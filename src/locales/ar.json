@@ -527,7 +527,7 @@
   "crypto_donate.explanation_box.title": "يتم إرسال العملات الرقمية",
   "crypto_donate_panel.actions.view": "اضغط لعرض {count, plural, one {# محفظة} other {# محفظة}}",
   "crypto_donate_panel.heading": "تبرّع بالعملات الرقمية",
-  "crypto_donate_panel.intro.message": "يقبل {siteTitle} العملات الرقمية لدعم تواجه . شكراً لدعمك!",
+  "crypto_donate_panel.intro.message": "منصّة {siteTitle} تقبل تبرعاتكم بالعملات الرقمية لدعم تواجدها . شكراً جزيلاً لدعمكم!",
   "datepicker.day": "يوم",
   "datepicker.hint": "مُجدول للنشر في…",
   "datepicker.month": "شهر",
