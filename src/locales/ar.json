@@ -1401,7 +1401,7 @@
   "status.group_mod_delete": "حذف المشاركة من المجموعة",
   "status.interactions.dislikes": "{count, plural, one {عدم اعجاب} other {عدم اعجاب}}",
   "status.interactions.favourites": "{count, plural, one {إعجاب واحد} other {إعجاب}}",
-  "status.interactions.quotes": "{count, plural, one {# صوت} other {# أصوات}}",
+  "status.interactions.quotes": "{count, plural, one {صوت} other {أصوات}}",
   "status.interactions.reblogs": "{count, plural, one {مشاركة} other {مشاركات}}",
   "status.load_more": "تحميل المزيد",
   "status.mention": "ذِكر @{name}",
