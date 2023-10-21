@@ -2,6 +2,7 @@ import { NODE_ENV } from 'soapbox/build-config';
 import sourceCode from 'soapbox/utils/code';
 
 import type { Account } from './schemas';
+import type { CaptureContext } from '@sentry/types';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
@@ -63,4 +64,10 @@ async function unsetSentryAccount() {
   Sentry.setUser(null);
 }
 
-export { startSentry, setSentryAccount, unsetSentryAccount };
+/** Capture the exception and report it to Sentry. */
+async function captureSentryException (exception: any, captureContext?: CaptureContext | undefined): Promise<void> {
+  const Sentry = await import('@sentry/react');
+  Sentry.captureException(exception, captureContext);
+}
+
+export { startSentry, setSentryAccount, unsetSentryAccount, captureSentryException };

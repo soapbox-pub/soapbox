@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
 import { HStack, Text, Stack } from 'soapbox/components/ui';
-import { captureException } from 'soapbox/monitoring';
+import { captureSentryException } from 'soapbox/sentry';
 import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
 import { unregisterSW } from 'soapbox/utils/sw';
@@ -37,7 +37,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
   textarea: HTMLTextAreaElement | null = null;
 
   componentDidCatch(error: any, info: any): void {
-    captureException(error, {
+    captureSentryException(error, {
       tags: {
         // Allow page crashes to be easily searched in Sentry.
         ErrorBoundary: 'yes',
