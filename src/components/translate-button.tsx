@@ -3,11 +3,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
-import { isLocal } from 'soapbox/utils/accounts';
 
 import { Stack, Button, Text } from './ui';
 
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities';
 
 interface ITranslateButton {
   status: Status;
@@ -28,7 +27,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     target_languages: targetLanguages,
   } = instance.pleroma.metadata.translation;
 
-  const renderTranslate = (me || allowUnauthenticated) && (allowRemote || isLocal(status.account as Account)) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
+  const renderTranslate = (me || allowUnauthenticated) && (allowRemote || status.account.local) && ['public', 'unlisted'].includes(status.visibility) && status.contentHtml.length > 0 && status.language !== null && intl.locale !== status.language;
 
   const supportsLanguages = (!sourceLanguages || sourceLanguages.includes(status.language!)) && (!targetLanguages || targetLanguages.includes(intl.locale));
 

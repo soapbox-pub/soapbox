@@ -28,7 +28,7 @@ import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
-import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
@@ -287,7 +287,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       return [];
     }
 
-    if (features.rssFeeds && isLocal(account)) {
+    if (features.rssFeeds && account.local) {
       menu.push({
         text: intl.formatMessage(messages.subscribeFeed),
         action: handleRssFeedClick,
@@ -303,7 +303,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (features.federating && isRemote(account)) {
+    if (features.federating && !account.local) {
       const domain = account.fqn.split('@')[1];
 
       menu.push({
@@ -453,7 +453,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (isRemote(account)) {
+    if (!account.local) {
       const domain = account.fqn.split('@')[1];
 
       menu.push(null);

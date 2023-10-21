@@ -23,7 +23,6 @@ import { HStack } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
-import { isLocal, isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 
@@ -415,7 +414,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         icon: require('@tabler/icons/clipboard-copy.svg'),
       });
 
-      if (features.embeds && isLocal(account)) {
+      if (features.embeds && account.local) {
         menu.push({
           text: intl.formatMessage(messages.embed),
           action: handleEmbed,
@@ -449,7 +448,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       });
     }
 
-    if (features.federating && isRemote(account)) {
+    if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         action: handleExternalClick,

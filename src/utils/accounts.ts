@@ -26,13 +26,6 @@ export const getAcct = (account: Pick<Account, 'fqn' | 'acct'>, displayFqn: bool
   displayFqn === true ? account.fqn : account.acct
 );
 
-export const isLocal = (account: Pick<Account, 'acct'>): boolean => {
-  const domain: string = account.acct.split('@')[1];
-  return domain === undefined ? true : false;
-};
-
-export const isRemote = (account: Pick<Account, 'acct'>): boolean => !isLocal(account);
-
 /** Default header filenames from various backends */
 const DEFAULT_HEADERS: string[] = [
   '/headers/original/missing.png', // Mastodon

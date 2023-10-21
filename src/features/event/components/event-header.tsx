@@ -19,7 +19,6 @@ import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, Me
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { download } from 'soapbox/utils/download';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -217,7 +216,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       },
     ];
 
-    if (features.federating && isRemote(account)) {
+    if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         action: handleExternalClick,

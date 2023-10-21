@@ -7,7 +7,7 @@ import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { isRemote, getDomain } from 'soapbox/utils/accounts';
+import { getDomain } from 'soapbox/utils/accounts';
 
 import type { Account } from 'soapbox/schemas';
 
@@ -31,7 +31,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const statusIds = useAppSelector((state) => OrderedSet(state.timelines.get(`account:${account.id}:with_replies`)!.items).union(state.reports.new.status_ids) as OrderedSet<string>);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isForward = useAppSelector((state) => state.reports.new.forward);
-  const canForward = isRemote(account) && features.federating;
+  const canForward = !account.local && features.federating;
   const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
 
   const [showAdditionalStatuses, setShowAdditionalStatuses] = useState<boolean>(false);
