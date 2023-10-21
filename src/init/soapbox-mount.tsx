@@ -41,39 +41,16 @@ const SoapboxMount = () => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
-  /** Render the onboarding flow. */
-  const renderOnboarding = () => (
-    <Suspense fallback={<LoadingScreen />}>
-      <OnboardingWizard />
-    </Suspense>
-  );
-
-  /** Render the auth layout or UI. */
-  const renderSwitch = () => (
-    <Switch>
-      {(!me && redirectRootNoLogin) && (
-        <Redirect exact from='/' to={redirectRootNoLogin} />
-      )}
-
-      <Route path='/' component={UI} />
-    </Switch>
-  );
-
-  /** Render the onboarding flow or UI. */
-  const renderBody = () => {
-    if (showOnboarding) {
-      return renderOnboarding();
-    } else {
-      return renderSwitch();
-    }
-  };
-
   return (
     <ErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
             <Switch>
+              {(!me && redirectRootNoLogin) && (
+                <Redirect exact from='/' to={redirectRootNoLogin} />
+              )}
+
               <Route
                 path='/embed/:statusId'
                 render={(props) => (
@@ -82,10 +59,16 @@ const SoapboxMount = () => {
                   </Suspense>
                 )}
               />
+
               <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
               <Route>
-                {renderBody()}
+                <Suspense fallback={<LoadingScreen />}>
+                  {showOnboarding
+                    ? <OnboardingWizard />
+                    : <UI />
+                  }
+                </Suspense>
 
                 <Suspense>
                   <ModalContainer />
