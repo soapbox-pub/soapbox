@@ -48,7 +48,7 @@ async function startSentry(dsn: string): Promise<void> {
 }
 
 /** Associate the account with Sentry events. */
-async function setSentryAccount(account: Account) {
+async function setSentryAccount(account: Account): Promise<void> {
   const Sentry = await import('@sentry/react');
 
   Sentry.setUser({
@@ -59,15 +59,18 @@ async function setSentryAccount(account: Account) {
 }
 
 /** Remove the account from Sentry events. */
-async function unsetSentryAccount() {
+async function unsetSentryAccount(): Promise<void> {
   const Sentry = await import('@sentry/react');
   Sentry.setUser(null);
 }
 
 /** Capture the exception and report it to Sentry. */
-async function captureSentryException (exception: any, captureContext?: CaptureContext | undefined): Promise<void> {
+async function captureSentryException (
+  exception: any,
+  captureContext?: CaptureContext | undefined,
+): Promise<string> {
   const Sentry = await import('@sentry/react');
-  Sentry.captureException(exception, captureContext);
+  return Sentry.captureException(exception, captureContext);
 }
 
 export { startSentry, setSentryAccount, unsetSentryAccount, captureSentryException };
