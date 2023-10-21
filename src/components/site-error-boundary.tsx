@@ -3,7 +3,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
 import { NODE_ENV } from 'soapbox/build-config';
-import { HStack, Text, Stack } from 'soapbox/components/ui';
+import { HStack, Text, Stack, Textarea } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { captureSentryException } from 'soapbox/sentry';
 import KVStore from 'soapbox/storage/kv-store';
@@ -121,12 +121,12 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
             ) : (
               <>
                 {errorText && (
-                  <textarea
+                  <Textarea
                     ref={textarea}
-                    className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
                     value={errorText}
                     onClick={handleCopy}
-                    dir='ltr'
+                    isCodeEditor
+                    rows={12}
                     readOnly
                   />
                 )}
