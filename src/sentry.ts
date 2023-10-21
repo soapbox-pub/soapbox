@@ -7,16 +7,13 @@ import type { SetOptional } from 'type-fest';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
-  const [Sentry, { Integrations: Integrations }] = await Promise.all([
-    import('@sentry/react'),
-    import('@sentry/tracing'),
-  ]);
+  const Sentry = await import('@sentry/react');
 
   Sentry.init({
     dsn,
     debug: false,
     enabled: NODE_ENV === 'production',
-    integrations: [new Integrations.BrowserTracing()],
+    integrations: [new Sentry.BrowserTracing()],
 
     // Filter events.
     // https://docs.sentry.io/platforms/javascript/configuration/filtering/

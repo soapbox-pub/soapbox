@@ -2077,13 +2077,6 @@
     "@sentry/types" "7.74.1"
     "@sentry/utils" "7.74.1"
 
-"@sentry/tracing@^7.74.1":
-  version "7.74.1"
-  resolved "https://registry.yarnpkg.com/@sentry/tracing/-/tracing-7.74.1.tgz#86cd078f632157c4a1b8880cba7f97c5a4839449"
-  integrity sha512-YqhLMY28uukOR8FtoCMvzdzBYkTtwj/JHUensDEpTZG5OoQTjrcgttpL+WMaCBUy1MpOIo7FyLB5aoRq2U7AIA==
-  dependencies:
-    "@sentry-internal/tracing" "7.74.1"
-
 "@sentry/types@7.74.1":
   version "7.74.1"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.74.1.tgz#b6f9b1bd266254f1f8b55fbcc92fa649ba2100ed"
