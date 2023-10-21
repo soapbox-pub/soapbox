@@ -10,7 +10,6 @@ import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
 import { unregisterSW } from 'soapbox/utils/sw';
 
-import SentryFeedbackForm from './sentry-feedback-form';
 import SiteLogo from './site-logo';
 
 interface ISiteErrorBoundary {
@@ -122,7 +121,7 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
           <div className='mx-auto max-w-lg space-y-4 py-16'>
             {(isProduction) ? (
               (sentryEnabled && sentryEventId) && (
-                <SentryFeedbackForm eventId={sentryEventId} />
+                <>{/* <SentryFeedbackForm eventId={sentryEventId} /> */}</>
               )
             ) : (
               <>
