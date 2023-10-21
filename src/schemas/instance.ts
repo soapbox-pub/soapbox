@@ -6,6 +6,25 @@ import { mrfSimpleSchema } from './pleroma';
 import { ruleSchema } from './rule';
 import { coerceObject, filteredArray, mimeSchema } from './utils';
 
+const fixVersion = (version: string) => {
+  // Handle Mastodon release candidates
+  if (new RegExp(/[0-9.]+rc[0-9]+/g).test(version)) {
+    version = version.split('rc').join('-rc');
+  }
+
+  // Rename Akkoma to Pleroma+akkoma
+  if (version.includes('Akkoma')) {
+    version = '2.7.2 (compatible; Pleroma 2.4.50+akkoma)';
+  }
+
+  // Set Takahē version to a Pleroma-like string
+  if (version.startsWith('takahe/')) {
+    version = `0.0.0 (compatible; Takahe ${version.slice(7)})`;
+  }
+
+  return version;
+};
+
 const configurationSchema = coerceObject({
   chats: coerceObject({
     max_characters: z.number().catch(5000),
@@ -136,6 +155,8 @@ const instanceSchema = coerceObject({
 }).transform(({ max_media_attachments, max_toot_chars, poll_limits, ...instance }) => {
   const { configuration } = instance;
 
+  const version = fixVersion(instance.version);
+
   const polls = {
     ...configuration.polls,
     max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
@@ -157,6 +178,7 @@ const instanceSchema = coerceObject({
       polls,
       statuses,
     },
+    version,
   };
 });
 

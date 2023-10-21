@@ -194,6 +194,7 @@ const getInstanceFeatures = (instance: Instance) => {
     announcements: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '2.2.49'),
+      v.software === TAKAHE && gte(v.version, '0.7.0'),
     ]),
 
     /**
@@ -233,6 +234,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
+      v.software === TAKAHE && gte(v.version, '0.9.0'),
     ]),
 
     /**
@@ -366,9 +368,14 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === WILDEBEEST,
     ]),
 
+    /**
+     * Ability to edit published posts.
+     * @see PUT /api/v1/statuses/:id
+     */
     editStatuses: any([
       v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.version, '3.5.0'),
+      v.software === TAKAHE && gte(v.version, '0.8.0'),
       features.includes('editing'),
     ]),
 
@@ -491,6 +498,7 @@ const getInstanceFeatures = (instance: Instance) => {
     followHashtags: any([
       v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
       v.software === PLEROMA && v.build === AKKOMA,
+      v.software === TAKAHE && gte(v.version, '0.9.0'),
     ]),
 
     /**
@@ -677,6 +685,7 @@ const getInstanceFeatures = (instance: Instance) => {
     mutesDuration: any([
       v.software === PLEROMA && gte(v.version, '2.3.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+      v.software === TAKAHE,
     ]),
 
     /**
@@ -732,6 +741,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === FIREFISH,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
+      v.software === TAKAHE && gte(v.version, '0.8.0'),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -758,6 +768,7 @@ const getInstanceFeatures = (instance: Instance) => {
     profileFields: any([
       v.software === MASTODON,
       v.software === PLEROMA,
+      v.software === TAKAHE && gte(v.version, '0.7.0'),
     ]),
 
     /**
@@ -978,7 +989,6 @@ export const parseVersion = (version: string): Backend => {
     loose: true,
   }) : null;
   const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
-
   if (match && semver && compat) {
     return {
       build: semver.build[0],
