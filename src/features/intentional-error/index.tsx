@@ -5,7 +5,7 @@ import React from 'react';
  * For testing logging/monitoring & previewing ErrorBoundary design.
  */
 const IntentionalError: React.FC = () => {
-  throw 'This error is intentional.';
+  throw new Error('This error is intentional.');
 };
 
 export default IntentionalError;

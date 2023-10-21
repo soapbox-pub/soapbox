@@ -164,6 +164,8 @@
   "alert.unexpected.links.support": "Support",
   "alert.unexpected.message": "Something went wrong.",
   "alert.unexpected.return_home": "Return Home",
+  "alert.unexpected.submit_feedback": "Submit Feedback",
+  "alert.unexpected.thanks": "Thanks for your feedback!",
   "aliases.account.add": "Create alias",
   "aliases.account_label": "Old account:",
   "aliases.aliases_list_delete": "Unlink alias",
