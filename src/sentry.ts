@@ -1,3 +1,4 @@
+import { NODE_ENV } from 'soapbox/build-config';
 import sourceCode from 'soapbox/utils/code';
 
 import type { Account } from './schemas';
@@ -12,6 +13,7 @@ async function startSentry(dsn: string): Promise<void> {
   Sentry.init({
     dsn,
     debug: false,
+    enabled: NODE_ENV === 'production',
     integrations: [new Integrations.BrowserTracing()],
 
     // Filter events.
