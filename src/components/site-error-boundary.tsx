@@ -18,13 +18,14 @@ interface ISiteErrorBoundary {
 
 /** Application-level error boundary. Fills the whole screen. */
 const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
-  const { links } = useSoapboxConfig();
+  const { links, sentryDsn } = useSoapboxConfig();
   const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [error, setError] = useState<unknown>();
   const [componentStack, setComponentStack] = useState<string>();
   const [browser, setBrowser] = useState<Bowser.Parser.Parser>();
 
+  const sentryEnabled = Boolean(sentryDsn);
   const isProduction = NODE_ENV === 'production';
   const errorText = String(error) + componentStack;
 
@@ -52,18 +53,16 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
     setError(error);
     setComponentStack(info.componentStack);
 
-    if (isProduction) {
-      captureSentryException(error, {
-        tags: {
-          // Allow page crashes to be easily searched in Sentry.
-          ErrorBoundary: 'yes',
-        },
-      });
+    captureSentryException(error, {
+      tags: {
+        // Allow page crashes to be easily searched in Sentry.
+        ErrorBoundary: 'yes',
+      },
+    });
 
-      import('bowser')
-        .then(({ default: Bowser }) => setBrowser(Bowser.getParser(window.navigator.userAgent)))
-        .catch(() => {});
-    }
+    import('bowser')
+      .then(({ default: Bowser }) => setBrowser(Bowser.getParser(window.navigator.userAgent)))
+      .catch(() => {});
   }
 
   function goHome() {
@@ -116,27 +115,31 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
             </div>
           </div>
 
-          {!isProduction && (
-            <div className='mx-auto max-w-lg space-y-4 py-16'>
-              {errorText && (
-                <textarea
-                  ref={textarea}
-                  className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
-                  value={errorText}
-                  onClick={handleCopy}
-                  dir='ltr'
-                  readOnly
-                />
-              )}
+          <div className='mx-auto max-w-lg space-y-4 py-16'>
+            {(isProduction && sentryEnabled) ? (
+              <>{/* TODO: Sentry report form. */}</>
+            ) : (
+              <>
+                {errorText && (
+                  <textarea
+                    ref={textarea}
+                    className='block h-48 w-full rounded-md border-gray-300 bg-gray-100 p-4 font-mono text-gray-900 shadow-sm focus:border-primary-500 focus:ring-2 focus:ring-primary-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 sm:text-sm'
+                    value={errorText}
+                    onClick={handleCopy}
+                    dir='ltr'
+                    readOnly
+                  />
+                )}
 
-              {browser && (
-                <Stack>
-                  <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>
-                  <Text theme='muted'>{browser.getBrowserName()} {browser.getBrowserVersion()}</Text>
-                </Stack>
-              )}
-            </div>
-          )}
+                {browser && (
+                  <Stack>
+                    <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>
+                    <Text theme='muted'>{browser.getBrowserName()} {browser.getBrowserVersion()}</Text>
+                  </Stack>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </main>
 
