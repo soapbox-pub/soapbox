@@ -6,6 +6,7 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 import { ScrollContext } from 'react-router-scroll-4';
 
 import * as BuildConfig from 'soapbox/build-config';
+import SiteErrorBoundary from 'soapbox/components/error-boundary';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import {
   ModalContainer,
@@ -17,8 +18,6 @@ import {
   useSoapboxConfig,
 } from 'soapbox/hooks';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
-
-import ErrorBoundary from '../components/error-boundary';
 
 const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
 const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
@@ -42,7 +41,7 @@ const SoapboxMount = () => {
   };
 
   return (
-    <ErrorBoundary>
+    <SiteErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
@@ -90,7 +89,7 @@ const SoapboxMount = () => {
           </ScrollContext>
         </CompatRouter>
       </BrowserRouter>
-    </ErrorBoundary>
+    </SiteErrorBoundary>
   );
 };
 
