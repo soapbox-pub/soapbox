@@ -3,9 +3,9 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
 import { NODE_ENV } from 'soapbox/build-config';
-import { HStack, Text, Stack, Textarea } from 'soapbox/components/ui';
+import { HStack, Text, Stack, Textarea, Form, Button, FormGroup, FormActions } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
-import { captureSentryException } from 'soapbox/sentry';
+import { captureSentryException, captureSentryFeedback } from 'soapbox/sentry';
 import KVStore from 'soapbox/storage/kv-store';
 import sourceCode from 'soapbox/utils/code';
 import { unregisterSW } from 'soapbox/utils/sw';
@@ -24,6 +24,9 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
   const [error, setError] = useState<unknown>();
   const [componentStack, setComponentStack] = useState<string>();
   const [browser, setBrowser] = useState<Bowser.Parser.Parser>();
+  const [sentryEventId, setSentryEventId] = useState<string>();
+  const [feedback, setFeedback] = useState<string>();
+  const [isSubmittingFeedback, setIsSubmittingFeedback] = useState<boolean>(false);
 
   const sentryEnabled = Boolean(sentryDsn);
   const isProduction = NODE_ENV === 'production';
@@ -49,6 +52,23 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
     document.execCommand('copy');
   };
 
+  const handleFeedbackChange: React.ChangeEventHandler<HTMLTextAreaElement> = (e) => {
+    setFeedback(e.target.value);
+  };
+
+  const handleSubmitFeedback: React.FormEventHandler = async (_e) => {
+    if (!feedback || !sentryEventId) return;
+    setIsSubmittingFeedback(true);
+
+    await captureSentryFeedback({
+      event_id: sentryEventId,
+      comments: feedback,
+    }).catch(console.error);
+
+    setFeedback('');
+    setIsSubmittingFeedback(false);
+  };
+
   function handleError(error: Error, info: ErrorInfo) {
     setError(error);
     setComponentStack(info.componentStack);
@@ -58,7 +78,9 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
         // Allow page crashes to be easily searched in Sentry.
         ErrorBoundary: 'yes',
       },
-    });
+    })
+      .then((eventId) => setSentryEventId(eventId))
+      .catch(console.error);
 
     import('bowser')
       .then(({ default: Bowser }) => setBrowser(Bowser.getParser(window.navigator.userAgent)))
@@ -116,8 +138,26 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
           </div>
 
           <div className='mx-auto max-w-lg space-y-4 py-16'>
-            {(isProduction && sentryEnabled) ? (
-              <>{/* TODO: Sentry report form. */}</>
+            {(isProduction) ? (
+              (sentryEnabled && sentryEventId) && (
+                <Form onSubmit={handleSubmitFeedback}>
+                  <FormGroup>
+                    <Textarea
+                      value={feedback}
+                      onChange={handleFeedbackChange}
+                      placeholder='Anything you can tell us about what happened?'
+                      disabled={isSubmittingFeedback}
+                      autoGrow
+                    />
+                  </FormGroup>
+
+                  <FormActions>
+                    <Button type='submit' className='mx-auto' disabled={!feedback || isSubmittingFeedback}>
+                      <FormattedMessage id='alert.unexpected.submit_feedback' defaultMessage='Submit Feedback' />
+                    </Button>
+                  </FormActions>
+                </Form>
+              )
             ) : (
               <>
                 {errorText && (

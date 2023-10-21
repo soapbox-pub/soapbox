@@ -2,7 +2,8 @@ import { NODE_ENV } from 'soapbox/build-config';
 import sourceCode from 'soapbox/utils/code';
 
 import type { Account } from './schemas';
-import type { CaptureContext } from '@sentry/types';
+import type { CaptureContext, UserFeedback } from '@sentry/types';
+import type { SetOptional } from 'type-fest';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
@@ -73,4 +74,16 @@ async function captureSentryException (
   return Sentry.captureException(exception, captureContext);
 }
 
-export { startSentry, setSentryAccount, unsetSentryAccount, captureSentryException };
+/** Capture user feedback and report it to Sentry. */
+async function captureSentryFeedback(feedback: SetOptional<UserFeedback, 'name' | 'email'>): Promise<void> {
+  const Sentry = await import('@sentry/react');
+  Sentry.captureUserFeedback(feedback as UserFeedback);
+}
+
+export {
+  startSentry,
+  setSentryAccount,
+  unsetSentryAccount,
+  captureSentryException,
+  captureSentryFeedback,
+};
