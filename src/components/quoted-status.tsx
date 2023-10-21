@@ -15,7 +15,7 @@ import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -51,7 +51,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
   const handleExpandClick: MouseEventHandler<HTMLDivElement> = (e) => {
     if (!status) return;
-    const account = status.account as AccountEntity;
+    const account = status.account;
 
     if (!compose && e.button === 0) {
       const statusUrl = `/@${account.acct}/posts/${status.id}`;
@@ -79,7 +79,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
     return null;
   }
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
 
   let actions = {};
   if (onCancel) {

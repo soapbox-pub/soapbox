@@ -9,7 +9,6 @@ import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { selectAccount } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
-import { isLocal } from 'soapbox/utils/accounts';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
@@ -79,7 +78,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const account = selectAccount(state, accountId)!;
     const acct = account.acct;
     const name = account.username;
-    const local = isLocal(account);
+    const local = account.local;
 
     const message = (
       <Stack space={4}>

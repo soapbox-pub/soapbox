@@ -12,7 +12,6 @@ import OutlineBox from 'soapbox/components/outline-box';
 import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
-import { isLocal } from 'soapbox/utils/accounts';
 import { getBadges } from 'soapbox/utils/badges';
 
 import BadgeInput from './badge-input';
@@ -115,7 +114,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
         </OutlineBox>
 
         <List>
-          {(ownAccount.admin && isLocal(account)) && (
+          {(ownAccount.admin && account.local) && (
             <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
               <div className='w-auto'>
                 <StaffRolePicker account={account} />

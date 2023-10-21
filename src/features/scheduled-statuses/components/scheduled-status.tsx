@@ -13,7 +13,7 @@ import { buildStatus } from '../builder';
 
 import ScheduledStatusActionBar from './scheduled-status-action-bar';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IScheduledStatus {
   statusId: string;
@@ -28,7 +28,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
 
   if (!status) return null;
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
 
   return (
     <div className={clsx('status__wrapper', `status__wrapper-${status.visibility}`, { 'status__wrapper-reply': !!status.in_reply_to_id })} tabIndex={0}>

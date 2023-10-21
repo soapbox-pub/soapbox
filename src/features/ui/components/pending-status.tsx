@@ -14,7 +14,7 @@ import { buildStatus } from '../util/pending-status-builder';
 
 import PollPreview from './poll-preview';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const shouldHaveCard = (pendingStatus: StatusEntity) => {
   return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));
@@ -54,7 +54,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   if (!status) return null;
   if (!status.account) return null;
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
 
   return (
     <div className={clsx('opacity-50', className)}>

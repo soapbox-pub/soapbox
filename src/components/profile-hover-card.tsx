@@ -14,7 +14,6 @@ import Badge from 'soapbox/components/badge';
 import ActionButton from 'soapbox/features/ui/components/action-button';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-import { isLocal } from 'soapbox/utils/accounts';
 
 import { showProfileHoverCard } from './hover-ref-wrapper';
 import { dateFormatOptions } from './relative-timestamp';
@@ -117,7 +116,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               badges={badges}
             />
 
-            {isLocal(account) ? (
+            {account.local ? (
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/calendar.svg')}
