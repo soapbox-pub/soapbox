@@ -1,4 +1,4 @@
-import React, { ErrorInfo, useRef, useState } from 'react';
+import React, { type ErrorInfo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
@@ -21,12 +21,12 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
   const { links } = useSoapboxConfig();
   const textarea = useRef<HTMLTextAreaElement>(null);
 
-  const [error, setError] = useState<any>();
-  const [componentStack, setComponentStack] = useState<any>();
+  const [error, setError] = useState<unknown>();
+  const [componentStack, setComponentStack] = useState<string>();
   const [browser, setBrowser] = useState<Bowser.Parser.Parser>();
 
   const isProduction = NODE_ENV === 'production';
-  const errorText = error + componentStack;
+  const errorText = String(error) + componentStack;
 
   const clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
@@ -52,16 +52,18 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
     setError(error);
     setComponentStack(info.componentStack);
 
-    captureSentryException(error, {
-      tags: {
-        // Allow page crashes to be easily searched in Sentry.
-        ErrorBoundary: 'yes',
-      },
-    });
+    if (isProduction) {
+      captureSentryException(error, {
+        tags: {
+          // Allow page crashes to be easily searched in Sentry.
+          ErrorBoundary: 'yes',
+        },
+      });
 
-    import('bowser')
-      .then(({ default: Bowser }) => setBrowser(Bowser.getParser(window.navigator.userAgent)))
-      .catch(() => {});
+      import('bowser')
+        .then(({ default: Bowser }) => setBrowser(Bowser.getParser(window.navigator.userAgent)))
+        .catch(() => {});
+    }
   }
 
   function goHome() {
@@ -141,29 +143,21 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
       <footer className='mx-auto w-full max-w-7xl shrink-0 px-4 sm:px-6 lg:px-8'>
         <HStack justifyContent='center' space={4} element='nav'>
           {links.get('status') && (
-            <>
-              <a href={links.get('status')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
-                <FormattedMessage id='alert.unexpected.links.status' defaultMessage='Status' />
-              </a>
-            </>
+            <SiteErrorBoundaryLink href={links.get('status')!}>
+              <FormattedMessage id='alert.unexpected.links.status' defaultMessage='Status' />
+            </SiteErrorBoundaryLink>
           )}
 
           {links.get('help') && (
-            <>
-              <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-              <a href={links.get('help')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
-                <FormattedMessage id='alert.unexpected.links.help' defaultMessage='Help Center' />
-              </a>
-            </>
+            <SiteErrorBoundaryLink href={links.get('help')!}>
+              <FormattedMessage id='alert.unexpected.links.help' defaultMessage='Help Center' />
+            </SiteErrorBoundaryLink>
           )}
 
           {links.get('support') && (
-            <>
-              <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-              <a href={links.get('support')} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
-                <FormattedMessage id='alert.unexpected.links.support' defaultMessage='Support' />
-              </a>
-            </>
+            <SiteErrorBoundaryLink href={links.get('support')!}>
+              <FormattedMessage id='alert.unexpected.links.support' defaultMessage='Support' />
+            </SiteErrorBoundaryLink>
           )}
         </HStack>
       </footer>
@@ -176,5 +170,21 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
     </ErrorBoundary>
   );
 };
+
+interface ISiteErrorBoundaryLink {
+  href: string;
+  children: React.ReactNode;
+}
+
+function SiteErrorBoundaryLink({ href, children }: ISiteErrorBoundaryLink) {
+  return (
+    <>
+      <span className='inline-block border-l border-gray-300' aria-hidden='true' />
+      <a href={href} className='text-sm font-medium text-gray-700 hover:underline dark:text-gray-600'>
+        {children}
+      </a>
+    </>
+  );
+}
 
 export default SiteErrorBoundary;
