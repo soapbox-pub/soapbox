@@ -6,8 +6,8 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 import { ScrollContext } from 'react-router-scroll-4';
 
 import * as BuildConfig from 'soapbox/build-config';
-import SiteErrorBoundary from 'soapbox/components/error-boundary';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
 import {
   ModalContainer,
   OnboardingWizard,
