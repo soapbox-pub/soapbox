@@ -29,7 +29,7 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
 import GroupPopover from './groups/popover/group-popover';
 
 import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { Account, Group, Status } from 'soapbox/types/entities';
+import type { Group, Status } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
@@ -131,7 +131,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const unmuteGroup = useUnmuteGroup(group as Group);
   const isMutingGroup = !!group?.relationship?.muting;
   const deleteGroupStatus = useDeleteGroupStatus(group as Group, status.id);
-  const blockGroupMember = useBlockGroupMember(group as Group, status?.account as any);
+  const blockGroupMember = useBlockGroupMember(group as Group, status.account);
 
   const me = useAppSelector(state => state.me);
   const { groupRelationship } = useGroupRelationship(status.group?.id);
@@ -266,20 +266,20 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(mentionCompose(status.account as Account));
+    dispatch(mentionCompose(status.account));
   };
 
   const handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(directCompose(status.account as Account));
+    dispatch(directCompose(status.account));
   };
 
   const handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
     dispatch(launchChat(account.id, history));
   };
 
   const handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initMuteModal(status.account as Account));
+    dispatch(initMuteModal(status.account));
   };
 
   const handleMuteGroupClick: React.EventHandler<React.MouseEvent> = () =>
@@ -304,7 +304,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/ban.svg'),
@@ -332,7 +332,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(ReportableEntities.STATUS, status.account as Account, { status }));
+    dispatch(initReport(ReportableEntities.STATUS, status.account, { status }));
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -346,7 +346,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const onModerate: React.MouseEventHandler = (e) => {
-    const account = status.account as Account;
+    const account = status.account;
     dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
   };
 
@@ -359,7 +359,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleDeleteFromGroup: React.EventHandler<React.MouseEvent> = () => {
-    const account = status.account as Account;
+    const account = status.account;
 
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
@@ -378,10 +378,10 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const handleBlockFromGroup = () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.groupBlockFromGroupHeading),
-      message: intl.formatMessage(messages.groupBlockFromGroupMessage, { name: (status.account as any).username }),
+      message: intl.formatMessage(messages.groupBlockFromGroupMessage, { name: status.account.username }),
       confirm: intl.formatMessage(messages.groupBlockConfirm),
       onConfirm: () => {
-        blockGroupMember({ account_ids: [(status.account as any).id] }, {
+        blockGroupMember({ account_ids: [status.account.id] }, {
           onSuccess() {
             toast.success(intl.formatMessage(messages.blocked, { name: account?.acct }));
           },
@@ -553,7 +553,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
     if (isGroupStatus && !!status.group) {
       const group = status.group as Group;
-      const account = status.account as Account;
+      const account = status.account;
       const isGroupOwner = groupRelationship?.role === GroupRoles.OWNER;
       const isGroupAdmin = groupRelationship?.role === GroupRoles.ADMIN;
       const isStatusFromOwner = group.owner.id === account.id;

@@ -24,10 +24,7 @@ import StatusInfo from './statuses/status-info';
 import Tombstone from './tombstone';
 import { Card, Icon, Stack, Text } from './ui';
 
-import type {
-  Account as AccountEntity,
-  Status as StatusEntity,
-} from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };
@@ -168,7 +165,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(mentionCompose(actualStatus.account as AccountEntity));
+    dispatch(mentionCompose(actualStatus.account));
   };
 
   const handleHotkeyOpen = (): void => {

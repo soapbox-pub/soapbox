@@ -10,7 +10,7 @@ import Icon from './icon';
 import { Button, HStack, Stack, Text } from './ui';
 import VerificationBadge from './verification-badge';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -30,7 +30,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
   const me = useAppSelector((state) => state.me);
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
   const event = status.event!;
 
   const banner = event.banner;

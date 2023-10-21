@@ -8,7 +8,7 @@ import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
 import { isPubkey } from 'soapbox/utils/nostr';
 
-import type { Account, Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities';
 
 interface IStatusReplyMentions {
   status: Status;
@@ -21,7 +21,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   const handleOpenMentionsModal: React.MouseEventHandler<HTMLSpanElement> = (e) => {
     e.stopPropagation();
 
-    const account = status.account as Account;
+    const account = status.account;
 
     dispatch(openModal('MENTIONS', {
       username: account.acct,

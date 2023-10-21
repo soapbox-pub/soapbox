@@ -28,7 +28,7 @@ import EventActionButton from '../components/event-action-button';
 import EventDate from '../components/event-date';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -88,7 +88,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     );
   }
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
   const event = status.event;
   const banner = event.banner;
 
