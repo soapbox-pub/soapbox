@@ -164,6 +164,8 @@
   "alert.unexpected.links.support": "الدعم",
   "alert.unexpected.message": "حدث خطأ ما.",
   "alert.unexpected.return_home": "العودة للصفحة الرئيسة",
+  "alert.unexpected.submit_feedback": "إرسال الملاحظات",
+  "alert.unexpected.thanks": "شكرا لملاحظاتك!",
   "aliases.account.add": "إنشاء اسم مستعار",
   "aliases.account_label": "الحساب القديم:",
   "aliases.aliases_list_delete": "إلغاء ربط الاسم المستعار",
