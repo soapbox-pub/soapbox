@@ -8,7 +8,7 @@ import api from '../api';
 import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 
-import type { AxiosError, RawAxiosRequestHeaders } from 'axios';
+import type { RawAxiosRequestHeaders } from 'axios';
 import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -125,7 +125,7 @@ const patchMeSuccess = (me: APIEntity) =>
     dispatch(action);
   };
 
-const patchMeFail = (error: AxiosError) => ({
+const patchMeFail = (error: unknown) => ({
   type: ME_PATCH_FAIL,
   error,
   skipAlert: true,

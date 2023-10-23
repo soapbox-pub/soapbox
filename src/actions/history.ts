@@ -2,7 +2,6 @@ import api from 'soapbox/api';
 
 import { importFetchedAccounts } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -37,7 +36,7 @@ const fetchHistorySuccess = (statusId: String, history: APIEntity[]) => ({
   history,
 });
 
-const fetchHistoryFail = (error: AxiosError) => ({
+const fetchHistoryFail = (error: unknown) => ({
   type: HISTORY_FETCH_FAIL,
   error,
 });

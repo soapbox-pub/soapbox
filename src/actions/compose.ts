@@ -1,4 +1,4 @@
-import axios, { AxiosError, Canceler } from 'axios';
+import axios, { Canceler } from 'axios';
 import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
@@ -388,7 +388,7 @@ const submitComposeSuccess = (composeId: string, status: APIEntity) => ({
   status: status,
 });
 
-const submitComposeFail = (composeId: string, error: AxiosError) => ({
+const submitComposeFail = (composeId: string, error: unknown) => ({
   type: COMPOSE_SUBMIT_FAIL,
   id: composeId,
   error: error,
@@ -451,7 +451,7 @@ const uploadComposeSuccess = (composeId: string, media: APIEntity, file: File) =
   skipLoading: true,
 });
 
-const uploadComposeFail = (composeId: string, error: AxiosError | true) => ({
+const uploadComposeFail = (composeId: string, error: unknown) => ({
   type: COMPOSE_UPLOAD_FAIL,
   id: composeId,
   error: error,
@@ -484,7 +484,7 @@ const changeUploadComposeSuccess = (composeId: string, media: APIEntity) => ({
   skipLoading: true,
 });
 
-const changeUploadComposeFail = (composeId: string, id: string, error: AxiosError) => ({
+const changeUploadComposeFail = (composeId: string, id: string, error: unknown) => ({
   type: COMPOSE_UPLOAD_CHANGE_FAIL,
   composeId,
   id,

@@ -3,7 +3,6 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { SearchFilter } from 'soapbox/reducers/search';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -105,7 +104,7 @@ const fetchSearchSuccess = (results: APIEntity[], searchTerm: string, searchType
   next,
 });
 
-const fetchSearchFail = (error: AxiosError) => ({
+const fetchSearchFail = (error: unknown) => ({
   type: SEARCH_FETCH_FAIL,
   error,
 });
@@ -178,7 +177,7 @@ const expandSearchSuccess = (results: APIEntity[], searchTerm: string, searchTyp
   next,
 });
 
-const expandSearchFail = (error: AxiosError) => ({
+const expandSearchFail = (error: unknown) => ({
   type: SEARCH_EXPAND_FAIL,
   error,
 });

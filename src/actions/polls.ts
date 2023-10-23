@@ -2,7 +2,6 @@ import api from '../api';
 
 import { importFetchedPoll } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -47,7 +46,7 @@ const voteSuccess = (poll: APIEntity) => ({
   poll,
 });
 
-const voteFail = (error: AxiosError) => ({
+const voteFail = (error: unknown) => ({
   type: POLL_VOTE_FAIL,
   error,
 });
@@ -61,7 +60,7 @@ const fetchPollSuccess = (poll: APIEntity) => ({
   poll,
 });
 
-const fetchPollFail = (error: AxiosError) => ({
+const fetchPollFail = (error: unknown) => ({
   type: POLL_FETCH_FAIL,
   error,
 });

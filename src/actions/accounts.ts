@@ -224,7 +224,7 @@ const fetchAccountSuccess = (account: APIEntity) => ({
   account,
 });
 
-const fetchAccountFail = (id: string | null, error: AxiosError) => ({
+const fetchAccountFail = (id: string | null, error: unknown) => ({
   type: ACCOUNT_FETCH_FAIL,
   id,
   error,
@@ -272,7 +272,7 @@ const blockAccountSuccess = (relationship: APIEntity, statuses: ImmutableMap<str
   statuses,
 });
 
-const blockAccountFail = (error: AxiosError) => ({
+const blockAccountFail = (error: unknown) => ({
   type: ACCOUNT_BLOCK_FAIL,
   error,
 });
@@ -287,7 +287,7 @@ const unblockAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const unblockAccountFail = (error: AxiosError) => ({
+const unblockAccountFail = (error: unknown) => ({
   type: ACCOUNT_UNBLOCK_FAIL,
   error,
 });
@@ -350,7 +350,7 @@ const muteAccountSuccess = (relationship: APIEntity, statuses: ImmutableMap<stri
   statuses,
 });
 
-const muteAccountFail = (error: AxiosError) => ({
+const muteAccountFail = (error: unknown) => ({
   type: ACCOUNT_MUTE_FAIL,
   error,
 });
@@ -365,7 +365,7 @@ const unmuteAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const unmuteAccountFail = (error: AxiosError) => ({
+const unmuteAccountFail = (error: unknown) => ({
   type: ACCOUNT_UNMUTE_FAIL,
   error,
 });
@@ -404,7 +404,7 @@ const subscribeAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const subscribeAccountFail = (error: AxiosError) => ({
+const subscribeAccountFail = (error: unknown) => ({
   type: ACCOUNT_SUBSCRIBE_FAIL,
   error,
 });
@@ -419,7 +419,7 @@ const unsubscribeAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const unsubscribeAccountFail = (error: AxiosError) => ({
+const unsubscribeAccountFail = (error: unknown) => ({
   type: ACCOUNT_UNSUBSCRIBE_FAIL,
   error,
 });
@@ -446,7 +446,7 @@ const removeFromFollowersSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const removeFromFollowersFail = (id: string, error: AxiosError) => ({
+const removeFromFollowersFail = (id: string, error: unknown) => ({
   type: ACCOUNT_REMOVE_FROM_FOLLOWERS_FAIL,
   id,
   error,
@@ -482,7 +482,7 @@ const fetchFollowersSuccess = (id: string, accounts: APIEntity[], next: string |
   next,
 });
 
-const fetchFollowersFail = (id: string, error: AxiosError) => ({
+const fetchFollowersFail = (id: string, error: unknown) => ({
   type: FOLLOWERS_FETCH_FAIL,
   id,
   error,
@@ -526,7 +526,7 @@ const expandFollowersSuccess = (id: string, accounts: APIEntity[], next: string 
   next,
 });
 
-const expandFollowersFail = (id: string, error: AxiosError) => ({
+const expandFollowersFail = (id: string, error: unknown) => ({
   type: FOLLOWERS_EXPAND_FAIL,
   id,
   error,
@@ -562,7 +562,7 @@ const fetchFollowingSuccess = (id: string, accounts: APIEntity[], next: string |
   next,
 });
 
-const fetchFollowingFail = (id: string, error: AxiosError) => ({
+const fetchFollowingFail = (id: string, error: unknown) => ({
   type: FOLLOWING_FETCH_FAIL,
   id,
   error,
@@ -606,7 +606,7 @@ const expandFollowingSuccess = (id: string, accounts: APIEntity[], next: string 
   next,
 });
 
-const expandFollowingFail = (id: string, error: AxiosError) => ({
+const expandFollowingFail = (id: string, error: unknown) => ({
   type: FOLLOWING_EXPAND_FAIL,
   id,
   error,
@@ -646,7 +646,7 @@ const fetchRelationshipsSuccess = (relationships: APIEntity[]) => ({
   skipLoading: true,
 });
 
-const fetchRelationshipsFail = (error: AxiosError) => ({
+const fetchRelationshipsFail = (error: unknown) => ({
   type: RELATIONSHIPS_FETCH_FAIL,
   error,
   skipLoading: true,
@@ -678,7 +678,7 @@ const fetchFollowRequestsSuccess = (accounts: APIEntity[], next: string | null) 
   next,
 });
 
-const fetchFollowRequestsFail = (error: AxiosError) => ({
+const fetchFollowRequestsFail = (error: unknown) => ({
   type: FOLLOW_REQUESTS_FETCH_FAIL,
   error,
 });
@@ -715,7 +715,7 @@ const expandFollowRequestsSuccess = (accounts: APIEntity[], next: string | null)
   next,
 });
 
-const expandFollowRequestsFail = (error: AxiosError) => ({
+const expandFollowRequestsFail = (error: unknown) => ({
   type: FOLLOW_REQUESTS_EXPAND_FAIL,
   error,
 });
@@ -742,7 +742,7 @@ const authorizeFollowRequestSuccess = (id: string) => ({
   id,
 });
 
-const authorizeFollowRequestFail = (id: string, error: AxiosError) => ({
+const authorizeFollowRequestFail = (id: string, error: unknown) => ({
   type: FOLLOW_REQUEST_AUTHORIZE_FAIL,
   id,
   error,
@@ -770,7 +770,7 @@ const rejectFollowRequestSuccess = (id: string) => ({
   id,
 });
 
-const rejectFollowRequestFail = (id: string, error: AxiosError) => ({
+const rejectFollowRequestFail = (id: string, error: unknown) => ({
   type: FOLLOW_REQUEST_REJECT_FAIL,
   id,
   error,
@@ -823,7 +823,7 @@ const pinAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const pinAccountFail = (error: AxiosError) => ({
+const pinAccountFail = (error: unknown) => ({
   type: ACCOUNT_PIN_FAIL,
   error,
 });
@@ -838,7 +838,7 @@ const unpinAccountSuccess = (relationship: APIEntity) => ({
   relationship,
 });
 
-const unpinAccountFail = (error: AxiosError) => ({
+const unpinAccountFail = (error: unknown) => ({
   type: ACCOUNT_UNPIN_FAIL,
   error,
 });
@@ -867,7 +867,7 @@ const fetchPinnedAccountsSuccess = (id: string, accounts: APIEntity[], next: str
   next,
 });
 
-const fetchPinnedAccountsFail = (id: string, error: AxiosError) => ({
+const fetchPinnedAccountsFail = (id: string, error: unknown) => ({
   type: PINNED_ACCOUNTS_FETCH_FAIL,
   id,
   error,

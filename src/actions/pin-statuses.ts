@@ -4,7 +4,6 @@ import api from '../api';
 
 import { importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -37,7 +36,7 @@ const fetchPinnedStatusesSuccess = (statuses: APIEntity[], next: string | null) 
   next,
 });
 
-const fetchPinnedStatusesFail = (error: AxiosError) => ({
+const fetchPinnedStatusesFail = (error: unknown) => ({
   type: PINNED_STATUSES_FETCH_FAIL,
   error,
 });

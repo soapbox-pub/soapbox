@@ -17,8 +17,6 @@ import ConfirmationStep from './steps/confirmation-step';
 import OtherActionsStep from './steps/other-actions-step';
 import ReasonStep from './steps/reason-step';
 
-import type { AxiosError } from 'axios';
-
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
   done: { id: 'report.done', defaultMessage: 'Done' },
@@ -123,7 +121,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const handleSubmit = () => {
     dispatch(submitReport())
       .then(() => setCurrentStep(Steps.THREE))
-      .catch((error: AxiosError) => dispatch(submitReportFail(error)));
+      .catch((error) => dispatch(submitReportFail(error)));
 
     if (isBlocked && account) {
       dispatch(blockAccount(account.id));

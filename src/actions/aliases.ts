@@ -9,7 +9,6 @@ import api from '../api';
 import { importFetchedAccounts } from './importer';
 import { patchMeSuccess } from './me';
 
-import type { AxiosError } from 'axios';
 import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
@@ -61,7 +60,7 @@ const fetchAliasesSuccess = (aliases: unknown[]) => ({
   value: aliases,
 });
 
-const fetchAliasesFail = (error: AxiosError) => ({
+const fetchAliasesFail = (error: unknown) => ({
   type: ALIASES_FETCH_FAIL,
   error,
 });
@@ -143,7 +142,7 @@ const addToAliasesSuccess = () => ({
   type: ALIASES_ADD_SUCCESS,
 });
 
-const addToAliasesFail = (error: AxiosError) => ({
+const addToAliasesFail = (error: unknown) => ({
   type: ALIASES_ADD_FAIL,
   error,
 });
@@ -196,7 +195,7 @@ const removeFromAliasesSuccess = () => ({
   type: ALIASES_REMOVE_SUCCESS,
 });
 
-const removeFromAliasesFail = (error: AxiosError) => ({
+const removeFromAliasesFail = (error: unknown) => ({
   type: ALIASES_REMOVE_FAIL,
   error,
 });

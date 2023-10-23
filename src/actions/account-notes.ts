@@ -1,6 +1,5 @@
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AnyAction } from 'redux';
 import type { RootState } from 'soapbox/store';
 
@@ -31,7 +30,7 @@ const submitAccountNoteSuccess = (relationship: any) => ({
   relationship,
 });
 
-const submitAccountNoteFail = (error: AxiosError) => ({
+const submitAccountNoteFail = (error: unknown) => ({
   type: ACCOUNT_NOTE_SUBMIT_FAIL,
   error,
 });

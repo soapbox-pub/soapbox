@@ -1,6 +1,5 @@
 import api, { getLinks } from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -44,7 +43,7 @@ const fetchHashtagSuccess = (name: string, tag: APIEntity) => ({
   tag,
 });
 
-const fetchHashtagFail = (error: AxiosError) => ({
+const fetchHashtagFail = (error: unknown) => ({
   type: HASHTAG_FETCH_FAIL,
   error,
 });
@@ -70,7 +69,7 @@ const followHashtagSuccess = (name: string, tag: APIEntity) => ({
   tag,
 });
 
-const followHashtagFail = (name: string, error: AxiosError) => ({
+const followHashtagFail = (name: string, error: unknown) => ({
   type: HASHTAG_FOLLOW_FAIL,
   name,
   error,
@@ -97,7 +96,7 @@ const unfollowHashtagSuccess = (name: string, tag: APIEntity) => ({
   tag,
 });
 
-const unfollowHashtagFail = (name: string, error: AxiosError) => ({
+const unfollowHashtagFail = (name: string, error: unknown) => ({
   type: HASHTAG_UNFOLLOW_FAIL,
   name,
   error,
@@ -124,7 +123,7 @@ const fetchFollowedHashtagsSuccess = (followed_tags: APIEntity[], next: string |
   next,
 });
 
-const fetchFollowedHashtagsFail = (error: AxiosError) => ({
+const fetchFollowedHashtagsFail = (error: unknown) => ({
   type: FOLLOWED_HASHTAGS_FETCH_FAIL,
   error,
 });
@@ -156,7 +155,7 @@ const expandFollowedHashtagsSuccess = (followed_tags: APIEntity[], next: string 
   next,
 });
 
-const expandFollowedHashtagsFail = (error: AxiosError) => ({
+const expandFollowedHashtagsFail = (error: unknown) => ({
   type: FOLLOWED_HASHTAGS_EXPAND_FAIL,
   error,
 });
