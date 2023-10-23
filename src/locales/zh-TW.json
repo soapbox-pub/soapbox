@@ -10,6 +10,7 @@
   "account.block_domain": "隱藏來自 {domain} 的所有內容",
   "account.blocked": "已封鎖",
   "account.chat": "和 @{name} 聊天",
+  "account.copy": "複製個人資料網址",
   "account.deactivated": "帳戶已被停權",
   "account.direct": "傳私訊給 @{name}",
   "account.domain_blocked": "隱藏網域",
