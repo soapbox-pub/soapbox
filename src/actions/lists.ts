@@ -6,7 +6,6 @@ import api from '../api';
 
 import { importFetchedAccounts } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -81,7 +80,7 @@ const fetchListSuccess = (list: APIEntity) => ({
   list,
 });
 
-const fetchListFail = (id: string | number, error: AxiosError) => ({
+const fetchListFail = (id: string | number, error: unknown) => ({
   type: LIST_FETCH_FAIL,
   id,
   error,
@@ -106,7 +105,7 @@ const fetchListsSuccess = (lists: APIEntity[]) => ({
   lists,
 });
 
-const fetchListsFail = (error: AxiosError) => ({
+const fetchListsFail = (error: unknown) => ({
   type: LISTS_FETCH_FAIL,
   error,
 });
@@ -159,7 +158,7 @@ const createListSuccess = (list: APIEntity) => ({
   list,
 });
 
-const createListFail = (error: AxiosError) => ({
+const createListFail = (error: unknown) => ({
   type: LIST_CREATE_FAIL,
   error,
 });
@@ -188,7 +187,7 @@ const updateListSuccess = (list: APIEntity) => ({
   list,
 });
 
-const updateListFail = (id: string | number, error: AxiosError) => ({
+const updateListFail = (id: string | number, error: unknown) => ({
   type: LIST_UPDATE_FAIL,
   id,
   error,
@@ -218,7 +217,7 @@ const deleteListSuccess = (id: string | number) => ({
   id,
 });
 
-const deleteListFail = (id: string | number, error: AxiosError) => ({
+const deleteListFail = (id: string | number, error: unknown) => ({
   type: LIST_DELETE_FAIL,
   id,
   error,
@@ -247,7 +246,7 @@ const fetchListAccountsSuccess = (id: string | number, accounts: APIEntity[], ne
   next,
 });
 
-const fetchListAccountsFail = (id: string | number, error: AxiosError) => ({
+const fetchListAccountsFail = (id: string | number, error: unknown) => ({
   type: LIST_ACCOUNTS_FETCH_FAIL,
   id,
   error,
@@ -343,7 +342,7 @@ const removeFromListSuccess = (listId: string | number, accountId: string) => ({
   accountId,
 });
 
-const removeFromListFail = (listId: string | number, accountId: string, error: AxiosError) => ({
+const removeFromListFail = (listId: string | number, accountId: string, error: unknown) => ({
   type: LIST_EDITOR_REMOVE_FAIL,
   listId,
   accountId,
@@ -384,7 +383,7 @@ const fetchAccountListsSuccess = (id: string, lists: APIEntity[]) => ({
   lists,
 });
 
-const fetchAccountListsFail = (id: string, err: AxiosError) => ({
+const fetchAccountListsFail = (id: string, err: unknown) => ({
   type: LIST_ADDER_LISTS_FETCH_FAIL,
   id,
   err,

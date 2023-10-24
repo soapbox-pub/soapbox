@@ -2,7 +2,6 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api, { getLinks } from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -61,7 +60,7 @@ const fetchScheduledStatusesSuccess = (statuses: APIEntity[], next: string | nul
   next,
 });
 
-const fetchScheduledStatusesFail = (error: AxiosError) => ({
+const fetchScheduledStatusesFail = (error: unknown) => ({
   type: SCHEDULED_STATUSES_FETCH_FAIL,
   error,
 });
@@ -94,7 +93,7 @@ const expandScheduledStatusesSuccess = (statuses: APIEntity[], next: string | nu
   next,
 });
 
-const expandScheduledStatusesFail = (error: AxiosError) => ({
+const expandScheduledStatusesFail = (error: unknown) => ({
   type: SCHEDULED_STATUSES_EXPAND_FAIL,
   error,
 });

@@ -1,6 +1,5 @@
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const MFA_FETCH_REQUEST = 'MFA_FETCH_REQUEST';
@@ -50,7 +49,7 @@ const setupMfa = (method: string) =>
     return api(getState).get(`/api/pleroma/accounts/mfa/setup/${method}`).then(({ data }) => {
       dispatch({ type: MFA_SETUP_SUCCESS, data });
       return data;
-    }).catch((error: AxiosError) => {
+    }).catch((error: unknown) => {
       dispatch({ type: MFA_SETUP_FAIL });
       throw error;
     });
@@ -63,7 +62,7 @@ const confirmMfa = (method: string, code: string, password: string) =>
     return api(getState).post(`/api/pleroma/accounts/mfa/confirm/${method}`, params).then(({ data }) => {
       dispatch({ type: MFA_CONFIRM_SUCCESS, method, code });
       return data;
-    }).catch((error: AxiosError) => {
+    }).catch((error: unknown) => {
       dispatch({ type: MFA_CONFIRM_FAIL, method, code, error, skipAlert: true });
       throw error;
     });
@@ -75,7 +74,7 @@ const disableMfa = (method: string, password: string) =>
     return api(getState).delete(`/api/pleroma/accounts/mfa/${method}`, { data: { password } }).then(({ data }) => {
       dispatch({ type: MFA_DISABLE_SUCCESS, method });
       return data;
-    }).catch((error: AxiosError) => {
+    }).catch((error: unknown) => {
       dispatch({ type: MFA_DISABLE_FAIL, method, skipAlert: true });
       throw error;
     });

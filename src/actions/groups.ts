@@ -5,7 +5,6 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedGroups, importFetchedAccounts } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { GroupRole } from 'soapbox/reducers/group-memberships';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
@@ -104,7 +103,7 @@ const deleteGroupSuccess = (id: string) => ({
   id,
 });
 
-const deleteGroupFail = (id: string, error: AxiosError) => ({
+const deleteGroupFail = (id: string, error: unknown) => ({
   type: GROUP_DELETE_FAIL,
   id,
   error,
@@ -132,7 +131,7 @@ const fetchGroupSuccess = (group: APIEntity) => ({
   group,
 });
 
-const fetchGroupFail = (id: string, error: AxiosError) => ({
+const fetchGroupFail = (id: string, error: unknown) => ({
   type: GROUP_FETCH_FAIL,
   id,
   error,
@@ -158,7 +157,7 @@ const fetchGroupsSuccess = (groups: APIEntity[]) => ({
   groups,
 });
 
-const fetchGroupsFail = (error: AxiosError) => ({
+const fetchGroupsFail = (error: unknown) => ({
   type: GROUPS_FETCH_FAIL,
   error,
 });
@@ -194,7 +193,7 @@ const fetchGroupRelationshipsSuccess = (relationships: APIEntity[]) => ({
   skipLoading: true,
 });
 
-const fetchGroupRelationshipsFail = (error: AxiosError) => ({
+const fetchGroupRelationshipsFail = (error: unknown) => ({
   type: GROUP_RELATIONSHIPS_FETCH_FAIL,
   error,
   skipLoading: true,
@@ -222,7 +221,7 @@ const groupKickSuccess = (groupId: string, accountId: string) => ({
   accountId,
 });
 
-const groupKickFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const groupKickFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_KICK_SUCCESS,
   groupId,
   accountId,
@@ -255,7 +254,7 @@ const fetchGroupBlocksSuccess = (id: string, accounts: APIEntity[], next: string
   next,
 });
 
-const fetchGroupBlocksFail = (id: string, error: AxiosError) => ({
+const fetchGroupBlocksFail = (id: string, error: unknown) => ({
   type: GROUP_BLOCKS_FETCH_FAIL,
   id,
   error,
@@ -295,7 +294,7 @@ const expandGroupBlocksSuccess = (id: string, accounts: APIEntity[], next: strin
   next,
 });
 
-const expandGroupBlocksFail = (id: string, error: AxiosError) => ({
+const expandGroupBlocksFail = (id: string, error: unknown) => ({
   type: GROUP_BLOCKS_EXPAND_FAIL,
   id,
   error,
@@ -322,7 +321,7 @@ const groupBlockSuccess = (groupId: string, accountId: string) => ({
   accountId,
 });
 
-const groupBlockFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const groupBlockFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_BLOCK_FAIL,
   groupId,
   accountId,
@@ -350,7 +349,7 @@ const groupUnblockSuccess = (groupId: string, accountId: string) => ({
   accountId,
 });
 
-const groupUnblockFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const groupUnblockFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_UNBLOCK_FAIL,
   groupId,
   accountId,
@@ -379,7 +378,7 @@ const groupPromoteAccountSuccess = (groupId: string, accountId: string, membersh
   memberships,
 });
 
-const groupPromoteAccountFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const groupPromoteAccountFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_PROMOTE_FAIL,
   groupId,
   accountId,
@@ -408,7 +407,7 @@ const groupDemoteAccountSuccess = (groupId: string, accountId: string, membershi
   memberships,
 });
 
-const groupDemoteAccountFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const groupDemoteAccountFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_DEMOTE_FAIL,
   groupId,
   accountId,
@@ -443,7 +442,7 @@ const fetchGroupMembershipsSuccess = (id: string, role: GroupRole, memberships: 
   next,
 });
 
-const fetchGroupMembershipsFail = (id: string, role: GroupRole, error: AxiosError) => ({
+const fetchGroupMembershipsFail = (id: string, role: GroupRole, error: unknown) => ({
   type: GROUP_MEMBERSHIPS_FETCH_FAIL,
   id,
   role,
@@ -486,7 +485,7 @@ const expandGroupMembershipsSuccess = (id: string, role: GroupRole, memberships:
   next,
 });
 
-const expandGroupMembershipsFail = (id: string, role: GroupRole, error: AxiosError) => ({
+const expandGroupMembershipsFail = (id: string, role: GroupRole, error: unknown) => ({
   type: GROUP_MEMBERSHIPS_EXPAND_FAIL,
   id,
   role,
@@ -519,7 +518,7 @@ const fetchGroupMembershipRequestsSuccess = (id: string, accounts: APIEntity[], 
   next,
 });
 
-const fetchGroupMembershipRequestsFail = (id: string, error: AxiosError) => ({
+const fetchGroupMembershipRequestsFail = (id: string, error: unknown) => ({
   type: GROUP_MEMBERSHIP_REQUESTS_FETCH_FAIL,
   id,
   error,
@@ -559,7 +558,7 @@ const expandGroupMembershipRequestsSuccess = (id: string, accounts: APIEntity[],
   next,
 });
 
-const expandGroupMembershipRequestsFail = (id: string, error: AxiosError) => ({
+const expandGroupMembershipRequestsFail = (id: string, error: unknown) => ({
   type: GROUP_MEMBERSHIP_REQUESTS_EXPAND_FAIL,
   id,
   error,
@@ -587,7 +586,7 @@ const authorizeGroupMembershipRequestSuccess = (groupId: string, accountId: stri
   accountId,
 });
 
-const authorizeGroupMembershipRequestFail = (groupId: string, accountId: string, error: AxiosError) => ({
+const authorizeGroupMembershipRequestFail = (groupId: string, accountId: string, error: unknown) => ({
   type: GROUP_MEMBERSHIP_REQUEST_AUTHORIZE_FAIL,
   groupId,
   accountId,
@@ -616,7 +615,7 @@ const rejectGroupMembershipRequestSuccess = (groupId: string, accountId: string)
   accountId,
 });
 
-const rejectGroupMembershipRequestFail = (groupId: string, accountId: string, error?: AxiosError) => ({
+const rejectGroupMembershipRequestFail = (groupId: string, accountId: string, error?: unknown) => ({
   type: GROUP_MEMBERSHIP_REQUEST_REJECT_FAIL,
   groupId,
   accountId,

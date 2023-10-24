@@ -7,7 +7,6 @@ import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
@@ -114,7 +113,7 @@ const fetchEmojiReactsSuccess = (id: string, emojiReacts: APIEntity[]) => ({
   emojiReacts,
 });
 
-const fetchEmojiReactsFail = (id: string, error: AxiosError) => ({
+const fetchEmojiReactsFail = (id: string, error: unknown) => ({
   type: EMOJI_REACTS_FETCH_FAIL,
   id,
   error,
@@ -135,7 +134,7 @@ const emojiReactSuccess = (status: Status, emoji: string) => ({
   skipLoading: true,
 });
 
-const emojiReactFail = (status: Status, emoji: string, error: AxiosError) => ({
+const emojiReactFail = (status: Status, emoji: string, error: unknown) => ({
   type: EMOJI_REACT_FAIL,
   status,
   emoji,
@@ -157,7 +156,7 @@ const unEmojiReactSuccess = (status: Status, emoji: string) => ({
   skipLoading: true,
 });
 
-const unEmojiReactFail = (status: Status, emoji: string, error: AxiosError) => ({
+const unEmojiReactFail = (status: Status, emoji: string, error: unknown) => ({
   type: UNEMOJI_REACT_FAIL,
   status,
   emoji,

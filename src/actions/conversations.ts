@@ -8,7 +8,6 @@ import {
   importFetchedStatus,
 } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -76,7 +75,7 @@ const expandConversationsSuccess = (conversations: APIEntity[], next: string | n
   isLoadingRecent,
 });
 
-const expandConversationsFail = (error: AxiosError) => ({
+const expandConversationsFail = (error: unknown) => ({
   type: CONVERSATIONS_FETCH_FAIL,
   error,
 });

@@ -6,7 +6,6 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 
 const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
@@ -46,7 +45,7 @@ function fetchBlocksSuccess(accounts: any, next: any) {
   };
 }
 
-function fetchBlocksFail(error: AxiosError) {
+function fetchBlocksFail(error: unknown) {
   return {
     type: BLOCKS_FETCH_FAIL,
     error,
@@ -90,7 +89,7 @@ function expandBlocksSuccess(accounts: any, next: any) {
   };
 }
 
-function expandBlocksFail(error: AxiosError) {
+function expandBlocksFail(error: unknown) {
   return {
     type: BLOCKS_EXPAND_FAIL,
     error,

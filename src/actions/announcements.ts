@@ -3,7 +3,6 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import { importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -61,7 +60,7 @@ export const fetchAnnouncementsSuccess = (announcements: APIEntity) => ({
   skipLoading: true,
 });
 
-export const fetchAnnouncementsFail = (error: AxiosError) => ({
+export const fetchAnnouncementsFail = (error: unknown) => ({
   type: ANNOUNCEMENTS_FETCH_FAIL,
   error,
   skipLoading: true,
@@ -94,7 +93,7 @@ export const dismissAnnouncementSuccess = (announcementId: string) => ({
   id: announcementId,
 });
 
-export const dismissAnnouncementFail = (announcementId: string, error: AxiosError) => ({
+export const dismissAnnouncementFail = (announcementId: string, error: unknown) => ({
   type: ANNOUNCEMENTS_DISMISS_FAIL,
   id: announcementId,
   error,
@@ -141,7 +140,7 @@ export const addReactionSuccess = (announcementId: string, name: string, already
   skipLoading: true,
 });
 
-export const addReactionFail = (announcementId: string, name: string, error: AxiosError) => ({
+export const addReactionFail = (announcementId: string, name: string, error: unknown) => ({
   type: ANNOUNCEMENTS_REACTION_ADD_FAIL,
   id: announcementId,
   name,
@@ -174,7 +173,7 @@ export const removeReactionSuccess = (announcementId: string, name: string) => (
   skipLoading: true,
 });
 
-export const removeReactionFail = (announcementId: string, name: string, error: AxiosError) => ({
+export const removeReactionFail = (announcementId: string, name: string, error: unknown) => ({
   type: ANNOUNCEMENTS_REACTION_REMOVE_FAIL,
   id: announcementId,
   name,

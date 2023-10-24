@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
 import { fetchRelationshipsFail, fetchRelationshipsSuccess } from 'soapbox/actions/accounts';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
@@ -17,7 +16,7 @@ const useFetchRelationships = () => {
     onSuccess(response) {
       dispatch(fetchRelationshipsSuccess(response.data));
     },
-    onError(error: AxiosError) {
+    onError(error) {
       dispatch(fetchRelationshipsFail(error));
     },
   });

@@ -1,6 +1,5 @@
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -38,7 +37,7 @@ const importFetchedInstance = (instance: APIEntity) => ({
   instance,
 });
 
-const fetchInstanceFail = (error: AxiosError) => ({
+const fetchInstanceFail = (error: unknown) => ({
   type: PATRON_INSTANCE_FETCH_FAIL,
   error,
   skipAlert: true,
@@ -49,7 +48,7 @@ const importFetchedAccount = (account: APIEntity) => ({
   account,
 });
 
-const fetchAccountFail = (error: AxiosError) => ({
+const fetchAccountFail = (error: unknown) => ({
   type: PATRON_ACCOUNT_FETCH_FAIL,
   error,
   skipAlert: true,

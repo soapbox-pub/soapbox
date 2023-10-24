@@ -9,7 +9,6 @@ import { fetchRelationships } from './accounts';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { expandGroupFeaturedTimeline } from './timelines';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -135,7 +134,7 @@ const reblogSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const reblogFail = (status: StatusEntity, error: AxiosError) => ({
+const reblogFail = (status: StatusEntity, error: unknown) => ({
   type: REBLOG_FAIL,
   status: status,
   error: error,
@@ -154,7 +153,7 @@ const unreblogSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const unreblogFail = (status: StatusEntity, error: AxiosError) => ({
+const unreblogFail = (status: StatusEntity, error: unknown) => ({
   type: UNREBLOG_FAIL,
   status: status,
   error: error,
@@ -208,7 +207,7 @@ const favouriteSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const favouriteFail = (status: StatusEntity, error: AxiosError) => ({
+const favouriteFail = (status: StatusEntity, error: unknown) => ({
   type: FAVOURITE_FAIL,
   status: status,
   error: error,
@@ -227,7 +226,7 @@ const unfavouriteSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const unfavouriteFail = (status: StatusEntity, error: AxiosError) => ({
+const unfavouriteFail = (status: StatusEntity, error: unknown) => ({
   type: UNFAVOURITE_FAIL,
   status: status,
   error: error,
@@ -281,7 +280,7 @@ const dislikeSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const dislikeFail = (status: StatusEntity, error: AxiosError) => ({
+const dislikeFail = (status: StatusEntity, error: unknown) => ({
   type: DISLIKE_FAIL,
   status: status,
   error: error,
@@ -300,7 +299,7 @@ const undislikeSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const undislikeFail = (status: StatusEntity, error: AxiosError) => ({
+const undislikeFail = (status: StatusEntity, error: unknown) => ({
   type: UNDISLIKE_FAIL,
   status: status,
   error: error,
@@ -356,7 +355,7 @@ const bookmarkSuccess = (status: StatusEntity, response: APIEntity) => ({
   response: response,
 });
 
-const bookmarkFail = (status: StatusEntity, error: AxiosError) => ({
+const bookmarkFail = (status: StatusEntity, error: unknown) => ({
   type: BOOKMARK_FAIL,
   status: status,
   error: error,
@@ -373,7 +372,7 @@ const unbookmarkSuccess = (status: StatusEntity, response: APIEntity) => ({
   response: response,
 });
 
-const unbookmarkFail = (status: StatusEntity, error: AxiosError) => ({
+const unbookmarkFail = (status: StatusEntity, error: unknown) => ({
   type: UNBOOKMARK_FAIL,
   status: status,
   error,
@@ -407,7 +406,7 @@ const fetchReblogsSuccess = (id: string, accounts: APIEntity[], next: string | n
   next,
 });
 
-const fetchReblogsFail = (id: string, error: AxiosError) => ({
+const fetchReblogsFail = (id: string, error: unknown) => ({
   type: REBLOGS_FETCH_FAIL,
   id,
   error,
@@ -432,7 +431,7 @@ const expandReblogsSuccess = (id: string, accounts: APIEntity[], next: string | 
   next,
 });
 
-const expandReblogsFail = (id: string, error: AxiosError) => ({
+const expandReblogsFail = (id: string, error: unknown) => ({
   type: REBLOGS_EXPAND_FAIL,
   id,
   error,
@@ -466,7 +465,7 @@ const fetchFavouritesSuccess = (id: string, accounts: APIEntity[], next: string 
   next,
 });
 
-const fetchFavouritesFail = (id: string, error: AxiosError) => ({
+const fetchFavouritesFail = (id: string, error: unknown) => ({
   type: FAVOURITES_FETCH_FAIL,
   id,
   error,
@@ -491,7 +490,7 @@ const expandFavouritesSuccess = (id: string, accounts: APIEntity[], next: string
   next,
 });
 
-const expandFavouritesFail = (id: string, error: AxiosError) => ({
+const expandFavouritesFail = (id: string, error: unknown) => ({
   type: FAVOURITES_EXPAND_FAIL,
   id,
   error,
@@ -523,7 +522,7 @@ const fetchDislikesSuccess = (id: string, accounts: APIEntity[]) => ({
   accounts,
 });
 
-const fetchDislikesFail = (id: string, error: AxiosError) => ({
+const fetchDislikesFail = (id: string, error: unknown) => ({
   type: DISLIKES_FETCH_FAIL,
   id,
   error,
@@ -552,7 +551,7 @@ const fetchReactionsSuccess = (id: string, reactions: APIEntity[]) => ({
   reactions,
 });
 
-const fetchReactionsFail = (id: string, error: AxiosError) => ({
+const fetchReactionsFail = (id: string, error: unknown) => ({
   type: REACTIONS_FETCH_FAIL,
   id,
   error,
@@ -598,7 +597,7 @@ const pinSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const pinFail = (status: StatusEntity, error: AxiosError) => ({
+const pinFail = (status: StatusEntity, error: unknown) => ({
   type: PIN_FAIL,
   status,
   error,
@@ -640,7 +639,7 @@ const unpinSuccess = (status: StatusEntity) => ({
   skipLoading: true,
 });
 
-const unpinFail = (status: StatusEntity, error: AxiosError) => ({
+const unpinFail = (status: StatusEntity, error: unknown) => ({
   type: UNPIN_FAIL,
   status,
   error,
@@ -676,7 +675,7 @@ const remoteInteractionSuccess = (ap_id: string, profile: string, url: string) =
   url,
 });
 
-const remoteInteractionFail = (ap_id: string, profile: string, error: AxiosError) => ({
+const remoteInteractionFail = (ap_id: string, profile: string, error: unknown) => ({
   type: REMOTE_INTERACTION_FAIL,
   ap_id,
   profile,

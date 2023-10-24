@@ -1,6 +1,5 @@
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -33,7 +32,7 @@ const fetchCustomEmojisSuccess = (custom_emojis: APIEntity[]) => ({
   skipLoading: true,
 });
 
-const fetchCustomEmojisFail = (error: AxiosError) => ({
+const fetchCustomEmojisFail = (error: unknown) => ({
   type: CUSTOM_EMOJIS_FETCH_FAIL,
   error,
   skipLoading: true,

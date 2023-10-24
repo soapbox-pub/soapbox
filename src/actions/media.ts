@@ -8,7 +8,6 @@ import resizeImage from 'soapbox/utils/resize-image';
 
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -59,7 +58,7 @@ const uploadFile = (
   file: File,
   intl: IntlShape,
   onSuccess: (data: APIEntity) => void = () => {},
-  onFail: (error: AxiosError | true) => void = () => {},
+  onFail: (error: unknown) => void = () => {},
   onProgress: (loaded: number) => void = () => {},
   changeTotal: (value: number) => void = () => {},
 ) =>

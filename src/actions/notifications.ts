@@ -22,7 +22,6 @@ import {
 import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
@@ -262,7 +261,7 @@ const expandNotificationsSuccess = (notifications: APIEntity[], next: string | n
   skipLoading: !isLoadingMore,
 });
 
-const expandNotificationsFail = (error: AxiosError, isLoadingMore: boolean) => ({
+const expandNotificationsFail = (error: unknown, isLoadingMore: boolean) => ({
   type: NOTIFICATIONS_EXPAND_FAIL,
   error,
   skipLoading: !isLoadingMore,
