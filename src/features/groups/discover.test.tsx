@@ -3,7 +3,7 @@ import React from 'react';
 
 import { buildAccount } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema } from 'soapbox/schemas';
 
 import Discover from './discover';
 
@@ -32,7 +32,7 @@ const store: any = {
       },
     }),
   },
-  instance: normalizeInstance({
+  instance: instanceSchema.parse({
     version: '3.4.1 (compatible; TruthSocial 1.0.0)',
     software: 'TRUTHSOCIAL',
   }),

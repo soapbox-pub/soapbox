@@ -13,7 +13,6 @@ export { FilterStatusRecord, normalizeFilterStatus } from './filter-status';
 export { normalizeGroup } from './group';
 export { GroupRelationshipRecord, normalizeGroupRelationship } from './group-relationship';
 export { HistoryRecord, normalizeHistory } from './history';
-export { InstanceRecord, normalizeInstance } from './instance';
 export { ListRecord, normalizeList } from './list';
 export { LocationRecord, normalizeLocation } from './location';
 export { MentionRecord, normalizeMention } from './mention';

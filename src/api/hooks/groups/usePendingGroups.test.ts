@@ -2,14 +2,14 @@ import { __stub } from 'soapbox/api';
 import { Entities } from 'soapbox/entity-store/entities';
 import { buildAccount, buildGroup } from 'soapbox/jest/factory';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema } from 'soapbox/schemas';
 
 import { usePendingGroups } from './usePendingGroups';
 
 const id = '1';
 const group = buildGroup({ id, display_name: 'soapbox' });
 const store = {
-  instance: normalizeInstance({
+  instance: instanceSchema.parse({
     version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)',
   }),
   me: '1',

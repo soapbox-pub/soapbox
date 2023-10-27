@@ -1,14 +1,14 @@
 import { __stub } from 'soapbox/api';
 import { buildAccount, buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
 import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema } from 'soapbox/schemas';
 
 import { useGroupsPath } from './useGroupsPath';
 
 describe('useGroupsPath()', () => {
   test('without the groupsDiscovery feature', () => {
     const store = {
-      instance: normalizeInstance({
+      instance: instanceSchema.parse({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
       }),
     };
@@ -24,7 +24,7 @@ describe('useGroupsPath()', () => {
     beforeEach(() => {
       const userId = '1';
       store = {
-        instance: normalizeInstance({
+        instance: instanceSchema.parse({
           version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)',
         }),
         me: userId,
