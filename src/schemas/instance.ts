@@ -53,6 +53,17 @@ const configurationSchema = coerceObject({
     max_characters: z.number().optional().catch(undefined),
     max_media_attachments: z.number().optional().catch(undefined),
   }),
+  translation: coerceObject({
+    enabled: z.boolean().catch(false),
+  }),
+  urls: coerceObject({
+    streaming: z.string().url().optional().catch(undefined),
+  }),
+});
+
+const contactSchema = coerceObject({
+  contact_account: accountSchema.optional().catch(undefined),
+  email: z.string().email().catch(''),
 });
 
 const nostrSchema = coerceObject({
@@ -65,6 +76,7 @@ const pleromaSchema = coerceObject({
     account_activation_required: z.boolean().catch(false),
     birthday_min_age: z.number().catch(0),
     birthday_required: z.boolean().catch(false),
+    description_limit: z.number().catch(1500),
     features: z.string().array().catch([]),
     federation: coerceObject({
       enabled: z.boolean().catch(true), // Assume true unless explicitly false
@@ -112,14 +124,20 @@ const pleromaPollLimitsSchema = coerceObject({
   min_expiration: z.number().optional().catch(undefined),
 });
 
+const registrations = coerceObject({
+  approval_required: z.boolean().catch(false),
+  enabled: z.boolean().catch(false),
+  message: z.string().optional().catch(undefined),
+});
+
 const statsSchema = coerceObject({
   domain_count: z.number().catch(0),
   status_count: z.number().catch(0),
   user_count: z.number().catch(0),
 });
 
-const urlsSchema = coerceObject({
-  streaming_api: z.string().url().optional().catch(undefined),
+const thumbnailSchema = coerceObject({
+  url: z.string().catch(''),
 });
 
 const usageSchema = coerceObject({
@@ -129,12 +147,10 @@ const usageSchema = coerceObject({
 });
 
 const instanceSchema = coerceObject({
-  approval_required: z.boolean().catch(false),
   configuration: configurationSchema,
-  contact_account: accountSchema.optional().catch(undefined),
+  contact: contactSchema,
   description: z.string().catch(''),
-  description_limit: z.number().catch(1500),
-  email: z.string().email().catch(''),
+  domain: z.string().catch(''),
   feature_quote: z.boolean().catch(false),
   fedibird_capabilities: z.array(z.string()).catch([]),
   languages: z.string().array().catch([]),
@@ -143,13 +159,11 @@ const instanceSchema = coerceObject({
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   poll_limits: pleromaPollLimitsSchema,
-  registrations: z.boolean().catch(false),
+  registrations: registrations,
   rules: filteredArray(ruleSchema),
-  short_description: z.string().catch(''),
   stats: statsSchema,
-  thumbnail: z.string().catch(''),
+  thumbnail: thumbnailSchema,
   title: z.string().catch(''),
-  urls: urlsSchema,
   usage: usageSchema,
   version: z.string().catch(''),
 }).transform(({ max_media_attachments, max_toot_chars, poll_limits, ...instance }) => {
@@ -182,6 +196,74 @@ const instanceSchema = coerceObject({
   };
 });
 
+const instanceV1ToV2 = coerceObject({
+  approval_required: z.boolean().catch(false),
+  configuration: configurationSchema,
+  contact_account: accountSchema.optional().catch(undefined),
+  description: z.string().catch(''),
+  description_limit: z.number().catch(1500),
+  email: z.string().email().catch(''),
+  feature_quote: z.boolean().catch(false),
+  fedibird_capabilities: z.array(z.string()).catch([]),
+  languages: z.string().array().catch([]),
+  max_media_attachments: z.number().optional().catch(undefined),
+  max_toot_chars: z.number().optional().catch(undefined),
+  nostr: nostrSchema.optional().catch(undefined),
+  pleroma: pleromaSchema,
+  poll_limits: pleromaPollLimitsSchema,
+  registrations: z.boolean().catch(false),
+  rules: filteredArray(ruleSchema),
+  short_description: z.string().catch(''),
+  stats: statsSchema,
+  thumbnail: z.string().catch(''),
+  title: z.string().catch(''),
+  urls: coerceObject({
+    streaming_api: z.string().url().optional().catch(undefined),
+  }),
+  usage: usageSchema,
+  version: z.string().catch(''),
+}).transform(({
+  approval_required,
+  configuration,
+  contact_account,
+  description,
+  description_limit,
+  email,
+  pleroma,
+  registrations,
+  short_description,
+  thumbnail,
+  urls,
+  ...instance
+}) => {
+  return instanceSchema.parse({
+    ...instance,
+    configuration: {
+      ...configuration,
+      urls: {
+        streaming: urls.streaming_api,
+      },
+    },
+    contact: {
+      account: contact_account,
+      email: email,
+    },
+    description: short_description || description,
+    pleroma: {
+      ...pleroma,
+      metadata: {
+        ...pleroma.metadata,
+        description_limit,
+      },
+    },
+    registrations: {
+      approval_required: approval_required,
+      enabled: registrations,
+    },
+    thumbnail: { url: thumbnail },
+  });
+});
+
 type Instance = z.infer<typeof instanceSchema>;
 
-export { instanceSchema, Instance };
+export { instanceSchema, instanceV1ToV2, Instance };

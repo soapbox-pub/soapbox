@@ -20,7 +20,7 @@ export function connectStream(
   callbacks: (dispatch: AppDispatch, getState: () => RootState) => ConnectStreamCallbacks,
 ) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    const streamingAPIBaseURL = getState().instance.urls.streaming_api;
+    const streamingAPIBaseURL = getState().instance.configuration.urls.streaming;
     const accessToken = getAccessToken(getState());
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
 
