@@ -82,7 +82,9 @@ export const loadInstance = createAsyncThunk<void, void, { state: RootState }>(
 
     if (rememberedInstance.payload && supportsInstanceV2((rememberedInstance.payload as any).instance)) {
       await dispatch(fetchInstanceV2(host));
-    } else dispatch(fetchInstance(host));
+    } else {
+      await dispatch(fetchInstance(host));
+    }
   },
 );
 
