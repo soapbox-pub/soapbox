@@ -165,18 +165,10 @@ const instanceSchema = coerceObject({
   title: z.string().catch(''),
   usage: usageSchema,
   version: z.string().catch(''),
-}).transform(({ max_media_attachments, max_toot_chars, poll_limits, ...instance }) => {
+}).transform(({ max_media_attachments, max_toot_chars, ...instance }) => {
   const { configuration } = instance;
 
   const version = fixVersion(instance.version);
-
-  const polls = {
-    ...configuration.polls,
-    max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
-    max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
-    max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
-    min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
-  };
 
   const statuses = {
     ...configuration.statuses,
@@ -188,7 +180,6 @@ const instanceSchema = coerceObject({
     ...instance,
     configuration: {
       ...configuration,
-      polls,
       statuses,
     },
     version,
