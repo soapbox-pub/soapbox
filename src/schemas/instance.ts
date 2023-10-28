@@ -154,8 +154,6 @@ const instanceSchema = coerceObject({
   feature_quote: z.boolean().catch(false),
   fedibird_capabilities: z.array(z.string()).catch([]),
   languages: z.string().array().catch([]),
-  max_media_attachments: z.number().optional().catch(undefined),
-  max_toot_chars: z.number().optional().catch(undefined),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   registrations: registrations,
@@ -165,21 +163,28 @@ const instanceSchema = coerceObject({
   title: z.string().catch(''),
   usage: usageSchema,
   version: z.string().catch(''),
-}).transform(({ max_media_attachments, max_toot_chars, ...instance }) => {
-  const { configuration } = instance;
-
+}).transform(({ configuration, ...instance }) => {
   const version = fixVersion(instance.version);
+
+  const polls = {
+    ...configuration.polls,
+    max_characters_per_option: configuration.polls.max_characters_per_option ?? 25,
+    max_expiration: configuration.polls.max_expiration ?? 2629746,
+    max_options: configuration.polls.max_options ?? 4,
+    min_expiration: configuration.polls.min_expiration ?? 300,
+  };
 
   const statuses = {
     ...configuration.statuses,
-    max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
-    max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? 4,
+    max_characters: configuration.statuses.max_characters ?? 500,
+    max_media_attachments: configuration.statuses.max_media_attachments ?? 4,
   };
 
   return {
     ...instance,
     configuration: {
       ...configuration,
+      polls,
       statuses,
     },
     version,
@@ -219,6 +224,8 @@ const instanceV1ToV2 = coerceObject({
   description,
   description_limit,
   email,
+  max_media_attachments,
+  max_toot_chars,
   poll_limits,
   pleroma,
   registrations,
@@ -226,40 +233,45 @@ const instanceV1ToV2 = coerceObject({
   thumbnail,
   urls,
   ...instance
-}) => {
-  return instanceSchema.parse({
-    ...instance,
-    configuration: {
-      ...configuration,
-      polls: {
-        max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
-        max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
-        max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
-        min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
-      },
-      urls: {
-        streaming: urls.streaming_api,
-      },
+}) => instanceSchema.parse({
+  ...instance,
+  configuration: {
+    ...configuration,
+    polls: {
+      ...configuration.polls,
+      max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
+      max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
+      max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
+      min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
     },
-    contact: {
-      account: contact_account,
-      email: email,
+    statuses: {
+      ...configuration.statuses,
+      max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
+      max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? 4,
     },
-    description: short_description || description,
-    pleroma: {
-      ...pleroma,
-      metadata: {
-        ...pleroma.metadata,
-        description_limit,
-      },
+    urls: {
+      streaming: urls.streaming_api,
     },
-    registrations: {
-      approval_required: approval_required,
-      enabled: registrations,
+  },
+  contact: {
+    account: contact_account,
+    email: email,
+  },
+  description: short_description || description,
+  pleroma: {
+    ...pleroma,
+    metadata: {
+      ...pleroma.metadata,
+      description_limit,
     },
-    thumbnail: { url: thumbnail },
-  });
-});
+  },
+  registrations: {
+    approval_required: approval_required,
+    enabled: registrations,
+  },
+  thumbnail: { url: thumbnail },
+}),
+);
 
 type Instance = z.infer<typeof instanceSchema>;
 
