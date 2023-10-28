@@ -4,7 +4,6 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { type Instance, instanceSchema } from 'soapbox/schemas';
-import { instanceV1ToV2 } from 'soapbox/schemas/instance';
 import KVStore from 'soapbox/storage/kv-store';
 import { ConfigDB } from 'soapbox/utils/config-db';
 
@@ -20,8 +19,7 @@ import type { APIEntity } from 'soapbox/types/entities';
 const initialState: Instance = instanceSchema.parse({});
 
 const importInstance = (_state: typeof initialState, instance: APIEntity) => {
-  if (typeof instance.domain === 'string') return instanceSchema.parse(instance);
-  return instanceV1ToV2.parse(instance);
+  return instanceSchema.parse(instance);
 };
 
 const preloadImport = (state: typeof initialState, action: Record<string, any>, path: string) => {

@@ -1,10 +1,14 @@
 /* eslint sort-keys: "error" */
 import z from 'zod';
 
+import { PLEROMA, parseVersion } from 'soapbox/utils/features';
+
 import { accountSchema } from './account';
 import { mrfSimpleSchema } from './pleroma';
 import { ruleSchema } from './rule';
 import { coerceObject, filteredArray, mimeSchema } from './utils';
+
+const getAttachmentLimit = (software: string | null) => software === PLEROMA ? Infinity : 4;
 
 const fixVersion = (version: string) => {
   // Handle Mastodon release candidates
@@ -50,8 +54,10 @@ const configurationSchema = coerceObject({
     min_expiration: z.number().optional().catch(undefined),
   }),
   statuses: coerceObject({
+    characters_reserved_per_url: z.number().optional().catch(undefined),
     max_characters: z.number().optional().catch(undefined),
     max_media_attachments: z.number().optional().catch(undefined),
+
   }),
   translation: coerceObject({
     enabled: z.boolean().catch(false),
@@ -131,9 +137,9 @@ const registrations = coerceObject({
 });
 
 const statsSchema = coerceObject({
-  domain_count: z.number().catch(0),
-  status_count: z.number().catch(0),
-  user_count: z.number().catch(0),
+  domain_count: z.number().optional().catch(undefined),
+  status_count: z.number().optional().catch(undefined),
+  user_count: z.number().optional().catch(undefined),
 });
 
 const thumbnailSchema = coerceObject({
@@ -146,7 +152,96 @@ const usageSchema = coerceObject({
   }),
 });
 
-const instanceSchema = coerceObject({
+const instanceV1Schema = coerceObject({
+  approval_required: z.boolean().catch(false),
+  configuration: configurationSchema,
+  contact_account: accountSchema.optional().catch(undefined),
+  description: z.string().catch(''),
+  description_limit: z.number().catch(1500),
+  email: z.string().email().catch(''),
+  feature_quote: z.boolean().catch(false),
+  fedibird_capabilities: z.array(z.string()).catch([]),
+  languages: z.string().array().catch([]),
+  max_media_attachments: z.number().optional().catch(undefined),
+  max_toot_chars: z.number().optional().catch(undefined),
+  nostr: nostrSchema.optional().catch(undefined),
+  pleroma: pleromaSchema,
+  poll_limits: pleromaPollLimitsSchema,
+  registrations: z.boolean().catch(false),
+  rules: filteredArray(ruleSchema),
+  short_description: z.string().catch(''),
+  stats: statsSchema,
+  thumbnail: z.string().catch(''),
+  title: z.string().catch(''),
+  urls: coerceObject({
+    streaming_api: z.string().url().optional().catch(undefined),
+  }),
+  usage: usageSchema,
+  version: z.string().catch('0.0.0'),
+});
+
+const instanceSchema = z.preprocess((data: any) => {
+  if (data.domain) return data;
+
+  const {
+    approval_required,
+    configuration,
+    contact_account,
+    description,
+    description_limit,
+    email,
+    max_media_attachments,
+    max_toot_chars,
+    poll_limits,
+    pleroma,
+    registrations,
+    short_description,
+    thumbnail,
+    urls,
+    ...instance
+  } = instanceV1Schema.parse(data);
+
+  const { software } = parseVersion(instance.version);
+
+  return {
+    ...instance,
+    configuration: {
+      ...configuration,
+      polls: {
+        ...configuration.polls,
+        max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
+        max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
+        max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
+        min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
+      },
+      statuses: {
+        ...configuration.statuses,
+        max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
+        max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? getAttachmentLimit(software),
+      },
+      urls: {
+        streaming: urls.streaming_api,
+      },
+    },
+    contact: {
+      account: contact_account,
+      email: email,
+    },
+    description: short_description || description,
+    pleroma: {
+      ...pleroma,
+      metadata: {
+        ...pleroma.metadata,
+        description_limit,
+      },
+    },
+    registrations: {
+      approval_required: approval_required,
+      enabled: registrations,
+    },
+    thumbnail: { url: thumbnail },
+  };
+}, coerceObject({
   configuration: configurationSchema,
   contact: contactSchema,
   description: z.string().catch(''),
@@ -162,7 +257,7 @@ const instanceSchema = coerceObject({
   thumbnail: thumbnailSchema,
   title: z.string().catch(''),
   usage: usageSchema,
-  version: z.string().catch(''),
+  version: z.string().catch('0.0.0'),
 }).transform(({ configuration, ...instance }) => {
   const version = fixVersion(instance.version);
 
@@ -189,90 +284,8 @@ const instanceSchema = coerceObject({
     },
     version,
   };
-});
-
-const instanceV1ToV2 = coerceObject({
-  approval_required: z.boolean().catch(false),
-  configuration: configurationSchema,
-  contact_account: accountSchema.optional().catch(undefined),
-  description: z.string().catch(''),
-  description_limit: z.number().catch(1500),
-  email: z.string().email().catch(''),
-  feature_quote: z.boolean().catch(false),
-  fedibird_capabilities: z.array(z.string()).catch([]),
-  languages: z.string().array().catch([]),
-  max_media_attachments: z.number().optional().catch(undefined),
-  max_toot_chars: z.number().optional().catch(undefined),
-  nostr: nostrSchema.optional().catch(undefined),
-  pleroma: pleromaSchema,
-  poll_limits: pleromaPollLimitsSchema,
-  registrations: z.boolean().catch(false),
-  rules: filteredArray(ruleSchema),
-  short_description: z.string().catch(''),
-  stats: statsSchema,
-  thumbnail: z.string().catch(''),
-  title: z.string().catch(''),
-  urls: coerceObject({
-    streaming_api: z.string().url().optional().catch(undefined),
-  }),
-  usage: usageSchema,
-  version: z.string().catch(''),
-}).transform(({
-  approval_required,
-  configuration,
-  contact_account,
-  description,
-  description_limit,
-  email,
-  max_media_attachments,
-  max_toot_chars,
-  poll_limits,
-  pleroma,
-  registrations,
-  short_description,
-  thumbnail,
-  urls,
-  ...instance
-}) => instanceSchema.parse({
-  ...instance,
-  configuration: {
-    ...configuration,
-    polls: {
-      ...configuration.polls,
-      max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
-      max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
-      max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
-      min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
-    },
-    statuses: {
-      ...configuration.statuses,
-      max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
-      max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? 4,
-    },
-    urls: {
-      streaming: urls.streaming_api,
-    },
-  },
-  contact: {
-    account: contact_account,
-    email: email,
-  },
-  description: short_description || description,
-  pleroma: {
-    ...pleroma,
-    metadata: {
-      ...pleroma.metadata,
-      description_limit,
-    },
-  },
-  registrations: {
-    approval_required: approval_required,
-    enabled: registrations,
-  },
-  thumbnail: { url: thumbnail },
-}),
-);
+}));
 
 type Instance = z.infer<typeof instanceSchema>;
 
-export { instanceSchema, instanceV1ToV2, Instance };
+export { instanceSchema, Instance };
