@@ -158,7 +158,6 @@ const instanceSchema = coerceObject({
   max_toot_chars: z.number().optional().catch(undefined),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
-  poll_limits: pleromaPollLimitsSchema,
   registrations: registrations,
   rules: filteredArray(ruleSchema),
   stats: statsSchema,
@@ -229,6 +228,7 @@ const instanceV1ToV2 = coerceObject({
   description,
   description_limit,
   email,
+  poll_limits,
   pleroma,
   registrations,
   short_description,
@@ -240,6 +240,12 @@ const instanceV1ToV2 = coerceObject({
     ...instance,
     configuration: {
       ...configuration,
+      polls: {
+        max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
+        max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
+        max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
+        min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
+      },
       urls: {
         streaming: urls.streaming_api,
       },
