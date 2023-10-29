@@ -13,10 +13,10 @@ import {
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
-import { accountSchema, cardSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
+import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
 import { maybeFromJS } from 'soapbox/utils/normalizers';
 
-import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities';
 
 export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self' | 'group';
@@ -69,6 +69,7 @@ export const StatusRecord = ImmutableRecord({
   poll: null as EmbeddedEntity<Poll>,
   quote: null as EmbeddedEntity<any>,
   quotes_count: 0,
+  reactions: null as ImmutableList<EmojiReaction> | null,
   reblog: null as EmbeddedEntity<any>,
   reblogged: false,
   reblogs_count: 0,
@@ -104,8 +105,8 @@ const normalizeMentions = (status: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize emojis
-const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
+// Normalize emoji reactions
+const normalizeReactions = (entity: ImmutableMap<string, any>) => {
   return entity.update('emojis', ImmutableList(), emojis => {
     return emojis.map(normalizeEmoji);
   });
@@ -218,6 +219,14 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
   }
 };
 
+// Normalize emojis
+const normalizeEmojis = (status: ImmutableMap<string, any>) => {
+  const reactions = status.getIn(['pleroma', 'emoji_reactions'], status.get('reactions')) as ImmutableList<ImmutableMap<string, any>>;
+  if (reactions) {
+    status.set('reactions', ImmutableList(reactions.map(((reaction: ImmutableMap<string, any>) => emojiReactionSchema.parse(reaction.toJS())))));
+  }
+};
+
 /** Rewrite `<p></p>` to empty string. */
 const fixContent = (status: ImmutableMap<string, any>) => {
   if (status.get('content') === '<p></p>') {
@@ -275,6 +284,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixQuote(status);
       fixSensitivity(status);
       normalizeEvent(status);
+      normalizeReactions(status);
       fixContent(status);
       normalizeFilterResults(status);
       normalizeDislikes(status);

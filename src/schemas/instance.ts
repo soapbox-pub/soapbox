@@ -49,6 +49,9 @@ const configurationSchema = coerceObject({
     max_options: z.number().optional().catch(undefined),
     min_expiration: z.number().optional().catch(undefined),
   }),
+  reactions: coerceObject({
+    max_reactions: z.number().catch(0),
+  }),
   statuses: coerceObject({
     max_characters: z.number().optional().catch(undefined),
     max_media_attachments: z.number().optional().catch(undefined),

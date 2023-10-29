@@ -71,7 +71,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
   };
 
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
-    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji)?.get('name') || '👍';
+    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji)?.name || '👍';
 
     if (isUserTouching()) {
       if (ownAccount) {
