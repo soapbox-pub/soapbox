@@ -419,6 +419,13 @@ const getInstanceFeatures = (instance: Instance) => {
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
 
     /**
+     * Ability to add emoji reactions to a status available in Mastodon forks.
+     * @see POST /v1/statuses/:id/react/:emoji
+     * @see POST /v1/statuses/:id/unreact/:emoji
+     */
+    emojiReactsMastodon: instance.configuration.reactions.max_reactions > 0,
+
+    /**
      * The backend allows only non-RGI ("Recommended for General Interchange") emoji reactions.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */

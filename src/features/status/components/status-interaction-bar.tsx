@@ -1,6 +1,4 @@
-import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
-import React from 'react';
+import clsx from 'clsx';import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -59,7 +57,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
 
   const getNormalizedReacts = () => {
     return reduceEmoji(
-      ImmutableList(status.pleroma.get('emoji_reactions') as any),
+      status.reactions,
       status.favourites_count,
       status.favourited,
       allowedEmoji,
@@ -164,20 +162,22 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getEmojiReacts = () => {
     const emojiReacts = getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
-      acc + cur.get('count')
+      acc + (cur.count || 0)
     ), 0);
+
+    const handleClick = features.emojiReacts ? handleOpenReactionsModal : handleOpenFavouritesModal;
 
     if (count) {
       return (
-        <InteractionCounter count={count} onClick={features.exposableReactions ? handleOpenReactionsModal : undefined}>
+        <InteractionCounter count={count} onClick={features.exposableReactions ? handleClick : undefined}>
           <HStack space={0.5} alignItems='center'>
             {emojiReacts.take(3).map((e, i) => {
               return (
                 <Emoji
                   key={i}
                   className='h-4.5 w-4.5 flex-none'
-                  emoji={e.get('name')}
-                  src={e.get('url')}
+                  emoji={e.name}
+                  src={e.url}
                 />
               );
             })}
@@ -193,7 +193,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     <HStack space={3}>
       {getReposts()}
       {getQuotes()}
-      {features.emojiReacts ? getEmojiReacts() : getFavourites()}
+      {(features.emojiReacts || features.emojiReactsMastodon) ? getEmojiReacts() : getFavourites()}
       {getDislikes()}
     </HStack>
   );

@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -626,15 +625,15 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const reblogCount = status.reblogs_count;
   const favouriteCount = status.favourites_count;
 
-  const emojiReactCount = reduceEmoji(
-    (status.pleroma.get('emoji_reactions') || ImmutableList()) as ImmutableList<any>,
+  const emojiReactCount = status.reactions ? reduceEmoji(
+    status.reactions,
     favouriteCount,
     status.favourited,
     allowedEmoji,
-  ).reduce((acc, cur) => acc + cur.get('count'), 0);
+  ).reduce((acc, cur) => acc + (cur.count || 0), 0) : undefined;
 
   const meEmojiReact = getReactForStatus(status, allowedEmoji);
-  const meEmojiName = meEmojiReact?.get('name') as keyof typeof reactMessages | undefined;
+  const meEmojiName = meEmojiReact?.name as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
     '👍': messages.reactionLike,
