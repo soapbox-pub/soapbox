@@ -122,7 +122,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
   return (
     <div key={option.title}>
       {showResults ? (
-        <div title={voted ? message : undefined}>
+        <div title={message}>
           <HStack
             justifyContent='between'
             alignItems='center'
