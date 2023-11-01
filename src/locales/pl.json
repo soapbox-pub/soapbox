@@ -230,6 +230,7 @@
   "chat_message_list_intro.leave_chat.heading": "Opuść czat",
   "chat_message_list_intro.leave_chat.message": "Czy na pewno chcesz opuścić ten czat? Wiadomości zostaną dla Ciebie usunięte, a czat zniknie z Twojej skrzynki.",
   "chat_pane.blankslate.action": "Napisz do kogoś",
+  "chat_pane.blankslate.body": "Szukaj kogoś do rozpoczęcia rozmowy.",
   "chat_search.blankslate.body": "Szukaj kogoś do rozpoczęcia rozmowy.",
   "chat_search.blankslate.title": "Rozpocznij rozmowę",
   "chat_search.empty_results_blankslate.body": "Spróbuj znaleźć inną nazwę.",
