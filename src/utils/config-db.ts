@@ -9,7 +9,7 @@ import trimStart from 'lodash/trimStart';
 import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma';
 
 export type Config = ImmutableMap<string, any>;
-export type Policy = ImmutableMap<string, any>;
+export type Policy = Record<string, any>;
 
 const find = (
   configs: ImmutableList<Config>,
@@ -40,15 +40,15 @@ const toSimplePolicy = (configs: ImmutableList<Config>): MRFSimple => {
 };
 
 const fromSimplePolicy = (simplePolicy: Policy): ImmutableList<Config> => {
-  const mapper = (hosts: ImmutableList<string>, key: string) => fromJS({ tuple: [`:${key}`, hosts.toJS()] });
+  const mapper = ([key, hosts]: [key: string, hosts: ImmutableList<string>]) => fromJS({ tuple: [`:${key}`, hosts] });
 
-  const value = simplePolicy.map(mapper).toList();
+  const value = Object.entries(simplePolicy).map(mapper);
 
   return ImmutableList([
     ImmutableMap({
       group: ':pleroma',
       key: ':mrf_simple',
-      value,
+      value: ImmutableList(value),
     }),
   ]);
 };
