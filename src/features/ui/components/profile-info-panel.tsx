@@ -7,6 +7,7 @@ import Markup from 'soapbox/components/markup';
 import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import toast from 'soapbox/toast';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
 
@@ -31,6 +32,8 @@ const messages = defineMessages({
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
+  copied: { id: 'account.copied', defaultMessage: 'Username was copied in the clipboard' },
+  notCopied: { id: 'account.not_copied', defaultMessage: 'Unable to copy the username' },
 });
 
 interface IProfileInfoPanel {
@@ -46,6 +49,15 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const { patronUser } = usePatronUser(account?.url);
   const me = useAppSelector(state => state.me);
   const ownAccount = account?.id === me;
+
+  const handleUsernameClick: React.MouseEventHandler = (event) => {
+    if ('clipboard' in navigator) {
+      navigator.clipboard.writeText('@' + username);
+      toast.success(messages.copied);
+    } else {
+      toast.error(messages.notCopied);
+    }
+  };
 
   const getStaffBadge = (): React.ReactNode => {
     if (account?.admin) {
@@ -153,10 +165,12 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             )}
           </HStack>
 
-          <HStack alignItems='center' space={0.5}>
+          <HStack alignItems='center' space={0.5} onClick={handleUsernameClick} className='cursor-pointer'>
             <Text size='sm' theme='muted' direction='ltr' truncate>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
+
+            <Icon src={require('@tabler/icons/copy.svg')} alt='copy' className='h-4 w-4 text-gray-600' />
 
             {account.locked && (
               <Icon
