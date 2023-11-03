@@ -50,7 +50,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const me = useAppSelector(state => state.me);
   const ownAccount = account?.id === me;
 
-  const handleUsernameClick: React.MouseEventHandler = (event) => {
+  const handleUsernameClick: React.MouseEventHandler = () => {
     if ('clipboard' in navigator) {
       navigator.clipboard.writeText('@' + username);
       toast.success(messages.copied);
