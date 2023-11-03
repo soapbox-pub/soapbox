@@ -391,7 +391,7 @@
   "compose_event.fields.description_label": "وصف الحدث",
   "compose_event.fields.description_placeholder": "الوصف",
   "compose_event.fields.end_time_label": "الحدث والتاريخ",
-  "compose_event.fields.end_time_placeholder": "الحدث ينتهي في…",
+  "compose_event.fields.end_time_placeholder": "ينتهي الحدث في…",
   "compose_event.fields.has_end_time": "الحدث له تاريخ إنتهاء",
   "compose_event.fields.location_label": "موقع الحدث",
   "compose_event.fields.name_label": "عنوان الحدث",
