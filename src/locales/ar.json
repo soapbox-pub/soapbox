@@ -686,7 +686,7 @@
   "event.quote": "اقتباس الحدث",
   "event.reblog": "إعادة نشر الحدث",
   "event.show_on_map": "العرض على الخريطة",
-  "event.unreblog": "حدث لم يُعَدْ نشره",
+  "event.unreblog": "إلغاء نشر الحدث",
   "event.website": "روابط خارجية",
   "event_map.navigate": "التنقل",
   "events.create_event": "إنشاء حدث",
