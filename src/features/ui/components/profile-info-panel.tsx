@@ -5,7 +5,7 @@ import { usePatronUser } from 'soapbox/api/hooks';
 import Badge from 'soapbox/components/badge';
 import Markup from 'soapbox/components/markup';
 import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
-import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
+import { Icon, IconButton, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
@@ -32,8 +32,9 @@ const messages = defineMessages({
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
-  copied: { id: 'account.copied', defaultMessage: 'Username was copied in the clipboard' },
-  notCopied: { id: 'account.not_copied', defaultMessage: 'Unable to copy the username' },
+  copy_success: { id: 'copy.success', defaultMessage: 'Copied to clipboard!' },
+  copy: { id: 'copy', defaultMessage: 'Copy' },
+  copy_failed: { id: 'copy.failed', defaultMessage: 'Failed to copy' },
 });
 
 interface IProfileInfoPanel {
@@ -52,10 +53,11 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   const handleUsernameClick: React.MouseEventHandler = () => {
     if ('clipboard' in navigator) {
-      navigator.clipboard.writeText('@' + username);
-      toast.success(messages.copied);
+      const c = (displayFqn) ? account?.fqn : account?.acct;
+      navigator.clipboard.writeText('@' + c);
+      toast.success(messages.copy_success);
     } else {
-      toast.error(messages.notCopied);
+      toast.error(messages.copy_failed);
     }
   };
 
@@ -165,12 +167,10 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
             )}
           </HStack>
 
-          <HStack alignItems='center' space={0.5} onClick={handleUsernameClick} className='cursor-pointer'>
+          <HStack alignItems='center' space={0.5}>
             <Text size='sm' theme='muted' direction='ltr' truncate>
               @{displayFqn ? account.fqn : account.acct}
             </Text>
-
-            <Icon src={require('@tabler/icons/copy.svg')} alt='copy' className='h-4 w-4 text-gray-600' />
 
             {account.locked && (
               <Icon
@@ -179,6 +179,14 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
                 className='h-4 w-4 text-gray-600'
               />
             )}
+
+            <IconButton
+              src={require('@tabler/icons/copy.svg')}
+              title={intl.formatMessage(messages.copy)}
+              className='text-gray-600'
+              iconClassName='h-4 w-4'
+              onClick={handleUsernameClick}
+            />
           </HStack>
         </Stack>
 
