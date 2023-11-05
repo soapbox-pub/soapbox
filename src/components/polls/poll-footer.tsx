@@ -33,9 +33,11 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
     e.preventDefault();
   };
 
-  const timeRemaining = poll.expired ?
-    intl.formatMessage(messages.closed) :
-    <RelativeTimestamp weight='medium' timestamp={poll.expires_at} futureDate />;
+  const timeRemaining = poll.expires_at && (
+    poll.expired ?
+      intl.formatMessage(messages.closed) :
+      <RelativeTimestamp weight='medium' timestamp={poll.expires_at} futureDate />
+  );
 
   let votesCount = null;
 
@@ -82,7 +84,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
           {votesCount}
         </Text>
 
-        {poll.expires_at && (
+        {poll.expires_at !== null && (
           <>
             <Text theme='muted'>&middot;</Text>
             <Text weight='medium' theme='muted' data-testid='poll-expiration'>{timeRemaining}</Text>

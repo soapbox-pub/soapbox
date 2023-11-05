@@ -14,7 +14,7 @@ const pollOptionSchema = z.object({
 const pollSchema = z.object({
   emojis: filteredArray(customEmojiSchema),
   expired: z.boolean().catch(false),
-  expires_at: z.string().datetime().catch(new Date().toUTCString()),
+  expires_at: z.string().datetime().nullable().catch(null),
   id: z.string(),
   multiple: z.boolean().catch(false),
   options: z.array(pollOptionSchema).min(2),
