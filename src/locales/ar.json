@@ -378,7 +378,7 @@
   "column_forbidden.body": "ليست لديك الصلاحيات للدخول إلى هذه الصفحة.",
   "column_forbidden.title": "محظور",
   "common.cancel": "إلغاء",
-  "compare_history_modal.header": "تعديل السِّجل",
+  "compare_history_modal.header": "سِجلّ التعديلات",
   "compose.character_counter.title": "مُستخدم {chars} حرف من أصل {maxChars} {maxChars, plural, one {حروف} other {حروف}}",
   "compose.edit_success": "تم تعديل المنشور",
   "compose.invalid_schedule": "يجب عليك جدولة منشور بمدة لا تقل عن 5 دقائق.",
