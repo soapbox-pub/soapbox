@@ -14,6 +14,7 @@ import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
+import { filteredArray } from 'soapbox/schemas/utils';
 import { maybeFromJS } from 'soapbox/utils/normalizers';
 
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities';
@@ -219,11 +220,13 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
   }
 };
 
-// Normalize emojis
+/** Normalize emojis. */
 const normalizeEmojis = (status: ImmutableMap<string, any>) => {
-  const reactions = status.getIn(['pleroma', 'emoji_reactions'], status.get('reactions')) as ImmutableList<ImmutableMap<string, any>>;
+  const data = ImmutableList<ImmutableMap<string, any>>(status.getIn(['pleroma', 'emoji_reactions']) || status.get('reactions'));
+  const reactions = filteredArray(emojiReactionSchema).parse(data.toJS());
+
   if (reactions) {
-    status.set('reactions', ImmutableList(reactions.map(((reaction: ImmutableMap<string, any>) => emojiReactionSchema.parse(reaction.toJS())))));
+    status.set('reactions', ImmutableList(reactions));
   }
 };
 
