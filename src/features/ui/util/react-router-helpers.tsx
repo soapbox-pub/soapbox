@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import React, { ComponentProps, Suspense } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
 
 import { Layout } from 'soapbox/components/ui';
@@ -7,6 +8,7 @@ import { useOwnAccount, useSettings } from 'soapbox/hooks';
 import ColumnForbidden from '../components/column-forbidden';
 import ColumnLoading from '../components/column-loading';
 import ColumnsArea from '../components/columns-area';
+import ErrorColumn from '../components/error-column';
 
 type PageProps = {
   params?: MatchType['params'];
@@ -46,24 +48,28 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
       return (
-        <Suspense fallback={renderLoading()}>
-          <Page params={match.params} layout={layout} {...componentParams}>
-            <Component params={match.params} {...componentParams}>
-              {content}
-            </Component>
-          </Page>
-        </Suspense>
+        <ErrorBoundary FallbackComponent={renderError}>
+          <Suspense fallback={renderLoading()}>
+            <Page params={match.params} layout={layout} {...componentParams}>
+              <Component params={match.params} {...componentParams}>
+                {content}
+              </Component>
+            </Page>
+          </Suspense>
+        </ErrorBoundary>
       );
     }
 
     return (
-      <Suspense fallback={renderLoading()}>
-        <ColumnsArea layout={layout}>
-          <Component params={match.params} {...componentParams}>
-            {content}
-          </Component>
-        </ColumnsArea>
-      </Suspense>
+      <ErrorBoundary FallbackComponent={renderError}>
+        <Suspense fallback={renderLoading()}>
+          <ColumnsArea layout={layout}>
+            <Component params={match.params} {...componentParams}>
+              {content}
+            </Component>
+          </ColumnsArea>
+        </Suspense>
+      </ErrorBoundary>
     );
   };
 
@@ -79,6 +85,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
 
   const renderLoading = () => renderWithLayout(<ColumnLoading />);
   const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
+  const renderError = (props: ComponentProps<typeof ErrorColumn>) => renderWithLayout(<ErrorColumn {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);
