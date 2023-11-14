@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
+import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor, $getRoot } from 'lexical';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -96,13 +96,13 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const anyMedia = compose.media_attachments.size > 0;
 
   const [composeFocused, setComposeFocused] = useState(false);
-  const [text, setText] = useState(compose.text);
 
   const firstRender = useRef(true);
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const editorRef = useRef<LexicalEditor>(null);
 
+  const text = editorRef.current?.getEditorState().read(() => $getRoot().getTextContent()) ?? '';
   const { isDraggedOver } = useDraggedFiles(formRef);
 
   const getClickableArea = () => {
@@ -297,7 +297,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             autoFocus={shouldAutoFocus}
             hasPoll={hasPoll}
             handleSubmit={handleSubmit}
-            onChange={setText}
             onFocus={handleComposeFocus}
             onPaste={onPaste}
           />
