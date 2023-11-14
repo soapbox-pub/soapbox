@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 const acceptedGdpr = !!localStorage.getItem('soapbox:gdpr');
 
@@ -14,8 +14,7 @@ const GdprBanner: React.FC = () => {
   const [slideout, setSlideout] = useState(false);
 
   const instance = useInstance();
-  const soapbox = useSoapboxConfig();
-  const isLoggedIn = useAppSelector(state => !!state.me);
+  const { gdprUrl } = useSoapboxConfig();
 
   const handleAccept = () => {
     localStorage.setItem('soapbox:gdpr', 'true');
@@ -23,9 +22,7 @@ const GdprBanner: React.FC = () => {
     setTimeout(() => setShown(true), 200);
   };
 
-  const showBanner = soapbox.gdpr && !isLoggedIn && !shown;
-
-  if (!showBanner) {
+  if (!shown) {
     return null;
   }
 
@@ -47,8 +44,8 @@ const GdprBanner: React.FC = () => {
         </Stack>
 
         <HStack space={2} alignItems='center' className='flex-none'>
-          {soapbox.gdprUrl && (
-            <a href={soapbox.gdprUrl} tabIndex={-1} className='inline-flex'>
+          {gdprUrl && (
+            <a href={gdprUrl} tabIndex={-1} className='inline-flex'>
               <Button theme='secondary'>
                 <FormattedMessage id='gdpr.learn_more' defaultMessage='Learn more' />
               </Button>

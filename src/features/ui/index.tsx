@@ -329,7 +329,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
       <WrappedRoute path='/developers/sw' developerOnly page={DefaultPage} component={ServiceWorkerInfo} content={children} />
       <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
-      <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={lazy(() => Promise.reject())} content={children} />
+      <WrappedRoute path='/error/network' developerOnly page={EmptyPage} component={lazy(() => Promise.reject(new TypeError('Failed to fetch dynamically imported module: TEST')))} content={children} />
       <WrappedRoute path='/error' developerOnly page={EmptyPage} component={IntentionalError} content={children} />
 
       {hasCrypto && <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />}
