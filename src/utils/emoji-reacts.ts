@@ -85,6 +85,7 @@ export const simulateUnEmojiReact = (emojiReacts: ImmutableList<EmojiReaction>, 
     const newCount = (emojiReact.count || 1) - 1;
     if (newCount < 1) return emojiReacts.delete(idx);
     return emojiReacts.set(idx, emojiReactionSchema.parse({
+      ...emojiReact,
       count: (emojiReact.count || 1) - 1,
       me: false,
     }));
