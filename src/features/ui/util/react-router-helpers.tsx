@@ -1,6 +1,6 @@
-import React, { ComponentProps, Suspense } from 'react';
-import { ErrorBoundary } from 'react-error-boundary';
-import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType } from 'react-router-dom';
+import React, { Suspense, useEffect, useRef } from 'react';
+import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
+import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType, useLocation } from 'react-router-dom';
 
 import { Layout } from 'soapbox/components/ui';
 import { useOwnAccount, useSettings } from 'soapbox/hooks';
@@ -48,8 +48,8 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
       return (
-        <ErrorBoundary FallbackComponent={renderError}>
-          <Suspense fallback={renderLoading()}>
+        <ErrorBoundary FallbackComponent={FallbackError}>
+          <Suspense fallback={<FallbackLoading />}>
             <Page params={match.params} layout={layout} {...componentParams}>
               <Component params={match.params} {...componentParams}>
                 {content}
@@ -61,8 +61,8 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     }
 
     return (
-      <ErrorBoundary FallbackComponent={renderError}>
-        <Suspense fallback={renderLoading()}>
+      <ErrorBoundary FallbackComponent={FallbackError}>
+        <Suspense fallback={<FallbackLoading />}>
           <ColumnsArea layout={layout}>
             <Component params={match.params} {...componentParams}>
               {content}
@@ -72,20 +72,6 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
       </ErrorBoundary>
     );
   };
-
-  const renderWithLayout = (children: JSX.Element) => (
-    <>
-      <Layout.Main>
-        {children}
-      </Layout.Main>
-
-      <Layout.Aside />
-    </>
-  );
-
-  const renderLoading = () => renderWithLayout(<ColumnLoading />);
-  const renderForbidden = () => renderWithLayout(<ColumnForbidden />);
-  const renderError = (props: ComponentProps<typeof ErrorColumn>) => renderWithLayout(<ErrorColumn {...props} />);
 
   const loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${history.location.pathname}${history.location.search}`);
@@ -104,11 +90,56 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
     if (!account) {
       return loginRedirect();
     } else {
-      return renderForbidden();
+      return <FallbackForbidden />;
     }
   }
 
   return <Route {...rest} render={renderComponent} />;
+};
+
+interface IFallbackLayout {
+  children: JSX.Element;
+}
+
+const FallbackLayout: React.FC<IFallbackLayout> = ({ children }) => (
+  <>
+    <Layout.Main>
+      {children}
+    </Layout.Main>
+
+    <Layout.Aside />
+  </>
+);
+
+const FallbackLoading: React.FC = () => (
+  <FallbackLayout>
+    <ColumnLoading />
+  </FallbackLayout>
+);
+
+const FallbackForbidden: React.FC = () => (
+  <FallbackLayout>
+    <ColumnForbidden />
+  </FallbackLayout>
+);
+
+const FallbackError: React.FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
+  const location = useLocation();
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      firstUpdate.current = false;
+    } else {
+      resetErrorBoundary();
+    }
+  }, [location]);
+
+  return (
+    <FallbackLayout>
+      <ErrorColumn error={error} onRetry={resetErrorBoundary} />
+    </FallbackLayout>
+  );
 };
 
 export {
