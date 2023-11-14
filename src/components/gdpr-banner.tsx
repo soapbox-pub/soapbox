@@ -22,7 +22,7 @@ const GdprBanner: React.FC = () => {
     setTimeout(() => setShown(true), 200);
   };
 
-  if (!shown) {
+  if (shown) {
     return null;
   }
 
