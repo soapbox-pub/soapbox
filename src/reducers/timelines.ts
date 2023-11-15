@@ -32,6 +32,7 @@ import {
 } from '../actions/timelines';
 
 import type { AnyAction } from 'redux';
+import type { ImportPosition } from 'soapbox/entity-store/types';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
 const TRUNCATE_LIMIT = 40;
@@ -93,6 +94,7 @@ const expandNormalizedTimeline = (
   prev: string | undefined,
   isPartial: boolean,
   isLoadingRecent: boolean,
+  pos: ImportPosition = 'end',
 ) => {
   const newIds = getStatusIds(statuses);
 
@@ -113,10 +115,10 @@ const expandNormalizedTimeline = (
 
     if (!newIds.isEmpty()) {
       timeline.update('items', oldIds => {
-        if (newIds.first() > oldIds.first()!) {
-          return mergeStatusIds(oldIds, newIds);
-        } else {
+        if (pos === 'end') {
           return mergeStatusIds(newIds, oldIds);
+        } else {
+          return mergeStatusIds(oldIds, newIds);
         }
       });
     }
