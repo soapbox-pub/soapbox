@@ -1,9 +1,7 @@
 /** Register the ServiceWorker. */
 function registerSW(path: string) {
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register(path, { scope: '/' });
-    });
+    navigator.serviceWorker.register(path, { scope: '/' });
   }
 }
 
