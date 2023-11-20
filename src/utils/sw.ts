@@ -7,6 +7,15 @@ function registerSW(path: string) {
   }
 }
 
+/** Prevent a new ServiceWorker from being installed. */
+function lockSW() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register = () => {
+      throw new Error('ServiceWorker already registered.');
+    };
+  }
+}
+
 /** Unregister the ServiceWorker */
 // https://stackoverflow.com/a/49771828/8811886
 const unregisterSW = async(): Promise<void> => {
@@ -22,4 +31,5 @@ const unregisterSW = async(): Promise<void> => {
 export {
   registerSW,
   unregisterSW,
+  lockSW,
 };
