@@ -24,11 +24,16 @@ const eventSchema = eventTemplateSchema.extend({
 /** Nostr event schema that also verifies the event's signature. */
 const signedEventSchema = eventSchema.refine(verifySignature);
 
+/** NIP-46 signer options. */
+const signEventOptsSchema = z.object({
+  pow: z.number().int().nonnegative(),
+});
+
 /** NIP-46 signer request. */
 const connectRequestSchema = z.object({
   id: z.string(),
   method: z.literal('sign_event'),
-  params: z.tuple([eventTemplateSchema]),
+  params: z.tuple([eventTemplateSchema]).or(z.tuple([eventTemplateSchema, signEventOptsSchema])),
 });
 
 export { nostrIdSchema, kindSchema, eventSchema, signedEventSchema, connectRequestSchema };
