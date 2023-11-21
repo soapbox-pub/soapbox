@@ -7,6 +7,8 @@ import {
   nip04 as _nip04,
 } from 'nostr-tools';
 
+import { powWorker } from 'soapbox/workers';
+
 /** localStorage key for the Nostr private key (if not using NIP-07). */
 const LOCAL_KEY = 'soapbox:nostr:privateKey';
 
@@ -28,9 +30,18 @@ async function getPublicKey(): Promise<string> {
   return window.nostr ? window.nostr.getPublicKey() : _getPublicKey(getPrivateKey());
 }
 
+interface SignEventOpts {
+  pow?: number;
+}
+
 /** Sign an event with NIP-07, or the locally generated key. */
-async function signEvent<K extends number>(event: EventTemplate<K>): Promise<Event<K>> {
-  return window.nostr ? window.nostr.signEvent(event) as Promise<Event<K>> : finishEvent(event, getPrivateKey()) ;
+async function signEvent<K extends number>(template: EventTemplate<K>, opts: SignEventOpts = {}): Promise<Event<K>> {
+  if (opts.pow) {
+    const event = await powWorker.mine({ ...template, pubkey: await getPublicKey() }, opts.pow) as Omit<Event<K>, 'sig'>;
+    return window.nostr ? window.nostr.signEvent(event) as Promise<Event<K>> : finishEvent(event, getPrivateKey()) ;
+  } else {
+    return window.nostr ? window.nostr.signEvent(template) as Promise<Event<K>> : finishEvent(template, getPrivateKey()) ;
+  }
 }
 
 /** Crypto function with NIP-07, or the local key. */
