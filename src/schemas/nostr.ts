@@ -27,7 +27,7 @@ const signedEventSchema = eventSchema.refine(verifySignature);
 /** NIP-46 signer options. */
 const signEventOptsSchema = z.object({
   pow: z.number().int().nonnegative(),
-});
+}).partial();
 
 /** NIP-46 signer request. */
 const connectRequestSchema = z.object({
