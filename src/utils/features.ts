@@ -363,6 +363,15 @@ const getInstanceFeatures = (instance: Instance) => {
     dislikes: v.software === FRIENDICA && gte(v.version, '2023.3.0'),
 
     /**
+     * Allow to register on a given domain
+     * @see GET /api/v1/pleroma/admin/domains
+     * @see POST /api/v1/pleroma/admin/domains
+     * @see PATCH /api/v1/pleroma/admin/domains/:id
+     * @see DELETE /api/v1/pleroma/admin/domains/:id
+     */
+    domains: instance.pleroma.metadata.multitenancy.enabled,
+
+    /**
      * Ability to edit profile information.
      * @see PATCH /api/v1/accounts/update_credentials
      */

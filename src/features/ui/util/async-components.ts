@@ -161,3 +161,5 @@ export const EditAnnouncementModal = lazy(() => import('soapbox/features/ui/comp
 export const FollowedTags = lazy(() => import('soapbox/features/followed-tags'));
 export const AccountNotePanel = lazy(() => import('soapbox/features/ui/components/panels/account-note-panel'));
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));
+export const Domains = lazy(() => import('soapbox/features/admin/domains'));
+export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal'));

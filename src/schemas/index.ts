@@ -3,6 +3,7 @@ export { attachmentSchema, type Attachment } from './attachment';
 export { cardSchema, type Card } from './card';
 export { chatMessageSchema, type ChatMessage } from './chat-message';
 export { customEmojiSchema, type CustomEmoji } from './custom-emoji';
+export { domainSchema, type Domain } from './domain';
 export { emojiReactionSchema, type EmojiReaction } from './emoji-reaction';
 export { groupSchema, type Group } from './group';
 export { groupMemberSchema, type GroupMember } from './group-member';

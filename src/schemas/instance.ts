@@ -80,6 +80,18 @@ const pleromaSchema = coerceObject({
       value_length: z.number().nonnegative().catch(2047),
     }),
     migration_cooldown_period: z.number().optional().catch(undefined),
+    multitenancy: coerceObject({
+      domains: z
+        .array(
+          z.object({
+            domain: z.coerce.string(),
+            id: z.string(),
+            public: z.boolean().catch(false),
+          }),
+        )
+        .optional(),
+      enabled: z.boolean().catch(false),
+    }),
     restrict_unauthenticated: coerceObject({
       activities: coerceObject({
         local: z.boolean().catch(false),
