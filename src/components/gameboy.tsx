@@ -16,7 +16,9 @@ const Gameboy: React.FC<IGameboy> = ({ src, onFocus, onBlur, ...rest }) => {
     await WasmBoy.loadROM(src);
     await WasmBoy.play();
 
-    if (document.activeElement !== canvas.current) {
+    if (document.activeElement === canvas.current) {
+      await WasmBoy.enableDefaultJoypad();
+    } else {
       await WasmBoy.disableDefaultJoypad();
     }
   }
@@ -31,6 +33,11 @@ const Gameboy: React.FC<IGameboy> = ({ src, onFocus, onBlur, ...rest }) => {
 
   useEffect(() => {
     init();
+
+    return () => {
+      WasmBoy.pause();
+      WasmBoy.disableDefaultJoypad();
+    };
   }, []);
 
   return (
