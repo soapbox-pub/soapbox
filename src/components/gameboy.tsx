@@ -69,4 +69,4 @@ const WasmBoyOptions = {
   saveStateCallback: false,
 };
 
-export { Gameboy };
+export default Gameboy;

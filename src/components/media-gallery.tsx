@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, Suspense } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -12,10 +12,10 @@ import { truncateFilename } from 'soapbox/utils/media';
 import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
 
-import { Gameboy } from './gameboy';
-
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
+
+const Gameboy = React.lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -155,7 +155,9 @@ const Item: React.FC<IItem> = ({
         key={attachment.id}
         style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
       >
-        <Gameboy className='media-gallery__item-thumbnail object-contain' src={attachment.url} />
+        <Suspense fallback={<div  className='media-gallery__item-thumbnail' />}>
+          <Gameboy className='media-gallery__item-thumbnail object-contain' src={attachment.url} />
+        </Suspense>
       </div>
     );
   } else if (attachment.type === 'unknown') {
