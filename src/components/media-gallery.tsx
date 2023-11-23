@@ -12,6 +12,8 @@ import { truncateFilename } from 'soapbox/utils/media';
 import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
 
+import { Gameboy } from './gameboy';
+
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
 
@@ -141,8 +143,22 @@ const Item: React.FC<IItem> = ({
   }
 
   let thumbnail: React.ReactNode = '';
+  const ext = attachment.url.split('.').pop()?.toLowerCase();
 
-  if (attachment.type === 'unknown') {
+  if (attachment.type === 'unknown' && ['gb', 'gbc'].includes(ext!)) {
+    return (
+      <div
+        className={clsx('media-gallery__item', {
+          standalone,
+          'rounded-md': total > 1,
+        })}
+        key={attachment.id}
+        style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
+      >
+        <Gameboy className='media-gallery__item-thumbnail object-contain' src={attachment.url} />
+      </div>
+    );
+  } else if (attachment.type === 'unknown') {
     const filename = truncateFilename(attachment.url, MAX_FILENAME_LENGTH);
     const attachmentIcon = (
       <Icon
@@ -215,7 +231,6 @@ const Item: React.FC<IItem> = ({
       </div>
     );
   } else if (attachment.type === 'audio') {
-    const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
         className={clsx('media-gallery__item-thumbnail')}
@@ -225,11 +240,10 @@ const Item: React.FC<IItem> = ({
         title={attachment.description}
       >
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
+        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
       </a>
     );
   } else if (attachment.type === 'video') {
-    const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
         className={clsx('media-gallery__item-thumbnail')}
@@ -246,7 +260,7 @@ const Item: React.FC<IItem> = ({
         >
           <source src={attachment.url} />
         </video>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
+        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
       </a>
     );
   }

@@ -1,0 +1,47 @@
+import React, { useEffect, useRef } from 'react';
+// @ts-ignore No types available
+import { WasmBoy } from 'wasmboy';
+
+interface IGameboy extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
+  /** URL to the ROM. */
+  src: string;
+}
+
+/** Component to display a playable Gameboy emulator. */
+const Gameboy: React.FC<IGameboy> = ({ src, ...rest }) => {
+  const canvas = useRef<HTMLCanvasElement>(null);
+
+  async function init() {
+    await WasmBoy.config(WasmBoyOptions, canvas.current!);
+    await WasmBoy.loadROM(src);
+    await WasmBoy.play();
+  }
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  return (
+    <canvas ref={canvas} {...rest} />
+  );
+};
+
+const WasmBoyOptions = {
+  headless: false,
+  useGbcWhenOptional: true,
+  isAudioEnabled: false,
+  frameSkip: 1,
+  audioBatchProcessing: true,
+  timersBatchProcessing: false,
+  audioAccumulateSamples: true,
+  graphicsBatchProcessing: false,
+  graphicsDisableScanlineRendering: false,
+  tileRendering: true,
+  tileCaching: true,
+  gameboyFPSCap: 60,
+  updateGraphicsCallback: false,
+  updateAudioCallback: false,
+  saveStateCallback: false,
+};
+
+export { Gameboy };
