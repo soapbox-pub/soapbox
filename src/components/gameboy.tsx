@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 // @ts-ignore No types available
 import { WasmBoy } from 'wasmboy';
 
@@ -8,21 +8,39 @@ interface IGameboy extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
 }
 
 /** Component to display a playable Gameboy emulator. */
-const Gameboy: React.FC<IGameboy> = ({ src, ...rest }) => {
+const Gameboy: React.FC<IGameboy> = ({ src, onFocus, onBlur, ...rest }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   async function init() {
     await WasmBoy.config(WasmBoyOptions, canvas.current!);
     await WasmBoy.loadROM(src);
     await WasmBoy.play();
+
+    if (document.activeElement !== canvas.current) {
+      await WasmBoy.disableDefaultJoypad();
+    }
   }
+
+  const handleFocus: React.FocusEventHandler<HTMLCanvasElement> = useCallback(() => {
+    WasmBoy.enableDefaultJoypad();
+  }, []);
+
+  const handleBlur: React.FocusEventHandler<HTMLCanvasElement> = useCallback(() => {
+    WasmBoy.disableDefaultJoypad();
+  }, []);
 
   useEffect(() => {
     init();
   }, []);
 
   return (
-    <canvas ref={canvas} {...rest} />
+    <canvas
+      ref={canvas}
+      tabIndex={0}
+      onFocus={onFocus ?? handleFocus}
+      onBlur={onBlur ?? handleBlur}
+      {...rest}
+    />
   );
 };
 
