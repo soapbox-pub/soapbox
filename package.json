@@ -65,6 +65,7 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@sentry/browser": "^7.74.1",
     "@sentry/react": "^7.74.1",
+    "@soapbox.pub/wasmboy": "^0.8.0",
     "@tabler/icons": "^2.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.3",
@@ -174,7 +175,6 @@
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-require": "^1.1.10",
     "vite-plugin-static-copy": "^0.17.0",
-    "wasmboy": "^0.7.1",
     "wicg-inert": "^3.1.1",
     "zod": "^3.21.4"
   },

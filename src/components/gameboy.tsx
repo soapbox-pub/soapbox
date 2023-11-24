@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
 // @ts-ignore No types available
-import { WasmBoy } from 'wasmboy';
+import { WasmBoy } from '@soapbox.pub/wasmboy';
+import React, { useCallback, useEffect, useRef } from 'react';
 
 interface IGameboy extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
   /** URL to the ROM. */
