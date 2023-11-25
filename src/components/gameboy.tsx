@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { exitFullscreen, isFullscreen, requestFullscreen } from 'soapbox/features/ui/util/fullscreen';
 
-import { IconButton } from './ui';
+import { HStack, IconButton } from './ui';
 
 let gainNode: GainNode | undefined;
 
@@ -77,6 +77,10 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     }
   };
 
+  const handleDownload = () => {
+    window.open(src);
+  };
+
   useEffect(() => {
     init();
 
@@ -123,27 +127,38 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
         {...rest}
       />
 
-      <div
-        className={clsx('absolute inset-x-0 bottom-0 flex w-full bg-gradient-to-t from-black/50 to-transparent p-2 opacity-0 transition-opacity', {
-          'opacity-100': showControls,
+      <HStack
+        justifyContent='between'
+        className={clsx('pointer-events-none absolute inset-x-0 bottom-0 w-full bg-gradient-to-t from-black/50 to-transparent p-2 opacity-0 transition-opacity', {
+          'pointer-events-auto opacity-100': showControls,
         })}
       >
-        <IconButton
-          className='text-white'
-          onClick={togglePaused}
-          src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
-        />
-        <IconButton
-          className='text-white'
-          onClick={toggleMuted}
-          src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
-        />
-        <IconButton
-          className='ml-auto text-white'
-          onClick={toggleFullscreen}
-          src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
-        />
-      </div>
+        <HStack space={2}>
+          <IconButton
+            className='text-white'
+            onClick={togglePaused}
+            src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
+          />
+          <IconButton
+            className='text-white'
+            onClick={toggleMuted}
+            src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
+          />
+        </HStack>
+
+        <HStack space={2}>
+          <IconButton
+            className='text-white'
+            src={require('@tabler/icons/download.svg')}
+            onClick={handleDownload}
+          />
+          <IconButton
+            className='text-white'
+            onClick={toggleFullscreen}
+            src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
+          />
+        </HStack>
+      </HStack>
     </div>
   );
 };
