@@ -95,11 +95,17 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     };
   }, []);
 
+  useEffect(() => {
+    if (fullscreen) {
+      node.current?.focus();
+    }
+  }, [fullscreen]);
+
   return (
     <div
       ref={node}
       tabIndex={0}
-      className={clsx(className, 'relative')}
+      className={clsx(className, 'relative outline-none')}
       onFocus={onFocus ?? handleFocus}
       onBlur={onBlur ?? handleBlur}
     >
