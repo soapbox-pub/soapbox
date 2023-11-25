@@ -135,11 +135,13 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
       >
         <HStack space={2}>
           <IconButton
+            theme='transparent'
             className='text-white'
             onClick={togglePaused}
             src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
           />
           <IconButton
+            theme='transparent'
             className='text-white'
             onClick={toggleMuted}
             src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
@@ -148,11 +150,13 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
 
         <HStack space={2}>
           <IconButton
+            theme='transparent'
             className='text-white'
             src={require('@tabler/icons/download.svg')}
             onClick={handleDownload}
           />
           <IconButton
+            theme='transparent'
             className='text-white'
             onClick={toggleFullscreen}
             src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
