@@ -1,7 +1,9 @@
 // @ts-ignore No types available
 import { WasmBoy } from '@soapbox.pub/wasmboy';
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import { IconButton } from './ui';
 
 interface IGameboy extends Pick<React.CanvasHTMLAttributes<HTMLCanvasElement>, 'onFocus' | 'onBlur'> {
   /** Classname of the outer `<div>`. */
@@ -16,10 +18,12 @@ interface IGameboy extends Pick<React.CanvasHTMLAttributes<HTMLCanvasElement>, '
 const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocus, onBlur, ...rest }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
+  const [paused, setPaused] = useState(false);
+
   async function init() {
     await WasmBoy.config(WasmBoyOptions, canvas.current!);
     await WasmBoy.loadROM(src);
-    await WasmBoy.play();
+    await play();
 
     if (document.activeElement === canvas.current) {
       await WasmBoy.enableDefaultJoypad();
@@ -36,6 +40,18 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     WasmBoy.disableDefaultJoypad();
   }, []);
 
+  const pause = async () => {
+    await WasmBoy.pause();
+    setPaused(true);
+  };
+
+  const play = async () => {
+    await WasmBoy.play();
+    setPaused(false);
+  };
+
+  const togglePaused = () => paused ? play() : pause();
+
   useEffect(() => {
     init();
 
@@ -46,7 +62,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
   }, []);
 
   return (
-    <div className={className}>
+    <div className={clsx(className, 'relative')}>
       <canvas
         ref={canvas}
         tabIndex={0}
@@ -58,6 +74,14 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
         onBlur={onBlur ?? handleBlur}
         {...rest}
       />
+
+      <div className='absolute inset-x-0 bottom-0 w-full bg-gradient-to-t from-black/50 to-transparent px-4 py-2'>
+        <IconButton
+          className='text-white'
+          onClick={togglePaused}
+          src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
+        />
+      </div>
     </div>
   );
 };
