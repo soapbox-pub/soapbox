@@ -24,6 +24,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(true);
   const [fullscreen, setFullscreen] = useState(false);
+  const [showControls, setShowControls] = useState(true);
 
   async function init() {
     await WasmBoy.config(WasmBoyOptions, canvas.current!);
@@ -48,6 +49,10 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
   const handleFullscreenChange = useCallback(() => {
     setFullscreen(isFullscreen());
   }, []);
+
+  const handleCanvasClick = useCallback(() => {
+    setShowControls(!showControls);
+  }, [showControls]);
 
   const pause = async () => {
     await WasmBoy.pause();
@@ -100,6 +105,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     >
       <canvas
         ref={canvas}
+        onClick={handleCanvasClick}
         className={clsx('h-full w-full bg-black ', {
           'object-contain': aspect === 'normal',
           'object-cover': aspect === 'stretched',
@@ -107,7 +113,11 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
         {...rest}
       />
 
-      <div className='absolute inset-x-0 bottom-0 flex w-full bg-gradient-to-t from-black/50 to-transparent p-2'>
+      <div
+        className={clsx('absolute inset-x-0 bottom-0 flex w-full bg-gradient-to-t from-black/50 to-transparent p-2 opacity-0 transition-opacity', {
+          'opacity-100': showControls,
+        })}
+      >
         <IconButton
           className='text-white'
           onClick={togglePaused}
