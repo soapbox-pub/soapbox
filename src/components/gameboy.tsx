@@ -3,9 +3,11 @@ import { WasmBoy } from '@soapbox.pub/wasmboy';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { exitFullscreen, isFullscreen, requestFullscreen } from 'soapbox/features/ui/util/fullscreen';
+
 import { IconButton } from './ui';
 
-interface IGameboy extends Pick<React.CanvasHTMLAttributes<HTMLCanvasElement>, 'onFocus' | 'onBlur'> {
+interface IGameboy extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'> {
   /** Classname of the outer `<div>`. */
   className?: string;
   /** URL to the ROM. */
@@ -16,10 +18,12 @@ interface IGameboy extends Pick<React.CanvasHTMLAttributes<HTMLCanvasElement>, '
 
 /** Component to display a playable Gameboy emulator. */
 const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocus, onBlur, ...rest }) => {
+  const node = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(true);
+  const [fullscreen, setFullscreen] = useState(false);
 
   async function init() {
     await WasmBoy.config(WasmBoyOptions, canvas.current!);
@@ -33,12 +37,16 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     }
   }
 
-  const handleFocus: React.FocusEventHandler<HTMLCanvasElement> = useCallback(() => {
+  const handleFocus: React.FocusEventHandler<HTMLDivElement> = useCallback(() => {
     WasmBoy.enableDefaultJoypad();
   }, []);
 
-  const handleBlur: React.FocusEventHandler<HTMLCanvasElement> = useCallback(() => {
+  const handleBlur: React.FocusEventHandler<HTMLDivElement> = useCallback(() => {
     WasmBoy.disableDefaultJoypad();
+  }, []);
+
+  const handleFullscreenChange = useCallback(() => {
+    setFullscreen(isFullscreen());
   }, []);
 
   const pause = async () => {
@@ -58,6 +66,14 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     setMuted(false);
   };
 
+  const toggleFullscreen = () => {
+    if (isFullscreen()) {
+      exitFullscreen();
+    } else if (node.current) {
+      requestFullscreen(node.current);
+    }
+  };
+
   useEffect(() => {
     init();
 
@@ -67,17 +83,27 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     };
   }, []);
 
+  useEffect(() => {
+    document.addEventListener('fullscreenchange', handleFullscreenChange, true);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange, true);
+    };
+  }, []);
+
   return (
-    <div className={clsx(className, 'relative')}>
+    <div
+      ref={node}
+      tabIndex={0}
+      className={clsx(className, 'relative')}
+      onFocus={onFocus ?? handleFocus}
+      onBlur={onBlur ?? handleBlur}
+    >
       <canvas
         ref={canvas}
-        tabIndex={0}
         className={clsx('h-full w-full bg-black ', {
           'object-contain': aspect === 'normal',
           'object-cover': aspect === 'stretched',
         })}
-        onFocus={onFocus ?? handleFocus}
-        onBlur={onBlur ?? handleBlur}
         {...rest}
       />
 
@@ -91,6 +117,11 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
           className='text-white'
           onClick={unmute}
           src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
+        />
+        <IconButton
+          className='ml-auto text-white'
+          onClick={toggleFullscreen}
+          src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
         />
       </div>
     </div>
