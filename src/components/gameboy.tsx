@@ -19,6 +19,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const [paused, setPaused] = useState(false);
+  const [muted, setMuted] = useState(true);
 
   async function init() {
     await WasmBoy.config(WasmBoyOptions, canvas.current!);
@@ -52,6 +53,11 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
 
   const togglePaused = () => paused ? play() : pause();
 
+  const unmute = async () => {
+    await WasmBoy.resumeAudioContext();
+    setMuted(false);
+  };
+
   useEffect(() => {
     init();
 
@@ -75,11 +81,16 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
         {...rest}
       />
 
-      <div className='absolute inset-x-0 bottom-0 w-full bg-gradient-to-t from-black/50 to-transparent px-4 py-2'>
+      <div className='absolute inset-x-0 bottom-0 flex w-full bg-gradient-to-t from-black/50 to-transparent p-2'>
         <IconButton
           className='text-white'
           onClick={togglePaused}
           src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
+        />
+        <IconButton
+          className='text-white'
+          onClick={unmute}
+          src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
         />
       </div>
     </div>
@@ -89,7 +100,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
 const WasmBoyOptions = {
   headless: false,
   useGbcWhenOptional: true,
-  isAudioEnabled: false,
+  isAudioEnabled: true,
   frameSkip: 1,
   audioBatchProcessing: true,
   timersBatchProcessing: false,
