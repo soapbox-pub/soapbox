@@ -156,7 +156,7 @@ const Item: React.FC<IItem> = ({
         style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
       >
         <Suspense fallback={<div  className='media-gallery__item-thumbnail' />}>
-          <Gameboy className='media-gallery__item-thumbnail' src={attachment.url} />
+          <Gameboy className='media-gallery__item-thumbnail cursor-default' src={attachment.url} />
         </Suspense>
       </div>
     );
