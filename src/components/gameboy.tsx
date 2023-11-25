@@ -7,6 +7,8 @@ import { exitFullscreen, isFullscreen, requestFullscreen } from 'soapbox/feature
 
 import { IconButton } from './ui';
 
+let gainNode: GainNode | undefined;
+
 interface IGameboy extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onFocus' | 'onBlur'> {
   /** Classname of the outer `<div>`. */
   className?: string;
@@ -65,11 +67,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
   };
 
   const togglePaused = () => paused ? play() : pause();
-
-  const unmute = async () => {
-    await WasmBoy.resumeAudioContext();
-    setMuted(false);
-  };
+  const toggleMuted = () => setMuted(!muted);
 
   const toggleFullscreen = () => {
     if (isFullscreen()) {
@@ -101,6 +99,12 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
     }
   }, [fullscreen]);
 
+  useEffect(() => {
+    if (gainNode) {
+      gainNode.gain.value = muted ? 0 : 1;
+    }
+  }, [gainNode, muted]);
+
   return (
     <div
       ref={node}
@@ -131,7 +135,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
         />
         <IconButton
           className='text-white'
-          onClick={unmute}
+          onClick={toggleMuted}
           src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
         />
         <IconButton
@@ -158,7 +162,11 @@ const WasmBoyOptions = {
   tileCaching: true,
   gameboyFPSCap: 60,
   updateGraphicsCallback: false,
-  updateAudioCallback: false,
+  updateAudioCallback: (audioContext: AudioContext, audioBufferSourceNode: AudioBufferSourceNode) => {
+    gainNode = gainNode ?? audioContext.createGain();
+    audioBufferSourceNode.connect(gainNode);
+    return gainNode;
+  },
   saveStateCallback: false,
 };
 
