@@ -1,14 +1,19 @@
 // @ts-ignore No types available
 import { WasmBoy } from '@soapbox.pub/wasmboy';
+import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef } from 'react';
 
-interface IGameboy extends React.CanvasHTMLAttributes<HTMLCanvasElement> {
+interface IGameboy extends Pick<React.CanvasHTMLAttributes<HTMLCanvasElement>, 'onFocus' | 'onBlur'> {
+  /** Classname of the outer `<div>`. */
+  className?: string;
   /** URL to the ROM. */
   src: string;
+  /** Aspect ratio of the canvas. */
+  aspect?: 'normal' | 'stretched';
 }
 
 /** Component to display a playable Gameboy emulator. */
-const Gameboy: React.FC<IGameboy> = ({ src, onFocus, onBlur, ...rest }) => {
+const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocus, onBlur, ...rest }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   async function init() {
@@ -41,13 +46,19 @@ const Gameboy: React.FC<IGameboy> = ({ src, onFocus, onBlur, ...rest }) => {
   }, []);
 
   return (
-    <canvas
-      ref={canvas}
-      tabIndex={0}
-      onFocus={onFocus ?? handleFocus}
-      onBlur={onBlur ?? handleBlur}
-      {...rest}
-    />
+    <div className={className}>
+      <canvas
+        ref={canvas}
+        tabIndex={0}
+        className={clsx('h-full w-full bg-black ', {
+          'object-contain': aspect === 'normal',
+          'object-cover': aspect === 'stretched',
+        })}
+        onFocus={onFocus ?? handleFocus}
+        onBlur={onBlur ?? handleBlur}
+        {...rest}
+      />
+    </div>
   );
 };
 
