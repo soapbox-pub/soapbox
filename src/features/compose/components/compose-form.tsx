@@ -18,7 +18,6 @@ import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
@@ -108,7 +107,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const isEmpty = !(fulltext.trim() || anyMedia);
   const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty && !isUploading;
-  const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
+  const shouldAutoFocus = autoFocus && !showSearch;
   const canSubmit = !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
 
   const getClickableArea = () => {
