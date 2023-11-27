@@ -108,7 +108,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const isEmpty = !(fulltext.trim() || anyMedia);
   const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty && !isUploading;
   const shouldAutoFocus = autoFocus && !showSearch;
-  const canSubmit = !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
+  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
