@@ -18,7 +18,6 @@ import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
-import { isMobile } from 'soapbox/is-mobile';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
@@ -101,16 +100,18 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const formRef = useRef<HTMLDivElement>(null);
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const editorRef = useRef<LexicalEditor>(null);
+  const { isDraggedOver } = useDraggedFiles(formRef);
 
   const text = editorRef.current?.getEditorState().read(() => $getRoot().getTextContent()) ?? '';
-  const { isDraggedOver } = useDraggedFiles(formRef);
+  const fulltext = [spoilerText, countableText(text)].join('');
+
+  const isEmpty = !(fulltext.trim() || anyMedia);
+  const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty && !isUploading;
+  const shouldAutoFocus = autoFocus && !showSearch;
+  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
-  };
-
-  const isEmpty = () => {
-    return !(text || spoilerText || anyMedia);
   };
 
   const isClickOutside = (e: MouseEvent | React.MouseEvent) => {
@@ -125,10 +126,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleClick = useCallback((e: MouseEvent | React.MouseEvent) => {
-    if (isEmpty() && isClickOutside(e)) {
+    if (isEmpty && isClickOutside(e)) {
       handleClickOutside();
     }
-  }, []);
+  }, [isEmpty]);
 
   const handleClickOutside = () => {
     setComposeFocused(false);
@@ -139,20 +140,12 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   };
 
   const handleSubmit = (e?: React.FormEvent<Element>) => {
+    if (!canSubmit) return;
+    e?.preventDefault();
+
     dispatch(changeCompose(id, text));
-
-    // Submit disabled:
-    const fulltext = [spoilerText, countableText(text)].join('');
-
-    if (e) {
-      e.preventDefault();
-    }
-
-    if (isSubmitting || isUploading || isChangingUpload || length(fulltext) > maxTootChars || (fulltext.length !== 0 && fulltext.trim().length === 0 && !anyMedia)) {
-      return;
-    }
-
     dispatch(submitCompose(id, { history }));
+
     editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };
 
@@ -214,12 +207,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       {features.richText && <MarkdownButton composeId={id} />}
     </HStack>
   ), [features, id]);
-
-  const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty() && !isUploading;
-  const disabled = isSubmitting;
-  const countedText = [spoilerText, countableText(text)].join('');
-  const disabledButton = disabled || isUploading || isChangingUpload || length(countedText) > maxTootChars || (countedText.length !== 0 && countedText.trim().length === 0 && !anyMedia);
-  const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
   const composeModifiers = !condensed && (
     <Stack space={4} className='compose-form__modifiers'>
@@ -323,7 +310,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
             </HStack>
           )}
 
-          <Button type='submit' theme='primary' icon={publishIcon} text={publishText} disabled={disabledButton} />
+          <Button type='submit' theme='primary' icon={publishIcon} text={publishText} disabled={!canSubmit} />
         </HStack>
       </div>
     </Stack>

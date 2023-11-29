@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, Suspense } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -14,6 +14,8 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
+
+const Gameboy = React.lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -141,8 +143,24 @@ const Item: React.FC<IItem> = ({
   }
 
   let thumbnail: React.ReactNode = '';
+  const ext = attachment.url.split('.').pop()?.toLowerCase();
 
-  if (attachment.type === 'unknown') {
+  if (attachment.type === 'unknown' && ['gb', 'gbc'].includes(ext!)) {
+    return (
+      <div
+        className={clsx('media-gallery__item', {
+          standalone,
+          'rounded-md': total > 1,
+        })}
+        key={attachment.id}
+        style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
+      >
+        <Suspense fallback={<div  className='media-gallery__item-thumbnail' />}>
+          <Gameboy className='media-gallery__item-thumbnail cursor-default' src={attachment.url} />
+        </Suspense>
+      </div>
+    );
+  } else if (attachment.type === 'unknown') {
     const filename = truncateFilename(attachment.url, MAX_FILENAME_LENGTH);
     const attachmentIcon = (
       <Icon
@@ -215,7 +233,6 @@ const Item: React.FC<IItem> = ({
       </div>
     );
   } else if (attachment.type === 'audio') {
-    const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
         className={clsx('media-gallery__item-thumbnail')}
@@ -225,11 +242,10 @@ const Item: React.FC<IItem> = ({
         title={attachment.description}
       >
         <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
+        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
       </a>
     );
   } else if (attachment.type === 'video') {
-    const ext = attachment.url.split('.').pop()?.toUpperCase();
     thumbnail = (
       <a
         className={clsx('media-gallery__item-thumbnail')}
@@ -246,7 +262,7 @@ const Item: React.FC<IItem> = ({
         >
           <source src={attachment.url} />
         </video>
-        <span className='media-gallery__file-extension__label'>{ext}</span>
+        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
       </a>
     );
   }
