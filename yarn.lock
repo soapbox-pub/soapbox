@@ -2456,10 +2456,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-motion@^0.0.36":
-  version "0.0.36"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.36.tgz#ec543b671f95e2e9b7abd50d7d31d3820ab03310"
-  integrity sha512-ATFMhp+A+kNxjvKK3bHPS9tO0wBuFg/zgLCc9vmzBYaNj87U839fpXWsB/OS0kDslMYp1Lg9xM/9hdPD81Ooeg==
+"@types/react-motion@^0.0.39":
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.39.tgz#f282ecc026b988e7524e222217304df708de2d14"
+  integrity sha512-FqQcamh3FED6A4CVL39fmZMHQ4B3v1C7lenxwqDAtENO+p+xuOXHCTOpxh632qdGTPeqHVhN7oeClhNijgpOPg==
   dependencies:
     "@types/react" "*"
 
