@@ -154,7 +154,7 @@
     "react-sticky-box": "^2.0.0",
     "react-swipeable-views": "^0.14.0",
     "react-virtuoso": "^4.3.11",
-    "redux": "^4.1.1",
+    "redux": "^5.0.0",
     "redux-immutable": "^4.0.0",
     "redux-thunk": "^2.2.0",
     "reselect": "^4.0.0",
