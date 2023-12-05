@@ -62,7 +62,7 @@
     "@reach/popover": "^0.18.0",
     "@reach/rect": "^0.18.0",
     "@reach/tabs": "^0.18.0",
-    "@reduxjs/toolkit": "^1.8.1",
+    "@reduxjs/toolkit": "^2.0.0",
     "@sentry/browser": "^7.74.1",
     "@sentry/react": "^7.74.1",
     "@soapbox.pub/wasmboy": "^0.8.0",
