@@ -10,7 +10,8 @@ import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   save: { id: 'admin.edit_domain.save', defaultMessage: 'Save' },
-  domainPlaceholder: { id: 'admin.edit_domain.fields.domain_placeholder', defaultMessage: 'Domain name' },
+  domainPlaceholder: { id: 'admin.edit_domain.fields.domain_placeholder', defaultMessage: 'Identity domain name' },
+  serviceDomainPlaceholder: { id: 'admin.edit_domain.fields.service_domain_placeholder', defaultMessage: 'Service domain name' },
   domainCreateSuccess: { id: 'admin.edit_domain.created', defaultMessage: 'Domain created' },
   domainUpdateSuccess: { id: 'admin.edit_domain.updated', defaultMessage: 'Domain edited' },
 });
@@ -30,6 +31,7 @@ const EditDomainModal: React.FC<IEditDomainModal> = ({ onClose, domainId }) => {
 
   const [domain] = useState<Domain | null>(domainId ? domains!.find(({ id }) => domainId === id)! : null);
   const [domainName, setDomainName] = useState(domain?.domain || '');
+  const [serviceDomainName, setServiceDomainName] = useState(domain?.service_domain || '');
   const [isPublic, setPublic] = useState(domain?.public || false);
 
   const onClickClose = () => {
@@ -48,6 +50,7 @@ const EditDomainModal: React.FC<IEditDomainModal> = ({ onClose, domainId }) => {
     } else {
       createDomain({
         domain: domainName,
+        service_domain: serviceDomainName,
         public: isPublic,
       }).then(() => {
         toast.success(messages.domainCreateSuccess);
@@ -76,6 +79,17 @@ const EditDomainModal: React.FC<IEditDomainModal> = ({ onClose, domainId }) => {
             placeholder={intl.formatMessage(messages.domainPlaceholder)}
             value={domainName}
             onChange={({ target }) => setDomainName(target.value)}
+            disabled={!!domainId}
+          />
+        </FormGroup>
+        <FormGroup
+          labelText={<FormattedMessage id='admin.edit_domain.fields.service_domain_label' defaultMessage='Service domain (optional)' />}
+        >
+          <Input
+            autoComplete='off'
+            placeholder={intl.formatMessage(messages.serviceDomainPlaceholder)}
+            value={serviceDomainName}
+            onChange={({ target }) => setServiceDomainName(target.value)}
             disabled={!!domainId}
           />
         </FormGroup>
