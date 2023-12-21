@@ -174,7 +174,7 @@
     "vite-plugin-compile-time": "^0.2.1",
     "vite-plugin-html": "^3.2.0",
     "vite-plugin-require": "^1.1.10",
-    "vite-plugin-static-copy": "^0.17.0",
+    "vite-plugin-static-copy": "^1.0.0",
     "wicg-inert": "^3.1.1",
     "zod": "^3.21.4"
   },
