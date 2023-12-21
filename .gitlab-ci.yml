@@ -45,7 +45,7 @@ lint:
       - "**/*.scss"
       - "**/*.css"
       - ".eslintignore"
-      - ".eslintrc.cjs"
+      - ".eslintrc.json"
       - ".stylelintrc.json"
 
 build:
