@@ -1,8 +1,7 @@
-import { AnyAction } from 'redux';
 
 import { play, soundCache } from 'soapbox/utils/sounds';
 
-import type { ThunkMiddleware } from 'redux-thunk';
+import type { AnyAction, Middleware } from 'redux';
 import type { Sounds } from 'soapbox/utils/sounds';
 
 interface Action extends AnyAction {
@@ -12,8 +11,9 @@ interface Action extends AnyAction {
 }
 
 /** Middleware to play sounds in response to certain Redux actions. */
-export default function soundsMiddleware(): ThunkMiddleware {
-  return () => next => (action: Action) => {
+export default function soundsMiddleware(): Middleware {
+  return () => next => anyAction => {
+    const action = anyAction as Action;
     if (action.meta?.sound && soundCache[action.meta.sound]) {
       play(soundCache[action.meta.sound]);
     }
