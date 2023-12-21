@@ -50,7 +50,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='space-y-3 pt-3 dark:divide-gray-800 sm:pt-0'>
+      <Layout.Main className='space-y-3 pt-3 sm:pt-0 dark:divide-gray-800'>
         {me && (
           <Card
             className={clsx('relative z-[1] transition', {

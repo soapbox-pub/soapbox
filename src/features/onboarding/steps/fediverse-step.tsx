@@ -26,7 +26,7 @@ const FediverseStep = ({ onNext }: { onNext: () => void }) => {
           </Text>
 
           <Stack space={4}>
-            <div className='border-b border-solid border-gray-200 pb-2 dark:border-gray-800 sm:pb-5'>
+            <div className='border-b border-solid border-gray-200 pb-2 sm:pb-5 dark:border-gray-800'>
               <Stack space={4}>
                 <Text theme='muted'>
                   <FormattedMessage
