@@ -7,7 +7,6 @@ import Markup from 'soapbox/components/markup';
 import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { isLocal } from 'soapbox/utils/accounts';
 import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
 
@@ -176,7 +175,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         )}
 
         <div className='flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center'>
-          {isLocal(account) ? (
+          {account.local ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
                 src={require('@tabler/icons/calendar.svg')}

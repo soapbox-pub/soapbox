@@ -9,7 +9,6 @@ import api, { getNextLink, getPrevLink } from '../api';
 import { fetchGroupRelationships } from './groups';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 
@@ -284,7 +283,7 @@ const expandTimelineSuccess = (
   skipLoading: !isLoadingMore,
 });
 
-const expandTimelineFail = (timeline: string, error: AxiosError, isLoadingMore: boolean) => ({
+const expandTimelineFail = (timeline: string, error: unknown, isLoadingMore: boolean) => ({
   type: TIMELINE_EXPAND_FAIL,
   timeline,
   error,

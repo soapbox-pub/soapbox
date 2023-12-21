@@ -76,7 +76,7 @@ const Navbar = () => {
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
-            <div className='absolute inset-y-0 left-0 flex items-center rtl:left-auto rtl:right-0 lg:hidden'>
+            <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:left-auto rtl:right-0'>
               <button onClick={onOpenSidebar}>
                 <Avatar src={account.avatar} size={34} />
               </button>
@@ -125,7 +125,7 @@ const Navbar = () => {
                     </Button>
                   </div>
                 ) : (
-                  <Form className='hidden items-center space-x-2 rtl:space-x-reverse xl:flex' onSubmit={handleSubmit}>
+                  <Form className='hidden items-center space-x-2 xl:flex rtl:space-x-reverse' onSubmit={handleSubmit}>
                     <Input
                       required
                       value={username}

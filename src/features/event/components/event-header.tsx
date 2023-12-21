@@ -19,7 +19,6 @@ import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, Me
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import VerificationBadge from 'soapbox/components/verification-badge';
 import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { isRemote } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { download } from 'soapbox/utils/download';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -29,7 +28,7 @@ import EventActionButton from '../components/event-action-button';
 import EventDate from '../components/event-date';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -81,7 +80,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     return (
       <>
         <div className='-mx-4 -mt-4'>
-          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
+          <div className='relative h-32 w-full bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
         </div>
 
         <PlaceholderEventHeader />
@@ -89,7 +88,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     );
   }
 
-  const account = status.account as AccountEntity;
+  const account = status.account;
   const event = status.event;
   const banner = event.banner;
 
@@ -217,7 +216,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       },
     ];
 
-    if (features.federating && isRemote(account)) {
+    if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         action: handleExternalClick,
@@ -365,7 +364,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   return (
     <>
       <div className='-mx-4 -mt-4'>
-        <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
+        <div className='relative h-32 w-full bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
           {banner && (
             <a href={banner.url} onClick={handleHeaderClick} target='_blank'>
               <StillImage

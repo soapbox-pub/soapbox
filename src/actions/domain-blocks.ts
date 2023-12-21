@@ -3,7 +3,6 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 
 import api, { getLinks } from '../api';
 
-import type { AxiosError } from 'axios';
 import type { EntityStore } from 'soapbox/entity-store/types';
 import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -50,7 +49,7 @@ const blockDomainSuccess = (domain: string, accounts: string[]) => ({
   accounts,
 });
 
-const blockDomainFail = (domain: string, error: AxiosError) => ({
+const blockDomainFail = (domain: string, error: unknown) => ({
   type: DOMAIN_BLOCK_FAIL,
   domain,
   error,
@@ -88,7 +87,7 @@ const unblockDomainSuccess = (domain: string, accounts: string[]) => ({
   accounts,
 });
 
-const unblockDomainFail = (domain: string, error: AxiosError) => ({
+const unblockDomainFail = (domain: string, error: unknown) => ({
   type: DOMAIN_UNBLOCK_FAIL,
   domain,
   error,
@@ -118,7 +117,7 @@ const fetchDomainBlocksSuccess = (domains: string[], next: string | null) => ({
   next,
 });
 
-const fetchDomainBlocksFail = (error: AxiosError) => ({
+const fetchDomainBlocksFail = (error: unknown) => ({
   type: DOMAIN_BLOCKS_FETCH_FAIL,
   error,
 });
@@ -162,7 +161,7 @@ const expandDomainBlocksSuccess = (domains: string[], next: string | null) => ({
   next,
 });
 
-const expandDomainBlocksFail = (error: AxiosError) => ({
+const expandDomainBlocksFail = (error: unknown) => ({
   type: DOMAIN_BLOCKS_EXPAND_FAIL,
   error,
 });

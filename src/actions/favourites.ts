@@ -4,7 +4,6 @@ import api, { getLinks } from '../api';
 
 import { importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -55,7 +54,7 @@ const fetchFavouritedStatusesSuccess = (statuses: APIEntity[], next: string | nu
   skipLoading: true,
 });
 
-const fetchFavouritedStatusesFail = (error: AxiosError) => ({
+const fetchFavouritedStatusesFail = (error: unknown) => ({
   type: FAVOURITED_STATUSES_FETCH_FAIL,
   error,
   skipLoading: true,
@@ -92,7 +91,7 @@ const expandFavouritedStatusesSuccess = (statuses: APIEntity[], next: string | n
   next,
 });
 
-const expandFavouritedStatusesFail = (error: AxiosError) => ({
+const expandFavouritedStatusesFail = (error: unknown) => ({
   type: FAVOURITED_STATUSES_EXPAND_FAIL,
   error,
 });
@@ -130,7 +129,7 @@ const fetchAccountFavouritedStatusesSuccess = (accountId: string, statuses: APIE
   skipLoading: true,
 });
 
-const fetchAccountFavouritedStatusesFail = (accountId: string, error: AxiosError) => ({
+const fetchAccountFavouritedStatusesFail = (accountId: string, error: unknown) => ({
   type: ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL,
   accountId,
   error,
@@ -170,7 +169,7 @@ const expandAccountFavouritedStatusesSuccess = (accountId: string, statuses: API
   next,
 });
 
-const expandAccountFavouritedStatusesFail = (accountId: string, error: AxiosError) => ({
+const expandAccountFavouritedStatusesFail = (accountId: string, error: unknown) => ({
   type: ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL,
   accountId,
   error,

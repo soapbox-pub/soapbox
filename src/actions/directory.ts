@@ -3,7 +3,6 @@ import api from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -35,7 +34,7 @@ const fetchDirectorySuccess = (accounts: APIEntity[]) => ({
   accounts,
 });
 
-const fetchDirectoryFail = (error: AxiosError) => ({
+const fetchDirectoryFail = (error: unknown) => ({
   type: DIRECTORY_FETCH_FAIL,
   error,
 });
@@ -62,7 +61,7 @@ const expandDirectorySuccess = (accounts: APIEntity[]) => ({
   accounts,
 });
 
-const expandDirectoryFail = (error: AxiosError) => ({
+const expandDirectoryFail = (error: unknown) => ({
   type: DIRECTORY_EXPAND_FAIL,
   error,
 });

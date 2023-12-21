@@ -12,7 +12,6 @@ import {
   STATUS_FETCH_SOURCE_SUCCESS,
 } from './statuses';
 
-import type { AxiosError } from 'axios';
 import type { ReducerStatus } from 'soapbox/reducers/statuses';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
@@ -184,7 +183,7 @@ const uploadEventBannerSuccess = (media: APIEntity, file: File) => ({
   file,
 });
 
-const uploadEventBannerFail = (error: AxiosError | true) => ({
+const uploadEventBannerFail = (error: unknown) => ({
   type: EVENT_BANNER_UPLOAD_FAIL,
   error,
 });
@@ -253,7 +252,7 @@ const submitEventSuccess = (status: APIEntity) => ({
   status,
 });
 
-const submitEventFail = (error: AxiosError) => ({
+const submitEventFail = (error: unknown) => ({
   type: EVENT_SUBMIT_FAIL,
   error,
 });
@@ -295,7 +294,7 @@ const joinEventSuccess = (status: APIEntity) => ({
   id: status.id,
 });
 
-const joinEventFail = (error: AxiosError, status: StatusEntity, previousState: string | null) => ({
+const joinEventFail = (error: unknown, status: StatusEntity, previousState: string | null) => ({
   type: EVENT_JOIN_FAIL,
   error,
   id: status.id,
@@ -330,7 +329,7 @@ const leaveEventSuccess = (status: APIEntity) => ({
   id: status.id,
 });
 
-const leaveEventFail = (error: AxiosError, status: StatusEntity) => ({
+const leaveEventFail = (error: unknown, status: StatusEntity) => ({
   type: EVENT_LEAVE_FAIL,
   id: status.id,
   error,
@@ -361,7 +360,7 @@ const fetchEventParticipationsSuccess = (id: string, accounts: APIEntity[], next
   next,
 });
 
-const fetchEventParticipationsFail = (id: string, error: AxiosError) => ({
+const fetchEventParticipationsFail = (id: string, error: unknown) => ({
   type: EVENT_PARTICIPATIONS_FETCH_FAIL,
   id,
   error,
@@ -398,7 +397,7 @@ const expandEventParticipationsSuccess = (id: string, accounts: APIEntity[], nex
   next,
 });
 
-const expandEventParticipationsFail = (id: string, error: AxiosError) => ({
+const expandEventParticipationsFail = (id: string, error: unknown) => ({
   type: EVENT_PARTICIPATIONS_EXPAND_FAIL,
   id,
   error,
@@ -429,7 +428,7 @@ const fetchEventParticipationRequestsSuccess = (id: string, participations: APIE
   next,
 });
 
-const fetchEventParticipationRequestsFail = (id: string, error: AxiosError) => ({
+const fetchEventParticipationRequestsFail = (id: string, error: unknown) => ({
   type: EVENT_PARTICIPATION_REQUESTS_FETCH_FAIL,
   id,
   error,
@@ -466,7 +465,7 @@ const expandEventParticipationRequestsSuccess = (id: string, participations: API
   next,
 });
 
-const expandEventParticipationRequestsFail = (id: string, error: AxiosError) => ({
+const expandEventParticipationRequestsFail = (id: string, error: unknown) => ({
   type: EVENT_PARTICIPATION_REQUESTS_EXPAND_FAIL,
   id,
   error,
@@ -497,7 +496,7 @@ const authorizeEventParticipationRequestSuccess = (id: string, accountId: string
   accountId,
 });
 
-const authorizeEventParticipationRequestFail = (id: string, accountId: string, error: AxiosError) => ({
+const authorizeEventParticipationRequestFail = (id: string, accountId: string, error: unknown) => ({
   type: EVENT_PARTICIPATION_REQUEST_AUTHORIZE_FAIL,
   id,
   accountId,
@@ -529,7 +528,7 @@ const rejectEventParticipationRequestSuccess = (id: string, accountId: string) =
   accountId,
 });
 
-const rejectEventParticipationRequestFail = (id: string, accountId: string, error: AxiosError) => ({
+const rejectEventParticipationRequestFail = (id: string, accountId: string, error: unknown) => ({
   type: EVENT_PARTICIPATION_REQUEST_REJECT_FAIL,
   id,
   accountId,

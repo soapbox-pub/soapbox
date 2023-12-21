@@ -38,6 +38,7 @@ const baseAccountSchema = z.object({
   header_static: z.string().url().optional().catch(undefined),
   id: z.string(),
   last_status_at: z.string().datetime().optional().catch(undefined),
+  local: z.boolean().catch(false),
   location: z.string().optional().catch(undefined),
   locked: z.boolean().catch(false),
   moved: z.literal(null).catch(null),
@@ -65,6 +66,7 @@ const baseAccountSchema = z.object({
     hide_follows: z.boolean().catch(false),
     hide_follows_count: z.boolean().catch(false),
     is_admin: z.boolean().catch(false),
+    is_local: z.boolean().optional().catch(undefined),
     is_moderator: z.boolean().catch(false),
     is_suggested: z.boolean().catch(false),
     location: z.string().optional().catch(undefined),
@@ -134,6 +136,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
     header_static: account.header_static || account.header,
     moderator: pleroma?.is_moderator || false,
+    local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: emojify(account.note, customEmojiMap),
     pleroma: (() => {

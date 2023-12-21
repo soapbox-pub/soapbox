@@ -8,7 +8,6 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import api, { staticClient } from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -106,7 +105,7 @@ const importSoapboxConfig = (soapboxConfig: APIEntity, host: string | null) => {
   };
 };
 
-const soapboxConfigFail = (error: AxiosError, host: string | null) => ({
+const soapboxConfigFail = (error: unknown, host: string | null) => ({
   type: SOAPBOX_CONFIG_REQUEST_FAIL,
   error,
   skipAlert: true,

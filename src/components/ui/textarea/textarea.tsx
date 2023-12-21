@@ -8,7 +8,7 @@ import { getTextDirection } from 'soapbox/utils/rtl';
 import Stack from '../stack/stack';
 import Text from '../text/text';
 
-interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'id' | 'maxLength' | 'onChange' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'id' | 'maxLength' | 'onChange' | 'onClick' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean;
   /** Allows the textarea height to grow while typing */
@@ -48,13 +48,14 @@ const Textarea = React.forwardRef(({
   autoGrow = false,
   maxRows = 10,
   minRows = 1,
+  rows: initialRows = 4,
   theme = 'default',
   maxLength,
   value,
   ...props
 }: ITextarea, ref: React.ForwardedRef<HTMLTextAreaElement>) => {
   const length = value?.length || 0;
-  const [rows, setRows] = useState<number>(autoGrow ? 1 : 4);
+  const [rows, setRows] = useState<number>(autoGrow ? minRows : initialRows);
   const locale = useLocale();
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -90,7 +91,7 @@ const Textarea = React.forwardRef(({
         ref={ref}
         rows={rows}
         onChange={handleChange}
-        className={clsx('block w-full rounded-md text-gray-900 placeholder:text-gray-600 dark:text-gray-100 dark:placeholder:text-gray-600 sm:text-sm', {
+        className={clsx('block w-full rounded-md text-gray-900 placeholder:text-gray-600 sm:text-sm dark:text-gray-100 dark:placeholder:text-gray-600', {
           'bg-white dark:bg-transparent shadow-sm border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
             theme === 'default',
           'bg-transparent border-0 focus:border-0 focus:ring-0': theme === 'transparent',

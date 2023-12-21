@@ -19,7 +19,6 @@ import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './
 import type { Resolve } from 'soapbox/utils/types';
 
 const statusPleromaSchema = z.object({
-  emoji_reactions: filteredArray(emojiReactionSchema),
   event: eventSchema.nullish().catch(undefined),
   quote: z.literal(null).catch(null),
   quote_visible: z.boolean().catch(true),
@@ -51,6 +50,7 @@ const baseStatusSchema = z.object({
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),
   pleroma: statusPleromaSchema.optional().catch(undefined),
+  reactions: filteredArray(emojiReactionSchema),
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),
   quotes_count: z.number().catch(0),
@@ -131,16 +131,18 @@ const statusSchema = baseStatusSchema.extend({
   reblog: embeddedStatusSchema,
   pleroma: statusPleromaSchema.extend({
     quote: embeddedStatusSchema,
+    emoji_reactions: filteredArray(emojiReactionSchema),
   }).optional().catch(undefined),
 }).transform(({ pleroma, ...status }) => {
   return {
     ...status,
     event: pleroma?.event,
     quote: pleroma?.quote || status.quote || null,
+    reactions: pleroma?.emoji_reactions || status.reactions || null,
     // There's apparently no better way to do this...
     // Just trying to remove the `event` and `quote` keys from the object.
     pleroma: pleroma ? (() => {
-      const { event, quote, ...rest } = pleroma;
+      const { event, quote, emoji_reactions, ...rest } = pleroma;
       return rest;
     })() : undefined,
   };

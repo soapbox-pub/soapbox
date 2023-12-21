@@ -2,7 +2,6 @@ import api, { getLinks } from '../api';
 
 import { importFetchedStatuses } from './importer';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -43,7 +42,7 @@ const fetchBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | nu
   next,
 });
 
-const fetchBookmarkedStatusesFail = (error: AxiosError) => ({
+const fetchBookmarkedStatusesFail = (error: unknown) => ({
   type: BOOKMARKED_STATUSES_FETCH_FAIL,
   error,
 });
@@ -77,7 +76,7 @@ const expandBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | n
   next,
 });
 
-const expandBookmarkedStatusesFail = (error: AxiosError) => ({
+const expandBookmarkedStatusesFail = (error: unknown) => ({
   type: BOOKMARKED_STATUSES_EXPAND_FAIL,
   error,
 });

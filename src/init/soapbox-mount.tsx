@@ -7,18 +7,18 @@ import { ScrollContext } from 'react-router-scroll-4';
 
 import * as BuildConfig from 'soapbox/build-config';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
 import {
   ModalContainer,
   OnboardingWizard,
 } from 'soapbox/features/ui/util/async-components';
 import {
   useAppSelector,
+  useLoggedIn,
   useOwnAccount,
   useSoapboxConfig,
 } from 'soapbox/hooks';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
-
-import ErrorBoundary from '../components/error-boundary';
 
 const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
 const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
@@ -28,52 +28,29 @@ const UI = React.lazy(() => import('soapbox/features/ui'));
 const SoapboxMount = () => {
   useCachedLocationHandler();
 
-  const me = useAppSelector(state => state.me);
+  const { isLoggedIn } = useLoggedIn();
   const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
 
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
-  const { redirectRootNoLogin } = soapboxConfig;
+  const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
 
-  /** Render the onboarding flow. */
-  const renderOnboarding = () => (
-    <Suspense fallback={<LoadingScreen />}>
-      <OnboardingWizard />
-    </Suspense>
-  );
-
-  /** Render the auth layout or UI. */
-  const renderSwitch = () => (
-    <Switch>
-      {(!me && redirectRootNoLogin) && (
-        <Redirect exact from='/' to={redirectRootNoLogin} />
-      )}
-
-      <Route path='/' component={UI} />
-    </Switch>
-  );
-
-  /** Render the onboarding flow or UI. */
-  const renderBody = () => {
-    if (showOnboarding) {
-      return renderOnboarding();
-    } else {
-      return renderSwitch();
-    }
-  };
-
   return (
-    <ErrorBoundary>
+    <SiteErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
             <Switch>
+              {(!isLoggedIn && redirectRootNoLogin) && (
+                <Redirect exact from='/' to={redirectRootNoLogin} />
+              )}
+
               <Route
                 path='/embed/:statusId'
                 render={(props) => (
@@ -82,18 +59,26 @@ const SoapboxMount = () => {
                   </Suspense>
                 )}
               />
+
               <Redirect from='/@:username/:statusId/embed' to='/embed/:statusId' />
 
               <Route>
-                {renderBody()}
+                <Suspense fallback={<LoadingScreen />}>
+                  {showOnboarding
+                    ? <OnboardingWizard />
+                    : <UI />
+                  }
+                </Suspense>
 
                 <Suspense>
                   <ModalContainer />
                 </Suspense>
 
-                <Suspense>
-                  <GdprBanner />
-                </Suspense>
+                {(gdpr && !isLoggedIn) && (
+                  <Suspense>
+                    <GdprBanner />
+                  </Suspense>
+                )}
 
                 <div id='toaster'>
                   <Toaster
@@ -107,7 +92,7 @@ const SoapboxMount = () => {
           </ScrollContext>
         </CompatRouter>
       </BrowserRouter>
-    </ErrorBoundary>
+    </SiteErrorBoundary>
   );
 };
 

@@ -1,6 +1,5 @@
 import api from '../api';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -28,7 +27,7 @@ const fetchTrendsSuccess = (tags: APIEntity[]) => ({
   skipLoading: true,
 });
 
-const fetchTrendsFail = (error: AxiosError) => ({
+const fetchTrendsFail = (error: unknown) => ({
   type: TRENDS_FETCH_FAIL,
   error,
   skipLoading: true,

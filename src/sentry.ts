@@ -1,18 +1,19 @@
+import { NODE_ENV } from 'soapbox/build-config';
 import sourceCode from 'soapbox/utils/code';
 
 import type { Account } from './schemas';
+import type { CaptureContext, UserFeedback } from '@sentry/types';
+import type { SetOptional } from 'type-fest';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
-  const [Sentry, { Integrations: Integrations }] = await Promise.all([
-    import('@sentry/react'),
-    import('@sentry/tracing'),
-  ]);
+  const Sentry = await import('@sentry/react');
 
   Sentry.init({
     dsn,
     debug: false,
-    integrations: [new Integrations.BrowserTracing()],
+    enabled: NODE_ENV === 'production',
+    integrations: [new Sentry.BrowserTracing()],
 
     // Filter events.
     // https://docs.sentry.io/platforms/javascript/configuration/filtering/
@@ -38,14 +39,14 @@ async function startSentry(dsn: string): Promise<void> {
       /^moz-extension:\/\//i,
     ],
 
-    tracesSampleRate: 1.0,
+    tracesSampleRate: .1,
   });
 
   Sentry.setContext('soapbox', sourceCode);
 }
 
 /** Associate the account with Sentry events. */
-async function setSentryAccount(account: Account) {
+async function setSentryAccount(account: Account): Promise<void> {
   const Sentry = await import('@sentry/react');
 
   Sentry.setUser({
@@ -56,9 +57,30 @@ async function setSentryAccount(account: Account) {
 }
 
 /** Remove the account from Sentry events. */
-async function unsetSentryAccount() {
+async function unsetSentryAccount(): Promise<void> {
   const Sentry = await import('@sentry/react');
   Sentry.setUser(null);
 }
 
-export { startSentry, setSentryAccount, unsetSentryAccount };
+/** Capture the exception and report it to Sentry. */
+async function captureSentryException (
+  exception: any,
+  captureContext?: CaptureContext | undefined,
+): Promise<string> {
+  const Sentry = await import('@sentry/react');
+  return Sentry.captureException(exception, captureContext);
+}
+
+/** Capture user feedback and report it to Sentry. */
+async function captureSentryFeedback(feedback: SetOptional<UserFeedback, 'name' | 'email'>): Promise<void> {
+  const Sentry = await import('@sentry/react');
+  Sentry.captureUserFeedback(feedback as UserFeedback);
+}
+
+export {
+  startSentry,
+  setSentryAccount,
+  unsetSentryAccount,
+  captureSentryException,
+  captureSentryFeedback,
+};

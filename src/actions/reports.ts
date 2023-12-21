@@ -2,7 +2,6 @@ import api from '../api';
 
 import { openModal } from './modals';
 
-import type { AxiosError } from 'axios';
 import type { Account } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { ChatMessage, Group, Status } from 'soapbox/types/entities';
@@ -83,7 +82,7 @@ const submitReportSuccess = () => ({
   type: REPORT_SUBMIT_SUCCESS,
 });
 
-const submitReportFail = (error: AxiosError) => ({
+const submitReportFail = (error: unknown) => ({
   type: REPORT_SUBMIT_FAIL,
   error,
 });

@@ -28,7 +28,7 @@ import { ChatKeys, useChats } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
 import { Account } from 'soapbox/schemas';
 import toast from 'soapbox/toast';
-import { isDefaultHeader, isLocal, isRemote } from 'soapbox/utils/accounts';
+import { isDefaultHeader } from 'soapbox/utils/accounts';
 import copy from 'soapbox/utils/copy';
 import { MASTODON, parseVersion } from 'soapbox/utils/features';
 
@@ -110,7 +110,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return (
       <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
         <div>
-          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
+          <div className='relative h-32 w-full bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
         </div>
 
         <div className='px-4 sm:px-6'>
@@ -287,7 +287,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       return [];
     }
 
-    if (features.rssFeeds && isLocal(account)) {
+    if (features.rssFeeds && account.local) {
       menu.push({
         text: intl.formatMessage(messages.subscribeFeed),
         action: handleRssFeedClick,
@@ -303,7 +303,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (features.federating && isRemote(account)) {
+    if (features.federating && !account.local) {
       const domain = account.fqn.split('@')[1];
 
       menu.push({
@@ -453,7 +453,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (isRemote(account)) {
+    if (!account.local) {
       const domain = account.fqn.split('@')[1];
 
       menu.push(null);
@@ -620,7 +620,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       )}
 
       <div>
-        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
           {renderHeader()}
 
           <div className='absolute left-2 top-2'>
