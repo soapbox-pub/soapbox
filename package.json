@@ -159,7 +159,7 @@
     "redux-thunk": "^3.1.0",
     "reselect": "^4.0.0",
     "resize-observer-polyfill": "^1.5.1",
-    "sass": "^1.66.1",
+    "sass": "^1.69.5",
     "semver": "^7.3.8",
     "stringz": "^2.0.0",
     "substring-trie": "^1.0.2",
