@@ -1,7 +1,7 @@
 import {
   withOpacityValue,
   parseColorMatrix,
-} from './colors.cjs';
+} from './colors';
 
 describe('withOpacityValue()', () => {
   it('returns a Tailwind color function with alpha support', () => {
@@ -11,8 +11,7 @@ describe('withOpacityValue()', () => {
     expect(typeof result).toBe('function');
 
     // Test calling the function
-    expect(result({})).toBe('rgb(var(--color-primary-500))');
-    expect(result({ opacityValue: .5 })).toBe('rgb(var(--color-primary-500) / 0.5)');
+    expect(result).toBe('rgb(var(--color-primary-500) / <alpha-value>)');
   });
 });
 
@@ -29,8 +28,8 @@ describe('parseColorMatrix()', () => {
     const result = parseColorMatrix(colorMatrix);
 
     // Colors are mapped to functions which return CSS values
-    expect(result.primary[500]({})).toEqual('rgb(var(--color-primary-500))');
-    expect(result.accent[300]({ opacityValue: .3 })).toEqual('rgb(var(--color-accent-300) / 0.3)');
+    // @ts-ignore
+    expect(result.accent['300']).toEqual('rgb(var(--color-accent-300) / <alpha-value>)');
   });
 
   it('parses single-tint values', () => {
@@ -46,6 +45,6 @@ describe('parseColorMatrix()', () => {
 
     const result = parseColorMatrix(colorMatrix);
 
-    expect(result['gradient-start']({ opacityValue: .7 })).toEqual('rgb(var(--color-gradient-start) / 0.7)');
+    expect(result['gradient-start']).toEqual('rgb(var(--color-gradient-start) / <alpha-value>)');
   });
 });
