@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import thunk, { ThunkDispatch } from 'redux-thunk';
+import { configureStore, Tuple } from '@reduxjs/toolkit';
+import { thunk, type ThunkDispatch } from 'redux-thunk';
 
 import errorsMiddleware from './middleware/errors';
 import soundsMiddleware from './middleware/sounds';
@@ -9,11 +9,11 @@ import type { AnyAction } from 'redux';
 
 export const store = configureStore({
   reducer: appReducer,
-  middleware: [
+  middleware: () => new Tuple(
     thunk,
     errorsMiddleware(),
     soundsMiddleware(),
-  ],
+  ),
   devTools: true,
 });
 
