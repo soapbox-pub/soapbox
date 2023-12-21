@@ -1,7 +1,11 @@
-const { parseColorMatrix } = require('./tailwind/colors.cjs');
+import aspectRatioPlugin from '@tailwindcss/aspect-ratio';
+import formsPlugin from '@tailwindcss/forms';
+import typographyPlugin from '@tailwindcss/typography';
+import { type Config } from 'tailwindcss';
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import { parseColorMatrix } from './tailwind/colors';
+
+const config: Config = {
   content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './index.html'],
   darkMode: 'class',
   theme: {
@@ -98,8 +102,10 @@ module.exports = {
     },
   },
   plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/aspect-ratio'),
+    aspectRatioPlugin,
+    formsPlugin,
+    typographyPlugin,
   ],
 };
+
+export default config;

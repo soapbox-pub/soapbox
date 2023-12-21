@@ -494,7 +494,7 @@ const UI: React.FC<IUI> = ({ children }) => {
           </Layout>
 
           {(me && !shouldHideFAB()) && (
-            <div className='fixed bottom-24 right-4 z-40 transition-all rtl:left-4 rtl:right-auto lg:hidden'>
+            <div className='fixed bottom-24 right-4 z-40 transition-all lg:hidden rtl:left-4 rtl:right-auto'>
               <FloatingActionButton />
             </div>
           )}
