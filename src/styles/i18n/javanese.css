@@ -5,6 +5,7 @@
   font-display: swap;
   font-weight: 400;
   src: url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-400-normal.woff2) format('woff2'), url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-400-normal.woff) format('woff');
+  unicode-range: U+A980-A9DF;
 }
 
 /* noto-sans-javanese-javanese-500-normal */
@@ -14,6 +15,7 @@
   font-display: swap;
   font-weight: 500;
   src: url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-500-normal.woff2) format('woff2'), url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-500-normal.woff) format('woff');
+  unicode-range: U+A980-A9DF;
 }
 
 /* noto-sans-javanese-javanese-600-normal */
@@ -23,6 +25,7 @@
   font-display: swap;
   font-weight: 600;
   src: url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-600-normal.woff2) format('woff2'), url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-600-normal.woff) format('woff');
+  unicode-range: U+A980-A9DF;
 }
 
 /* noto-sans-javanese-javanese-700-normal */
@@ -32,4 +35,5 @@
   font-display: swap;
   font-weight: 700;
   src: url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-700-normal.woff2) format('woff2'), url(@fontsource/noto-sans-javanese/files/noto-sans-javanese-javanese-700-normal.woff) format('woff');
+  unicode-range: U+A980-A9DF;
 }
