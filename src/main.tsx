@@ -20,6 +20,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import './iframe';
 import './styles/i18n/arabic.css';
+import './styles/i18n/javanese.css';
 import './styles/application.scss';
 import './styles/tailwind.css';
 
