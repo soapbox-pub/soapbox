@@ -180,7 +180,7 @@ const instanceV1Schema = coerceObject({
   version: z.string().catch('0.0.0'),
 });
 
-const instanceSchema = z.preprocess((data: any) => {
+const instanceSchema = z.preprocess((data: unknown) => {
   if (data.domain) return data;
 
   const {
