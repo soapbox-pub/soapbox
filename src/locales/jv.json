@@ -1,1 +1,15 @@
-{}
+{
+  "about.also_available": "",
+  "accordion.collapse": "ꦲꦩ꧀ꦧꦿꦸꦏ꧀",
+  "accordion.expand": "ꦗꦼꦩ꧀ꦧꦂꦲꦏꦼꦤ꧀",
+  "account.add_or_remove_from_list": "ꦠꦩ꧀ꦧꦃꦈꦠꦮꦶꦧꦸꦱꦼꦏ꧀ꦱꦏꦶꦁꦝꦥ꧀ꦠꦂ",
+  "account.badges.bot": "ꦫꦺꦴꦧꦺꦴꦠ꧀",
+  "account.birthday": "ꦭꦲꦶꦂ",
+  "account.birthday_today": "ꦢꦶꦤ꧀ꦠꦼꦤ꧀ꦥꦸꦤꦶꦏꦶꦄꦩ꧀ꦧꦭ꧀ꦮꦂꦱ!",
+  "account.block": "ꦧꦼꦤ꧀ꦢꦸꦁ @{name}",
+  "account.block_domain": "ꦱꦩꦸꦧꦫꦁꦱꦏꦶꦁ {domain} ꦈꦩ꧀ꦥꦼꦠꦏꦼ",
+  "account.blocked": "ꦢꦶꦧꦼꦤ꧀ꦢꦸꦁ",
+  "account.chat": "ꦏꦤ꧀ꦝꦃꦏꦭꦶꦃ @{name}",
+  "account.copy": "ꦱꦭꦶꦤ꧀ꦭꦶꦁꦩꦫꦁꦥꦿꦺꦴꦥꦶꦭ꧀",
+  "account.edit_profile": "ꦎꦮꦲꦶꦥꦿꦺꦴꦥꦶꦭ꧀"
+}
