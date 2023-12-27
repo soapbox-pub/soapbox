@@ -2527,10 +2527,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-motion@^0.0.39":
-  version "0.0.39"
-  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.39.tgz#f282ecc026b988e7524e222217304df708de2d14"
-  integrity sha512-FqQcamh3FED6A4CVL39fmZMHQ4B3v1C7lenxwqDAtENO+p+xuOXHCTOpxh632qdGTPeqHVhN7oeClhNijgpOPg==
+"@types/react-motion@^0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@types/react-motion/-/react-motion-0.0.40.tgz#e743961e999688d9aa31d6e6b71b65cbb53b3104"
+  integrity sha512-Bp6i9WTvW6QFN2E/XQPm8HPGMx1SVJ7H1DPsvptwWWh1XBymDZ7N7SK4nSZT/4tP4bTGvp1KHSAsswWZKO/WHA==
   dependencies:
     "@types/react" "*"
 
