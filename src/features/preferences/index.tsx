@@ -42,6 +42,7 @@ const languages = {
   is: 'íslenska',
   it: 'Italiano',
   ja: '日本語',
+  jv: 'ꦧꦱꦗꦮ',
   ka: 'ქართული',
   kk: 'Қазақша',
   ko: '한국어',
