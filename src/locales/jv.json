@@ -77,6 +77,7 @@
   "account_note.placeholder": "ꦏ꧀ꦭꦶꦏ꧀ꦏꦁꦒꦺꦴꦤꦩ꧀ꦧꦃꦕꦛꦼꦠꦤ꧀",
   "account_search.placeholder": "ꦒꦺꦴꦭꦺꦏꦶꦄꦏꦸꦤ꧀",
   "actualStatus.edited": "ꦏꦎꦮꦲꦶ {date}",
+  "actualStatuses.quote_tombstone": "ꦏꦶꦫꦶꦩꦤ꧀ꦲꦺꦴꦫꦏꦱꦼꦝꦶꦪ.",
   "admin.announcements.action": "ꦒꦮꦺꦮꦼꦮꦫ",
   "admin.announcements.all_day": "ꦱꦧꦤ꧀ꦲꦫꦶ",
   "admin.announcements.delete": "ꦧꦸꦱꦼꦏ꧀",
@@ -111,5 +112,9 @@
   "admin.reports.actions.view_status": "ꦥꦶꦂꦱꦤꦶꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀",
   "admin.reports.report_closed_message": "ꦭꦥꦺꦴꦫꦤ꧀ꦧꦧꦒꦤ꧀ @{name} ꦢꦶꦠꦸꦠꦸꦥ꧀",
   "admin.reports.report_title": "ꦭꦥꦺꦴꦫꦤꦲꦶꦁ {acct}",
-  "admin.statuses.actions.delete_status": "ꦧꦸꦱꦼꦏ꧀ꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀"
+  "admin.statuses.actions.delete_status": "ꦧꦸꦱꦼꦏ꧀ꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀",
+  "admin.statuses.actions.mark_status_not_sensitive": "ꦠꦼꦔꦼꦫꦶꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀ꦧꦺꦴꦠꦼꦤ꧀ꦒꦮꦠ꧀",
+  "admin.statuses.actions.mark_status_sensitive": "ꦠꦼꦔꦼꦫꦶꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀ꦒꦮꦠ꧀",
+  "admin.statuses.status_deleted_message": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦤꦶꦁ @{acct} ꦱꦩ꧀ꦥꦸꦤ꧀ꦢꦶꦧꦸꦱꦼꦏ꧀",
+  "admin.statuses.status_marked_message_not_sensitive": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦺꦤꦶꦁ @{acct} ꦢꦶꦥꦸꦤ꧀ꦠꦺꦼꦔꦼꦫꦶꦧꦺꦴꦠꦼꦤ꧀ꦒꦮꦠ꧀"
 }
