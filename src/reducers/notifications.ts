@@ -71,6 +71,7 @@ const comparator = (a: NotificationRecord, b: NotificationRecord) => {
 const minifyNotification = (notification: NotificationRecord) => {
   return notification.mergeWith((o, n) => n || o, {
     account: notification.getIn(['account', 'id']) as string,
+    accounts: notification.accounts?.map((account: any) => account.get('id')),
     target: notification.getIn(['target', 'id']) as string,
     status: notification.getIn(['status', 'id']) as string,
   });

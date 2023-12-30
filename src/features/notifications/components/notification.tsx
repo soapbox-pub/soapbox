@@ -1,5 +1,6 @@
+import { List as ImmutableList } from 'immutable';
 import React, { useCallback } from 'react';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
+import { defineMessages, useIntl, FormattedList, FormattedMessage, IntlShape, MessageDescriptor } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
@@ -17,7 +18,8 @@ import { makeGetNotification } from 'soapbox/selectors';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity,
+} from 'soapbox/types/entities';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -57,11 +59,6 @@ const icons: Record<NotificationType, string> = {
   'pleroma:participation_request': require('@tabler/icons/calendar-event.svg'),
   'pleroma:participation_accepted': require('@tabler/icons/calendar-event.svg'),
 };
-
-const nameMessage = defineMessage({
-  id: 'notification.name',
-  defaultMessage: '{link}{others}',
-});
 
 const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
@@ -138,26 +135,29 @@ const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
   account: AccountEntity,
-  totalCount: number | null,
+  accounts: ImmutableList<AccountEntity> | null,
   targetName: string,
   instanceTitle: string,
 ): React.ReactNode => {
-  const link = buildLink(account);
-  const name = intl.formatMessage(nameMessage, {
-    link,
-    others: totalCount && totalCount > 0 ? (
+  if (!accounts) accounts = accounts || ImmutableList([account]);
+
+  const renderedAccounts = accounts.slice(0, 2).map(account => buildLink(account)).toArray().filter(Boolean);
+
+  if (accounts.size > 2) {
+    renderedAccounts.push(
       <FormattedMessage
-        id='notification.others'
-        defaultMessage='+ {count, plural, one {# other} other {# others}}'
-        values={{ count: totalCount - 1 }}
-      />
-    ) : '',
-  });
+        id='notification.more'
+        defaultMessage='{count, plural, one {# other} other {# others}}'
+        values={{ count: accounts.size - renderedAccounts.length }}
+      />,
+    );
+  }
 
   return intl.formatMessage(messages[type], {
-    name,
+    name: <FormattedList type='conjunction' value={renderedAccounts} />,
     targetName,
     instance: instanceTitle,
+    count: accounts.size,
   });
 };
 
@@ -187,7 +187,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   const instance = useInstance();
 
   const type = notification.type;
-  const { account, status } = notification;
+  const { account, accounts, status } = notification;
 
   const getHandlers = () => ({
     reply: handleMention,
@@ -356,7 +356,9 @@ const Notification: React.FC<INotificaton> = (props) => {
 
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object'
+    ? buildMessage(intl, type, account, accounts as ImmutableList<AccountEntity>, targetName, instance.title)
+    : null;
 
   const ariaLabel = validType(type) ? (
     notificationForScreenReader(

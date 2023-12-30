@@ -4,6 +4,7 @@
  * @see {@link https://docs.joinmastodon.org/entities/notification/}
  */
 import {
+  List as ImmutableList,
   Map as ImmutableMap,
   Record as ImmutableRecord,
   fromJS,
@@ -14,6 +15,7 @@ import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
 // https://docs.joinmastodon.org/entities/notification/
 export const NotificationRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,
+  accounts: null as ImmutableList<EmbeddedEntity<Account>> | null,
   chat_message: null as ImmutableMap<string, any> | string | null, // pleroma:chat_mention
   created_at: new Date(),
   emoji: null as string | null, // pleroma:emoji_reaction

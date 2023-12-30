@@ -151,47 +151,50 @@ const isBroken = (status: APIEntity) => {
   }
 };
 
-const importFetchedStatuses = (statuses: APIEntity[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const accounts: APIEntity[] = [];
-    const normalStatuses: APIEntity[] = [];
-    const polls: APIEntity[] = [];
+const importFetchedStatuses = (statuses: APIEntity[]) => (dispatch: AppDispatch) => {
+  const accounts: APIEntity[] = [];
+  const normalStatuses: APIEntity[] = [];
+  const polls: APIEntity[] = [];
 
-    function processStatus(status: APIEntity) {
-      // Skip broken statuses
-      if (isBroken(status)) return;
+  function processStatus(status: APIEntity) {
+    // Skip broken statuses
+    if (isBroken(status)) return;
 
-      normalStatuses.push(status);
-      accounts.push(status.account);
+    normalStatuses.push(status);
 
-      if (status.reblog?.id) {
-        processStatus(status.reblog);
-      }
-
-      // Fedibird quotes
-      if (status.quote?.id) {
-        processStatus(status.quote);
-      }
-
-      if (status.pleroma?.quote?.id) {
-        processStatus(status.pleroma.quote);
-      }
-
-      if (status.poll?.id) {
-        polls.push(status.poll);
-      }
-
-      if (status.group?.id) {
-        dispatch(importFetchedGroup(status.group));
-      }
+    accounts.push(status.account);
+    if (status.accounts) {
+      accounts.push(...status.accounts);
     }
 
-    statuses.forEach(processStatus);
+    if (status.reblog?.id) {
+      processStatus(status.reblog);
+    }
 
-    dispatch(importPolls(polls));
-    dispatch(importFetchedAccounts(accounts));
-    dispatch(importStatuses(normalStatuses));
-  };
+    // Fedibird quotes
+    if (status.quote?.id) {
+      processStatus(status.quote);
+    }
+
+    if (status.pleroma?.quote?.id) {
+      processStatus(status.pleroma.quote);
+    }
+
+    if (status.poll?.id) {
+      polls.push(status.poll);
+    }
+
+    if (status.group?.id) {
+      dispatch(importFetchedGroup(status.group));
+    }
+  }
+
+  statuses.forEach(processStatus);
+
+  dispatch(importPolls(polls));
+  dispatch(importFetchedAccounts(accounts));
+  dispatch(importStatuses(normalStatuses));
+};
 
 const importFetchedPoll = (poll: APIEntity) =>
   (dispatch: AppDispatch) => {

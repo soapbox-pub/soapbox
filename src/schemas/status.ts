@@ -26,6 +26,7 @@ const statusPleromaSchema = z.object({
 
 const baseStatusSchema = z.object({
   account: accountSchema,
+  accounts: z.array(accountSchema),
   application: z.object({
     name: z.string(),
     website: z.string().url().nullable().catch(null),

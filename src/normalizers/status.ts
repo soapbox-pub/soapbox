@@ -44,6 +44,7 @@ interface Tombstone {
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
   account: null as unknown as Account,
+  accounts: null as ImmutableList<Account> | null,
   application: null as ImmutableMap<string, any> | null,
   approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
@@ -265,6 +266,17 @@ const parseAccount = (status: ImmutableMap<string, any>) => {
   }
 };
 
+const parseAccounts = (status: ImmutableMap<string, any>) => {
+  try {
+    if (status.get('accounts')) {
+      const accounts = status.get('accounts').map((account: ImmutableMap<string, any>) => accountSchema.parse(maybeFromJS(account)));
+      return status.set('accounts', accounts);
+    }
+  } catch (_e) {
+    return status.set('accounts', null);
+  }
+};
+
 const parseGroup = (status: ImmutableMap<string, any>) => {
   try {
     const group = groupSchema.parse(status.get('group').toJS());
@@ -293,6 +305,7 @@ export const normalizeStatus = (status: Record<string, any>) => {
       normalizeDislikes(status);
       normalizeTombstone(status);
       parseAccount(status);
+      parseAccounts(status);
       parseGroup(status);
     }),
   );

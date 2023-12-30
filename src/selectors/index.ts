@@ -28,6 +28,10 @@ export function selectAccount(state: RootState, accountId: string) {
   return state.entities[Entities.ACCOUNTS]?.store[accountId] as AccountSchema | undefined;
 }
 
+export function selectAccounts(state: RootState, accountIds: ImmutableList<string>) {
+  return accountIds.map(accountId => state.entities[Entities.ACCOUNTS]?.store[accountId] as AccountSchema | undefined);
+}
+
 export function selectOwnAccount(state: RootState) {
   if (state.me) {
     return selectAccount(state, state.me);
@@ -162,7 +166,8 @@ export const makeGetNotification = () => {
     (state: RootState, notification: Notification) => selectAccount(state, normalizeId(notification.account)),
     (state: RootState, notification: Notification) => selectAccount(state, normalizeId(notification.target)),
     (state: RootState, notification: Notification) => state.statuses.get(normalizeId(notification.status)),
-  ], (notification, account, target, status) => {
+    (state: RootState, notification: Notification) => notification.accounts ? selectAccounts(state, notification.accounts?.map(normalizeId)) : null,
+  ], (notification, account, target, status, accounts) => {
     return notification.merge({
       // @ts-ignore
       account: account || null,
@@ -170,6 +175,8 @@ export const makeGetNotification = () => {
       target: target || null,
       // @ts-ignore
       status: status || null,
+      // @ts-ignore
+      accounts,
     });
   });
 };

@@ -146,6 +146,27 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
   });
 };
 
+const deduplicateStatuses = (statuses: any[]) => {
+  const deduplicatedStatuses: any[] = [];
+
+  for (const status of statuses) {
+    const reblogged = status.reblog && deduplicatedStatuses.find((deduplicatedStatuses) => deduplicatedStatuses.reblog?.id === status.reblog.id);
+
+    if (reblogged) {
+      if (reblogged.accounts) {
+        reblogged.accounts.push(status.account);
+      } else {
+        reblogged.accounts = [reblogged.account, status.account];
+      }
+      reblogged.id += ':' + status.id;
+    } else {
+      deduplicatedStatuses.push(status);
+    }
+  }
+
+  return deduplicatedStatuses;
+};
+
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
@@ -172,12 +193,15 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     return api(getState).get(path, { params }).then(response => {
       dispatch(importFetchedStatuses(response.data));
 
+      const statuses = deduplicateStatuses(response.data);
+      dispatch(importFetchedStatuses(statuses.filter(status => status.accounts)));
+
       const statusesFromGroups = (response.data as Status[]).filter((status) => !!status.group);
       dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
 
       dispatch(expandTimelineSuccess(
         timelineId,
-        response.data,
+        statuses,
         getNextLink(response),
         getPrevLink(response),
         response.status === 206,

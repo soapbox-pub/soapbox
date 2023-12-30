@@ -1,6 +1,7 @@
 import clsx from 'clsx';
+import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useRef, useState } from 'react';
-import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { defineMessages, useIntl, FormattedList, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
@@ -249,6 +250,31 @@ const Status: React.FC<IStatus> = (props) => {
         />
       );
     } else if (isReblog) {
+      const accounts = status.accounts || ImmutableList([status.account]);
+
+      const renderedAccounts = accounts.slice(0, 2).map(account => !!account && (
+        <Link to={`/@${account.acct}`} className='hover:underline'>
+          <bdi className='truncate'>
+            <strong
+              className='text-gray-800 dark:text-gray-200'
+              dangerouslySetInnerHTML={{
+                __html: account.display_name_html,
+              }}
+            />
+          </bdi>
+        </Link>
+      )).toArray().filter(Boolean);
+
+      if (accounts.size > 2) {
+        renderedAccounts.push(
+          <FormattedMessage
+            id='notification.more'
+            defaultMessage='{count, plural, one {# other} other {# others}}'
+            values={{ count: accounts.size - renderedAccounts.length }}
+          />,
+        );
+      }
+
       return (
         <StatusInfo
           avatarSize={avatarSize}
@@ -258,18 +284,8 @@ const Status: React.FC<IStatus> = (props) => {
               id='status.reblogged_by'
               defaultMessage='{name} reposted'
               values={{
-                name: (
-                  <Link to={`/@${status.account.acct}`} className='hover:underline'>
-                    <bdi className='truncate'>
-                      <strong
-                        className='text-gray-800 dark:text-gray-200'
-                        dangerouslySetInnerHTML={{
-                          __html: status.account.display_name_html,
-                        }}
-                      />
-                    </bdi>
-                  </Link>
-                ),
+                name: <FormattedList type='conjunction' value={renderedAccounts} />,
+                count: accounts.size,
               }}
             />
           }
