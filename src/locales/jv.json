@@ -116,5 +116,13 @@
   "admin.statuses.actions.mark_status_not_sensitive": "ꦠꦼꦔꦼꦫꦶꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀ꦧꦺꦴꦠꦼꦤ꧀ꦒꦮꦠ꧀",
   "admin.statuses.actions.mark_status_sensitive": "ꦠꦼꦔꦼꦫꦶꦥꦺꦴꦱ꧀ꦠꦶꦔꦤ꧀ꦒꦮꦠ꧀",
   "admin.statuses.status_deleted_message": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦤꦶꦁ @{acct} ꦱꦩ꧀ꦥꦸꦤ꧀ꦢꦶꦧꦸꦱꦼꦏ꧀",
-  "admin.statuses.status_marked_message_not_sensitive": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦺꦤꦶꦁ @{acct} ꦢꦶꦥꦸꦤ꧀ꦠꦺꦼꦔꦼꦫꦶꦧꦺꦴꦠꦼꦤ꧀ꦒꦮꦠ꧀"
+  "admin.statuses.status_marked_message_not_sensitive": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦺꦤꦶꦁ @{acct} ꦢꦶꦥꦸꦤ꧀ꦠꦺꦼꦔꦼꦫꦶꦧꦺꦴꦠꦼꦤ꧀ꦒꦮꦠ꧀",
+  "admin.statuses.status_marked_message_sensitive": "ꦏꦶꦫꦶꦩꦤ꧀ꦢꦺꦤꦶꦁ @{acct} ꦢꦶꦠꦼꦔꦼꦫꦶꦒꦮꦠ꧀",
+  "admin.theme.title": "ꦠꦺꦩ",
+  "admin.users.actions.delete_user": "ꦧꦸꦱꦼꦏ꧀ @{name}",
+  "admin.users.actions.demote_to_moderator_message": "@{acct} ꦢꦶꦝꦸꦤ꧀ꦏꦺꦢꦢꦶꦩꦺꦴꦝꦺꦫꦠꦺꦴꦂ",
+  "admin.users.actions.demote_to_user_message": "@{acct} ꦢꦶꦝꦸꦤ꧀ꦏꦺꦢꦢꦶꦥꦔꦒꦼꦩ꧀ꦧꦶꦪꦱ",
+  "admin.users.actions.promote_to_admin_message": "@{acct} ꦢꦶꦥꦿꦺꦴꦩꦺꦴꦱꦶꦏꦺꦢꦢꦶꦄꦝ꧀ꦩꦶꦤ꧀",
+  "admin.users.actions.promote_to_moderator_message": "@{acct} ꦢꦶꦥꦿꦺꦴꦩꦺꦴꦱꦶꦏꦺꦢꦢꦶꦩꦺꦴꦝꦺꦫꦠꦺꦴꦂ",
+  "admin.users.remove_donor_message": "@{acct} ꦢꦶꦧꦸꦱꦼꦏ꧀ꦩꦶꦤꦁꦏꦝꦺꦴꦤꦺꦴꦂ"
 }
