@@ -100,6 +100,7 @@
   "admin.dashwidgets.software_header": "ꦥꦶꦫꦤ꧀ꦠꦶꦄꦭꦸꦱ꧀",
   "admin.edit_announcement.created": "ꦮꦼꦮꦫꦢꦶꦥꦸꦤ꧀ꦢꦩꦼꦭ꧀",
   "admin.edit_announcement.deleted": "ꦮꦫꦮꦫꦢꦶꦧꦸꦱꦼꦏ꧀",
+  "admin.edit_announcement.fields.all_day_hint": "ꦪꦺꦤ꧀ꦢꦶꦕꦺꦤ꧀ꦛꦁ꧈ꦱꦶꦁꦢꦶꦠꦩ꧀ꦥꦶꦭ꧀ꦏꦺꦩꦸꦁꦠꦁꦒꦭ꧀ꦉꦤ꧀ꦠꦁꦮꦼꦏ꧀ꦠꦸ",
   "admin.edit_announcement.fields.all_day_label": "ꦄꦕꦫꦱꦧꦼꦤ꧀ꦲꦫꦶ",
   "admin.edit_announcement.fields.content_label": "ꦏꦺꦴꦤ꧀ꦠꦺꦤ꧀",
   "admin.edit_announcement.fields.content_placeholder": "ꦏꦺꦴꦤ꧀ꦠꦺꦤ꧀ꦮꦫꦮꦫ",
