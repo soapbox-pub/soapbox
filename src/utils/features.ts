@@ -642,6 +642,16 @@ const getInstanceFeatures = (instance: Instance) => {
     importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
 
     /**
+     * Mastodon server information API v2.
+     * @see GET /api/v2/instance
+     * @see {@link https://docs.joinmastodon.org/methods/instance/#v2}
+    */
+    instanceV2: any([
+      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.5.54'),
+    ]),
+
+    /**
      * Can create, view, and manage lists.
      * @see {@link https://docs.joinmastodon.org/methods/lists/}
      * @see GET /api/v1/timelines/list/:list_id
@@ -954,7 +964,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Can translate statuses.
      * @see POST /api/v1/statuses/:id/translate
      */
-    translations: features.includes('translation'),
+    translations: features.includes('translation') || instance.configuration.translation.enabled,
 
     /**
      * Trending statuses.
@@ -1024,7 +1034,7 @@ export const parseVersion = (version: string): Backend => {
       build: semver.build[0],
       compatVersion: compat.version,
       software: match[2] || MASTODON,
-      version: semver.version,
+      version: semver.version.split('-')[0],
     };
   } else {
     // If we can't parse the version, this is a new and exotic backend.

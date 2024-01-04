@@ -339,7 +339,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/about/:slug?' page={DefaultPage} component={AboutPage} publicRoute exact />
 
-      {(features.accountCreation && instance.registrations) && (
+      {(features.accountCreation && instance.registrations.enabled) && (
         <WrappedRoute path='/signup' page={EmptyPage} component={RegistrationPage} publicRoute exact />
       )}
 

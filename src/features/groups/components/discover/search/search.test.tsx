@@ -3,12 +3,12 @@ import React from 'react';
 import { __stub } from 'soapbox/api';
 import { buildGroup } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema } from 'soapbox/schemas';
 
 import Search from './search';
 
 const store = {
-  instance: normalizeInstance({
+  instance: instanceSchema.parse({
     version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)',
   }),
 };

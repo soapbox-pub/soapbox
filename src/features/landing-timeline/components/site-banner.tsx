@@ -9,7 +9,7 @@ import { LogoText } from './logo-text';
 
 const SiteBanner: React.FC = () => {
   const instance = useInstance();
-  const description = instance.short_description || instance.description;
+  const description = instance.description;
 
   return (
     <Stack space={3}>
