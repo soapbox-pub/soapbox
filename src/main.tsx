@@ -20,16 +20,18 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import './iframe';
 import './styles/i18n/arabic.css';
+import './styles/i18n/javanese.css';
 import './styles/application.scss';
 import './styles/tailwind.css';
 
 import './precheck';
 import ready from './ready';
-import { registerSW } from './utils/sw';
+import { registerSW, lockSW } from './utils/sw';
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();
   registerSW('/sw.js');
+  lockSW();
 }
 
 ready(() => {

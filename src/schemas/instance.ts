@@ -53,6 +53,9 @@ const configurationSchema = coerceObject({
     max_options: z.number().optional().catch(undefined),
     min_expiration: z.number().optional().catch(undefined),
   }),
+  reactions: coerceObject({
+    max_reactions: z.number().catch(0),
+  }),
   statuses: coerceObject({
     characters_reserved_per_url: z.number().optional().catch(undefined),
     max_characters: z.number().optional().catch(undefined),
@@ -180,7 +183,7 @@ const instanceV1Schema = coerceObject({
   version: z.string().catch('0.0.0'),
 });
 
-const instanceSchema = z.preprocess((data: unknown) => {
+const instanceSchema = z.preprocess((data: any) => {
   if (data.domain) return data;
 
   const {

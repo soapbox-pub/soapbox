@@ -30,24 +30,25 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
   const getRemoteInstance = useCallback(makeGetRemoteInstance(), []);
   const remoteInstance = useAppSelector(state => getRemoteInstance(state, host));
 
-  const [data, setData] = useState({} as any);
+  const [data, setData] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    setData(remoteInstance.get('federation'));
+    setData(remoteInstance.get('federation') as Record<string, any>);
   }, [remoteInstance]);
 
   const handleDataChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
     return ({ target }) => {
-      setData(data.set(key, target.checked));
+      setData({ ...data, [key]: target.checked });
     };
   };
 
   const handleMediaRemoval: React.ChangeEventHandler<HTMLInputElement> = ({ target: { checked } }) => {
-    const newData = data.merge({
+    const newData = {
+      ...data,
       avatar_removal: checked,
       banner_removal: checked,
       media_removal: checked,
-    });
+    };
 
     setData(newData);
   };

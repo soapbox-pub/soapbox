@@ -1,7 +1,6 @@
 import toast from 'soapbox/toast';
 
-import type { AnyAction } from 'redux';
-import type { ThunkMiddleware } from 'redux-thunk';
+import type { AnyAction, Middleware } from 'redux';
 
 /** Whether the action is considered a failure. */
 const isFailType = (type: string): boolean => type.endsWith('_FAIL');
@@ -21,8 +20,9 @@ const shouldShowError = ({ type, skipAlert, error }: AnyAction): boolean => {
 };
 
 /** Middleware to display Redux errors to the user. */
-const errorsMiddleware = (): ThunkMiddleware =>
-  () => next => action => {
+const errorsMiddleware = (): Middleware =>
+  () => next => anyAction => {
+    const action = anyAction as AnyAction;
     if (shouldShowError(action)) {
       toast.showAlertForError(action.error);
     }

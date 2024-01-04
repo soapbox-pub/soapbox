@@ -187,7 +187,7 @@ const Account = ({
 
   return (
     <div data-testid='account' className='group block w-full shrink-0' ref={overflowRef}>
-      <HStack alignItems={actionAlignment} justifyContent='between'>
+      <HStack alignItems={actionAlignment} space={3} justifyContent='between'>
         <HStack alignItems={withAccountNote || note ? 'top' : 'center'} space={3} className='overflow-hidden'>
           <ProfilePopper
             condition={showProfileHoverCard}

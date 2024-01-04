@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -8,7 +8,7 @@ import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { APIEntity, EmojiReaction, Status } from 'soapbox/types/entities';
 
 const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';
@@ -26,17 +26,17 @@ const noOp = () => () => new Promise(f => f(undefined));
 
 const simpleEmojiReact = (status: Status, emoji: string, custom?: string) =>
   (dispatch: AppDispatch) => {
-    const emojiReacts: ImmutableList<ImmutableMap<string, any>> = status.pleroma.get('emoji_reactions') || ImmutableList();
+    const emojiReacts: ImmutableList<EmojiReaction> = status.reactions || ImmutableList();
 
     if (emoji === '👍' && status.favourited) return dispatch(unfavourite(status));
 
-    const undo = emojiReacts.filter(e => e.get('me') === true && e.get('name') === emoji).count() > 0;
+    const undo = emojiReacts.filter(e => e.me === true && e.name === emoji).count() > 0;
     if (undo) return dispatch(unEmojiReact(status, emoji));
 
     return Promise.all([
       ...emojiReacts
-        .filter((emojiReact) => emojiReact.get('me') === true)
-        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))).toArray(),
+        .filter((emojiReact) => emojiReact.me === true)
+        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.name))).toArray(),
       status.favourited && dispatch(unfavourite(status)),
     ]).then(() => {
       if (emoji === '👍') {

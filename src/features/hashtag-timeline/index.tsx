@@ -7,7 +7,7 @@ import { useHashtagStream } from 'soapbox/api/hooks';
 import List, { ListItem } from 'soapbox/components/list';
 import { Column, Toggle } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useLoggedIn } from 'soapbox/hooks';
 
 interface IHashtagTimeline {
   params?: {
@@ -22,7 +22,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const dispatch = useAppDispatch();
   const tag = useAppSelector((state) => state.tags.get(id));
   const next = useAppSelector(state => state.timelines.get(`hashtag:${id}`)?.next);
-
+  const { isLoggedIn } = useLoggedIn();
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandHashtagTimeline(id, { url: next, maxId }));
@@ -50,7 +50,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
 
   return (
     <Column label={`#${id}`} transparent>
-      {features.followHashtags && (
+      {features.followHashtags && isLoggedIn && (
         <List>
           <ListItem
             label={<FormattedMessage id='hashtag.follow' defaultMessage='Follow hashtag' />}

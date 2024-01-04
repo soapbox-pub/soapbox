@@ -11,10 +11,6 @@ export const FOCUS_EDITOR_COMMAND: LexicalCommand<void> = createCommand();
 const FocusPlugin: React.FC<IFocusPlugin> = ({ autoFocus }) => {
   const [editor] = useLexicalComposerContext();
 
-  const focus = () => {
-    editor.dispatchCommand(FOCUS_EDITOR_COMMAND, undefined);
-  };
-
   useEffect(() => editor.registerCommand(FOCUS_EDITOR_COMMAND, () => {
     editor.focus(
       () => {
@@ -29,8 +25,10 @@ const FocusPlugin: React.FC<IFocusPlugin> = ({ autoFocus }) => {
   }, COMMAND_PRIORITY_NORMAL));
 
   useEffect(() => {
-    if (autoFocus) focus();
-  }, []);
+    if (autoFocus) {
+      editor.dispatchCommand(FOCUS_EDITOR_COMMAND, undefined);
+    }
+  }, [autoFocus, editor]);
 
   return null;
 };

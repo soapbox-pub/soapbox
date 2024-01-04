@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import parse, { Element, type HTMLReactParserOptions, domToReact } from 'html-react-parser';
+import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -105,7 +105,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         }
 
         if (classes?.includes('hashtag')) {
-          const child = domToReact(domNode.children);
+          const child = domToReact(domNode.children as DOMNode[]);
           const hashtag = typeof child === 'string' ? child.replace(/^#/, '') : undefined;
           if (hashtag) {
             return <HashtagLink hashtag={hashtag} />;
@@ -121,7 +121,7 @@ const StatusContent: React.FC<IStatusContent> = ({
             target='_blank'
             title={domNode.attribs.href}
           >
-            {domToReact(domNode.children, options)}
+            {domToReact(domNode.children as DOMNode[], options)}
           </a>
         );
       }

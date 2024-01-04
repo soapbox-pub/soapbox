@@ -14,6 +14,7 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 import {
   useAppSelector,
+  useLoggedIn,
   useOwnAccount,
   useSoapboxConfig,
 } from 'soapbox/hooks';
@@ -27,13 +28,13 @@ const UI = React.lazy(() => import('soapbox/features/ui'));
 const SoapboxMount = () => {
   useCachedLocationHandler();
 
-  const me = useAppSelector(state => state.me);
+  const { isLoggedIn } = useLoggedIn();
   const { account } = useOwnAccount();
   const soapboxConfig = useSoapboxConfig();
 
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
-  const { redirectRootNoLogin } = soapboxConfig;
+  const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
@@ -46,7 +47,7 @@ const SoapboxMount = () => {
         <CompatRouter>
           <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
             <Switch>
-              {(!me && redirectRootNoLogin) && (
+              {(!isLoggedIn && redirectRootNoLogin) && (
                 <Redirect exact from='/' to={redirectRootNoLogin} />
               )}
 
@@ -73,9 +74,11 @@ const SoapboxMount = () => {
                   <ModalContainer />
                 </Suspense>
 
-                <Suspense>
-                  <GdprBanner />
-                </Suspense>
+                {(gdpr && !isLoggedIn) && (
+                  <Suspense>
+                    <GdprBanner />
+                  </Suspense>
+                )}
 
                 <div id='toaster'>
                   <Toaster

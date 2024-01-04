@@ -12,7 +12,7 @@ import { VitePWA } from 'vite-plugin-pwa';
 import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   build: {
     assetsDir: 'packs',
     assetsInlineLimit: 0,
@@ -28,6 +28,9 @@ export default defineConfig({
   assetsInclude: ['**/*.oga'],
   server: {
     port: 3036,
+  },
+  optimizeDeps: {
+    exclude: command === 'serve' ? ['@soapbox.pub/wasmboy'] : [],
   },
   plugins: [
     checker({ typescript: true }),
@@ -100,7 +103,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: 'src/jest/test-setup.ts',
   },
-});
+}));
 
 /** Return file as string, or return empty string if the file isn't found. */
 function readFileContents(path: string) {

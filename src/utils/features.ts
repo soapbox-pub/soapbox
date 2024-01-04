@@ -15,22 +15,28 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
- * Firefish, a fork of Misskey. Formerly known as Calckey.
- * @see {@link https://joinfirefish.org/}
- */
-export const FIREFISH = 'Firefish';
-
-/**
  * Ditto, a Nostr server with Mastodon API.
  * @see {@link https://gitlab.com/soapbox-pub/ditto}
  */
 export const DITTO = 'Ditto';
 
 /**
+ * Firefish, a fork of Misskey. Formerly known as Calckey.
+ * @see {@link https://joinfirefish.org/}
+ */
+export const FIREFISH = 'Firefish';
+
+/**
  * Friendica, decentralized social platform implementing multiple federation protocols.
  * @see {@link https://friendi.ca/}
  */
 export const FRIENDICA = 'Friendica';
+
+/**
+ * Iceshrimp, yet another Misskey fork.
+ * @see {@link https://iceshrimp.dev/}
+ */
+export const ICESHRIMP = 'Iceshrimp';
 
 /**
  * Mastodon, the software upon which this is all based.
@@ -143,6 +149,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     accountLookup: any([
       v.software === FIREFISH,
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TAKAHE && gte(v.version, '0.6.1'),
@@ -192,6 +199,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see {@link https://docs.joinmastodon.org/methods/announcements/}
      */
     announcements: any([
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '2.2.49'),
       v.software === TAKAHE && gte(v.version, '0.7.0'),
@@ -230,11 +238,13 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     bookmarks: any([
       v.software === FIREFISH,
+      v.software === ICESHRIMP,
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
       v.software === PIXELFED,
       v.software === TAKAHE && gte(v.version, '0.9.0'),
+      v.software === DITTO,
     ]),
 
     /**
@@ -319,6 +329,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     conversations: any([
       v.software === FIREFISH,
+      v.software === ICESHRIMP,
       v.software === FRIENDICA,
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -359,6 +370,7 @@ const getInstanceFeatures = (instance: Instance) => {
     editProfile: any([
       v.software === FIREFISH,
       v.software === FRIENDICA,
+      v.software === ICESHRIMP,
       v.software === MASTODON,
       v.software === MITRA,
       v.software === PIXELFED,
@@ -374,6 +386,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     editStatuses: any([
       v.software === FRIENDICA && gte(v.version, '2022.12.0'),
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.version, '3.5.0'),
       v.software === TAKAHE && gte(v.version, '0.8.0'),
       features.includes('editing'),
@@ -405,6 +418,13 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see DELETE /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
+
+    /**
+     * Ability to add emoji reactions to a status available in Mastodon forks.
+     * @see POST /v1/statuses/:id/react/:emoji
+     * @see POST /v1/statuses/:id/unreact/:emoji
+     */
+    emojiReactsMastodon: instance.configuration.reactions.max_reactions > 0,
 
     /**
      * The backend allows only non-RGI ("Recommended for General Interchange") emoji reactions.
@@ -444,6 +464,7 @@ const getInstanceFeatures = (instance: Instance) => {
     exposableReactions: any([
       v.software === FIREFISH,
       v.software === FRIENDICA,
+      v.software === ICESHRIMP,
       v.software === MASTODON,
       v.software === TAKAHE && gte(v.version, '0.6.1'),
       v.software === TRUTHSOCIAL,
@@ -638,6 +659,7 @@ const getInstanceFeatures = (instance: Instance) => {
     lists: any([
       v.software === FIREFISH,
       v.software === FRIENDICA,
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
@@ -693,6 +715,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see PUT /api/v1/accounts/:id/mute
      */
     mutesDuration: any([
+      v.software === ICESHRIMP,
       v.software === PLEROMA && gte(v.version, '2.3.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
       v.software === TAKAHE,
@@ -725,6 +748,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/notifications
      */
     notificationsIncludeTypes: any([
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
       v.software === TAKAHE && gte(v.version, '0.6.2'),
@@ -749,6 +773,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     polls: any([
       v.software === FIREFISH,
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
       v.software === TAKAHE && gte(v.version, '0.8.0'),
@@ -789,6 +814,7 @@ const getInstanceFeatures = (instance: Instance) => {
     publicTimeline: any([
       v.software === FIREFISH,
       v.software === FRIENDICA,
+      v.software === ICESHRIMP,
       v.software === MASTODON,
       v.software === PLEROMA,
       v.software === TAKAHE,
@@ -874,6 +900,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v2/search
      */
     searchFromAccount: any([
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA && gte(v.version, '1.0.0'),
     ]),
@@ -927,6 +954,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     suggestionsV2: any([
       v.software === FRIENDICA,
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
@@ -943,6 +971,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/trends/statuses
      */
     trendingStatuses: any([
+      v.software === ICESHRIMP,
       v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
     ]),
@@ -953,6 +982,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     trends: any([
       v.software === FRIENDICA && gte(v.version, '2022.12.0'),
+      v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       v.software === TRUTHSOCIAL,
       v.software === DITTO,

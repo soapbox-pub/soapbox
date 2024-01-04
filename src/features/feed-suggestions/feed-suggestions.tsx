@@ -24,7 +24,7 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
   if (!account) return null;
 
   return (
-    <Stack space={3} className='w-52 shrink-0 rounded-md border border-solid border-gray-300 p-4 dark:border-gray-800 md:w-full md:shrink md:border-transparent md:p-0 dark:md:border-transparent'>
+    <Stack space={3} className='w-52 shrink-0 rounded-md border border-solid border-gray-300 p-4 md:w-full md:shrink md:border-transparent md:p-0 dark:border-gray-800 dark:md:border-transparent'>
       <Link
         to={`/@${account.acct}`}
         title={account.acct}
