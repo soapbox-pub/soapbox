@@ -682,6 +682,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see POST /api/v1/admin/accounts/:account_id/approve
      */
     mastodonAdmin: any([
+      v.software === DITTO,
       v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
     ]),
