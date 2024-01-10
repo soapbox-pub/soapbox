@@ -50,7 +50,7 @@
   "chats.actions.delete": "Delete message",
   "chats.actions.report": "Report user",
   "chats.search_placeholder": "Start a chat with…",
-  "colum.filters.expiration.never": "Никога",
+  "column.filters.expiration.never": "Никога",
   "column.admin.dashboard": "Dashboard",
   "column.admin.reports": "Reports",
   "column.aliases": "Account aliases",

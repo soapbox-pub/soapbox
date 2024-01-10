@@ -9,7 +9,7 @@ import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks';
 
 import { languages } from '../preferences';
 
-/** Displays arbitary user-uploaded HTML on a page at `/about/:slug` */
+/** Displays arbitrary user-uploaded HTML on a page at `/about/:slug` */
 const AboutPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { slug } = useParams<{ slug?: string }>();

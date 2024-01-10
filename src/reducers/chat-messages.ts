@@ -41,7 +41,7 @@ export default function chatMessages(state = initialState, action: AnyAction) {
   switch (action.type) {
     case CHAT_MESSAGE_SEND_REQUEST:
       return importMessage(state, fromJS({
-        id: action.uuid, // Make fake message to get overriden later
+        id: action.uuid, // Make fake message to get overridden later
         chat_id: action.chatId,
         account_id: action.me,
         content: action.params.content,
