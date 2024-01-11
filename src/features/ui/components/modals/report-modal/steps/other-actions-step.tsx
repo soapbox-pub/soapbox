@@ -15,7 +15,7 @@ const messages = defineMessages({
   addAdditionalStatuses: { id: 'report.otherActions.addAdditional', defaultMessage: 'Would you like to add additional statuses to this report?' },
   addMore: { id: 'report.otherActions.addMore', defaultMessage: 'Add more' },
   furtherActions: { id: 'report.otherActions.furtherActions', defaultMessage: 'Further actions:' },
-  hideAdditonalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },
+  hideAdditionalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },
   otherStatuses: { id: 'report.otherActions.otherStatuses', defaultMessage: 'Include other statuses?' },
 });
 
@@ -70,7 +70,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
                   >
-                    {intl.formatMessage(messages.hideAdditonalStatuses)}
+                    {intl.formatMessage(messages.hideAdditionalStatuses)}
                   </Button>
                 </div>
               </Stack>

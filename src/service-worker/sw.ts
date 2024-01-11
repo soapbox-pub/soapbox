@@ -46,7 +46,7 @@ interface ClonedNotification {
   title: string;
 }
 
-/** Status entitiy from the API (kind of). */
+/** Status entity from the API (kind of). */
 // HACK
 interface APIStatus extends Omit<StatusEntity, 'media_attachments'> {
   media_attachments: { preview_url: string }[];
