@@ -92,6 +92,19 @@ export default defineConfig(({ command }) => ({
       filename: 'report.html',
       title: 'Soapbox Bundle',
     }),
+    {
+      name: 'mock-api',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (/^\/api\//.test(req.url!)) {
+            res.statusCode = 404;
+            res.end('Not Found');
+          } else {
+            next();
+          }
+        });
+      },
+    },
   ],
   resolve: {
     alias: [
