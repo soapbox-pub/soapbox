@@ -136,6 +136,7 @@ import {
   RegisterInvite,
   ExternalLogin,
   LandingTimeline,
+  Items,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -246,6 +247,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
+      <WrappedRoute path='/items' page={DefaultPage} component={Items} content={children} />
 
       <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} publicRoute />
       {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}

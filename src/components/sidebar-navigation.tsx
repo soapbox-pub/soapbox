@@ -138,6 +138,12 @@ const SidebarNavigation = () => {
 
             {renderMessagesLink()}
 
+            <SidebarNavigationLink
+              to='/items'
+              icon={require('@tabler/icons/moneybag.svg')}
+              text='Items'
+            />
+
             {features.groups && (
               <SidebarNavigationLink
                 to={groupsPath}
