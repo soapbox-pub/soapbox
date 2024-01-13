@@ -60,6 +60,7 @@ const Items: React.FC<IItems> = () => {
 };
 
 const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
+  const free = price === 0;
   const favicon = account?.pleroma?.favicon;
 
   return (
@@ -72,7 +73,8 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
 
       <div>
         <Text weight='bold'>{name}</Text>
-        <HStack space={2} alignItems='center'>
+
+        <HStack space={1} alignItems='center'>
           <Text size='xs' theme='muted'>@{account.acct}</Text>
           {favicon && (
             <Tooltip text={`Item issued by ${account.acct}`}>
@@ -84,9 +86,9 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
 
       <Button
         className='mt-auto'
-        icon={require('@tabler/icons/bolt.svg')}
+        icon={free ? undefined : require('@tabler/icons/bolt.svg')}
       >
-        {price === 0 ? 'Free' : <FormattedNumber value={price} />}
+        {free ? 'Free' : <FormattedNumber value={price} />}
       </Button>
     </div>
   );
