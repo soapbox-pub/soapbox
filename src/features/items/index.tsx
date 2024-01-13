@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { type Event } from 'nostr-tools';
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
@@ -63,6 +64,40 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
   const free = price === 0;
   const favicon = account?.pleroma?.favicon;
 
+  const [purchased, setPurchased] = React.useState(false);
+  const [isPurchasing, setPurchasing] = React.useState(false);
+
+  const handlePurchase = async () => {
+    setPurchasing(true);
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    setPurchasing(false);
+    setPurchased(true);
+  };
+
+  function getButtonIcon() {
+    if (free || isPurchasing) {
+      return undefined;
+    }
+    if (purchased) {
+      return require('@tabler/icons/check.svg');
+    }
+    return require('@tabler/icons/bolt.svg');
+  }
+
+  function renderButtonText() {
+    if (purchased) {
+      return <Text>Got it</Text>;
+    }
+    if (free) {
+      return <Text>Free</Text>;
+    }
+    return (
+      <span className={clsx({ 'opacity-0': isPurchasing })}>
+        <FormattedNumber value={price} />
+      </span>
+    );
+  }
+
   return (
     <div key={id} className='flex flex-col gap-3 text-center'>
       <img
@@ -84,14 +119,32 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
         </HStack>
       </div>
 
-      <Button
-        className='mt-auto'
-        icon={free ? undefined : require('@tabler/icons/bolt.svg')}
-      >
-        {free ? 'Free' : <FormattedNumber value={price} />}
-      </Button>
+      <MaybeTooltip text='You own this item' show={purchased}>
+        <Button
+          className={clsx('mt-auto', { 'animate-pulse': isPurchasing })}
+          disabled={isPurchasing || purchased}
+          theme='primary'
+          onClick={handlePurchase}
+          icon={getButtonIcon()}
+        >
+          {renderButtonText()}
+        </Button>
+      </MaybeTooltip>
     </div>
   );
 };
+
+interface IMaybeTooltip {
+  text?: string;
+  children: JSX.Element;
+  show?: boolean;
+}
+
+function MaybeTooltip({ text, children, show = true }: IMaybeTooltip) {
+  if (text && show) {
+    return <Tooltip text={text}>{children}</Tooltip>;
+  }
+  return <>{children}</>;
+}
 
 export default Items;

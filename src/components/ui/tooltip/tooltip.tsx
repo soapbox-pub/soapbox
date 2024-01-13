@@ -12,7 +12,7 @@ import React, { useRef, useState } from 'react';
 
 interface ITooltip {
   /** Element to display the tooltip around. */
-  children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
+  children: JSX.Element;
   /** Text to display in the tooltip. */
   text: string;
 }
