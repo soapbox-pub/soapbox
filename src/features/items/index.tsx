@@ -37,7 +37,7 @@ const items = [
   { id: '11', name: 'Gamething', image: 'http://localhost:8080/gamething.png', account, price: 2500 },
   { id: '12', name: 'Gold Fiddle', image: 'http://localhost:8080/gold-fiddle.png', account, price: 7000 },
   { id: '13', name: 'Holy Bible', image: 'http://localhost:8080/holy-bible.png', account, price: 0 },
-  { id: '14', name: 'Mushroom', image: 'http://localhost:8080/mushroom.png', account, price: 1000 },
+  { id: '14', name: 'Mushroom', image: 'http://localhost:8080/mushroom.png', account, description: 'A bright red mushroom', price: 1000 },
   { id: '15', name: 'Owl Clock', image: 'http://localhost:8080/owl-clock.png', account, price: 1000 },
   { id: '16', name: 'Piggy Bank', image: 'http://localhost:8080/piggy-bank.png', account, price: 500 },
   { id: '17', name: 'Royal Crown', image: 'http://localhost:8080/royal-crown.png', account, price: 1000000 },
@@ -60,7 +60,7 @@ const Items: React.FC<IItems> = () => {
   );
 };
 
-const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
+const Item: React.FC<SoapboxItem> = ({ id, name, image, description, account, price }) => {
   const free = price === 0;
   const favicon = account?.pleroma?.favicon;
 
@@ -112,7 +112,7 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
       <img
         className='aspect-1 rounded-lg object-contain'
         src={image}
-        alt={name}
+        alt={description}
       />
 
       <div>
