@@ -119,32 +119,17 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
         </HStack>
       </div>
 
-      <MaybeTooltip text='You own this item' show={purchased}>
-        <Button
-          className={clsx('mt-auto', { 'animate-pulse': isPurchasing })}
-          disabled={isPurchasing || purchased}
-          theme='primary'
-          onClick={handlePurchase}
-          icon={getButtonIcon()}
-        >
-          {renderButtonText()}
-        </Button>
-      </MaybeTooltip>
+      <Button
+        className={clsx('mt-auto', { 'animate-pulse': isPurchasing })}
+        disabled={isPurchasing || purchased}
+        theme='primary'
+        onClick={handlePurchase}
+        icon={getButtonIcon()}
+      >
+        {renderButtonText()}
+      </Button>
     </div>
   );
 };
-
-interface IMaybeTooltip {
-  text?: string;
-  children: JSX.Element;
-  show?: boolean;
-}
-
-function MaybeTooltip({ text, children, show = true }: IMaybeTooltip) {
-  if (text && show) {
-    return <Tooltip text={text}>{children}</Tooltip>;
-  }
-  return <>{children}</>;
-}
 
 export default Items;
