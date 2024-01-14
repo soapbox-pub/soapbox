@@ -3,7 +3,7 @@ import { type Event } from 'nostr-tools';
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
 
-import { Button, Column, HStack, Text, Tooltip } from 'soapbox/components/ui';
+import { Button, Column, HStack, Icon, Text, Tooltip } from 'soapbox/components/ui';
 import { type Account } from 'soapbox/schemas';
 
 interface SoapboxItem {
@@ -99,7 +99,16 @@ const Item: React.FC<SoapboxItem> = ({ id, name, image, account, price }) => {
   }
 
   return (
-    <div key={id} className='flex flex-col gap-3 text-center'>
+    <div key={id} className='relative flex flex-col gap-3 text-center'>
+      {purchased && (
+        <div className='absolute right-0 top-0'>
+          <Icon
+            className='text-green-500'
+            src={require('@tabler/icons/discount-check-filled.svg')}
+          />
+        </div>
+      )}
+
       <img
         className='aspect-1 rounded-lg object-contain'
         src={image}
