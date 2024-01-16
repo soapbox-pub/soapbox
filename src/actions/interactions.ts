@@ -768,6 +768,7 @@ export {
   FAVOURITES_EXPAND_FAIL,
   REBLOGS_EXPAND_SUCCESS,
   REBLOGS_EXPAND_FAIL,
+  ZAP_REQUEST,
   reblog,
   unreblog,
   toggleReblog,
