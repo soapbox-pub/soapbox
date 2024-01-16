@@ -78,6 +78,10 @@ const FAVOURITES_EXPAND_FAIL = 'FAVOURITES_EXPAND_FAIL';
 const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
 const REBLOGS_EXPAND_FAIL = 'REBLOGS_EXPAND_FAIL';
 
+const ZAP_REQUEST = 'ZAP_REQUEST';
+const ZAP_SUCCESS = 'ZAP_SUCCESS';
+const ZAP_FAIL    = 'ZAP_FAIL';
+
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
@@ -301,6 +305,38 @@ const undislikeSuccess = (status: StatusEntity) => ({
 
 const undislikeFail = (status: StatusEntity, error: unknown) => ({
   type: UNDISLIKE_FAIL,
+  status: status,
+  error: error,
+  skipLoading: true,
+});
+
+const zap = (status: StatusEntity, amount: number) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(zapRequest(status));
+
+    api(getState).post(`/api/v1/statuses/${status.id}/zap`, { amount }).then(function(response) {
+      dispatch(zapSuccess(status));
+    }).catch(function(error) {
+      dispatch(zapFail(status, error));
+    });
+  };
+
+const zapRequest = (status: StatusEntity) => ({
+  type: ZAP_REQUEST,
+  status: status,
+  skipLoading: true,
+});
+
+const zapSuccess = (status: StatusEntity) => ({
+  type: ZAP_SUCCESS,
+  status: status,
+  skipLoading: true,
+});
+
+const zapFail = (status: StatusEntity, error: unknown) => ({
+  type: ZAP_FAIL,
   status: status,
   error: error,
   skipLoading: true,
@@ -801,4 +837,5 @@ export {
   remoteInteractionRequest,
   remoteInteractionSuccess,
   remoteInteractionFail,
+  zap,
 };
