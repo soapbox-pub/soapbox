@@ -1,6 +1,7 @@
 /**
  * Status edit normalizer
- */
+*/
+import * as DOMPurify from 'dompurify';
 import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
@@ -60,8 +61,8 @@ const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
 
 const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
   const emojiMap   = makeEmojiMap(statusEdit.get('emojis'));
-  const contentHtml = stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap));
-  const spoilerHtml = emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap);
+  const contentHtml = DOMPurify.sanitize(stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap)), { ADD_ATTR: ['target'] });
+  const spoilerHtml = DOMPurify.sanitize(emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap), { ADD_ATTR: ['target'] });
 
   return statusEdit
     .set('contentHtml', contentHtml)

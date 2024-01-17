@@ -1,3 +1,4 @@
+import * as DOMPurify from 'dompurify';
 import escapeTextContentForBrowser from 'escape-html';
 import { z } from 'zod';
 
@@ -30,7 +31,7 @@ const pollSchema = z.object({
 
   const emojifiedOptions = poll.options.map((option) => ({
     ...option,
-    title_emojified: emojify(escapeTextContentForBrowser(option.title), emojiMap),
+    title_emojified: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(option.title), emojiMap), { ALLOWED_TAGS: [] }),
   }));
 
   // If the user has votes, they have certainly voted.
