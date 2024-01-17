@@ -36,4 +36,12 @@ const connectRequestSchema = z.object({
   params: z.tuple([eventTemplateSchema]).or(z.tuple([eventTemplateSchema, signEventOptsSchema])),
 });
 
-export { nostrIdSchema, kindSchema, eventSchema, signedEventSchema, connectRequestSchema };
+/** NIP-47 signer response. */
+const nwcRequestSchema = z.object({
+  method: z.literal('pay_invoice'),
+  params: z.object({
+    invoice: z.string(),
+  }),
+});
+
+export { nostrIdSchema, kindSchema, eventSchema, signedEventSchema, connectRequestSchema, nwcRequestSchema };
