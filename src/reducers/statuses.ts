@@ -30,6 +30,7 @@ import {
   UNDISLIKE_REQUEST,
   DISLIKE_FAIL,
   ZAP_REQUEST,
+  ZAP_FAIL,
 } from '../actions/interactions';
 import {
   STATUS_CREATE_REQUEST,
@@ -235,12 +236,12 @@ const simulateDislike = (
 };
 
 /** Simulate zap of status for optimistic interactions */
-const simulateZap = (state: State, statusId: string): State => {
+const simulateZap = (state: State, statusId: string, zapped: boolean): State => {
   const status = state.get(statusId);
   if (!status) return state;
 
   const updatedStatus = status.merge({
-    zapped: true,
+    zapped,
   });
 
   return state.set(statusId, updatedStatus);
@@ -301,7 +302,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case DISLIKE_FAIL:
       return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'disliked'], false);
     case ZAP_REQUEST:
-      return simulateZap(state, action.status.id);
+      return simulateZap(state, action.status.id, true);
+    case ZAP_FAIL:
+      return simulateZap(state, action.status.id, false);
     case REBLOG_REQUEST:
       return state.setIn([action.status.id, 'reblogged'], true);
     case REBLOG_FAIL:

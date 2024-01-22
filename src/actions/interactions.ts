@@ -769,6 +769,7 @@ export {
   REBLOGS_EXPAND_SUCCESS,
   REBLOGS_EXPAND_FAIL,
   ZAP_REQUEST,
+  ZAP_FAIL,
   reblog,
   unreblog,
   toggleReblog,
