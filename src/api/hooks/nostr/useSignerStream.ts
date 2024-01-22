@@ -57,9 +57,7 @@ function useSignerStream() {
       return;
     }
 
-    // @ts-ignore
     await window.webln?.enable();
-    // @ts-ignore
     await window.webln?.sendPayment(reqMsg.data.params.invoice);
   }
 

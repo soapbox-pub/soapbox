@@ -791,7 +791,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        {acceptsZaps && (
+        {(acceptsZaps && window.webln) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
             icon={require('@tabler/icons/bolt.svg')}

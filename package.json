@@ -91,6 +91,7 @@
     "@types/semver": "^7.3.9",
     "@types/uuid": "^9.0.0",
     "@vitejs/plugin-react": "^4.0.4",
+    "@webbtc/webln-types": "^3.0.0",
     "autoprefixer": "^10.4.15",
     "axios": "^1.2.2",
     "axios-mock-adapter": "^1.22.0",
