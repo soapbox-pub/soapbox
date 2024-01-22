@@ -1453,6 +1453,7 @@
   "status.unmute_conversation": "Unmute Conversation",
   "status.unpin": "Unpin from profile",
   "status.unpin_to_group": "Unpin from Group",
+  "status.zap": "Zap",
   "status_list.queue_label": "Click to see {count} new {count, plural, one {post} other {posts}}",
   "statuses.quote_tombstone": "Post is unavailable.",
   "statuses.tombstone": "One or more posts are unavailable.",
