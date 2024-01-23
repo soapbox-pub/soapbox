@@ -6,7 +6,7 @@ import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
 import { relationshipSchema } from './relationship';
-import { contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
+import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
 
@@ -29,6 +29,9 @@ const baseAccountSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
+  ditto: coerceObject({
+    accepts_zaps: z.boolean().catch(false),
+  }),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),
   followers_count: z.number().catch(0),
