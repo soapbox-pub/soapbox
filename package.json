@@ -122,7 +122,7 @@
     "immer": "^10.0.0",
     "immutable": "^4.2.1",
     "intersection-observer": "^0.12.2",
-    "intl-messageformat": "10.5.8",
+    "intl-messageformat": "10.5.11",
     "intl-pluralrules": "^2.0.0",
     "leaflet": "^1.8.0",
     "lexical": "^0.12.4",
