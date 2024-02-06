@@ -4,12 +4,13 @@ import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
 import Markup from 'soapbox/components/markup';
 import { HStack, Icon } from 'soapbox/components/ui';
-import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components';
 
 import type { Account } from 'soapbox/schemas';
 
 const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
 const isTicker = (value: string): boolean => Boolean(getTicker(value));
+const isZapEmoji = (value: string) => /^\u26A1[\uFE00-\uFE0F]?$/.test(value);
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
@@ -39,6 +40,8 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
         address={field.value_plain}
       />
     );
+  } else if (isZapEmoji(field.name)) {
+    return <LightningAddress address={field.value_plain} />;
   }
 
   return (
