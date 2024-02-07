@@ -528,6 +528,7 @@
   "confirmations.scheduled_status_delete.message": "Are you sure you want to cancel this scheduled post?",
   "confirmations.unfollow.confirm": "Dejar de seguir",
   "copy.success": "¡Copiado al portapapeles!",
+  "crypto.lightning": "Lightning",
   "crypto_donate.explanation_box.message": "{siteTitle} accepts cryptocurrency donations. You may send a donation to any of the addresses below. Thank you for your support!",
   "crypto_donate.explanation_box.title": "Sending cryptocurrency donations",
   "crypto_donate_panel.actions.view": "Haga clic para ver {contar, plural, una {# cartera} other {# carteras}}",
