@@ -15,7 +15,7 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import Thread from 'soapbox/features/status/components/thread';
 import Video from 'soapbox/features/video';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { isUserTouching } from 'soapbox/is-mobile';
+import { userTouching } from 'soapbox/is-mobile';
 import { makeGetStatus } from 'soapbox/selectors';
 
 import ImageLoader from '../image-loader';
@@ -104,7 +104,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const getIndex = () => index !== null ? index : props.index;
 
   const toggleNavigation = () => {
-    setNavigationHidden(value => !value && isUserTouching());
+    setNavigationHidden(value => !value && userTouching.matches);
   };
 
   const handleStatusClick: React.MouseEventHandler = e => {
