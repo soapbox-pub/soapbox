@@ -163,7 +163,7 @@ const buildMessage = (
 
 const avatarSize = 48;
 
-interface INotificaton {
+interface INotification {
   hidden?: boolean;
   notification: NotificationEntity;
   onMoveUp?: (notificationId: string) => void;
@@ -173,7 +173,7 @@ interface INotificaton {
   updateScrollBottom?: (bottom: number) => void;
 }
 
-const Notification: React.FC<INotificaton> = (props) => {
+const Notification: React.FC<INotification> = (props) => {
   const { hidden = false, onMoveUp, onMoveDown } = props;
 
   const dispatch = useAppDispatch();

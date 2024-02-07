@@ -12,7 +12,7 @@ const BigCard: React.FC<IBigCard> = ({ title, subtitle, children }) => {
   return (
     <Card variant='rounded' size='xl'>
       <CardBody>
-        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
           <Stack space={2}>
             <Text size='2xl' align='center' weight='bold'>{title}</Text>
             {subtitle && <Text theme='muted' align='center'>{subtitle}</Text>}

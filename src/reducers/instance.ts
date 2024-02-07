@@ -8,19 +8,25 @@ import KVStore from 'soapbox/storage/kv-store';
 import { ConfigDB } from 'soapbox/utils/config-db';
 
 import {
-  rememberInstance,
   fetchInstance,
+  fetchInstanceV2,
 } from '../actions/instance';
 
 import type { AnyAction } from 'redux';
+import type { APIEntity } from 'soapbox/types/entities';
 
 const initialState: Instance = instanceSchema.parse({});
 
-const importInstance = (_state: typeof initialState, instance: unknown) => {
+const importInstance = (_state: Instance, instance: APIEntity): Instance => {
   return instanceSchema.parse(instance);
 };
 
-const preloadImport = (state: typeof initialState, action: Record<string, any>, path: string) => {
+const importInstanceV2 = (state: Instance, data: APIEntity): Instance => {
+  const instance = instanceSchema.parse(data);
+  return { ...instance, stats: state.stats };
+};
+
+const preloadImport = (state: Instance, action: Record<string, any>, path: string) => {
   const instance = action.data[path];
   return instance ? importInstance(state, instance) : state;
 };
@@ -32,7 +38,7 @@ const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) 
   return v ? v.getIn(['tuple', 1]) : undefined;
 };
 
-const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) => {
+const importConfigs = (state: Instance, configs: ImmutableList<any>) => {
   // FIXME: This is pretty hacked together. Need to make a cleaner map.
   const config = ConfigDB.find(configs, ':pleroma', ':instance');
   const simplePolicy = ConfigDB.toSimplePolicy(configs);
@@ -45,8 +51,10 @@ const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) 
       const registrationsOpen = getConfigValue(value, ':registrations_open') as boolean | undefined;
       const approvalRequired = getConfigValue(value, ':account_approval_required') as boolean | undefined;
 
-      draft.registrations = registrationsOpen ?? draft.registrations;
-      draft.approval_required = approvalRequired ?? draft.approval_required;
+      draft.registrations = {
+        enabled: registrationsOpen ?? draft.registrations.enabled,
+        approval_required: approvalRequired ?? draft.registrations.approval_required,
+      };
     }
 
     if (simplePolicy) {
@@ -55,7 +63,7 @@ const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) 
   });
 };
 
-const handleAuthFetch = (state: typeof initialState) => {
+const handleAuthFetch = (state: Instance) => {
   // Authenticated fetch is enabled, so make the instance appear censored
   return {
     ...state,
@@ -76,15 +84,19 @@ const getHost = (instance: { uri: string }) => {
   }
 };
 
-const persistInstance = (instance: { uri: string }) => {
-  const host = getHost(instance);
-
+const persistInstance = (instance: { uri: string }, host: string | null = getHost(instance)) => {
   if (host) {
     KVStore.setItem(`instance:${host}`, instance).catch(console.error);
   }
 };
 
-const handleInstanceFetchFail = (state: typeof initialState, error: Record<string, any>) => {
+const persistInstanceV2 = (instance: { uri: string }, host: string | null = getHost(instance)) => {
+  if (host) {
+    KVStore.setItem(`instanceV2:${host}`, instance).catch(console.error);
+  }
+};
+
+const handleInstanceFetchFail = (state: Instance, error: Record<string, any>) => {
   if (error.response?.status === 401) {
     return handleAuthFetch(state);
   } else {
@@ -96,11 +108,12 @@ export default function instance(state = initialState, action: AnyAction) {
   switch (action.type) {
     case PLEROMA_PRELOAD_IMPORT:
       return preloadImport(state, action, '/api/v1/instance');
-    case rememberInstance.fulfilled.type:
-      return importInstance(state, action.payload);
     case fetchInstance.fulfilled.type:
       persistInstance(action.payload);
-      return importInstance(state, action.payload);
+      return importInstance(state, action.payload.instance);
+    case fetchInstanceV2.fulfilled.type:
+      persistInstanceV2(action.payload);
+      return importInstanceV2(state, action.payload.instance);
     case fetchInstance.rejected.type:
       return handleInstanceFetchFail(state, action.error);
     case ADMIN_CONFIG_UPDATE_REQUEST:

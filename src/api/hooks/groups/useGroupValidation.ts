@@ -41,7 +41,7 @@ function useGroupValidation(name: string = '') {
     ...queryInfo,
     data: {
       ...queryInfo.data,
-      isValid: !queryInfo.data?.error ?? true,
+      isValid: !queryInfo.data?.error,
     },
   };
 }

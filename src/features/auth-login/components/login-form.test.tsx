@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
-import { normalizeInstance } from 'soapbox/normalizers';
+import { instanceSchema } from 'soapbox/schemas';
 
 import LoginForm from './login-form';
 
@@ -9,7 +9,7 @@ describe('<LoginForm />', () => {
   it('renders for Pleroma', () => {
     const mockFn = vi.fn();
     const store = {
-      instance: normalizeInstance({
+      instance: instanceSchema.parse({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
       }),
     };
@@ -22,7 +22,7 @@ describe('<LoginForm />', () => {
   it('renders for Mastodon', () => {
     const mockFn = vi.fn();
     const store = {
-      instance: normalizeInstance({
+      instance: instanceSchema.parse({
         version: '3.0.0',
       }),
     };

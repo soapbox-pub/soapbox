@@ -1,4 +1,4 @@
-image: node:20
+image: node:21
 
 variables:
   NODE_ENV: test
@@ -45,7 +45,7 @@ lint:
       - "**/*.scss"
       - "**/*.css"
       - ".eslintignore"
-      - ".eslintrc.cjs"
+      - ".eslintrc.json"
       - ".stylelintrc.json"
 
 build:
@@ -111,9 +111,9 @@ pages:
 
 docker:
   stage: deploy
-  image: docker:24.0.6
+  image: docker:24.0.7
   services:
-    - docker:24.0.6-dind
+    - docker:24.0.7-dind
   tags:
     - dind
   # https://medium.com/devops-with-valentine/how-to-build-a-docker-image-and-push-it-to-the-gitlab-container-registry-from-a-gitlab-ci-pipeline-acac0d1f26df

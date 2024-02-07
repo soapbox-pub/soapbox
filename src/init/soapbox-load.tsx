@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 
-import { loadInstance } from 'soapbox/actions/instance';
+import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import LoadingScreen from 'soapbox/components/loading-screen';
@@ -20,7 +20,7 @@ const loadInitial = () => {
     // Await for authenticated fetch
     await dispatch(fetchMe());
     // Await for feature detection
-    await dispatch(loadInstance());
+    await dispatch(fetchInstance());
     // Await for configuration
     await dispatch(loadSoapboxConfig());
   };

@@ -7,6 +7,6 @@ export const useRegistrationStatus = () => {
 
   return {
     /** Registrations are open. */
-    isOpen: features.accountCreation && instance.registrations,
+    isOpen: features.accountCreation && instance.registrations.enabled,
   };
 };

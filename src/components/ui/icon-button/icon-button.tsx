@@ -9,7 +9,7 @@ interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconClassName?: string;
   /** URL to the svg icon. */
   src: string;
-  /** Text to display next ot the button. */
+  /** Text to display next to the button. */
   text?: string;
   /** Predefined styles to display for the button. */
   theme?: 'seamless' | 'outlined' | 'secondary' | 'transparent' | 'dark';

@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Hashtags: let users follow hashtags (Mastodon, Akkoma).
 - Posts: Support posts filtering on recent Mastodon versions
 - Reactions: Support custom emoji reactions
-- Compatbility: Support Mastodon v2 timeline filters.
-- Compatbility: Preliminary support for Ditto backend.
+- Compatibility: Support Mastodon v2 timeline filters.
+- Compatibility: Preliminary support for Ditto backend.
 - Compatibility: Support Firefish.
 - Posts: Support dislikes on Friendica.
 - UI: added a character counter to some textareas.

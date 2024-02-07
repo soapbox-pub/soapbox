@@ -67,6 +67,7 @@ const baseStatusSchema = z.object({
   uri: z.string().url().catch(''),
   url: z.string().url().catch(''),
   visibility: z.string().catch('public'),
+  zapped: z.coerce.boolean(),
 });
 
 type BaseStatus = z.infer<typeof baseStatusSchema>;

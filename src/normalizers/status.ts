@@ -82,6 +82,7 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
+  zapped: false,
   event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields

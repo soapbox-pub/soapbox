@@ -1,5 +1,5 @@
 /**
- * Icon: abstact component to render SVG icons.
+ * Icon: abstract component to render SVG icons.
  * @module soapbox/components/icon
  */
 

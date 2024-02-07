@@ -102,6 +102,7 @@ export const CryptoDonate = lazy(() => import('soapbox/features/crypto-donate'))
 export const CryptoDonatePanel = lazy(() => import('soapbox/features/crypto-donate/components/crypto-donate-panel'));
 export const CryptoAddress = lazy(() => import('soapbox/features/crypto-donate/components/crypto-address'));
 export const CryptoDonateModal = lazy(() => import('soapbox/features/ui/components/modals/crypto-donate-modal'));
+export const LightningAddress = lazy(() => import('soapbox/features/crypto-donate/components/lightning-address'));
 export const ScheduledStatuses = lazy(() => import('soapbox/features/scheduled-statuses'));
 export const UserIndex = lazy(() => import('soapbox/features/admin/user-index'));
 export const FederationRestrictions = lazy(() => import('soapbox/features/federation-restrictions'));

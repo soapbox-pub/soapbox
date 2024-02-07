@@ -43,13 +43,13 @@ const messages = defineMessages({
   add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Filter' },
   edit: { id: 'column.filters.edit', defaultMessage: 'Edit Filter' },
   create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
-  expiration_never: { id: 'colum.filters.expiration.never', defaultMessage: 'Never' },
-  expiration_1800: { id: 'colum.filters.expiration.1800', defaultMessage: '30 minutes' },
-  expiration_3600: { id: 'colum.filters.expiration.3600', defaultMessage: '1 hour' },
-  expiration_21600: { id: 'colum.filters.expiration.21600', defaultMessage: '6 hours' },
-  expiration_43200: { id: 'colum.filters.expiration.43200', defaultMessage: '12 hours' },
-  expiration_86400: { id: 'colum.filters.expiration.86400', defaultMessage: '1 day' },
-  expiration_604800: { id: 'colum.filters.expiration.604800', defaultMessage: '1 week' },
+  expiration_never: { id: 'column.filters.expiration.never', defaultMessage: 'Never' },
+  expiration_1800: { id: 'column.filters.expiration.1800', defaultMessage: '30 minutes' },
+  expiration_3600: { id: 'column.filters.expiration.3600', defaultMessage: '1 hour' },
+  expiration_21600: { id: 'column.filters.expiration.21600', defaultMessage: '6 hours' },
+  expiration_43200: { id: 'column.filters.expiration.43200', defaultMessage: '12 hours' },
+  expiration_86400: { id: 'column.filters.expiration.86400', defaultMessage: '1 day' },
+  expiration_604800: { id: 'column.filters.expiration.604800', defaultMessage: '1 week' },
 });
 
 const FilterField: StreamfieldComponent<IFilterField> = ({ value, onChange }) => {

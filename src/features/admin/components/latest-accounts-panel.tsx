@@ -1,4 +1,4 @@
-import { OrderedSet as ImmutableOrderedSet, is } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -7,8 +7,6 @@ import { fetchUsers } from 'soapbox/actions/admin';
 import { Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { selectAccount } from 'soapbox/selectors';
-import { compareId } from 'soapbox/utils/comparators';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },
@@ -23,9 +21,7 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
-
   const accountIds = useAppSelector<ImmutableOrderedSet<string>>((state) => state.admin.get('latestUsers').take(limit));
-  const hasDates = useAppSelector((state) => accountIds.every(id => !!selectAccount(state, id)?.created_at));
 
   const [total, setTotal] = useState(accountIds.size);
 
@@ -36,13 +32,6 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
       })
       .catch(() => {});
   }, []);
-
-  const sortedIds = accountIds.sort(compareId).reverse();
-  const isSorted  = hasDates && is(accountIds, sortedIds);
-
-  if (!isSorted || !accountIds || accountIds.isEmpty()) {
-    return null;
-  }
 
   const handleAction = () => {
     history.push('/soapbox/admin/users');

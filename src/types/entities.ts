@@ -12,7 +12,6 @@ import {
   FilterKeywordRecord,
   FilterStatusRecord,
   HistoryRecord,
-  InstanceRecord,
   ListRecord,
   LocationRecord,
   MentionRecord,
@@ -41,7 +40,6 @@ type Filter = ReturnType<typeof FilterRecord>;
 type FilterKeyword = ReturnType<typeof FilterKeywordRecord>;
 type FilterStatus = ReturnType<typeof FilterStatusRecord>;
 type History = ReturnType<typeof HistoryRecord>;
-type Instance = ReturnType<typeof InstanceRecord>;
 type List = ReturnType<typeof ListRecord>;
 type Location = ReturnType<typeof LocationRecord>;
 type Mention = ReturnType<typeof MentionRecord>;
@@ -77,7 +75,6 @@ export {
   FilterKeyword,
   FilterStatus,
   History,
-  Instance,
   List,
   Location,
   Mention,

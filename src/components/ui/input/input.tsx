@@ -93,7 +93,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
             'text-gray-900 dark:text-gray-100': !props.disabled,
             'text-gray-600': props.disabled,
             'rounded-md bg-white dark:bg-gray-900 border-gray-400 dark:border-gray-800': theme === 'normal',
-            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white': theme === 'search',
+            'rounded-full bg-gray-200 border-gray-200 dark:bg-gray-800 dark:border-gray-800 focus:bg-white dark:focus:bg-gray-900': theme === 'search',
             'pr-10 rtl:pl-10 rtl:pr-3': isPassword || append,
             'pl-8': typeof icon !== 'undefined',
             'pl-16': typeof prepend !== 'undefined',

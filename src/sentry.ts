@@ -39,7 +39,7 @@ async function startSentry(dsn: string): Promise<void> {
       /^moz-extension:\/\//i,
     ],
 
-    tracesSampleRate: 1.0,
+    tracesSampleRate: .1,
   });
 
   Sentry.setContext('soapbox', sourceCode);
