@@ -528,6 +528,7 @@
   "confirmations.scheduled_status_delete.message": "هل تود حقا حذف هذا المنشور المجدول؟",
   "confirmations.unfollow.confirm": "إلغاء المتابعة",
   "copy.success": "نسخ إلى الحافظة!",
+  "crypto.lightning": "البرق",
   "crypto_donate.explanation_box.message": "يمكنك أن تدعم منصة {siteTitle} من خلال التبرع بالعملات الرقمية على العناوين الظاهرة في الأسفل. شكراً جزيلاً لك على الدعم!",
   "crypto_donate.explanation_box.title": "التبرع بالعملات الرقمية",
   "crypto_donate_panel.actions.view": "اضغط لعرض {count, plural, one {# محفظة} other {# محفظة}}",
