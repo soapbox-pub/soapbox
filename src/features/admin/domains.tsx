@@ -72,15 +72,6 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
             {' '}
             {domain.domain}
           </Text>
-          {domain.domain !== domain.service_domain && (
-            <Text size='sm'>
-              <Text tag='span' size='sm' weight='medium'>
-                <FormattedMessage id='admin.domains.service_domain_name' defaultMessage='Service domain:' />
-              </Text>
-              {' '}
-              {domain.service_domain}
-            </Text>
-          )}
           <Text tag='span' size='sm' weight='medium'>
             {domain.public ? (
               <FormattedMessage id='admin.domains.public' defaultMessage='Public' />

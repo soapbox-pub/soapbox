@@ -5,7 +5,6 @@ import { domainSchema } from 'soapbox/schemas';
 
 interface CreateDomainParams {
   domain: string;
-  service_domain?: string;
   public: boolean;
 }
 
