@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
 import { closeModal, openModal } from 'soapbox/actions/modals';
 import { useAppDispatch } from 'soapbox/hooks';
-import { isUserTouching } from 'soapbox/is-mobile';
+import { userTouching } from 'soapbox/is-mobile';
 
 import { IconButton, Portal } from '../ui';
 
@@ -53,8 +53,6 @@ const DropdownMenu = (props: IDropdownMenu) => {
 
   const arrowRef = useRef<HTMLDivElement>(null);
 
-  const isOnMobile = isUserTouching();
-
   const { x, y, strategy, refs, middlewareData, placement } = useFloating<HTMLButtonElement>({
     placement: initialPlacement,
     middleware: [
@@ -92,7 +90,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
    * On mobile screens, let's replace the Popper dropdown with a Modal.
    */
   const handleOpen = () => {
-    if (isOnMobile) {
+    if (userTouching.matches) {
       dispatch(
         openModal('ACTIONS', {
           status: filteredProps.status,
@@ -113,7 +111,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   const handleClose = () => {
     (refs.reference.current as HTMLButtonElement)?.focus();
 
-    if (isOnMobile) {
+    if (userTouching.matches) {
       dispatch(closeModal('ACTIONS'));
     } else {
       closeDropdownMenu();
