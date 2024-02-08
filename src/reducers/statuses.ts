@@ -1,6 +1,6 @@
-import * as DOMPurify from 'dompurify';
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import DOMPurify from 'isomorphic-dompurify';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';

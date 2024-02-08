@@ -1,5 +1,5 @@
-import * as DOMPurify from 'dompurify';
 import escapeTextContentForBrowser from 'escape-html';
+import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import emojify from 'soapbox/features/emoji';

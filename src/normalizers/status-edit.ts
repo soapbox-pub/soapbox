@@ -1,7 +1,6 @@
 /**
  * Status edit normalizer
 */
-import * as DOMPurify from 'dompurify';
 import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
@@ -9,6 +8,7 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+import DOMPurify from 'isomorphic-dompurify';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';

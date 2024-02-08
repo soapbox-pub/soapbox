@@ -1,4 +1,4 @@
-import * as DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import React from 'react';
 
 import Markup from 'soapbox/components/markup';
