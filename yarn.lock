@@ -2914,6 +2914,11 @@
     "@webassemblyjs/ast" "1.11.6"
     "@xtuc/long" "4.2.2"
 
+"@webbtc/webln-types@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@webbtc/webln-types/-/webln-types-3.0.0.tgz#448b2138423865087ba8859e9e6430fc2463b864"
+  integrity sha512-aXfTHLKz5lysd+6xTeWl+qHNh/p3qVYbeLo+yDN5cUDmhie2ZoGvkppfWxzbGkcFBzb6dJyQ2/i2cbmDHas+zQ==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"
