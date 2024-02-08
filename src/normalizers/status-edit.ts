@@ -8,6 +8,7 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+import DOMPurify from 'isomorphic-dompurify';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
@@ -60,8 +61,8 @@ const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
 
 const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
   const emojiMap   = makeEmojiMap(statusEdit.get('emojis'));
-  const contentHtml = stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap));
-  const spoilerHtml = emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap);
+  const contentHtml = DOMPurify.sanitize(stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap)), { ADD_ATTR: ['target'] });
+  const spoilerHtml = DOMPurify.sanitize(emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap), { ADD_ATTR: ['target'] });
 
   return statusEdit
     .set('contentHtml', contentHtml)

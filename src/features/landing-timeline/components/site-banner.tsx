@@ -1,3 +1,4 @@
+import DOMPurify from 'isomorphic-dompurify';
 import React from 'react';
 
 import Markup from 'soapbox/components/markup';
@@ -9,7 +10,7 @@ import { LogoText } from './logo-text';
 
 const SiteBanner: React.FC = () => {
   const instance = useInstance();
-  const description = instance.description;
+  const description = DOMPurify.sanitize(instance.description);
 
   return (
     <Stack space={3}>
