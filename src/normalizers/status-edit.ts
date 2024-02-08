@@ -1,6 +1,6 @@
 /**
  * Status edit normalizer
-*/
+ */
 import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
