@@ -2,7 +2,7 @@ import { NiceRelay } from 'nostr-machina';
 import { type Event } from 'nostr-tools';
 import { useEffect, useMemo } from 'react';
 
-import { nip04, signEvent } from 'soapbox/features/nostr/sign';
+import { signer } from 'soapbox/features/nostr/sign';
 import { useInstance } from 'soapbox/hooks';
 import { connectRequestSchema, nwcRequestSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
@@ -21,7 +21,7 @@ function useSignerStream() {
 
   async function handleConnectEvent(event: Event) {
     if (!relay || !pubkey) return;
-    const decrypted = await nip04.decrypt(pubkey, event.content);
+    const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
     const reqMsg = jsonSchema.pipe(connectRequestSchema).safeParse(decrypted);
     if (!reqMsg.success) {
@@ -32,12 +32,12 @@ function useSignerStream() {
 
     const respMsg = {
       id: reqMsg.data.id,
-      result: await signEvent(reqMsg.data.params[0], reqMsg.data.params[1]),
+      result: await signer.signEvent(reqMsg.data.params[0]),
     };
 
-    const respEvent = await signEvent({
+    const respEvent = await signer.signEvent({
       kind: 24133,
-      content: await nip04.encrypt(pubkey, JSON.stringify(respMsg)),
+      content: await signer.nip04!.encrypt(pubkey, JSON.stringify(respMsg)),
       tags: [['p', pubkey]],
       created_at: Math.floor(Date.now() / 1000),
     });
@@ -48,7 +48,7 @@ function useSignerStream() {
   async function handleWalletEvent(event: Event) {
     if (!relay || !pubkey) return;
 
-    const decrypted = await nip04.decrypt(pubkey, event.content);
+    const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
     const reqMsg = jsonSchema.pipe(nwcRequestSchema).safeParse(decrypted);
     if (!reqMsg.success) {

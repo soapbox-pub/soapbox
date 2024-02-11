@@ -6,6 +6,7 @@ import {
   finishEvent,
   nip04 as _nip04,
 } from 'nostr-tools';
+import { type  NostrSigner } from 'nspec';
 
 import { powWorker } from 'soapbox/workers';
 
@@ -60,4 +61,10 @@ const nip04 = {
   },
 };
 
-export { getPublicKey, signEvent, nip04 };
+const signer: NostrSigner = {
+  getPublicKey,
+  signEvent,
+  nip04,
+};
+
+export { signer };
