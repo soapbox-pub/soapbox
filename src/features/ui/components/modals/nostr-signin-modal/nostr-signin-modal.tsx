@@ -29,7 +29,7 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
   const renderModalTitle = () => {
     switch (step) {
       case 0:
-        return <FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in with extension' />;
+        return <FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />;
       case 1:
         return <FormattedMessage id='nostr_signin.identity.title' defaultMessage='Who are you?' />;
       default:
