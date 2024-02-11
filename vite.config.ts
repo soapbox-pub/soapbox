@@ -27,7 +27,7 @@ export default defineConfig(({ command }) => ({
   },
   assetsInclude: ['**/*.oga'],
   server: {
-    port: 3036,
+    port: Number(process.env.PORT ?? 3036),
   },
   optimizeDeps: {
     exclude: command === 'serve' ? ['@soapbox.pub/wasmboy'] : [],
