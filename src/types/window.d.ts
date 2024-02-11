@@ -1,7 +1,7 @@
-import type Nostr from './nostr';
+import type { NostrSigner } from 'nspec';
 
 declare global {
   interface Window {
-    nostr?: Nostr;
+    nostr?: NostrSigner;
   }
 }

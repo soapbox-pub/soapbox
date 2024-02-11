@@ -2,7 +2,7 @@ import { nip19 } from 'nostr-tools';
 
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { getPublicKey } from 'soapbox/features/nostr/sign';
+import { signer } from 'soapbox/features/nostr/sign';
 import { selectAccount } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
@@ -134,7 +134,7 @@ const createAccount = (params: Record<string, any>) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
     const { nostrSignup } = getFeatures(instance);
-    const pubkey = nostrSignup ? await getPublicKey() : undefined;
+    const pubkey = (signer && nostrSignup) ? await signer.getPublicKey() : undefined;
 
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
     return api(getState, 'app').post('/api/v1/accounts', params, {
