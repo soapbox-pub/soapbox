@@ -2,7 +2,9 @@ import { shift, useFloating, Placement, offset, OffsetOptions } from '@floating-
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
-import { Emoji as EmojiComponent, HStack, IconButton } from 'soapbox/components/ui';
+import EmojiComponent from 'soapbox/components/ui/emoji/emoji';
+import HStack from 'soapbox/components/ui/hstack/hstack';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
 import { useClickOutside, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
