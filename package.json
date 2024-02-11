@@ -208,7 +208,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-tailwindcss": "^3.13.0",
     "fake-indexeddb": "^5.0.0",
-    "husky": "^8.0.0",
+    "husky": "^9.0.0",
     "jsdom": "^23.0.0",
     "lint-staged": ">=10",
     "react-intl-translations-manager": "^5.0.3",
