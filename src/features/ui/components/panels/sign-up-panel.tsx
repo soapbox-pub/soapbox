@@ -1,13 +1,15 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useInstance, useRegistrationStatus } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 
 const SignUpPanel = () => {
   const instance = useInstance();
   const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);
+  const dispatch = useAppDispatch();
 
   if (me || !isOpen) return null;
 
@@ -23,7 +25,7 @@ const SignUpPanel = () => {
         </Text>
       </Stack>
 
-      <Button theme='primary' block to='/signup'>
+      <Button theme='primary' block onClick={() => dispatch(openModal('NOSTR_SIGNIN'))}>
         <FormattedMessage id='account.register' defaultMessage='Sign up' />
       </Button>
     </Stack>
