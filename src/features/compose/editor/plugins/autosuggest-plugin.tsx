@@ -324,7 +324,7 @@ const AutosuggestPlugin = ({
           dispatch(chooseEmoji(suggestion));
           replaceMatch($createEmojiNode(suggestion));
         } else if (suggestion[0] === '#') {
-          node.setTextContent(`${suggestion} `);
+          (node as TextNode).setTextContent(`${suggestion} `);
           node.select();
         } else {
           const account = selectAccount(getState(), suggestion)!;
