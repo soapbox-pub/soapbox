@@ -1,5 +1,5 @@
 import { NiceRelay } from 'nostr-machina';
-import { type Event } from 'nostr-tools';
+import { type NostrEvent } from 'nspec';
 import { useEffect, useMemo } from 'react';
 
 import { signer } from 'soapbox/features/nostr/sign';
@@ -14,13 +14,13 @@ function useSignerStream() {
   const pubkey = instance.nostr?.pubkey;
 
   const relay = useMemo(() => {
-    if (relayUrl) {
+    if (relayUrl && signer) {
       return new NiceRelay(relayUrl);
     }
-  }, [relayUrl]);
+  }, [relayUrl, !!signer]);
 
-  async function handleConnectEvent(event: Event) {
-    if (!relay || !pubkey) return;
+  async function handleConnectEvent(event: NostrEvent) {
+    if (!relay || !pubkey || !signer) return;
     const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
     const reqMsg = jsonSchema.pipe(connectRequestSchema).safeParse(decrypted);
@@ -45,8 +45,8 @@ function useSignerStream() {
     relay.send(['EVENT', respEvent]);
   }
 
-  async function handleWalletEvent(event: Event) {
-    if (!relay || !pubkey) return;
+  async function handleWalletEvent(event: NostrEvent) {
+    if (!relay || !pubkey || !signer) return;
 
     const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 

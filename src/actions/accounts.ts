@@ -134,7 +134,7 @@ const createAccount = (params: Record<string, any>) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
     const { nostrSignup } = getFeatures(instance);
-    const pubkey = nostrSignup ? await signer.getPublicKey() : undefined;
+    const pubkey = (signer && nostrSignup) ? await signer.getPublicKey() : undefined;
 
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
     return api(getState, 'app').post('/api/v1/accounts', params, {

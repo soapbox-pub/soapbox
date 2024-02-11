@@ -8,6 +8,10 @@ import { verifyCredentials } from './auth';
 /** Log in with a Nostr pubkey. */
 function nostrLogIn() {
   return async (dispatch: AppDispatch) => {
+    if (!signer) {
+      throw new Error('No Nostr signer available');
+    }
+
     const pubkey = await signer.getPublicKey();
     const npub = nip19.npubEncode(pubkey);
 
