@@ -4,7 +4,7 @@ import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts';
 import { openModal } from 'soapbox/actions/modals';
 import { EmojiSelector, Portal } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
-import { isUserTouching } from 'soapbox/is-mobile';
+import { userTouching } from 'soapbox/is-mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji-reacts';
 
 interface IStatusReactionWrapper {
@@ -39,7 +39,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
       clearTimeout(timeout.current);
     }
 
-    if (!isUserTouching()) {
+    if (!userTouching.matches) {
       setVisible(true);
     }
   };
@@ -51,7 +51,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
 
     // Unless the user is touching, delay closing the emoji selector briefly
     // so the user can move the mouse diagonally to make a selection.
-    if (isUserTouching()) {
+    if (userTouching.matches) {
       setVisible(false);
     } else {
       timeout.current = setTimeout(() => {
@@ -73,7 +73,7 @@ const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, chi
   const handleClick: React.EventHandler<React.MouseEvent> = e => {
     const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji)?.name || '👍';
 
-    if (isUserTouching()) {
+    if (userTouching.matches) {
       if (ownAccount) {
         if (visible) {
           handleReact(meEmojiReact);

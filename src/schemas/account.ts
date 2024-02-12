@@ -1,4 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
+import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import emojify from 'soapbox/features/emoji';
@@ -115,7 +116,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
 
   const newFields = fields.map((field) => ({
     ...field,
-    name_emojified: emojify(escapeTextContentForBrowser(field.name), customEmojiMap),
+    name_emojified: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(field.name), customEmojiMap), { USE_PROFILES: { html: true } }),
     value_emojified: emojify(field.value, customEmojiMap),
     value_plain: unescapeHTML(field.value),
   }));
@@ -133,7 +134,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     avatar_static: account.avatar_static || account.avatar,
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
     display_name: displayName,
-    display_name_html: emojify(escapeTextContentForBrowser(displayName), customEmojiMap),
+    display_name_html: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(displayName), customEmojiMap), { USE_PROFILES: { html: true } }),
     domain,
     fields: newFields,
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
@@ -141,7 +142,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
-    note_emojified: emojify(account.note, customEmojiMap),
+    note_emojified: DOMPurify.sanitize(emojify(account.note, customEmojiMap), { USE_PROFILES: { html: true } }),
     pleroma: (() => {
       if (!pleroma) return undefined;
       const { relationship, ...rest } = pleroma;

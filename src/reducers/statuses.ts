@@ -1,5 +1,6 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import DOMPurify from 'isomorphic-dompurify';
 
 import emojify from 'soapbox/features/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
@@ -119,8 +120,8 @@ export const calculateStatus = (
 
     return status.merge({
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
-      contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
-      spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
+      contentHtml: DOMPurify.sanitize(stripCompatibilityFeatures(emojify(status.content, emojiMap)), { USE_PROFILES: { html: true } }),
+      spoilerHtml: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), { USE_PROFILES: { html: true } }),
       hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
     });
   }

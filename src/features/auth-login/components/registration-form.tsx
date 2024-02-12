@@ -258,8 +258,8 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
             />
           </FormGroup>
 
-          <FormGroup>
-            {domains && (
+          {domains && (
+            <FormGroup>
               <Select
                 onChange={onDomainChange}
                 value={params.get('domain')}
@@ -268,8 +268,8 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
                   <option key={id} value={id}>{domain}</option>
                 ))}
               </Select>
-            )}
-          </FormGroup>
+            </FormGroup>
+          )}
 
 
           {!features.nostrSignup && (
