@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { nostrLogIn } from 'soapbox/actions/nostr';
+import { openModal } from 'soapbox/actions/modals';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
@@ -40,9 +40,7 @@ const Navbar = () => {
   const onOpenSidebar = () => dispatch(openSidebar());
 
   const handleNostrLogin = async () => {
-    setLoading(true);
-    await dispatch(nostrLogIn()).catch(console.error);
-    setLoading(false);
+    dispatch(openModal('NOSTR_SIGNIN'));
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {

@@ -1,22 +1,20 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
 import Button from 'soapbox/components/ui/button/button';
 import Stack from 'soapbox/components/ui/stack/stack';
-import { signer } from 'soapbox/features/nostr/sign';
+import { useAppDispatch } from 'soapbox/hooks';
 
 interface IExtensionStep {
   setStep: (step: number) => void;
 }
 
 const ExtensionStep: React.FC<IExtensionStep> = ({ setStep }) => {
-  const onClick = () => {
-    signer!.getPublicKey();
-  };
+  const dispatch = useAppDispatch();
 
-  const onClickAlt = () => {
-    setStep(1);
-  };
+  const onClick = () => dispatch(nostrExtensionLogIn());
+  const onClickAlt = () => setStep(1);
 
   return (
     <Stack className='my-6' space={3}>

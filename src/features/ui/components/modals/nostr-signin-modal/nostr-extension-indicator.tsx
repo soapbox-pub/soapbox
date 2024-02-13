@@ -1,14 +1,16 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Text from 'soapbox/components/ui/text/text';
+import { useAppDispatch } from 'soapbox/hooks';
 
-interface INostrExtensionIndicator {
-  signinAction: () => void;
-}
+const NostrExtensionIndicator: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-const NostrExtensionIndicator: React.FC<INostrExtensionIndicator> = ({ signinAction }) => {
+  const onClick = () => dispatch(nostrExtensionLogIn());
+
   return (
     <Stack space={2} className='rounded-lg bg-gray-100 p-2 dark:bg-gray-800'>
       <Text size='xs'>
@@ -17,7 +19,7 @@ const NostrExtensionIndicator: React.FC<INostrExtensionIndicator> = ({ signinAct
             id='nostr_extension.found'
             defaultMessage='<link>Sign in</link> with browser extension.'
             values={{
-              link: (node) => <button className='underline' onClick={signinAction}>{node}</button>,
+              link: (node) => <button className='underline' onClick={onClick}>{node}</button>,
             }}
           />
         ) : (

@@ -17,7 +17,7 @@ interface IIdentityStep {
 const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep }) => {
   return (
     <Stack className='mt-3' space={3}>
-      <NostrExtensionIndicator signinAction={() => setStep(0)} />
+      <NostrExtensionIndicator />
 
       <FormGroup labelText='Username'>
         <Input
