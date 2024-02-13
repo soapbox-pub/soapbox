@@ -9,18 +9,22 @@ import Stack from 'soapbox/components/ui/stack/stack';
 import NostrExtensionIndicator from '../nostr-extension-indicator';
 
 interface IIdentityStep {
-  setStep: (step: number) => void;
+  username: string;
+  setUsername(username: string): void;
+  setStep(step: number): void;
 }
 
-const IdentityStep: React.FC<IIdentityStep> = ({ setStep }) => {
+const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep }) => {
   return (
-    <Stack space={3}>
+    <Stack className='mt-3' space={3}>
       <NostrExtensionIndicator signinAction={() => setStep(0)} />
 
       <FormGroup labelText='Username'>
         <Input
           icon={require('@tabler/icons/at.svg')}
           placeholder='Username or npub'
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
       </FormGroup>
 
