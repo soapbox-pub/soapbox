@@ -13,7 +13,7 @@ interface IEmoji {
 }
 
 const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
-  const autoPlayGif = useSettings().get('autoPlayGif');
+  const { autoPlayGif } = useSettings();
 
   // @ts-ignore
   if (unicodeMapping[emoji]) {

@@ -1,10 +1,10 @@
 import { getSettings } from 'soapbox/actions/settings';
+import { settingsSchema } from 'soapbox/schemas/soapbox/settings';
 
 import { useAppSelector } from './useAppSelector';
 
-import type { Map as ImmutableMap } from 'immutable';
-
 /** Get the user settings from the store */
-export const useSettings = (): ImmutableMap<string, any> => {
-  return useAppSelector((state) => getSettings(state));
+export const useSettings = () => {
+  const data = useAppSelector((state) => getSettings(state));
+  return settingsSchema.parse(data.toJS());
 };

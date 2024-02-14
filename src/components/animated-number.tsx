@@ -20,7 +20,7 @@ interface IAnimatedNumber {
 }
 
 const AnimatedNumber: React.FC<IAnimatedNumber> = ({ value, obfuscate }) => {
-  const reduceMotion = useSettings().get('reduceMotion');
+  const { reduceMotion } = useSettings();
 
   const [direction, setDirection] = useState(1);
   const [displayedValue, setDisplayedValue] = useState<number>(value);

@@ -50,8 +50,8 @@ const Notifications = () => {
   const intl = useIntl();
   const settings = useSettings();
 
-  const showFilterBar = settings.getIn(['notifications', 'quickFilter', 'show']);
-  const activeFilter = settings.getIn(['notifications', 'quickFilter', 'active']);
+  const showFilterBar = settings.notifications.quickFilter.show;
+  const activeFilter = settings.notifications.quickFilter.active;
   const notifications = useAppSelector(state => getNotifications(state));
   const isLoading = useAppSelector(state => state.notifications.isLoading);
   // const isUnread = useAppSelector(state => state.notifications.unread > 0);

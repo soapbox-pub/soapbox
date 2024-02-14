@@ -25,8 +25,8 @@ const NotificationFilterBar = () => {
   const settings = useSettings();
   const features = useFeatures();
 
-  const selectedFilter = settings.getIn(['notifications', 'quickFilter', 'active']) as string;
-  const advancedMode = settings.getIn(['notifications', 'quickFilter', 'advanced']);
+  const selectedFilter = settings.notifications.quickFilter.active;
+  const advancedMode = settings.notifications.quickFilter.advanced;
 
   const onClick = (notificationType: string) => () => dispatch(setFilter(notificationType));
 

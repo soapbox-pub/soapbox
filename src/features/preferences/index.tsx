@@ -139,7 +139,7 @@ const Preferences = () => {
           <SelectDropdown
             className='max-w-[200px]'
             items={languages}
-            defaultValue={settings.get('locale') as string | undefined}
+            defaultValue={settings.locale}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['locale'])}
           />
         </ListItem>
@@ -148,7 +148,7 @@ const Preferences = () => {
           <SelectDropdown
             className='max-w-[200px]'
             items={displayMediaOptions}
-            defaultValue={settings.get('displayMedia') as string | undefined}
+            defaultValue={settings.displayMedia}
             onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['displayMedia'])}
           />
         </ListItem>
@@ -158,7 +158,7 @@ const Preferences = () => {
             <SelectDropdown
               className='max-w-[200px]'
               items={defaultPrivacyOptions}
-              defaultValue={settings.get('defaultPrivacy') as string | undefined}
+              defaultValue={settings.defaultPrivacy}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultPrivacy'])}
             />
           </ListItem>
@@ -169,7 +169,7 @@ const Preferences = () => {
             <SelectDropdown
               className='max-w-[200px]'
               items={defaultContentTypeOptions}
-              defaultValue={settings.get('defaultContentType') as string | undefined}
+              defaultValue={settings.defaultContentType}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => onSelectChange(event, ['defaultContentType'])}
             />
           </ListItem>

@@ -20,18 +20,17 @@ interface ISoapboxHead {
 /** Injects metadata into site head with Helmet. */
 const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const { locale, direction } = useLocale();
-  const settings = useSettings();
+  const { demo, reduceMotion, underlineLinks, demetricator } = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
-  const demo = !!settings.get('demo');
   const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
   const dsn = soapboxConfig.sentryDsn;
 
   const bodyClass = clsx('h-full bg-white text-base dark:bg-gray-800', {
-    'no-reduce-motion': !settings.get('reduceMotion'),
-    'underline-links': settings.get('underlineLinks'),
-    'demetricator': settings.get('demetricator'),
+    'no-reduce-motion': !reduceMotion,
+    'underline-links': underlineLinks,
+    'demetricator': demetricator,
   });
 
   useEffect(() => {

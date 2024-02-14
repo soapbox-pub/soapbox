@@ -106,8 +106,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   useWindowScroll = true,
 }, ref) => {
   const history = useHistory();
-  const settings = useSettings();
-  const autoloadMore = settings.get('autoloadMore');
+  const { autoloadMore } = useSettings();
 
   // Preserve scroll position
   const scrollDataKey = `soapbox:scrollData:${scrollKey}`;

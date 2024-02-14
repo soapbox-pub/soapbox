@@ -27,10 +27,10 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const settings = useSettings();
 
   const timelineId = 'remote';
-  const onlyMedia = !!settings.getIn(['remote', 'other', 'onlyMedia']);
+  const onlyMedia = settings.remote.other.onlyMedia;
   const next = useAppSelector(state => state.timelines.get('remote')?.next);
 
-  const pinned: boolean = (settings.getIn(['remote_timeline', 'pinnedHosts']) as any).includes(instance);
+  const pinned = settings.remote_timeline.pinnedHosts.includes(instance);
 
   const handleCloseClick: React.MouseEventHandler = () => {
     history.push('/timeline/fediverse');

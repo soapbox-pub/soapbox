@@ -38,12 +38,11 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
   const { account } = useOwnAccount();
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const settings = useSettings();
+  const { displayMedia, deleteModal } = useSettings();
   const { links } = useSoapboxConfig();
 
   const isUnderReview = status.visibility === 'self';
   const isOwnStatus = status.getIn(['account', 'id']) === account?.id;
-  const displayMedia = settings.get('displayMedia') as string;
 
   const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
@@ -58,7 +57,6 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
   };
 
   const handleDeleteStatus = () => {
-    const deleteModal = settings.get('deleteModal');
     if (!deleteModal) {
       dispatch(deleteStatus(status.id, false));
     } else {

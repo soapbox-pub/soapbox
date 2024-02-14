@@ -20,7 +20,7 @@ interface IReactionsBar {
 }
 
 const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, addReaction, removeReaction, emojiMap }) => {
-  const reduceMotion = useSettings().get('reduceMotion');
+  const { reduceMotion } = useSettings();
 
   const handleEmojiPick = (data: Emoji) => {
     addReaction(announcementId, (data as NativeEmoji).native.replace(/:/g, ''));

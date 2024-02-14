@@ -7,10 +7,9 @@ import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 const PromoPanel: React.FC = () => {
   const instance = useInstance();
   const { promoPanel } = useSoapboxConfig();
-  const settings = useSettings();
+  const { locale } = useSettings();
 
   const promoItems = promoPanel.get('items');
-  const locale = settings.get('locale');
 
   if (!promoItems || promoItems.isEmpty()) return null;
 

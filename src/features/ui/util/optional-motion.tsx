@@ -6,7 +6,7 @@ import { useSettings } from 'soapbox/hooks';
 import ReducedMotion from './reduced-motion';
 
 const OptionalMotion = (props: MotionProps) => {
-  const reduceMotion = useSettings().get('reduceMotion');
+  const { reduceMotion } = useSettings();
 
   return (
     reduceMotion ? <ReducedMotion {...props} /> : <Motion {...props} />
