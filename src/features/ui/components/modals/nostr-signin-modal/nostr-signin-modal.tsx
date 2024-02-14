@@ -31,7 +31,7 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
       case 2:
         return <KeyStep />;
       case 3:
-        return <AccountStep />;
+        return <AccountStep username={username} />;
       case 4:
         return <RegisterStep />;
     }

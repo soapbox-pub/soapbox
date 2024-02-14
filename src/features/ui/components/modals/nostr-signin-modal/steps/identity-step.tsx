@@ -30,7 +30,7 @@ const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep 
 
       <HStack space={2} alignItems='center' justifyContent='between'>
         <Button theme='transparent'>Sign up</Button>
-        <Button theme='accent' onClick={() => setStep(2)}>Next</Button>
+        <Button theme='accent' disabled={!username} onClick={() => setStep(3)}>Next</Button>
       </HStack>
     </Stack>
   );

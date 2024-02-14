@@ -1,5 +1,6 @@
 import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
+import { NSchema as n } from 'nspec';
 import z from 'zod';
 
 import emojify from 'soapbox/features/emoji';
@@ -50,6 +51,9 @@ const baseAccountSchema = z.object({
     z.string(),
     z.null(),
   ]).catch(null),
+  nostr: coerceObject({
+    npub: n.bech32().optional().catch(undefined),
+  }),
   note: contentSchema,
   /** Fedibird extra settings. */
   other_settings: z.object({
