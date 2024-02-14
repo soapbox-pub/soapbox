@@ -456,7 +456,6 @@
   "confirmations.block_from_group.heading": "グループから追放する",
   "confirmations.block_from_group.message": "@{name} をこのグループから追放してもよろしいですか?",
   "confirmations.cancel.confirm": "取り消す",
-  "confirmations.cancel.heading": "",
   "confirmations.cancel.message": "この投稿の作成をキャンセルしてもよろしいですか?",
   "confirmations.cancel_editing.confirm": "編集をキャンセルする",
   "confirmations.cancel_editing.heading": "投稿の編集をキャンセル",
