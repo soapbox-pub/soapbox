@@ -136,7 +136,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const me = useAppSelector(state => state.me);
   const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
-  const settings = useSettings();
+  const { boostModal, deleteModal } = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
   const { allowedEmoji } = soapboxConfig;
@@ -208,7 +208,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
       const modalReblog = () => dispatch(toggleReblog(status));
-      const boostModal = settings.get('boostModal');
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
@@ -229,7 +228,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const doDeleteStatus = (withRedraft = false) => {
     dispatch((_, getState) => {
-      const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
         dispatch(deleteStatus(status.id, withRedraft));
       } else {

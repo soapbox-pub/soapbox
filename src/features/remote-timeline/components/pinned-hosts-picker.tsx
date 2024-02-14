@@ -10,9 +10,9 @@ interface IPinnedHostsPicker {
 
 const PinnedHostsPicker: React.FC<IPinnedHostsPicker> = ({ host: activeHost }) => {
   const settings = useSettings();
-  const pinnedHosts = settings.getIn(['remote_timeline', 'pinnedHosts']) as any;
+  const pinnedHosts = settings.remote_timeline.pinnedHosts;
 
-  if (!pinnedHosts || pinnedHosts.isEmpty()) return null;
+  if (!pinnedHosts.length) return null;
 
   return (
     <HStack className='mb-4' space={2}>

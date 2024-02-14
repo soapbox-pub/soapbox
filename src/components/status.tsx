@@ -75,8 +75,7 @@ const Status: React.FC<IStatus> = (props) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string;
+  const { displayMedia, boostModal } = useSettings();
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
@@ -155,7 +154,6 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
     const modalReblog = () => dispatch(toggleReblog(actualStatus));
-    const boostModal = settings.get('boostModal');
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {

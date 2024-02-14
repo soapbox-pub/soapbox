@@ -27,14 +27,13 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
   autoloadThreshold = 50,
 }) => {
   const intl = useIntl();
-  const settings = useSettings();
+  const { autoloadTimelines } = useSettings();
 
   // Whether we are scrolled past the `threshold`.
   const [scrolled, setScrolled] = useState<boolean>(false);
   // Whether we are scrolled above the `autoloadThreshold`.
   const [scrolledTop, setScrolledTop] = useState<boolean>(false);
 
-  const autoload = settings.get('autoloadTimelines') === true;
   const visible = count > 0 && scrolled;
 
   /** Number of pixels scrolled down from the top of the page. */
@@ -44,10 +43,10 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
 
   /** Unload feed items if scrolled to the top. */
   const maybeUnload = useCallback(() => {
-    if (autoload && scrolledTop && count) {
+    if (autoloadTimelines && scrolledTop && count) {
       onClick();
     }
-  }, [autoload, scrolledTop, count, onClick]);
+  }, [autoloadTimelines, scrolledTop, count, onClick]);
 
   /** Set state while scrolling. */
   const handleScroll = useCallback(throttle(() => {

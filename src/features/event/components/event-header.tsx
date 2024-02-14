@@ -71,7 +71,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const history = useHistory();
 
   const features = useFeatures();
-  const settings = useSettings();
+  const { boostModal } = useSettings();
   const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
@@ -123,7 +123,6 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleReblogClick = () => {
     const modalReblog = () => dispatch(toggleReblog(status));
-    const boostModal = settings.get('boostModal');
     if (!boostModal) {
       modalReblog();
     } else {

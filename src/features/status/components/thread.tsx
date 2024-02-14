@@ -26,8 +26,6 @@ import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/statu
 import DetailedStatus from './detailed-status';
 import ThreadStatus from './thread-status';
 
-type DisplayMedia = 'default' | 'hide_all' | 'show_all';
-
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,
   (state: RootState) => state.contexts.inReplyTos,
@@ -96,9 +94,8 @@ const Thread = (props: IThread) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
-  const settings = useSettings();
+  const { displayMedia } = useSettings();
 
-  const displayMedia = settings.get('displayMedia') as DisplayMedia;
   const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {

@@ -72,8 +72,7 @@ const Item: React.FC<IItem> = ({
   last,
   total,
 }) => {
-  const settings = useSettings();
-  const autoPlayGif = settings.get('autoPlayGif') === true;
+  const { autoPlayGif } = useSettings();
   const { mediaPreview } = useSoapboxConfig();
 
   const handleMouseEnter: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {

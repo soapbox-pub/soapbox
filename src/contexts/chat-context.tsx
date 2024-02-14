@@ -5,8 +5,6 @@ import { toggleMainWindow } from 'soapbox/actions/chats';
 import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { IChat, useChat } from 'soapbox/queries/chats';
 
-type WindowState = 'open' | 'minimized';
-
 const ChatContext = createContext<any>({
   isOpen: false,
   needsAcceptance: false,
@@ -26,7 +24,7 @@ interface IChatProvider {
 const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const settings = useSettings();
+  const { chats } = useSettings();
   const { account } = useOwnAccount();
 
   const path = history.location.pathname;
@@ -38,9 +36,8 @@ const ChatProvider: React.FC<IChatProvider> = ({ children }) => {
 
   const { data: chat } = useChat(currentChatId as string);
 
-  const mainWindowState = settings.getIn(['chats', 'mainWindow']) as WindowState;
   const needsAcceptance = !chat?.accepted && chat?.created_by_account !== account?.id;
-  const isOpen = mainWindowState === 'open';
+  const isOpen = chats.mainWindow === 'open';
 
   const changeScreen = (screen: ChatWidgetScreens, currentChatId?: string | null) => {
     setCurrentChatId(currentChatId || null);
