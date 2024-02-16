@@ -29,7 +29,7 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
       case 1:
         return <IdentityStep username={username} setUsername={setUsername} setStep={setStep} />;
       case 2:
-        return <KeyStep />;
+        return <KeyStep setStep={setStep} />;
       case 3:
         return <AccountStep username={username} />;
       case 4:
@@ -45,6 +45,8 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
         return <FormattedMessage id='nostr_signin.identity.title' defaultMessage='Who are you?' />;
       case 2:
         return <FormattedMessage id='nostr_signin.key.title' defaultMessage='You need a key to continue' />;
+      case 3:
+        return <FormattedMessage id='nostr_signin.account.title' defaultMessage='Create an account' />;
       default:
         return null;
     }
