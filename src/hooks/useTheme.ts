@@ -8,12 +8,10 @@ type Theme = 'light' | 'dark';
  * regardless of whether that's by system theme or direct setting.
  */
 const useTheme = (): Theme => {
-  const settings = useSettings();
+  const { themeMode } = useSettings();
   const systemTheme = useSystemTheme();
 
-  const userTheme = settings.get('themeMode');
-  const darkMode = userTheme === 'dark' || (userTheme === 'system' && systemTheme === 'dark');
-
+  const darkMode = themeMode === 'dark' || (themeMode === 'system' && systemTheme === 'dark');
   return darkMode ? 'dark' : 'light';
 };
 

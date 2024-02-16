@@ -24,7 +24,7 @@ const SidebarNavigation = () => {
 
   const instance = useInstance();
   const features = useFeatures();
-  const settings = useSettings();
+  const { isDeveloper } = useSettings();
   const { account } = useOwnAccount();
   const groupsPath = useGroupsPath();
 
@@ -71,7 +71,7 @@ const SidebarNavigation = () => {
         });
       }
 
-      if (settings.get('isDeveloper')) {
+      if (isDeveloper) {
         menu.push({
           to: '/developers',
           icon: require('@tabler/icons/code.svg'),

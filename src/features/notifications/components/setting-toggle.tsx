@@ -1,14 +1,14 @@
+import get from 'lodash/get';
 import React from 'react';
 
 import { Toggle } from 'soapbox/components/ui';
-
-import type { Map as ImmutableMap } from 'immutable';
+import { Settings } from 'soapbox/schemas/soapbox/settings';
 
 interface ISettingToggle {
   /** Unique identifier for the Toggle. */
   id?: string;
   /** The full user settings map. */
-  settings: ImmutableMap<string, any>;
+  settings: Settings;
   /** Array of key names leading into the setting map. */
   settingPath: string[];
   /** Callback when the setting is toggled. */
@@ -25,7 +25,7 @@ const SettingToggle: React.FC<ISettingToggle> = ({ id, settings, settingPath, on
   return (
     <Toggle
       id={id}
-      checked={!!settings.getIn(settingPath)}
+      checked={!!get(settings, settingPath)}
       onChange={handleChange}
     />
   );

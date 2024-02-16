@@ -35,8 +35,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const intl = useIntl();
   const history = useHistory();
 
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia');
+  const { displayMedia } = useSettings();
 
   const overlay = useRef<HTMLDivElement>(null);
 

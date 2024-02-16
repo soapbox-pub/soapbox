@@ -23,13 +23,13 @@ const CommunityTimeline = () => {
 
   const instance = useInstance();
   const settings = useSettings();
-  const onlyMedia = !!settings.getIn(['public', 'other', 'onlyMedia'], false);
+  const onlyMedia = settings.public.other.onlyMedia;
   const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
 
-  const explanationBoxExpanded = settings.get('explanationBox');
-  const showExplanationBox = settings.get('showExplanationBox');
+  const explanationBoxExpanded = settings.explanationBox;
+  const showExplanationBox = settings.showExplanationBox;
 
   const dismissExplanationBox = () => {
     dispatch(changeSetting(['showExplanationBox'], false));

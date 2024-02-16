@@ -43,7 +43,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
   const history = useHistory();
 
   const { account } = useOwnAccount();
-  const settings = useSettings();
+  const { isDeveloper } = useSettings();
 
   const renderComponent = ({ match }: RouteComponentProps) => {
     if (Page) {
@@ -81,7 +81,7 @@ const WrappedRoute: React.FC<IWrappedRoute> = ({
 
   const authorized = [
     account || publicRoute,
-    developerOnly ? settings.get('isDeveloper') : true,
+    developerOnly ? isDeveloper : true,
     staffOnly ? account && account.staff : true,
     adminOnly ? account && account.admin : true,
   ].every(c => c);

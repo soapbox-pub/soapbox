@@ -41,11 +41,10 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const settings = useSettings();
+  const { locale } = useSettings();
   const features = useFeatures();
   const instance = useInstance();
 
-  const locale = settings.get('locale');
   const needsConfirmation = instance.pleroma.metadata.account_activation_required;
   const needsApproval = instance.registrations.approval_required;
   const supportsEmailList = features.emailList;

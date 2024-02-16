@@ -28,8 +28,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusEntity;
 
   const { tileServer } = useSoapboxConfig();
-  const settings = useSettings();
-  const displayMedia = settings.get('displayMedia') as string;
+  const { displayMedia } = useSettings();
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));

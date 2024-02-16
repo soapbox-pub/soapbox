@@ -34,7 +34,7 @@ const StatusInfo = (props: IStatusInfo) => {
           {icon}
         </div>
 
-        <Text size='xs' theme='muted' weight='medium'>
+        <Text size='xs' theme='muted' weight='medium' truncate>
           {text}
         </Text>
       </HStack>

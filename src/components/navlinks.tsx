@@ -9,9 +9,8 @@ interface INavlinks {
 }
 
 const Navlinks: React.FC<INavlinks> = ({ type }) => {
-  const settings = useSettings();
+  const { locale } = useSettings();
   const { copyright, navlinks } = useSoapboxConfig();
-  const locale = settings.get('locale') as string;
 
   return (
     <footer className='relative mx-auto mt-auto max-w-7xl py-8'>
