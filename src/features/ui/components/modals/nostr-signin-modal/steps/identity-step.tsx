@@ -7,7 +7,7 @@ import Input from 'soapbox/components/ui/input/input';
 import Stack from 'soapbox/components/ui/stack/stack';
 
 import EmojiGraphic from '../components/emoji-graphic';
-import NostrExtensionIndicator from '../nostr-extension-indicator';
+import NostrExtensionIndicator from '../components/nostr-extension-indicator';
 
 interface IIdentityStep {
   username: string;
