@@ -6,6 +6,7 @@ import HStack from 'soapbox/components/ui/hstack/hstack';
 import Input from 'soapbox/components/ui/input/input';
 import Stack from 'soapbox/components/ui/stack/stack';
 
+import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../nostr-extension-indicator';
 
 interface IIdentityStep {
@@ -18,6 +19,8 @@ const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep 
   return (
     <Stack className='mt-3' space={3}>
       <NostrExtensionIndicator />
+
+      <EmojiGraphic emoji='🕵️' />
 
       <FormGroup labelText='Username'>
         <Input

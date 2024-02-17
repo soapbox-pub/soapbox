@@ -6,6 +6,8 @@ import Button from 'soapbox/components/ui/button/button';
 import Stack from 'soapbox/components/ui/stack/stack';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import EmojiGraphic from '../components/emoji-graphic';
+
 interface IExtensionStep {
   setStep: (step: number) => void;
 }
@@ -18,6 +20,8 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep }) => {
 
   return (
     <Stack className='my-6' space={3}>
+      <EmojiGraphic emoji='🔐' />
+
       <Button theme='accent' size='lg' onClick={onClick}>
         <FormattedMessage id='nostr_signin.siwe.action' defaultMessage='Sign in with extension' />
       </Button>
