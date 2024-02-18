@@ -1,32 +1,35 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button/button';
-import Stack from 'soapbox/components/ui/stack/stack';
+import { Button, Stack, Modal } from 'soapbox/components/ui';
 
 import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
 
 interface IKeyStep {
   setStep(step: number): void;
+  onClose(): void;
 }
 
-const KeyStep: React.FC<IKeyStep> = ({ setStep }) => {
+const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
   return (
-    <Stack className='my-3' space={6} justifyContent='center'>
-      <NostrExtensionIndicator />
+    <Modal title={<FormattedMessage id='nostr_signin.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
+      <Stack className='my-3' space={6} justifyContent='center'>
+        <NostrExtensionIndicator />
 
-      <EmojiGraphic emoji='🔑' />
+        <EmojiGraphic emoji='🔑' />
 
-      <Stack space={3} alignItems='center'>
-        <Button theme='accent' size='lg'>
-          Generate key
-        </Button>
+        <Stack space={3} alignItems='center'>
+          <Button theme='accent' size='lg'>
+            Generate key
+          </Button>
 
-        <Button theme='transparent' onClick={() => setStep(1)}>
-          I already have a key
-        </Button>
+          <Button theme='transparent' onClick={() => setStep(1)}>
+            I already have a key
+          </Button>
+        </Stack>
       </Stack>
-    </Stack>
+    </Modal>
   );
 };
 
