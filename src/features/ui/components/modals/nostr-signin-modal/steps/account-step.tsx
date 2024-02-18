@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { useAccount } from 'soapbox/api/hooks';
-import { Avatar, Text, Stack, Emoji, Button, Tooltip, HStack, Modal } from 'soapbox/components/ui';
+import { Avatar, Text, Stack, Emoji, Button, Tooltip, Modal } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
 
 interface IAccountStep {
@@ -21,14 +21,16 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
     [account?.acct],
   );
 
-  const goBack = () => setStep(1);
-
   if (!account) {
     return null;
   }
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signin.account.title' defaultMessage='Your account' />} onClose={onClose}>
+    <Modal
+      title={<FormattedMessage id='nostr_signin.account.title' defaultMessage='Your account' />}
+      onClose={onClose}
+      onBack={() => setStep(1)}
+    >
       <Stack space={6}>
         <Stack space={3} alignItems='center'>
           <Avatar className='bg-gray-100 dark:bg-gray-800' src={account.avatar} size={160} />
@@ -51,10 +53,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
         </Stack>
 
         {account.ditto.is_registered ? (
-          <HStack space={3}>
-            <Button theme='transparent' size='lg' block onClick={goBack}>Not me</Button>
-            <Button theme='accent' size='lg' block>Continue</Button>
-          </HStack>
+          <Button theme='accent' size='lg' block>Continue</Button>
         ) : (
           <Stack space={6}>
             <Stack space={3} alignItems='center' className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
@@ -65,10 +64,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
               </Text>
             </Stack>
 
-            <HStack space={3}>
-              <Button theme='transparent' size='lg' block onClick={goBack}>Not me</Button>
-              <Button theme='accent' size='lg' block>Join</Button>
-            </HStack>
+            <Button theme='accent' size='lg' block>Join</Button>
           </Stack>
         )}
       </Stack>
