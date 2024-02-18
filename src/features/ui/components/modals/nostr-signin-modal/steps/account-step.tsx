@@ -1,16 +1,16 @@
 import { NSchema as n } from 'nspec';
 import React, { useMemo } from 'react';
 
-import { useAccountLookup } from 'soapbox/api/hooks';
+import { useAccount } from 'soapbox/api/hooks';
 import { Avatar, Text, Stack, Emoji, Button, Tooltip } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
 
 interface IAccountStep {
-  username: string;
+  accountId: string;
 }
 
-const AccountStep: React.FC<IAccountStep> = ({ username }) => {
-  const { account } = useAccountLookup(username);
+const AccountStep: React.FC<IAccountStep> = ({ accountId }) => {
+  const { account } = useAccount(accountId);
   const instance = useInstance();
 
   const isBech32 = useMemo(

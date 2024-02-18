@@ -16,7 +16,7 @@ interface INostrSigninModal {
 const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
   const [step, setStep] = useState(0);
 
-  const [username, setUsername] = useState('');
+  const [accountId, setAccountId] = useState<string | undefined>();
 
   const handleClose = () => {
     onClose('NOSTR_SIGNIN');
@@ -27,11 +27,11 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
       case 0:
         return <ExtensionStep setStep={setStep} />;
       case 1:
-        return <IdentityStep username={username} setUsername={setUsername} setStep={setStep} />;
+        return <IdentityStep setAccountId={setAccountId} setStep={setStep} />;
       case 2:
         return <KeyStep setStep={setStep} />;
       case 3:
-        return <AccountStep username={username} />;
+        return <AccountStep accountId={accountId!} />;
       case 4:
         return <RegisterStep />;
     }

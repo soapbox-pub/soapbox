@@ -13,16 +13,16 @@ import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
 
 interface IIdentityStep {
-  username: string;
-  setUsername(username: string): void;
+  setAccountId(accountId: string): void;
   setStep(step: number): void;
 }
 
-const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep }) => {
+const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep }) => {
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
+  const [username, setUsername] = useState('');
 
   const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setNotFound(false);
@@ -33,7 +33,8 @@ const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep 
     setLoading(true);
 
     await dispatch(accountLookup(username))
-      .then(() => {
+      .then((account) => {
+        setAccountId(account.id);
         setStep(3);
         setNotFound(false);
         setLoading(false);
