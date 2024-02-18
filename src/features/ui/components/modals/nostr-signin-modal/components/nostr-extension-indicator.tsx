@@ -19,7 +19,7 @@ const NostrExtensionIndicator: React.FC = () => {
             id='nostr_extension.found'
             defaultMessage='<link>Sign in</link> with browser extension.'
             values={{
-              link: (node) => <button className='underline' onClick={onClick}>{node}</button>,
+              link: (node) => <button type='button' className='underline' onClick={onClick}>{node}</button>,
             }}
           />
         ) : (
