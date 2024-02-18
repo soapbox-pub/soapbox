@@ -33,6 +33,7 @@ const baseAccountSchema = z.object({
   display_name: z.string().catch(''),
   ditto: coerceObject({
     accepts_zaps: z.boolean().catch(false),
+    is_registered: z.boolean().catch(false),
   }),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),

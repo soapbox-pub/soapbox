@@ -71,7 +71,14 @@ const IdentityStep: React.FC<IIdentityStep> = ({ username, setUsername, setStep 
 
         <HStack space={2} alignItems='center' justifyContent='between'>
           <Button theme='transparent' onClick={() => setStep(2)} disabled={loading}>Sign up</Button>
-          <Button theme='accent' type='submit' disabled={!username || loading} onClick={handleSubmit}>Next</Button>
+
+          <Button
+            theme='accent'
+            type='submit' disabled={!username || loading || notFound}
+            onClick={handleSubmit}
+          >
+            Next
+          </Button>
         </HStack>
       </Stack>
     </Form>
