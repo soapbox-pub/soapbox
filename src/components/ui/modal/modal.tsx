@@ -8,6 +8,7 @@ import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 
 const messages = defineMessages({
+  back: { id: 'card.back.label', defaultMessage: 'Back' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
@@ -56,6 +57,7 @@ interface IModal {
   width?: keyof typeof widths;
   children?: React.ReactNode;
   className?: string;
+  onBack?: () => void;
 }
 
 /** Displays a modal dialog box. */
@@ -78,6 +80,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   title,
   width = 'xl',
   className,
+  onBack,
 }, ref) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -102,6 +105,15 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
+              {onBack && (
+                <IconButton
+                  src={require('@tabler/icons/arrow-left.svg')}
+                  title={intl.formatMessage(messages.back)}
+                  onClick={onBack}
+                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+                />
+              )}
+
               <h3 className='grow truncate text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
