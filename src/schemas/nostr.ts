@@ -1,4 +1,4 @@
-import { verifySignature } from 'nostr-tools';
+import { verifyEvent } from 'nostr-tools';
 import { z } from 'zod';
 
 /** Schema to validate Nostr hex IDs such as event IDs and pubkeys. */
@@ -22,7 +22,7 @@ const eventSchema = eventTemplateSchema.extend({
 });
 
 /** Nostr event schema that also verifies the event's signature. */
-const signedEventSchema = eventSchema.refine(verifySignature);
+const signedEventSchema = eventSchema.refine(verifyEvent);
 
 /** NIP-46 signer options. */
 const signEventOptsSchema = z.object({
