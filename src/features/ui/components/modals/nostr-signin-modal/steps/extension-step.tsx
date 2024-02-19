@@ -21,7 +21,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
-      <Stack className='my-6' space={6}>
+      <Stack space={6}>
         <EmojiGraphic emoji='🔐' />
 
         <Stack space={3}>
