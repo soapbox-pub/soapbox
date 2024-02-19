@@ -21,16 +21,18 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
-      <Stack className='my-6' space={3}>
+      <Stack className='my-6' space={6}>
         <EmojiGraphic emoji='🔐' />
 
-        <Button theme='accent' size='lg' onClick={onClick}>
-          <FormattedMessage id='nostr_signin.siwe.action' defaultMessage='Sign in with extension' />
-        </Button>
+        <Stack space={3}>
+          <Button theme='accent' size='lg' onClick={onClick}>
+            <FormattedMessage id='nostr_signin.siwe.action' defaultMessage='Sign in with extension' />
+          </Button>
 
-        <Button theme='transparent' onClick={onClickAlt}>
-          <FormattedMessage id='nostr_signin.siwe.alt' defaultMessage='Sign in with key' />
-        </Button>
+          <Button theme='transparent' onClick={onClickAlt}>
+            <FormattedMessage id='nostr_signin.siwe.alt' defaultMessage='Sign in with key' />
+          </Button>
+        </Stack>
       </Stack>
     </Modal>
   );
