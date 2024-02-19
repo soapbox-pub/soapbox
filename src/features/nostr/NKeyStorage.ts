@@ -1,6 +1,5 @@
 import { getPublicKey, nip19 } from 'nostr-tools';
 import { NSchema as n, NostrSigner, NSecSigner } from 'nspec';
-import { z } from 'zod';
 
 import { lockStorageKey } from 'soapbox/utils/storage';
 
@@ -23,7 +22,9 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     lockStorageKey(storageKey);
 
     try {
-      for (const nsec of this.#dataSchema().parse(data)) {
+      const nsecs = new Set(this.#dataSchema().parse(data));
+
+      for (const nsec of nsecs) {
         const { data: secretKey } = nip19.decode(nsec);
         const pubkey = getPublicKey(secretKey);
         this.#keypairs.set(pubkey, secretKey);
@@ -34,7 +35,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
   }
 
   #dataSchema() {
-    return n.json().pipe(z.set(n.bech32('nsec')));
+    return n.json().pipe(n.bech32('nsec').array());
   }
 
   #syncStorage() {
