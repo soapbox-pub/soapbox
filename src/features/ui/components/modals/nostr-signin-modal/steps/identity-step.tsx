@@ -53,7 +53,9 @@ const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose 
     <Modal title={<FormattedMessage id='nostr_signin.identity.title' defaultMessage='Who are you?' />} onClose={onClose}>
       <Form>
         <Stack className='mt-3' space={3}>
-          <NostrExtensionIndicator />
+          <div className='my-3'>
+            <NostrExtensionIndicator />
+          </div>
 
           <EmojiGraphic emoji='🕵️' />
 

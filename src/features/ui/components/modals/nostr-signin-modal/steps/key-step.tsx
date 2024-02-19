@@ -14,13 +14,13 @@ interface IKeyStep {
 const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
   return (
     <Modal title={<FormattedMessage id='nostr_signin.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
-      <Stack className='my-3' space={6} justifyContent='center'>
+      <Stack className='my-3' space={6}>
         <NostrExtensionIndicator />
 
         <EmojiGraphic emoji='🔑' />
 
         <Stack space={3} alignItems='center'>
-          <Button theme='accent' size='lg'>
+          <Button theme='accent' size='lg' onClick={() => setStep(5)}>
             Generate key
           </Button>
 

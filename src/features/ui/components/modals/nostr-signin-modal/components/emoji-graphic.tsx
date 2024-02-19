@@ -10,7 +10,7 @@ interface IEmojiGraphic {
 const EmojiGraphic: React.FC<IEmojiGraphic> = ({ emoji }) => {
   return (
     <div className='flex items-center justify-center'>
-      <div className='my-6 rounded-full bg-gray-100 p-8 dark:bg-gray-800'>
+      <div className='rounded-full bg-gray-100 p-8 dark:bg-gray-800'>
         <Emoji className='h-24 w-24' emoji={emoji} />
       </div>
     </div>

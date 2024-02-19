@@ -77,10 +77,11 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     return this.#keypairs.has(pubkey);
   }
 
-  add(secretKey: Uint8Array): void {
+  add(secretKey: Uint8Array): NostrSigner {
     const pubkey = getPublicKey(secretKey);
     this.#keypairs.set(pubkey, secretKey);
     this.#syncStorage();
+    return this.get(pubkey)!;
   }
 
   *entries(): IterableIterator<[string, NostrSigner]> {
