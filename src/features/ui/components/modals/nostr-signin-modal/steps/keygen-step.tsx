@@ -3,7 +3,8 @@ import { NostrSigner } from 'nspec';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, Stack, Modal } from 'soapbox/components/ui';
+import CopyableInput from 'soapbox/components/copyable-input';
+import { Button, Stack, Modal, FormGroup } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useInstance } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
@@ -30,9 +31,11 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
   const [downloaded, setDownloaded] = useState(false);
 
   const handleDownload = () => {
-    download(nsec, `${slugify(instance.title)}-${npub.slice(5, 9)}.nsec`);
+    download(nsec, `${slugify(instance.title)}-${npub.slice(5, 9)}.nsec.txt`);
     setDownloaded(true);
   };
+
+  const handleCopy = () => setDownloaded(true);
 
   const handleNext = () => {
     const signer = NKeys.add(secretKey);
@@ -50,8 +53,18 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
           </Button>
         </Stack>
 
-        <Stack space={3} alignItems='end'>
-          <Button theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
+        <Stack space={3}>
+          <FormGroup labelText='Public key'>
+            <CopyableInput value={npub} />
+          </FormGroup>
+
+          <FormGroup labelText='Secret key'>
+            <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
+          </FormGroup>
+        </Stack>
+
+        <Stack alignItems='end'>
+          <Button className='mt-3' theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
             Next
           </Button>
         </Stack>
