@@ -34,11 +34,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
   }
 
   #dataSchema() {
-    return n.json().pipe(z.set(this.#nsecSchema()));
-  }
-
-  #nsecSchema() {
-    return n.bech32().refine((v): v is `nsec1${string}` => v.startsWith('nsec1'), { message: 'Invalid secret key' });
+    return n.json().pipe(z.set(n.bech32('nsec')));
   }
 
   #syncStorage() {
