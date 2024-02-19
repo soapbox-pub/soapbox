@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { accountLookup } from 'soapbox/actions/accounts';
 import { Button, Form, FormGroup, HStack, Input, Stack, Modal } from 'soapbox/components/ui';
@@ -15,40 +15,44 @@ interface IIdentityStep {
   onClose(): void;
 }
 
+const messages = defineMessages({
+  notFound: { id: 'nostr_signin.identity.not_found', defaultMessage: 'Account not found' },
+  nsec: { id: 'nostr_signin.identity.nsec', defaultMessage: 'Enter your public key' },
+});
+
 const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose }) => {
+  const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [notFound, setNotFound] = useState(false);
   const [username, setUsername] = useState('');
 
   const handleChangeUsername: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setNotFound(false);
+    setError(undefined);
     setUsername(e.target.value);
   };
 
   const handleSubmit = async () => {
     setLoading(true);
 
-    await dispatch(accountLookup(username))
-      .then((account) => {
-        setAccountId(account.id);
-        setStep('account');
-        setNotFound(false);
-        setLoading(false);
-      })
-      .catch((error) => {
-        if (error.response?.status === 404) {
-          setNotFound(true);
-        }
-        setLoading(false);
-      });
-  };
+    if (username.startsWith('nsec1')) {
+      setError(intl.formatMessage(messages.nsec));
+      setLoading(false);
+      return;
+    }
 
-  const errors: string[] = [];
-  if (notFound) {
-    errors.push('Account not found');
-  }
+    try {
+      const account = await dispatch(accountLookup(username));
+      setAccountId(account.id);
+      setStep('account');
+    } catch (e: any) {
+      if (e.response?.status === 404) {
+        setError(intl.formatMessage(messages.notFound));
+      }
+      setLoading(false);
+    }
+  };
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.identity.title' defaultMessage='Who are you?' />} onClose={onClose}>
@@ -60,7 +64,7 @@ const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose 
 
           <EmojiGraphic emoji='🕵️' />
 
-          <FormGroup labelText='Username' errors={errors}>
+          <FormGroup labelText='Username' errors={error ? [error] : []}>
             <Input
               icon={require('@tabler/icons/at.svg')}
               placeholder='Username or npub'
@@ -76,7 +80,7 @@ const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose 
 
             <Button
               theme='accent'
-              type='submit' disabled={!username || loading || notFound}
+              type='submit' disabled={!username || loading || !!error}
               onClick={handleSubmit}
             >
               Next
