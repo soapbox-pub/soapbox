@@ -7,10 +7,11 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
+import { Step } from '../nostr-signin-modal';
 
 interface IIdentityStep {
   setAccountId(accountId: string): void;
-  setStep(step: number): void;
+  setStep(step: Step): void;
   onClose(): void;
 }
 
@@ -32,7 +33,7 @@ const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose 
     await dispatch(accountLookup(username))
       .then((account) => {
         setAccountId(account.id);
-        setStep(3);
+        setStep('account');
         setNotFound(false);
         setLoading(false);
       })
@@ -71,7 +72,7 @@ const IdentityStep: React.FC<IIdentityStep> = ({ setAccountId, setStep, onClose 
           </FormGroup>
 
           <HStack space={2} alignItems='center' justifyContent='between'>
-            <Button theme='transparent' onClick={() => setStep(2)} disabled={loading}>Sign up</Button>
+            <Button theme='transparent' onClick={() => setStep('key')} disabled={loading}>Sign up</Button>
 
             <Button
               theme='accent'

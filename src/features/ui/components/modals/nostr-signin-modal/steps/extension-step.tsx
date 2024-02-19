@@ -6,9 +6,10 @@ import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import EmojiGraphic from '../components/emoji-graphic';
+import { Step } from '../nostr-signin-modal';
 
 interface IExtensionStep {
-  setStep: (step: number) => void;
+  setStep: (step: Step) => void;
   onClose(): void;
 }
 
@@ -16,7 +17,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
   const dispatch = useAppDispatch();
 
   const onClick = () => dispatch(nostrExtensionLogIn());
-  const onClickAlt = () => setStep(1);
+  const onClickAlt = () => setStep('identity');
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>

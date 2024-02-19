@@ -10,10 +10,11 @@ import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
 
 import EmojiGraphic from '../components/emoji-graphic';
+import { Step } from '../nostr-signin-modal';
 
 interface IKeygenStep {
   setSigner(signer: NostrSigner): void;
-  setStep(step: number): void;
+  setStep(step: Step): void;
   onClose(): void;
 }
 

@@ -8,12 +8,14 @@ import KeyStep from './steps/key-step';
 import KeygenStep from './steps/keygen-step';
 import RegisterStep from './steps/register-step';
 
+type Step = 'extension' | 'identity' | 'key' | 'keygen' | 'account' | 'register';
+
 interface INostrSigninModal {
   onClose: (type?: string) => void;
 }
 
 const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
-  const [step, setStep] = useState(window.nostr ? 0 : 1);
+  const [step, setStep] = useState<Step>(window.nostr ? 'extension' : 'identity');
 
   const [, setSigner] = useState<NostrSigner | undefined>();
   const [accountId, setAccountId] = useState<string | undefined>();
@@ -21,21 +23,23 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
   const handleClose = () => onClose('NOSTR_SIGNIN');
 
   switch (step) {
-    case 0:
+    case 'extension':
       return <ExtensionStep setStep={setStep} onClose={handleClose} />;
-    case 1:
+    case 'identity':
       return <IdentityStep setAccountId={setAccountId} setStep={setStep} onClose={handleClose} />;
-    case 2:
+    case 'key':
       return <KeyStep setStep={setStep}  onClose={handleClose} />;
-    case 3:
-      return <AccountStep accountId={accountId!} setStep={setStep}  onClose={handleClose} />;
-    case 4:
-      return <RegisterStep onClose={handleClose} />;
-    case 5:
+    case 'keygen':
       return <KeygenStep setSigner={setSigner} setStep={setStep} onClose={handleClose} />;
+    case 'account':
+      return <AccountStep accountId={accountId!} setStep={setStep}  onClose={handleClose} />;
+    case 'register':
+      return <RegisterStep onClose={handleClose} />;
     default:
       return null;
   }
 };
 
 export default NostrSigninModal;
+
+export type { Step };

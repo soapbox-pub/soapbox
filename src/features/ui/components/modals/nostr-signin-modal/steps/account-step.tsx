@@ -6,9 +6,11 @@ import { useAccount } from 'soapbox/api/hooks';
 import { Avatar, Text, Stack, Emoji, Button, Tooltip, Modal } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
 
+import { Step } from '../nostr-signin-modal';
+
 interface IAccountStep {
   accountId: string;
-  setStep(step: number): void;
+  setStep(step: Step): void;
   onClose(): void;
 }
 
@@ -29,7 +31,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
     <Modal
       title={<FormattedMessage id='nostr_signin.account.title' defaultMessage='Your account' />}
       onClose={onClose}
-      onBack={() => setStep(1)}
+      onBack={() => setStep('identity')}
     >
       <Stack space={6}>
         <Stack space={3} alignItems='center'>

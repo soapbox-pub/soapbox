@@ -5,9 +5,10 @@ import { Button, Stack, Modal } from 'soapbox/components/ui';
 
 import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
+import { Step } from '../nostr-signin-modal';
 
 interface IKeyStep {
-  setStep(step: number): void;
+  setStep(step: Step): void;
   onClose(): void;
 }
 
@@ -20,11 +21,11 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
         <EmojiGraphic emoji='🔑' />
 
         <Stack space={3} alignItems='center'>
-          <Button theme='accent' size='lg' onClick={() => setStep(5)}>
+          <Button theme='accent' size='lg' onClick={() => setStep('keygen')}>
             Generate key
           </Button>
 
-          <Button theme='transparent' onClick={() => setStep(1)}>
+          <Button theme='transparent' onClick={() => setStep('identity')}>
             I already have a key
           </Button>
         </Stack>
