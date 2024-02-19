@@ -1,12 +1,13 @@
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 import { NostrSigner } from 'nspec';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { fetchAccount } from 'soapbox/actions/accounts';
 import CopyableInput from 'soapbox/components/copyable-input';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
-import { useInstance } from 'soapbox/hooks';
+import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
 
@@ -14,13 +15,15 @@ import EmojiGraphic from '../components/emoji-graphic';
 import { Step } from '../nostr-signin-modal';
 
 interface IKeygenStep {
+  setAccountId(accountId: string): void;
   setSigner(signer: NostrSigner): void;
   setStep(step: Step): void;
   onClose(): void;
 }
 
-const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
+const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setSigner, setStep, onClose }) => {
   const instance = useInstance();
+  const dispatch = useAppDispatch();
 
   const secretKey = useMemo(() => generateSecretKey(), []);
   const pubkey = useMemo(() => getPublicKey(secretKey), [secretKey]);
@@ -29,6 +32,11 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
   const npub = useMemo(() => nip19.npubEncode(pubkey), [pubkey]);
 
   const [downloaded, setDownloaded] = useState(false);
+
+  useEffect(() => {
+    // Pre-fetch into cache.
+    dispatch(fetchAccount(pubkey)).catch(() => {});
+  }, [pubkey]);
 
   const handleDownload = () => {
     download(nsec, `${slugify(instance.title)}-${npub.slice(5, 9)}.nsec.txt`);
@@ -40,6 +48,8 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
   const handleNext = () => {
     const signer = NKeys.add(secretKey);
     setSigner(signer);
+    setAccountId(pubkey); // HACK: Ditto uses pubkeys as account IDs.
+    setStep('account');
   };
 
   return (

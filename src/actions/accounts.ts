@@ -154,7 +154,7 @@ const fetchAccount = (id: string) =>
     const account = selectAccount(getState(), id);
 
     if (account) {
-      return null;
+      return Promise.resolve(null);
     }
 
     dispatch(fetchAccountRequest(id));

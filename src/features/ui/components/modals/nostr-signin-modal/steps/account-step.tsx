@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { useAccount } from 'soapbox/api/hooks';
 import { Avatar, Text, Stack, Emoji, Button, Tooltip, Modal } from 'soapbox/components/ui';
+import ModalLoading from 'soapbox/features/ui/components/modal-loading';
 import { useInstance } from 'soapbox/hooks';
 
 import { Step } from '../nostr-signin-modal';
@@ -24,7 +25,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
   );
 
   if (!account) {
-    return null;
+    return <ModalLoading />;
   }
 
   return (

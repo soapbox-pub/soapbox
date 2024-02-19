@@ -30,7 +30,7 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
     case 'key':
       return <KeyStep setStep={setStep}  onClose={handleClose} />;
     case 'keygen':
-      return <KeygenStep setSigner={setSigner} setStep={setStep} onClose={handleClose} />;
+      return <KeygenStep setAccountId={setAccountId} setSigner={setSigner} setStep={setStep} onClose={handleClose} />;
     case 'account':
       return <AccountStep accountId={accountId!} setStep={setStep}  onClose={handleClose} />;
     case 'register':
