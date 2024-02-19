@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import CopyableInput from 'soapbox/components/copyable-input';
-import { Button, Stack, Modal, FormGroup } from 'soapbox/components/ui';
+import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useInstance } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
@@ -44,7 +44,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.keygen.title' defaultMessage='Your new key' />} onClose={onClose}>
-      <Stack className='my-3' space={6}>
+      <Stack className='my-3' space={9}>
         <EmojiGraphic emoji='🔑' />
 
         <Stack alignItems='center'>
@@ -53,20 +53,20 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setSigner, setStep, onClose }) => {
           </Button>
         </Stack>
 
-        <Stack space={3}>
-          <FormGroup labelText='Public key'>
-            <CopyableInput value={npub} />
-          </FormGroup>
+        <FormGroup labelText='Secret key'>
+          <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
+        </FormGroup>
 
-          <FormGroup labelText='Secret key'>
-            <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
-          </FormGroup>
+        <Stack className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
+          <Text>Back up your secret key in a secure place. If lost, your account cannot be recovered. Never share your secret key with anyone.</Text>
         </Stack>
 
         <Stack alignItems='end'>
-          <Button className='mt-3' theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
-            Next
-          </Button>
+          <Tooltip text='Download your key to continue' disabled={downloaded}>
+            <Button theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
+              Next
+            </Button>
+          </Tooltip>
         </Stack>
       </Stack>
     </Modal>
