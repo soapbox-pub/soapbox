@@ -135,7 +135,7 @@
     "mini-css-extract-plugin": "^2.6.0",
     "nostr-machina": "^0.1.0",
     "nostr-tools": "^1.14.2",
-    "nspec": "^0.1.0",
+    "nspec": "^0.5.0",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.29",
     "process": "^0.11.10",
