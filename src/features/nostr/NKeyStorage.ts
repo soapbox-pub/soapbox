@@ -1,5 +1,5 @@
+import { NSchema as n, NostrSigner, NSecSigner } from '@soapbox/nspec';
 import { getPublicKey, nip19 } from 'nostr-tools';
-import { NSchema as n, NostrSigner, NSecSigner } from 'nspec';
 
 import { lockStorageKey } from 'soapbox/utils/storage';
 

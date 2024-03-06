@@ -1,4 +1,4 @@
-import { NostrSigner } from 'nspec';
+import { NostrSigner } from '@soapbox/nspec';
 import React, { useState } from 'react';
 
 import AccountStep from './steps/account-step';

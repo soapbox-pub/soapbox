@@ -1,5 +1,5 @@
 import { hexToBytes } from '@noble/hashes/utils';
-import { type NostrSigner, type NostrEvent, NSecSigner } from 'nspec';
+import { type NostrSigner, type NostrEvent, NSecSigner } from '@soapbox/nspec';
 
 /** Use key from `localStorage` if available, falling back to NIP-07. */
 export class SoapboxSigner implements NostrSigner {

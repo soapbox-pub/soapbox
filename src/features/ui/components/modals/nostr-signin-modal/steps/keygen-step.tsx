@@ -1,5 +1,5 @@
+import { NostrSigner } from '@soapbox/nspec';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
-import { NostrSigner } from 'nspec';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 

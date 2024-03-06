@@ -1,5 +1,5 @@
+import { type NostrEvent } from '@soapbox/nspec';
 import { NiceRelay } from 'nostr-machina';
-import { type NostrEvent } from 'nspec';
 import { useEffect, useMemo } from 'react';
 
 import { signer } from 'soapbox/features/nostr/sign';

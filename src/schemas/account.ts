@@ -1,6 +1,6 @@
+import { NSchema as n } from '@soapbox/nspec';
 import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
-import { NSchema as n } from 'nspec';
 import z from 'zod';
 
 import emojify from 'soapbox/features/emoji';

@@ -1,4 +1,4 @@
-import { NSchema as n } from 'nspec';
+import { NSchema as n } from '@soapbox/nspec';
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
