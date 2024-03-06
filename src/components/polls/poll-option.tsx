@@ -67,6 +67,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             <Text
               theme='inherit'
               weight='medium'
+              align='center'
               dangerouslySetInnerHTML={{ __html: option.title_emojified }}
             />
           </div>
