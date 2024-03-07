@@ -6,9 +6,8 @@ import ExtensionStep from './steps/extension-step';
 import IdentityStep from './steps/identity-step';
 import KeyStep from './steps/key-step';
 import KeygenStep from './steps/keygen-step';
-import RegisterStep from './steps/register-step';
 
-type Step = 'extension' | 'identity' | 'key' | 'keygen' | 'account' | 'register';
+type Step = 'extension' | 'identity' | 'key' | 'keygen' | 'account';
 
 interface INostrSigninModal {
   onClose: (type?: string) => void;
@@ -33,8 +32,6 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
       return <KeygenStep setAccountId={setAccountId} setSigner={setSigner} setStep={setStep} onClose={handleClose} />;
     case 'account':
       return <AccountStep accountId={accountId!} setStep={setStep}  onClose={handleClose} />;
-    case 'register':
-      return <RegisterStep onClose={handleClose} />;
     default:
       return null;
   }

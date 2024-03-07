@@ -19,8 +19,8 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
   const { account } = useAccount(accountId);
   const instance = useInstance();
 
-  const isBech32 = useMemo(
-    () => n.bech32().safeParse(account?.acct).success,
+  const username = useMemo(
+    () => n.bech32().safeParse(account?.acct).success ? account?.acct.slice(0, 13) : account?.acct,
     [account?.acct],
   );
 
@@ -49,7 +49,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
 
             <Tooltip text={account.nostr.npub ?? account.acct}>
               <Text size='sm' theme='muted' align='center' truncate>
-                {isBech32 ? account.acct.slice(0, 13) : account.acct}
+                {username}
               </Text>
             </Tooltip>
           </Stack>
