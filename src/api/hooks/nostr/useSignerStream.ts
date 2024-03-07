@@ -1,23 +1,12 @@
 import { type NostrEvent } from '@soapbox/nspec';
-import { NiceRelay } from 'nostr-machina';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
-import { signer } from 'soapbox/features/nostr/sign';
-import { useInstance } from 'soapbox/hooks';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import { connectRequestSchema, nwcRequestSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
 
 function useSignerStream() {
-  const instance = useInstance();
-
-  const relayUrl = instance.nostr?.relay;
-  const pubkey = instance.nostr?.pubkey;
-
-  const relay = useMemo(() => {
-    if (relayUrl && signer) {
-      return new NiceRelay(relayUrl);
-    }
-  }, [relayUrl, !!signer]);
+  const { relay, pubkey, signer } = useNostr();
 
   async function handleConnectEvent(event: NostrEvent) {
     if (!relay || !pubkey || !signer) return;
@@ -42,7 +31,7 @@ function useSignerStream() {
       created_at: Math.floor(Date.now() / 1000),
     });
 
-    relay.send(['EVENT', respEvent]);
+    relay.event(respEvent);
   }
 
   async function handleWalletEvent(event: NostrEvent) {
@@ -61,28 +50,26 @@ function useSignerStream() {
     await window.webln?.sendPayment(reqMsg.data.params.invoice);
   }
 
+  async function handleEvent(event: NostrEvent) {
+    switch (event.kind) {
+      case 24133:
+        await handleConnectEvent(event);
+        break;
+      case 23194:
+        await handleWalletEvent(event);
+        break;
+    }
+  }
+
   useEffect(() => {
     if (!relay || !pubkey) return;
-    const sub = relay.req([{ kinds: [24133, 23194], authors: [pubkey], limit: 0 }]);
 
-    const readEvents = async () => {
-      for await (const event of sub) {
-        switch (event.kind) {
-          case 24133:
-            await handleConnectEvent(event);
-            break;
-          case 23194:
-            await handleWalletEvent(event);
-            break;
-        }
+    (async() => {
+      for await (const msg of relay.req([{ kinds: [24133, 23194], authors: [pubkey], limit: 0 }])) {
+        if (msg[0] === 'EVENT') handleEvent(msg[2]);
       }
-    };
+    })();
 
-    readEvents();
-
-    return () => {
-      relay?.close();
-    };
   }, [relay, pubkey]);
 }
 

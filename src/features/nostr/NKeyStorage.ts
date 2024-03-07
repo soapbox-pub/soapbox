@@ -1,5 +1,6 @@
 import { NSchema as n, NostrSigner, NSecSigner } from '@soapbox/nspec';
 import { getPublicKey, nip19 } from 'nostr-tools';
+import { z } from 'zod';
 
 import { lockStorageKey } from 'soapbox/utils/storage';
 
@@ -34,7 +35,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     }
   }
 
-  #dataSchema() {
+  #dataSchema(): z.ZodType<`nsec1${string}`[]> {
     return n.json().pipe(n.bech32('nsec').array());
   }
 
