@@ -190,6 +190,7 @@
   "auth.logged_out": "Logged out.",
   "authorize.success": "Approved",
   "backups.actions.create": "Create backup",
+  "backups.download": "Download",
   "backups.empty_message": "No backups found. {action}",
   "backups.empty_message.action": "Create one now?",
   "backups.pending": "Pending",
