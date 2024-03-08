@@ -190,6 +190,7 @@
   "auth.logged_out": "Desconectado.",
   "authorize.success": "Aprobado",
   "backups.actions.create": "Crear copia de seguridad",
+  "backups.download": "Descargar",
   "backups.empty_message": "No se han encontrado copias de seguridad. {acción}",
   "backups.empty_message.action": "¿Crear una ahora?",
   "backups.pending": "Pendiente",
