@@ -67,7 +67,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
       onClick={e => e.stopPropagation()}
       target='_blank'
     >
-      <div className='pointer-events-none max-w-3xl p-4 sm:p-6'>
+      <div className='pointer-events-none p-4 sm:p-6'>
         {renderInner()}
       </div>
     </a>
