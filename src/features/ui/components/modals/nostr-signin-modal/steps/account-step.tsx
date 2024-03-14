@@ -1,4 +1,5 @@
 import { NSchema as n } from '@soapbox/nspec';
+import { nip19 } from 'nostr-tools';
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -62,6 +63,8 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
     return <ModalLoading />;
   }
 
+  const acct = account.nostr.pubkey ? nip19.npubEncode(account.nostr.pubkey) : account.acct;
+
   return (
     <Modal
       title={<FormattedMessage id='nostr_signin.account.title' defaultMessage='Your account' />}
@@ -81,7 +84,7 @@ const AccountStep: React.FC<IAccountStep> = ({ accountId, setStep, onClose }) =>
               truncate
             />
 
-            <Tooltip text={account.nostr.npub ?? account.acct}>
+            <Tooltip text={acct}>
               <Text size='sm' theme='muted' align='center' truncate>
                 {username}
               </Text>
