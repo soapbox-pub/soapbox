@@ -76,7 +76,11 @@ const cardSchema = z.object({
     }
   });
 
-  card.html = html.outerHTML;
+  card.html = html.innerHTML;
+
+  if (!card.html) {
+    card.type = 'link';
+  }
 
   return card;
 });
