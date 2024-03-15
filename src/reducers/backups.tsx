@@ -8,7 +8,7 @@ import {
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities';
 
-const BackupRecord = ImmutableRecord({
+export const BackupRecord = ImmutableRecord({
   id: null as number | null,
   content_type: '',
   url: '',
@@ -17,7 +17,7 @@ const BackupRecord = ImmutableRecord({
   inserted_at: '',
 });
 
-type Backup = ReturnType<typeof BackupRecord>;
+export type Backup = ReturnType<typeof BackupRecord>;
 type State = ImmutableMap<string, Backup>;
 
 const initialState: State = ImmutableMap();
