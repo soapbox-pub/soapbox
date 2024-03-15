@@ -1,8 +1,7 @@
 import { NSchema as n, NostrSigner, NSecSigner } from '@soapbox/nspec';
+import { WebLock } from '@soapbox/weblock';
 import { getPublicKey, nip19 } from 'nostr-tools';
 import { z } from 'zod';
-
-import { lockStorageKey } from 'soapbox/utils/storage';
 
 /**
  * Gets Nostr keypairs from storage and returns a `Map`-like object of signers.
@@ -20,7 +19,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     this.#storageKey = storageKey;
 
     const data = this.#storage.getItem(storageKey);
-    lockStorageKey(storageKey);
+    WebLock.storages.lockKey(storageKey);
 
     try {
       const nsecs = new Set(this.#dataSchema().parse(data));
