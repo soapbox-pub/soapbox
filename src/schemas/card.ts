@@ -1,5 +1,6 @@
 import punycode from 'punycode';
 
+import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
 import { groupSchema } from './group';
@@ -53,6 +54,29 @@ const cardSchema = z.object({
       card.image = pleroma.opengraph.thumbnail_url;
     }
   }
+
+  const html = DOMPurify.sanitize(card.html, {
+    ALLOWED_TAGS: ['iframe'],
+    ALLOWED_ATTR: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
+    RETURN_DOM: true,
+  });
+
+  html.querySelectorAll('iframe').forEach((frame) => {
+    try {
+      const src = new URL(frame.src);
+      if (src.protocol !== 'https:') {
+        throw new Error('iframe must be https');
+      }
+      if (src.origin === location.origin) {
+        throw new Error('iframe must not be same origin');
+      }
+      frame.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
+    } catch (e) {
+      frame.remove();
+    }
+  });
+
+  card.html = html.outerHTML;
 
   return card;
 });
