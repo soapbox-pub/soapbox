@@ -1,4 +1,3 @@
-import { NostrSigner } from '@soapbox/nspec';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -16,12 +15,11 @@ import { Step } from '../nostr-signin-modal';
 
 interface IKeygenStep {
   setAccountId(accountId: string): void;
-  setSigner(signer: NostrSigner): void;
   setStep(step: Step): void;
   onClose(): void;
 }
 
-const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setSigner, setStep, onClose }) => {
+const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setStep, onClose }) => {
   const instance = useInstance();
   const dispatch = useAppDispatch();
 
@@ -46,8 +44,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setSigner, setStep, o
   const handleCopy = () => setDownloaded(true);
 
   const handleNext = () => {
-    const signer = NKeys.add(secretKey);
-    setSigner(signer);
+    NKeys.add(secretKey);
     setAccountId(pubkey); // HACK: Ditto uses pubkeys as account IDs.
     setStep('account');
   };

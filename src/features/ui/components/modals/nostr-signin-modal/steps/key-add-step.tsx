@@ -1,4 +1,3 @@
-import { NostrSigner } from '@soapbox/nspec';
 import { getPublicKey, nip19 } from 'nostr-tools';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -12,12 +11,11 @@ import { Step } from '../nostr-signin-modal';
 
 interface IKeyAddStep {
   setAccountId(accountId: string): void;
-  setSigner(signer: NostrSigner): void;
   setStep(step: Step): void;
   onClose(): void;
 }
 
-const KeyAddStep: React.FC<IKeyAddStep> = ({ setAccountId, setSigner, setStep, onClose }) => {
+const KeyAddStep: React.FC<IKeyAddStep> = ({ setAccountId, setStep, onClose }) => {
   const [nsec, setNsec] = useState('');
   const [error, setError] = useState<string | undefined>();
 
@@ -32,9 +30,8 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ setAccountId, setSigner, setStep, o
       if (result.type === 'nsec') {
         const seckey = result.data;
         const pubkey = getPublicKey(seckey);
-        const signer = NKeys.add(seckey);
+        NKeys.add(seckey);
         setAccountId(pubkey);
-        setSigner(signer);
         setStep('account');
       }
     } catch (e) {
