@@ -25,7 +25,7 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
             Generate key
           </Button>
 
-          <Button theme='transparent' onClick={() => setStep('identity')}>
+          <Button theme='transparent' onClick={() => setStep('key-add')}>
             I already have a key
           </Button>
         </Stack>

@@ -11,15 +11,12 @@ import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
 
 import EmojiGraphic from '../components/emoji-graphic';
-import { Step } from '../nostr-signin-modal';
 
 interface IKeygenStep {
-  setAccountId(accountId: string): void;
-  setStep(step: Step): void;
   onClose(): void;
 }
 
-const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setStep, onClose }) => {
+const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const instance = useInstance();
   const dispatch = useAppDispatch();
 
@@ -45,8 +42,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ setAccountId, setStep, onClose }) =
 
   const handleNext = () => {
     NKeys.add(secretKey);
-    setAccountId(pubkey); // HACK: Ditto uses pubkeys as account IDs.
-    setStep('account');
+    // TODO: log in, close modal
   };
 
   return (

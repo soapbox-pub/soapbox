@@ -1,4 +1,4 @@
-import { getPublicKey, nip19 } from 'nostr-tools';
+import { nip19 } from 'nostr-tools';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -7,15 +7,12 @@ import { NKeys } from 'soapbox/features/nostr/keys';
 
 import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
-import { Step } from '../nostr-signin-modal';
 
 interface IKeyAddStep {
-  setAccountId(accountId: string): void;
-  setStep(step: Step): void;
   onClose(): void;
 }
 
-const KeyAddStep: React.FC<IKeyAddStep> = ({ setAccountId, setStep, onClose }) => {
+const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
   const [nsec, setNsec] = useState('');
   const [error, setError] = useState<string | undefined>();
 
@@ -29,10 +26,8 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ setAccountId, setStep, onClose }) =
       const result = nip19.decode(nsec);
       if (result.type === 'nsec') {
         const seckey = result.data;
-        const pubkey = getPublicKey(seckey);
         NKeys.add(seckey);
-        setAccountId(pubkey);
-        setStep('account');
+        // TODO: log in, close modal
       }
     } catch (e) {
       setError('Invalid nsec');
