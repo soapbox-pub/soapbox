@@ -16,7 +16,11 @@ interface IExtensionStep {
 const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
   const dispatch = useAppDispatch();
 
-  const onClick = () => dispatch(nostrExtensionLogIn());
+  const onClick = () => {
+    dispatch(nostrExtensionLogIn());
+    onClose();
+  };
+
   const onClickAlt = () => setStep('key');
 
   return (

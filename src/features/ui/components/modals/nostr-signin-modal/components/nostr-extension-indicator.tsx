@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { closeModal } from 'soapbox/actions/modals';
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Text from 'soapbox/components/ui/text/text';
@@ -9,7 +10,10 @@ import { useAppDispatch } from 'soapbox/hooks';
 const NostrExtensionIndicator: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const onClick = () => dispatch(nostrExtensionLogIn());
+  const onClick = () => {
+    dispatch(nostrExtensionLogIn());
+    dispatch(closeModal('NOSTR_SIGNIN'));
+  };
 
   return (
     <Stack space={2} className='rounded-lg bg-gray-100 p-2 dark:bg-gray-800'>

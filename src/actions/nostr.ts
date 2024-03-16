@@ -3,7 +3,6 @@ import { nip19 } from 'nostr-tools';
 import { type AppDispatch } from 'soapbox/store';
 
 import { verifyCredentials } from './auth';
-import { closeModal } from './modals';
 
 /** Log in with a Nostr pubkey. */
 function logInNostr(pubkey: string) {
@@ -19,10 +18,7 @@ function nostrExtensionLogIn() {
     if (!window.nostr) {
       throw new Error('No Nostr signer available');
     }
-
     const pubkey = await window.nostr.getPublicKey();
-
-    dispatch(closeModal('NOSTR_SIGNIN'));
     return dispatch(logInNostr(pubkey));
   };
 }
