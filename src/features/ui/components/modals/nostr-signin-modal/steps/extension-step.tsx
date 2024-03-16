@@ -17,7 +17,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
   const dispatch = useAppDispatch();
 
   const onClick = () => dispatch(nostrExtensionLogIn());
-  const onClickAlt = () => setStep('key-add');
+  const onClickAlt = () => setStep('key');
 
   return (
     <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
