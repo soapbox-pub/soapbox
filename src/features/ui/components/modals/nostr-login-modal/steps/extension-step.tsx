@@ -24,17 +24,17 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
   const onClickAlt = () => setStep('key-add');
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='NOSTR_SIGNUP.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
       <Stack space={6}>
         <EmojiGraphic emoji='🔐' />
 
         <Stack space={3}>
           <Button theme='accent' size='lg' onClick={onClick}>
-            <FormattedMessage id='nostr_signin.siwe.action' defaultMessage='Sign in with extension' />
+            <FormattedMessage id='NOSTR_SIGNUP.siwe.action' defaultMessage='Sign in with extension' />
           </Button>
 
           <Button theme='transparent' onClick={onClickAlt}>
-            <FormattedMessage id='nostr_signin.siwe.alt' defaultMessage='Sign in with key' />
+            <FormattedMessage id='NOSTR_SIGNUP.siwe.alt' defaultMessage='Sign in with key' />
           </Button>
         </Stack>
       </Stack>

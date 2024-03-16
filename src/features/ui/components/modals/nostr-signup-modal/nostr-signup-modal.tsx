@@ -6,14 +6,14 @@ import KeygenStep from './steps/keygen-step';
 
 type Step = 'extension' | 'key' | 'keygen';
 
-interface INostrSigninModal {
+interface INostrSignupModal {
   onClose: (type?: string) => void;
 }
 
-const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
+const NostrSigninModal: React.FC<INostrSignupModal> = ({ onClose }) => {
   const [step, setStep] = useState<Step>(window.nostr ? 'extension' : 'key');
 
-  const handleClose = () => onClose('NOSTR_SIGNIN');
+  const handleClose = () => onClose('NOSTR_SIGNUP');
 
   switch (step) {
     case 'extension':

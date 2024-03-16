@@ -6,7 +6,7 @@ import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import EmojiGraphic from '../components/emoji-graphic';
-import { Step } from '../nostr-signin-modal';
+import { Step } from '../nostr-signup-modal';
 
 interface IExtensionStep {
   setStep: (step: Step) => void;
@@ -24,17 +24,17 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
   const onClickAlt = () => setStep('key');
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signin.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='NOSTR_SIGNUP.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
       <Stack space={6}>
         <EmojiGraphic emoji='🔐' />
 
         <Stack space={3}>
           <Button theme='accent' size='lg' onClick={onClick}>
-            <FormattedMessage id='nostr_signin.siwe.action' defaultMessage='Sign in with extension' />
+            <FormattedMessage id='NOSTR_SIGNUP.siwe.action' defaultMessage='Sign in with extension' />
           </Button>
 
           <Button theme='transparent' onClick={onClickAlt}>
-            <FormattedMessage id='nostr_signin.siwe.alt' defaultMessage='Sign in with key' />
+            <FormattedMessage id='NOSTR_SIGNUP.siwe.alt' defaultMessage='Sign in with key' />
           </Button>
         </Stack>
       </Stack>

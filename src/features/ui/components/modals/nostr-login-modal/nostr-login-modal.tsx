@@ -12,7 +12,7 @@ interface INostrLoginModal {
 const NostrLoginModal: React.FC<INostrLoginModal> = ({ onClose }) => {
   const [step, setStep] = useState<Step>(window.nostr ? 'extension' : 'key-add');
 
-  const handleClose = () => onClose('NOSTR_SIGNIN');
+  const handleClose = () => onClose('NOSTR_SIGNUP');
 
   switch (step) {
     case 'extension':

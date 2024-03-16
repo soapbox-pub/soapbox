@@ -25,7 +25,7 @@ const SignUpPanel = () => {
         </Text>
       </Stack>
 
-      <Button theme='primary' block onClick={() => dispatch(openModal('NOSTR_SIGNIN'))}>
+      <Button theme='primary' block onClick={() => dispatch(openModal('NOSTR_SIGNUP'))}>
         <FormattedMessage id='account.register' defaultMessage='Sign up' />
       </Button>
     </Stack>

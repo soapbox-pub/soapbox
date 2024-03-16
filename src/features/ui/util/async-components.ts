@@ -162,5 +162,5 @@ export const EditAnnouncementModal = lazy(() => import('soapbox/features/ui/comp
 export const FollowedTags = lazy(() => import('soapbox/features/followed-tags'));
 export const AccountNotePanel = lazy(() => import('soapbox/features/ui/components/panels/account-note-panel'));
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));
-export const NostrSigninModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signin-modal/nostr-signin-modal'));
+export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal'));
