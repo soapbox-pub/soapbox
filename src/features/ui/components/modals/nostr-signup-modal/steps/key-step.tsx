@@ -6,7 +6,7 @@ import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import NostrExtensionIndicator from '../components/nostr-extension-indicator';
+import NostrExtensionIndicator from '../../nostr-login-modal/components/nostr-extension-indicator';
 import { Step } from '../nostr-signup-modal';
 
 interface IKeyStep {
