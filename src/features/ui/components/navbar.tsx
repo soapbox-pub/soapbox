@@ -40,7 +40,7 @@ const Navbar = () => {
   const onOpenSidebar = () => dispatch(openSidebar());
 
   const handleNostrLogin = async () => {
-    dispatch(openModal('NOSTR_SIGNIN'));
+    dispatch(openModal('NOSTR_LOGIN'));
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {

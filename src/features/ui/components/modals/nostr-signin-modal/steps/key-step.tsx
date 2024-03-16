@@ -1,7 +1,9 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { openModal } from 'soapbox/actions/modals';
 import { Button, Stack, Modal } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
@@ -13,6 +15,13 @@ interface IKeyStep {
 }
 
 const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
+  const dispatch = useAppDispatch();
+
+  const onAltClick = () => {
+    dispatch(openModal('NOSTR_LOGIN'));
+    onClose();
+  };
+
   return (
     <Modal title={<FormattedMessage id='nostr_signin.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
       <Stack className='my-3' space={6}>
@@ -25,7 +34,7 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
             Generate key
           </Button>
 
-          <Button theme='transparent' onClick={() => setStep('key-add')}>
+          <Button theme='transparent' onClick={onAltClick}>
             I already have a key
           </Button>
         </Stack>

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
 import ExtensionStep from './steps/extension-step';
-import KeyAddStep from './steps/key-add-step';
 import KeyStep from './steps/key-step';
 import KeygenStep from './steps/keygen-step';
 
-type Step = 'extension' | 'key' | 'keygen' | 'key-add';
+type Step = 'extension' | 'key' | 'keygen';
 
 interface INostrSigninModal {
   onClose: (type?: string) => void;
@@ -21,8 +20,6 @@ const NostrSigninModal: React.FC<INostrSigninModal> = ({ onClose }) => {
       return <ExtensionStep setStep={setStep} onClose={handleClose} />;
     case 'key':
       return <KeyStep setStep={setStep} onClose={handleClose} />;
-    case 'key-add':
-      return <KeyAddStep onClose={handleClose} />;
     case 'keygen':
       return <KeygenStep onClose={handleClose} />;
     default:
