@@ -12,7 +12,7 @@ const NostrExtensionIndicator: React.FC = () => {
 
   const onClick = () => {
     dispatch(nostrExtensionLogIn());
-    dispatch(closeModal('NOSTR_SIGNUP'));
+    dispatch(closeModal());
   };
 
   return (
