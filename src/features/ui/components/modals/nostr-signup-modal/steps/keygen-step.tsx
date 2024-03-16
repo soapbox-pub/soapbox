@@ -4,13 +4,12 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import CopyableInput from 'soapbox/components/copyable-input';
+import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
-
-import EmojiGraphic from '../components/emoji-graphic';
 
 interface IKeygenStep {
   onClose(): void;

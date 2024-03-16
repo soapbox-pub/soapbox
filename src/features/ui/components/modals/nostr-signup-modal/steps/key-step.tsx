@@ -2,10 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
+import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
 import { Step } from '../nostr-signup-modal';
 

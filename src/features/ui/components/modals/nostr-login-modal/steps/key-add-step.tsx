@@ -2,10 +2,10 @@ import { nip19 } from 'nostr-tools';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, Input, FormGroup, Form } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
 
-import EmojiGraphic from '../components/emoji-graphic';
 import NostrExtensionIndicator from '../components/nostr-extension-indicator';
 
 interface IKeyAddStep {

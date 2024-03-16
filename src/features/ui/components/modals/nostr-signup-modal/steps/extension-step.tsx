@@ -2,10 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
+import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import EmojiGraphic from '../components/emoji-graphic';
 import { Step } from '../nostr-signup-modal';
 
 interface IExtensionStep {
