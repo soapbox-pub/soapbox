@@ -23,4 +23,4 @@ function nostrExtensionLogIn() {
   };
 }
 
-export { nostrExtensionLogIn };
+export { logInNostr, nostrExtensionLogIn };
