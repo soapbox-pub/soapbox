@@ -19,7 +19,7 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
 
   const onAltClick = () => {
     onClose();
-    dispatch(openModal('NOSTR_LOGIN'));
+    dispatch(openModal('NOSTR_LOGIN', { step: 'key-add' }));
   };
 
   return (

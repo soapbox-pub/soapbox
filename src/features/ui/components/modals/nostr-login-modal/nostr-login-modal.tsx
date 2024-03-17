@@ -7,10 +7,11 @@ type Step = 'extension' | 'key-add';
 
 interface INostrLoginModal {
   onClose: (type?: string) => void;
+  step?: Step;
 }
 
-const NostrLoginModal: React.FC<INostrLoginModal> = ({ onClose }) => {
-  const [step, setStep] = useState<Step>(window.nostr ? 'extension' : 'key-add');
+const NostrLoginModal: React.FC<INostrLoginModal> = ({ onClose, step: firstStep }) => {
+  const [step, setStep] = useState<Step>(firstStep ?? (window.nostr ? 'extension' : 'key-add'));
 
   const handleClose = () => onClose('NOSTR_LOGIN');
 
