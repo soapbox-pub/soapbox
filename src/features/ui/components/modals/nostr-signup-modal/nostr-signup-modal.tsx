@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-import ExtensionStep from './steps/extension-step';
+import ExtensionStep from '../nostr-login-modal/steps/extension-step';
+
 import KeyStep from './steps/key-step';
 import KeygenStep from './steps/keygen-step';
 
@@ -17,7 +18,7 @@ const NostrSigninModal: React.FC<INostrSignupModal> = ({ onClose }) => {
 
   switch (step) {
     case 'extension':
-      return <ExtensionStep setStep={setStep} onClose={handleClose} />;
+      return <ExtensionStep onClickAlt={() => setStep('key')} onClose={handleClose} />;
     case 'key':
       return <KeyStep setStep={setStep} onClose={handleClose} />;
     case 'keygen':

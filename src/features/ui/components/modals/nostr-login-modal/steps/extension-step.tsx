@@ -6,22 +6,18 @@ import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
-import { Step } from '../nostr-login-modal';
-
 interface IExtensionStep {
-  setStep: (step: Step) => void;
+  onClickAlt: () => void;
   onClose(): void;
 }
 
-const ExtensionStep: React.FC<IExtensionStep> = ({ setStep, onClose }) => {
+const ExtensionStep: React.FC<IExtensionStep> = ({ onClickAlt, onClose }) => {
   const dispatch = useAppDispatch();
 
   const onClick = () => {
     dispatch(nostrExtensionLogIn());
     onClose();
   };
-
-  const onClickAlt = () => setStep('key-add');
 
   return (
     <Modal title={<FormattedMessage id='nostr_signup.siwe.title' defaultMessage='Sign in' />} onClose={onClose}>
