@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
+import { logInNostr } from 'soapbox/actions/nostr';
 import CopyableInput from 'soapbox/components/copyable-input';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
@@ -39,9 +40,11 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
 
   const handleCopy = () => setDownloaded(true);
 
-  const handleNext = () => {
-    NKeys.add(secretKey);
-    // TODO: log in, close modal
+  const handleNext = async () => {
+    const signer = NKeys.add(secretKey);
+    const pubkey = await signer.getPublicKey();
+    dispatch(logInNostr(pubkey));
+    onClose();
   };
 
   return (
