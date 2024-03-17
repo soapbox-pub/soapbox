@@ -41,7 +41,7 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='NOSTR_SIGNUP.key-add.title' defaultMessage='Import Key' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='nostr_signup.key-add.title' defaultMessage='Import Key' />} onClose={onClose}>
       <Stack className='my-3' space={6}>
         <NostrExtensionIndicator />
 

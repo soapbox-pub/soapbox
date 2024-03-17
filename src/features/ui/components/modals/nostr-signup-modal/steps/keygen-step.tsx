@@ -48,7 +48,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='NOSTR_SIGNUP.keygen.title' defaultMessage='Your new key' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='nostr_signup.keygen.title' defaultMessage='Your new key' />} onClose={onClose}>
       <Stack className='my-3' space={9}>
         <EmojiGraphic emoji='🔑' />
 

@@ -23,7 +23,7 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='NOSTR_SIGNUP.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='nostr_signup.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
       <Stack className='my-3' space={6}>
         <NostrExtensionIndicator />
 
