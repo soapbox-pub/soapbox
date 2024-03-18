@@ -2,6 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { Provider } from 'react-redux';
 
+import { NostrProvider } from 'soapbox/contexts/nostr-context';
 import { StatProvider } from 'soapbox/contexts/stat-context';
 import { createGlobals } from 'soapbox/globals';
 import { queryClient } from 'soapbox/queries/client';
@@ -29,11 +30,13 @@ const Soapbox: React.FC = () => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <StatProvider>
-          <SoapboxHead>
-            <SoapboxLoad>
-              <SoapboxMount />
-            </SoapboxLoad>
-          </SoapboxHead>
+          <NostrProvider>
+            <SoapboxHead>
+              <SoapboxLoad>
+                <SoapboxMount />
+              </SoapboxLoad>
+            </SoapboxHead>
+          </NostrProvider>
         </StatProvider>
       </QueryClientProvider>
     </Provider>

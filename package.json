@@ -73,6 +73,8 @@
     "@sentry/browser": "^7.74.1",
     "@sentry/react": "^7.74.1",
     "@soapbox.pub/wasmboy": "^0.8.0",
+    "@soapbox/nspec": "npm:@jsr/soapbox__nspec",
+    "@soapbox/weblock": "npm:@jsr/soapbox__weblock",
     "@tabler/icons": "^2.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
@@ -134,8 +136,7 @@
     "lodash": "^4.7.11",
     "mini-css-extract-plugin": "^2.6.0",
     "nostr-machina": "^0.1.0",
-    "nostr-tools": "^1.14.2",
-    "nspec": "^0.1.0",
+    "nostr-tools": "^2.3.0",
     "path-browserify": "^1.0.1",
     "postcss": "^8.4.29",
     "process": "^0.11.10",
@@ -185,7 +186,7 @@
     "vite-plugin-require": "^1.1.10",
     "vite-plugin-static-copy": "^1.0.0",
     "wicg-inert": "^3.1.1",
-    "zod": "^3.21.4"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@formatjs/cli": "^6.2.0",

@@ -1,3 +1,4 @@
+import { NSchema as n } from '@soapbox/nspec';
 import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
@@ -32,6 +33,7 @@ const baseAccountSchema = z.object({
   display_name: z.string().catch(''),
   ditto: coerceObject({
     accepts_zaps: z.boolean().catch(false),
+    is_registered: z.boolean().catch(false),
   }),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),
@@ -50,6 +52,9 @@ const baseAccountSchema = z.object({
     z.string(),
     z.null(),
   ]).catch(null),
+  nostr: coerceObject({
+    pubkey: n.id().optional().catch(undefined),
+  }),
   note: contentSchema,
   /** Fedibird extra settings. */
   other_settings: z.object({

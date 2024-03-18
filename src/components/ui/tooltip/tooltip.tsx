@@ -15,13 +15,15 @@ interface ITooltip {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;
   /** Text to display in the tooltip. */
   text: string;
+  /** If disabled, it will render the children without wrapping them. */
+  disabled?: boolean;
 }
 
 /**
  * Tooltip
  */
 const Tooltip: React.FC<ITooltip> = (props) => {
-  const { children, text } = props;
+  const { children, text, disabled = false } = props;
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -54,6 +56,10 @@ const Tooltip: React.FC<ITooltip> = (props) => {
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
   ]);
+
+  if (disabled) {
+    return children;
+  }
 
   return (
     <>

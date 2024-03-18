@@ -1,4 +1,4 @@
-import type { NostrSigner } from 'nspec';
+import type { NostrSigner } from '@soapbox/nspec';
 
 declare global {
   interface Window {
