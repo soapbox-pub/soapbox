@@ -190,6 +190,7 @@
   "auth.logged_out": "已登出。",
   "authorize.success": "已批准",
   "backups.actions.create": "创建备份",
+  "backups.download": "下载",
   "backups.empty_message": "没有找到备份。{action}",
   "backups.empty_message.action": "现在要备份吗？",
   "backups.pending": "待处理",
