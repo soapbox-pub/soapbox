@@ -9,7 +9,7 @@ import { httpErrorMessages } from './utils/errors';
 export type ToastText = string | MessageDescriptor
 export type ToastType = 'success' | 'error' | 'info'
 
-interface IToastOptions {
+export interface IToastOptions {
   action?(): void;
   actionLink?: string;
   actionLabel?: ToastText;
