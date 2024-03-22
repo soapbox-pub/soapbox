@@ -1,5 +1,5 @@
 import { NRelay, NRelay1, NostrSigner } from '@soapbox/nspec';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useOwnAccount } from 'soapbox/hooks';
@@ -27,7 +27,10 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const pubkey = instance.nostr?.pubkey;
   const accountPubkey = account?.nostr.pubkey;
 
-  const signer = (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr;
+  const signer = useMemo(
+    () => (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr,
+    [accountPubkey],
+  );
 
   useEffect(() => {
     if (url) {
