@@ -246,7 +246,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks/all' page={DefaultPage} component={Bookmarks} content={children} />}
       {features.bookmarks && <WrappedRoute path='/bookmarks/:id' page={DefaultPage} component={Bookmarks} content={children} />}
-      {features.bookmarkFolders && <WrappedRoute path='/bookmarks' page={DefaultPage} component={BookmarkFolders} content={children} />}
+      <WrappedRoute path='/bookmarks' page={DefaultPage} component={BookmarkFolders} content={children} />
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
