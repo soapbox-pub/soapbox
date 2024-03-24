@@ -1497,7 +1497,7 @@
   "theme_editor.restore": "Restore default theme",
   "theme_editor.save": "Save theme",
   "theme_editor.saved": "Theme updated!",
-  "theme_toggle.black": "Pure Black (beta)",
+  "theme_toggle.black": "Black",
   "theme_toggle.dark": "Dark",
   "theme_toggle.light": "Light",
   "theme_toggle.system": "System",
