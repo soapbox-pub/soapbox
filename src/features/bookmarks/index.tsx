@@ -6,7 +6,7 @@ import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actio
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
@@ -19,6 +19,7 @@ const handleLoadMore = debounce((dispatch) => {
 const Bookmarks: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
+  const theme = useTheme();
 
   const statusIds = useAppSelector((state) => state.status_lists.get('bookmarks')!.items);
   const isLoading = useAppSelector((state) => state.status_lists.get('bookmarks')!.isLoading);
@@ -38,13 +39,14 @@ const Bookmarks: React.FC = () => {
     <Column label={intl.formatMessage(messages.heading)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
         <StatusList
+          className='black:p-4 black:sm:p-5'
           statusIds={statusIds}
           scrollKey='bookmarked_statuses'
           hasMore={hasMore}
           isLoading={typeof isLoading === 'boolean' ? isLoading : true}
           onLoadMore={() => handleLoadMore(dispatch)}
           emptyMessage={emptyMessage}
-          divideType='space'
+          divideType={theme === 'black' ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>
