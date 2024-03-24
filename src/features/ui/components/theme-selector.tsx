@@ -6,7 +6,7 @@ import { Icon, Select } from 'soapbox/components/ui';
 const messages = defineMessages({
   light: { id: 'theme_toggle.light', defaultMessage: 'Light' },
   dark: { id: 'theme_toggle.dark', defaultMessage: 'Dark' },
-  black: { id: 'theme_toggle.black', defaultMessage: 'Pure Black' },
+  black: { id: 'theme_toggle.black', defaultMessage: 'Pure Black (beta)' },
   system: { id: 'theme_toggle.system', defaultMessage: 'System' },
 });
 
