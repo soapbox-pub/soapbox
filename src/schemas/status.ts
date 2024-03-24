@@ -30,6 +30,7 @@ const baseStatusSchema = z.object({
     name: z.string(),
     website: z.string().url().nullable().catch(null),
   }).nullable().catch(null),
+  bookmark_folder: z.string().nullable().catch(null),
   bookmarked: z.coerce.boolean(),
   card: cardSchema.nullable().catch(null),
   content: contentSchema,

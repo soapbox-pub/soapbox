@@ -13,7 +13,6 @@ import { ReactionRecord } from 'soapbox/reducers/user-lists';
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
 
 const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
   all: { id: 'reactions.all', defaultMessage: 'All' },
 });
 

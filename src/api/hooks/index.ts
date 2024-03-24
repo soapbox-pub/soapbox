@@ -44,6 +44,13 @@ export { useUnmuteGroup } from './groups/useUnmuteGroup';
 export { useUpdateGroup } from './groups/useUpdateGroup';
 export { useUpdateGroupTag } from './groups/useUpdateGroupTag';
 
+// Statuses
+export { useBookmarkFolders } from './statuses/useBookmarkFolders';
+export { useBookmarkFolder } from './statuses/useBookmarkFolder';
+export { useCreateBookmarkFolder } from './statuses/useCreateBookmarkFolder';
+export { useDeleteBookmarkFolder } from './statuses/useDeleteBookmarkFolder';
+export { useUpdateBookmarkFolder } from './statuses/useUpdateBookmarkFolder';
+
 // Streaming
 export { useUserStream } from './streaming/useUserStream';
 export { useCommunityStream } from './streaming/useCommunityStream';
