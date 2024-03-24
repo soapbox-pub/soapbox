@@ -118,13 +118,15 @@ const EditBookmarkFolderModal: React.FC<IEditBookmarkFolderModal> = ({ folderId,
     updateBookmarkFolder({
       name: name.value,
       emoji,
-    }).then(() => {
-      toast.success(intl.formatMessage(messages.editSuccess));
-      dispatch(closeModal('EDIT_BOOKMARK_FOLDER'));
-    })
-      .catch(() => {
+    }, {
+      onSuccess() {
+        toast.success(intl.formatMessage(messages.editSuccess));
+        dispatch(closeModal('EDIT_BOOKMARK_FOLDER'));
+      },
+      onError() {
         toast.success(intl.formatMessage(messages.editFail));
-      });
+      },
+    });
   };
 
   const label = intl.formatMessage(messages.label);

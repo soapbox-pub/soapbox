@@ -23,10 +23,13 @@ const NewFolderForm: React.FC = () => {
     e.preventDefault();
     createBookmarkFolder({
       name: name.value,
-    }).then(() => {
-      toast.success(messages.createSuccess);
-    }).catch(() => {
-      toast.success(messages.createFail);
+    }, {
+      onSuccess() {
+        toast.success(messages.createSuccess);
+      },
+      onError() {
+        toast.success(messages.createFail);
+      },
     });
   };
 

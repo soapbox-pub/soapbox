@@ -69,11 +69,14 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
       message: intl.formatMessage(messages.deleteFolderMessage),
       confirm: intl.formatMessage(messages.deleteFolderConfirm),
       onConfirm: () => {
-        deleteBookmarkFolder(folderId!).then(() => {
-          toast.success(messages.deleteFolderSuccess);
-          history.push('/bookmarks');
-        }).catch(() => {
-          toast.error(messages.deleteFolderFail);
+        deleteBookmarkFolder(folderId!, {
+          onSuccess() {
+            toast.success(messages.deleteFolderSuccess);
+            history.push('/bookmarks');
+          },
+          onError() {
+            toast.error(messages.deleteFolderFail);
+          },
         });
       },
     }));
