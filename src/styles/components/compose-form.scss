@@ -128,7 +128,7 @@
   }
 
   &__dropdown {
-    @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm overflow-hidden;
+    @apply absolute bg-white dark:bg-gray-900 z-[1000] rounded-md shadow-lg ml-10 text-sm overflow-hidden black:bg-black black:border black:border-gray-800;
 
     &.top {
       transform-origin: 50% 100%;
@@ -140,10 +140,10 @@
   }
 
   &__option {
-    @apply flex p-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer;
+    @apply flex p-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer black:hover:bg-gray-900;
 
     &.active {
-      @apply bg-gray-100 dark:bg-gray-800;
+      @apply bg-gray-100 dark:bg-gray-800 black:bg-gray-900;
     }
 
     &:hover,

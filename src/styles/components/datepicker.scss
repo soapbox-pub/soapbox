@@ -12,7 +12,7 @@
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
-  @apply border-b-white dark:border-b-gray-900;
+  @apply border-b-white dark:border-b-gray-900 black:border-b-black;
 }
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
