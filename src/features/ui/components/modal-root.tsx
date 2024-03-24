@@ -14,6 +14,7 @@ import {
   CryptoDonateModal,
   DislikesModal,
   EditAnnouncementModal,
+  EditBookmarkFolderModal,
   EditFederationModal,
   EmbedModal,
   EventMapModal,
@@ -36,6 +37,7 @@ import {
   ReblogsModal,
   ReplyMentionsModal,
   ReportModal,
+  SelectBookmarkFolderModal,
   UnauthorizedModal,
   VideoModal,
 } from 'soapbox/features/ui/util/async-components';
@@ -57,6 +59,7 @@ const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'CRYPTO_DONATE': CryptoDonateModal,
   'DISLIKES': DislikesModal,
   'EDIT_ANNOUNCEMENT': EditAnnouncementModal,
+  'EDIT_BOOKMARK_FOLDER': EditBookmarkFolderModal,
   'EDIT_FEDERATION': EditFederationModal,
   'EMBED': EmbedModal,
   'EVENT_MAP': EventMapModal,
@@ -78,6 +81,7 @@ const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'REBLOGS': ReblogsModal,
   'REPLY_MENTIONS': ReplyMentionsModal,
   'REPORT': ReportModal,
+  'SELECT_BOOKMARK_FOLDER': SelectBookmarkFolderModal,
   'UNAUTHORIZED': UnauthorizedModal,
   'VIDEO': VideoModal,
 };

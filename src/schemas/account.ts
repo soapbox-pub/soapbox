@@ -94,6 +94,9 @@ const baseAccountSchema = z.object({
       discoverable: z.boolean().catch(true),
     }).optional().catch(undefined),
     sms_verified: z.boolean().catch(false),
+    nostr: z.object({
+      nip05: z.string().optional().catch(undefined),
+    }).optional().catch(undefined),
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),

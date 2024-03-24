@@ -19,9 +19,6 @@ const messages = defineMessages({
   pause: { id: 'video.pause', defaultMessage: 'Pause' },
   mute: { id: 'video.mute', defaultMessage: 'Mute sound' },
   unmute: { id: 'video.unmute', defaultMessage: 'Unmute sound' },
-  hide: { id: 'video.hide', defaultMessage: 'Hide video' },
-  expand: { id: 'video.expand', defaultMessage: 'Expand video' },
-  close: { id: 'video.close', defaultMessage: 'Close video' },
   fullscreen: { id: 'video.fullscreen', defaultMessage: 'Full screen' },
   exit_fullscreen: { id: 'video.exit_fullscreen', defaultMessage: 'Exit full screen' },
 });

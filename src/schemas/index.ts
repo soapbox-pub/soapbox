@@ -1,5 +1,6 @@
 export { accountSchema, type Account } from './account';
 export { attachmentSchema, type Attachment } from './attachment';
+export { bookmarkFolderSchema, type BookmarkFolder } from './bookmark-folder';
 export { cardSchema, type Card } from './card';
 export { chatMessageSchema, type ChatMessage } from './chat-message';
 export { customEmojiSchema, type CustomEmoji } from './custom-emoji';
