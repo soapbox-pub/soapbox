@@ -23,7 +23,7 @@ const settingsSchema = z.object({
   missingDescriptionModal: z.boolean().catch(false),
   defaultPrivacy: z.enum(['public', 'unlisted', 'private', 'direct']).catch('public'),
   defaultContentType: z.enum(['text/plain', 'text/markdown']).catch('text/plain'),
-  themeMode: z.enum(['system', 'light', 'dark']).catch('system'),
+  themeMode: z.enum(['system', 'light', 'dark', 'black']).catch('system'),
   locale: z.string().catch(navigator.language).pipe(z.enum(locales)).catch('en'),
   showExplanationBox: z.boolean().catch(true),
   explanationBox: z.boolean().catch(true),

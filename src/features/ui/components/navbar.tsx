@@ -70,7 +70,7 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+    <nav className='sticky top-0 z-50 bg-white shadow black:border-b black:border-b-gray-800 black:bg-black dark:bg-primary-900' ref={node} data-testid='navbar'>
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (

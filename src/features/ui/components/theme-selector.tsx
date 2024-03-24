@@ -6,6 +6,7 @@ import { Icon, Select } from 'soapbox/components/ui';
 const messages = defineMessages({
   light: { id: 'theme_toggle.light', defaultMessage: 'Light' },
   dark: { id: 'theme_toggle.dark', defaultMessage: 'Dark' },
+  black: { id: 'theme_toggle.black', defaultMessage: 'Pure Black' },
   system: { id: 'theme_toggle.system', defaultMessage: 'System' },
 });
 
@@ -26,6 +27,8 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         return require('@tabler/icons/sun.svg');
       case 'dark':
         return require('@tabler/icons/moon.svg');
+      case 'black':
+        return require('@tabler/icons/moon-off.svg');
       default:
         return null;
     }
@@ -50,6 +53,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
           <option value='system'>{intl.formatMessage(messages.system)}</option>
           <option value='light'>{intl.formatMessage(messages.light)}</option>
           <option value='dark'>{intl.formatMessage(messages.dark)}</option>
+          <option value='black'>{intl.formatMessage(messages.black)}</option>
         </Select>
 
         <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>

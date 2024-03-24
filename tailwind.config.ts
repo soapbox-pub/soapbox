@@ -2,8 +2,11 @@ import aspectRatioPlugin from '@tailwindcss/aspect-ratio';
 import formsPlugin from '@tailwindcss/forms';
 import typographyPlugin from '@tailwindcss/typography';
 import { type Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 import { parseColorMatrix } from './tailwind/colors';
+
+const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black &'));
 
 const config: Config = {
   content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './index.html'],
@@ -105,6 +108,7 @@ const config: Config = {
     aspectRatioPlugin,
     formsPlugin,
     typographyPlugin,
+    blackVariantPlugin,
   ],
 };
 

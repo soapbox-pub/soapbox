@@ -144,7 +144,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
       }
     >
       <div
-        className='fixed inset-0 bg-gray-500/90 dark:bg-gray-700/90'
+        className='fixed inset-0 bg-gray-500/90 black:bg-gray-900/90 dark:bg-gray-700/90'
         role='button'
         onClick={handleClose}
       />
@@ -153,7 +153,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         <div
           className={
             clsx({
-              'flex flex-col flex-1 bg-white dark:bg-primary-900 -translate-x-full rtl:translate-x-full w-full max-w-xs': true,
+              'flex flex-col flex-1 bg-white black:bg-black dark:bg-primary-900 -translate-x-full rtl:translate-x-full w-full max-w-xs': true,
               '!translate-x-0': sidebarOpen,
             })
           }
@@ -350,7 +350,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     </button>
 
                     {switcher && (
-                      <div className='border-t-2 border-solid border-gray-100 dark:border-gray-800'>
+                      <div className='border-t-2 border-solid border-gray-100 black:border-t dark:border-gray-800'>
                         {otherAccounts.map(account => renderAccount(account))}
 
                         <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>

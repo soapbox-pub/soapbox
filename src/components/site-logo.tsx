@@ -15,7 +15,7 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   const { logo, logoDarkMode } = useSoapboxConfig();
   const { demo } = useSettings();
 
-  let darkMode = useTheme() === 'dark';
+  let darkMode = ['dark', 'black'].includes(useTheme());
   if (theme === 'dark') darkMode = true;
 
   /** Soapbox logo. */

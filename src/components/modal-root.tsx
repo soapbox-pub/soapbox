@@ -232,7 +232,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       <div
         role='presentation'
         id='modal-overlay'
-        className='fixed inset-0 bg-gray-500/90 backdrop-blur dark:bg-gray-700/90'
+        className='fixed inset-0 bg-gray-500/90 backdrop-blur black:bg-gray-900/90 dark:bg-gray-700/90'
         onClick={handleOnClose}
       />
 
