@@ -723,6 +723,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Can set a Nostr username.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    nip05: v.software === DITTO,
+
+    /**
      * Ability to sign Nostr events over websocket.
      * @see GET /api/v1/streaming?stream=nostr
      */

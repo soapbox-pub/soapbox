@@ -592,6 +592,8 @@
   "edit_profile.fields.meta_fields.content_placeholder": "Content",
   "edit_profile.fields.meta_fields.label_placeholder": "Label",
   "edit_profile.fields.meta_fields_label": "Profile fields",
+  "edit_profile.fields.nip05_label": "Username",
+  "edit_profile.fields.nip05_placeholder": "user@{domain}",
   "edit_profile.fields.stranger_notifications_label": "Block notifications from strangers",
   "edit_profile.fields.website_label": "Website",
   "edit_profile.fields.website_placeholder": "Display a Link",
