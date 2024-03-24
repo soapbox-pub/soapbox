@@ -56,6 +56,7 @@ const StatusList: React.FC<IStatusList> = ({
   isPartial,
   showAds = false,
   showGroup = true,
+  className,
   ...other
 }) => {
   const soapboxConfig = useSoapboxConfig();
@@ -233,7 +234,7 @@ const StatusList: React.FC<IStatusList> = ({
       ref={node}
       className={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
         'divide-none': divideType !== 'border',
-      })}
+      }, className)}
       itemClassName={clsx({
         'pb-3': divideType !== 'border',
       })}

@@ -22,12 +22,12 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const { locale, direction } = useLocale();
   const { demo, reduceMotion, underlineLinks, demetricator } = useSettings();
   const soapboxConfig = useSoapboxConfig();
+  const theme = useTheme();
 
-  const darkMode = useTheme() === 'dark';
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
   const dsn = soapboxConfig.sentryDsn;
 
-  const bodyClass = clsx('h-full bg-white text-base dark:bg-gray-800', {
+  const bodyClass = clsx('h-full bg-white text-base black:bg-black dark:bg-gray-800', {
     'no-reduce-motion': !reduceMotion,
     'underline-links': underlineLinks,
     'demetricator': demetricator,
@@ -42,10 +42,10 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   return (
     <>
       <Helmet>
-        <html lang={locale} className={clsx('h-full', { dark: darkMode })} />
+        <html lang={locale} className={clsx('h-full', { 'dark': theme === 'dark', 'dark black': theme === 'black' })} />
         <body className={bodyClass} dir={direction} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-        {darkMode && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
+        {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>
 

@@ -1,9 +1,9 @@
 .react-datepicker {
-  @apply dark:bg-gray-900 dark:border-gray-700 p-4 font-sans text-xs text-gray-900 dark:text-gray-300 border border-solid border-gray-200 rounded-lg;
+  @apply black:bg-black dark:bg-gray-900 dark:border-gray-700 p-4 font-sans text-xs text-gray-900 dark:text-gray-300 border border-solid border-gray-200 rounded-lg;
 }
 
 .react-datepicker__input-container > input {
-  @apply dark:bg-gray-900 dark:text-gray-100 block w-full sm:text-sm border-gray-400 dark:border-gray-800 rounded-md focus:ring-primary-500 focus:border-primary-500;
+  @apply black:bg-black dark:bg-gray-900 dark:text-gray-100 block w-full sm:text-sm border-gray-400 dark:border-gray-800 rounded-md focus:ring-primary-500 focus:border-primary-500;
 
   &.has-error {
     @apply text-red-600 border-red-600;
@@ -12,7 +12,7 @@
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before,
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::after {
-  @apply border-b-white dark:border-b-gray-900;
+  @apply border-b-white dark:border-b-gray-900 black:border-b-black;
 }
 
 .react-datepicker-popper[data-placement^='bottom'] .react-datepicker__triangle::before {
@@ -24,7 +24,7 @@
 }
 
 .react-datepicker__header {
-  @apply bg-white dark:bg-gray-900 border-b-0 py-1 px-0;
+  @apply bg-white black:bg-black dark:bg-gray-900 border-b-0 py-1 px-0;
 }
 
 .react-datepicker__current-month,
@@ -85,11 +85,13 @@
 }
 
 .react-datepicker__time {
-  @apply dark:bg-gray-900;
+  &-container & {
+    @apply dark:bg-gray-900 black:bg-black;
+  }
 }
 
 .react-datepicker__time-container {
-  @apply dark:border-gray-700;
+  @apply dark:border-gray-700 black:border-gray-800;
 }
 
 .react-datepicker__day-name,

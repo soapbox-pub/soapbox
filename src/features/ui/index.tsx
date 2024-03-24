@@ -483,7 +483,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
         <BackgroundShapes />
 
-        <div className='z-10 flex flex-col'>
+        <div className='z-10 flex min-h-screen flex-col'>
           <Navbar />
 
           <Layout>

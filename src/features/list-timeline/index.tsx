@@ -8,13 +8,14 @@ import { expandListTimeline } from 'soapbox/actions/timelines';
 import { useListStream } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Button, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
 const ListTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
+  const theme = useTheme();
 
   const list = useAppSelector((state) => state.lists.get(id));
   const next = useAppSelector(state => state.timelines.get(`list:${id}`)?.next);
@@ -61,11 +62,12 @@ const ListTimeline: React.FC = () => {
   return (
     <Column label={title} transparent>
       <Timeline
+        className='black:p-4 black:sm:p-5'
         scrollKey='list_timeline'
         timelineId={`list:${id}`}
         onLoadMore={handleLoadMore}
         emptyMessage={emptyMessage}
-        divideType='space'
+        divideType={theme === 'black' ? 'border' : 'space'}
       />
     </Column>
   );

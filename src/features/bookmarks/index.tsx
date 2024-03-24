@@ -11,7 +11,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 const messages = defineMessages({
@@ -39,6 +39,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const history = useHistory();
+  const theme = useTheme();
 
   const folderId = params?.id;
 
@@ -107,13 +108,14 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     >
       <PullToRefresh onRefresh={handleRefresh}>
         <StatusList
+          className='black:p-4 black:sm:p-5'
           statusIds={statusIds}
           scrollKey='bookmarked_statuses'
           hasMore={hasMore}
           isLoading={typeof isLoading === 'boolean' ? isLoading : true}
           onLoadMore={() => handleLoadMore(dispatch, folderId)}
           emptyMessage={emptyMessage}
-          divideType='space'
+          divideType={theme === 'black' ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>

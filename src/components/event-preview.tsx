@@ -51,7 +51,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
   ));
 
   return (
-    <div className={clsx('relative w-full overflow-hidden rounded-lg bg-gray-100 dark:bg-primary-800', className)}>
+    <div className={clsx('relative w-full overflow-hidden rounded-lg bg-gray-100 black:border black:border-gray-800 black:bg-black dark:bg-primary-800', className)}>
       <div className='absolute right-3 top-28'>
         {floatingAction && action}
       </div>

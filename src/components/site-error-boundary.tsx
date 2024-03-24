@@ -74,7 +74,7 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
   }
 
   const fallback = (
-    <div className='flex h-screen flex-col bg-white pb-12 pt-16 dark:bg-primary-900'>
+    <div className='flex h-screen flex-col bg-white pb-12 pt-16 black:bg-black dark:bg-primary-900'>
       <main className='mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
         <div className='flex shrink-0 justify-center'>
           <a href='/' className='inline-flex'>

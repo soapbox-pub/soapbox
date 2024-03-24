@@ -6,7 +6,7 @@ import { expandRemoteTimeline } from 'soapbox/actions/timelines';
 import { useRemoteStream } from 'soapbox/api/hooks';
 import IconButton from 'soapbox/components/icon-button';
 import { Column, HStack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useSettings, useTheme } from 'soapbox/hooks';
 
 import Timeline from '../ui/components/timeline';
 
@@ -22,6 +22,7 @@ interface IRemoteTimeline {
 const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   const instance = params?.instance as string;
   const settings = useSettings();
@@ -64,6 +65,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
       )}
 
       <Timeline
+        className='black:p-4 black:sm:p-5'
         scrollKey={`${timelineId}_${instance}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}
         onLoadMore={handleLoadMore}
@@ -74,7 +76,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
             values={{ instance }}
           />
         }
-        divideType='space'
+        divideType={theme === 'black' ? 'border' : 'space'}
       />
     </Column>
   );

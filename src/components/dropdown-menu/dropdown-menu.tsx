@@ -293,7 +293,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
             data-testid='dropdown-menu'
             ref={refs.setFloating}
             className={
-              clsx('z-[1001] w-56 rounded-md bg-white py-1 shadow-lg transition-opacity duration-100 focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700', {
+              clsx('z-[1001] w-56 rounded-md bg-white py-1 shadow-lg transition-opacity duration-100 focus:outline-none black:bg-black dark:bg-gray-900 dark:ring-2 dark:ring-primary-700', {
                 'opacity-0 pointer-events-none': !isOpen,
               })
             }
@@ -318,7 +318,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
             <div
               ref={arrowRef}
               style={arrowProps}
-              className='pointer-events-none absolute z-[-1] h-3 w-3 bg-white dark:bg-gray-900'
+              className='pointer-events-none absolute z-[-1] h-3 w-3 bg-white black:bg-black dark:bg-gray-900'
             />
           </div>
         </Portal>

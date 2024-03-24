@@ -226,7 +226,6 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       ref={ref}
       id={id}
       useWindowScroll={useWindowScroll}
-      className={className}
       data={data}
       startReached={onScrollToTop}
       endReached={handleEndReached}

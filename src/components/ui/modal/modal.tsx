@@ -95,7 +95,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
     <div
       ref={ref}
       data-testid='modal'
-      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', widths[width])}
     >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
