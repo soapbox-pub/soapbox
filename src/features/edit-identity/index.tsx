@@ -10,6 +10,7 @@ interface IEditIdentity {
 
 const messages = defineMessages({
   title: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
+  username: { id: 'edit_profile.fields.nip05_label', defaultMessage: 'Username' },
 });
 
 const identifiers = [
@@ -36,7 +37,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
             onSelect={() => { /* TODO */ }}
           />
         ))}
-        <ListItem label={<UsernameInput className='w-full' placeholder='Add new identity' />}>
+        <ListItem label={<UsernameInput />}>
           <Button theme='accent'>Add</Button>
         </ListItem>
       </List>
@@ -45,11 +46,12 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 };
 
 const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
+  const intl = useIntl();
   const instance = useInstance();
 
   return (
     <Input
-      placeholder='Username'
+      placeholder={intl.formatMessage(messages.username)}
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
           <Icon className='h-4 w-4' src={require('@tabler/icons/at.svg')} />
