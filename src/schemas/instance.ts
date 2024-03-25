@@ -176,6 +176,7 @@ const instanceV1Schema = coerceObject({
   stats: statsSchema,
   thumbnail: z.string().catch(''),
   title: z.string().catch(''),
+  uri: z.string().catch(''),
   urls: coerceObject({
     streaming_api: z.string().url().optional().catch(undefined),
   }),
@@ -200,6 +201,7 @@ const instanceSchema = z.preprocess((data: any) => {
     registrations,
     short_description,
     thumbnail,
+    uri,
     urls,
     ...instance
   } = instanceV1Schema.parse(data);
@@ -231,6 +233,7 @@ const instanceSchema = z.preprocess((data: any) => {
       email: email,
     },
     description: short_description || description,
+    domain: uri,
     pleroma: {
       ...pleroma,
       metadata: {
