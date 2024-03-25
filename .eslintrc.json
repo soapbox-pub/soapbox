@@ -22,7 +22,8 @@
     "import",
     "promise",
     "react-hooks",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "formatjs"
   ],
   "parserOptions": {
     "sourceType": "module",
@@ -311,7 +312,12 @@
         "config": "tailwind.config.ts"
       }
     ],
-    "tailwindcss/migration-from-tailwind-2": "error"
+    "tailwindcss/migration-from-tailwind-2": "error",
+
+
+    "formatjs/enforce-default-message": "error",
+    "formatjs/enforce-id": "error",
+    "formatjs/no-literal-string-in-jsx": "warn"
   },
   "overrides": [
     {

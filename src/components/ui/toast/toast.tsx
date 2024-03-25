@@ -142,7 +142,7 @@ const Toast = (props: IToast) => {
               onClick={dismissToast}
               data-testid='toast-dismiss'
             >
-              <span className='sr-only'>Close</span>
+              <span className='sr-only'><FormattedMessage id='lightbox.close' defaultMessage='Close' /></span>
               <Icon src={require('@tabler/icons/x.svg')} className='h-5 w-5' />
             </button>
           </div>

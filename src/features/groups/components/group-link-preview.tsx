@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { Avatar, Button, CardTitle, Stack } from 'soapbox/components/ui';
 import { type Card as StatusCard } from 'soapbox/types/entities';
@@ -28,7 +29,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
         <CardTitle title={<span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />} />
 
         <Button theme='primary' to={`/group/${group.slug}`} block>
-          View Group
+          <FormattedMessage id='group.popover.action' defaultMessage='View Group' />
         </Button>
       </Stack>
     </Stack>

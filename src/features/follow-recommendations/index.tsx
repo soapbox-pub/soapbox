@@ -9,7 +9,7 @@ import AccountContainer from 'soapbox/containers/account-container';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
-  heading: { id: 'followRecommendations.heading', defaultMessage: 'Suggested Profiles' },
+  heading: { id: 'follow_recommendations.heading', defaultMessage: 'Suggested Profiles' },
 });
 
 const FollowRecommendations: React.FC = () => {

@@ -26,7 +26,7 @@ import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
 const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },
   delete: { id: 'chats.actions.delete', defaultMessage: 'Delete for both' },
-  deleteForMe: { id: 'chats.actions.deleteForMe', defaultMessage: 'Delete for me' },
+  deleteForMe: { id: 'chats.actions.delete_for_me', defaultMessage: 'Delete for me' },
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
   report: { id: 'chats.actions.report', defaultMessage: 'Report' },
 });
