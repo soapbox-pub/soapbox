@@ -325,7 +325,7 @@ const EditProfile: React.FC = () => {
               type='text'
               value={data.nip05}
               onChange={handleTextChange('nip05')}
-              placeholder={intl.formatMessage(messages.nip05Placeholder, { domain: location.host })}
+              placeholder={intl.formatMessage(messages.nip05Placeholder, { domain: instance.domain })}
             />
           </FormGroup>
         )}
