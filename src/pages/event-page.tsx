@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { Column, Layout, Tabs } from 'soapbox/components/ui';
@@ -46,12 +47,12 @@ const EventPage: React.FC<IEventPage> = ({ params, children }) => {
 
   const tabs = status ? [
     {
-      text: 'Information',
+      text: <FormattedMessage id='event.information' defaultMessage='Information' />,
       to: `/@${status.getIn(['account', 'acct'])}/events/${status.id}`,
       name: 'info',
     },
     {
-      text: 'Discussion',
+      text: <FormattedMessage id='event.discussion' defaultMessage='Discussion' />,
       to: `/@${status.getIn(['account', 'acct'])}/events/${status.id}/discussion`,
       name: 'discussion',
     },

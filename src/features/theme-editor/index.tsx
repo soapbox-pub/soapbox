@@ -25,6 +25,16 @@ const messages = defineMessages({
   export: { id: 'theme_editor.export', defaultMessage: 'Export theme' },
   import: { id: 'theme_editor.import', defaultMessage: 'Import theme' },
   importSuccess: { id: 'theme_editor.import_success', defaultMessage: 'Theme was successfully imported!' },
+  colorPrimary: { id: 'theme_editor.colors.primary', defaultMessage: 'Primary' },
+  colorSecondary: { id: 'theme_editor.colors.secondary', defaultMessage: 'Secondary' },
+  colorAccent: { id: 'theme_editor.colors.accent', defaultMessage: 'Accent' },
+  colorGray: { id: 'theme_editor.colors.gray', defaultMessage: 'Gray' },
+  colorSuccess: { id: 'theme_editor.colors.success', defaultMessage: 'Success' },
+  colorDanger: { id: 'theme_editor.colors.danger', defaultMessage: 'Danger' },
+  colorGreentext: { id: 'theme_editor.colors.greentext', defaultMessage: 'Greentext' },
+  colorAccentBlue: { id: 'theme_editor.colors.accent_blue', defaultMessage: 'Accent Blue' },
+  colorGradientStart: { id: 'theme_editor.colors.gradient_start', defaultMessage: 'Gradient Start' },
+  colorGradientEnd: { id: 'theme_editor.colors.gradient_end', defaultMessage: 'Gradient End' },
 });
 
 interface IThemeEditor {
@@ -125,42 +135,42 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
       <Form onSubmit={handleSubmit}>
         <List>
           <PaletteListItem
-            label='Primary'
+            label={intl.formatMessage(messages.colorPrimary)}
             palette={colors.primary}
             onChange={updateColors('primary')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
-            label='Secondary'
+            label={intl.formatMessage(messages.colorSecondary)}
             palette={colors.secondary}
             onChange={updateColors('secondary')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
-            label='Accent'
+            label={intl.formatMessage(messages.colorAccent)}
             palette={colors.accent}
             onChange={updateColors('accent')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
-            label='Gray'
+            label={intl.formatMessage(messages.colorGray)}
             palette={colors.gray}
             onChange={updateColors('gray')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
-            label='Success'
+            label={intl.formatMessage(messages.colorSuccess)}
             palette={colors.success}
             onChange={updateColors('success')}
             resetKey={resetKey}
           />
 
           <PaletteListItem
-            label='Danger'
+            label={intl.formatMessage(messages.colorDanger)}
             palette={colors.danger}
             onChange={updateColors('danger')}
             resetKey={resetKey}
@@ -169,25 +179,25 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 
         <List>
           <ColorListItem
-            label='Greentext'
+            label={intl.formatMessage(messages.colorGreentext)}
             value={colors.greentext}
             onChange={updateColor('greentext')}
           />
 
           <ColorListItem
-            label='Accent Blue'
+            label={intl.formatMessage(messages.colorAccentBlue)}
             value={colors['accent-blue']}
             onChange={updateColor('accent-blue')}
           />
 
           <ColorListItem
-            label='Gradient Start'
+            label={intl.formatMessage(messages.colorGradientStart)}
             value={colors['gradient-start']}
             onChange={updateColor('gradient-start')}
           />
 
           <ColorListItem
-            label='Gradient End'
+            label={intl.formatMessage(messages.colorGradientEnd)}
             value={colors['gradient-end']}
             onChange={updateColor('gradient-end')}
           />
@@ -210,7 +220,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
             }]}
           />
           <Button theme='secondary' onClick={resetTheme}>
-            <FormattedMessage id='theme_editor.Reset' defaultMessage='Reset' />
+            <FormattedMessage id='theme_editor.reset' defaultMessage='Reset' />
           </Button>
 
           <Button type='submit' theme='primary' disabled={submitting}>

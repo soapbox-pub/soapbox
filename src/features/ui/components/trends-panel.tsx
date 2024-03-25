@@ -15,7 +15,7 @@ interface ITrendsPanel {
 
 const messages = defineMessages({
   viewAll: {
-    id: 'trendsPanel.viewAll',
+    id: 'trends_panel.view_all',
     defaultMessage: 'View all',
   },
 });
