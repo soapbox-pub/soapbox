@@ -382,7 +382,7 @@ const Thread = (props: IThread) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 dark:border-gray-800' />
+              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
 
               <StatusActionBar
                 status={status}
@@ -396,7 +396,7 @@ const Thread = (props: IThread) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-gray-800' />
+        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
       )}
     </div>
   );

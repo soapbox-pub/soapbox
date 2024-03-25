@@ -81,7 +81,7 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
       <div
         className={
           clsx({
-            'p-4 rounded-b-lg border-t border-solid border-gray-100 dark:border-primary-900': true,
+            'p-4 rounded-b-lg border-t border-solid border-gray-100 dark:border-primary-900 black:border-black': true,
             'h-0 hidden': !expanded,
           })
         }
