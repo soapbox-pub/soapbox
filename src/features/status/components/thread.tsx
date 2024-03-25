@@ -445,7 +445,7 @@ const Thread = (props: IThread) => {
           initialTopMostItemIndex={initialTopMostItemIndex}
           useWindowScroll={useWindowScroll}
           itemClassName={itemClassName}
-          className={
+          listClassName={
             clsx({
               'h-full': !useWindowScroll,
             })

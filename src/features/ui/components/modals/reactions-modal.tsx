@@ -98,9 +98,10 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className={clsx('max-w-full', {
+        className={clsx({
           'mt-4': reactions.size > 0,
         })}
+        listClassName='max-w-full'
         itemClassName='pb-3'
       >
         {accounts.map((account) =>
