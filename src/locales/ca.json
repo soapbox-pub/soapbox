@@ -544,7 +544,6 @@
   "status.remove_account_from_group": "Suprimeix el compte del grup",
   "status.remove_post_from_group": "Suprimeix l'entrada del grup",
   "status.reply": "Respondre",
-  "status.replyAll": "Respondre al tema",
   "status.report": "Informar sobre @{name}",
   "status.sensitive_warning": "Contingut sensible",
   "status.share": "Compartir",

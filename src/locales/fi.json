@@ -369,7 +369,6 @@
   "status.reblogs.empty": "Kukaan ei ole vielä buustannut tätä tuuttausta. Kun joku tekee niin, näkyy kyseinen henkilö tässä.",
   "status.redraft": "Poista & palauta muokattavaksi",
   "status.reply": "Vastaa",
-  "status.replyAll": "Vastaa ketjuun",
   "status.report": "Raportoi @{name}",
   "status.sensitive_warning": "Arkaluontoista sisältöä",
   "status.share": "Jaa",

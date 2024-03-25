@@ -435,7 +435,6 @@
   "status.reblogged_by": "{name} передмухнув(-ла)",
   "status.reblogs.empty": "Ніхто ще не передмухнув цього дмуху. Коли якісь користувачі це зроблять, вони будуть відображені тут.",
   "status.reply": "Відповісти",
-  "status.replyAll": "Відповісти на ланцюжок",
   "status.report": "Поскаржитися на @{name}",
   "status.sensitive_warning": "Дражливий зміст",
   "status.share": "Поділитися",

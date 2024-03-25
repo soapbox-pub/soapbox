@@ -376,7 +376,6 @@
   "status.reblogs.empty": "Ninguén promoveu este toot polo de agora. Cando alguén o faga, mostraránse aquí.",
   "status.redraft": "Eliminar & reescribir",
   "status.reply": "Resposta",
-  "status.replyAll": "Resposta a conversa",
   "status.report": "Informar @{name}",
   "status.sensitive_warning": "Contido sensible",
   "status.share": "Compartir",

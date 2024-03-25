@@ -376,7 +376,6 @@
   "status.reblogs.empty": "ยังไม่มีใครดันโพสต์นี้ เมื่อใครสักคนดัน เขาจะปรากฏที่นี่",
   "status.redraft": "ลบแล้วร่างใหม่",
   "status.reply": "ตอบกลับ",
-  "status.replyAll": "ตอบกลับกระทู้",
   "status.report": "รายงาน @{name}",
   "status.sensitive_warning": "เนื้อหาที่ละเอียดอ่อน",
   "status.share": "แบ่งปัน",
