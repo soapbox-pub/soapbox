@@ -48,7 +48,7 @@ const ReblogsModal: React.FC<IReblogsModal> = ({ onClose, statusId }) => {
       <ScrollableList
         scrollKey='reblogs'
         emptyMessage={emptyMessage}
-        className='max-w-full'
+        listClassName='max-w-full'
         itemClassName='pb-3'
         style={{ height: '80vh' }}
         useWindowScroll={false}

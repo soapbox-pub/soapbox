@@ -35,7 +35,7 @@ const Reports: React.FC = () => {
       showLoading={showLoading}
       scrollKey='admin-reports'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
-      className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
+      listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {reports.map(report => report && <Report id={report} key={report} />)}
     </ScrollableList>

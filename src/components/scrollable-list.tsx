@@ -71,6 +71,8 @@ interface IScrollableList extends VirtuosoProps<any, any> {
   onRefresh?: () => Promise<any>;
   /** Extra class names on the Virtuoso element. */
   className?: string;
+  /** Extra class names on the list element. */
+  listClassName?: string;
   /** Class names on each item container. */
   itemClassName?: string;
   /** `id` attribute on the Virtuoso element. */
@@ -96,6 +98,7 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
   onScrollToTop,
   onLoadMore,
   className,
+  listClassName,
   itemClassName,
   id,
   hasMore,
@@ -233,9 +236,10 @@ const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
       itemContent={renderItem}
       initialTopMostItemIndex={initialIndex}
       rangeChanged={handleRangeChange}
+      className={className}
       style={style}
       context={{
-        listClassName: className,
+        listClassName,
         itemClassName,
       }}
       components={{

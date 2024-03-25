@@ -286,9 +286,10 @@ const Account = ({
                 </Text>
               ) : withAccountNote && (
                 <Text
+                  truncate
                   size='sm'
                   dangerouslySetInnerHTML={{ __html: account.note_emojified }}
-                  className='mr-2 rtl:ml-2 rtl:mr-0'
+                  className='mr-2 rtl:ml-2 rtl:mr-0 [&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
                 />
               )}
             </Stack>
