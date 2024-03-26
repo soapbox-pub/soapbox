@@ -1225,6 +1225,7 @@
   "register_invite.lead": "Completa questo modulo per creare il tuo profilo.",
   "register_invite.title": "Hai ricevuto un invito su {siteTitle}, iscriviti!",
   "registration.agreement": "Accetto e autorizzo: {tos} ai sensi del Regolamento Europeo 679/2016 GDPR.",
+  "registration.captcha": "Captcha",
   "registration.captcha.hint": "Se il codice è illegibile, cliccalo per cambiarlo",
   "registration.captcha.placeholder": "Digita i caratteri disegnati sopra",
   "registration.closed_message": "{instance} non accetta le richieste di iscrizione",
