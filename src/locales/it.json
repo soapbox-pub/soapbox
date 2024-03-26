@@ -1549,6 +1549,7 @@
   "toast.view": "Mostra",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {persona ne sta} other {persone ne stanno}} parlando",
   "trends.title": "Tendenze",
+  "trends_panel.view_all": "Di più",
   "unauthorized_modal.text": "Per fare questo, devi prima autenticarti.",
   "unauthorized_modal.title": "Iscriviti su {site_title}",
   "upload_button.label": "Aggiungi allegati",
