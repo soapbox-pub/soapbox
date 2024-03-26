@@ -1283,7 +1283,7 @@
   "reply_mentions.reply_empty": "Rispondendo alla pubblicazione",
   "report.block": "Blocca {target}",
   "report.block_hint": "Vuoi anche bloccare questa persona?",
-  "report.chat_message.context": "Quando segnali il messaggio di una persona, verranno comunicati al gruppo di moderazione, 5 messaggi precedenti e 5 messaggi successivi quello selezionato. Per una migliore comprensione.",
+  "report.chat_message.context": "Per migliorare la comprensione del contesto, quando segnali il messaggio di una persona, verranno comunicati al gruppo di moderazione i 5 messaggi precedenti e i 5 messaggi successivi a quello selezionato.",
   "report.chat_message.title": "Segnala messaggio",
   "report.confirmation.content": "Se riscontriamo che {entity} viola {link}, prenderemo provvedimenti.",
   "report.confirmation.entity.account": "profilo",
