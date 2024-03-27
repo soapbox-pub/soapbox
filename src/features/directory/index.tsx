@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
@@ -53,9 +53,13 @@ const Directory = () => {
       <Stack space={4}>
         <div className='grid grid-cols-2 gap-2'>
           <div>
-            <Text weight='medium'>Display filter</Text>
+            <Text weight='medium'>
+              <FormattedMessage id='directory.display_filter' defaultMessage='Display filter' />
+            </Text>
             <fieldset className='mt-3'>
-              <legend className='sr-only'>Display filter</legend>
+              <legend className='sr-only'>
+                <FormattedMessage id='directory.display_filter' defaultMessage='Display filter' />
+              </legend>
               <div className='space-y-2'>
                 <RadioButton name='order' value='active' label={intl.formatMessage(messages.recentlyActive)} checked={order === 'active'} onChange={handleChangeOrder} />
                 <RadioButton name='order' value='new' label={intl.formatMessage(messages.newArrivals)} checked={order === 'new'} onChange={handleChangeOrder} />
@@ -65,9 +69,13 @@ const Directory = () => {
 
           {features.federating && (
             <div>
-              <Text weight='medium'>Fediverse filter</Text>
+              <Text weight='medium'>
+                <FormattedMessage id='directory.fediverse_filter' defaultMessage='Fediverse filter' />
+              </Text>
               <fieldset className='mt-3'>
-                <legend className='sr-only'>Fediverse filter</legend>
+                <legend className='sr-only'>
+                  <FormattedMessage id='directory.fediverse_filter' defaultMessage='Fediverse filter' />
+                </legend>
                 <div className='space-y-2'>
                   <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: instance.title })} checked={local} onChange={handleChangeLocal} />
                   <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={handleChangeLocal} />

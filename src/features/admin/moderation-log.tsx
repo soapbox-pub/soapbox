@@ -56,7 +56,7 @@ const ModerationLog = () => {
         emptyMessage={intl.formatMessage(messages.emptyMessage)}
         hasMore={hasMore}
         onLoadMore={handleLoadMore}
-        className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
+        listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
       >
         {items.map(item => item && (
           <LogItem key={item.id} log={item} />

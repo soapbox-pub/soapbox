@@ -13,9 +13,9 @@ interface ISiteLogo extends React.ComponentProps<'img'> {
 /** Display the most appropriate site logo based on the theme and configuration. */
 const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   const { logo, logoDarkMode } = useSoapboxConfig();
-  const settings = useSettings();
+  const { demo } = useSettings();
 
-  let darkMode = useTheme() === 'dark';
+  let darkMode = ['dark', 'black'].includes(useTheme());
   if (theme === 'dark') darkMode = true;
 
   /** Soapbox logo. */
@@ -26,7 +26,7 @@ const SiteLogo: React.FC<ISiteLogo> = ({ className, theme, ...rest }) => {
   // Use the right logo if provided, then use fallbacks.
   const getSrc = () => {
     // In demo mode, use the Soapbox logo.
-    if (settings.get('demo')) return soapboxLogo;
+    if (demo) return soapboxLogo;
 
     return (darkMode && logoDarkMode)
       ? logoDarkMode

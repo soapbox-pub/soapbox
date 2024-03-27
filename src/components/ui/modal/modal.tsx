@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
 import { ButtonThemes } from '../button/useButtonStyles';
@@ -8,6 +8,7 @@ import HStack from '../hstack/hstack';
 import IconButton from '../icon-button/icon-button';
 
 const messages = defineMessages({
+  back: { id: 'card.back.label', defaultMessage: 'Back' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
@@ -56,6 +57,7 @@ interface IModal {
   width?: keyof typeof widths;
   children?: React.ReactNode;
   className?: string;
+  onBack?: () => void;
 }
 
 /** Displays a modal dialog box. */
@@ -78,6 +80,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   title,
   width = 'xl',
   className,
+  onBack,
 }, ref) => {
   const intl = useIntl();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
@@ -92,7 +95,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
     <div
       ref={ref}
       data-testid='modal'
-      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all dark:bg-primary-900 dark:text-gray-100', widths[width])}
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', widths[width])}
     >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
@@ -102,6 +105,15 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                 'flex-row-reverse': closePosition === 'left',
               })}
             >
+              {onBack && (
+                <IconButton
+                  src={require('@tabler/icons/arrow-left.svg')}
+                  title={intl.formatMessage(messages.back)}
+                  onClick={onBack}
+                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+                />
+              )}
+
               <h3 className='grow truncate text-lg font-bold leading-6 text-gray-900 dark:text-white'>
                 {title}
               </h3>
@@ -133,7 +145,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                 theme='tertiary'
                 onClick={cancelAction}
               >
-                {cancelText || 'Cancel'}
+                {cancelText || <FormattedMessage id='common.cancel' defaultMessage='Cancel' />}
               </Button>
             )}
           </div>

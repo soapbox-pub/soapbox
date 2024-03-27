@@ -6,10 +6,14 @@ import { Button, HStack, Input } from './ui';
 interface ICopyableInput {
   /** Text to be copied. */
   value: string;
+  /** Input type. */
+  type?: 'text' | 'password';
+  /** Callback after the value has been copied. */
+  onCopy?(): void;
 }
 
 /** An input with copy abilities. */
-const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
+const CopyableInput: React.FC<ICopyableInput> = ({ value, type = 'text', onCopy }) => {
   const input = useRef<HTMLInputElement>(null);
 
   const selectInput = () => {
@@ -20,13 +24,15 @@ const CopyableInput: React.FC<ICopyableInput> = ({ value }) => {
     } else {
       document.execCommand('copy');
     }
+
+    onCopy?.();
   };
 
   return (
     <HStack alignItems='center'>
       <Input
         ref={input}
-        type='text'
+        type={type}
         value={value}
         className='rounded-r-none rtl:rounded-l-none rtl:rounded-r-lg'
         outerClassName='grow'

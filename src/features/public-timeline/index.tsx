@@ -7,7 +7,7 @@ import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import { usePublicStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useInstance, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme } from 'soapbox/hooks';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker';
 import Timeline from '../ui/components/timeline';
@@ -20,16 +20,17 @@ const messages = defineMessages({
 const CommunityTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
 
   const instance = useInstance();
   const settings = useSettings();
-  const onlyMedia = !!settings.getIn(['public', 'other', 'onlyMedia'], false);
+  const onlyMedia = settings.public.other.onlyMedia;
   const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
 
-  const explanationBoxExpanded = settings.get('explanationBox');
-  const showExplanationBox = settings.get('showExplanationBox');
+  const explanationBoxExpanded = settings.explanationBox;
+  const showExplanationBox = settings.showExplanationBox;
 
   const dismissExplanationBox = () => {
     dispatch(changeSetting(['showExplanationBox'], false));
@@ -57,7 +58,7 @@ const CommunityTimeline = () => {
     <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent>
       <PinnedHostsPicker />
 
-      {showExplanationBox && <div className='mb-4'>
+      {showExplanationBox && <div className='mb-4 black:mx-4'>
         <Accordion
           headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
           action={dismissExplanationBox}
@@ -86,12 +87,13 @@ const CommunityTimeline = () => {
       </div>}
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
+          className='black:p-4 black:sm:p-5'
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
           prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
-          divideType='space'
+          divideType={theme === 'black' ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>

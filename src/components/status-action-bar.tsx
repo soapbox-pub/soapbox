@@ -92,7 +92,7 @@ const messages = defineMessages({
   redraftMessage: { id: 'confirmations.redraft.message', defaultMessage: 'Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.' },
   replies_disabled_group: { id: 'status.disabled_replies.group_membership', defaultMessage: 'Only group members can reply' },
   reply: { id: 'status.reply', defaultMessage: 'Reply' },
-  replyAll: { id: 'status.replyAll', defaultMessage: 'Reply to thread' },
+  replyAll: { id: 'status.reply_all', defaultMessage: 'Reply to thread' },
   replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
   report: { id: 'status.report', defaultMessage: 'Report @{name}' },
@@ -136,7 +136,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const me = useAppSelector(state => state.me);
   const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
-  const settings = useSettings();
+  const { boostModal, deleteModal } = useSettings();
   const soapboxConfig = useSoapboxConfig();
 
   const { allowedEmoji } = soapboxConfig;
@@ -208,7 +208,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
       const modalReblog = () => dispatch(toggleReblog(status));
-      const boostModal = settings.get('boostModal');
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
@@ -229,7 +228,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const doDeleteStatus = (withRedraft = false) => {
     dispatch((_, getState) => {
-      const deleteModal = settings.get('deleteModal');
       if (!deleteModal) {
         dispatch(deleteStatus(status.id, withRedraft));
       } else {

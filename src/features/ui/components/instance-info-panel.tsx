@@ -25,7 +25,7 @@ const InstanceInfoPanel: React.FC<IInstanceInfoPanel> = ({ host }) => {
 
   const settings = useSettings();
   const remoteInstance: any = useAppSelector(state => getRemoteInstance(state, host));
-  const pinned: boolean = (settings.getIn(['remote_timeline', 'pinnedHosts']) as any).includes(host);
+  const pinned = settings.remote_timeline.pinnedHosts.includes(host);
 
   const handlePinHost = () => {
     if (!pinned) {

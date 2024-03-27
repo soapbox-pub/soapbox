@@ -38,14 +38,21 @@ export const accountIdsToAccts = (state: RootState, ids: string[]) => ids.map((i
 
 const getAccountBase         = (state: RootState, id: string) => state.entities[Entities.ACCOUNTS]?.store[id] as Account | undefined;
 const getAccountRelationship = (state: RootState, id: string) => state.relationships.get(id);
+const getAccountMeta         = (state: RootState, id: string) => state.accounts_meta[id];
 
 export const makeGetAccount = () => {
   return createSelector([
     getAccountBase,
     getAccountRelationship,
-  ], (account, relationship) => {
+    getAccountMeta,
+  ], (account, relationship, meta) => {
     if (!account) return null;
-    return { ...account, relationship };
+    return {
+      ...account,
+      relationship,
+      source: meta?.source ?? account.source,
+      pleroma: meta?.pleroma ?? account.pleroma,
+    };
   });
 };
 

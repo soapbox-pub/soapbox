@@ -28,7 +28,7 @@ const MenuList: React.FC<IMenuList> = (props) => {
       <MenuItems
         onKeyDown={(event) => event.nativeEvent.stopImmediatePropagation()}
         className={
-          clsx(className, 'shadow-menu rounded-lg bg-white py-1 dark:bg-primary-900')
+          clsx(className, 'shadow-menu rounded-lg bg-white py-1 black:bg-black dark:bg-primary-900')
         }
         {...filteredProps}
       />
@@ -37,6 +37,6 @@ const MenuList: React.FC<IMenuList> = (props) => {
 };
 
 /** Divides menu items. */
-const MenuDivider = () => <hr className='mx-2 my-1 border-t-2 border-gray-100 dark:border-gray-800' />;
+const MenuDivider = () => <hr className='mx-2 my-1 border-t-2 border-gray-100 black:border-t dark:border-gray-800' />;
 
 export { Menu, MenuButton, MenuDivider, MenuItems, MenuItem, MenuList, MenuLink };

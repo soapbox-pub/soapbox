@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -57,7 +56,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
         <Text
           truncate
           align='left'
-          className={clsx('[&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden')}
+          className='[&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
           dangerouslySetInnerHTML={{ __html: account.note_emojified || '&nbsp;' }}
         />
       </Stack>

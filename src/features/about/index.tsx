@@ -18,7 +18,7 @@ const AboutPage: React.FC = () => {
   const soapboxConfig = useSoapboxConfig();
 
   const [pageHtml, setPageHtml] = useState<string>('');
-  const [locale, setLocale] = useState<string>(settings.get('locale'));
+  const [locale, setLocale] = useState<string>(settings.locale);
 
   const { aboutPages } = soapboxConfig;
 

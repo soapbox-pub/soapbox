@@ -124,7 +124,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
       {visible && (
         <div
           ref={refs.setFloating}
-          className='z-[1003] mt-2 max-w-xs rounded-md bg-white shadow-lg focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700'
+          className='z-[1003] mt-2 max-w-xs rounded-md bg-white shadow-lg focus:outline-none black:bg-black dark:bg-gray-900 dark:ring-2 dark:ring-primary-700'
           style={{
             position: strategy,
             top: y ?? 0,

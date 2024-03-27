@@ -5,7 +5,7 @@ import { expandCommunityTimeline } from 'soapbox/actions/timelines';
 import { useCommunityStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useInstance, useTheme } from 'soapbox/hooks';
 
 import AboutPage from '../about';
 import Timeline from '../ui/components/timeline';
@@ -15,6 +15,7 @@ import { SiteBanner } from './components/site-banner';
 const LandingTimeline = () => {
   const dispatch = useAppDispatch();
   const instance = useInstance();
+  const theme = useTheme();
 
   const timelineEnabled = !instance.pleroma.metadata.restrict_unauthenticated.timelines.local;
   const next = useAppSelector(state => state.timelines.get('community')?.next);
@@ -50,12 +51,13 @@ const LandingTimeline = () => {
       {timelineEnabled ? (
         <PullToRefresh onRefresh={handleRefresh}>
           <Timeline
+            className='black:p-4 black:sm:p-5'
             scrollKey={`${timelineId}_timeline`}
             timelineId={timelineId}
             prefix='home'
             onLoadMore={handleLoadMore}
             emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
-            divideType='space'
+            divideType={theme === 'black' ? 'border' : 'space'}
           />
         </PullToRefresh>
       ) : (

@@ -78,7 +78,7 @@
 }
 
 .actions-modal {
-  @apply flex-col relative text-gray-400 overflow-hidden w-full max-w-lg m-auto bg-white dark:bg-gray-900 shadow-xl rounded-2xl;
+  @apply flex-col relative text-gray-400 overflow-hidden w-full max-w-lg m-auto bg-white black:bg-black dark:bg-gray-900 shadow-xl rounded-2xl;
   max-height: calc(100vh - 3rem);
 
   &__item-label {
@@ -86,7 +86,7 @@
   }
 
   .dropdown-menu__separator {
-    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
+    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600 black:bg-gray-800;
   }
 
   &__status {

@@ -100,7 +100,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
     if (actualStatus.pleroma.get('quote_visible', true) === false) {
       quote = (
         <div className='quoted-actualStatus-tombstone'>
-          <p><FormattedMessage id='actualStatuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          <p><FormattedMessage id='status.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
     } else {
@@ -190,7 +190,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                     tabIndex={0}
                   >
                     <Text tag='span' theme='muted' size='sm'>
-                      <FormattedMessage id='actualStatus.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: true, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit' }) }} />
+                      <FormattedMessage id='status.edited' defaultMessage='Edited {date}' values={{ date: intl.formatDate(new Date(actualStatus.edited_at), { hour12: true, month: 'short', day: '2-digit', hour: 'numeric', minute: '2-digit' }) }} />
                     </Text>
                   </div>
                 </>

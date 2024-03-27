@@ -22,8 +22,7 @@ export interface IStillImage {
 
 /** Renders images on a canvas, only playing GIFs if autoPlayGif is enabled. */
 const StillImage: React.FC<IStillImage> = ({ alt, className, src, style, letterboxed = false, showExt = false, onError }) => {
-  const settings = useSettings();
-  const autoPlayGif = settings.get('autoPlayGif');
+  const { autoPlayGif } = useSettings();
 
   const canvas = useRef<HTMLCanvasElement>(null);
   const img    = useRef<HTMLImageElement>(null);

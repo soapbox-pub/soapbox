@@ -49,7 +49,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
           count={count}
           countMax={countMax}
           className={clsx('h-5 w-5', {
-            'text-gray-600 dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400': !isActive,
+            'text-gray-600 black:text-white dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400': !isActive,
             'text-primary-500 dark:text-primary-400': isActive,
           })}
         />

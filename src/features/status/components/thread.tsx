@@ -26,8 +26,6 @@ import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/statu
 import DetailedStatus from './detailed-status';
 import ThreadStatus from './thread-status';
 
-type DisplayMedia = 'default' | 'hide_all' | 'show_all';
-
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,
   (state: RootState) => state.contexts.inReplyTos,
@@ -96,9 +94,8 @@ const Thread = (props: IThread) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
-  const settings = useSettings();
+  const { displayMedia } = useSettings();
 
-  const displayMedia = settings.get('displayMedia') as DisplayMedia;
   const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {
@@ -385,7 +382,7 @@ const Thread = (props: IThread) => {
 
           {!isUnderReview ? (
             <>
-              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 dark:border-gray-800' />
+              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
 
               <StatusActionBar
                 status={status}
@@ -399,7 +396,7 @@ const Thread = (props: IThread) => {
       </HotKeys>
 
       {hasDescendants && (
-        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 dark:border-gray-800' />
+        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
       )}
     </div>
   );
@@ -448,7 +445,7 @@ const Thread = (props: IThread) => {
           initialTopMostItemIndex={initialTopMostItemIndex}
           useWindowScroll={useWindowScroll}
           itemClassName={itemClassName}
-          className={
+          listClassName={
             clsx({
               'h-full': !useWindowScroll,
             })

@@ -12,11 +12,11 @@ import { getDomain } from 'soapbox/utils/accounts';
 import type { Account } from 'soapbox/schemas';
 
 const messages = defineMessages({
-  addAdditionalStatuses: { id: 'report.otherActions.addAdditional', defaultMessage: 'Would you like to add additional statuses to this report?' },
-  addMore: { id: 'report.otherActions.addMore', defaultMessage: 'Add more' },
-  furtherActions: { id: 'report.otherActions.furtherActions', defaultMessage: 'Further actions:' },
-  hideAdditionalStatuses: { id: 'report.otherActions.hideAdditional', defaultMessage: 'Hide additional statuses' },
-  otherStatuses: { id: 'report.otherActions.otherStatuses', defaultMessage: 'Include other statuses?' },
+  addAdditionalStatuses: { id: 'report.other_actions.add_additional', defaultMessage: 'Would you like to add additional statuses to this report?' },
+  addMore: { id: 'report.other_actions.add_more', defaultMessage: 'Add more' },
+  furtherActions: { id: 'report.other_actions.further_actions', defaultMessage: 'Further actions:' },
+  hideAdditionalStatuses: { id: 'report.other_actions.hide_additional', defaultMessage: 'Hide additional statuses' },
+  otherStatuses: { id: 'report.other_actions.other_statuses', defaultMessage: 'Include other statuses?' },
 });
 
 interface IOtherActionsStep {

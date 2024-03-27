@@ -15,7 +15,7 @@ interface IPlaceholderStatus {
 const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
   <div
     className={clsx({
-      'status-placeholder bg-white dark:bg-primary-900': true,
+      'status-placeholder bg-white black:bg-black dark:bg-primary-900': true,
       'shadow-xl dark:shadow-none sm:rounded-xl px-4 py-6 sm:p-5': variant === 'rounded',
       'py-4': variant === 'slim',
     })}

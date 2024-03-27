@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { nostrLogIn } from 'soapbox/actions/nostr';
+import { openModal } from 'soapbox/actions/modals';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
@@ -40,9 +40,7 @@ const Navbar = () => {
   const onOpenSidebar = () => dispatch(openSidebar());
 
   const handleNostrLogin = async () => {
-    setLoading(true);
-    await dispatch(nostrLogIn()).catch(console.error);
-    setLoading(false);
+    dispatch(openModal('NOSTR_LOGIN'));
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {
@@ -72,7 +70,7 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='sticky top-0 z-50 bg-white shadow dark:bg-primary-900' ref={node} data-testid='navbar'>
+    <nav className='sticky top-0 z-50 bg-white shadow black:border-b black:border-b-gray-800 black:bg-black dark:bg-primary-900' ref={node} data-testid='navbar'>
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (

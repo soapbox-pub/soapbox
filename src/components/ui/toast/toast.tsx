@@ -106,7 +106,7 @@ const Toast = (props: IToast) => {
       data-testid='toast'
       className={
         clsx({
-          'p-4 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white dark:bg-gray-900 shadow-lg dark:ring-2 dark:ring-gray-800': true,
+          'p-4 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg bg-white black:bg-black dark:bg-gray-900 shadow-lg dark:ring-2 dark:ring-gray-800': true,
           'animate-enter': t.visible,
           'animate-leave': !t.visible,
         })
@@ -142,7 +142,7 @@ const Toast = (props: IToast) => {
               onClick={dismissToast}
               data-testid='toast-dismiss'
             >
-              <span className='sr-only'>Close</span>
+              <span className='sr-only'><FormattedMessage id='lightbox.close' defaultMessage='Close' /></span>
               <Icon src={require('@tabler/icons/x.svg')} className='h-5 w-5' />
             </button>
           </div>

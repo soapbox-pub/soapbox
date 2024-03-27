@@ -71,7 +71,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const history = useHistory();
 
   const features = useFeatures();
-  const settings = useSettings();
+  const { boostModal } = useSettings();
   const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
@@ -80,7 +80,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     return (
       <>
         <div className='-mx-4 -mt-4'>
-          <div className='relative h-32 w-full bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
         </div>
 
         <PlaceholderEventHeader />
@@ -123,7 +123,6 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleReblogClick = () => {
     const modalReblog = () => dispatch(toggleReblog(status));
-    const boostModal = settings.get('boostModal');
     if (!boostModal) {
       modalReblog();
     } else {
@@ -364,13 +363,13 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   return (
     <>
       <div className='-mx-4 -mt-4'>
-        <div className='relative h-32 w-full bg-gray-200 md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
+        <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
           {banner && (
             <a href={banner.url} onClick={handleHeaderClick} target='_blank'>
               <StillImage
                 src={banner.url}
                 alt={intl.formatMessage(messages.bannerHeader)}
-                className='absolute inset-0 h-full object-cover md:rounded-t-xl'
+                className='absolute inset-0 h-full object-cover black:rounded-t-none md:rounded-t-xl'
               />
             </a>
           )}

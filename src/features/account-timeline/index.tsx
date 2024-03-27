@@ -32,7 +32,7 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const [accountLoading, setAccountLoading] = useState<boolean>(!account);
 
   const path = withReplies ? `${account?.id}:with_replies` : account?.id;
-  const showPins = settings.getIn(['account_timeline', 'shows', 'pinned']) === true && !withReplies;
+  const showPins = settings.account_timeline.shows.pinned && !withReplies;
   const statusIds = useAppSelector(state => getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }));
   const featuredStatusIds = useAppSelector(state => getStatusIds(state, { type: `account:${account?.id}:pinned`, prefix: 'account_timeline' }));
 

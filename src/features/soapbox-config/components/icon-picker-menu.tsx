@@ -79,7 +79,7 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ icons, onClose, onPick, sty
 
   return (
     <div
-      className={clsx('absolute z-[101] -my-0.5')}
+      className='absolute z-[101] -my-0.5'
       style={{ transform: 'translateX(calc(-1 * env(safe-area-inset-right)))', ...style }}
       ref={setRef}
     >

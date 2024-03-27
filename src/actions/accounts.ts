@@ -1,8 +1,5 @@
-import { nip19 } from 'nostr-tools';
-
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
-import { signer } from 'soapbox/features/nostr/sign';
 import { selectAccount } from 'soapbox/selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
@@ -132,14 +129,8 @@ const noOp = () => new Promise(f => f(undefined));
 
 const createAccount = (params: Record<string, any>) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
-    const { instance } = getState();
-    const { nostrSignup } = getFeatures(instance);
-    const pubkey = (signer && nostrSignup) ? await signer.getPublicKey() : undefined;
-
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
-    return api(getState, 'app').post('/api/v1/accounts', params, {
-      headers: pubkey ? { authorization: `Bearer ${nip19.npubEncode(pubkey)}` } : undefined,
-    }).then(({ data: token }) => {
+    return api(getState, 'app').post('/api/v1/accounts', params).then(({ data: token }) => {
       return dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token });
     }).catch(error => {
       dispatch({ type: ACCOUNT_CREATE_FAIL, error, params });
@@ -154,7 +145,7 @@ const fetchAccount = (id: string) =>
     const account = selectAccount(getState(), id);
 
     if (account) {
-      return null;
+      return Promise.resolve(null);
     }
 
     dispatch(fetchAccountRequest(id));

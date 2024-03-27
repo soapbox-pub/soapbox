@@ -8,12 +8,12 @@ export const PERMISSION_MANAGE_REPORTS = 0x0000000000000010;
 type Permission = typeof PERMISSION_CREATE_GROUPS | typeof PERMISSION_INVITE_USERS | typeof PERMISSION_MANAGE_USERS | typeof PERMISSION_MANAGE_REPORTS
 
 export const hasPermission = (state: RootState, permission: Permission) => {
-  const account = state.accounts_meta.get(state.me as string)!;
+  return true;
+  // const role = state.accounts_meta[state.me as string]?.role;
 
-  if (!account?.role) return true;
+  // if (!role) return true;
+  // const { permissions } = role;
 
-  const permissions = account.getIn(['role', 'permissions']) as number;
-
-  if (!permission) return true;
-  return (permissions & permission) === permission;
+  // if (!permission) return true;
+  // return (permissions & permission) === permission;
 };

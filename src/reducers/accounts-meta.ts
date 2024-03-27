@@ -3,40 +3,48 @@
  * @module soapbox/reducers/accounts_meta
  */
 
-import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { produce } from 'immer';
 
 import { VERIFY_CREDENTIALS_SUCCESS, AUTH_ACCOUNT_REMEMBER_SUCCESS } from 'soapbox/actions/auth';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
+import { Account, accountSchema } from 'soapbox/schemas';
 
 import type { AnyAction } from 'redux';
 
-const MetaRecord = ImmutableRecord({
-  pleroma: ImmutableMap<string, any>(),
-  role: null as ImmutableMap<string, any> | null,
-  source: ImmutableMap<string, any>(),
-});
+interface AccountMeta {
+  pleroma: Account['pleroma'];
+  source: Account['source'];
+}
 
-export type Meta = ReturnType<typeof MetaRecord>;
-type State = ImmutableMap<string, Meta>;
+type State = Record<string, AccountMeta | undefined>;
 
-const importAccount = (state: State, account: ImmutableMap<string, any>) => {
-  const accountId = account.get('id');
+function importAccount(state: State, data: unknown): State {
+  const result = accountSchema.safeParse(data);
 
-  return state.set(accountId, MetaRecord({
-    pleroma: account.get('pleroma', ImmutableMap()).delete('settings_store'),
-    role: account.get('role', null),
-    source: account.get('source', ImmutableMap()),
-  }));
-};
+  if (!result.success) {
+    return state;
+  }
 
-export default function accounts_meta(state: State = ImmutableMap<string, Meta>(), action: AnyAction) {
+  const account = result.data;
+
+  return produce(state, draft => {
+    const existing = draft[account.id];
+
+    draft[account.id] = {
+      pleroma: account.pleroma ?? existing?.pleroma,
+      source: account.source ?? existing?.source,
+    };
+  });
+}
+
+export default function accounts_meta(state: Readonly<State> = {}, action: AnyAction): State {
   switch (action.type) {
     case ME_FETCH_SUCCESS:
     case ME_PATCH_SUCCESS:
-      return importAccount(state, ImmutableMap(fromJS(action.me)));
+      return importAccount(state, action.me);
     case VERIFY_CREDENTIALS_SUCCESS:
     case AUTH_ACCOUNT_REMEMBER_SUCCESS:
-      return importAccount(state, ImmutableMap(fromJS(action.account)));
+      return importAccount(state, action.account);
     default:
       return state;
   }

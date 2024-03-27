@@ -50,8 +50,8 @@ const Notifications = () => {
   const intl = useIntl();
   const settings = useSettings();
 
-  const showFilterBar = settings.getIn(['notifications', 'quickFilter', 'show']);
-  const activeFilter = settings.getIn(['notifications', 'quickFilter', 'active']);
+  const showFilterBar = settings.notifications.quickFilter.show;
+  const activeFilter = settings.notifications.quickFilter.active;
   const notifications = useAppSelector(state => getNotifications(state));
   const isLoading = useAppSelector(state => state.notifications.isLoading);
   // const isUnread = useAppSelector(state => state.notifications.unread > 0);
@@ -164,8 +164,8 @@ const Notifications = () => {
       onLoadMore={handleLoadOlder}
       onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
-      className={clsx({
-        'divide-y divide-gray-200 dark:divide-primary-800 divide-solid': notifications.size > 0,
+      listClassName={clsx({
+        'divide-y divide-gray-200 black:divide-gray-800 dark:divide-primary-800 divide-solid': notifications.size > 0,
         'space-y-2': notifications.size === 0,
       })}
     >

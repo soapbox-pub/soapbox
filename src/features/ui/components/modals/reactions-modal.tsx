@@ -13,7 +13,6 @@ import { ReactionRecord } from 'soapbox/reducers/user-lists';
 import type { Item } from 'soapbox/components/ui/tabs/tabs';
 
 const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
   all: { id: 'reactions.all', defaultMessage: 'All' },
 });
 
@@ -99,9 +98,10 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
-        className={clsx('max-w-full', {
+        className={clsx({
           'mt-4': reactions.size > 0,
         })}
+        listClassName='max-w-full'
         itemClassName='pb-3'
       >
         {accounts.map((account) =>

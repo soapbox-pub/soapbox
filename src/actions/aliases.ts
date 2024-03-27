@@ -105,8 +105,8 @@ const addToAliases = (account: Account) =>
     const features = getFeatures(instance);
 
     if (!features.accountMoving) {
-      const me = state.me;
-      const alsoKnownAs = state.accounts_meta.get(me as string)!.pleroma.get('also_known_as');
+      const me = state.me as string;
+      const alsoKnownAs = state.accounts_meta[me]?.pleroma?.also_known_as ?? [];
 
       dispatch(addToAliasesRequest());
 
@@ -156,8 +156,8 @@ const removeFromAliases = (account: string) =>
     const features = getFeatures(instance);
 
     if (!features.accountMoving) {
-      const me = state.me;
-      const alsoKnownAs = state.accounts_meta.get(me as string)!.pleroma.get('also_known_as');
+      const me = state.me as string;
+      const alsoKnownAs = state.accounts_meta[me]?.pleroma?.also_known_as ?? [];
 
       dispatch(removeFromAliasesRequest());
 

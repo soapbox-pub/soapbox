@@ -10,7 +10,6 @@ import EditListForm from './components/edit-list-form';
 import Search from './components/search';
 
 const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
   changeTitle: { id: 'lists.edit.submit', defaultMessage: 'Change title' },
   addToList: { id: 'lists.account.add', defaultMessage: 'Add to list' },
   removeFromList: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

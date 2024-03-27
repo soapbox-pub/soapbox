@@ -12,7 +12,6 @@ import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soa
 import ComposeForm from '../../../compose/components/compose-form';
 
 const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });

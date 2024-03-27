@@ -50,10 +50,10 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='space-y-3 pt-3 sm:pt-0 dark:divide-gray-800'>
+      <Layout.Main className='space-y-3 pt-3 black:space-y-0 sm:pt-0 dark:divide-gray-800'>
         {me && (
           <Card
-            className={clsx('relative z-[1] transition', {
+            className={clsx('relative z-[1] transition black:border-b black:border-gray-800', {
               'border-2 border-primary-600 border-dashed z-[99]': isDragging,
               'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
             })}

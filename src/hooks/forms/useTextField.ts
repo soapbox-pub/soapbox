@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
  * Returns props for `<input type="text">`.
  * If `initialValue` changes from undefined to a string, it will set the value.
  */
-function useTextField(initialValue: string | undefined) {
+function useTextField(initialValue?: string | undefined) {
   const [value, setValue] = useState(initialValue);
   const hasInitialValue = typeof initialValue === 'string';
 

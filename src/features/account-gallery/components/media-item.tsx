@@ -15,10 +15,7 @@ interface IMediaItem {
 }
 
 const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
-  const settings = useSettings();
-  const autoPlayGif = settings.get('autoPlayGif');
-  const displayMedia = settings.get('displayMedia');
-
+  const { autoPlayGif, displayMedia } = useSettings();
   const [visible, setVisible] = useState<boolean>(displayMedia !== 'hide_all' && !attachment.status?.sensitive || displayMedia === 'show_all');
 
   const handleMouseEnter: React.MouseEventHandler<HTMLVideoElement> = e => {

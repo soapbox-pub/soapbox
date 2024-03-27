@@ -47,7 +47,7 @@ const FavouritesModal: React.FC<IFavouritesModal> = ({ onClose, statusId }) => {
       <ScrollableList
         scrollKey='favourites'
         emptyMessage={emptyMessage}
-        className='max-w-full'
+        listClassName='max-w-full'
         itemClassName='pb-3'
         style={{ height: '80vh' }}
         useWindowScroll={false}
