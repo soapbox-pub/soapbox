@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, Column, Emoji, HStack, Icon, Input, Tooltip } from 'soapbox/components/ui';
+import { useNostr } from 'soapbox/contexts/nostr-context';
+import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq';
 import { useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -18,17 +20,22 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
 });
 
-const identifiers = [
-  'alex@alexgleason.me',
-  'lunk@alexgleason.me',
-  'yolo@alexgleason.me',
-];
-
 /** EditIdentity component. */
 const EditIdentity: React.FC<IEditIdentity> = () => {
   const intl = useIntl();
+  const instance = useInstance();
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
+  const { relay, signer } = useNostr();
+
+  const admin = instance.nostr?.pubkey;
+  const [username, setUsername] = useState<string>('');
+
+  const { events: labels } = useNostrReq(
+    admin
+      ? [{ kinds: [1985], authors: [admin], '#L': ['nip05'] }]
+      : [],
+  );
 
   if (!account) return null;
 
@@ -42,30 +49,51 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
     }
   };
 
+  const submit = async () => {
+    if (!admin || !signer || !relay) return;
+
+    const event = await signer.signEvent({
+      kind: 5950,
+      content: '',
+      tags: [
+        ['i', `${username}@${instance.domain}`, 'text'],
+        ['p', admin],
+      ],
+      created_at: Math.floor(Date.now() / 1000),
+    });
+
+    await relay.event(event);
+  };
+
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <List>
-        {identifiers.map((identifier) => (
-          <ListItem
-            key={identifier}
-            label={
-              <HStack alignItems='center' space={2}>
-                <span>{identifier}</span>
-                {(account.source?.nostr?.nip05 === identifier && account.acct !== identifier) && (
-                  <Tooltip text={intl.formatMessage(messages.unverified)}>
-                    <div>
-                      <Emoji className='h-4 w-4' emoji='⚠️' />
-                    </div>
-                  </Tooltip>
-                )}
-              </HStack>
-            }
-            isSelected={account.source?.nostr?.nip05 === identifier}
-            onSelect={() => updateNip05(identifier)}
-          />
-        ))}
-        <ListItem label={<UsernameInput />}>
-          <Button theme='accent'>Add</Button>
+        {labels.map((label) => {
+          const identifier = label.tags.find(([name]) => name === 'l')?.[1];
+          if (!identifier) return null;
+
+          return (
+            <ListItem
+              key={identifier}
+              label={
+                <HStack alignItems='center' space={2}>
+                  <span>{identifier}</span>
+                  {(account.source?.nostr?.nip05 === identifier && account.acct !== identifier) && (
+                    <Tooltip text={intl.formatMessage(messages.unverified)}>
+                      <div>
+                        <Emoji className='h-4 w-4' emoji='⚠️' />
+                      </div>
+                    </Tooltip>
+                  )}
+                </HStack>
+              }
+              isSelected={account.source?.nostr?.nip05 === identifier}
+              onSelect={() => updateNip05(identifier)}
+            />
+          );
+        })}
+        <ListItem label={<UsernameInput value={username} onChange={(e) => setUsername(e.target.value)} />}>
+          <Button theme='accent' onClick={submit}>Add</Button>
         </ListItem>
       </List>
     </Column>
