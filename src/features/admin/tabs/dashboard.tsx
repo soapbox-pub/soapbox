@@ -93,7 +93,7 @@ const Dashboard: React.FC = () => {
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
 
-        {features.announcements && (
+        {features.adminAnnouncements && (
           <ListItem
             to='/soapbox/admin/announcements'
             label={<FormattedMessage id='column.admin.announcements' defaultMessage='Announcements' />}

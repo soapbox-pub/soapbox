@@ -187,6 +187,17 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to manage announcements by admins.
+     * @see GET /api/v1/pleroma/admin/announcements
+     * @see GET /api/v1/pleroma/admin/announcements/:id
+     * @see POST /api/v1/pleroma/admin/announcements
+     * @see PATCH /api/v1/pleroma/admin/announcements/:id
+     * @see DELETE /api/v1/pleroma/admin/announcements/:id
+     * @see {@link https://docs.pleroma.social/backend/development/API/admin_api/#get-apiv1pleromaadminannouncements}
+     */
+    adminAnnouncements: v.software === PLEROMA && gte(v.version, '2.2.49'),
+
+    /**
      * An additional moderator interface is available on the domain.
      * @see /pleroma/admin
      */
