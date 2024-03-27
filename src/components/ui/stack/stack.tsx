@@ -32,8 +32,6 @@ const alignItemsOptions = {
 interface IStack extends React.HTMLAttributes<HTMLDivElement> {
   /** Horizontal alignment of children. */
   alignItems?: keyof typeof alignItemsOptions;
-  /** Extra class names on the element. */
-  className?: string;
   /** Vertical alignment of children. */
   justifyContent?: keyof typeof justifyContentOptions;
   /** Size of the gap between elements. */

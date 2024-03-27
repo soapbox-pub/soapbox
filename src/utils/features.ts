@@ -187,6 +187,17 @@ const getInstanceFeatures = (instance: Instance) => {
     accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
+     * Ability to manage announcements by admins.
+     * @see GET /api/v1/pleroma/admin/announcements
+     * @see GET /api/v1/pleroma/admin/announcements/:id
+     * @see POST /api/v1/pleroma/admin/announcements
+     * @see PATCH /api/v1/pleroma/admin/announcements/:id
+     * @see DELETE /api/v1/pleroma/admin/announcements/:id
+     * @see {@link https://docs.pleroma.social/backend/development/API/admin_api/#get-apiv1pleromaadminannouncements}
+     */
+    adminAnnouncements: v.software === PLEROMA && gte(v.version, '2.2.49'),
+
+    /**
      * An additional moderator interface is available on the domain.
      * @see /pleroma/admin
      */
@@ -371,6 +382,15 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET  /api/friendica/statuses/:id/disliked_by
      */
     dislikes: v.software === FRIENDICA && gte(v.version, '2023.3.0'),
+
+    /**
+     * Allow to register on a given domain
+     * @see GET /api/v1/pleroma/admin/domains
+     * @see POST /api/v1/pleroma/admin/domains
+     * @see PATCH /api/v1/pleroma/admin/domains/:id
+     * @see DELETE /api/v1/pleroma/admin/domains/:id
+     */
+    domains: instance.pleroma.metadata.multitenancy.enabled,
 
     /**
      * Ability to edit profile information.

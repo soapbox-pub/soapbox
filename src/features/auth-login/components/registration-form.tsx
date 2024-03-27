@@ -10,7 +10,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modals';
 import BirthdayInput from 'soapbox/components/birthday-input';
-import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea } from 'soapbox/components/ui';
+import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Select } from 'soapbox/components/ui';
 import CaptchaField from 'soapbox/features/auth-login/components/captcha';
 import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks';
 
@@ -50,6 +50,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   const supportsEmailList = features.emailList;
   const supportsAccountLookup = features.accountLookup;
   const birthdayRequired = instance.pleroma.metadata.birthday_required;
+  const domains = instance.pleroma.metadata.multitenancy.enabled ? instance.pleroma.metadata.multitenancy.domains!.filter((domain) => domain.public) : undefined;
 
   const [captchaLoading, setCaptchaLoading] = useState(true);
   const [submissionLoading, setSubmissionLoading] = useState(false);
@@ -80,7 +81,19 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     setUsernameUnavailable(false);
     source.current.cancel();
 
-    usernameAvailable(e.target.value);
+    const domain = params.get('domain');
+    usernameAvailable(e.target.value, domain ? domains!.find(({ id }) => id === domain)?.domain : undefined);
+  };
+
+  const onDomainChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    updateParams({ domain: e.target.value || null });
+    setUsernameUnavailable(false);
+    source.current.cancel();
+
+    const username = params.get('username');
+    if (username) {
+      usernameAvailable(username, domains!.find(({ id }) => id === e.target.value)?.domain);
+    }
   };
 
   const onCheckboxChange: React.ChangeEventHandler<HTMLInputElement> = e => {
@@ -155,12 +168,12 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     return params.get('password', '') === passwordConfirmation;
   };
 
-  const usernameAvailable = useCallback(debounce(username => {
+  const usernameAvailable = useCallback(debounce((username, domain?: string) => {
     if (!supportsAccountLookup) return;
 
     const source = refreshCancelToken();
 
-    dispatch(accountLookup(username, source.token))
+    dispatch(accountLookup(`${username}${domain ? `@${domain}` : ''}`, source.token))
       .then(account => {
         setUsernameUnavailable(!!account);
       })
@@ -243,6 +256,20 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               required
             />
           </FormGroup>
+
+          {domains && (
+            <FormGroup>
+              <Select
+                onChange={onDomainChange}
+                value={params.get('domain')}
+              >
+                {domains.map(({ id, domain }) => (
+                  <option key={id} value={id}>{domain}</option>
+                ))}
+              </Select>
+            </FormGroup>
+          )}
+
 
           {!features.nostrSignup && (
             <Input
