@@ -66,9 +66,11 @@ const Settings = () => {
             <ListItem label={intl.formatMessage(messages.editProfile)} to='/settings/profile'>
               <span className='max-w-full truncate'>{displayName}</span>
             </ListItem>
-            <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
-              <span className='max-w-full truncate'>{account?.source?.nostr?.nip05}</span>
-            </ListItem>
+            {features.nip05 && (
+              <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
+                <span className='max-w-full truncate'>{account?.source?.nostr?.nip05}</span>
+              </ListItem>
+            )}
           </List>
         </CardBody>
 
