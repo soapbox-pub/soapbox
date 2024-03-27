@@ -15,9 +15,10 @@ const StatePlugin: React.FC<IStatePlugin> = ({ composeId }) => {
 
   useEffect(() => {
     editor.registerUpdateListener(({ editorState }) => {
-      const isEmpty = editorState.read(() => $getRoot().getTextContent()) === '';
+      const text = editorState.read(() => $getRoot().getTextContent());
+      const isEmpty = text === '';
       const data = isEmpty ? null : JSON.stringify(editorState.toJSON());
-      dispatch(setEditorState(composeId, data));
+      dispatch(setEditorState(composeId, data, text));
     });
   }, [editor]);
 

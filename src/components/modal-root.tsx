@@ -5,6 +5,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { saveDraftStatus } from 'soapbox/actions/draft-statuses';
 import { cancelEventCompose } from 'soapbox/actions/events';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { useAppDispatch, usePrevious } from 'soapbox/hooks';
@@ -16,6 +17,7 @@ import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/comp
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
+  saveDraft: { id: 'confirmations.cancel_editing.save_draft', defaultMessage: 'Save draft' },
 });
 
 export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) => {
@@ -89,6 +91,12 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
           },
           onCancel: () => {
             dispatch(closeModal('CONFIRM'));
+          },
+          secondary: intl.formatMessage(messages.saveDraft),
+          onSecondary: isEditing ? undefined : () => {
+            dispatch(saveDraftStatus('compose-modal'));
+            dispatch(closeModal('COMPOSE'));
+            dispatch(cancelReplyCompose());
           },
         }));
       } else if (hasEventComposeContent && type === 'COMPOSE_EVENT') {

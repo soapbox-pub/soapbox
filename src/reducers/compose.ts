@@ -82,6 +82,7 @@ const PollRecord = ImmutableRecord({
 export const ReducerCompose = ImmutableRecord({
   caretPosition: null as number | null,
   content_type: 'text/plain',
+  draft_id: null as string | null,
   editorState: null as string | null,
   focusDate: null as Date | null,
   group_id: null as string | null,
@@ -111,7 +112,7 @@ export const ReducerCompose = ImmutableRecord({
 });
 
 type State = ImmutableMap<string, Compose>;
-type Compose = ReturnType<typeof ReducerCompose>;
+export type Compose = ReturnType<typeof ReducerCompose>;
 type Poll = ReturnType<typeof PollRecord>;
 
 const statusToTextMentions = (status: Status, account: Account) => {
@@ -439,7 +440,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         })));
     case COMPOSE_SET_STATUS:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
-        if (!action.withRedraft) {
+        if (!action.withRedraft && !action.draftId) {
           map.set('id', action.status.id);
         }
         map.set('text', action.rawText || unescapeHTML(expandMentions(action.status)));
@@ -473,6 +474,14 @@ export default function compose(state = initialState, action: ComposeAction | Ev
             multiple: action.status.poll.multiple,
             expires_in: 24 * 3600,
           }));
+        }
+
+        if (action.draftId) {
+          map.set('draft_id', action.draftId);
+        }
+
+        if (action.editorState) {
+          map.set('editorState', action.editorState);
         }
       }));
     case COMPOSE_POLL_ADD:
@@ -515,7 +524,9 @@ export default function compose(state = initialState, action: ComposeAction | Ev
     case SETTING_CHANGE:
       return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
     case COMPOSE_EDITOR_STATE_SET:
-      return updateCompose(state, action.id, compose => compose.set('editorState', action.editorState as string));
+      return updateCompose(state, action.id, compose => compose
+        .set('editorState', action.editorState as string)
+        .set('text', action.text as string));
     case EVENT_COMPOSE_CANCEL:
       return updateCompose(state, 'event-compose-modal', compose => compose.set('text', ''));
     case EVENT_FORM_SET:

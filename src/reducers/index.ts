@@ -23,6 +23,7 @@ import contexts from './contexts';
 import conversations from './conversations';
 import custom_emojis from './custom-emojis';
 import domain_lists from './domain-lists';
+import draft_statuses from './draft-statuses';
 import dropdown_menu from './dropdown-menu';
 import filters from './filters';
 import followed_tags from './followed-tags';
@@ -84,6 +85,7 @@ const reducers = {
   conversations,
   custom_emojis,
   domain_lists,
+  draft_statuses,
   dropdown_menu,
   entities,
   filters,

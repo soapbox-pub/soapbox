@@ -14,7 +14,7 @@ import { buildStatus } from '../util/pending-status-builder';
 
 import PollPreview from './poll-preview';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Poll as PollEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const shouldHaveCard = (pendingStatus: StatusEntity) => {
   return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));
@@ -60,7 +60,10 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
     <div className={clsx('opacity-50', className)}>
       <div className={clsx('status', { 'status-reply': !!status.in_reply_to_id, muted })} data-id={status.id}>
         <Card
-          className={clsx('py-6 sm:p-5', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })}
+          className={clsx(`status-${status.visibility}`, {
+            'py-6 sm:p-5': !thread,
+            'status-reply': !!status.in_reply_to_id,
+          })}
           variant={thread ? 'default' : 'rounded'}
         >
           <div className='mb-4'>
@@ -86,7 +89,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
 
               <PendingStatusMedia status={status} />
 
-              {status.poll && <PollPreview pollId={status.poll as string} />}
+              {status.poll && <PollPreview poll={status.poll as PollEntity} />}
 
               {status.quote && <QuotedStatus statusId={status.quote as string} />}
             </Stack>

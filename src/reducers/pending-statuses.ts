@@ -1,6 +1,7 @@
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
 import {
+  STATUS_CREATE_FAIL,
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
 } from 'soapbox/actions/statuses';
@@ -36,6 +37,7 @@ export default function pending_statuses(state = initialState, action: AnyAction
   switch (action.type) {
     case STATUS_CREATE_REQUEST:
       return action.editing ? state : importStatus(state, ImmutableMap(fromJS(action.params)), action.idempotencyKey);
+    case STATUS_CREATE_FAIL:
     case STATUS_CREATE_SUCCESS:
       return deleteStatus(state, action.idempotencyKey);
     default:

@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
+import { saveDraftStatus } from 'soapbox/actions/draft-statuses';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import { useGroup } from 'soapbox/api/hooks';
 import { checkComposeContent } from 'soapbox/components/modal-root';
@@ -14,6 +15,7 @@ import ComposeForm from '../../../compose/components/compose-form';
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
+  saveDraft: { id: 'confirmations.cancel_editing.save_draft', defaultMessage: 'Save draft' },
 });
 
 interface IComposeModal {
@@ -45,6 +47,12 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
           : <FormattedMessage id='confirmations.cancel.message' defaultMessage='Are you sure you want to cancel creating this post?' />,
         confirm: intl.formatMessage(statusId ? messages.cancelEditing : messages.confirm),
         onConfirm: () => {
+          dispatch(closeModal('COMPOSE'));
+          dispatch(cancelReplyCompose());
+        },
+        secondary: intl.formatMessage(messages.saveDraft),
+        onSecondary: statusId ? undefined : () => {
+          dispatch(saveDraftStatus(composeId));
           dispatch(closeModal('COMPOSE'));
           dispatch(cancelReplyCompose());
         },

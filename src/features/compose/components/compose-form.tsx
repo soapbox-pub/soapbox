@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor, $getRoot } from 'lexical';
+import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor } from 'lexical';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
@@ -86,6 +86,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     is_uploading: isUploading,
     schedule: scheduledAt,
     group_id: groupId,
+    text,
   } = compose;
 
   const prevSpoiler = usePrevious(spoiler);
@@ -102,7 +103,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const editorRef = useRef<LexicalEditor>(null);
   const { isDraggedOver } = useDraggedFiles(formRef);
 
-  const text = editorRef.current?.getEditorState().read(() => $getRoot().getTextContent()) ?? '';
   const fulltext = [spoilerText, countableText(text)].join('');
 
   const isEmpty = !(fulltext.trim() || anyMedia);

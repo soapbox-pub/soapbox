@@ -37,6 +37,7 @@ const messages = defineMessages({
   events: { id: 'column.events', defaultMessage: 'Events' },
   invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
+  drafts: { id: 'navigation.drafts', defaultMessage: 'Drafts' },
   addAccount: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   followRequests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -88,6 +89,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const draftCount = useAppSelector((state) => state.draft_statuses.size);
   const groupsPath = useGroupsPath();
 
   const closeButtonRef = React.useRef(null);
@@ -239,6 +241,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/developers'
                       icon={require('@tabler/icons/code.svg')}
                       text={intl.formatMessage(messages.developers)}
+                      onClick={onClose}
+                    />
+                  )}
+
+                  {draftCount > 0 && (
+                    <SidebarLink
+                      to='/draft_statuses'
+                      icon={require('@tabler/icons/notes.svg')}
+                      text={intl.formatMessage(messages.drafts)}
                       onClick={onClose}
                     />
                   )}

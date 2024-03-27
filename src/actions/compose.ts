@@ -110,9 +110,11 @@ interface ComposeSetStatusAction {
   contentType?: string | false;
   v: ReturnType<typeof parseVersion>;
   withRedraft?: boolean;
+  draftId?: string;
+  editorState?: string | null;
 }
 
-const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
+const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean, draftId?: string, editorState?: string | null) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const { instance } = getState();
     const { explicitAddressing } = getFeatures(instance);
@@ -127,6 +129,8 @@ const setComposeToStatus = (status: Status, rawText: string, spoilerText?: strin
       contentType,
       v: parseVersion(instance.version),
       withRedraft,
+      draftId,
+      editorState,
     };
 
     dispatch(action);
@@ -273,8 +277,13 @@ const directComposeById = (accountId: string) =>
 const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, composeId: string, data: APIEntity, status: string, edit?: boolean) => {
   if (!dispatch || !getState) return;
 
+  const state = getState();
+
+  const me = state.me as string;
+  const draftId = getState().compose.get(composeId)!.draft_id;
+
   dispatch(insertIntoTagHistory(composeId, data.tags || [], status));
-  dispatch(submitComposeSuccess(composeId, { ...data }));
+  dispatch(submitComposeSuccess(composeId, { ...data }, me, draftId));
   toast.success(edit ? messages.editSuccess : messages.success, {
     actionLabel: messages.view,
     actionLink: `/@${data.account.acct}/posts/${data.id}`,
@@ -382,10 +391,12 @@ const submitComposeRequest = (composeId: string) => ({
   id: composeId,
 });
 
-const submitComposeSuccess = (composeId: string, status: APIEntity) => ({
+const submitComposeSuccess = (composeId: string, status: APIEntity, accountId: string, draftId?: string | null) => ({
   type: COMPOSE_SUBMIT_SUCCESS,
   id: composeId,
   status: status,
+  accountId,
+  draftId,
 });
 
 const submitComposeFail = (composeId: string, error: unknown) => ({
@@ -845,10 +856,11 @@ const eventDiscussionCompose = (composeId: string, status: Status) =>
     });
   };
 
-const setEditorState = (composeId: string, editorState: EditorState | string | null) => ({
+const setEditorState = (composeId: string, editorState: EditorState | string | null, text?: string) => ({
   type: COMPOSE_EDITOR_STATE_SET,
   id: composeId,
   editorState: editorState,
+  text,
 });
 
 type ComposeAction =
