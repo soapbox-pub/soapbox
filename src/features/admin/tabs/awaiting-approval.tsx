@@ -33,7 +33,7 @@ const AwaitingApproval: React.FC = () => {
       showLoading={showLoading}
       scrollKey='awaiting-approval'
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
-      className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
+      listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
       {accountIds.map(id => (
         <div key={id} className='px-5 py-4'>

@@ -41,7 +41,7 @@ const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
     body = (
       <ScrollableList
         scrollKey='mentions'
-        className='max-w-full'
+        listClassName='max-w-full'
         itemClassName='pb-3'
       >
         {accountIds.map(id =>

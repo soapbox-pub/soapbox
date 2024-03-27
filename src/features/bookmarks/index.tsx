@@ -83,7 +83,9 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     }));
   };
 
-  const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
+  const emptyMessage = folderId
+    ? <FormattedMessage id='empty_column.bookmarks.folder' defaultMessage="You don't have any bookmarks in this folder yet. When you add one, it will show up here." />
+    : <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
   const items = folderId ? [
     {

@@ -35,7 +35,7 @@ const GroupTopics: React.FC<IGroupTopics> = (props) => {
       showLoading={!group || isLoading && tags.length === 0}
       placeholderComponent={PlaceholderAccount}
       placeholderCount={3}
-      className='divide-y divide-solid divide-gray-300 dark:divide-gray-800'
+      listClassName='divide-y divide-solid divide-gray-300 dark:divide-gray-800'
       itemClassName='py-3 last:pb-0'
       emptyMessage={
         <Stack space={4} className='pt-6' justifyContent='center' alignItems='center'>

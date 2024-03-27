@@ -11,6 +11,7 @@ import type { AxiosResponse } from 'axios';
 const noOp = () => {};
 
 const messages = defineMessages({
+  captcha: { id: 'registration.captcha', defaultMessage: 'Captcha' },
   placeholder: { id: 'registration.captcha.placeholder', defaultMessage: 'Enter the pictured text' },
 });
 
@@ -110,7 +111,7 @@ const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, 
   return (
     <Stack space={2}>
       <div className='flex w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-white dark:border-gray-600'>
-        <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
+        <img alt={intl.formatMessage(messages.captcha)} src={captcha.get('url')} onClick={onClick} />
       </div>
 
       <Input

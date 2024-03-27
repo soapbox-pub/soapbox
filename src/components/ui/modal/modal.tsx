@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
 import { ButtonThemes } from '../button/useButtonStyles';
@@ -145,7 +145,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                 theme='tertiary'
                 onClick={cancelAction}
               >
-                {cancelText || 'Cancel'}
+                {cancelText || <FormattedMessage id='common.cancel' defaultMessage='Cancel' />}
               </Button>
             )}
           </div>
