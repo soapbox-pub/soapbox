@@ -683,6 +683,7 @@
   "empty_column.aliases.suggestions": "There are no account suggestions available for the provided term.",
   "empty_column.blocks": "You haven't blocked any users yet.",
   "empty_column.bookmarks": "You don't have any bookmarks yet. When you add one, it will show up here.",
+  "empty_column.bookmarks.folder": "You don't have any bookmarks in this folder yet. When you add one, it will show up here.",
   "empty_column.community": "The local timeline is empty. Write something publicly to get the ball rolling!",
   "empty_column.direct": "You don't have any direct messages yet. When you send or receive one, it will show up here.",
   "empty_column.dislikes": "No one has disliked this post yet. When someone does, they will show up here.",
