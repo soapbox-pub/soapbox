@@ -29,11 +29,12 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
   const { relay, signer } = useNostr();
 
   const admin = instance.nostr?.pubkey;
+  const pubkey = account?.nostr?.pubkey;
   const [username, setUsername] = useState<string>('');
 
   const { events: labels } = useNostrReq(
-    admin
-      ? [{ kinds: [1985], authors: [admin], '#L': ['nip05'] }]
+    (admin && pubkey)
+      ? [{ kinds: [1985], authors: [admin], '#L': ['nip05'], '#p': [pubkey] }]
       : [],
   );
 
