@@ -31,13 +31,9 @@ const spaces = {
   8: 'space-x-8',
 };
 
-interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> {
+interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'children' | 'className' | 'onClick' | 'style' | 'title'> {
   /** Vertical alignment of children. */
   alignItems?: keyof typeof alignItemsOptions;
-  /** Extra class names on the <div> element. */
-  className?: string;
-  /** Children */
-  children?: React.ReactNode;
   /** Horizontal alignment of children. */
   justifyContent?: keyof typeof justifyContentOptions;
   /** Size of the gap between elements. */
@@ -46,8 +42,6 @@ interface IHStack extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onClick'> 
   grow?: boolean;
   /** HTML element to use for container. */
   element?: keyof JSX.IntrinsicElements;
-  /** Extra CSS styles for the <div> */
-  style?: React.CSSProperties;
   /** Whether to let the flexbox wrap onto multiple lines. */
   wrap?: boolean;
 }
