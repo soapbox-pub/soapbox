@@ -5,10 +5,10 @@ import Icon from 'soapbox/components/icon';
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { useInstance } from 'soapbox/hooks';
 
-import type { Map as ImmutableMap } from 'immutable';
+import type { RemoteInstance } from 'soapbox/selectors';
 
-const hasRestrictions = (remoteInstance: ImmutableMap<string, any>): boolean => {
-  const { accept, reject_deletes, report_removal, ...federation } = remoteInstance.get('federation');
+const hasRestrictions = (remoteInstance: RemoteInstance): boolean => {
+  const { accept, reject_deletes, report_removal, ...federation } = remoteInstance.federation;
   return !!Object.values(federation).reduce((acc, value) => Boolean(acc || value), false);
 };
 
@@ -30,7 +30,7 @@ const Restriction: React.FC<IRestriction> = ({ icon, children }) => {
 };
 
 interface IInstanceRestrictions {
-  remoteInstance: ImmutableMap<string, any>;
+  remoteInstance: RemoteInstance;
 }
 
 const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance }) => {
@@ -46,7 +46,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
       followers_only,
       media_nsfw,
       media_removal,
-    } = remoteInstance.get('federation').toJS();
+    } = remoteInstance.federation;
 
     const fullMediaRemoval = media_removal && avatar_removal && banner_removal;
     const partialMediaRemoval = media_removal || avatar_removal || banner_removal;
@@ -108,10 +108,10 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
   const renderContent = () => {
     if (!instance || !remoteInstance) return null;
 
-    const host = remoteInstance.get('host');
+    const host = remoteInstance.host;
     const siteTitle = instance.title;
 
-    if (remoteInstance.getIn(['federation', 'reject']) === true) {
+    if (remoteInstance.federation.reject === true) {
       return (
         <Restriction icon={require('@tabler/icons/shield-x.svg')}>
           <FormattedMessage

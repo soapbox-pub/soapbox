@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
+  Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
 import { createSelector } from 'reselect';
@@ -305,7 +306,7 @@ const getRemoteInstanceFavicon = (state: RootState, host: string) => {
   return account?.pleroma?.favicon;
 };
 
-type HostFederation = {
+export type HostFederation = {
   [key in keyof MRFSimple]: boolean;
 };
 
@@ -328,19 +329,25 @@ export const makeGetHosts = () => {
   });
 };
 
-export const makeGetRemoteInstance = () => {
-  return createSelector([
+export const RemoteInstanceRecord = ImmutableRecord({
+  host: '',
+  favicon: null as string | null,
+  federation: null as unknown as HostFederation,
+});
+
+export type RemoteInstance = ReturnType<typeof RemoteInstanceRecord>;
+
+export const makeGetRemoteInstance = () =>
+  createSelector([
     (_state: RootState, host: string) => host,
     getRemoteInstanceFavicon,
     getRemoteInstanceFederation,
-  ], (host, favicon, federation) => {
-    return ImmutableMap({
+  ], (host, favicon, federation) =>
+    RemoteInstanceRecord({
       host,
       favicon,
       federation,
-    });
-  });
-};
+    }));
 
 type ColumnQuery = { type: string; prefix?: string };
 
