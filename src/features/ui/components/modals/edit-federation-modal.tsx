@@ -33,7 +33,7 @@ const EditFederationModal: React.FC<IEditFederationModal> = ({ host, onClose }) 
   const [data, setData] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    setData(remoteInstance.get('federation') as Record<string, any>);
+    setData(remoteInstance.federation);
   }, [remoteInstance]);
 
   const handleDataChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
