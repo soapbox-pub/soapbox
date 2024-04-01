@@ -1,14 +1,17 @@
-import { NostrEvent, NostrFilter } from '@soapbox/nspec';
+import { NSet, NostrEvent, NostrFilter } from '@soapbox/nspec';
 import isEqual from 'lodash/isEqual';
 import { useEffect, useRef, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
+import { useForceUpdate } from 'soapbox/hooks/useForceUpdate';
 
 /** Streams events from the relay for the given filters. */
 export function useNostrReq(filters: NostrFilter[]): { events: NostrEvent[]; eose: boolean; closed: boolean } {
   const { relay } = useNostr();
 
-  const [events, setEvents] = useState<NostrEvent[]>([]);
+  const nset = useRef<NSet>(new NSet());
+  const forceUpdate = useForceUpdate();
+
   const [closed, setClosed] = useState(false);
   const [eose, setEose] = useState(false);
 
@@ -21,7 +24,8 @@ export function useNostrReq(filters: NostrFilter[]): { events: NostrEvent[]; eos
       (async () => {
         for await (const msg of relay.req(value, { signal })) {
           if (msg[0] === 'EVENT') {
-            setEvents((prev) => [msg[2], ...prev]);
+            nset.current.add(msg[2]);
+            forceUpdate();
           } else if (msg[0] === 'EOSE') {
             setEose(true);
           } else if (msg[0] === 'CLOSED') {
@@ -41,7 +45,7 @@ export function useNostrReq(filters: NostrFilter[]): { events: NostrEvent[]; eos
   }, [relay, value]);
 
   return {
-    events,
+    events: [...nset.current],
     eose,
     closed,
   };

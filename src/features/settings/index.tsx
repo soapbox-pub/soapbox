@@ -20,6 +20,7 @@ const messages = defineMessages({
   configureMfa: { id: 'settings.configure_mfa', defaultMessage: 'Configure MFA' },
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
   editProfile: { id: 'settings.edit_profile', defaultMessage: 'Edit Profile' },
+  editIdentity: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
   exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
@@ -65,6 +66,11 @@ const Settings = () => {
             <ListItem label={intl.formatMessage(messages.editProfile)} to='/settings/profile'>
               <span className='max-w-full truncate'>{displayName}</span>
             </ListItem>
+            {features.nip05 && (
+              <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
+                <span className='max-w-full truncate'>{account?.source?.nostr?.nip05}</span>
+              </ListItem>
+            )}
           </List>
         </CardBody>
 
