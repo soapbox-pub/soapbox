@@ -1,6 +1,7 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
-import { HStack, Input } from 'soapbox/components/ui';
+import { HStack, Input, Select } from 'soapbox/components/ui';
 import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
 import { useInstance } from 'soapbox/hooks';
 
@@ -45,15 +46,31 @@ const RelayField: StreamfieldComponent<RelayData> = ({ value, onChange }) => {
     };
   };
 
+  const handleMarkerChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    onChange({ ...value, marker: (e.currentTarget.value as 'read' | 'write' | '') || undefined });
+  };
+
   return (
     <HStack space={2} grow>
       <Input
         type='text'
-        outerClassName='w-2/5 grow'
+        outerClassName='w-full grow'
         value={value.url}
         onChange={handleChange('url')}
         placeholder={instance.nostr?.relay ?? `wss://${instance.domain}/relay`}
       />
+
+      <Select className='mt-1' full={false} onChange={handleMarkerChange}>
+        <option value='' selected={value.marker === undefined}>
+          <FormattedMessage id='nostr_relays.read_write' defaultMessage='Read & write' />
+        </option>
+        <option value='read' selected={value.marker === 'read'}>
+          <FormattedMessage id='nostr_relays.read_only' defaultMessage='Read-only' />
+        </option>
+        <option value='write' selected={value.marker === 'write'}>
+          <FormattedMessage id='nostr_relays.write_only' defaultMessage='Write-only' />
+        </option>
+      </Select>
     </HStack>
   );
 };
