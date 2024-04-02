@@ -21,6 +21,7 @@ const messages = defineMessages({
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
   editProfile: { id: 'settings.edit_profile', defaultMessage: 'Edit Profile' },
   editIdentity: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
+  editRelays: { id: 'nostr_relays.title', defaultMessage: 'Relays' },
   exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
@@ -71,6 +72,7 @@ const Settings = () => {
                 <span className='max-w-full truncate'>{account?.source?.nostr?.nip05}</span>
               </ListItem>
             )}
+            {features.nostr && <ListItem label={intl.formatMessage(messages.editRelays)} to='/settings/relays' />}
           </List>
         </CardBody>
 

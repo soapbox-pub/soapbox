@@ -757,6 +757,9 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     nip05: v.software === DITTO,
 
+    /** Has a Nostr relay. */
+    nostr: !!instance.nostr?.relay,
+
     /**
      * Ability to sign Nostr events over websocket.
      * @see GET /api/v1/streaming?stream=nostr
