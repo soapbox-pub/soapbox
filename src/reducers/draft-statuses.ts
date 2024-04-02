@@ -43,8 +43,8 @@ const deleteStatus = (state: State, id: string) => {
   return state;
 };
 
-const persistState = (state: State, accountId: string) => {
-  KVStore.setItem(`drafts:${accountId}`, state.toJS());
+const persistState = (state: State, accountUrl: string) => {
+  KVStore.setItem(`drafts:${accountUrl}`, state.toJS());
   return state;
 };
 
@@ -53,11 +53,11 @@ export default function scheduled_statuses(state: State = initialState, action: 
     case DRAFT_STATUSES_FETCH_SUCCESS:
       return importStatuses(state, action.statuses);
     case PERSIST_DRAFT_STATUS:
-      return persistState(importStatus(state, action.status), action.accountId);
+      return persistState(importStatus(state, action.status), action.accountUrl);
     case CANCEL_DRAFT_STATUS:
-      return persistState(deleteStatus(state, action.id), action.accountId);
+      return persistState(deleteStatus(state, action.id), action.accountUrl);
     case COMPOSE_SUBMIT_SUCCESS:
-      return persistState(deleteStatus(state, action.draftId), action.accountId);
+      return persistState(deleteStatus(state, action.draftId), action.accountUrl);
     default:
       return state;
   }

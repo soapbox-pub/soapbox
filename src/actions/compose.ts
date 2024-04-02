@@ -7,7 +7,7 @@ import api from 'soapbox/api';
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import emojiSearch from 'soapbox/features/emoji/search';
 import { normalizeTag } from 'soapbox/normalizers';
-import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
+import { selectAccount, selectOwnAccount, makeGetAccount } from 'soapbox/selectors';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
@@ -88,6 +88,8 @@ const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS' as const;
 const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
 
 const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
+
+const getAccount = makeGetAccount();
 
 const messages = defineMessages({
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
@@ -279,11 +281,11 @@ const handleComposeSubmit = (dispatch: AppDispatch, getState: () => RootState, c
 
   const state = getState();
 
-  const me = state.me as string;
+  const accountUrl = getAccount(state, state.me as string)!.url;
   const draftId = getState().compose.get(composeId)!.draft_id;
 
   dispatch(insertIntoTagHistory(composeId, data.tags || [], status));
-  dispatch(submitComposeSuccess(composeId, { ...data }, me, draftId));
+  dispatch(submitComposeSuccess(composeId, { ...data }, accountUrl, draftId));
   toast.success(edit ? messages.editSuccess : messages.success, {
     actionLabel: messages.view,
     actionLink: `/@${data.account.acct}/posts/${data.id}`,
@@ -391,11 +393,11 @@ const submitComposeRequest = (composeId: string) => ({
   id: composeId,
 });
 
-const submitComposeSuccess = (composeId: string, status: APIEntity, accountId: string, draftId?: string | null) => ({
+const submitComposeSuccess = (composeId: string, status: APIEntity, accountUrl: string, draftId?: string | null) => ({
   type: COMPOSE_SUBMIT_SUCCESS,
   id: composeId,
   status: status,
-  accountId,
+  accountUrl,
   draftId,
 });
 
