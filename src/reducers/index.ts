@@ -8,7 +8,6 @@ import entities from 'soapbox/entity-store/reducer';
 import accounts_meta from './accounts-meta';
 import admin from './admin';
 import admin_announcements from './admin-announcements';
-import admin_log from './admin-log';
 import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import announcements from './announcements';
@@ -69,7 +68,6 @@ const reducers = {
   accounts_meta,
   admin,
   admin_announcements,
-  admin_log,
   admin_user_index,
   aliases,
   announcements,

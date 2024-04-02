@@ -20,14 +20,12 @@ import {
   StatusRecord,
   TagRecord,
 } from 'soapbox/normalizers';
-import { LogEntryRecord } from 'soapbox/reducers/admin-log';
 import { Account as SchemaAccount } from 'soapbox/schemas';
 
 import type { Record as ImmutableRecord } from 'immutable';
 import type { LegacyMap } from 'soapbox/utils/legacy';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
-type AdminLog = ReturnType<typeof LogEntryRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
 type Announcement = ReturnType<typeof AnnouncementRecord>;
 type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
@@ -62,7 +60,6 @@ type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableReco
 export {
   Account,
   AdminAccount,
-  AdminLog,
   AdminReport,
   Announcement,
   AnnouncementReaction,

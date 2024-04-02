@@ -55,10 +55,6 @@ const ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST = 'ADMIN_STATUS_TOGGLE_SENSITIVITY
 const ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS';
 const ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL    = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL';
 
-const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
-const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
-const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
-
 const ADMIN_USERS_TAG_REQUEST = 'ADMIN_USERS_TAG_REQUEST';
 const ADMIN_USERS_TAG_SUCCESS = 'ADMIN_USERS_TAG_SUCCESS';
 const ADMIN_USERS_TAG_FAIL    = 'ADMIN_USERS_TAG_FAIL';
@@ -423,19 +419,6 @@ const toggleStatusSensitivity = (id: string, sensitive: boolean) =>
       });
   };
 
-const fetchModerationLog = (params?: Record<string, any>) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({ type: ADMIN_LOG_FETCH_REQUEST });
-    return api(getState)
-      .get('/api/v1/pleroma/admin/moderation_log', { params })
-      .then(({ data }) => {
-        dispatch({ type: ADMIN_LOG_FETCH_SUCCESS, items: data.items, total: data.total });
-        return data;
-      }).catch(error => {
-        dispatch({ type: ADMIN_LOG_FETCH_FAIL, error });
-      });
-  };
-
 const tagUsers = (accountIds: string[], tags: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const nicknames = accountIdsToAccts(getState(), accountIds);
@@ -707,9 +690,6 @@ export {
   ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST,
   ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS,
   ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL,
-  ADMIN_LOG_FETCH_REQUEST,
-  ADMIN_LOG_FETCH_SUCCESS,
-  ADMIN_LOG_FETCH_FAIL,
   ADMIN_USERS_TAG_REQUEST,
   ADMIN_USERS_TAG_SUCCESS,
   ADMIN_USERS_TAG_FAIL,
@@ -757,7 +737,6 @@ export {
   approveUsers,
   deleteStatus,
   toggleStatusSensitivity,
-  fetchModerationLog,
   tagUsers,
   untagUsers,
   setTags,

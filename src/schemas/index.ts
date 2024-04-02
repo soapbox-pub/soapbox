@@ -12,6 +12,7 @@ export { groupRelationshipSchema, type GroupRelationship } from './group-relatio
 export { groupTagSchema, type GroupTag } from './group-tag';
 export { instanceSchema, type Instance } from './instance';
 export { mentionSchema, type Mention } from './mention';
+export { moderationLogEntrySchema, type ModerationLogEntry } from './moderation-log-entry';
 export { notificationSchema, type Notification } from './notification';
 export { patronUserSchema, type PatronUser } from './patron';
 export { pollSchema, type Poll, type PollOption } from './poll';
