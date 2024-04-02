@@ -30,7 +30,7 @@ const NostrRelays = () => {
     const tags = events[0]?.tags ?? [];
     const data = tags.map(tag => ({ url: tag[1], marker: tag[2] as 'read' | 'write' | undefined }));
     setRelays(data);
-  }, [events]);
+  }, [events[0]]);
 
   const handleSubmit = async (): Promise<void> => {
     if (!signer || !relay) return;
