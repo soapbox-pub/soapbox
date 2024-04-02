@@ -16,6 +16,7 @@ export { notificationSchema, type Notification } from './notification';
 export { patronUserSchema, type PatronUser } from './patron';
 export { pollSchema, type Poll, type PollOption } from './poll';
 export { relationshipSchema, type Relationship } from './relationship';
+export { relaySchema, type Relay } from './relay';
 export { statusSchema, type Status } from './status';
 export { tagSchema, type Tag } from './tag';
 export { tombstoneSchema, type Tombstone } from './tombstone';

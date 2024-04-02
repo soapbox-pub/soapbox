@@ -2,11 +2,6 @@ import { Entities } from 'soapbox/entity-store/entities';
 import { useDeleteEntity } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks';
 
-interface DeleteDomainParams {
-  domain: string;
-  public: boolean;
-}
-
 const useDeleteDomain = () => {
   const api = useApi();
 
@@ -23,4 +18,4 @@ const useDeleteDomain = () => {
   };
 };
 
-export { useDeleteDomain, type DeleteDomainParams };
+export { useDeleteDomain };

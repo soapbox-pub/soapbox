@@ -37,7 +37,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
     dispatch(openModal('EDIT_DOMAIN', { domainId: domain.id }));
   };
 
-  const handleDeleteDomain = (id: string) => () => {
+  const handleDeleteDomain = () => () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
@@ -90,7 +90,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
           <Button theme='primary' onClick={handleEditDomain(domain)}>
             <FormattedMessage id='admin.domains.edit' defaultMessage='Edit' />
           </Button>
-          <Button theme='primary' onClick={handleDeleteDomain(domain.id)}>
+          <Button theme='primary' onClick={handleDeleteDomain()}>
             <FormattedMessage id='admin.domains.delete' defaultMessage='Delete' />
           </Button>
         </HStack>

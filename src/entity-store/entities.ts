@@ -11,6 +11,7 @@ enum Entities {
   GROUP_TAGS = 'GroupTags',
   PATRON_USERS = 'PatronUsers',
   RELATIONSHIPS = 'Relationships',
+  RELAYS = 'Relays',
   STATUSES = 'Statuses'
 }
 
@@ -24,6 +25,7 @@ interface EntityTypes {
   [Entities.GROUP_TAGS]: Schemas.GroupTag;
   [Entities.PATRON_USERS]: Schemas.PatronUser;
   [Entities.RELATIONSHIPS]: Schemas.Relationship;
+  [Entities.RELAYS]: Schemas.Relay;
   [Entities.STATUSES]: Schemas.Status;
 }
 

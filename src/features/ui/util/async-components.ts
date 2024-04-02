@@ -169,3 +169,4 @@ export const EditBookmarkFolderModal = lazy(() => import('soapbox/features/ui/co
 export const SelectBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/select-bookmark-folder-modal'));
 export const Domains = lazy(() => import('soapbox/features/admin/domains'));
 export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal'));
+export const Relays = lazy(() => import('soapbox/features/admin/relays'));
