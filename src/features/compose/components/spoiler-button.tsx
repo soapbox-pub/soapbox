@@ -26,7 +26,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ composeId }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/alert-triangle.svg')}
+      icon={require('@tabler/icons/outline/alert-triangle.svg')}
       title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
       active={active}
       onClick={onClick}

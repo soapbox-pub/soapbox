@@ -84,12 +84,12 @@ const Lists: React.FC = () => {
         >
           {lists.map((list: any) => (
             <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'>
-              <Icon src={require('@tabler/icons/list.svg')} />
+              <Icon src={require('@tabler/icons/outline/list.svg')} />
               <span className='grow'>
                 {list.title}
               </span>
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
             </Link>
           ))}
         </ScrollableList>

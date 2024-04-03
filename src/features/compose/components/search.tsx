@@ -111,7 +111,7 @@ const Search = (props: ISearch) => {
   const makeMenu = () => [
     {
       text: intl.formatMessage(messages.action, { query: value }),
-      icon: require('@tabler/icons/search.svg'),
+      icon: require('@tabler/icons/outline/search.svg'),
       action: handleSubmit,
     },
   ];
@@ -166,12 +166,12 @@ const Search = (props: ISearch) => {
           onClick={handleClear}
         >
           <SvgIcon
-            src={require('@tabler/icons/search.svg')}
+            src={require('@tabler/icons/outline/search.svg')}
             className={clsx('h-4 w-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
-            src={require('@tabler/icons/x.svg')}
+            src={require('@tabler/icons/outline/x.svg')}
             className={clsx('h-4 w-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

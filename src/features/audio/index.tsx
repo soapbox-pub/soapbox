@@ -518,7 +518,7 @@ const Audio: React.FC<IAudio> = (props) => {
               className='player-button'
               onClick={togglePlay}
             >
-              <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
+              <Icon src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
             </button>
 
             <button
@@ -528,7 +528,7 @@ const Audio: React.FC<IAudio> = (props) => {
               className='player-button'
               onClick={toggleMute}
             >
-              <Icon src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')} />
+              <Icon src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
             </button>
 
             <div
@@ -569,7 +569,7 @@ const Audio: React.FC<IAudio> = (props) => {
               download
               target='_blank'
             >
-              <Icon src={require('@tabler/icons/download.svg')} />
+              <Icon src={require('@tabler/icons/outline/download.svg')} />
             </a>
           </div>
         </div>

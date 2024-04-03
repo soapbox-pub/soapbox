@@ -138,13 +138,13 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
             theme='transparent'
             className='text-white'
             onClick={togglePaused}
-            src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')}
+            src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')}
           />
           <IconButton
             theme='transparent'
             className='text-white'
             onClick={toggleMuted}
-            src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')}
+            src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')}
           />
         </HStack>
 
@@ -152,14 +152,14 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
           <IconButton
             theme='transparent'
             className='text-white'
-            src={require('@tabler/icons/download.svg')}
+            src={require('@tabler/icons/outline/download.svg')}
             onClick={handleDownload}
           />
           <IconButton
             theme='transparent'
             className='text-white'
             onClick={toggleFullscreen}
-            src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
+            src={fullscreen ? require('@tabler/icons/outline/arrows-minimize.svg') : require('@tabler/icons/outline/arrows-maximize.svg')}
           />
         </HStack>
       </HStack>

@@ -134,7 +134,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
           {all && (
             <IconButton
               className='text-gray-600 hover:text-gray-600 dark:hover:text-white'
-              src={require('@tabler/icons/dots.svg')}
+              src={require('@tabler/icons/outline/dots.svg')}
               onClick={handleExpand}
             />
           )}

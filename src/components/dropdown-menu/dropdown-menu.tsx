@@ -41,7 +41,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
     onOpen,
     onShiftClick,
     placement: initialPlacement = 'top',
-    src = require('@tabler/icons/dots.svg'),
+    src = require('@tabler/icons/outline/dots.svg'),
     title = 'Menu',
     ...filteredProps
   } = props;

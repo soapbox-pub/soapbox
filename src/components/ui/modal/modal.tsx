@@ -65,7 +65,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   cancelAction,
   cancelText,
   children,
-  closeIcon = require('@tabler/icons/x.svg'),
+  closeIcon = require('@tabler/icons/outline/x.svg'),
   closePosition = 'right',
   confirmationAction,
   confirmationDisabled,
@@ -107,7 +107,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
             >
               {onBack && (
                 <IconButton
-                  src={require('@tabler/icons/arrow-left.svg')}
+                  src={require('@tabler/icons/outline/arrow-left.svg')}
                   title={intl.formatMessage(messages.back)}
                   onClick={onBack}
                   className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'

@@ -110,7 +110,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>
             <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
               <Icon
-                src={require('@tabler/icons/message-2.svg')}
+                src={require('@tabler/icons/outline/message-2.svg')}
                 className='h-6 w-6 text-gray-600'
               />
             </div>

@@ -110,7 +110,7 @@ const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
       placeholder={intl.formatMessage(messages.username)}
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
-          <Icon className='h-4 w-4' src={require('@tabler/icons/at.svg')} />
+          <Icon className='h-4 w-4' src={require('@tabler/icons/outline/at.svg')} />
           <span>{instance.domain}</span>
         </HStack>
       )}

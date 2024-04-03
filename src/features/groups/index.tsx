@@ -79,7 +79,7 @@ const Groups: React.FC = () => {
       {canCreateGroup && (
         <Button
           className='xl:hidden'
-          icon={require('@tabler/icons/circles.svg')}
+          icon={require('@tabler/icons/outline/circles.svg')}
           onClick={createGroup}
           theme='secondary'
           block

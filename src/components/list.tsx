@@ -73,7 +73,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
         <HStack space={1} alignItems='center' className='overflow-hidden text-gray-700 dark:text-gray-600'>
           {children}
 
-          <Icon src={require('@tabler/icons/chevron-right.svg')} className='ml-1 rtl:rotate-180' />
+          <Icon src={require('@tabler/icons/outline/chevron-right.svg')} className='ml-1 rtl:rotate-180' />
         </HStack>
       ) : null}
 
@@ -91,7 +91,7 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
             }
           >
             <Icon
-              src={require('@tabler/icons/check.svg')}
+              src={require('@tabler/icons/outline/check.svg')}
               className={
                 clsx({
                   'h-4 w-4 text-white dark:text-white transition-all duration-500': true,

@@ -68,7 +68,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           disabled={!hasPrevPage || isDisabled}
         >
           <Icon
-            src={require('@tabler/icons/chevron-left.svg')}
+            src={require('@tabler/icons/outline/chevron-left.svg')}
             className='h-5 w-5 text-black dark:text-white'
           />
         </button>
@@ -100,7 +100,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           disabled={!hasNextPage || isDisabled}
         >
           <Icon
-            src={require('@tabler/icons/chevron-right.svg')}
+            src={require('@tabler/icons/outline/chevron-right.svg')}
             className='h-5 w-5 text-black dark:text-white'
           />
         </button>

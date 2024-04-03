@@ -145,7 +145,7 @@ const Navbar = () => {
                     <Link to='/reset-password'>
                       <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                         <IconButton
-                          src={require('@tabler/icons/help.svg')}
+                          src={require('@tabler/icons/outline/help.svg')}
                           className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
                           iconClassName='h-5 w-5'
                         />

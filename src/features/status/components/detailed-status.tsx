@@ -57,7 +57,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             avatarSize={42}
             icon={
               <Icon
-                src={require('@tabler/icons/circles.svg')}
+                src={require('@tabler/icons/outline/circles.svg')}
                 className='h-4 w-4 text-primary-600 dark:text-accent-blue'
               />
             }
@@ -109,9 +109,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/mail.svg')} />;
+    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/mail.svg')} />;
   } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/lock.svg')} />;
+    statusTypeIcon = <Icon className='h-4 w-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/lock.svg')} />;
   }
 
   return (

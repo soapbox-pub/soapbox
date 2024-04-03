@@ -101,7 +101,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/balloon.svg')}
+          src={require('@tabler/icons/outline/balloon.svg')}
           className='h-4 w-4 text-gray-800 dark:text-gray-200'
         />
 
@@ -160,7 +160,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
             {account.locked && (
               <Icon
-                src={require('@tabler/icons/lock.svg')}
+                src={require('@tabler/icons/outline/lock.svg')}
                 alt={intl.formatMessage(messages.account_locked)}
                 className='h-4 w-4 text-gray-600'
               />
@@ -178,7 +178,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.local ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/calendar.svg')}
+                src={require('@tabler/icons/outline/calendar.svg')}
                 className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -195,7 +195,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.location ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/map-pin.svg')}
+                src={require('@tabler/icons/outline/map-pin.svg')}
                 className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -208,7 +208,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.website ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/link.svg')}
+                src={require('@tabler/icons/outline/link.svg')}
                 className='h-4 w-4 text-gray-800 dark:text-gray-200'
               />
 

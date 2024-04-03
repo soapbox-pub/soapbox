@@ -45,11 +45,11 @@ const Report: React.FC<IReport> = ({ id }) => {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/hourglass-empty.svg'),
+      icon: require('@tabler/icons/outline/hourglass-empty.svg'),
     }, {
       text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/trash.svg'),
+      icon: require('@tabler/icons/outline/trash.svg'),
       destructive: true,
     }];
   };
@@ -149,7 +149,7 @@ const Report: React.FC<IReport> = ({ id }) => {
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
-        <DropdownMenu items={menu} src={require('@tabler/icons/dots-vertical.svg')} />
+        <DropdownMenu items={menu} src={require('@tabler/icons/outline/dots-vertical.svg')} />
       </HStack>
     </HStack>
   );

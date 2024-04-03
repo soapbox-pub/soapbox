@@ -75,7 +75,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       if (hasComposeContent && type === 'COMPOSE') {
         const isEditing = compose!.id !== null;
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/trash.svg'),
+          icon: require('@tabler/icons/outline/trash.svg'),
           heading: isEditing
             ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
             : <FormattedMessage id='confirmations.cancel.heading' defaultMessage='Discard post' />,
@@ -94,7 +94,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
       } else if (hasEventComposeContent && type === 'COMPOSE_EVENT') {
         const isEditing = getState().compose_event.id !== null;
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/trash.svg'),
+          icon: require('@tabler/icons/outline/trash.svg'),
           heading: isEditing
             ? <FormattedMessage id='confirmations.cancel_event_editing.heading' defaultMessage='Cancel event editing' />
             : <FormattedMessage id='confirmations.delete_event.heading' defaultMessage='Delete event' />,

@@ -25,7 +25,7 @@ const NewEventPanel = () => {
       </Stack>
 
       <Button
-        icon={require('@tabler/icons/calendar-event.svg')}
+        icon={require('@tabler/icons/outline/calendar-event.svg')}
         onClick={createEvent}
         theme='secondary'
         block

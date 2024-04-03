@@ -11,6 +11,8 @@ interface ISidebarNavigationLink {
   countMax?: number;
   /** URL to an SVG icon. */
   icon: string;
+  /** URL to an SVG icon for active state. */
+  activeIcon?: string;
   /** Link label. */
   text: React.ReactNode;
   /** Route to an internal page. */
@@ -21,7 +23,7 @@ interface ISidebarNavigationLink {
 
 /** Desktop sidebar navigation link. */
 const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, ref: React.ForwardedRef<HTMLAnchorElement>): JSX.Element => {
-  const { icon, text, to = '', count, countMax, onClick } = props;
+  const { icon, activeIcon, text, to = '', count, countMax, onClick } = props;
   const isActive = location.pathname === to;
 
   const handleClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -45,7 +47,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
     >
       <span className='relative'>
         <Icon
-          src={icon}
+          src={(isActive && activeIcon) || icon}
           count={count}
           countMax={countMax}
           className={clsx('h-5 w-5', {

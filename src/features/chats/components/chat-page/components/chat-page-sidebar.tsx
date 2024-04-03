@@ -42,13 +42,13 @@ const ChatPageSidebar = () => {
 
           <HStack space={1}>
             <IconButton
-              src={require('@tabler/icons/settings.svg')}
+              src={require('@tabler/icons/outline/settings.svg')}
               iconClassName='h-5 w-5 text-gray-600'
               onClick={handleSettingsClick}
             />
 
             <IconButton
-              src={require('@tabler/icons/edit.svg')}
+              src={require('@tabler/icons/outline/edit.svg')}
               iconClassName='h-5 w-5 text-gray-600'
               onClick={handleChatCreate}
             />

@@ -1,4 +1,4 @@
-import IconCode from '@tabler/icons/code.svg';
+import IconCode from '@tabler/icons/outline/code.svg';
 import React from 'react';
 
 import { render, screen } from 'soapbox/jest/test-helpers';

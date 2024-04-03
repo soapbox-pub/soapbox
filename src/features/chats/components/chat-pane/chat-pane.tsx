@@ -111,7 +111,7 @@ const ChatPane = () => {
             toggleChatPane();
           }
         }}
-        secondaryActionIcon={require('@tabler/icons/edit.svg')}
+        secondaryActionIcon={require('@tabler/icons/outline/edit.svg')}
       />
 
       {isOpen ? renderBody() : null}

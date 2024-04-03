@@ -137,7 +137,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
     dispatch((dispatch, getState) => {
       if (checkEventComposeContent(getState().compose_event)) {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/trash.svg'),
+          icon: require('@tabler/icons/outline/trash.svg'),
           heading: id
             ? <FormattedMessage id='confirmations.cancel_event_editing.heading' defaultMessage='Cancel event editing' />
             : <FormattedMessage id='confirmations.delete_event.heading' defaultMessage='Delete event' />,
@@ -177,12 +177,12 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
 
   const renderLocation = () => location && (
     <HStack className='h-[38px] text-gray-700 dark:text-gray-500' alignItems='center' space={2}>
-      <Icon src={ADDRESS_ICONS[location.type] || require('@tabler/icons/map-pin.svg')} />
+      <Icon src={ADDRESS_ICONS[location.type] || require('@tabler/icons/outline/map-pin.svg')} />
       <Stack className='grow'>
         <Text>{location.description}</Text>
         <Text theme='muted' size='xs'>{[location.street, location.locality, location.country].filter(val => val?.trim()).join(' · ')}</Text>
       </Stack>
-      <IconButton title={intl.formatMessage(messages.resetLocation)} src={require('@tabler/icons/x.svg')} onClick={() => onChangeLocation(null)} />
+      <IconButton title={intl.formatMessage(messages.resetLocation)} src={require('@tabler/icons/outline/x.svg')} onClick={() => onChangeLocation(null)} />
     </HStack>
   );
 
@@ -213,7 +213,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           {banner ? (
             <>
               <img className='h-full w-full object-cover' src={banner.url} alt='' />
-              <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/x.svg')} onClick={handleClearBanner} />
+              <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/outline/x.svg')} onClick={handleClearBanner} />
             </>
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />

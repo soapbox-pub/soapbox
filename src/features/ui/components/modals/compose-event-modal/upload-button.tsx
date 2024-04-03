@@ -28,7 +28,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
   return (
     <HStack className='h-full w-full cursor-pointer text-primary-500 dark:text-accent-blue' space={3} alignItems='center' justifyContent='center' element='label'>
       <Icon
-        src={require('@tabler/icons/photo-plus.svg')}
+        src={require('@tabler/icons/outline/photo-plus.svg')}
         className='h-7 w-7'
         onClick={handleClick}
       />

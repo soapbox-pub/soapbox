@@ -64,7 +64,7 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
     >
       <Stack alignItems='center' space={6}>
         <div className='h-96 w-full' id='event-map' />
-        <Button onClick={onClickNavigate} icon={require('@tabler/icons/gps.svg')}>
+        <Button onClick={onClickNavigate} icon={require('@tabler/icons/outline/gps.svg')}>
           <FormattedMessage id='event_map.navigate' defaultMessage='Navigate' />
         </Button>
       </Stack>

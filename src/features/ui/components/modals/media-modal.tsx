@@ -255,7 +255,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           >
             <IconButton
               title={intl.formatMessage(messages.close)}
-              src={require('@tabler/icons/x.svg')}
+              src={require('@tabler/icons/outline/x.svg')}
               onClick={onClose}
               theme='dark'
               className='!p-1.5 hover:scale-105 hover:bg-gray-900'
@@ -264,7 +264,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
             <HStack alignItems='center' space={2}>
               <IconButton
-                src={require('@tabler/icons/download.svg')}
+                src={require('@tabler/icons/outline/download.svg')}
                 theme='dark'
                 className='!p-1.5 hover:scale-105 hover:bg-gray-900'
                 iconClassName='h-5 w-5'
@@ -273,7 +273,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
               {status && (
                 <IconButton
-                  src={isFullScreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')}
+                  src={isFullScreen ? require('@tabler/icons/outline/arrows-minimize.svg') : require('@tabler/icons/outline/arrows-maximize.svg')}
                   title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
                   theme='dark'
                   className='hidden !p-1.5 hover:scale-105 hover:bg-gray-900 xl:block'
@@ -296,7 +296,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                   onClick={handlePrevClick}
                   aria-label={intl.formatMessage(messages.previous)}
                 >
-                  <Icon src={require('@tabler/icons/arrow-left.svg')} className='h-5 w-5' />
+                  <Icon src={require('@tabler/icons/outline/arrow-left.svg')} className='h-5 w-5' />
                 </button>
               </div>
             )}
@@ -318,7 +318,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                   onClick={handleNextClick}
                   aria-label={intl.formatMessage(messages.next)}
                 >
-                  <Icon src={require('@tabler/icons/arrow-right.svg')} className='h-5 w-5' />
+                  <Icon src={require('@tabler/icons/outline/arrow-right.svg')} className='h-5 w-5' />
                 </button>
               </div>
             )}

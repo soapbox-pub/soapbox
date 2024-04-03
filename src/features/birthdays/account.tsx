@@ -36,7 +36,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
           date: formattedBirthday,
         })}
       >
-        <Icon src={require('@tabler/icons/balloon.svg')} />
+        <Icon src={require('@tabler/icons/outline/balloon.svg')} />
         {formattedBirthday}
       </div>
     </HStack>
