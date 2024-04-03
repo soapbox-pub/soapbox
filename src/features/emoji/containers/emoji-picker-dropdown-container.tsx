@@ -40,7 +40,7 @@ const EmojiPickerDropdownContainer = (
           'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
         })}
         ref={refs.setReference}
-        src={require('@tabler/icons/mood-happy.svg')}
+        src={require('@tabler/icons/outline/mood-happy.svg')}
         title={title}
         aria-label={title}
         aria-expanded={visible}

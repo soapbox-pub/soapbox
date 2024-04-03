@@ -103,7 +103,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
     const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
       <div className='media-gallery__item-thumbnail'>
-        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
+        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/outline/volume.svg')} /></span>
         <span className='media-gallery__file-extension__label'>{fileExtension}</span>
       </div>
     );
@@ -112,7 +112,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   if (!visible) {
     icon = (
       <span className='media-gallery__item__icons'>
-        <Icon src={require('@tabler/icons/eye-off.svg')} />
+        <Icon src={require('@tabler/icons/outline/eye-off.svg')} />
       </span>
     );
   }

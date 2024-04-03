@@ -20,7 +20,7 @@ const LoadGap: React.FC<ILoadGap> = ({ disabled, maxId, onClick }) => {
 
   return (
     <button className='load-more load-gap' disabled={disabled} onClick={handleClick} aria-label={intl.formatMessage(messages.load_more)}>
-      <Icon src={require('@tabler/icons/dots.svg')} />
+      <Icon src={require('@tabler/icons/outline/dots.svg')} />
     </button>
   );
 };

@@ -72,7 +72,7 @@ const ChatWindow = () => {
             {isOpen && (
               <button onClick={closeChat}>
                 <Icon
-                  src={require('@tabler/icons/arrow-left.svg')}
+                  src={require('@tabler/icons/outline/arrow-left.svg')}
                   className='h-6 w-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
                 />
               </button>
@@ -107,7 +107,7 @@ const ChatWindow = () => {
           </HStack>
         }
         secondaryAction={secondaryAction()}
-        secondaryActionIcon={isOpen ? require('@tabler/icons/info-circle.svg') : require('@tabler/icons/edit.svg')}
+        secondaryActionIcon={isOpen ? require('@tabler/icons/outline/info-circle.svg') : require('@tabler/icons/outline/edit.svg')}
         isToggleable={!isOpen}
         isOpen={isOpen}
         onToggle={toggleChatPane}

@@ -4,10 +4,10 @@ import { useAppSelector } from 'soapbox/hooks';
 
 import { HStack, Icon, Stack, Text } from './ui';
 
-const buildingCommunityIcon = require('@tabler/icons/building-community.svg');
-const homeIcon = require('@tabler/icons/home-2.svg');
-const mapPinIcon = require('@tabler/icons/map-pin.svg');
-const roadIcon = require('@tabler/icons/road.svg');
+const buildingCommunityIcon = require('@tabler/icons/outline/building-community.svg');
+const homeIcon = require('@tabler/icons/outline/home-2.svg');
+const mapPinIcon = require('@tabler/icons/outline/map-pin.svg');
+const roadIcon = require('@tabler/icons/outline/road.svg');
 
 export const ADDRESS_ICONS: Record<string, string> = {
   house: homeIcon,

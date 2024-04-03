@@ -60,7 +60,7 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
           {menu && (
             <DropdownMenu
               items={menu}
-              src={require('@tabler/icons/dots-vertical.svg')}
+              src={require('@tabler/icons/outline/dots-vertical.svg')}
             />
           )}
           {action && actionIcon && (
@@ -72,7 +72,7 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
             </button>
           )}
           <Icon
-            src={expanded ? require('@tabler/icons/chevron-up.svg') : require('@tabler/icons/chevron-down.svg')}
+            src={expanded ? require('@tabler/icons/outline/chevron-up.svg') : require('@tabler/icons/outline/chevron-down.svg')}
             className='h-5 w-5 text-gray-700 dark:text-gray-600'
           />
         </HStack>

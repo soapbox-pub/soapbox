@@ -18,7 +18,7 @@ const Tag: React.FC<ITag> = ({ tag, onDelete }) => {
 
       <IconButton
         iconClassName='h-4 w-4'
-        src={require('@tabler/icons/x.svg')}
+        src={require('@tabler/icons/outline/x.svg')}
         onClick={() => onDelete(tag)}
       />
     </div>

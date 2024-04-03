@@ -164,7 +164,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <Icon
         className='h-16 w-16 text-gray-800 dark:text-gray-200'
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/paperclip.svg')}
+        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/outline/paperclip.svg')}
       />
     );
 
@@ -240,7 +240,7 @@ const Item: React.FC<IItem> = ({
         target='_blank'
         title={attachment.description}
       >
-        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/volume.svg')} /></span>
+        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/outline/volume.svg')} /></span>
         <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
       </a>
     );

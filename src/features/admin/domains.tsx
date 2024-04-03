@@ -116,7 +116,7 @@ const Domains: React.FC = () => {
       <Stack className='gap-4'>
         <Button
           className='sm:w-fit sm:self-end'
-          icon={require('@tabler/icons/plus.svg')}
+          icon={require('@tabler/icons/outline/plus.svg')}
           onClick={handleCreateDomain}
           theme='secondary'
           block

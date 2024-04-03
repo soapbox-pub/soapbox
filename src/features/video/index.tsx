@@ -519,7 +519,7 @@ const Video: React.FC<IVideo> = ({
               onClick={togglePlay}
               autoFocus={autoFocus}
             >
-              <Icon src={paused ? require('@tabler/icons/player-play.svg') : require('@tabler/icons/player-pause.svg')} />
+              <Icon src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
             </button>
 
             <button
@@ -529,7 +529,7 @@ const Video: React.FC<IVideo> = ({
               className='player-button'
               onClick={toggleMute}
             >
-              <Icon src={muted ? require('@tabler/icons/volume-3.svg') : require('@tabler/icons/volume.svg')} />
+              <Icon src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
             </button>
 
             <div className={clsx('video-player__volume', { active: hovered })} onMouseDown={handleVolumeMouseDown} ref={slider}>
@@ -562,7 +562,7 @@ const Video: React.FC<IVideo> = ({
               className='player-button'
               onClick={toggleFullscreen}
             >
-              <Icon src={fullscreen ? require('@tabler/icons/arrows-minimize.svg') : require('@tabler/icons/arrows-maximize.svg')} />
+              <Icon src={fullscreen ? require('@tabler/icons/outline/arrows-minimize.svg') : require('@tabler/icons/outline/arrows-maximize.svg')} />
             </button>
           </div>
         </div>

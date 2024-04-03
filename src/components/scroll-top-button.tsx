@@ -92,7 +92,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
       >
         <Icon
           className='h-4 w-4'
-          src={require('@tabler/icons/arrow-bar-to-up.svg')}
+          src={require('@tabler/icons/outline/arrow-bar-to-up.svg')}
         />
 
         <Text theme='inherit' size='sm'>

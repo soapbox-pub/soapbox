@@ -28,8 +28,8 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
         className='h-4 w-4'
         src={
           isOwner
-            ? require('@tabler/icons/users.svg')
-            : require('@tabler/icons/gavel.svg')
+            ? require('@tabler/icons/outline/users.svg')
+            : require('@tabler/icons/outline/gavel.svg')
         }
       />
 

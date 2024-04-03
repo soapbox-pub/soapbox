@@ -27,7 +27,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   const handleRevoke = () => {
     if (isCurrent)
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/alert-triangle.svg'),
+        icon: require('@tabler/icons/outline/alert-triangle.svg'),
         heading: intl.formatMessage(messages.revokeSessionHeading),
         message: intl.formatMessage(messages.revokeSessionMessage),
         confirm: intl.formatMessage(messages.revokeSessionConfirm),

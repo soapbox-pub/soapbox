@@ -59,7 +59,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index - 1)}
             className='flex h-8 w-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/chevron-left.svg')} className='h-6 w-6 text-black dark:text-white' />
+            <Icon src={require('@tabler/icons/outline/chevron-left.svg')} className='h-6 w-6 text-black dark:text-white' />
           </button>
         </div>
       )}
@@ -72,7 +72,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index + 1)}
             className='flex h-8 w-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/chevron-right.svg')} className='h-6 w-6 text-black dark:text-white' />
+            <Icon src={require('@tabler/icons/outline/chevron-right.svg')} className='h-6 w-6 text-black dark:text-white' />
           </button>
         </div>
       )}

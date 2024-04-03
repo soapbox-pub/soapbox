@@ -50,7 +50,7 @@ const EventDate: React.FC<IEventDate> = ({ status }) => {
 
   return (
     <HStack alignItems='center' space={2}>
-      <Icon src={require('@tabler/icons/calendar.svg')} />
+      <Icon src={require('@tabler/icons/outline/calendar.svg')} />
       <span>{date}</span>
     </HStack>
   );

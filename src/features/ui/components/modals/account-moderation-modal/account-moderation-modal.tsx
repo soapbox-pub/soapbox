@@ -172,7 +172,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
 
         {features.adminFE && (
           <HStack justifyContent='center'>
-            <Button icon={require('@tabler/icons/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
+            <Button icon={require('@tabler/icons/outline/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
               <FormattedMessage id='account_moderation_modal.admin_fe' defaultMessage='Open in AdminFE' />
             </Button>
           </HStack>

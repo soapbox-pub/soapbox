@@ -138,13 +138,13 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       if (isMemberUser) {
         items.push({
           text: intl.formatMessage(messages.groupModPromoteMod, { role: GroupRoles.ADMIN }),
-          icon: require('@tabler/icons/briefcase.svg'),
+          icon: require('@tabler/icons/outline/briefcase.svg'),
           action: handleAdminAssignment,
         });
       } else if (isMemberAdmin) {
         items.push({
           text: intl.formatMessage(messages.groupModDemote, { role: GroupRoles.ADMIN, name: account.username }),
-          icon: require('@tabler/icons/briefcase.svg'),
+          icon: require('@tabler/icons/outline/briefcase.svg'),
           action: handleUserAssignment,
           destructive: true,
         });
@@ -159,14 +159,14 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       if (features.groupsKick) {
         items.push({
           text: intl.formatMessage(messages.groupModKick, { name: account.username }),
-          icon: require('@tabler/icons/user-minus.svg'),
+          icon: require('@tabler/icons/outline/user-minus.svg'),
           action: handleKickFromGroup,
         });
       }
 
       items.push({
         text: intl.formatMessage(messages.groupModBlock, { name: account.username }),
-        icon: require('@tabler/icons/ban.svg'),
+        icon: require('@tabler/icons/outline/ban.svg'),
         action: handleBlockFromGroup,
         destructive: true,
       });

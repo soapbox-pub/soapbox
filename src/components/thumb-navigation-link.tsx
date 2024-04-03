@@ -9,13 +9,14 @@ interface IThumbNavigationLink {
   count?: number;
   countMax?: number;
   src: string;
+  activeSrc?: string;
   text: string | React.ReactElement;
   to: string;
   exact?: boolean;
   paths?: Array<string>;
 }
 
-const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, src, text, to, exact, paths }): JSX.Element => {
+const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, src, activeSrc, text, to, exact, paths }): JSX.Element => {
   const { pathname } = useLocation();
 
   const isActive = (): boolean => {
@@ -28,11 +29,13 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
 
   const active = isActive();
 
+  const icon = (active && activeSrc) || src;
+
   return (
     <NavLink to={to} exact={exact} className='thumb-navigation__link'>
       {count !== undefined ? (
         <IconWithCounter
-          src={src}
+          src={icon}
           className={clsx({
             'h-5 w-5': true,
             'text-gray-600 black:text-white': !active,
@@ -43,7 +46,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
         />
       ) : (
         <Icon
-          src={src}
+          src={icon}
           className={clsx({
             'h-5 w-5': true,
             'text-gray-600 black:text-white': !active,

@@ -36,7 +36,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
   const onClickClose = () => {
     if (checkComposeContent(compose)) {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/trash.svg'),
+        icon: require('@tabler/icons/outline/trash.svg'),
         heading: statusId
           ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
           : <FormattedMessage id='confirmations.cancel.heading' defaultMessage='Discard post' />,

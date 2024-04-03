@@ -102,7 +102,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <FormattedMessage id='event.location' defaultMessage='Location' />
         </Text>
         <HStack space={2} alignItems='center'>
-          <Icon src={require('@tabler/icons/map-pin.svg')} />
+          <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
           <Text>{text}</Text>
         </HStack>
       </Stack>
@@ -125,7 +125,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <FormattedMessage id='event.date' defaultMessage='Date' />
         </Text>
         <HStack space={2} alignItems='center'>
-          <Icon src={require('@tabler/icons/calendar.svg')} />
+          <Icon src={require('@tabler/icons/outline/calendar.svg')} />
           <Text>
             <FormattedDate
               value={startDate}
@@ -165,7 +165,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
         {status.event.links.map(link => (
           <HStack space={2} alignItems='center'>
-            <Icon src={require('@tabler/icons/link.svg')} />
+            <Icon src={require('@tabler/icons/outline/link.svg')} />
             <a href={link.remote_url || link.url} className='text-primary-600 hover:underline dark:text-accent-blue' target='_blank'>
               {(link.remote_url || link.url).replace(/^https?:\/\//, '')}
             </a>

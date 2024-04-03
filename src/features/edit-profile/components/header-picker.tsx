@@ -55,7 +55,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
         justifyContent='center'
       >
         <Icon
-          src={require('@tabler/icons/photo-plus.svg')}
+          src={require('@tabler/icons/outline/photo-plus.svg')}
           className='h-4.5 w-4.5'
         />
 
@@ -76,7 +76,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
       {onClear && src && (
         <IconButton
           onClick={handleClear}
-          src={require('@tabler/icons/x.svg')}
+          src={require('@tabler/icons/outline/x.svg')}
           theme='dark'
           className='absolute right-2 top-2 z-10 hover:scale-105 hover:bg-gray-900'
           iconClassName='h-5 w-5'

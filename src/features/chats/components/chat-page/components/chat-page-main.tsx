@@ -120,7 +120,7 @@ const ChatPageMain = () => {
         <HStack alignItems='center' space={2} className='overflow-hidden'>
           <HStack alignItems='center'>
             <IconButton
-              src={require('@tabler/icons/arrow-left.svg')}
+              src={require('@tabler/icons/outline/arrow-left.svg')}
               className='mr-2 h-7 w-7 sm:mr-0 sm:hidden rtl:rotate-180'
               onClick={() => history.push('/chats')}
             />
@@ -162,7 +162,7 @@ const ChatPageMain = () => {
         <Menu>
           <MenuButton
             as={IconButton}
-            src={require('@tabler/icons/info-circle.svg')}
+            src={require('@tabler/icons/outline/info-circle.svg')}
             iconClassName='h-5 w-5 text-gray-600'
             children={null}
           />
@@ -213,7 +213,7 @@ const ChatPageMain = () => {
                   className='!px-0 hover:!bg-transparent'
                 >
                   <div className='flex w-full items-center space-x-2 text-sm font-bold text-primary-500 dark:text-accent-blue'>
-                    <Icon src={require('@tabler/icons/ban.svg')} className='h-5 w-5' />
+                    <Icon src={require('@tabler/icons/outline/ban.svg')} className='h-5 w-5' />
                     <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
                   </div>
                 </MenuItem>
@@ -225,7 +225,7 @@ const ChatPageMain = () => {
                     className='!px-0 hover:!bg-transparent'
                   >
                     <div className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600 dark:text-danger-500'>
-                      <Icon src={require('@tabler/icons/logout.svg')} className='h-5 w-5' />
+                      <Icon src={require('@tabler/icons/outline/logout.svg')} className='h-5 w-5' />
                       <span>{intl.formatMessage(messages.leaveChat)}</span>
                     </div>
                   </MenuItem>

@@ -7,7 +7,7 @@ const CompletedStep = ({ onComplete }: { onComplete: () => void }) => (
   <Card variant='rounded' size='xl'>
     <CardBody>
       <Stack space={2}>
-        <Icon strokeWidth={1} src={require('@tabler/icons/confetti.svg')} className='mx-auto h-16 w-16 text-primary-600 dark:text-primary-400' />
+        <Icon strokeWidth={1} src={require('@tabler/icons/outline/confetti.svg')} className='mx-auto h-16 w-16 text-primary-600 dark:text-primary-400' />
 
         <Text size='2xl' align='center' weight='bold'>
           <FormattedMessage id='onboarding.finished.title' defaultMessage='Onboarding complete' />

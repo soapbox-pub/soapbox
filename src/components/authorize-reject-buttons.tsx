@@ -106,7 +106,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
         <HStack space={3} alignItems='center'>
           <AuthorizeRejectButton
             theme='danger'
-            icon={require('@tabler/icons/x.svg')}
+            icon={require('@tabler/icons/outline/x.svg')}
             action={handleReject}
             isLoading={state === 'rejecting'}
             disabled={state === 'authorizing'}
@@ -114,7 +114,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
           />
           <AuthorizeRejectButton
             theme='primary'
-            icon={require('@tabler/icons/check.svg')}
+            icon={require('@tabler/icons/outline/check.svg')}
             action={handleAuthorize}
             isLoading={state === 'authorizing'}
             disabled={state === 'rejecting'}
@@ -162,7 +162,7 @@ const AuthorizeRejectButton: React.FC<IAuthorizeRejectButton> = ({ theme, icon, 
         }
       >
         <IconButton
-          src={isLoading ? require('@tabler/icons/player-stop-filled.svg') : icon}
+          src={isLoading ? require('@tabler/icons/filled/player-stop.svg') : icon}
           onClick={action}
           theme='seamless'
           className='h-10 w-10 items-center justify-center bg-white focus:!ring-0 dark:!bg-gray-900'

@@ -76,12 +76,12 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
           onClick={handleClear}
         >
           <SvgIcon
-            src={require('@tabler/icons/search.svg')}
+            src={require('@tabler/icons/outline/search.svg')}
             className={clsx('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
           />
 
           <SvgIcon
-            src={require('@tabler/icons/x.svg')}
+            src={require('@tabler/icons/outline/x.svg')}
             className={clsx('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

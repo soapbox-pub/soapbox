@@ -91,12 +91,12 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     {
       text: intl.formatMessage(messages.editFolder),
       action: handleEditFolder,
-      icon: require('@tabler/icons/edit.svg'),
+      icon: require('@tabler/icons/outline/edit.svg'),
     },
     {
       text: intl.formatMessage(messages.deleteFolder),
       action: handleDeleteFolder,
-      icon: require('@tabler/icons/trash.svg'),
+      icon: require('@tabler/icons/outline/trash.svg'),
     },
   ] : [];
 
@@ -104,7 +104,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     <Column
       label={folder ? folder.name : intl.formatMessage(messages.heading)}
       action={
-        <DropdownMenu items={items} src={require('@tabler/icons/dots-vertical.svg')} />
+        <DropdownMenu items={items} src={require('@tabler/icons/outline/dots-vertical.svg')} />
       }
       transparent
     >
