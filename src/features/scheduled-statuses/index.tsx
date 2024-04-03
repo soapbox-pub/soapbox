@@ -39,6 +39,7 @@ const ScheduledStatuses = () => {
         isLoading={typeof isLoading === 'boolean' ? isLoading : true}
         onLoadMore={() => handleLoadMore(dispatch)}
         emptyMessage={emptyMessage}
+        listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
       >
         {statusIds.map((id: string) => <ScheduledStatus key={id} statusId={id} />)}
       </ScrollableList>
