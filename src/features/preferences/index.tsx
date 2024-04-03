@@ -190,6 +190,10 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.delete_modal_label' defaultMessage='Show confirmation dialog before deleting a post' />}>
           <SettingToggle settings={settings} settingPath={['deleteModal']} onChange={onToggleChange} />
         </ListItem>
+
+        <ListItem label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}>
+          <SettingToggle settings={settings} settingPath={['missingDescriptionModal']} onChange={onToggleChange} />
+        </ListItem>
       </List>
 
       <List>

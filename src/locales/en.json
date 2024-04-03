@@ -1590,6 +1590,8 @@
   "upload_error.poll": "File upload not allowed with polls.",
   "upload_error.video_duration_limit": "Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})",
   "upload_error.video_size_limit": "Video exceeds the current file size limit ({limit})",
+  "upload_form.alt_label": "Alt",
+  "upload_form.alt_warning": "This attachment doesn't have a description",
   "upload_form.description": "Describe for the visually impaired",
   "upload_form.preview": "Preview",
   "upload_form.undo": "Delete",

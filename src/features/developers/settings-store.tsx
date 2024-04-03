@@ -118,10 +118,6 @@ const SettingsStore: React.FC = () => {
           <SettingToggle settings={settings} settingPath={['unfollowModal']} onChange={onToggleChange} />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}>
-          <SettingToggle settings={settings} settingPath={['missingDescriptionModal']} onChange={onToggleChange} />
-        </ListItem>
-
         <ListItem label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}>
           <SettingToggle settings={settings} settingPath={['reduceMotion']} onChange={onToggleChange} />
         </ListItem>
