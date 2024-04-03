@@ -81,7 +81,7 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
   decorate(): JSX.Element {
     const emoji = this.__emoji;
     if (isNativeEmoji(emoji)) {
-      return  <Component emoji={emoji.native} alt={emoji.colons} className='emojione h-4 w-4' />;
+      return <Component emoji={emoji.native} alt={emoji.colons} className='emojione h-4 w-4' />;
     } else {
       return <Component src={emoji.imageUrl} alt={emoji.colons} className='emojione h-4 w-4' />;
     }

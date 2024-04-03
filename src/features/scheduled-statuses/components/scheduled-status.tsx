@@ -5,7 +5,7 @@ import Account from 'soapbox/components/account';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import StatusContent from 'soapbox/components/status-content';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import { HStack } from 'soapbox/components/ui';
+import { HStack, Stack } from 'soapbox/components/ui';
 import PollPreview from 'soapbox/features/ui/components/poll-preview';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -40,28 +40,28 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
               account={account}
               timestamp={status.created_at}
               futureTimestamp
-              hideActions
+              action={<ScheduledStatusActionBar status={status} {...other} />}
             />
           </HStack>
         </div>
 
         <StatusReplyMentions status={status} />
 
-        <StatusContent
-          status={status}
-          collapsable
-        />
-
-        {status.media_attachments.size > 0 && (
-          <AttachmentThumbs
-            media={status.media_attachments}
-            sensitive={status.sensitive}
+        <Stack space={4}>
+          <StatusContent
+            status={status}
+            collapsable
           />
-        )}
 
-        {status.poll && <PollPreview pollId={status.poll as string} />}
+          {status.media_attachments.size > 0 && (
+            <AttachmentThumbs
+              media={status.media_attachments}
+              sensitive={status.sensitive}
+            />
+          )}
 
-        <ScheduledStatusActionBar status={status} {...other} />
+          {status.poll && <PollPreview pollId={status.poll as string} />}
+        </Stack>
       </div>
     </div>
   );
