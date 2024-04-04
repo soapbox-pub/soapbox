@@ -11,6 +11,7 @@ import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
+import QuotedStatusIndicator from './quoted-status-indicator';
 import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
@@ -131,6 +132,8 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
                 status={status}
                 collapsable
               />
+
+              {status.quote && <QuotedStatusIndicator statusId={status.quote as string} />}
 
               {status.media_attachments.size > 0 && (
                 <StatusMedia
