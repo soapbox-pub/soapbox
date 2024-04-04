@@ -1591,6 +1591,8 @@
   "upload_error.video_duration_limit": "Video exceeds the current duration limit ({limit, plural, one {# second} other {# seconds}})",
   "upload_error.video_size_limit": "Video exceeds the current file size limit ({limit})",
   "upload_form.description": "Describe for the visually impaired",
+  "upload_form.description_missing.indicator": "Alt",
+  "upload_form.description_missing.title": "This attachment doesn't have a description",
   "upload_form.preview": "Preview",
   "upload_form.undo": "Delete",
   "upload_progress.label": "Uploading…",
