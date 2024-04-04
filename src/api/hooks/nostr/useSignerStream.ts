@@ -64,13 +64,20 @@ function useSignerStream() {
   useEffect(() => {
     if (!relay || !pubkey) return;
 
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     (async() => {
-      for await (const msg of relay.req([{ kinds: [24133, 23194], authors: [pubkey], limit: 0 }])) {
+      for await (const msg of relay.req([{ kinds: [24133, 23194], authors: [pubkey], limit: 0 }], { signal })) {
         if (msg[0] === 'EVENT') handleEvent(msg[2]);
       }
     })();
 
-  }, [relay, pubkey]);
+    return () => {
+      controller.abort();
+    };
+
+  }, [relay, pubkey, signer]);
 }
 
 export { useSignerStream };
