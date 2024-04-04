@@ -19,3 +19,4 @@ export { relationshipSchema, type Relationship } from './relationship';
 export { statusSchema, type Status } from './status';
 export { tagSchema, type Tag } from './tag';
 export { tombstoneSchema, type Tombstone } from './tombstone';
+export { trendsLinkSchema, type TrendsLink } from './trends-link';

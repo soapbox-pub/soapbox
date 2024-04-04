@@ -93,4 +93,4 @@ const attachmentSchema = z.discriminatedUnion('type', [
 
 type Attachment = z.infer<typeof attachmentSchema>;
 
-export { attachmentSchema, type Attachment };
+export { blurhashSchema, attachmentSchema, type Attachment };

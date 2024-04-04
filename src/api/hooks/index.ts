@@ -60,3 +60,6 @@ export { useHashtagStream } from './streaming/useHashtagStream';
 export { useListStream } from './streaming/useListStream';
 export { useGroupStream } from './streaming/useGroupStream';
 export { useRemoteStream } from './streaming/useRemoteStream';
+
+// Trends
+export { useTrendingLinks } from './trends/useTrendingLinks';

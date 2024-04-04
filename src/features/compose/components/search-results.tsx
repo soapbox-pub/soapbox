@@ -4,17 +4,18 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
 import { fetchTrendingStatuses } from 'soapbox/actions/trending-statuses';
-import { useAccount } from 'soapbox/api/hooks';
+import { useAccount, useTrendingLinks } from 'soapbox/api/hooks';
 import Hashtag from 'soapbox/components/hashtag';
 import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
+import TrendingLink from 'soapbox/components/trending-link';
 import { HStack, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -24,6 +25,7 @@ const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
   statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
   hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
+  links: { id: 'search_results.links', defaultMessage: 'News' },
 });
 
 const SearchResults = () => {
@@ -31,6 +33,7 @@ const SearchResults = () => {
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
@@ -40,6 +43,7 @@ const SearchResults = () => {
   const submitted = useAppSelector((state) => state.search.submitted);
   const selectedFilter = useAppSelector((state) => state.search.filter);
   const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
+  const { trendingLinks } = useTrendingLinks();
   const { account } = useAccount(filterByAccount);
 
   const handleLoadMore = () => dispatch(expandSearch(selectedFilter));
@@ -61,15 +65,18 @@ const SearchResults = () => {
         action: () => selectFilter('statuses'),
         name: 'statuses',
       },
-    );
-
-    items.push(
       {
         text: intl.formatMessage(messages.hashtags),
         action: () => selectFilter('hashtags'),
         name: 'hashtags',
       },
     );
+
+    if (!submitted && features.trendingLinks) items.push({
+      text: intl.formatMessage(messages.links),
+      action: () => selectFilter('links'),
+      name: 'links',
+    });
 
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
@@ -197,6 +204,13 @@ const SearchResults = () => {
     }
   }
 
+  if (selectedFilter === 'links') {
+    if (submitted) selectFilter('accounts');
+    else if (!submitted && trendingLinks) {
+      searchResults = trendingLinks.map(trendingLink => <TrendingLink trendingLink={trendingLink} />);
+    }
+  }
+
   return (
     <>
       {filterByAccount ? (
@@ -228,7 +242,7 @@ const SearchResults = () => {
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
           itemClassName={clsx({
-            'pb-4': selectedFilter === 'accounts',
+            'pb-4': ['accounts', 'links'].includes(selectedFilter),
             'pb-3': selectedFilter === 'hashtags',
           })}
         >

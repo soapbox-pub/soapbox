@@ -21,6 +21,7 @@ const cardSchema = z.object({
   height: z.number().catch(0),
   html: z.string().catch(''),
   image: z.string().nullable().catch(null),
+  image_description: z.string().nullable().catch(null),
   pleroma: z.object({
     opengraph: z.object({
       width: z.number(),

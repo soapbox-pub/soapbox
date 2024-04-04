@@ -29,6 +29,7 @@ const ResultsRecord = ImmutableRecord({
   statuses: ImmutableOrderedSet<string>(),
   groups: ImmutableOrderedSet<string>(),
   hashtags: ImmutableOrderedSet<Tag>(), // it's a list of maps
+  links: ImmutableOrderedSet(),
   accountsHasMore: false,
   statusesHasMore: false,
   groupsHasMore: false,
@@ -52,7 +53,7 @@ const ReducerRecord = ImmutableRecord({
 
 type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
-export type SearchFilter = 'accounts' | 'statuses' | 'groups' | 'hashtags';
+export type SearchFilter = 'accounts' | 'statuses' | 'groups' | 'hashtags' | 'links';
 
 const toIds = (items: APIEntities = []) => {
   return ImmutableOrderedSet(items.map(item => item.id));

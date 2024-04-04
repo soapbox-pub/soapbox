@@ -9,6 +9,19 @@ import { HStack, Stack, Text } from './ui';
 
 import type { Tag } from 'soapbox/types/entities';
 
+const accountsCountRenderer = (count: number) => !!count && (
+  <Text theme='muted' size='sm'>
+    <FormattedMessage
+      id='trends.count_by_accounts'
+      defaultMessage='{count} {rawCount, plural, one {person} other {people}} talking'
+      values={{
+        rawCount: count,
+        count: <strong>{shortNumberFormat(count)}</strong>,
+      }}
+    />
+  </Text>
+);
+
 interface IHashtag {
   hashtag: Tag;
 }
@@ -23,18 +36,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
         </Link>
 
-        {Boolean(count) && (
-          <Text theme='muted' size='sm'>
-            <FormattedMessage
-              id='trends.count_by_accounts'
-              defaultMessage='{count} {rawCount, plural, one {person} other {people}} talking'
-              values={{
-                rawCount: count,
-                count: <strong>{shortNumberFormat(count)}</strong>,
-              }}
-            />
-          </Text>
-        )}
+        {accountsCountRenderer(count)}
       </Stack>
 
       {hashtag.history && (
@@ -52,4 +54,4 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
   );
 };
 
-export default Hashtag;
+export { Hashtag as default, accountsCountRenderer };

@@ -15,4 +15,4 @@ const tagSchema = z.object({
 
 type Tag = z.infer<typeof tagSchema>;
 
-export { tagSchema, type Tag };
+export { historySchema, tagSchema, type Tag };

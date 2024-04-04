@@ -11,7 +11,8 @@ enum Entities {
   GROUP_TAGS = 'GroupTags',
   PATRON_USERS = 'PatronUsers',
   RELATIONSHIPS = 'Relationships',
-  STATUSES = 'Statuses'
+  STATUSES = 'Statuses',
+  TRENDS_LINKS = 'TrendsLinks',
 }
 
 interface EntityTypes {
@@ -25,6 +26,7 @@ interface EntityTypes {
   [Entities.PATRON_USERS]: Schemas.PatronUser;
   [Entities.RELATIONSHIPS]: Schemas.Relationship;
   [Entities.STATUSES]: Schemas.Status;
+  [Entities.TRENDS_LINKS]: Schemas.TrendsLink;
 }
 
 export { Entities, type EntityTypes };
