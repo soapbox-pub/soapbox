@@ -89,6 +89,8 @@ const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
 
 const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
 
+const COMPOSE_CHANGE_MEDIA_ORDER = 'COMPOSE_CHANGE_MEDIA_ORDER' as const;
+
 const messages = defineMessages({
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.' },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent!' },
@@ -851,6 +853,13 @@ const setEditorState = (composeId: string, editorState: EditorState | string | n
   editorState: editorState,
 });
 
+const changeMediaOrder = (composeId: string, a: string, b: string) => ({
+  type: COMPOSE_CHANGE_MEDIA_ORDER,
+  id: composeId,
+  a,
+  b,
+});
+
 type ComposeAction =
   ComposeSetStatusAction
   | ReturnType<typeof changeCompose>
@@ -897,6 +906,7 @@ type ComposeAction =
   | ComposeRemoveFromMentionsAction
   | ComposeEventReplyAction
   | ReturnType<typeof setEditorState>
+  | ReturnType<typeof changeMediaOrder>
 
 export {
   COMPOSE_CHANGE,
@@ -945,6 +955,7 @@ export {
   COMPOSE_SET_STATUS,
   COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
+  COMPOSE_CHANGE_MEDIA_ORDER,
   setComposeToStatus,
   changeCompose,
   replyCompose,
@@ -1000,5 +1011,6 @@ export {
   removeFromMentions,
   eventDiscussionCompose,
   setEditorState,
+  changeMediaOrder,
   type ComposeAction,
 };

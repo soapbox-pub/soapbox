@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { undoUploadCompose, changeUploadCompose } from 'soapbox/actions/compose';
 import Upload from 'soapbox/components/upload';
@@ -8,9 +8,12 @@ interface IUploadCompose {
   id: string;
   composeId: string;
   onSubmit?(): void;
+  onDragStart: (id: string) => void;
+  onDragEnter: (id: string) => void;
+  onDragEnd: () => void;
 }
 
-const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id, onSubmit }) => {
+const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id, onSubmit, onDragStart, onDragEnter, onDragEnd }) => {
   const dispatch = useAppDispatch();
   const { pleroma: { metadata: { description_limit: descriptionLimit } } } = useInstance();
 
@@ -24,12 +27,23 @@ const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id, onSubmit }) =>
     dispatch(undoUploadCompose(composeId, media.id));
   };
 
+  const handleDragStart = useCallback(() => {
+    onDragStart(id);
+  }, [onDragStart, id]);
+
+  const handleDragEnter = useCallback(() => {
+    onDragEnter(id);
+  }, [onDragEnter, id]);
+
   return (
     <Upload
       media={media}
       onDelete={handleDelete}
       onDescriptionChange={handleDescriptionChange}
       onSubmit={onSubmit}
+      onDragStart={handleDragStart}
+      onDragEnter={handleDragEnter}
+      onDragEnd={onDragEnd}
       descriptionLimit={descriptionLimit}
       withPreview
     />
