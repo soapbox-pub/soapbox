@@ -61,7 +61,7 @@ const messages = defineMessages({
   descriptionMissingTitle: { id: 'upload_form.description_missing.title', defaultMessage: 'This attachment doesn\'t have a description' },
 });
 
-interface IUpload {
+interface IUpload extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onDragStart' | 'onDragEnter' | 'onDragEnd'> {
   media: Attachment;
   onSubmit?(): void;
   onDelete?(): void;
@@ -75,6 +75,9 @@ const Upload: React.FC<IUpload> = ({
   onSubmit,
   onDelete,
   onDescriptionChange,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
   descriptionLimit,
   withPreview = true,
 }) => {
@@ -151,7 +154,18 @@ const Upload: React.FC<IUpload> = ({
   );
 
   return (
-    <div className='compose-form__upload' tabIndex={0} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} role='button'>
+    <div
+      className='compose-form__upload'
+      tabIndex={0}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      role='button'
+      draggable
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragEnd={onDragEnd}
+    >
       <Blurhash hash={media.blurhash} className='media-gallery__preview' />
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (

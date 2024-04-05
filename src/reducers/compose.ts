@@ -54,6 +54,7 @@ import {
   COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   ComposeAction,
+  COMPOSE_CHANGE_MEDIA_ORDER,
 } from '../actions/compose';
 import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me';
@@ -520,6 +521,14 @@ export default function compose(state = initialState, action: ComposeAction | Ev
       return updateCompose(state, 'event-compose-modal', compose => compose.set('text', ''));
     case EVENT_FORM_SET:
       return updateCompose(state, 'event-compose-modal', compose => compose.set('text', action.text));
+    case COMPOSE_CHANGE_MEDIA_ORDER:
+      return updateCompose(state, action.id, compose => compose.update('media_attachments', list => {
+        const indexA = list.findIndex(x => x.get('id') === action.a);
+        const moveItem = list.get(indexA)!;
+        const indexB = list.findIndex(x => x.get('id') === action.b);
+
+        return list.splice(indexA, 1).splice(indexB, 0, moveItem);
+      }));
     default:
       return state;
   }
