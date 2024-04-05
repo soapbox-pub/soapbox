@@ -17,10 +17,19 @@ const headerMissing = require('soapbox/assets/images/header-missing.png');
 
 const birthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
+const hexSchema = z.string().regex(/^#[a-f0-9]{6}$/i);
+
 const fieldSchema = z.object({
   name: z.string(),
   value: z.string(),
   verified_at: z.string().datetime().nullable().catch(null),
+});
+
+const roleSchema = z.object({
+  id: z.string().catch(''),
+  name: z.string().catch(''),
+  color: hexSchema.catch(''),
+  highlighted: z.boolean().catch(true),
 });
 
 const baseAccountSchema = z.object({
@@ -85,6 +94,7 @@ const baseAccountSchema = z.object({
     relationship: relationshipSchema.optional().catch(undefined),
     tags: z.array(z.string()).catch([]),
   }).optional().catch(undefined),
+  roles: filteredArray(roleSchema),
   source: z.object({
     approved: z.boolean().catch(true),
     chats_onboarded: z.boolean().catch(true),
@@ -117,6 +127,9 @@ const getDomain = (url: string) => {
     return '';
   }
 };
+
+const filterBadges = (tags?: string[]) =>
+  tags?.filter(tag => tag.startsWith('badge:')).map(tag => ({ id: tag, name: tag.replace(/^badge:/, '') }));
 
 /** Add internal fields to the account. */
 const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, fields, ...account }: T) => {
@@ -156,6 +169,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
       const { relationship, ...rest } = pleroma;
       return rest;
     })(),
+    roles: account.roles || filterBadges(pleroma?.tags),
     relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,

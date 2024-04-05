@@ -117,7 +117,7 @@ export const generateThemeCss = (soapboxConfig: SoapboxConfig): string => {
   return colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
 };
 
-const hexToHsl = (hex: string): Hsl | null => {
+export const hexToHsl = (hex: string): Hsl | null => {
   const rgb = hexToRgb(hex);
   return rgb ? rgbToHsl(rgb) : null;
 };
