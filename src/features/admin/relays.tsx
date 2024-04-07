@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useCreateRelay, useDeleteRelay, useRelays } from 'soapbox/api/hooks/admin';
+import { useRelays } from 'soapbox/api/hooks/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, Form, HStack, Input, Stack, Text } from 'soapbox/components/ui';
 import { useTextField } from 'soapbox/hooks/forms';
@@ -22,14 +22,14 @@ interface IRelay {
 }
 
 const Relay: React.FC<IRelay> = ({ relay }) => {
-  const { mutate: deleteRelay } = useDeleteRelay();
-  const { refetch } = useRelays();
+  const { unfollowRelay } = useRelays();
 
   const handleDeleteRelay = () => () => {
-    deleteRelay(relay.actor).then(() => {
-      refetch();
-      toast.success(messages.relayDeleteSuccess);
-    }).catch(() => {});
+    unfollowRelay(relay.actor, {
+      onSuccess: () => {
+        toast.success(messages.relayDeleteSuccess);
+      },
+    });
   };
 
   return (
@@ -64,18 +64,16 @@ const NewRelayForm: React.FC = () => {
 
   const name = useTextField();
 
-  const { createRelay, isSubmitting } = useCreateRelay();
-  const { refetch } = useRelays();
+  const { followRelay, isPendingFollow } = useRelays();
 
   const handleSubmit = (e: React.FormEvent<Element>) => {
     e.preventDefault();
-    createRelay(name.value, {
+    followRelay(name.value, {
       onSuccess() {
         toast.success(messages.createSuccess);
-        refetch();
       },
       onError() {
-        toast.success(messages.createFail);
+        toast.error(messages.createFail);
       },
     });
   };
@@ -91,13 +89,13 @@ const NewRelayForm: React.FC = () => {
           <Input
             type='text'
             placeholder={label}
-            disabled={isSubmitting}
+            disabled={isPendingFollow}
             {...name}
           />
         </label>
 
         <Button
-          disabled={isSubmitting}
+          disabled={isPendingFollow}
           onClick={handleSubmit}
           theme='primary'
         >

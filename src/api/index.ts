@@ -4,7 +4,7 @@
  * @module soapbox/api
  */
 
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 

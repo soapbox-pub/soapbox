@@ -1,9 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { AxiosResponse } from 'axios';
 
 import { useApi } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { adminRuleSchema, type AdminRule } from 'soapbox/schemas';
+
+import type { AxiosResponse } from 'axios';
 
 interface CreateRuleParams {
   priority?: number;

@@ -25,7 +25,7 @@ const useModerationLog = () => {
   };
 
   const queryInfo = useInfiniteQuery({
-    queryKey: ['moderation_log'],
+    queryKey: ['admin', 'moderation_log'],
     queryFn: ({ pageParam }) => getModerationLog(pageParam),
     initialPageParam: 1,
     getNextPageParam: (page, allPages) => flattenPages(allPages)!.length >= page.total ? undefined : allPages.length + 1,

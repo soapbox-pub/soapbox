@@ -1,11 +1,6 @@
-export { useCreateDomain, type CreateDomainParams } from './useCreateDomain';
-export { useCreateRelay } from './useCreateRelay';
-export { useDeleteDomain } from './useDeleteDomain';
-export { useDeleteRelay } from './useDeleteRelay';
 export { useDomains } from './useDomains';
 export { useModerationLog } from './useModerationLog';
 export { useRelays } from './useRelays';
 export { useRules } from './useRules';
 export { useSuggest } from './useSuggest';
-export { useUpdateDomain } from './useUpdateDomain';
 export { useVerify } from './useVerify';
