@@ -401,7 +401,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     const ownAccount = status.account.id === me;
     const username = status.account.username;
     const account = status.account;
-    const domain = account.fqn.split('@')[1];
 
     const menu: Menu = [];
 
@@ -455,6 +454,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     if (features.federating && !account.local) {
+      const { hostname: domain } = new URL(status.uri);
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         action: handleExternalClick,
