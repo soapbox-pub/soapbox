@@ -65,7 +65,7 @@ const Tag: React.FC<ITag> = (props) => {
         <HStack alignItems='center'>
           <button onClick={() => setLayout(Layout.LIST)}>
             <Icon
-              src={require('@tabler/icons/layout-list.svg')}
+              src={require('@tabler/icons/outline/layout-list.svg')}
               className={
                 clsx('h-5 w-5 text-gray-600', {
                   'text-primary-600': layout === Layout.LIST,
@@ -76,7 +76,7 @@ const Tag: React.FC<ITag> = (props) => {
 
           <button onClick={() => setLayout(Layout.GRID)}>
             <Icon
-              src={require('@tabler/icons/layout-grid.svg')}
+              src={require('@tabler/icons/outline/layout-grid.svg')}
               className={
                 clsx('h-5 w-5 text-gray-600', {
                   'text-primary-600': layout === Layout.GRID,

@@ -16,7 +16,7 @@ const PinnedHostsPicker: React.FC<IPinnedHostsPicker> = ({ host: activeHost }) =
 
   return (
     <HStack className='mb-4' space={2}>
-      {pinnedHosts.map((host: any) => (
+      {pinnedHosts.map((host) => (
         <Button
           key={host}
           to={`/timeline/${host}`}

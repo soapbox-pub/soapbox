@@ -143,7 +143,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     </>);
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/check.svg'),
+      icon: require('@tabler/icons/outline/check.svg'),
       heading: needsConfirmation
         ? intl.formatMessage(messages.needsConfirmationHeader)
         : needsApproval
@@ -250,7 +250,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               autoCorrect='off'
               autoCapitalize='off'
               pattern='^[a-zA-Z\d_-]+'
-              icon={require('@tabler/icons/at.svg')}
+              icon={require('@tabler/icons/outline/at.svg')}
               onChange={onUsernameChange}
               value={params.get('username', '')}
               required

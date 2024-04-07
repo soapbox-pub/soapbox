@@ -131,7 +131,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       dispatch(unblockAccount(account.id));
     } else {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/ban.svg'),
+        icon: require('@tabler/icons/outline/ban.svg'),
         heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
         message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
         confirm: intl.formatMessage(messages.blockConfirm),
@@ -187,7 +187,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onBlockDomain = (domain: string) => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/ban.svg'),
+      icon: require('@tabler/icons/outline/ban.svg'),
       heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -291,7 +291,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.subscribeFeed),
         action: handleRssFeedClick,
-        icon: require('@tabler/icons/rss.svg'),
+        icon: require('@tabler/icons/outline/rss.svg'),
       });
     }
 
@@ -299,7 +299,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.share, { name: account.username }),
         action: handleShare,
-        icon: require('@tabler/icons/upload.svg'),
+        icon: require('@tabler/icons/outline/upload.svg'),
       });
     }
 
@@ -309,14 +309,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.profileExternal, { domain }),
         action: () => onProfileExternal(account.url),
-        icon: require('@tabler/icons/external-link.svg'),
+        icon: require('@tabler/icons/outline/external-link.svg'),
       });
     }
 
     menu.push({
       text: intl.formatMessage(messages.copy),
       action: handleCopy,
-      icon: require('@tabler/icons/clipboard-copy.svg'),
+      icon: require('@tabler/icons/outline/clipboard-copy.svg'),
     });
 
     if (!ownAccount) return menu;
@@ -325,7 +325,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(account.id === ownAccount.id ? messages.searchSelf : messages.search, { name: account.username }),
         action: onSearch,
-        icon: require('@tabler/icons/search.svg'),
+        icon: require('@tabler/icons/outline/search.svg'),
       });
     }
 
@@ -337,36 +337,36 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.edit_profile),
         to: '/settings/profile',
-        icon: require('@tabler/icons/user.svg'),
+        icon: require('@tabler/icons/outline/user.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.preferences),
         to: '/settings',
-        icon: require('@tabler/icons/settings.svg'),
+        icon: require('@tabler/icons/outline/settings.svg'),
       });
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),
         to: '/mutes',
-        icon: require('@tabler/icons/circle-x.svg'),
+        icon: require('@tabler/icons/outline/circle-x.svg'),
       });
       menu.push({
         text: intl.formatMessage(messages.blocks),
         to: '/blocks',
-        icon: require('@tabler/icons/ban.svg'),
+        icon: require('@tabler/icons/outline/ban.svg'),
       });
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.username }),
         action: onMention,
-        icon: require('@tabler/icons/at.svg'),
+        icon: require('@tabler/icons/outline/at.svg'),
       });
 
       if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
-          icon: require('@tabler/icons/mail.svg'),
+          icon: require('@tabler/icons/outline/mail.svg'),
         });
       }
 
@@ -375,13 +375,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(messages.hideReblogs, { name: account.username }),
             action: onReblogToggle,
-            icon: require('@tabler/icons/repeat.svg'),
+            icon: require('@tabler/icons/outline/repeat.svg'),
           });
         } else {
           menu.push({
             text: intl.formatMessage(messages.showReblogs, { name: account.username }),
             action: onReblogToggle,
-            icon: require('@tabler/icons/repeat.svg'),
+            icon: require('@tabler/icons/outline/repeat.svg'),
           });
         }
 
@@ -389,7 +389,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(messages.add_or_remove_from_list),
             action: onAddToList,
-            icon: require('@tabler/icons/list.svg'),
+            icon: require('@tabler/icons/outline/list.svg'),
           });
         }
 
@@ -397,14 +397,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse),
             action: onEndorseToggle,
-            icon: require('@tabler/icons/user-check.svg'),
+            icon: require('@tabler/icons/outline/user-check.svg'),
           });
         }
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
           text: intl.formatMessage(messages.add_or_remove_from_list),
           action: onAddToList,
-          icon: require('@tabler/icons/list.svg'),
+          icon: require('@tabler/icons/outline/list.svg'),
         });
       }
 
@@ -414,7 +414,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.removeFromFollowers),
           action: onRemoveFromFollowers,
-          icon: require('@tabler/icons/user-x.svg'),
+          icon: require('@tabler/icons/outline/user-x.svg'),
         });
       }
 
@@ -422,13 +422,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.username }),
           action: onMute,
-          icon: require('@tabler/icons/circle-x.svg'),
+          icon: require('@tabler/icons/outline/circle-x.svg'),
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.mute, { name: account.username }),
           action: onMute,
-          icon: require('@tabler/icons/circle-x.svg'),
+          icon: require('@tabler/icons/outline/circle-x.svg'),
         });
       }
 
@@ -436,20 +436,20 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.unblock, { name: account.username }),
           action: onBlock,
-          icon: require('@tabler/icons/ban.svg'),
+          icon: require('@tabler/icons/outline/ban.svg'),
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.block, { name: account.username }),
           action: onBlock,
-          icon: require('@tabler/icons/ban.svg'),
+          icon: require('@tabler/icons/outline/ban.svg'),
         });
       }
 
       menu.push({
         text: intl.formatMessage(messages.report, { name: account.username }),
         action: onReport,
-        icon: require('@tabler/icons/flag.svg'),
+        icon: require('@tabler/icons/outline/flag.svg'),
       });
     }
 
@@ -462,13 +462,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.unblockDomain, { domain }),
           action: () => onUnblockDomain(domain),
-          icon: require('@tabler/icons/ban.svg'),
+          icon: require('@tabler/icons/outline/ban.svg'),
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.blockDomain, { domain }),
           action: () => onBlockDomain(domain),
-          icon: require('@tabler/icons/ban.svg'),
+          icon: require('@tabler/icons/outline/ban.svg'),
         });
       }
     }
@@ -479,7 +479,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.adminAccount, { name: account.username }),
         action: onModerate,
-        icon: require('@tabler/icons/gavel.svg'),
+        icon: require('@tabler/icons/outline/gavel.svg'),
       });
     }
 
@@ -566,7 +566,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       return (
         <IconButton
-          src={require('@tabler/icons/messages.svg')}
+          src={require('@tabler/icons/outline/messages.svg')}
           onClick={() => createAndNavigateToChat.mutate(account.id)}
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
@@ -578,7 +578,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     } else if (account.pleroma?.accepts_chat_messages) {
       return (
         <IconButton
-          src={require('@tabler/icons/messages.svg')}
+          src={require('@tabler/icons/outline/messages.svg')}
           onClick={() => createAndNavigateToChat.mutate(account.id)}
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
@@ -600,7 +600,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     return (
       <IconButton
-        src={require('@tabler/icons/upload.svg')}
+        src={require('@tabler/icons/outline/upload.svg')}
         onClick={handleShare}
         title={intl.formatMessage(messages.share, { name: account.username })}
         theme='outlined'
@@ -657,7 +657,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>
                   <IconButton
-                    src={require('@tabler/icons/dots.svg')}
+                    src={require('@tabler/icons/outline/dots.svg')}
                     theme='outlined'
                     className='px-2'
                     iconClassName='h-4 w-4'

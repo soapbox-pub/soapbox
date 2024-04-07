@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
 
             <Icon
               className='h-4 w-4'
-              src={require('@tabler/icons/external-link.svg')}
+              src={require('@tabler/icons/outline/external-link.svg')}
             />
           </a>
         </ListItem>
@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
           <List>
             <ListItem label='subscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/download.svg')}
+                src={require('@tabler/icons/outline/download.svg')}
                 onClick={handleSubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -160,7 +160,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='unsubscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/download.svg')}
+                src={require('@tabler/icons/outline/download.svg')}
                 onClick={handleUnsubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -168,7 +168,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='combined.csv'>
               <IconButton
-                src={require('@tabler/icons/download.svg')}
+                src={require('@tabler/icons/outline/download.svg')}
                 onClick={handleCombinedClick}
                 iconClassName='h-5 w-5'
               />

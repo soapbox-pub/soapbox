@@ -39,11 +39,11 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <BackgroundShapes position='absolute' />
 
-      <div className='absolute z-20 self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
+      <div className='absolute z-[2] self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />
       </div>
 
-      <div className={clsx('absolute inset-0 z-10 flex h-12 shadow lg:h-16', {
+      <div className={clsx('absolute inset-0 z-[1] flex h-12 shadow lg:h-16', {
         'bg-white': !dark,
         'bg-gray-800': dark,
       })}

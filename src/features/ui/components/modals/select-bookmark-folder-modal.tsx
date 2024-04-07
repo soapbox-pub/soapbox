@@ -42,7 +42,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
     <RadioItem
       label={
         <HStack alignItems='center' space={2}>
-          <Icon src={require('@tabler/icons/bookmarks.svg')} size={20} />
+          <Icon src={require('@tabler/icons/outline/bookmarks.svg')} size={20} />
           <span><FormattedMessage id='bookmark_folders.all_bookmarks' defaultMessage='All bookmarks' /></span>
         </HStack>
       }
@@ -63,7 +63,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
                 src={folder.emoji_url || undefined}
                 className='h-5 w-5 flex-none'
               />
-            ) : <Icon src={require('@tabler/icons/folder.svg')} size={20} />}
+            ) : <Icon src={require('@tabler/icons/outline/folder.svg')} size={20} />}
             <span>{folder.name}</span>
           </HStack>
         }

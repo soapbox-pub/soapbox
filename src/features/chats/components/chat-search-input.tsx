@@ -34,7 +34,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       append={
         <button onClick={onClear}>
           <Icon
-            src={value.length ? require('@tabler/icons/x.svg') : require('@tabler/icons/search.svg')}
+            src={value.length ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
             className='h-4 w-4 text-gray-700 dark:text-gray-600'
             aria-hidden='true'
           />

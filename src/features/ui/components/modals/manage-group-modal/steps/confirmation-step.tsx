@@ -101,12 +101,12 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
 
       <HStack space={2} justifyContent='center'>
         {('share' in navigator) && (
-          <Button onClick={handleShare} theme='transparent' icon={require('@tabler/icons/share.svg')} className='text-primary-600'>
+          <Button onClick={handleShare} theme='transparent' icon={require('@tabler/icons/outline/share.svg')} className='text-primary-600'>
             <FormattedMessage id='manage_group.confirmation.share' defaultMessage='Share this group' />
           </Button>
         )}
 
-        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/link.svg')} className='text-primary-600'>
+        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/outline/link.svg')} className='text-primary-600'>
           <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
         </Button>
       </HStack>

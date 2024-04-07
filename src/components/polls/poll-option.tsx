@@ -86,7 +86,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             aria-label={option.title}
           >
             {active && (
-              <Icon src={require('@tabler/icons/check.svg')} className='h-4 w-4 text-white dark:text-primary-900' />
+              <Icon src={require('@tabler/icons/outline/check.svg')} className='h-4 w-4 text-white dark:text-primary-900' />
             )}
           </span>
         </div>
@@ -143,7 +143,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
             <HStack space={2} alignItems='center' className='relative'>
               {voted ? (
                 <Icon
-                  src={require('@tabler/icons/circle-check.svg')}
+                  src={require('@tabler/icons/outline/circle-check.svg')}
                   alt={intl.formatMessage(messages.voted)}
                   className='h-4 w-4 text-primary-600 dark:fill-white dark:text-primary-800'
                 />

@@ -43,7 +43,7 @@ const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ classNam
         })}
       >
         <Icon
-          src={require('@tabler/icons/camera-plus.svg')}
+          src={require('@tabler/icons/outline/camera-plus.svg')}
           className='h-5 w-5 text-white'
         />
       </HStack>

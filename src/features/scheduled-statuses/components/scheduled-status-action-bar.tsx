@@ -1,11 +1,10 @@
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled-statuses';
 import { getSettings } from 'soapbox/actions/settings';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack } from 'soapbox/components/ui';
+import { Button, HStack } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -34,7 +33,7 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
         dispatch(cancelScheduledStatus(status.id));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/calendar-stats.svg'),
+          icon: require('@tabler/icons/outline/calendar-stats.svg'),
           heading: intl.formatMessage(messages.deleteHeading),
           message: intl.formatMessage(messages.deleteMessage),
           confirm: intl.formatMessage(messages.deleteConfirm),
@@ -46,12 +45,9 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
 
   return (
     <HStack justifyContent='end'>
-      <IconButton
-        title={intl.formatMessage(messages.cancel)}
-        text={intl.formatMessage(messages.cancel)}
-        src={require('@tabler/icons/x.svg')}
-        onClick={handleCancelClick}
-      />
+      <Button theme='danger' size='sm' onClick={handleCancelClick}>
+        <FormattedMessage id='scheduled_status.cancel' defaultMessage='Cancel' />
+      </Button>
     </HStack>
   );
 };

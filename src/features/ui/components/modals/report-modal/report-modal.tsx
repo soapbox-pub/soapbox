@@ -226,7 +226,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
           <List>
             <ListItem
-              label={<Icon src={require('@tabler/icons/info-circle.svg')} className='text-gray-600' />}
+              label={<Icon src={require('@tabler/icons/outline/info-circle.svg')} className='text-gray-600' />}
             >
               <Text size='sm'>{intl.formatMessage(messages.reportContext)}</Text>
             </ListItem>

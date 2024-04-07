@@ -36,7 +36,7 @@ const Discover: React.FC = () => {
         <HStack alignItems='center'>
           {isSearching ? (
             <IconButton
-              src={require('@tabler/icons/arrow-left.svg')}
+              src={require('@tabler/icons/outline/arrow-left.svg')}
               iconClassName='mr-2 h-5 w-5 fill-current text-gray-600 rtl:rotate-180'
               onClick={cancelSearch}
               data-testid='group-search-icon'
@@ -55,7 +55,7 @@ const Discover: React.FC = () => {
             append={
               <button onClick={clearValue}>
                 <Icon
-                  src={hasSearchValue ? require('@tabler/icons/x.svg') : require('@tabler/icons/search.svg')}
+                  src={hasSearchValue ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
                   className='h-4 w-4 text-gray-700 dark:text-gray-600'
                   aria-hidden='true'
                 />

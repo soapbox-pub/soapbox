@@ -67,7 +67,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
         <div className='flex flex-wrap gap-x-2 gap-y-1 text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/user.svg')} />
+            <Icon src={require('@tabler/icons/outline/user.svg')} />
             <HStack space={1} alignItems='center' grow>
               <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
               {account.verified && <VerificationBadge />}
@@ -78,7 +78,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={require('@tabler/icons/map-pin.svg')} />
+              <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
               <span>
                 {event.location.get('name')}
               </span>

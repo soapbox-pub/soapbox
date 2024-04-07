@@ -12,12 +12,12 @@ const messages = defineMessages({
 
 /** Map between OAuth providers and brand icons. */
 const BRAND_ICONS: Record<string, string> = {
-  twitter: require('@tabler/icons/brand-twitter.svg'),
-  facebook: require('@tabler/icons/brand-facebook.svg'),
-  google: require('@tabler/icons/brand-google.svg'),
-  microsoft: require('@tabler/icons/brand-windows.svg'),
-  slack: require('@tabler/icons/brand-slack.svg'),
-  github: require('@tabler/icons/brand-github.svg'),
+  twitter: require('@tabler/icons/outline/brand-twitter.svg'),
+  facebook: require('@tabler/icons/outline/brand-facebook.svg'),
+  google: require('@tabler/icons/outline/brand-google.svg'),
+  microsoft: require('@tabler/icons/outline/brand-windows.svg'),
+  slack: require('@tabler/icons/outline/brand-slack.svg'),
+  github: require('@tabler/icons/outline/brand-github.svg'),
 };
 
 interface IConsumerButton {
@@ -29,7 +29,7 @@ const ConsumerButton: React.FC<IConsumerButton> = ({ provider }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const icon = BRAND_ICONS[provider] || require('@tabler/icons/key.svg');
+  const icon = BRAND_ICONS[provider] || require('@tabler/icons/outline/key.svg');
 
   const handleClick = () => {
     dispatch(prepareRequest(provider));

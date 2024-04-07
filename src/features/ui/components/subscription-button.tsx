@@ -91,7 +91,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   if (isRequested || isFollowing) {
     return (
       <IconButton
-        src={isSubscribed ? require('@tabler/icons/bell-ringing.svg') : require('@tabler/icons/bell.svg')}
+        src={isSubscribed ? require('@tabler/icons/outline/bell-ringing.svg') : require('@tabler/icons/outline/bell.svg')}
         onClick={handleToggle}
         title={title}
         theme='outlined'

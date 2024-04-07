@@ -17,8 +17,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
           <Icon
             src={
               group.locked
-                ? require('@tabler/icons/lock.svg')
-                : require('@tabler/icons/world.svg')
+                ? require('@tabler/icons/outline/lock.svg')
+                : require('@tabler/icons/outline/world.svg')
             }
             className='h-6 w-6 text-gray-600 dark:text-gray-600'
           />
@@ -49,8 +49,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
         className='h-4 w-4'
         src={
           group.locked
-            ? require('@tabler/icons/lock.svg')
-            : require('@tabler/icons/world.svg')
+            ? require('@tabler/icons/outline/lock.svg')
+            : require('@tabler/icons/outline/world.svg')
         }
       />
 

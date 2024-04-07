@@ -34,11 +34,11 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.id}`,
-      icon: require('@tabler/icons/pencil.svg'),
+      icon: require('@tabler/icons/outline/pencil.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: handleDeleteStatus,
-      icon: require('@tabler/icons/trash.svg'),
+      icon: require('@tabler/icons/outline/trash.svg'),
       destructive: true,
     }];
   };
@@ -55,7 +55,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
       <div className='flex-none'>
         <DropdownMenu
           items={menu}
-          src={require('@tabler/icons/dots-vertical.svg')}
+          src={require('@tabler/icons/outline/dots-vertical.svg')}
         />
       </div>
     </HStack>

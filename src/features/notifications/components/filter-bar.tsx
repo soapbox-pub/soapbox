@@ -46,43 +46,43 @@ const NotificationFilterBar = () => {
     });
   } else {
     items.push({
-      text: <Icon src={require('@tabler/icons/at.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/at.svg')} />,
       title: intl.formatMessage(messages.mentions),
       action: onClick('mention'),
       name: 'mention',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/heart.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/heart.svg')} />,
       title: intl.formatMessage(messages.favourites),
       action: onClick('favourite'),
       name: 'favourite',
     });
     if (features.emojiReacts) items.push({
-      text: <Icon src={require('@tabler/icons/mood-smile.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/mood-smile.svg')} />,
       title: intl.formatMessage(messages.emoji_reacts),
       action: onClick('pleroma:emoji_reaction'),
       name: 'pleroma:emoji_reaction',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/repeat.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/repeat.svg')} />,
       title: intl.formatMessage(messages.boosts),
       action: onClick('reblog'),
       name: 'reblog',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/chart-bar.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/chart-bar.svg')} />,
       title: intl.formatMessage(messages.polls),
       action: onClick('poll'),
       name: 'poll',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/bell-ringing.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/bell-ringing.svg')} />,
       title: intl.formatMessage(messages.statuses),
       action: onClick('status'),
       name: 'status',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/user-plus.svg')} />,
+      text: <Icon src={require('@tabler/icons/outline/user-plus.svg')} />,
       title: intl.formatMessage(messages.follows),
       action: onClick('follow'),
       name: 'follow',

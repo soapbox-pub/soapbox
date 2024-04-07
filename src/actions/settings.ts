@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { defineMessage } from 'react-intl';
 import { createSelector } from 'reselect';
 import { v4 as uuid } from 'uuid';
@@ -169,7 +169,7 @@ const defaultSettings = ImmutableMap({
   ]),
 
   remote_timeline: ImmutableMap({
-    pinnedHosts: ImmutableOrderedSet(),
+    pinnedHosts: ImmutableList(),
   }),
 });
 

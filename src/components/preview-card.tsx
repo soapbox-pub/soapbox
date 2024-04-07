@@ -135,7 +135,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       )}
       <HStack space={1} alignItems='center'>
         <Text tag='span' theme='muted'>
-          <Icon src={require('@tabler/icons/link.svg')} />
+          <Icon src={require('@tabler/icons/outline/link.svg')} />
         </Text>
         <Text tag='span' theme='muted' size='sm' direction={direction}>
           {card.provider_name}
@@ -168,10 +168,10 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     if (embedded) {
       embed = renderVideo();
     } else {
-      let iconVariant = require('@tabler/icons/player-play.svg');
+      let iconVariant = require('@tabler/icons/outline/player-play.svg');
 
       if (card.type === 'photo') {
-        iconVariant = require('@tabler/icons/zoom-in.svg');
+        iconVariant = require('@tabler/icons/outline/zoom-in.svg');
       }
 
       embed = (
@@ -198,7 +198,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                     className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
                     <Icon
-                      src={require('@tabler/icons/external-link.svg')}
+                      src={require('@tabler/icons/outline/external-link.svg')}
                       className='h-6 w-6 text-inherit'
                     />
                   </a>

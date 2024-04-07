@@ -231,10 +231,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishIcon = require('@tabler/icons/mail.svg');
+    publishIcon = require('@tabler/icons/outline/mail.svg');
     publishText = intl.formatMessage(messages.message);
   } else if (privacy === 'private') {
-    publishIcon = require('@tabler/icons/lock.svg');
+    publishIcon = require('@tabler/icons/outline/lock.svg');
     publishText = intl.formatMessage(messages.publish);
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);

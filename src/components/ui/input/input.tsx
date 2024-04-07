@@ -123,7 +123,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 className='h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 focus:ring-primary-500 dark:text-gray-600 dark:hover:text-gray-400'
               >
                 <SvgIcon
-                  src={revealed ? require('@tabler/icons/eye-off.svg') : require('@tabler/icons/eye.svg')}
+                  src={revealed ? require('@tabler/icons/outline/eye-off.svg') : require('@tabler/icons/outline/eye.svg')}
                   className='h-4 w-4'
                 />
               </button>

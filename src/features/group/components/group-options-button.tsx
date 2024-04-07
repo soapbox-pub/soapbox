@@ -98,7 +98,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (canShare) {
       items.push({
         text: intl.formatMessage(messages.share),
-        icon: require('@tabler/icons/share.svg'),
+        icon: require('@tabler/icons/outline/share.svg'),
         action: handleShare,
       });
     }
@@ -106,7 +106,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (isInGroup) {
       items.push({
         text: isMuting ? intl.formatMessage(messages.unmute) : intl.formatMessage(messages.mute),
-        icon: require('@tabler/icons/volume-3.svg'),
+        icon: require('@tabler/icons/outline/volume-3.svg'),
         action: isMuting ? handleUnmute : handleMute,
       });
     }
@@ -114,7 +114,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (isMember || isAdmin) {
       items.push({
         text: intl.formatMessage(messages.report),
-        icon: require('@tabler/icons/flag.svg'),
+        icon: require('@tabler/icons/outline/flag.svg'),
         action: () => dispatch(initReport(ReportableEntities.GROUP, account as Account, { group })),
       });
     }
@@ -123,7 +123,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
       items.push(null);
       items.push({
         text: intl.formatMessage(messages.leave),
-        icon: require('@tabler/icons/logout.svg'),
+        icon: require('@tabler/icons/outline/logout.svg'),
         action: handleLeave,
       });
     }
@@ -138,7 +138,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
   return (
     <DropdownMenu items={menu} placement='bottom'>
       <IconButton
-        src={require('@tabler/icons/dots.svg')}
+        src={require('@tabler/icons/outline/dots.svg')}
         theme='secondary'
         iconClassName='h-5 w-5'
         className='self-stretch px-2.5'

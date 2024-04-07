@@ -87,7 +87,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
     if (!isOwner && tag.pinned) {
       return (
         <Icon
-          src={require('@tabler/icons/pin-filled.svg')}
+          src={require('@tabler/icons/filled/pin.svg')}
           className='h-5 w-5 text-gray-600'
           data-testid='pin-icon'
         />
@@ -112,8 +112,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
             theme='transparent'
             src={
               tag.pinned ?
-                require('@tabler/icons/pin-filled.svg') :
-                require('@tabler/icons/pin.svg')
+                require('@tabler/icons/filled/pin.svg') :
+                require('@tabler/icons/outline/pin.svg')
             }
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             data-testid='pin-icon'
@@ -128,7 +128,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
           <IconButton
             onClick={togglePin}
             theme='transparent'
-            src={require('@tabler/icons/pin-filled.svg')}
+            src={require('@tabler/icons/filled/pin.svg')}
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
           />
         </Tooltip>
@@ -181,8 +181,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
               theme='transparent'
               src={
                 tag.visible ?
-                  require('@tabler/icons/eye.svg') :
-                  require('@tabler/icons/eye-off.svg')
+                  require('@tabler/icons/outline/eye.svg') :
+                  require('@tabler/icons/outline/eye-off.svg')
               }
               iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             />

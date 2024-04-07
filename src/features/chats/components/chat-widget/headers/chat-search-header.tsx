@@ -26,7 +26,7 @@ const ChatSearchHeader = () => {
             }}
           >
             <Icon
-              src={require('@tabler/icons/arrow-left.svg')}
+              src={require('@tabler/icons/outline/arrow-left.svg')}
               className='h-6 w-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
             />
           </button>

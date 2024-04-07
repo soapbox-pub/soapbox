@@ -1,23 +1,23 @@
-import bookIcon from '@tabler/icons/book.svg';
-import fileCodeIcon from '@tabler/icons/file-code.svg';
-import fileSpreadsheetIcon from '@tabler/icons/file-spreadsheet.svg';
-import fileTextIcon from '@tabler/icons/file-text.svg';
-import fileZipIcon from '@tabler/icons/file-zip.svg';
-import defaultIcon from '@tabler/icons/paperclip.svg';
-import presentationIcon from '@tabler/icons/presentation.svg';
-import xIcon from '@tabler/icons/x.svg';
-import zoomInIcon from '@tabler/icons/zoom-in.svg';
+import bookIcon from '@tabler/icons/outline/book.svg';
+import fileCodeIcon from '@tabler/icons/outline/file-code.svg';
+import fileSpreadsheetIcon from '@tabler/icons/outline/file-spreadsheet.svg';
+import fileTextIcon from '@tabler/icons/outline/file-text.svg';
+import fileZipIcon from '@tabler/icons/outline/file-zip.svg';
+import defaultIcon from '@tabler/icons/outline/paperclip.svg';
+import presentationIcon from '@tabler/icons/outline/presentation.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
+import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';
 import { HStack, Icon, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
 import { Attachment } from 'soapbox/types/entities';
 
 export const MIMETYPE_ICONS: Record<string, string> = {
@@ -58,9 +58,10 @@ const messages = defineMessages({
   description: { id: 'upload_form.description', defaultMessage: 'Describe for the visually impaired' },
   delete: { id: 'upload_form.undo', defaultMessage: 'Delete' },
   preview: { id: 'upload_form.preview', defaultMessage: 'Preview' },
+  descriptionMissingTitle: { id: 'upload_form.description_missing.title', defaultMessage: 'This attachment doesn\'t have a description' },
 });
 
-interface IUpload {
+interface IUpload extends Pick<React.HTMLAttributes<HTMLDivElement>, 'onDragStart' | 'onDragEnter' | 'onDragEnd'> {
   media: Attachment;
   onSubmit?(): void;
   onDelete?(): void;
@@ -74,11 +75,16 @@ const Upload: React.FC<IUpload> = ({
   onSubmit,
   onDelete,
   onDescriptionChange,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
   descriptionLimit,
   withPreview = true,
 }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const { missingDescriptionModal } = useSettings();
 
   const [hovered, setHovered] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -148,7 +154,18 @@ const Upload: React.FC<IUpload> = ({
   );
 
   return (
-    <div className='compose-form__upload' tabIndex={0} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick} role='button'>
+    <div
+      className='compose-form__upload'
+      tabIndex={0}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
+      role='button'
+      draggable
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragEnd={onDragEnd}
+    >
       <Blurhash hash={media.blurhash} className='media-gallery__preview' />
       <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
         {({ scale }) => (
@@ -198,6 +215,19 @@ const Upload: React.FC<IUpload> = ({
                   />
                 </label>
               </div>
+            )}
+
+            {missingDescriptionModal && !description && (
+              <span
+                title={intl.formatMessage(messages.descriptionMissingTitle)}
+                className={clsx('absolute bottom-2 left-2 z-10 inline-flex items-center gap-1 rounded bg-gray-900 px-2 py-1 text-xs font-medium uppercase text-white transition-opacity duration-100 ease-linear', {
+                  'opacity-0 pointer-events-none': active,
+                  'opacity-100': !active,
+                })}
+              >
+                <Icon className='h-4 w-4' src={require('@tabler/icons/outline/alert-triangle.svg')} />
+                <FormattedMessage id='upload_form.description_missing.indicator' defaultMessage='Alt' />
+              </span>
             )}
 
             <div className='compose-form__upload-preview'>

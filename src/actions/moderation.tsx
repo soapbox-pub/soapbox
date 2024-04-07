@@ -58,7 +58,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
     );
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/user-off.svg'),
+      icon: require('@tabler/icons/outline/user-off.svg'),
       heading: intl.formatMessage(messages.deactivateUserHeading, { acct }),
       message,
       confirm: intl.formatMessage(messages.deactivateUserConfirm, { name }),
@@ -96,7 +96,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const checkbox = local ? intl.formatMessage(messages.deleteLocalUserCheckbox) : false;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/user-minus.svg'),
+      icon: require('@tabler/icons/outline/user-minus.svg'),
       heading: intl.formatMessage(messages.deleteUserHeading, { acct }),
       message,
       confirm,
@@ -118,7 +118,7 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
     const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/alert-triangle.svg'),
+      icon: require('@tabler/icons/outline/alert-triangle.svg'),
       heading: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveHeading : messages.markStatusNotSensitiveHeading),
       message: intl.formatMessage(sensitive === false ? messages.markStatusSensitivePrompt : messages.markStatusNotSensitivePrompt, { acct }),
       confirm: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveConfirm : messages.markStatusNotSensitiveConfirm),
@@ -138,7 +138,7 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
     const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/trash.svg'),
+      icon: require('@tabler/icons/outline/trash.svg'),
       heading: intl.formatMessage(messages.deleteStatusHeading),
       message: intl.formatMessage(messages.deleteStatusPrompt, { acct: <strong className='break-words'>{acct}</strong> }),
       confirm: intl.formatMessage(messages.deleteStatusConfirm),

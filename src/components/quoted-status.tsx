@@ -11,6 +11,7 @@ import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
+import QuotedStatusIndicator from './quoted-status-indicator';
 import StatusContent from './status-content';
 import StatusReplyMentions from './status-reply-mentions';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
@@ -84,7 +85,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   if (onCancel) {
     actions = {
       onActionClick: handleClose,
-      actionIcon: require('@tabler/icons/x.svg'),
+      actionIcon: require('@tabler/icons/outline/x.svg'),
       actionAlignment: 'top',
       actionTitle: intl.formatMessage(messages.cancel),
     };
@@ -131,6 +132,8 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
                 status={status}
                 collapsable
               />
+
+              {status.quote && <QuotedStatusIndicator statusId={status.quote as string} />}
 
               {status.media_attachments.size > 0 && (
                 <StatusMedia

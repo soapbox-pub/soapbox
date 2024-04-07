@@ -25,7 +25,7 @@ const MarkdownButton: React.FC<IMarkdownButton> = ({ composeId }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/markdown.svg')}
+      icon={require('@tabler/icons/outline/markdown.svg')}
       title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
       active={active}
       onClick={onClick}

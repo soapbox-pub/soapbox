@@ -75,7 +75,7 @@
     "@soapbox.pub/wasmboy": "^0.8.0",
     "@soapbox/nspec": "npm:@jsr/soapbox__nspec",
     "@soapbox/weblock": "npm:@jsr/soapbox__weblock",
-    "@tabler/icons": "^2.0.0",
+    "@tabler/icons": "^3.1.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",

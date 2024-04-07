@@ -53,7 +53,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
         <EmojiGraphic emoji='🔑' />
 
         <Stack alignItems='center'>
-          <Button theme='primary' size='lg' icon={require('@tabler/icons/download.svg')} onClick={handleDownload}>
+          <Button theme='primary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
             Download key
           </Button>
         </Stack>

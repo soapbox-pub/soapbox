@@ -39,7 +39,7 @@ const GroupListItem = (props: IGroupListItem) => {
             <HStack className='text-gray-700 dark:text-gray-600' space={1} alignItems='center'>
               <Icon
                 className='h-4.5 w-4.5'
-                src={group.locked ? require('@tabler/icons/lock.svg') : require('@tabler/icons/world.svg')}
+                src={group.locked ? require('@tabler/icons/outline/lock.svg') : require('@tabler/icons/outline/world.svg')}
               />
 
               <Text theme='inherit' tag='span' size='sm' weight='medium'>
