@@ -1,9 +1,8 @@
 import { OrderedSet } from 'immutable';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
-import { fetchRules } from 'soapbox/actions/rules';
 import { Button, FormGroup, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
 import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
@@ -43,10 +42,6 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const handleForwardChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeReportForward(event.target.checked));
   };
-
-  useEffect(() => {
-    dispatch(fetchRules());
-  }, []);
 
   return (
     <Stack space={4}>

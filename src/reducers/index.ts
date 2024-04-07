@@ -47,7 +47,6 @@ import profile_hover_card from './profile-hover-card';
 import push_notifications from './push-notifications';
 import relationships from './relationships';
 import reports from './reports';
-import rules from './rules';
 import scheduled_statuses from './scheduled-statuses';
 import search from './search';
 import security from './security';
@@ -108,7 +107,6 @@ const reducers = {
   push_notifications,
   relationships,
   reports,
-  rules,
   scheduled_statuses,
   search,
   security,

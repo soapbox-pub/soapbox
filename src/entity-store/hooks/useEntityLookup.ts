@@ -25,10 +25,11 @@ function useEntityLookup<TEntity extends Entity>(
   const { schema = z.custom<TEntity>() } = opts;
 
   const dispatch = useAppDispatch();
+  const [fetchedEntity, setFetchedEntity] = useState<TEntity | undefined>();
   const [isFetching, setPromise] = useLoading(true);
   const [error, setError] = useState<unknown>();
 
-  const entity = useAppSelector(state => findEntity(state, entityType, lookupFn));
+  const entity = useAppSelector(state => findEntity(state, entityType, lookupFn) ?? fetchedEntity);
   const isEnabled = opts.enabled ?? true;
   const isLoading = isFetching && !entity;
 
@@ -36,6 +37,7 @@ function useEntityLookup<TEntity extends Entity>(
     try {
       const response = await setPromise(entityFn());
       const entity = schema.parse(response.data);
+      setFetchedEntity(entity);
       dispatch(importEntities([entity], entityType));
     } catch (e) {
       setError(e);

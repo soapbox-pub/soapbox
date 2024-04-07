@@ -3,11 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeReportComment, changeReportRule, ReportableEntities } from 'soapbox/actions/reports';
-import { fetchRules } from 'soapbox/actions/rules';
 import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 
 import type { Account } from 'soapbox/schemas';
+import type { Rule } from 'soapbox/schemas/rule';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },
@@ -31,7 +31,7 @@ const ReasonStep: React.FC<IReasonStep> = () => {
 
   const entityType = useAppSelector((state) => state.reports.new.entityType);
   const comment = useAppSelector((state) => state.reports.new.comment);
-  const rules = useAppSelector((state) => state.rules.items);
+  const { rules } = useInstance();
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const shouldRequireRule = rules.length > 0;
 
@@ -57,7 +57,7 @@ const ReasonStep: React.FC<IReasonStep> = () => {
     }
   };
 
-  const filterRuleType = (rule: any) => {
+  const filterRuleType = (rule: Rule) => {
     let ruleTypeToFilter = 'content';
 
     switch (entityType) {
@@ -82,10 +82,6 @@ const ReasonStep: React.FC<IReasonStep> = () => {
 
     return true;
   };
-
-  useEffect(() => {
-    dispatch(fetchRules());
-  }, []);
 
   useEffect(() => {
     if (rules.length > 0 && rulesListRef.current) {
@@ -136,7 +132,7 @@ const ReasonStep: React.FC<IReasonStep> = () => {
                       >
                         {rule.text}
                       </Text>
-                      <Text tag='span' theme='muted' size='sm'>{rule.subtext}</Text>
+                      <Text tag='span' theme='muted' size='sm'>{rule.hint}</Text>
                     </Stack>
 
                     <input

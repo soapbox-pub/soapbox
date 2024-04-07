@@ -171,4 +171,5 @@ export const EditIdentity = lazy(() => import('soapbox/features/edit-identity'))
 export const Domains = lazy(() => import('soapbox/features/admin/domains'));
 export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal'));
 export const NostrRelays = lazy(() => import('soapbox/features/nostr-relays'));
+export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Redirect'));
 export const Relays = lazy(() => import('soapbox/features/admin/relays'));
