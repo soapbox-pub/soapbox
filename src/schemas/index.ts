@@ -18,6 +18,7 @@ export { patronUserSchema, type PatronUser } from './patron';
 export { pollSchema, type Poll, type PollOption } from './poll';
 export { relationshipSchema, type Relationship } from './relationship';
 export { relaySchema, type Relay } from './relay';
+export { ruleSchema, adminRuleSchema, type Rule, type AdminRule } from './rule';
 export { statusSchema, type Status } from './status';
 export { tagSchema, type Tag } from './tag';
 export { tombstoneSchema, type Tombstone } from './tombstone';
