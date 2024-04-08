@@ -141,6 +141,8 @@ import {
   Domains,
   NostrRelays,
   Bech32Redirect,
+  Relays,
+  Rules,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -331,8 +333,10 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />
       {features.adminAnnouncements && <WrappedRoute path='/soapbox/admin/announcements' staffOnly page={AdminPage} component={Announcements} content={children} exact />}
       {features.domains && <WrappedRoute path='/soapbox/admin/domains' staffOnly page={AdminPage} component={Domains} content={children} exact />}
+      {features.adminRules && <WrappedRoute path='/soapbox/admin/rules' staffOnly page={AdminPage} component={Rules} content={children} exact />}
       <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
       <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
