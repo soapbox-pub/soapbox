@@ -72,25 +72,26 @@ const handleAuthFetch = (state: Instance) => {
   };
 };
 
-const getHost = (instance: { uri: string }) => {
+const getHost = (instance: { uri?: string; domain?: string }) => {
+  const domain = instance.uri || instance.domain as string;
   try {
-    return new URL(instance.uri).host;
+    return new URL(domain).host;
   } catch {
     try {
-      return new URL(`https://${instance.uri}`).host;
+      return new URL(`https://${domain}`).host;
     } catch {
       return null;
     }
   }
 };
 
-const persistInstance = (instance: { uri: string }, host: string | null = getHost(instance)) => {
+const persistInstance = ({ instance }: { instance: { uri: string } }, host: string | null = getHost(instance)) => {
   if (host) {
     KVStore.setItem(`instance:${host}`, instance).catch(console.error);
   }
 };
 
-const persistInstanceV2 = (instance: { uri: string }, host: string | null = getHost(instance)) => {
+const persistInstanceV2 = ({ instance }: { instance: { domain: string } }, host: string | null = getHost(instance)) => {
   if (host) {
     KVStore.setItem(`instanceV2:${host}`, instance).catch(console.error);
   }
