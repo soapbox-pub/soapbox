@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { getTextDirection } from 'soapbox/utils/rtl';
 
-import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/types/entities';
+import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/schemas';
 
 interface IAnnouncementContent {
   announcement: AnnouncementEntity;
@@ -67,7 +67,7 @@ const AnnouncementContent: React.FC<IAnnouncementContent> = ({ announcement }) =
       } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
-        const status = announcement.statuses.get(link.href);
+        const status = announcement.statuses[link.href];
         if (status) {
           link.addEventListener('click', onStatusClick.bind(this, status), false);
         }
