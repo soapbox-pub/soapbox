@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { useDeleteDomain, useDomains } from 'soapbox/api/hooks/admin';
+import { useDomains } from 'soapbox/api/hooks/admin';
 import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
@@ -30,23 +30,23 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const { mutate: deleteDomain } = useDeleteDomain();
-  const { refetch } = useDomains();
+  const { deleteDomain } = useDomains();
 
   const handleEditDomain = (domain: DomainEntity) => () => {
     dispatch(openModal('EDIT_DOMAIN', { domainId: domain.id }));
   };
 
-  const handleDeleteDomain = (id: string) => () => {
+  const handleDeleteDomain = () => () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => {
-        deleteDomain(domain.id).then(() => {
-          toast.success(messages.domainDeleteSuccess);
-          refetch();
-        }).catch(() => {});
+        deleteDomain(domain.id, {
+          onSuccess: () => {
+            toast.success(messages.domainDeleteSuccess);
+          },
+        });
       },
     }));
   };
@@ -90,7 +90,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
           <Button theme='primary' onClick={handleEditDomain(domain)}>
             <FormattedMessage id='admin.domains.edit' defaultMessage='Edit' />
           </Button>
-          <Button theme='primary' onClick={handleDeleteDomain(domain.id)}>
+          <Button theme='primary' onClick={handleDeleteDomain()}>
             <FormattedMessage id='admin.domains.delete' defaultMessage='Delete' />
           </Button>
         </HStack>
@@ -103,11 +103,15 @@ const Domains: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const { data: domains, isFetching } = useDomains();
+  const { data: domains, isFetching, refetch } = useDomains();
 
   const handleCreateDomain = () => {
     dispatch(openModal('EDIT_DOMAIN'));
   };
+
+  useEffect(() => {
+    if (!isFetching) refetch();
+  }, []);
 
   const emptyMessage = <FormattedMessage id='empty_column.admin.domains' defaultMessage='There are no domains yet.' />;
 

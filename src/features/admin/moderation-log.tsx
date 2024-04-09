@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
-import { fetchModerationLog } from 'soapbox/actions/admin';
+import { useModerationLog } from 'soapbox/api/hooks/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { AdminLog } from 'soapbox/types/entities';
+
+import type { ModerationLogEntry } from 'soapbox/schemas';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },
@@ -14,37 +14,18 @@ const messages = defineMessages({
 
 const ModerationLog = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
 
-  const items = useAppSelector((state) => {
-    return state.admin_log.index.map((i) => state.admin_log.items.get(String(i)));
-  });
+  const {
+    data,
+    hasNextPage,
+    isLoading,
+    fetchNextPage,
+  } = useModerationLog();
 
-  const hasMore = useAppSelector((state) => state.admin_log.total - state.admin_log.index.count() > 0);
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [lastPage, setLastPage] = useState(0);
-
-  const showLoading = isLoading && items.count() === 0;
-
-  useEffect(() => {
-    dispatch(fetchModerationLog())
-      .then(() => {
-        setIsLoading(false);
-        setLastPage(1);
-      })
-      .catch(() => { });
-  }, []);
+  const showLoading = isLoading && data.length === 0;
 
   const handleLoadMore = () => {
-    const page = lastPage + 1;
-
-    setIsLoading(true);
-    dispatch(fetchModerationLog({ page }))
-      .then(() => {
-        setIsLoading(false);
-        setLastPage(page);
-      }).catch(() => { });
+    fetchNextPage();
   };
 
   return (
@@ -54,11 +35,11 @@ const ModerationLog = () => {
         showLoading={showLoading}
         scrollKey='moderation-log'
         emptyMessage={intl.formatMessage(messages.emptyMessage)}
-        hasMore={hasMore}
+        hasMore={hasNextPage}
         onLoadMore={handleLoadMore}
         listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
       >
-        {items.map(item => item && (
+        {data.map(item => item && (
           <LogItem key={item.id} log={item} />
         ))}
       </ScrollableList>
@@ -67,7 +48,7 @@ const ModerationLog = () => {
 };
 
 interface ILogItem {
-  log: AdminLog;
+  log: ModerationLogEntry;
 }
 
 const LogItem: React.FC<ILogItem> = ({ log }) => {

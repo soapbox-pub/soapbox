@@ -204,6 +204,15 @@ const getInstanceFeatures = (instance: Instance) => {
     adminFE: v.software === PLEROMA,
 
     /**
+     * Ability to manage instance rules by admins.
+     * @see GET /api/v1/pleroma/admin/rules
+     * @see POST /api/v1/pleroma/admin/rules
+     * @see PATCH /api/v1/pleroma/admin/rules/:id
+     * @see DELETE /api/v1/pleroma/admin/rules/:id
+     */
+    adminRules: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.51'),
+
+    /**
      * Can display announcements set by admins.
      * @see GET /api/v1/announcements
      * @see POST /api/v1/announcements/:id/dismiss

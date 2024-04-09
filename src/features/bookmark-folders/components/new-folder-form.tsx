@@ -37,7 +37,7 @@ const NewFolderForm: React.FC = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <HStack space={2}>
+      <HStack space={2} alignItems='center'>
         <label className='grow'>
           <span style={{ display: 'none' }}>{label}</span>
 

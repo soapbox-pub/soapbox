@@ -100,6 +100,13 @@ const Dashboard: React.FC = () => {
           />
         )}
 
+        {features.adminRules && (
+          <ListItem
+            to='/soapbox/admin/rules'
+            label={<FormattedMessage id='column.admin.rules' defaultMessage='Instance rules' />}
+          />
+        )}
+
         {features.domains && (
           <ListItem
             to='/soapbox/admin/domains'

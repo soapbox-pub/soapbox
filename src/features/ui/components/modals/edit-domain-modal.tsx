@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
-import { useCreateDomain, useDomains, useUpdateDomain } from 'soapbox/api/hooks/admin';
+import { useDomains } from 'soapbox/api/hooks/admin';
 import { Form, FormGroup, HStack, Input, Modal, Stack, Text, Toggle } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 import { Domain } from 'soapbox/schemas';
@@ -24,9 +24,7 @@ const EditDomainModal: React.FC<IEditDomainModal> = ({ onClose, domainId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const { data: domains, refetch } = useDomains();
-  const { createDomain, isSubmitting: isCreating } = useCreateDomain();
-  const { updateDomain, isSubmitting: isUpdating } = useUpdateDomain(domainId!);
+  const { data: domains, createDomain, isCreating, updateDomain, isUpdating } = useDomains();
 
   const [domain] = useState<Domain | null>(domainId ? domains!.find(({ id }) => domainId === id)! : null);
   const [domainName, setDomainName] = useState(domain?.domain || '');
@@ -39,21 +37,24 @@ const EditDomainModal: React.FC<IEditDomainModal> = ({ onClose, domainId }) => {
   const handleSubmit = () => {
     if (domainId) {
       updateDomain({
+        id: domainId,
         public: isPublic,
-      }).then(() => {
-        toast.success(messages.domainUpdateSuccess);
-        dispatch(closeModal('EDIT_DOMAIN'));
-        refetch();
-      }).catch(() => {});
+      }, {
+        onSuccess: () => {
+          toast.success(messages.domainUpdateSuccess);
+          dispatch(closeModal('EDIT_DOMAIN'));
+        },
+      });
     } else {
       createDomain({
         domain: domainName,
         public: isPublic,
-      }).then(() => {
-        toast.success(messages.domainCreateSuccess);
-        dispatch(closeModal('EDIT_DOMAIN'));
-        refetch();
-      }).catch(() => {});
+      }, {
+        onSuccess: () => {
+          toast.success(messages.domainCreateSuccess);
+          dispatch(closeModal('EDIT_DOMAIN'));
+        },
+      });
     }
   };
 
