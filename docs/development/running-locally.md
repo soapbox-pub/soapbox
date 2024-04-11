@@ -4,7 +4,7 @@ To get it running, just clone the repo:
 
 ```
 git clone https://gitlab.com/soapbox-pub/soapbox.git
-cd soapbox-fe
+cd soapbox
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:
