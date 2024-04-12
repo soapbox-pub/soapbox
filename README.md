@@ -37,8 +37,8 @@ See here for a detailed setup guide: [Installing Rebased+Soapbox](https://soapbo
 
 Already have a server? No problem — it is still possible to use Soapbox.
 
-- [Deploying on Pleroma](https://docs.soapbox.pub/frontend/installing/#install-soapbox)
-- [Deploying on Mastodon](https://docs.soapbox.pub/frontend/administration/mastodon/)
+- [Deploying on Pleroma](https://docs.soapbox.pub/soapbox/install/pleroma/#install-soapbox)
+- [Deploying on Mastodon](https://docs.soapbox.pub/soapbox/install/mastodon/)
 
 > 💡 If using Pleroma, it's recommended to [upgrade it to Rebased](https://gitlab.com/-/snippets/2411739). This comes with better support and many new features, helping you get the most out of Soapbox.
 
@@ -48,16 +48,16 @@ tl;dr — `git clone`, `yarn`, and `yarn dev`.
 
 For detailed guides, see these pages:
 
-1. [Soapbox local development](https://docs.soapbox.pub/frontend/development/running-locally/)
-2. [yarn commands](https://docs.soapbox.pub/frontend/development/yarn-commands/)
-3. [How it works](https://docs.soapbox.pub/frontend/development/how-it-works/)
-4. [Environment variables](https://docs.soapbox.pub/frontend/development/local-config/)
-5. [Developing a backend](https://docs.soapbox.pub/frontend/development/developing-backend/)
+1. [Soapbox local development](https://docs.soapbox.pub/soapbox/development/local/)
+2. [yarn commands](https://docs.soapbox.pub/soapbox/development/yarn-commands/)
+3. [How it works](https://docs.soapbox.pub/soapbox/development/how-it-works/)
+4. [Build config](https://docs.soapbox.pub/soapbox/development/build-config/)
+5. [Developing a backend](https://docs.soapbox.pub/soapbox/development/backend/)
 
 ## Contributing
 
 We welcome contributions to this project.
-To contribute, see [Contributing to Soapbox](docs/contributing.md).
+To contribute, see [Contributing to Soapbox](https://docs.soapbox.pub/soapbox/contributing/).
 
 Translators can help by providing [translations through Weblate](https://hosted.weblate.org/projects/soapbox-pub/soapbox/).
 Native speakers from all around the world are welcome!
