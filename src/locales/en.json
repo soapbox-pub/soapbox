@@ -1481,6 +1481,8 @@
   "status.approval.rejected": "Rejected",
   "status.bookmark": "Bookmark",
   "status.bookmark.select_folder": "Select folder",
+  "status.bookmark_folder": "Set bookmark folder",
+  "status.bookmark_folder_change": "Change bookmark folder",
   "status.bookmark_folder_changed": "Changed folder",
   "status.bookmarked": "Bookmark added.",
   "status.cancel_reblog_private": "Un-repost",
