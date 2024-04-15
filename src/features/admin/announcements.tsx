@@ -1,38 +1,43 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { deleteAnnouncement, fetchAdminAnnouncements, initAnnouncementModal } from 'soapbox/actions/admin';
 import { openModal } from 'soapbox/actions/modals';
+import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { Announcement as AnnouncementEntity } from 'soapbox/types/entities';
+import { useAppDispatch } from 'soapbox/hooks';
+import { AdminAnnouncement } from 'soapbox/schemas';
+import toast from 'soapbox/toast';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.announcements', defaultMessage: 'Announcements' },
   deleteConfirm: { id: 'confirmations.admin.delete_announcement.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.admin.delete_announcement.heading', defaultMessage: 'Delete announcement' },
   deleteMessage: { id: 'confirmations.admin.delete_announcement.message', defaultMessage: 'Are you sure you want to delete the announcement?' },
+  deleteSuccess: { id: 'admin.edit_announcement.deleted', defaultMessage: 'Announcement deleted' },
 });
 
 interface IAnnouncement {
-  announcement: AnnouncementEntity;
+  announcement: AdminAnnouncement;
 }
 
 const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const { deleteAnnouncement } = useAnnouncements();
 
-  const handleEditAnnouncement = (announcement: AnnouncementEntity) => () => {
-    dispatch(initAnnouncementModal(announcement));
+  const handleEditAnnouncement = () => {
+    dispatch(openModal('EDIT_ANNOUNCEMENT', { announcement }));
   };
 
-  const handleDeleteAnnouncement = (id: string) => () => {
+  const handleDeleteAnnouncement = () => {
     dispatch(openModal('CONFIRM', {
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
-      onConfirm: () => dispatch(deleteAnnouncement(id)),
+      onConfirm: () => deleteAnnouncement(announcement.id, {
+        onSuccess: () => toast.success(messages.deleteSuccess),
+      }),
     }));
   };
 
@@ -68,10 +73,10 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
           </HStack>
         )}
         <HStack justifyContent='end' space={2}>
-          <Button theme='primary' onClick={handleEditAnnouncement(announcement)}>
+          <Button theme='primary' onClick={handleEditAnnouncement}>
             <FormattedMessage id='admin.announcements.edit' defaultMessage='Edit' />
           </Button>
-          <Button theme='primary' onClick={handleDeleteAnnouncement(announcement.id)}>
+          <Button theme='primary' onClick={handleDeleteAnnouncement}>
             <FormattedMessage id='admin.announcements.delete' defaultMessage='Delete' />
           </Button>
         </HStack>
@@ -84,15 +89,11 @@ const Announcements: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const announcements = useAppSelector((state) => state.admin_announcements.items);
-  const isLoading = useAppSelector((state) => state.admin_announcements.isLoading);
+  const { data: announcements, isLoading } = useAnnouncements();
 
-  useEffect(() => {
-    dispatch(fetchAdminAnnouncements());
-  }, []);
 
   const handleCreateAnnouncement = () => {
-    dispatch(initAnnouncementModal());
+    dispatch(openModal('EDIT_ANNOUNCEMENT'));
   };
 
   const emptyMessage = <FormattedMessage id='empty_column.admin.announcements' defaultMessage='There are no announcements yet.' />;
@@ -114,9 +115,9 @@ const Announcements: React.FC = () => {
           emptyMessage={emptyMessage}
           itemClassName='py-3 first:pt-0 last:pb-0'
           isLoading={isLoading}
-          showLoading={isLoading && !announcements.count()}
+          showLoading={isLoading && !announcements?.length}
         >
-          {announcements.map((announcement) => (
+          {announcements!.map((announcement) => (
             <Announcement key={announcement.id} announcement={announcement} />
           ))}
         </ScrollableList>

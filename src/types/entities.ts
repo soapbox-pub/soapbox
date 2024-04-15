@@ -1,8 +1,6 @@
 import {
   AdminAccountRecord,
   AdminReportRecord,
-  AnnouncementRecord,
-  AnnouncementReactionRecord,
   AttachmentRecord,
   ChatRecord,
   ChatMessageRecord,
@@ -27,8 +25,6 @@ import type { LegacyMap } from 'soapbox/utils/legacy';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
-type Announcement = ReturnType<typeof AnnouncementRecord>;
-type AnnouncementReaction = ReturnType<typeof AnnouncementReactionRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
@@ -61,8 +57,6 @@ export {
   Account,
   AdminAccount,
   AdminReport,
-  Announcement,
-  AnnouncementReaction,
   Attachment,
   Chat,
   ChatMessage,

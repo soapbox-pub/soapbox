@@ -9,16 +9,14 @@ import AnnouncementContent from './announcement-content';
 import ReactionsBar from './reactions-bar';
 
 import type { Map as ImmutableMap } from 'immutable';
-import type { Announcement as AnnouncementEntity } from 'soapbox/types/entities';
+import type { Announcement as AnnouncementEntity } from 'soapbox/schemas';
 
 interface IAnnouncement {
   announcement: AnnouncementEntity;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
   emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
 }
 
-const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, removeReaction, emojiMap }) => {
+const Announcement: React.FC<IAnnouncement> = ({ announcement, emojiMap }) => {
   const features = useFeatures();
 
   const startsAt = announcement.starts_at && new Date(announcement.starts_at);
@@ -64,8 +62,6 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, addReaction, remo
         <ReactionsBar
           reactions={announcement.reactions}
           announcementId={announcement.id}
-          addReaction={addReaction}
-          removeReaction={removeReaction}
           emojiMap={emojiMap}
         />
       )}

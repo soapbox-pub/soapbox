@@ -1,4 +1,3 @@
-import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { expandNotifications } from 'soapbox/actions/notifications';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import { useStatContext } from 'soapbox/contexts/stat-context';
@@ -24,8 +23,7 @@ function useUserStream() {
 /** Refresh home timeline and notifications. */
 function refresh(dispatch: AppDispatch, done?: () => void) {
   return dispatch(expandHomeTimeline({}, () =>
-    dispatch(expandNotifications({}, () =>
-      dispatch(fetchAnnouncements(done))))));
+    dispatch(expandNotifications({}, done))));
 }
 
 export { useUserStream };
