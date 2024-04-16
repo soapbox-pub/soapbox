@@ -7,7 +7,6 @@ import Markup from 'soapbox/components/markup';
 import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { badgeToTag, getBadges as getAccountBadges } from 'soapbox/utils/badges';
 import { capitalize } from 'soapbox/utils/strings';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers';
@@ -58,13 +57,14 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   };
 
   const getCustomBadges = (): React.ReactNode[] => {
-    const badges = account ? getAccountBadges(account) : [];
+    const badges = account?.roles || [];
 
-    return badges.map(badge => (
+    return badges.filter(badge => badge.highlighted).map(badge => (
       <Badge
-        key={badge}
-        slug={badge}
-        title={capitalize(badgeToTag(badge))}
+        key={badge.id || badge.name}
+        slug={badge.name}
+        title={capitalize(badge.name)}
+        color={badge.color}
       />
     ));
   };
