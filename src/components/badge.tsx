@@ -13,7 +13,9 @@ const Badge: React.FC<IBadge> = ({ title, slug, color }) => {
   const fallback = !['patron', 'admin', 'moderator', 'opaque', 'badge:donor'].includes(slug);
 
   const isDark = useMemo(() => {
-    const hsl = hexToHsl(color!);
+    if (!color) return false;
+
+    const hsl = hexToHsl(color);
 
     if (hsl && hsl.l > 50) return false;
 
