@@ -1,21 +1,18 @@
 import { getLocale, getSettings } from 'soapbox/actions/settings';
+import { updateReactions } from 'soapbox/api/hooks/announcements/useAnnouncements';
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { selectEntity } from 'soapbox/entity-store/selectors';
 import messages from 'soapbox/messages';
 import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
 import { queryClient } from 'soapbox/queries/client';
+import { announcementSchema, type Announcement, type Relationship } from 'soapbox/schemas';
 import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';
 import { removePageItem } from 'soapbox/utils/queries';
 import { play, soundCache } from 'soapbox/utils/sounds';
 
 import { connectStream } from '../stream';
 
-import {
-  deleteAnnouncement,
-  updateAnnouncements,
-  updateReaction as updateAnnouncementsReaction,
-} from './announcements';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { MARKER_FETCH_SUCCESS } from './markers';
@@ -29,7 +26,6 @@ import {
 } from './timelines';
 
 import type { IStatContext } from 'soapbox/contexts/stat-context';
-import type { Relationship } from 'soapbox/schemas';
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity, Chat } from 'soapbox/types/entities';
 
@@ -65,6 +61,35 @@ const updateChatQuery = (chat: IChat) => {
   };
   queryClient.setQueryData<Chat>(ChatKeys.chat(chat.id), newChat as any);
 };
+
+const updateAnnouncementReactions = ({ announcement_id: id, name, count }: APIEntity) => {
+  queryClient.setQueryData(['announcements'], (prevResult: Announcement[]) =>
+    prevResult.map(value => {
+      if (value.id !== id) return value;
+
+      return announcementSchema.parse({
+        ...value,
+        reactions: updateReactions(value.reactions, name, -1, true),
+      });
+    }),
+  );
+};
+
+const updateAnnouncement = (announcement: APIEntity) =>
+  queryClient.setQueryData(['announcements'], (prevResult: Announcement[]) => {
+    let updated = false;
+
+    const result = prevResult.map(value => value.id === announcement.id
+      ? (updated = true, announcementSchema.parse(announcement))
+      : value);
+
+    if (!updated) return [announcementSchema.parse(announcement), ...result];
+  });
+
+const deleteAnnouncement = (id: string) =>
+  queryClient.setQueryData(['announcements'], (prevResult: Announcement[]) =>
+    prevResult.filter(value => value.id !== id),
+  );
 
 interface TimelineStreamOpts {
   statContext?: IStatContext;
@@ -164,13 +189,13 @@ const connectTimelineStream = (
           dispatch(updateFollowRelationships(JSON.parse(data.payload)));
           break;
         case 'announcement':
-          dispatch(updateAnnouncements(JSON.parse(data.payload)));
+          updateAnnouncement(JSON.parse(data.payload));
           break;
         case 'announcement.reaction':
-          dispatch(updateAnnouncementsReaction(JSON.parse(data.payload)));
+          updateAnnouncementReactions(JSON.parse(data.payload));
           break;
         case 'announcement.delete':
-          dispatch(deleteAnnouncement(data.payload));
+          deleteAnnouncement(data.payload);
           break;
         case 'marker':
           dispatch({ type: MARKER_FETCH_SUCCESS, marker: JSON.parse(data.payload) });

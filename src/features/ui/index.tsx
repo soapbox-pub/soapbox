@@ -4,7 +4,6 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
-import { fetchAnnouncements } from 'soapbox/actions/announcements';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
@@ -417,8 +416,6 @@ const UI: React.FC<IUI> = ({ children }) => {
       // @ts-ignore
       .then(() => dispatch(fetchMarker(['notifications'])))
       .catch(console.error);
-
-    dispatch(fetchAnnouncements());
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));

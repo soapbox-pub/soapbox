@@ -5,9 +5,9 @@ import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
 import { createSelector } from 'reselect';
 
-import { addReaction as addReactionAction, removeReaction as removeReactionAction } from 'soapbox/actions/announcements';
+import { useAnnouncements } from 'soapbox/api/hooks/announcements';
 import { Card, HStack, Widget } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 
 import Announcement from './announcement';
 
@@ -16,36 +16,30 @@ import type { RootState } from 'soapbox/store';
 const customEmojiMap = createSelector([(state: RootState) => state.custom_emojis], items => (items as ImmutableList<ImmutableMap<string, string>>).reduce((map, emoji) => map.set(emoji.get('shortcode')!, emoji), ImmutableMap<string, ImmutableMap<string, string>>()));
 
 const AnnouncementsPanel = () => {
-  const dispatch = useAppDispatch();
   const emojiMap = useAppSelector(state => customEmojiMap(state));
   const [index, setIndex] = useState(0);
 
-  const announcements = useAppSelector((state) => state.announcements.items);
+  const { data: announcements } = useAnnouncements();
 
-  const addReaction = (id: string, name: string) => dispatch(addReactionAction(id, name));
-  const removeReaction = (id: string, name: string) => dispatch(removeReactionAction(id, name));
-
-  if (announcements.size === 0) return null;
+  if (!announcements || announcements.length === 0) return null;
 
   const handleChangeIndex = (index: number) => {
-    setIndex(index % announcements.size);
+    setIndex(index % announcements.length);
   };
 
   return (
     <Widget title={<FormattedMessage id='announcements.title' defaultMessage='Announcements' />}>
       <Card className='relative black:rounded-xl black:border black:border-gray-800' size='md' variant='rounded'>
         <ReactSwipeableViews animateHeight index={index} onChangeIndex={handleChangeIndex}>
-          {announcements.map((announcement) => (
+          {announcements!.map((announcement) => (
             <Announcement
               key={announcement.id}
               announcement={announcement}
               emojiMap={emojiMap}
-              addReaction={addReaction}
-              removeReaction={removeReaction}
             />
           )).reverse()}
         </ReactSwipeableViews>
-        {announcements.size > 1 && (
+        {announcements.length > 1 && (
           <HStack space={2} alignItems='center' justifyContent='center' className='relative'>
             {announcements.map((_, i) => (
               <button

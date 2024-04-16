@@ -1,31 +1,32 @@
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
+import { useAnnouncements } from 'soapbox/api/hooks/announcements';
 import AnimatedNumber from 'soapbox/components/animated-number';
 import unicodeMapping from 'soapbox/features/emoji/mapping';
 
 import Emoji from './emoji';
 
 import type { Map as ImmutableMap } from 'immutable';
-import type { AnnouncementReaction } from 'soapbox/types/entities';
+import type { AnnouncementReaction } from 'soapbox/schemas';
 
 interface IReaction {
   announcementId: string;
   reaction: AnnouncementReaction;
   emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
-  addReaction: (id: string, name: string) => void;
-  removeReaction: (id: string, name: string) => void;
   style: React.CSSProperties;
 }
 
-const Reaction: React.FC<IReaction> = ({ announcementId, reaction, addReaction, removeReaction, emojiMap, style }) => {
+const Reaction: React.FC<IReaction> = ({ announcementId, reaction, emojiMap, style }) => {
   const [hovered, setHovered] = useState(false);
+
+  const { addReaction, removeReaction } = useAnnouncements();
 
   const handleClick = () => {
     if (reaction.me) {
-      removeReaction(announcementId, reaction.name);
+      removeReaction({ announcementId, name: reaction.name });
     } else {
-      addReaction(announcementId, reaction.name);
+      addReaction({ announcementId, name: reaction.name });
     }
   };
 

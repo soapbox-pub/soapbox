@@ -1,4 +1,6 @@
 export { accountSchema, type Account } from './account';
+export { announcementSchema, adminAnnouncementSchema, type Announcement, type AdminAnnouncement } from './announcement';
+export { announcementReactionSchema, type AnnouncementReaction } from './announcement-reaction';
 export { attachmentSchema, type Attachment } from './attachment';
 export { bookmarkFolderSchema, type BookmarkFolder } from './bookmark-folder';
 export { cardSchema, type Card } from './card';
