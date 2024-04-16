@@ -20,7 +20,8 @@ import {
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
 } from 'soapbox/actions/admin';
-import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers';
+import { normalizeAdminAccount } from 'soapbox/normalizers';
+import { reportSchema, Report } from 'soapbox/schemas';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
@@ -28,7 +29,7 @@ import type { APIEntity } from 'soapbox/types/entities';
 import type { Config } from 'soapbox/utils/config-db';
 
 const ReducerRecord = ImmutableRecord({
-  reports: ImmutableMap<string, ReducerAdminReport>(),
+  reports: ImmutableMap<string, Report>(),
   openReports: ImmutableOrderedSet<string>(),
   users: ImmutableMap<string, ReducerAdminAccount>(),
   latestUsers: ImmutableOrderedSet<string>(),
@@ -40,18 +41,9 @@ const ReducerRecord = ImmutableRecord({
 type State = ReturnType<typeof ReducerRecord>;
 
 type AdminAccountRecord = ReturnType<typeof normalizeAdminAccount>;
-type AdminReportRecord = ReturnType<typeof normalizeAdminReport>;
 
 export interface ReducerAdminAccount extends AdminAccountRecord {
   account: string | null;
-}
-
-export interface ReducerAdminReport extends AdminReportRecord {
-  account: string | null;
-  target_account: string | null;
-  action_taken_by_account: string | null;
-  assigned_account: string | null;
-  statuses: ImmutableList<string | null>;
 }
 
 // Lol https://javascript.plainenglish.io/typescript-essentials-conditionally-filter-types-488705bfbf56
@@ -139,26 +131,11 @@ function approveUsers(state: State, users: APIUser[]): State {
   });
 }
 
-const minifyReport = (report: AdminReportRecord): ReducerAdminReport => {
-  return report.mergeWith((o, n) => n || o, {
-    account: normalizeId(report.getIn(['account', 'id'])),
-    target_account: normalizeId(report.getIn(['target_account', 'id'])),
-    action_taken_by_account: normalizeId(report.getIn(['action_taken_by_account', 'id'])),
-    assigned_account: normalizeId(report.getIn(['assigned_account', 'id'])),
-    statuses: report.get('statuses').map((status: any) => normalizeId(status.get('id'))),
-  }) as ReducerAdminReport;
-};
-
-const fixReport = (report: APIEntity): ReducerAdminReport => {
-  return normalizeAdminReport(report).withMutations(report => {
-    minifyReport(report);
-  }) as ReducerAdminReport;
-};
-
 function importReports(state: State, reports: APIEntity[]): State {
   return state.withMutations(state => {
     reports.forEach(report => {
-      const normalizedReport = fixReport(report);
+      console.log(reportSchema.safeParse(report));
+      const normalizedReport = reportSchema.parse(report);
       if (!normalizedReport.action_taken) {
         state.update('openReports', orderedSet => orderedSet.add(report.id));
       }

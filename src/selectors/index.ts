@@ -3,7 +3,6 @@ import {
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
   Record as ImmutableRecord,
-  fromJS,
 } from 'immutable';
 import { createSelector } from 'reselect';
 
@@ -233,34 +232,6 @@ export const makeGetChat = () => {
   );
 };
 
-export const makeGetReport = () => {
-  const getStatus = makeGetStatus();
-
-  return createSelector(
-    [
-      (state: RootState, id: string) => state.admin.reports.get(id),
-      (state: RootState, id: string) => selectAccount(state, state.admin.reports.get(id)?.account || ''),
-      (state: RootState, id: string) => selectAccount(state, state.admin.reports.get(id)?.target_account || ''),
-      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.get(id)?.statuses)).map(
-        statusId => state.statuses.get(normalizeId(statusId)))
-        .filter((s: any) => s)
-        .map((s: any) => getStatus(state, s.toJS())),
-    ],
-
-    (report, account, targetAccount, statuses) => {
-      if (!report) return null;
-      return report.withMutations((report) => {
-        // @ts-ignore
-        report.set('account', account);
-        // @ts-ignore
-        report.set('target_account', targetAccount);
-        // @ts-ignore
-        report.set('statuses', statuses);
-      });
-    },
-  );
-};
-
 const getAuthUserIds = createSelector([
   (state: RootState) => state.auth.users,
 ], authUsers => {
@@ -317,7 +288,6 @@ const getRemoteInstanceFederation = (state: RootState, host: string): HostFedera
     Object.entries(simplePolicy).map(([key, hosts]) => [key, hosts.includes(host)]),
   ) as HostFederation;
 };
-
 
 export const makeGetHosts = () => {
   return createSelector([getSimplePolicy], (simplePolicy) => {

@@ -11,25 +11,17 @@ import { relationshipSchema } from './relationship';
 import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
+import { roleSchema } from './role';
 
 const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
 const headerMissing = require('soapbox/assets/images/header-missing.png');
 
 const birthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
-const hexSchema = z.string().regex(/^#[a-f0-9]{6}$/i);
-
 const fieldSchema = z.object({
   name: z.string(),
   value: z.string(),
   verified_at: z.string().datetime().nullable().catch(null),
-});
-
-const roleSchema = z.object({
-  id: z.string().catch(''),
-  name: z.string().catch(''),
-  color: hexSchema.catch(''),
-  highlighted: z.boolean().catch(true),
 });
 
 const baseAccountSchema = z.object({

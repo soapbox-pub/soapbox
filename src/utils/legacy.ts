@@ -59,7 +59,6 @@ function immutableizeStore<T, S extends Record<string, T | undefined>>(state: S)
   };
 }
 
-
 export {
   immutableizeStore,
   immutableizeEntity,

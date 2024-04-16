@@ -160,7 +160,6 @@ const expandFollowedHashtagsFail = (error: unknown) => ({
   error,
 });
 
-
 export {
   HASHTAG_FETCH_REQUEST,
   HASHTAG_FETCH_SUCCESS,

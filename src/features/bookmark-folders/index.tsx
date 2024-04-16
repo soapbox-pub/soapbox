@@ -9,7 +9,6 @@ import { useFeatures } from 'soapbox/hooks';
 
 import NewFolderForm from './components/new-folder-form';
 
-
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
 });

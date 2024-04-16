@@ -32,7 +32,6 @@ const GroupTagTimeline: React.FC<IGroupTimeline> = (props) => {
     }
   }, [groupId, tag]);
 
-
   if (isLoading || !tag || !group) {
     return null;
   }

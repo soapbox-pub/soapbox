@@ -122,6 +122,8 @@ const fetchMastodonReports = (params: Record<string, any>) =>
         reports.forEach((report: APIEntity) => {
           dispatch(importFetchedAccount(report.account?.account));
           dispatch(importFetchedAccount(report.target_account?.account));
+          dispatch(importFetchedAccount(report.assigned_account?.account));
+          dispatch(importFetchedAccount(report.action_taken_by_account?.account));
           dispatch(importFetchedStatuses(report.statuses));
         });
         dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
@@ -538,7 +540,6 @@ const expandUserIndex = () =>
         dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
       });
   };
-
 
 export {
   ADMIN_CONFIG_FETCH_REQUEST,
