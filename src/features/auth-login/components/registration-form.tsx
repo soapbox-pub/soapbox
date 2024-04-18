@@ -270,7 +270,6 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
             </FormGroup>
           )}
 
-
           {!features.nostrSignup && (
             <Input
               type='email'

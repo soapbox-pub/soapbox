@@ -68,7 +68,7 @@ const importFetchedAccounts = (accounts: APIEntity[], args = { should_refetch: f
   const normalAccounts: APIEntity[] = [];
 
   const processAccount = (account: APIEntity) => {
-    if (!account.id) return;
+    if (!account?.id) return;
 
     if (should_refetch) {
       account.should_refetch = true;

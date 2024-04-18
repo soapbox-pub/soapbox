@@ -4,7 +4,6 @@ import { render, screen } from 'soapbox/jest/test-helpers';
 
 import Blankslate from './blankslate';
 
-
 describe('<Blankslate />', () => {
   describe('with string props', () => {
     it('should render correctly', () => {

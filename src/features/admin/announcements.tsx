@@ -91,7 +91,6 @@ const Announcements: React.FC = () => {
 
   const { data: announcements, isLoading } = useAnnouncements();
 
-
   const handleCreateAnnouncement = () => {
     dispatch(openModal('EDIT_ANNOUNCEMENT'));
   };

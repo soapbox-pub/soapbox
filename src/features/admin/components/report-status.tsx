@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { deleteStatusModal } from 'soapbox/actions/moderation';
@@ -6,9 +6,10 @@ import DropdownMenu from 'soapbox/components/dropdown-menu';
 import StatusContent from 'soapbox/components/status-content';
 import StatusMedia from 'soapbox/components/status-media';
 import { HStack, Stack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { makeGetStatus } from 'soapbox/selectors';
 
-import type { AdminReport, Status } from 'soapbox/types/entities';
+import type { Report as ReportEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -16,13 +17,18 @@ const messages = defineMessages({
 });
 
 interface IReportStatus {
-  status: Status;
-  report?: AdminReport;
+  statusId: string;
+  report?: ReportEntity;
 }
 
-const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
+const ReportStatus: React.FC<IReportStatus> = ({ statusId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+
+  const getStatus = useCallback(makeGetStatus(), []);
+  const status = useAppSelector(state => getStatus(state, { id: statusId }));
+
+  if (!status) return null;
 
   const handleDeleteStatus = () => {
     dispatch(deleteStatusModal(intl, status.id));

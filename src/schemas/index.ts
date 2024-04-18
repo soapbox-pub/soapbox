@@ -1,6 +1,7 @@
 export { accountSchema, type Account } from './account';
 export { announcementSchema, adminAnnouncementSchema, type Announcement, type AdminAnnouncement } from './announcement';
 export { announcementReactionSchema, type AnnouncementReaction } from './announcement-reaction';
+export { adminAccountSchema, type AdminAccount } from './admin-account';
 export { attachmentSchema, type Attachment } from './attachment';
 export { bookmarkFolderSchema, type BookmarkFolder } from './bookmark-folder';
 export { cardSchema, type Card } from './card';
@@ -20,6 +21,8 @@ export { patronUserSchema, type PatronUser } from './patron';
 export { pollSchema, type Poll, type PollOption } from './poll';
 export { relationshipSchema, type Relationship } from './relationship';
 export { relaySchema, type Relay } from './relay';
+export { reportSchema, type Report } from './report';
+export { roleSchema, type Role } from './role';
 export { ruleSchema, adminRuleSchema, type Rule, type AdminRule } from './rule';
 export { statusSchema, type Status } from './status';
 export { tagSchema, type Tag } from './tag';

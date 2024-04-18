@@ -1,20 +1,19 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import { useAccount } from 'soapbox/api/hooks';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetReport } from 'soapbox/selectors';
 import toast from 'soapbox/toast';
 
 import ReportStatus from './report-status';
 
-import type { List as ImmutableList } from 'immutable';
-import type { Account, AdminReport, Status } from 'soapbox/types/entities';
+import type { Account as AccountEntity, Report as ReportEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
@@ -30,16 +29,14 @@ const Report: React.FC<IReport> = ({ id }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const getReport = useCallback(makeGetReport(), []);
-
-  const report = useAppSelector((state) => getReport(state, id) as AdminReport | undefined);
+  const report = useAppSelector((state) => state.admin.reports.get(id) as ReportEntity | undefined);
 
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
-  if (!report) return null;
+  const { account } = useAccount(report?.account.id) as { account: AccountEntity };
+  const { account: targetAccount } = useAccount(report?.target_account.id) as { account: AccountEntity };
 
-  const account = report.account as Account;
-  const targetAccount = report.target_account as Account;
+  if (!report) return null;
 
   const makeMenu = () => {
     return [{
@@ -76,8 +73,8 @@ const Report: React.FC<IReport> = ({ id }) => {
   };
 
   const menu = makeMenu();
-  const statuses = report.statuses as ImmutableList<Status>;
-  const statusCount = statuses.count();
+  const statuses = report.statuses;
+  const statusCount = statuses.length;
   const acct = targetAccount.acct as string;
   const reporterAcct = account.acct as string;
 
@@ -113,7 +110,7 @@ const Report: React.FC<IReport> = ({ id }) => {
                 <ReportStatus
                   key={status.id}
                   report={report}
-                  status={status}
+                  statusId={status.id}
                 />
               ))}
             </Stack>
