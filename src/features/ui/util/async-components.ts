@@ -175,3 +175,4 @@ export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Re
 export const Relays = lazy(() => import('soapbox/features/admin/relays'));
 export const Rules = lazy(() => import('soapbox/features/admin/rules'));
 export const EditRuleModal = lazy(() => import('soapbox/features/ui/components/modals/edit-rule-modal'));
+export const MediaProxyCache = lazy(() => import('soapbox/features/admin/media-proxy-cache'));
