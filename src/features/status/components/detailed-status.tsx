@@ -85,8 +85,6 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
 
-  const isSensitive = actualStatus.sensitive;
-
   let statusTypeIcon = null;
 
   let quote;
@@ -128,14 +126,12 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
         <Stack
           className='relative z-0'
-          style={{ minHeight: isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
+          style={{ minHeight: actualStatus.sensitive ? Math.max(minHeight, 208) + 12 : undefined }}
         >
-          {isSensitive && (
-            <SensitiveContentOverlay
-              status={status}
-              ref={overlay}
-            />
-          )}
+          <SensitiveContentOverlay
+            status={status}
+            ref={overlay}
+          />
 
           <Stack space={4}>
             <StatusContent

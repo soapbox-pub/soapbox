@@ -369,7 +369,6 @@ const Status: React.FC<IStatus> = (props) => {
     react: handleHotkeyReact,
   };
 
-  const isSensitive = actualStatus.sensitive;
   const isSoftDeleted = status.tombstone?.reason === 'deleted';
 
   if (isSoftDeleted) {
@@ -424,14 +423,12 @@ const Status: React.FC<IStatus> = (props) => {
 
             <Stack
               className='relative z-0'
-              style={{ minHeight: isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
+              style={{ minHeight: actualStatus.sensitive ? Math.max(minHeight, 208) + 12 : undefined }}
             >
-              {(isSensitive) && (
-                <SensitiveContentOverlay
-                  status={actualStatus}
-                  ref={overlay}
-                />
-              )}
+              <SensitiveContentOverlay
+                status={actualStatus}
+                ref={overlay}
+              />
 
               {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
                 <Stack space={4}>

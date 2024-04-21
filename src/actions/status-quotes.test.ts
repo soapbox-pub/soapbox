@@ -46,7 +46,7 @@ describe('fetchStatusQuotes()', () => {
         { type: 'STATUS_QUOTES_FETCH_REQUEST', statusId },
         { type: 'POLLS_IMPORT', polls: [] },
         { type: 'ACCOUNTS_IMPORT', accounts: [status.account] },
-        { type: 'STATUSES_IMPORT', statuses: [status], expandSpoilers: false },
+        { type: 'STATUSES_IMPORT', statuses: [status] },
         { type: 'STATUS_QUOTES_FETCH_SUCCESS', statusId, statuses: [status], next: null },
       ];
       await store.dispatch(fetchStatusQuotes(statusId));
@@ -118,7 +118,7 @@ describe('expandStatusQuotes()', () => {
           { type: 'STATUS_QUOTES_EXPAND_REQUEST', statusId },
           { type: 'POLLS_IMPORT', polls: [] },
           { type: 'ACCOUNTS_IMPORT', accounts: [status.account] },
-          { type: 'STATUSES_IMPORT', statuses: [status], expandSpoilers: false },
+          { type: 'STATUSES_IMPORT', statuses: [status] },
           { type: 'STATUS_QUOTES_EXPAND_SUCCESS', statusId, statuses: [status], next: null },
         ];
         await store.dispatch(expandStatusQuotes(statusId));

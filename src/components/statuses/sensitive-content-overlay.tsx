@@ -29,22 +29,23 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
 
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const { displayMedia, expandSpoilers } = useSettings();
+  const { displayMedia } = useSettings();
 
-  let visible = false;
+  let visible = !status.sensitive;
 
-  if (status.hidden !== null) {
-    visible = status.hidden;
-  } else {
-    if (expandSpoilers) visible = true;
-    if ((displayMedia === 'default' && status.sensitive) || displayMedia === 'hide_all') visible = false;
-  }
+  if (status.hidden !== null) visible = status.hidden;
+  else if (displayMedia === 'show_all') visible = true;
+  else if (displayMedia === 'hide_all' && status.media_attachments.size) visible = false;
+
+  const showHideButton = status.sensitive || (status.media_attachments.size && displayMedia === 'hide_all');
 
   const toggleVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
 
     dispatch(toggleStatusHidden(status));
   };
+
+  if (visible && !showHideButton) return null;
 
   return (
     <div

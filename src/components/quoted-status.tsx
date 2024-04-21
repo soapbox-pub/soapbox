@@ -109,12 +109,10 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
             className='relative z-0'
             style={{ minHeight: status.sensitive ? Math.max(minHeight, 208) + 12 : undefined }}
           >
-            {status.sensitive && (
-              <SensitiveContentOverlay
-                status={status}
-                ref={overlay}
-              />
-            )}
+            <SensitiveContentOverlay
+              status={status}
+              ref={overlay}
+            />
 
             <Stack space={4}>
               <StatusContent

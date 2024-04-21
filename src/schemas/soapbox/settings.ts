@@ -15,7 +15,6 @@ const settingsSchema = z.object({
   underlineLinks: z.boolean().catch(false),
   autoPlayGif: z.boolean().catch(true),
   displayMedia: z.enum(['default', 'hide_all', 'show_all']).catch('default'),
-  expandSpoilers: z.boolean().catch(false),
   preserveSpoilers: z.boolean().catch(false),
   unfollowModal: z.boolean().catch(false),
   boostModal: z.boolean().catch(false),

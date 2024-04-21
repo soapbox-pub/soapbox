@@ -78,7 +78,7 @@ const languages = {
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
   displayPostsDefault: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide posts marked as sensitive' },
-  displayPostsHideAll: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide posts' },
+  displayPostsHideAll: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide media posts' },
   displayPostsShowAll: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show posts' },
   privacy_public: { id: 'preferences.options.privacy_public', defaultMessage: 'Public' },
   privacy_unlisted: { id: 'preferences.options.privacy_unlisted', defaultMessage: 'Unlisted' },
@@ -196,10 +196,6 @@ const Preferences = () => {
         <ListItem label={<FormattedMessage id='preferences.fields.auto_play_gif_label' defaultMessage='Auto-play animated GIFs' />}>
           <SettingToggle settings={settings} settingPath={['autoPlayGif']} onChange={onToggleChange} />
         </ListItem>
-
-        {features.spoilers && <ListItem label={<FormattedMessage id='preferences.fields.expand_spoilers_label' defaultMessage='Always expand posts marked with content warnings' />}>
-          <SettingToggle settings={settings} settingPath={['expandSpoilers']} onChange={onToggleChange} />
-        </ListItem>}
 
         <ListItem label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}>
           <SettingToggle settings={settings} settingPath={['autoloadTimelines']} onChange={onToggleChange} />
