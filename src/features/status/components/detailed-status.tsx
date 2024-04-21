@@ -19,17 +19,13 @@ import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 interface IDetailedStatus {
   status: StatusEntity;
-  showMedia?: boolean;
   withMedia?: boolean;
   onOpenCompareHistoryModal: (status: StatusEntity) => void;
-  onToggleMediaVisibility: () => void;
 }
 
 const DetailedStatus: React.FC<IDetailedStatus> = ({
   status,
   onOpenCompareHistoryModal,
-  onToggleMediaVisibility,
-  showMedia,
   withMedia = true,
 }) => {
   const intl = useIntl();
@@ -89,8 +85,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   const { account } = actualStatus;
   if (!account || typeof account !== 'object') return null;
 
-  const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.hidden;
+  const isSensitive = actualStatus.sensitive;
 
   let statusTypeIcon = null;
 
@@ -133,13 +128,11 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
         <Stack
           className='relative z-0'
-          style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
+          style={{ minHeight: isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
         >
-          {(isUnderReview || isSensitive) && (
+          {isSensitive && (
             <SensitiveContentOverlay
               status={status}
-              visible={showMedia}
-              onToggleVisibility={onToggleMediaVisibility}
               ref={overlay}
             />
           )}
@@ -155,11 +148,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
             {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
               <Stack space={4}>
-                <StatusMedia
-                  status={actualStatus}
-                  showMedia={showMedia}
-                  onToggleVisibility={onToggleMediaVisibility}
-                />
+                <StatusMedia status={actualStatus} />
 
                 {quote}
               </Stack>

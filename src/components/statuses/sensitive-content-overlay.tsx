@@ -1,13 +1,10 @@
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { deleteStatus } from 'soapbox/actions/statuses';
-import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
+import { toggleStatusHidden } from 'soapbox/actions/statuses';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
 
-import DropdownMenu from '../dropdown-menu';
 import { Button, HStack, Text } from '../ui';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
@@ -19,73 +16,35 @@ const messages = defineMessages({
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   hide: { id: 'moderation_overlay.hide', defaultMessage: 'Hide content' },
   sensitiveTitle: { id: 'status.sensitive_warning', defaultMessage: 'Sensitive content' },
-  underReviewTitle: { id: 'moderation_overlay.title', defaultMessage: 'Content Under Review' },
-  underReviewSubtitle: { id: 'moderation_overlay.subtitle', defaultMessage: 'This Post has been sent to Moderation for review and is only visible to you. If you believe this is an error please contact Support.' },
   sensitiveSubtitle: { id: 'status.sensitive_warning.subtitle', defaultMessage: 'This content may not be suitable for all audiences.' },
-  contact: { id: 'moderation_overlay.contact', defaultMessage: 'Contact' },
   show: { id: 'moderation_overlay.show', defaultMessage: 'Show Content' },
 });
 
 interface ISensitiveContentOverlay {
   status: StatusEntity;
-  onToggleVisibility?(): void;
-  visible?: boolean;
 }
 
 const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
-  const { onToggleVisibility, status } = props;
+  const { status } = props;
 
-  const { account } = useOwnAccount();
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const { displayMedia, deleteModal } = useSettings();
-  const { links } = useSoapboxConfig();
+  const { displayMedia, expandSpoilers } = useSettings();
 
-  const isUnderReview = status.visibility === 'self';
-  const isOwnStatus = status.getIn(['account', 'id']) === account?.id;
+  let visible = false;
 
-  const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
+  if (status.hidden !== null) {
+    visible = status.hidden;
+  } else {
+    if (expandSpoilers) visible = true;
+    if ((displayMedia === 'default' && status.sensitive) || displayMedia === 'hide_all') visible = false;
+  }
 
   const toggleVisibility = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
 
-    if (onToggleVisibility) {
-      onToggleVisibility();
-    } else {
-      setVisible((prevValue) => !prevValue);
-    }
+    dispatch(toggleStatusHidden(status));
   };
-
-  const handleDeleteStatus = () => {
-    if (!deleteModal) {
-      dispatch(deleteStatus(status.id, false));
-    } else {
-      dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/trash.svg'),
-        heading: intl.formatMessage(messages.deleteHeading),
-        message: intl.formatMessage(messages.deleteMessage),
-        confirm: intl.formatMessage(messages.deleteConfirm),
-        onConfirm: () => dispatch(deleteStatus(status.id, false)),
-      }));
-    }
-  };
-
-  const menu = useMemo(() => {
-    return [
-      {
-        text: intl.formatMessage(messages.delete),
-        action: handleDeleteStatus,
-        icon: require('@tabler/icons/outline/trash.svg'),
-        destructive: true,
-      },
-    ];
-  }, []);
-
-  useEffect(() => {
-    if (typeof props.visible !== 'undefined') {
-      setVisible(!!props.visible);
-    }
-  }, [props.visible]);
 
   return (
     <div
@@ -109,11 +68,11 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
           <div className='mx-auto w-3/4 space-y-4 text-center' ref={ref}>
             <div className='space-y-1'>
               <Text theme='white' weight='semibold'>
-                {intl.formatMessage(isUnderReview ? messages.underReviewTitle : messages.sensitiveTitle)}
+                {intl.formatMessage(messages.sensitiveTitle)}
               </Text>
 
               <Text theme='white' size='sm' weight='medium'>
-                {intl.formatMessage(isUnderReview ? messages.underReviewSubtitle : messages.sensitiveSubtitle)}
+                {intl.formatMessage(messages.sensitiveSubtitle)}
               </Text>
 
               {status.spoiler_text && (
@@ -126,27 +85,6 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
             </div>
 
             <HStack alignItems='center' justifyContent='center' space={2}>
-              {isUnderReview ? (
-                <>
-                  {links.get('support') && (
-                    <a
-                      href={links.get('support')}
-                      target='_blank'
-                      onClick={(event) => event.stopPropagation()}
-                    >
-                      <Button
-                        type='button'
-                        theme='outline'
-                        size='sm'
-                        icon={require('@tabler/icons/outline/headset.svg')}
-                      >
-                        {intl.formatMessage(messages.contact)}
-                      </Button>
-                    </a>
-                  )}
-                </>
-              ) : null}
-
               <Button
                 type='button'
                 theme='outline'
@@ -156,13 +94,6 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
               >
                 {intl.formatMessage(messages.show)}
               </Button>
-
-              {(isUnderReview && isOwnStatus) ? (
-                <DropdownMenu
-                  items={menu}
-                  src={require('@tabler/icons/outline/dots.svg')}
-                />
-              ) : null}
             </HStack>
           </div>
         </div>

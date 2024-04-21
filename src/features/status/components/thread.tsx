@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { type VirtuosoHandle } from 'react-virtuoso';
@@ -10,7 +10,7 @@ import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
 import { favourite, reblog, unfavourite, unreblog } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
-import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
+import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import StatusActionBar from 'soapbox/components/status-action-bar';
 import Tombstone from 'soapbox/components/tombstone';
@@ -18,10 +18,10 @@ import { Stack } from 'soapbox/components/ui';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
 import { type Account, type Status } from 'soapbox/types/entities';
-import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
+import { textForScreenReader } from 'soapbox/utils/status';
 
 import DetailedStatus from './detailed-status';
 import ThreadStatus from './thread-status';
@@ -94,9 +94,6 @@ const Thread = (props: IThread) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
-  const { displayMedia } = useSettings();
-
-  const isUnderReview = status?.visibility === 'self';
 
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {
     let ancestorsIds = ImmutableOrderedSet<string>();
@@ -120,15 +117,9 @@ const Thread = (props: IThread) => {
   let initialTopMostItemIndex = ancestorsIds.size;
   if (!useWindowScroll && initialTopMostItemIndex !== 0) initialTopMostItemIndex = ancestorsIds.size + 1;
 
-  const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
-
   const node = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
   const scroller = useRef<VirtuosoHandle>(null);
-
-  const handleToggleMediaVisibility = () => {
-    setShowMedia(!showMedia);
-  };
 
   const handleHotkeyReact = () => {
     if (statusRef.current) {
@@ -182,14 +173,6 @@ const Thread = (props: IThread) => {
     }
   };
 
-  const handleToggleHidden = (status: Status) => {
-    if (status.hidden) {
-      dispatch(revealStatus(status.id));
-    } else {
-      dispatch(hideStatus(status.id));
-    }
-  };
-
   const handleHotkeyMoveUp = () => {
     handleMoveUp(status!.id);
   };
@@ -222,12 +205,8 @@ const Thread = (props: IThread) => {
     history.push(`/@${status!.getIn(['account', 'acct'])}`);
   };
 
-  const handleHotkeyToggleHidden = () => {
-    handleToggleHidden(status!);
-  };
-
   const handleHotkeyToggleSensitive = () => {
-    handleToggleMediaVisibility();
+    dispatch(toggleStatusHidden(status));
   };
 
   const handleMoveUp = (id: string) => {
@@ -321,11 +300,6 @@ const Thread = (props: IThread) => {
     });
   };
 
-  // Reset media visibility if status changes.
-  useEffect(() => {
-    setShowMedia(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
-  }, [status.id]);
-
   // Scroll focused status into view when thread updates.
   useEffect(() => {
     scroller.current?.scrollToIndex({
@@ -355,7 +329,6 @@ const Thread = (props: IThread) => {
     boost: handleHotkeyBoost,
     mention: handleHotkeyMention,
     openProfile: handleHotkeyOpenProfile,
-    toggleHidden: handleHotkeyToggleHidden,
     toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
@@ -374,24 +347,18 @@ const Thread = (props: IThread) => {
 
           <DetailedStatus
             status={status}
-            showMedia={showMedia}
             withMedia={withMedia}
-            onToggleMediaVisibility={handleToggleMediaVisibility}
             onOpenCompareHistoryModal={handleOpenCompareHistoryModal}
           />
 
-          {!isUnderReview ? (
-            <>
-              <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
+          <hr className='-mx-4 mb-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
 
-              <StatusActionBar
-                status={status}
-                expandable={false}
-                space='lg'
-                withLabels
-              />
-            </>
-          ) : null}
+          <StatusActionBar
+            status={status}
+            expandable={false}
+            space='lg'
+            withLabels
+          />
         </div>
       </HotKeys>
 

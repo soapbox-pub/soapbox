@@ -3,8 +3,6 @@ import { Entities } from 'soapbox/entity-store/entities';
 import { Group, accountSchema, groupSchema } from 'soapbox/schemas';
 import { filteredArray } from 'soapbox/schemas/utils';
 
-import { getSettings } from '../settings';
-
 import type { AppDispatch, RootState } from 'soapbox/store';
 import type { APIEntity } from 'soapbox/types/entities';
 
@@ -45,17 +43,9 @@ const importGroup = (group: Group) =>
 const importGroups = (groups: Group[]) =>
   importEntities(groups, Entities.GROUPS);
 
-const importStatus = (status: APIEntity, idempotencyKey?: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
-  };
+const importStatus = (status: APIEntity, idempotencyKey?: string) => ({ type: STATUS_IMPORT, status, idempotencyKey });
 
-const importStatuses = (statuses: APIEntity[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
-  };
+const importStatuses = (statuses: APIEntity[]) => ({ type: STATUSES_IMPORT, statuses });
 
 const importPolls = (polls: APIEntity[]) =>
   ({ type: POLLS_IMPORT, polls });

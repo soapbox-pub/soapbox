@@ -111,7 +111,7 @@ const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: 
     expectsCard: false,
     event: pleroma?.event,
     filtered: [],
-    hidden: false,
+    hidden: null as boolean | null,
     pleroma: pleroma ? (() => {
       const { event, ...rest } = pleroma;
       return rest;

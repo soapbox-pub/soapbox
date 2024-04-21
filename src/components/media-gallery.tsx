@@ -297,7 +297,6 @@ export interface IMediaGallery {
   defaultWidth?: number;
   cacheWidth?: (width: number) => void;
   visible?: boolean;
-  onToggleVisibility?: () => void;
   displayMedia?: string;
   compact?: boolean;
   className?: string;

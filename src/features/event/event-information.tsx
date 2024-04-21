@@ -9,9 +9,8 @@ import StatusMedia from 'soapbox/components/status-media';
 import TranslateButton from 'soapbox/components/translate-button';
 import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 import { makeGetStatus } from 'soapbox/selectors';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -28,10 +27,8 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusEntity;
 
   const { tileServer } = useSoapboxConfig();
-  const { displayMedia } = useSettings();
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
   useEffect(() => {
     dispatch(fetchStatus(params.statusId)).then(() => {
@@ -39,13 +36,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     }).catch(() => {
       setIsLoaded(true);
     });
-
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
   }, [params.statusId]);
-
-  const handleToggleMediaVisibility = () => {
-    setShowMedia(!showMedia);
-  };
 
   const handleShowMap: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
     e.preventDefault();
@@ -195,11 +186,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         </Stack>
       )}
 
-      <StatusMedia
-        status={status}
-        showMedia={showMedia}
-        onToggleVisibility={handleToggleMediaVisibility}
-      />
+      <StatusMedia status={status} />
 
       {status.quote && status.pleroma.get('quote_visible', true) && (
         <QuotedStatus statusId={status.quote as string} />

@@ -34,11 +34,5 @@ describe('<Status />', () => {
       render(<Status status={status} />, undefined, state);
       expect(screen.getByTestId('status-action-bar')).toBeInTheDocument();
     });
-
-    it('is not rendered if status is under review', () => {
-      const inReviewStatus = status.set('visibility', 'self');
-      render(<Status status={inReviewStatus as ReducerStatus} />, undefined, state);
-      expect(screen.queryAllByTestId('status-action-bar')).toHaveLength(0);
-    });
   });
 });

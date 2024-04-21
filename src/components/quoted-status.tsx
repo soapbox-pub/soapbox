@@ -6,8 +6,6 @@ import { useHistory } from 'react-router-dom';
 import StatusMedia from 'soapbox/components/status-media';
 import { Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
-import { useSettings } from 'soapbox/hooks';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import EventPreview from './event-preview';
 import OutlineBox from './outline-box';
@@ -36,11 +34,8 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   const intl = useIntl();
   const history = useHistory();
 
-  const { displayMedia } = useSettings();
-
   const overlay = useRef<HTMLDivElement>(null);
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
   const [minHeight, setMinHeight] = useState(208);
 
   useEffect(() => {
@@ -69,10 +64,6 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
     if (onCancel) {
       onCancel();
     }
-  };
-
-  const handleToggleMediaVisibility = () => {
-    setShowMedia(!showMedia);
   };
 
   if (!status) {
@@ -116,13 +107,11 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
         {status.event ? <EventPreview status={status} hideAction /> : (
           <Stack
             className='relative z-0'
-            style={{ minHeight: status.hidden ? Math.max(minHeight, 208) + 12 : undefined }}
+            style={{ minHeight: status.sensitive ? Math.max(minHeight, 208) + 12 : undefined }}
           >
-            {(status.hidden) && (
+            {status.sensitive && (
               <SensitiveContentOverlay
                 status={status}
-                visible={showMedia}
-                onToggleVisibility={handleToggleMediaVisibility}
                 ref={overlay}
               />
             )}
@@ -136,12 +125,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
               {status.quote && <QuotedStatusIndicator statusId={status.quote as string} />}
 
               {status.media_attachments.size > 0 && (
-                <StatusMedia
-                  status={status}
-                  muted={compose}
-                  showMedia={showMedia}
-                  onToggleVisibility={handleToggleMediaVisibility}
-                />
+                <StatusMedia status={status} muted={compose} />
               )}
             </Stack>
           </Stack>

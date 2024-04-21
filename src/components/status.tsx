@@ -12,7 +12,7 @@ import AccountContainer from 'soapbox/containers/account-container';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
+import { textForScreenReader, getActualStatus } from 'soapbox/utils/status';
 
 import EventPreview from './event-preview';
 import StatusActionBar from './status-action-bar';
@@ -77,12 +77,11 @@ const Status: React.FC<IStatus> = (props) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const { displayMedia, boostModal } = useSettings();
+  const { boostModal } = useSettings();
   const didShowCard = useRef(false);
   const node = useRef<HTMLDivElement>(null);
   const overlay = useRef<HTMLDivElement>(null);
 
-  const [showMedia, setShowMedia] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
   const [minHeight, setMinHeight] = useState(208);
 
   const actualStatus = getActualStatus(status);
@@ -98,18 +97,10 @@ const Status: React.FC<IStatus> = (props) => {
   }, []);
 
   useEffect(() => {
-    setShowMedia(defaultMediaVisibility(status, displayMedia));
-  }, [status.id]);
-
-  useEffect(() => {
     if (overlay.current) {
       setMinHeight(overlay.current.getBoundingClientRect().height);
     }
   }, [overlay.current]);
-
-  const handleToggleMediaVisibility = (): void => {
-    setShowMedia(!showMedia);
-  };
 
   const handleClick = (e?: React.MouseEvent): void => {
     e?.stopPropagation();
@@ -188,12 +179,8 @@ const Status: React.FC<IStatus> = (props) => {
     }
   };
 
-  const handleHotkeyToggleHidden = (): void => {
-    dispatch(toggleStatusHidden(actualStatus));
-  };
-
   const handleHotkeyToggleSensitive = (): void => {
-    handleToggleMediaVisibility();
+    dispatch(toggleStatusHidden(actualStatus));
   };
 
   const handleHotkeyReact = (): void => {
@@ -377,14 +364,12 @@ const Status: React.FC<IStatus> = (props) => {
     openProfile: handleHotkeyOpenProfile,
     moveUp: handleHotkeyMoveUp,
     moveDown: handleHotkeyMoveDown,
-    toggleHidden: handleHotkeyToggleHidden,
     toggleSensitive: handleHotkeyToggleSensitive,
     openMedia: handleHotkeyOpenMedia,
     react: handleHotkeyReact,
   };
 
-  const isUnderReview = actualStatus.visibility === 'self';
-  const isSensitive = actualStatus.hidden;
+  const isSensitive = actualStatus.sensitive;
   const isSoftDeleted = status.tombstone?.reason === 'deleted';
 
   if (isSoftDeleted) {
@@ -439,13 +424,11 @@ const Status: React.FC<IStatus> = (props) => {
 
             <Stack
               className='relative z-0'
-              style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
+              style={{ minHeight: isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
             >
-              {(isUnderReview || isSensitive) && (
+              {(isSensitive) && (
                 <SensitiveContentOverlay
-                  status={status}
-                  visible={showMedia}
-                  onToggleVisibility={handleToggleMediaVisibility}
+                  status={actualStatus}
                   ref={overlay}
                 />
               )}
@@ -467,8 +450,6 @@ const Status: React.FC<IStatus> = (props) => {
                         status={actualStatus}
                         muted={muted}
                         onClick={handleClick}
-                        showMedia={showMedia}
-                        onToggleVisibility={handleToggleMediaVisibility}
                       />
 
                       {quote}
@@ -478,7 +459,7 @@ const Status: React.FC<IStatus> = (props) => {
               )}
             </Stack>
 
-            {(!hideActionBar && !isUnderReview) && (
+            {!hideActionBar && (
               <div className='pt-4'>
                 <StatusActionBar status={actualStatus} fromBookmarks={fromBookmarks} />
               </div>

@@ -104,7 +104,6 @@ const buildSearchContent = (status: StatusRecord): string => {
 export const calculateStatus = (
   status: StatusRecord,
   oldStatus?: StatusRecord,
-  expandSpoilers: boolean = false,
 ): StatusRecord => {
   if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
     return status.merge({
@@ -122,7 +121,6 @@ export const calculateStatus = (
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
       contentHtml: DOMPurify.sanitize(stripCompatibilityFeatures(emojify(status.content, emojiMap)), { USE_PROFILES: { html: true } }),
       spoilerHtml: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), { USE_PROFILES: { html: true } }),
-      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
     });
   }
 };
@@ -153,22 +151,22 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
+const fixStatus = (state: State, status: APIEntity): ReducerStatus => {
   const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixTranslation(status, oldStatus);
     fixQuote(status, oldStatus);
-    calculateStatus(status, oldStatus, expandSpoilers);
+    calculateStatus(status, oldStatus);
     minifyStatus(status);
   }) as ReducerStatus;
 };
 
-const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
-  state.set(status.id, fixStatus(state, status, expandSpoilers));
+const importStatus = (state: State, status: APIEntity): State =>
+  state.set(status.id, fixStatus(state, status));
 
-const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
+const importStatuses = (state: State, statuses: APIEntities): State =>
+  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
 
 const deleteStatus = (state: State, id: string, references: Array<string>) => {
   references.forEach(ref => {
@@ -271,9 +269,9 @@ const initialState: State = ImmutableMap();
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
     case STATUS_IMPORT:
-      return importStatus(state, action.status, action.expandSpoilers);
+      return importStatus(state, action.status);
     case STATUSES_IMPORT:
-      return importStatuses(state, action.statuses, action.expandSpoilers);
+      return importStatuses(state, action.statuses);
     case STATUS_CREATE_REQUEST:
       return action.editing ? state : incrementReplyCount(state, action.params);
     case STATUS_CREATE_FAIL:

@@ -33,8 +33,7 @@ const keyMap = {
   goToBlocked: 'g b',
   goToMuted: 'g m',
   goToRequests: 'g r',
-  toggleHidden: 'x',
-  toggleSensitive: 'h',
+  toggleSensitive: ['h', 'x'],
   openMedia: 'a',
 };
 

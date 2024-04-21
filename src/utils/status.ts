@@ -11,12 +11,6 @@ export const defaultMediaVisibility = <T extends { reblog: T | string | null } &
   if (!status) return false;
   status = getActualStatus(status);
 
-  const isUnderReview = status.visibility === 'self';
-
-  if (isUnderReview) {
-    return false;
-  }
-
   return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 

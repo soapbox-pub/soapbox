@@ -20,7 +20,7 @@ import { maybeFromJS } from 'soapbox/utils/normalizers';
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities';
 
 export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
-export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self' | 'group';
+export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'group';
 
 export type EventJoinMode = 'free' | 'restricted' | 'invite';
 export type EventJoinState = 'pending' | 'reject' | 'accept';
@@ -88,7 +88,7 @@ export const StatusRecord = ImmutableRecord({
   // Internal fields
   contentHtml: '',
   expectsCard: false,
-  hidden: false,
+  hidden: null as boolean | null,
   search_index: '',
   showFiltered: true,
   spoilerHtml: '',

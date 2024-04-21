@@ -6,7 +6,8 @@ import PreviewCard from 'soapbox/components/preview-card';
 import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch, useSettings } from 'soapbox/hooks';
+import { defaultMediaVisibility } from 'soapbox/utils/status';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Status, Attachment } from 'soapbox/types/entities';
@@ -20,8 +21,6 @@ interface IStatusMedia {
   onClick?: () => void;
   /** Whether or not the media is concealed behind a NSFW banner. */
   showMedia?: boolean;
-  /** Callback when visibility is toggled (eg clicked through NSFW). */
-  onToggleVisibility?: () => void;
 }
 
 /** Render media attachments for a status. */
@@ -29,10 +28,12 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   status,
   muted = false,
   onClick,
-  showMedia = true,
-  onToggleVisibility = () => { },
+  showMedia,
 }) => {
   const dispatch = useAppDispatch();
+  const { displayMedia } = useSettings();
+
+  const visible = showMedia || (status.hidden === null ? defaultMediaVisibility(status, displayMedia) : status.hidden);
 
   const size = status.media_attachments.size;
   const firstAttachment = status.media_attachments.first();
@@ -76,7 +77,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
             alt={video.description}
             aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
             height={285}
-            visible={showMedia}
+            visible={visible}
             inline
           />
         </Suspense>
@@ -106,8 +107,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
             sensitive={status.sensitive}
             height={285}
             onOpenMedia={openMedia}
-            visible={showMedia}
-            onToggleVisibility={onToggleVisibility}
+            visible={visible}
           />
         </Suspense>
       );

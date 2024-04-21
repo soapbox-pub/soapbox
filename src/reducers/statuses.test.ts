@@ -106,14 +106,6 @@ describe('statuses reducer', () => {
       expect(hidden).toBe(true);
     });
 
-    it('expands CWs when expandSpoilers is enabled', async () => {
-      const status = await import('soapbox/__fixtures__/status-cw.json');
-      const action = { type: STATUS_IMPORT, status, expandSpoilers: true };
-
-      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
-      expect(hidden).toBe(false);
-    });
-
     it('parses custom emojis', async () => {
       const status = await import('soapbox/__fixtures__/status-custom-emoji.json');
       const action = { type: STATUS_IMPORT, status };

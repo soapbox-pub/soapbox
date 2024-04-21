@@ -6,7 +6,7 @@ import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
-import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
+import { toggleStatusHidden } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
 import { HStack, Text, Emoji } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
@@ -198,7 +198,7 @@ const Notification: React.FC<INotification> = (props) => {
     openProfile: handleOpenProfile,
     moveUp: handleMoveUp,
     moveDown: handleMoveDown,
-    toggleHidden: handleHotkeyToggleHidden,
+    toggleSensitive: handleHotkeyToggleSensitive,
   });
 
   const handleOpen = () => {
@@ -252,13 +252,9 @@ const Notification: React.FC<INotification> = (props) => {
     }
   }, [status]);
 
-  const handleHotkeyToggleHidden = useCallback((e?: KeyboardEvent) => {
+  const handleHotkeyToggleSensitive = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
-      if (status.hidden) {
-        dispatch(revealStatus(status.id));
-      } else {
-        dispatch(hideStatus(status.id));
-      }
+      dispatch(toggleStatusHidden(status));
     }
   }, [status]);
 
