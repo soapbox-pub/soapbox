@@ -11,9 +11,6 @@ import {
 import {
   ADMIN_CONFIG_FETCH_SUCCESS,
   ADMIN_CONFIG_UPDATE_SUCCESS,
-  ADMIN_REPORTS_FETCH_SUCCESS,
-  ADMIN_REPORTS_PATCH_REQUEST,
-  ADMIN_REPORTS_PATCH_SUCCESS,
   ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_DELETE_REQUEST,
   ADMIN_USERS_DELETE_SUCCESS,
@@ -21,7 +18,6 @@ import {
   ADMIN_USERS_APPROVE_SUCCESS,
 } from 'soapbox/actions/admin';
 import { normalizeAdminAccount } from 'soapbox/normalizers';
-import { reportSchema, Report } from 'soapbox/schemas';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
 import type { AnyAction } from 'redux';
@@ -29,8 +25,6 @@ import type { APIEntity } from 'soapbox/types/entities';
 import type { Config } from 'soapbox/utils/config-db';
 
 const ReducerRecord = ImmutableRecord({
-  reports: ImmutableMap<string, Report>(),
-  openReports: ImmutableOrderedSet<string>(),
   users: ImmutableMap<string, ReducerAdminAccount>(),
   latestUsers: ImmutableOrderedSet<string>(),
   awaitingApproval: ImmutableOrderedSet<string>(),
@@ -51,7 +45,6 @@ type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]:
 
 type SetKeys = keyof FilterConditionally<State, ImmutableOrderedSet<string>>;
 
-type APIReport = { id: string; state: string; statuses: any[] };
 type APIUser = { id: string; email: string; nickname: string; registration_reason: string };
 
 type Filter = 'local' | 'need_approval' | 'active';
@@ -131,35 +124,6 @@ function approveUsers(state: State, users: APIUser[]): State {
   });
 }
 
-function importReports(state: State, reports: APIEntity[]): State {
-  return state.withMutations(state => {
-    reports.forEach(report => {
-      console.log(reportSchema.safeParse(report));
-      const normalizedReport = reportSchema.parse(report);
-      if (!normalizedReport.action_taken) {
-        state.update('openReports', orderedSet => orderedSet.add(report.id));
-      }
-      state.setIn(['reports', report.id], normalizedReport);
-    });
-  });
-}
-
-function handleReportDiffs(state: State, reports: APIReport[]) {
-  // Note: the reports here aren't full report objects
-  // hence the need for a new function.
-  return state.withMutations(state => {
-    reports.forEach(report => {
-      switch (report.state) {
-        case 'open':
-          state.update('openReports', orderedSet => orderedSet.add(report.id));
-          break;
-        default:
-          state.update('openReports', orderedSet => orderedSet.delete(report.id));
-      }
-    });
-  });
-}
-
 const normalizeConfig = (config: any): Config => ImmutableMap(fromJS(config));
 
 const normalizeConfigs = (configs: any): ImmutableList<Config> => {
@@ -175,11 +139,6 @@ export default function admin(state: State = ReducerRecord(), action: AnyAction)
     case ADMIN_CONFIG_FETCH_SUCCESS:
     case ADMIN_CONFIG_UPDATE_SUCCESS:
       return importConfigs(state, action.configs);
-    case ADMIN_REPORTS_FETCH_SUCCESS:
-      return importReports(state, action.reports);
-    case ADMIN_REPORTS_PATCH_REQUEST:
-    case ADMIN_REPORTS_PATCH_SUCCESS:
-      return handleReportDiffs(state, action.reports);
     case ADMIN_USERS_FETCH_SUCCESS:
       return importUsers(state, action.users, action.filters, action.page);
     case ADMIN_USERS_DELETE_REQUEST:

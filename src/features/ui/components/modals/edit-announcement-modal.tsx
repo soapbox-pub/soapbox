@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
-import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
+import { useAnnouncements } from 'soapbox/api/hooks/admin';
 import { Form, FormGroup, HStack, Modal, Stack, Text, Textarea, Toggle } from 'soapbox/components/ui';
 import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch } from 'soapbox/hooks';

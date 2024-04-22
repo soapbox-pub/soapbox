@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { closeReports } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import { useAccount } from 'soapbox/api/hooks';
+import { useCloseReport, useReport, useReports } from 'soapbox/api/hooks/admin';
 import DropdownMenu from 'soapbox/components/dropdown-menu';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 import ReportStatus from './report-status';
 
-import type { Account as AccountEntity, Report as ReportEntity } from 'soapbox/schemas';
+import type { Account as AccountEntity } from 'soapbox/schemas';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
@@ -29,7 +29,9 @@ const Report: React.FC<IReport> = ({ id }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const report = useAppSelector((state) => state.admin.reports.get(id) as ReportEntity | undefined);
+  const { report } = useReport(id);
+  const { fetchEntities } = useReports({ resolved: false });
+  const { closeReport } = useCloseReport(id);
 
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
@@ -52,10 +54,13 @@ const Report: React.FC<IReport> = ({ id }) => {
   };
 
   const handleCloseReport = () => {
-    dispatch(closeReports([report.id])).then(() => {
-      const message = intl.formatMessage(messages.reportClosed, { name: targetAccount.username as string });
-      toast.success(message);
-    }).catch(() => {});
+    closeReport(report.id, {
+      onSuccess: () => {
+        const message = intl.formatMessage(messages.reportClosed, { name: targetAccount.username as string });
+        toast.success(message);
+        fetchEntities();
+      },
+    });
   };
 
   const handleDeactivateUser = () => {

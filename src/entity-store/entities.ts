@@ -12,6 +12,7 @@ enum Entities {
   PATRON_USERS = 'PatronUsers',
   RELATIONSHIPS = 'Relationships',
   RELAYS = 'Relays',
+  REPORTS = 'Reports',
   RULES = 'Rules',
   STATUSES = 'Statuses',
 }
@@ -27,6 +28,7 @@ interface EntityTypes {
   [Entities.PATRON_USERS]: Schemas.PatronUser;
   [Entities.RELATIONSHIPS]: Schemas.Relationship;
   [Entities.RELAYS]: Schemas.Relay;
+  [Entities.REPORTS]: Schemas.Report;
   [Entities.RULES]: Schemas.AdminRule;
   [Entities.STATUSES]: Schemas.Status;
 }

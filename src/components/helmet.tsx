@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
+import { useReports } from 'soapbox/api/hooks/admin';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useAppSelector, useInstance, useSettings } from 'soapbox/hooks';
 import { RootState } from 'soapbox/store';
@@ -10,9 +11,8 @@ FaviconService.initFaviconService();
 
 const getNotifTotals = (state: RootState): number => {
   const notifications = state.notifications.unread || 0;
-  const reports = state.admin.openReports.count();
   const approvals = state.admin.awaitingApproval.count();
-  return notifications + reports + approvals;
+  return notifications + approvals;
 };
 
 interface IHelmet {
@@ -20,9 +20,10 @@ interface IHelmet {
 }
 
 const Helmet: React.FC<IHelmet> = ({ children }) => {
+  useReports({ resolved: false });
   const instance = useInstance();
-  const { unreadChatsCount } = useStatContext();
-  const unreadCount = useAppSelector((state) => getNotifTotals(state) + unreadChatsCount);
+  const { unreadChatsCount, openReportsCount } = useStatContext();
+  const unreadCount = useAppSelector((state) => getNotifTotals(state) + unreadChatsCount + openReportsCount);
   const { demetricator } = useSettings();
 
   const hasUnreadNotifications = React.useMemo(() => !(unreadCount < 1 || demetricator), [unreadCount, demetricator]);

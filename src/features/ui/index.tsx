@@ -3,7 +3,7 @@ import React, { Suspense, lazy, useEffect, useRef } from 'react';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
-import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
+import { fetchUsers, fetchConfig } from 'soapbox/actions/admin';
 import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
@@ -420,7 +420,6 @@ const UI: React.FC<IUI> = ({ children }) => {
       .catch(console.error);
 
     if (account.staff) {
-      dispatch(fetchReports({ resolved: false }));
       dispatch(fetchUsers(['local', 'need_approval']));
     }
 

@@ -3,6 +3,7 @@ import { useIntl, defineMessages } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Tabs } from 'soapbox/components/ui';
+import { useStatContext } from 'soapbox/contexts/stat-context';
 import { useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -14,9 +15,9 @@ const messages = defineMessages({
 const AdminTabs: React.FC = () => {
   const intl = useIntl();
   const match = useRouteMatch();
+  const { openReportsCount } = useStatContext();
 
   const approvalCount = useAppSelector(state => state.admin.awaitingApproval.count());
-  const reportsCount = useAppSelector(state => state.admin.openReports.count());
 
   const tabs = [{
     name: '/soapbox/admin',
@@ -26,7 +27,7 @@ const AdminTabs: React.FC = () => {
     name: '/soapbox/admin/reports',
     text: intl.formatMessage(messages.reports),
     to: '/soapbox/admin/reports',
-    count: reportsCount,
+    count: openReportsCount,
   }, {
     name: '/soapbox/admin/approval',
     text: intl.formatMessage(messages.waitlist),

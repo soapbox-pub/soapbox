@@ -1,6 +1,6 @@
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
-import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { importFetchedAccounts } from 'soapbox/actions/importer';
 import { accountIdsToAccts } from 'soapbox/selectors';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 import { getFeatures } from 'soapbox/utils/features';
@@ -18,10 +18,6 @@ const ADMIN_CONFIG_FETCH_FAIL    = 'ADMIN_CONFIG_FETCH_FAIL';
 const ADMIN_CONFIG_UPDATE_REQUEST = 'ADMIN_CONFIG_UPDATE_REQUEST';
 const ADMIN_CONFIG_UPDATE_SUCCESS = 'ADMIN_CONFIG_UPDATE_SUCCESS';
 const ADMIN_CONFIG_UPDATE_FAIL    = 'ADMIN_CONFIG_UPDATE_FAIL';
-
-const ADMIN_REPORTS_FETCH_REQUEST = 'ADMIN_REPORTS_FETCH_REQUEST';
-const ADMIN_REPORTS_FETCH_SUCCESS = 'ADMIN_REPORTS_FETCH_SUCCESS';
-const ADMIN_REPORTS_FETCH_FAIL    = 'ADMIN_REPORTS_FETCH_FAIL';
 
 const ADMIN_REPORTS_PATCH_REQUEST = 'ADMIN_REPORTS_PATCH_REQUEST';
 const ADMIN_REPORTS_PATCH_SUCCESS = 'ADMIN_REPORTS_PATCH_SUCCESS';
@@ -112,58 +108,6 @@ const updateSoapboxConfig = (data: Record<string, any>) =>
     }];
 
     return dispatch(updateConfig(params));
-  };
-
-const fetchMastodonReports = (params: Record<string, any>) =>
-  (dispatch: AppDispatch, getState: () => RootState) =>
-    api(getState)
-      .get('/api/v1/admin/reports', { params })
-      .then(({ data: reports }) => {
-        reports.forEach((report: APIEntity) => {
-          dispatch(importFetchedAccount(report.account?.account));
-          dispatch(importFetchedAccount(report.target_account?.account));
-          dispatch(importFetchedAccount(report.assigned_account?.account));
-          dispatch(importFetchedAccount(report.action_taken_by_account?.account));
-          dispatch(importFetchedStatuses(report.statuses));
-        });
-        dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
-      }).catch(error => {
-        dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
-      });
-
-const fetchPleromaReports = (params: Record<string, any>) =>
-  (dispatch: AppDispatch, getState: () => RootState) =>
-    api(getState)
-      .get('/api/v1/pleroma/admin/reports', { params })
-      .then(({ data: { reports } }) => {
-        reports.forEach((report: APIEntity) => {
-          dispatch(importFetchedAccount(report.account));
-          dispatch(importFetchedAccount(report.actor));
-          dispatch(importFetchedStatuses(report.statuses));
-        });
-        dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
-      }).catch(error => {
-        dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });
-      });
-
-const fetchReports = (params: Record<string, any> = {}) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState();
-
-    const instance = state.instance;
-    const features = getFeatures(instance);
-
-    dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
-
-    if (features.mastodonAdmin) {
-      return dispatch(fetchMastodonReports(params));
-    } else {
-      const { resolved } = params;
-
-      return dispatch(fetchPleromaReports({
-        state: resolved === false ? 'open' : (resolved ? 'resolved' : null),
-      }));
-    }
   };
 
 const patchMastodonReports = (reports: { id: string; state: string }[]) =>
@@ -548,9 +492,6 @@ export {
   ADMIN_CONFIG_UPDATE_REQUEST,
   ADMIN_CONFIG_UPDATE_SUCCESS,
   ADMIN_CONFIG_UPDATE_FAIL,
-  ADMIN_REPORTS_FETCH_REQUEST,
-  ADMIN_REPORTS_FETCH_SUCCESS,
-  ADMIN_REPORTS_FETCH_FAIL,
   ADMIN_REPORTS_PATCH_REQUEST,
   ADMIN_REPORTS_PATCH_SUCCESS,
   ADMIN_REPORTS_PATCH_FAIL,
@@ -594,7 +535,6 @@ export {
   fetchConfig,
   updateConfig,
   updateSoapboxConfig,
-  fetchReports,
   closeReports,
   fetchUsers,
   deactivateUsers,

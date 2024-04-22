@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
-import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
+import { useAnnouncements } from 'soapbox/api/hooks/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';

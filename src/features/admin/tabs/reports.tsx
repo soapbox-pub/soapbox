@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchReports } from 'soapbox/actions/admin';
+import { useReports } from 'soapbox/api/hooks/admin';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 import Report from '../components/report';
 
@@ -15,19 +14,14 @@ const messages = defineMessages({
 
 const Reports: React.FC = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
 
-  const [isLoading, setLoading] = useState(true);
-
-  const reports = useAppSelector(state => state.admin.openReports.toList());
+  const { reports, isLoading, fetchEntities } = useReports({ resolved: false });
 
   useEffect(() => {
-    dispatch(fetchReports())
-      .then(() => setLoading(false))
-      .catch(() => {});
+    fetchEntities();
   }, []);
 
-  const showLoading = isLoading && reports.count() === 0;
+  const showLoading = isLoading && reports.length === 0;
 
   return (
     <ScrollableList
@@ -37,7 +31,7 @@ const Reports: React.FC = () => {
       emptyMessage={intl.formatMessage(messages.emptyMessage)}
       listClassName='divide-y divide-solid divide-gray-200 dark:divide-gray-800'
     >
-      {reports.map(report => report && <Report id={report} key={report} />)}
+      {reports.map(report => report && <Report id={report.id} key={report.id} />)}
     </ScrollableList>
   );
 };

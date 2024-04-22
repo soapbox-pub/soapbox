@@ -8,10 +8,10 @@ import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
 import { relationshipSchema } from './relationship';
+import { roleSchema } from './role';
 import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
-import { roleSchema } from './role';
 
 const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
 const headerMissing = require('soapbox/assets/images/header-missing.png');

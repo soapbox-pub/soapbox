@@ -10,10 +10,10 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const features = useFeatures();
   const groupsPath = useGroupsPath();
 
-  const { unreadChatsCount } = useStatContext();
+  const { unreadChatsCount, openReportsCount } = useStatContext();
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const dashboardCount = useAppSelector((state) => openReportsCount + state.admin.awaitingApproval.count());
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {

@@ -40,7 +40,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ statusId }) => {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.id}`,
-      icon: require('@tabler/icons/outline/pencil.svg'),
+      icon: require('@tabler/icons/outline/arrows-vertical.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: handleDeleteStatus,

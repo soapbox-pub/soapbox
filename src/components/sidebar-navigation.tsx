@@ -20,7 +20,7 @@ const messages = defineMessages({
 /** Desktop sidebar with links to different views in the app. */
 const SidebarNavigation = () => {
   const intl = useIntl();
-  const { unreadChatsCount } = useStatContext();
+  const { unreadChatsCount, openReportsCount } = useStatContext();
 
   const instance = useInstance();
   const features = useFeatures();
@@ -30,7 +30,7 @@ const SidebarNavigation = () => {
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const dashboardCount = useAppSelector((state) => openReportsCount + state.admin.awaitingApproval.count());
 
   const restrictUnauth = instance.pleroma.metadata.restrict_unauthenticated;
 
