@@ -85,11 +85,15 @@ const useAnnouncements = () => {
   });
 
   return {
-    data: data?.toSorted((a, b) => new Date(a.starts_at || a.published_at).getDate() - new Date(b.starts_at || b.published_at).getDate()),
+    data: data ? [...data].sort(compareAnnouncements) : undefined,
     ...result,
     addReaction,
     removeReaction,
   };
 };
+
+function compareAnnouncements(a: Announcement, b: Announcement): number {
+  return new Date(a.starts_at || a.published_at).getDate() - new Date(b.starts_at || b.published_at).getDate();
+}
 
 export { useAnnouncements };
