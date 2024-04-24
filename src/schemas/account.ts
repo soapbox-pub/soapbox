@@ -129,7 +129,7 @@ const getDomain = (url: string) => {
 };
 
 const filterBadges = (tags?: string[]) =>
-  tags?.filter(tag => tag.startsWith('badge:')).map(tag => ({ id: tag, name: tag.replace(/^badge:/, '') }));
+  tags?.filter(tag => tag.startsWith('badge:')).map(tag => roleSchema.parse({ id: tag, name: tag.replace(/^badge:/, '') }));
 
 /** Add internal fields to the account. */
 const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, fields, ...account }: T) => {
@@ -169,7 +169,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
       const { relationship, ...rest } = pleroma;
       return rest;
     })(),
-    roles: account.roles || filterBadges(pleroma?.tags),
+    roles: account.roles.length ? account.roles : filterBadges(pleroma?.tags),
     relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
