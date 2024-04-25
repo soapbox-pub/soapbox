@@ -1926,9 +1926,9 @@
     fastq "^1.6.0"
 
 "@nostrify/nostrify@npm:@jsr/nostrify__nostrify":
-  version "0.14.0"
-  resolved "https://npm.jsr.io/~/8/@jsr/nostrify__nostrify/0.14.0.tgz#0350296F62A418CD8D266BA81A3543AFB46D95DE"
-  integrity sha512-umLGPAi+F2IUsup3Tsmz5ykd1CWgMh/5k3mvDM2fWNBiXmsgCXAaoQ39Cqt8CUTEXsroX8jxT2A56zxBne8vEA==
+  version "0.14.1"
+  resolved "https://npm.jsr.io/~/8/@jsr/nostrify__nostrify/0.14.1.tgz#F459CF80B26B5A976B428E30B231CF2ACC2368CF"
+  integrity sha512-4lfHfWTnE7o0tRW9BVzxmF4z907GyKZWtMGj1OZn+NX+g9sY+dXTXR/1/kC9sG0cpwDtjxFEdX7yvhSMTWdCuA==
   dependencies:
     "@noble/hashes" "^1.4.0"
     "@scure/base" "^1.1.6"
@@ -1938,7 +1938,7 @@
     lru-cache "^10.2.0"
     nostr-tools "^2.5.0"
     websocket-ts "^2.1.5"
-    zod "^3.22.4"
+    zod "^3.23.4"
 
 "@popperjs/core@^2.11.5", "@popperjs/core@^2.9.2":
   version "2.11.5"
@@ -6407,9 +6407,9 @@ lowercase-keys@^2.0.0:
   integrity sha512-tqNXrS78oMOE73NMxK4EMLQsQowWf8jKooH9g7xPavRT706R6bkQJ6DY2Te7QukaZsulxa30wQ7bk0pm4XiHmA==
 
 lru-cache@^10.2.0:
-  version "10.2.0"
-  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.2.0.tgz#0bd445ca57363465900f4d1f9bd8db343a4d95c3"
-  integrity sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==
+  version "10.2.1"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.2.1.tgz#e8d901141f22937968e45a6533d52824070151e4"
+  integrity sha512-tS24spDe/zXhWbNPErCHs/AGOzbKGHT+ybSBqmdLm8WZ1xXLWvH8Qn71QPAlqVhd0qUTWjy+Kl9JmISgDdEjsA==
 
 lru-cache@^4.1.2:
   version "4.1.5"
@@ -9810,11 +9810,6 @@ zod@^3.21.0:
   version "3.22.3"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.3.tgz#2fbc96118b174290d94e8896371c95629e87a060"
   integrity sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==
-
-zod@^3.22.4:
-  version "3.22.4"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.22.4.tgz#f31c3a9386f61b1f228af56faa9255e845cf3fff"
-  integrity sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==
 
 zod@^3.23.4:
   version "3.23.4"
