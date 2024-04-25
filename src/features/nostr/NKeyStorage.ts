@@ -1,4 +1,4 @@
-import { NSchema as n, NostrSigner, NSecSigner } from '@soapbox/nspec';
+import { NSchema as n, NostrSigner, NSecSigner } from '@nostrify/nostrify';
 import { WebLock } from '@soapbox/weblock';
 import { getPublicKey, nip19 } from 'nostr-tools';
 import { z } from 'zod';
