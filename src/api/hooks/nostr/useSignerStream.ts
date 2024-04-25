@@ -1,8 +1,8 @@
-import { type NostrEvent } from '@nostrify/nostrify';
+import { type NostrEvent, NSchema as n, NostrConnectResponse } from '@nostrify/nostrify';
 import { useEffect } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { connectRequestSchema, nwcRequestSchema } from 'soapbox/schemas/nostr';
+import { nwcRequestSchema } from 'soapbox/schemas/nostr';
 import { jsonSchema } from 'soapbox/schemas/utils';
 
 function useSignerStream() {
@@ -12,16 +12,16 @@ function useSignerStream() {
     if (!relay || !pubkey || !signer) return;
     const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
-    const reqMsg = jsonSchema.pipe(connectRequestSchema).safeParse(decrypted);
+    const reqMsg = n.json().pipe(n.connectRequest()).safeParse(decrypted);
     if (!reqMsg.success) {
       console.warn(decrypted);
       console.warn(reqMsg.error);
       return;
     }
 
-    const respMsg = {
+    const respMsg: NostrConnectResponse = {
       id: reqMsg.data.id,
-      result: await signer.signEvent(reqMsg.data.params[0]),
+      result: JSON.stringify(await signer.signEvent(JSON.parse(reqMsg.data.params[0]))),
     };
 
     const respEvent = await signer.signEvent({
