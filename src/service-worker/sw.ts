@@ -32,7 +32,16 @@ interface NotificationData {
 
 /** ServiceWorker Notification options with extra fields. */
 interface ExtendedNotificationOptions extends NotificationOptions {
+  actions?: NotificationAction[];
   data: NotificationData;
+  image?: string;
+  title: string;
+  timestamp?: EpochTimeStamp;
+}
+
+interface NotificationAction {
+  action: string;
+  icon?: string;
   title: string;
 }
 
