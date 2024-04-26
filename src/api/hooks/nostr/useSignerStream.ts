@@ -21,7 +21,7 @@ function useSignerStream() {
 
     const respMsg = {
       id: reqMsg.data.id,
-      result: await signer.signEvent(reqMsg.data.params[0]),
+      result: JSON.stringify(await signer.signEvent(JSON.parse(reqMsg.data.params[0]))),
     };
 
     const respEvent = await signer.signEvent({
