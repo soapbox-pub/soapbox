@@ -231,7 +231,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see DELETE /api/v1/announcements/:id/reactions/:name
      * @see {@link https://docs.joinmastodon.org/methods/announcements/}
      */
-    announcementsReactions: true, // v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
 
     /**
      * Pleroma backups.
