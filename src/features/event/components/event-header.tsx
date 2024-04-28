@@ -113,10 +113,6 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     copy(uri);
   };
 
-  const handleExternalClick = () => {
-    window.open(status.uri, '_blank');
-  };
-
   const handleBookmarkClick = () => {
     dispatch(toggleBookmark(status));
   };
@@ -218,8 +214,9 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
-        action: handleExternalClick,
         icon: require('@tabler/icons/outline/external-link.svg'),
+        href: status.uri,
+        target: '_blank',
       });
     }
 
@@ -393,8 +390,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                 if (typeof menuItem?.text === 'undefined') {
                   return <MenuDivider key={idx} />;
                 } else {
-                  const Comp = (menuItem.action ? MenuItem : MenuLink) as any;
-                  const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link, target: menuItem.target || '_self' };
+                  const Comp = (menuItem.href ? MenuLink : MenuItem) as any;
+                  const itemProps = menuItem.href ? { href: menuItem.href, target: menuItem.target || '_self' } : { onSelect: menuItem.action };
 
                   return (
                     <Comp key={idx} {...itemProps} className='group'>

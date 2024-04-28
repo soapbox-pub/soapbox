@@ -263,10 +263,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     }
   };
 
-  const handleRssFeedClick = () => {
-    window.open(software === MASTODON ? `${account.url}.rss` : `${account.url}/feed.rss`, '_blank');
-  };
-
   const handleShare = () => {
     navigator.share({
       text: `@${account.acct}`,
@@ -290,8 +286,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (features.rssFeeds && account.local) {
       menu.push({
         text: intl.formatMessage(messages.subscribeFeed),
-        action: handleRssFeedClick,
         icon: require('@tabler/icons/outline/rss.svg'),
+        href: software === MASTODON ? `${account.url}.rss` : `${account.url}/feed.rss`,
+        target: '_blank',
       });
     }
 

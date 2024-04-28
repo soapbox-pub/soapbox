@@ -211,10 +211,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }));
   };
 
-  const handleExternalClick = () => {
-    window.open(status.uri, '_blank');
-  };
-
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
       const modalReblog = () => dispatch(toggleReblog(status));
@@ -336,10 +332,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }));
   };
 
-  const handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
-    history.push(`/@${status.account.acct}/posts/${status.id}`);
-  };
-
   const handleEmbed = () => {
     dispatch(openModal('EMBED', {
       url: status.url,
@@ -417,8 +409,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     if (expandable) {
       menu.push({
         text: intl.formatMessage(messages.open),
-        action: handleOpen,
         icon: require('@tabler/icons/outline/arrows-vertical.svg'),
+        to: `/@${status.account.acct}/posts/${status.id}`,
       });
     }
 
@@ -475,8 +467,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       const { hostname: domain } = new URL(status.uri);
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
-        action: handleExternalClick,
         icon: require('@tabler/icons/outline/external-link.svg'),
+        href: status.uri,
+        target: '_blank',
       });
     }
 

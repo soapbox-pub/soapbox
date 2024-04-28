@@ -33,6 +33,7 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
     event.stopPropagation();
 
     if (!item) return;
+
     if (onClick) onClick();
 
     if (item.to) {
