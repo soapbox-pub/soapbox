@@ -15,6 +15,11 @@ interface NostrConnectResponse {
   error?: string;
 }
 
+let onOpen: () => void;
+const open = new Promise<void>((resolve) => {
+  onOpen = resolve;
+});
+
 function useSignerStream() {
   const { relay, pubkey, signer } = useNostr();
 
@@ -143,6 +148,18 @@ function useSignerStream() {
     };
 
   }, [relay, pubkey, signer]);
+
+  useEffect(() => {
+    if (relay) {
+      if (relay.socket.readyState === WebSocket.OPEN) {
+        onOpen();
+      } else {
+        relay.socket.addEventListener('open', onOpen, { once: true });
+      }
+    }
+  }, [relay]);
+
+  return { open };
 }
 
 export { useSignerStream };

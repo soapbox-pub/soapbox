@@ -1,12 +1,13 @@
-import { NRelay, NRelay1, NostrSigner } from '@soapbox/nspec';
+import { NRelay1, NostrSigner } from '@soapbox/nspec';
+import { getPublicKey, nip19 } from 'nostr-tools';
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
-import { useOwnAccount } from 'soapbox/hooks';
+import { useAuthToken } from 'soapbox/hooks/useAuthToken';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
-  relay?: NRelay;
+  relay?: NRelay1;
   pubkey?: string;
   signer?: NostrSigner;
 }
@@ -21,11 +22,29 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const instance = useInstance();
   const [relay, setRelay] = useState<NRelay1>();
 
-  const { account } = useOwnAccount();
+  const token = useAuthToken();
 
   const url = instance.nostr?.relay;
   const pubkey = instance.nostr?.pubkey;
-  const accountPubkey = account?.nostr.pubkey;
+
+  let accountPubkey: string | undefined;
+
+  try {
+    const result = nip19.decode(token!);
+    switch (result.type) {
+      case 'npub':
+        accountPubkey = result.data;
+        break;
+      case 'nsec':
+        accountPubkey = getPublicKey(result.data);
+        break;
+      case 'nprofile':
+        accountPubkey = result.data.pubkey;
+        break;
+    }
+  } catch (e) {
+    // Ignore
+  }
 
   const signer = useMemo(
     () => (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr,

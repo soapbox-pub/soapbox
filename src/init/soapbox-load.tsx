@@ -4,6 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
+import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import {
   useAppSelector,
@@ -14,13 +15,14 @@ import {
 import MESSAGES from 'soapbox/messages';
 
 /** Load initial data from the backend */
-const loadInitial = () => {
+const loadInitial = (open: Promise<void>) => {
   // @ts-ignore
   return async(dispatch, getState) => {
     // Await for authenticated fetch
+    await dispatch(fetchInstance());
+    await open;
     await dispatch(fetchMe());
     // Await for feature detection
-    await dispatch(fetchInstance());
     // Await for configuration
     await dispatch(loadSoapboxConfig());
   };
@@ -43,6 +45,8 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const { open } = useSignerStream();
+
   /** Whether to display a loading indicator. */
   const showLoading = [
     me === null,
@@ -62,7 +66,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    dispatch(loadInitial()).then(() => {
+    dispatch(loadInitial(open)).then(() => {
       setIsLoaded(true);
     }).catch(() => {
       setIsLoaded(true);
