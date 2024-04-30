@@ -1,4 +1,4 @@
-import { NSet, NostrEvent, NostrFilter } from '@soapbox/nspec';
+import { NSet, NostrEvent, NostrFilter } from '@nostrify/nostrify';
 import isEqual from 'lodash/isEqual';
 import { useEffect, useRef, useState } from 'react';
 
