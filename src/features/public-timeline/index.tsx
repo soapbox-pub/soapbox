@@ -13,7 +13,7 @@ import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker
 import Timeline from '../ui/components/timeline';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Fediverse timeline' },
+  title: { id: 'column.public', defaultMessage: 'Global timeline' },
   dismiss: { id: 'fediverse_tab.explanation_box.dismiss', defaultMessage: 'Don\'t show again' },
 });
 
