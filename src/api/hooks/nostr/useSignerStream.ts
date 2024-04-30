@@ -1,4 +1,4 @@
-import { type NostrEvent } from '@soapbox/nspec';
+import { type NostrEvent } from '@nostrify/nostrify';
 import { useEffect } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
