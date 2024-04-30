@@ -187,7 +187,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         https://stackoverflow.com/a/68637108
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
+      {features.federating && <WrappedRoute path='/timeline/global' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
@@ -202,11 +202,11 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/web/:path' to='/:path' />
       <Redirect from='/timelines/home' to='/' />
       <Redirect from='/timelines/public/local' to='/timeline/local' />
-      <Redirect from='/timelines/public' to='/timeline/fediverse' />
+      <Redirect from='/timelines/public' to='/timeline/global' />
       <Redirect from='/timelines/direct' to='/messages' />
 
       {/* Pleroma FE web routes */}
-      <Redirect from='/main/all' to='/timeline/fediverse' />
+      <Redirect from='/main/all' to='/timeline/global' />
       <Redirect from='/main/public' to='/timeline/local' />
       <Redirect from='/main/friends' to='/' />
       <Redirect from='/tag/:id' to='/tags/:id' />
@@ -244,6 +244,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/auth/mfa' to='/settings/mfa' />
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
+      <Redirect from='/timeline/fediverse' to='/timeline/global' />
 
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
