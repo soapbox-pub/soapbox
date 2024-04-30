@@ -1,19 +1,8 @@
-import { type NostrEvent } from '@nostrify/nostrify';
+import { NostrEvent, NostrConnectResponse, NSchema as n } from '@nostrify/nostrify';
 import { useEffect } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { connectRequestSchema, nwcRequestSchema } from 'soapbox/schemas/nostr';
-import { jsonSchema } from 'soapbox/schemas/utils';
-
-/** NIP-46 [response](https://github.com/nostr-protocol/nips/blob/master/46.md#response-events-kind24133) content. */
-interface NostrConnectResponse {
-  /** Request ID that this response is for. */
-  id: string;
-  /** Result of the call (this can be either a string or a JSON stringified object) */
-  result: string;
-  /** Error in string form, if any. Its presence indicates an error with the request. */
-  error?: string;
-}
+import { nwcRequestSchema } from 'soapbox/schemas/nostr';
 
 function useSignerStream() {
   const { relay, pubkey, signer } = useNostr();
@@ -35,7 +24,7 @@ function useSignerStream() {
     if (!relay || !pubkey || !signer) return;
     const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
-    const reqMsg = jsonSchema.pipe(connectRequestSchema).safeParse(decrypted);
+    const reqMsg = n.json().pipe(n.connectRequest()).safeParse(decrypted);
     if (!reqMsg.success) {
       console.warn(decrypted);
       console.warn(reqMsg.error);
@@ -104,7 +93,7 @@ function useSignerStream() {
 
     const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
 
-    const reqMsg = jsonSchema.pipe(nwcRequestSchema).safeParse(decrypted);
+    const reqMsg = n.json().pipe(nwcRequestSchema).safeParse(decrypted);
     if (!reqMsg.success) {
       console.warn(decrypted);
       console.warn(reqMsg.error);
