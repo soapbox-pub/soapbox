@@ -1128,7 +1128,7 @@
   "patron.title": "筹集目标",
   "pinned_accounts.title": "{name} 的选择",
   "pinned_statuses.none": "没有置顶帖文。",
-  "poll.choose_multiple": "选您所想。",
+  "poll.choose_multiple": "想选多少就选多少。",
   "poll.closed": "已关闭",
   "poll.non_anonymous": "公开投票",
   "poll.non_anonymous.label": "投票的选择能被其他实例看到",
