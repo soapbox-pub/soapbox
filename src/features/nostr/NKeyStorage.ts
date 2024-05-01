@@ -35,7 +35,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
   }
 
   private dataSchema(): z.ZodType<`nsec1${string}`[]> {
-    return n.json().pipe(n.bech32('nsec')).array() as z.ZodType<`nsec1${string}`[]>;
+    return n.json().pipe(n.bech32('nsec').array()) as z.ZodType<`nsec1${string}`[]>;
   }
 
   #syncStorage() {
