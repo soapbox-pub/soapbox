@@ -105,6 +105,7 @@
   "admin.dashwidgets.software_header": "ソフトウェア",
   "admin.domains.delete": "削除",
   "admin.domains.edit": "編集",
+  "admin.domains.name": "ドメイン:",
   "admin.edit_announcement.created": "アナウンスが作成されました",
   "admin.edit_announcement.deleted": "アナウンスを削除しました",
   "admin.edit_announcement.fields.all_day_hint": "チェックすると、日付のみが表示されるようになります",
