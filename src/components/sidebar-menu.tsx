@@ -266,12 +266,14 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   <Divider />
 
-                  <SidebarLink
-                    to='/blocks'
-                    icon={require('@tabler/icons/outline/ban.svg')}
-                    text={intl.formatMessage(messages.blocks)}
-                    onClick={onClose}
-                  />
+                  {features.blocks && (
+                    <SidebarLink
+                      to='/blocks'
+                      icon={require('@tabler/icons/outline/ban.svg')}
+                      text={intl.formatMessage(messages.blocks)}
+                      onClick={onClose}
+                    />
+                  )}
 
                   <SidebarLink
                     to='/mutes'
