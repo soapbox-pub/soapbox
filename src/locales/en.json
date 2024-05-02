@@ -338,6 +338,7 @@
   "column.admin.edit_domain": "Edit domain",
   "column.admin.edit_rule": "Edit rule",
   "column.admin.moderation_log": "Moderation Log",
+  "column.admin.nostr_relays": "Relays",
   "column.admin.relays": "Instance relays",
   "column.admin.reports": "Reports",
   "column.admin.reports.menu.moderation_log": "Moderation Log",

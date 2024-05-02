@@ -113,6 +113,13 @@ const Dashboard: React.FC = () => {
             label={<FormattedMessage id='column.admin.domains' defaultMessage='Domains' />}
           />
         )}
+
+        {features.nostr && (
+          <ListItem
+            to='/soapbox/admin/nostr/relays'
+            label={<FormattedMessage id='column.admin.nostr_relays' defaultMessage='Relays' />}
+          />
+        )}
       </List>
 
       {account.admin && (
