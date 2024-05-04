@@ -338,6 +338,7 @@
   "column.admin.edit_domain": "Editar el dominio",
   "column.admin.edit_rule": "Modificar una regla",
   "column.admin.moderation_log": "Registro de moderación",
+  "column.admin.nostr_relays": "Relés",
   "column.admin.relays": "Relés de instancia",
   "column.admin.reports": "Reports",
   "column.admin.reports.menu.moderation_log": "Registro de moderación",
