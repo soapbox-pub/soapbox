@@ -501,6 +501,7 @@ const getInstanceFeatures = (instance: Instance) => {
     explicitAddressing: any([
       v.software === PLEROMA && gte(v.version, '1.0.0'),
       v.software === TRUTHSOCIAL,
+      v.software === DITTO,
     ]),
 
     /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */
