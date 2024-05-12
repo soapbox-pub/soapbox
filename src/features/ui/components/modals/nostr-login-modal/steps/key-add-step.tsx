@@ -34,7 +34,9 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
         const pubkey = await signer.getPublicKey();
         dispatch(logInNostr(pubkey));
         onClose();
+        return;
       }
+      setError('Invalid nsec');
     } catch (e) {
       setError('Invalid nsec');
     }
