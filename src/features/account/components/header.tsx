@@ -328,11 +328,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
       icon: require('@tabler/icons/outline/clipboard-copy.svg'),
     });
 
-    menu.push({
-      text: intl.formatMessage(messages.npub),
-      action: handleCopyNpub,
-      icon: require('@tabler/icons/outline/clipboard-copy.svg'),
-    });
+    if (account.nostr.pubkey) {
+      menu.push({
+        text: intl.formatMessage(messages.npub),
+        action: handleCopyNpub,
+        icon: require('@tabler/icons/outline/clipboard-copy.svg'),
+      });
+    }
 
     if (!ownAccount) return menu;
 
