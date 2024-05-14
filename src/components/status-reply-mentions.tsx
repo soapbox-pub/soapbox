@@ -6,7 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
 import { useAppDispatch } from 'soapbox/hooks';
-import { isPubkey } from 'soapbox/utils/nostr';
+import { shortenNostr } from 'soapbox/utils/nostr';
 
 import type { Status } from 'soapbox/types/entities';
 
@@ -57,7 +57,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
         className='reply-mentions__account max-w-[200px] truncate align-bottom'
         onClick={(e) => e.stopPropagation()}
       >
-        @{isPubkey(account.username) ? account.username.slice(0, 8) : account.username}
+        @{shortenNostr(account.username)}
       </Link>
     );
 

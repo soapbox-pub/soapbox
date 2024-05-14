@@ -5,7 +5,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
-import { isPubkey } from 'soapbox/utils/nostr';
+import { shortenNostr } from 'soapbox/utils/nostr';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities';
 
@@ -56,7 +56,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     const username = acct.split('@')[0];
     return (
       <span className='reply-mentions__account'>
-        @{isPubkey(username) ? username.slice(0, 8) : username}
+        @{shortenNostr(username)}
       </span>
     );
   }).toArray();

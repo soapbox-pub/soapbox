@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { isPubkey } from 'soapbox/utils/nostr';
+import { shortenNostr } from 'soapbox/utils/nostr';
 
 import { Tooltip } from './ui';
 
@@ -29,7 +29,7 @@ const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) 
         onClick={handleClick}
         dir='ltr'
       >
-        @{isPubkey(username) ? username.slice(0, 8) : username}
+        @{shortenNostr(username)}
       </Link>
     </Tooltip>
   );
