@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
+import { npubEncode } from 'nostr-tools/nip19';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -45,6 +46,7 @@ const messages = defineMessages({
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   copy: { id: 'account.copy', defaultMessage: 'Copy link to profile' },
+  npub: { id: 'account.npub', defaultMessage: 'Copy user Npub' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
   media: { id: 'account.media', defaultMessage: 'Media' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Hide everything from {domain}' },
@@ -276,6 +278,16 @@ const Header: React.FC<IHeader> = ({ account }) => {
     copy(account.url);
   };
 
+  const handleCopyNpub: React.EventHandler<React.MouseEvent> = (e) => {
+    // Check if the account object has an 'pubkey' property, convert to npub, and copy it
+    if (account && account.nostr.pubkey) {
+      const npub = npubEncode(account.nostr.pubkey);
+      copy(npub);
+    } else {
+      console.error('Account Npub is not available.');
+    }
+  };
+
   const makeMenu = () => {
     const menu: Menu = [];
 
@@ -313,6 +325,12 @@ const Header: React.FC<IHeader> = ({ account }) => {
     menu.push({
       text: intl.formatMessage(messages.copy),
       action: handleCopy,
+      icon: require('@tabler/icons/outline/clipboard-copy.svg'),
+    });
+
+    menu.push({
+      text: intl.formatMessage(messages.npub),
+      action: handleCopyNpub,
       icon: require('@tabler/icons/outline/clipboard-copy.svg'),
     });
 
