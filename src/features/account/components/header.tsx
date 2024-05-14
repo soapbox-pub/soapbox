@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
-import { npubEncode } from 'nostr-tools/nip19';
+import { nip19 } from 'nostr-tools';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -46,7 +46,7 @@ const messages = defineMessages({
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   copy: { id: 'account.copy', defaultMessage: 'Copy link to profile' },
-  npub: { id: 'account.npub', defaultMessage: 'Copy user Npub' },
+  npub: { id: 'account.npub', defaultMessage: 'Copy user npub' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
   media: { id: 'account.media', defaultMessage: 'Media' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Hide everything from {domain}' },
@@ -281,10 +281,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const handleCopyNpub: React.EventHandler<React.MouseEvent> = (e) => {
     // Check if the account object has an 'pubkey' property, convert to npub, and copy it
     if (account && account.nostr.pubkey) {
-      const npub = npubEncode(account.nostr.pubkey);
+      const npub = nip19.npubEncode(account.nostr.pubkey);
       copy(npub);
     } else {
-      console.error('Account Npub is not available.');
+      console.error('Account npub is not available.');
     }
   };
 
