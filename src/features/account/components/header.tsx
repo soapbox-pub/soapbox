@@ -279,13 +279,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const handleCopyNpub: React.EventHandler<React.MouseEvent> = (e) => {
-    // Check if the account object has an 'pubkey' property, convert to npub, and copy it
-    if (account && account.nostr.pubkey) {
-      const npub = nip19.npubEncode(account.nostr.pubkey);
-      copy(npub);
-    } else {
-      console.error('Account npub is not available.');
-    }
+    copy(nip19.npubEncode(account.nostr.pubkey!));
   };
 
   const makeMenu = () => {
