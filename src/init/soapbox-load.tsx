@@ -17,11 +17,8 @@ import MESSAGES from 'soapbox/messages';
 const loadInitial = () => {
   // @ts-ignore
   return async(dispatch, getState) => {
-    // Await for authenticated fetch
-    await dispatch(fetchMe());
-    // Await for feature detection
     await dispatch(fetchInstance());
-    // Await for configuration
+    await dispatch(fetchMe());
     await dispatch(loadSoapboxConfig());
   };
 };
