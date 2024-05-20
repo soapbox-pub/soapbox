@@ -141,6 +141,7 @@ import {
   Bech32Redirect,
   Relays,
   Rules,
+  AdminNostrRelays,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -186,7 +187,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         https://stackoverflow.com/a/68637108
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
+      {features.federating && <WrappedRoute path='/timeline/global' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
@@ -201,11 +202,11 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/web/:path' to='/:path' />
       <Redirect from='/timelines/home' to='/' />
       <Redirect from='/timelines/public/local' to='/timeline/local' />
-      <Redirect from='/timelines/public' to='/timeline/fediverse' />
+      <Redirect from='/timelines/public' to='/timeline/global' />
       <Redirect from='/timelines/direct' to='/messages' />
 
       {/* Pleroma FE web routes */}
-      <Redirect from='/main/all' to='/timeline/fediverse' />
+      <Redirect from='/main/all' to='/timeline/global' />
       <Redirect from='/main/public' to='/timeline/local' />
       <Redirect from='/main/friends' to='/' />
       <Redirect from='/tag/:id' to='/tags/:id' />
@@ -243,6 +244,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/auth/mfa' to='/settings/mfa' />
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
+      <Redirect from='/timeline/fediverse' to='/timeline/global' />
 
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
@@ -265,7 +267,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.chats && <WrappedRoute path='/chats/:chatId' page={ChatsPage} component={ChatIndex} content={children} />}
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
-      <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
+      {features.blocks && <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />}
       {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters/new' page={DefaultPage} component={EditFilter} content={children} />}
@@ -332,6 +334,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />
+      {features.nostr && <WrappedRoute path='/soapbox/admin/nostr/relays' staffOnly page={AdminPage} component={AdminNostrRelays} content={children} exact />}
       {features.adminAnnouncements && <WrappedRoute path='/soapbox/admin/announcements' staffOnly page={AdminPage} component={Announcements} content={children} exact />}
       {features.domains && <WrappedRoute path='/soapbox/admin/domains' staffOnly page={AdminPage} component={Domains} content={children} exact />}
       {features.adminRules && <WrappedRoute path='/soapbox/admin/rules' staffOnly page={AdminPage} component={Rules} content={children} exact />}

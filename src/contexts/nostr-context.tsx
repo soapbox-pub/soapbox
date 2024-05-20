@@ -1,4 +1,4 @@
-import { NRelay1, NostrSigner } from '@soapbox/nspec';
+import { NRelay1, NostrSigner } from '@nostrify/nostrify';
 import { getPublicKey, nip19 } from 'nostr-tools';
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 

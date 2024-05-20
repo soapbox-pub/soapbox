@@ -1,4 +1,4 @@
-import { NSchema as n } from '@soapbox/nspec';
+import { NSchema as n } from '@nostrify/nostrify';
 import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';

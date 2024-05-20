@@ -1,4 +1,4 @@
-import { NSchema as n, NostrSigner, NSecSigner } from '@soapbox/nspec';
+import { NSchema as n, NostrSigner, NSecSigner } from '@nostrify/nostrify';
 import { WebLock } from '@soapbox/weblock';
 import { getPublicKey, nip19 } from 'nostr-tools';
 import { z } from 'zod';
@@ -22,7 +22,7 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     WebLock.storages.lockKey(storageKey);
 
     try {
-      const nsecs = new Set(this.#dataSchema().parse(data));
+      const nsecs = new Set(this.dataSchema().parse(data));
 
       for (const nsec of nsecs) {
         const { data: secretKey } = nip19.decode(nsec);
@@ -34,8 +34,8 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     }
   }
 
-  #dataSchema(): z.ZodType<`nsec1${string}`[]> {
-    return n.json().pipe(n.bech32('nsec').array());
+  private dataSchema(): z.ZodType<`nsec1${string}`[]> {
+    return n.json().pipe(n.bech32('nsec').array()) as z.ZodType<`nsec1${string}`[]>;
   }
 
   #syncStorage() {

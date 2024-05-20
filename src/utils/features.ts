@@ -252,6 +252,14 @@ const getInstanceFeatures = (instance: Instance) => {
     blockersVisible: features.includes('blockers_visible'),
 
     /**
+     * Ability to block users.
+     * @see POST /api/v1/accounts/:id/block
+     * @see POST /api/v1/accounts/:id/unblock
+     * @see GET /api/v1/blocks
+     */
+    blocks: v.software !== DITTO,
+
+    /**
      * Can group bookmarks in folders.
      * @see GET /api/v1/pleroma/bookmark_folders
      * @see POST /api/v1/pleroma/bookmark_folders
@@ -493,6 +501,7 @@ const getInstanceFeatures = (instance: Instance) => {
     explicitAddressing: any([
       v.software === PLEROMA && gte(v.version, '1.0.0'),
       v.software === TRUTHSOCIAL,
+      v.software === DITTO,
     ]),
 
     /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */

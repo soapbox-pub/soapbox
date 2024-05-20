@@ -11,7 +11,7 @@ import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures, useInstance } from 'soapbox/hooks';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 import type { List as ImmutableList } from 'immutable';
@@ -89,6 +89,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const groupsPath = useGroupsPath();
+  const instance = useInstance();
 
   const closeButtonRef = React.useRef(null);
 
@@ -248,16 +249,16 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                     <SidebarLink
                       to='/timeline/local'
-                      icon={features.federating ? require('@tabler/icons/outline/affiliate.svg') : require('@tabler/icons/outline/world.svg')}
-                      text={features.federating ? <FormattedMessage id='tabs_bar.local' defaultMessage='Local' /> : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                      icon={features.federating ? require('@tabler/icons/outline/users-group.svg') : require('@tabler/icons/outline/world.svg')}
+                      text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                       onClick={onClose}
                     />
 
                     {features.federating && (
                       <SidebarLink
-                        to='/timeline/fediverse'
-                        icon={require('@tabler/icons/outline/topology-star-ring-3.svg')}
-                        text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                        to='/timeline/global'
+                        icon={require('@tabler/icons/outline/world.svg')}
+                        text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
                         onClick={onClose}
                       />
                     )}
@@ -265,12 +266,14 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   <Divider />
 
-                  <SidebarLink
-                    to='/blocks'
-                    icon={require('@tabler/icons/outline/ban.svg')}
-                    text={intl.formatMessage(messages.blocks)}
-                    onClick={onClose}
-                  />
+                  {features.blocks && (
+                    <SidebarLink
+                      to='/blocks'
+                      icon={require('@tabler/icons/outline/ban.svg')}
+                      text={intl.formatMessage(messages.blocks)}
+                      onClick={onClose}
+                    />
+                  )}
 
                   <SidebarLink
                     to='/mutes'

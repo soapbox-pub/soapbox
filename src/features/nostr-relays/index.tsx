@@ -18,8 +18,8 @@ const NostrRelays = () => {
   const { relay, signer } = useNostr();
 
   const { events } = useNostrReq(
-    account?.nostr
-      ? [{ kinds: [10002], authors: [account?.nostr.pubkey], limit: 1 }]
+    account?.nostr?.pubkey
+      ? [{ kinds: [10002], authors: [account.nostr.pubkey], limit: 1 }]
       : [],
   );
 
