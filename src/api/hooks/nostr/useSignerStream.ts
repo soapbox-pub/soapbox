@@ -1,11 +1,15 @@
 import { NostrEvent, NostrConnectResponse, NSchema as n } from '@nostrify/nostrify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { WebsocketEvent } from 'websocket-ts';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { nwcRequestSchema } from 'soapbox/schemas/nostr';
 
 function useSignerStream() {
   const { relay, pubkey, signer } = useNostr();
+
+  const [opened, setOpened] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   async function sendConnect(response: NostrConnectResponse) {
     if (!relay || !pubkey || !signer) return;
@@ -116,6 +120,29 @@ function useSignerStream() {
   }
 
   useEffect(() => {
+    if (relay?.socket.readyState === WebSocket.OPEN) {
+      setOpened(true);
+    }
+
+    const openHandler = () => {
+      setOpened(true);
+      setIsConnected(true);
+    };
+
+    const closeHandler = () => {
+      setIsConnected(false);
+    };
+
+    relay?.socket.addEventListener(WebsocketEvent.open, openHandler);
+    relay?.socket.addEventListener(WebsocketEvent.close, closeHandler);
+
+    return () => {
+      relay?.socket.removeEventListener(WebsocketEvent.open, openHandler);
+      relay?.socket.removeEventListener(WebsocketEvent.close, closeHandler);
+    };
+  }, [relay]);
+
+  useEffect(() => {
     if (!relay || !pubkey) return;
 
     const controller = new AbortController();
@@ -132,6 +159,8 @@ function useSignerStream() {
     };
 
   }, [relay, pubkey, signer]);
+
+  return { opened, isConnected };
 }
 
 export { useSignerStream };

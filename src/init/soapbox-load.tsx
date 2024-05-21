@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 
-import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import LoadingScreen from 'soapbox/components/loading-screen';
@@ -17,11 +16,7 @@ import MESSAGES from 'soapbox/messages';
 const loadInitial = () => {
   // @ts-ignore
   return async(dispatch, getState) => {
-    // Await for authenticated fetch
     await dispatch(fetchMe());
-    // Await for feature detection
-    await dispatch(fetchInstance());
-    // Await for configuration
     await dispatch(loadSoapboxConfig());
   };
 };

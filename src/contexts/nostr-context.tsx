@@ -1,4 +1,4 @@
-import { NRelay, NRelay1, NostrSigner } from '@nostrify/nostrify';
+import { NRelay1, NostrSigner } from '@nostrify/nostrify';
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
@@ -6,7 +6,7 @@ import { useOwnAccount } from 'soapbox/hooks';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
-  relay?: NRelay;
+  relay?: NRelay1;
   pubkey?: string;
   signer?: NostrSigner;
 }
