@@ -46,7 +46,7 @@ Already have a server? No problem — it is still possible to use Soapbox.
 
 # Developing Soapbox
 
-tl;dr — `git clone`, `yarn`, and `yarn dev`.
+tl;dr — `git clone`, `yarn`, `yarn dev` and for Ditto `BACKEND_URL="http://localhost:4036/" yarn dev`.
 
 For detailed guides, see these pages:
 
