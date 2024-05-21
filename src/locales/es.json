@@ -38,6 +38,7 @@
   "account.mute": "Silenciar a @{name}",
   "account.muted": "Silenciado",
   "account.never_active": "Nunca",
+  "account.npub": "Copiar el usuario npub",
   "account.patron": "Patrón",
   "account.posts": "Posts",
   "account.posts_with_replies": "Toots y respuestas",
