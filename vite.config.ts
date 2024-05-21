@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 /// <reference types="vitest" />
 import fs from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
@@ -11,6 +12,8 @@ import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
 import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+
+const { NODE_ENV } = process.env;
 
 export default defineConfig(({ command }) => ({
   build: {
@@ -46,6 +49,9 @@ export default defineConfig(({ command }) => ({
       inject: {
         data: {
           snippets: readFileContents('custom/snippets.html'),
+          csp: NODE_ENV === 'production'
+            ? "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self' blob: https: wss:; img-src 'self' data: blob: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; frame-src 'self' https:; font-src 'self'; base-uri 'self'; manifest-src 'self';"
+            : "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self' blob: https: wss: http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:*; img-src 'self' data: blob: https: http://localhost:* http://127.0.0.1:*; media-src 'self' https: http://localhost:* http://127.0.0.1:*; style-src 'self' 'unsafe-inline'; frame-src 'self' https:; font-src 'self'; base-uri 'self'; manifest-src 'self';",
         },
       },
     }),

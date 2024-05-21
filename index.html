@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta http-equiv="content-security-policy" content="default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; connect-src 'self' blob: https: wss:; img-src 'self' data: blob: https:; media-src 'self' https:; style-src 'self' 'unsafe-inline'; frame-src 'self' https:; font-src 'self'; base-uri 'self'; manifest-src 'self';">
+    <meta http-equiv="content-security-policy" content="<%- csp %>">
     <link href="/manifest.json" rel="manifest">
     <!--server-generated-meta-->
     <script type="module" src="./src/main.tsx"></script>
