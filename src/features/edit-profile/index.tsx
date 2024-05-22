@@ -128,6 +128,9 @@ interface AccountCredentials {
   birthday?: string;
   /** Nostr NIP-05 identifier. */
   nip05?: string;
+  /** Lightning address.
+   *  https://github.com/lnurl/luds/blob/luds/16.md */
+  lud16?: string;
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -151,6 +154,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     location: account.location,
     birthday: account.pleroma?.birthday ?? undefined,
     nip05: account.source?.nostr?.nip05 ?? '',
+    lud16: account?.nostr?.lud16 ?? '',
   };
 };
 

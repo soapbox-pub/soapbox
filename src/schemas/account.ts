@@ -63,6 +63,7 @@ const baseAccountSchema = z.object({
   ]).catch(null),
   nostr: coerceObject({
     pubkey: n.id().optional().catch(undefined),
+    lud16: z.string().email().optional().catch(undefined),
   }),
   note: contentSchema,
   /** Fedibird extra settings. */
