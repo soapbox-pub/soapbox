@@ -10,7 +10,7 @@ import SuggestedGroups from './components/discover/suggested-groups';
 import TabBar, { TabItems } from './components/tab-bar';
 
 const messages = defineMessages({
-  placeholder: { id: 'groups.discover.search.placeholder', defaultMessage: 'Search' },
+  placeholder: { id: 'groups.discover.search.placeholder', defaultMessage: 'Discover' },
 });
 
 const Discover: React.FC = () => {
