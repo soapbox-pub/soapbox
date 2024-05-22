@@ -184,7 +184,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to set one's website on their profile.
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountWebsite: v.software === TRUTHSOCIAL,
+    accountWebsite: v.software === TRUTHSOCIAL || v.software === DITTO,
 
     /**
      * Ability to manage announcements by admins.
