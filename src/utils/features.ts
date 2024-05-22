@@ -1031,6 +1031,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === ICESHRIMP,
       v.software === FRIENDICA && gte(v.version, '2022.12.0'),
       v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === DITTO,
     ]),
 
     /**
