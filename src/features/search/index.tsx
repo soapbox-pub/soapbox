@@ -6,7 +6,7 @@ import Search from 'soapbox/features/compose/components/search';
 import SearchResults from 'soapbox/features/compose/components/search-results';
 
 const messages = defineMessages({
-  heading: { id: 'column.search', defaultMessage: 'Search' },
+  heading: { id: 'column.search', defaultMessage: 'Discover' },
 });
 
 const SearchPage = () => {
