@@ -38,7 +38,7 @@ const SearchResults = () => {
   const trendingStatuses = useAppSelector((state) => state.trending_statuses.items);
   const trends = useAppSelector((state) => state.trends.items);
   const submitted = useAppSelector((state) => state.search.submitted);
-  const selectedFilter = useAppSelector((state) => state.search.filter || 'statuses');
+  const selectedFilter = useAppSelector((state) => state.search.filter);
   const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
   const { account } = useAccount(filterByAccount);
 
@@ -105,10 +105,6 @@ const SearchResults = () => {
 
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
-    // Ensure the filter is set to 'statuses' initially
-    if (!selectedFilter) {
-      dispatch(setFilter('statuses'));
-    }
   }, []);
 
   let searchResults;
