@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Search' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Discover' },
 });
 
 const Search = () => {

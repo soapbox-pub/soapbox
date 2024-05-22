@@ -52,17 +52,17 @@ const SearchResults = () => {
     const items = [];
     items.push(
       {
-        text: intl.formatMessage(messages.accounts),
-        action: () => selectFilter('accounts'),
-        name: 'accounts',
-      },
-      {
         text: intl.formatMessage(messages.statuses),
         action: () => selectFilter('statuses'),
         name: 'statuses',
       },
+      {
+        text: intl.formatMessage(messages.accounts),
+        action: () => selectFilter('accounts'),
+        name: 'accounts',
+      },
     );
-
+  
     items.push(
       {
         text: intl.formatMessage(messages.hashtags),
@@ -70,7 +70,7 @@ const SearchResults = () => {
         name: 'hashtags',
       },
     );
-
+  
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
 
