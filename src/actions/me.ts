@@ -40,7 +40,7 @@ const getMeToken = (state: RootState) => {
 };
 
 const fetchMe = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const token = getMeToken(state);
     const accountUrl = getMeUrl(state);
@@ -68,7 +68,7 @@ const persistAuthAccount = (account: APIEntity, params: Record<string, any>) => 
 };
 
 const patchMe = (params: Record<string, any>, isFormData = false) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(patchMeRequest());
 
     const headers: RawAxiosRequestHeaders = isFormData ? {
