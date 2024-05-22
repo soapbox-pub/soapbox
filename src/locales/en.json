@@ -658,6 +658,8 @@
   "edit_profile.fields.location_label": "Location",
   "edit_profile.fields.location_placeholder": "Location",
   "edit_profile.fields.locked_label": "Lock account",
+  "edit_profile.fields.lud16_label": "Lightning Address",
+  "edit_profile.fields.lud16_placeholder": "name@example.com",
   "edit_profile.fields.meta_fields.content_placeholder": "Content",
   "edit_profile.fields.meta_fields.label_placeholder": "Label",
   "edit_profile.fields.meta_fields_label": "Profile fields",
