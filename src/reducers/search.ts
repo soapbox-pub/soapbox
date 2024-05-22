@@ -45,14 +45,14 @@ const ReducerRecord = ImmutableRecord({
   submittedValue: '',
   hidden: false,
   results: ResultsRecord(),
-  filter: 'accounts' as SearchFilter,
+  filter: 'statuses' as SearchFilter,
   accountId: null as string | null,
   next: null as string | null,
 });
 
 type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
-export type SearchFilter = 'accounts' | 'statuses' | 'groups' | 'hashtags';
+export type SearchFilter = 'statuses' | 'accounts' | 'groups' | 'hashtags';
 
 const toIds = (items: APIEntities = []) => {
   return ImmutableOrderedSet(items.map(item => item.id));
@@ -62,8 +62,8 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
   return state.withMutations(state => {
     if (state.value === searchTerm && state.filter === searchType) {
       state.set('results', ResultsRecord({
-        accounts: toIds(results.accounts),
         statuses: toIds(results.statuses),
+        accounts: toIds(results.accounts),
         groups: toIds(results.groups),
         hashtags: ImmutableOrderedSet(results.hashtags.map(normalizeTag)), // it's a list of records
         accountsHasMore: results.accounts.length >= 20,

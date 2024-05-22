@@ -38,7 +38,7 @@ const SearchResults = () => {
   const trendingStatuses = useAppSelector((state) => state.trending_statuses.items);
   const trends = useAppSelector((state) => state.trends.items);
   const submitted = useAppSelector((state) => state.search.submitted);
-  const selectedFilter = useAppSelector((state) => state.search.filter);
+  const selectedFilter = useAppSelector((state) => state.search.filter || 'statuses');
   const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
   const { account } = useAccount(filterByAccount);
 
@@ -52,17 +52,17 @@ const SearchResults = () => {
     const items = [];
     items.push(
       {
-        text: intl.formatMessage(messages.accounts),
-        action: () => selectFilter('accounts'),
-        name: 'accounts',
-      },
-      {
         text: intl.formatMessage(messages.statuses),
         action: () => selectFilter('statuses'),
         name: 'statuses',
       },
+      {
+        text: intl.formatMessage(messages.accounts),
+        action: () => selectFilter('accounts'),
+        name: 'accounts',
+      },
     );
-
+  
     items.push(
       {
         text: intl.formatMessage(messages.hashtags),
@@ -70,7 +70,7 @@ const SearchResults = () => {
         name: 'hashtags',
       },
     );
-
+  
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
 
@@ -105,6 +105,10 @@ const SearchResults = () => {
 
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
+    // Ensure the filter is set to 'statuses' initially
+    if (!selectedFilter) {
+      dispatch(setFilter('statuses'));
+    }
   }, []);
 
   let searchResults;
