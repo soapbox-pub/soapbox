@@ -144,7 +144,7 @@ export default function search(state = ReducerRecord(), action: AnyAction) {
         results: ResultsRecord(),
         submitted: false,
         submittedValue: '',
-        filter: 'accounts',
+        filter: 'statuses',
         accountId: null,
       });
       return ReducerRecord({ accountId: action.accountId, filter: 'statuses' });
