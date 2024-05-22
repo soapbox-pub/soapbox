@@ -56,6 +56,7 @@ const messages = defineMessages({
   websitePlaceholder: { id: 'edit_profile.fields.website_placeholder', defaultMessage: 'Display a Link' },
   locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
   nip05Placeholder: { id: 'edit_profile.fields.nip05_placeholder', defaultMessage: 'user@{domain}' },
+  lud16Placeholder: { id: 'edit_profile.fields.lud16_placeholder', defaultMessage: 'user@example.com' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
 
@@ -354,6 +355,19 @@ const EditProfile: React.FC = () => {
               value={data.location}
               onChange={handleTextChange('location')}
               placeholder={intl.formatMessage(messages.locationPlaceholder)}
+            />
+          </FormGroup>
+        )}
+
+        {features.accountLud16 && (
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.lud16_label' defaultMessage='Lightning Address' />}
+          >
+            <Input
+              type='email'
+              value={data.lud16}
+              onChange={handleTextChange('lud16')}
+              placeholder={intl.formatMessage(messages.lud16Placeholder)}
             />
           </FormGroup>
         )}

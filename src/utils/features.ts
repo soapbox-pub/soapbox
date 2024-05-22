@@ -158,6 +158,12 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
+     * Ability to set one's lightning address on their profile.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    accountLud16: v.software === DITTO,
+
+    /**
      * Move followers to a different ActivityPub account.
      * @see POST /api/pleroma/move_account
      */
