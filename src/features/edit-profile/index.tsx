@@ -377,7 +377,7 @@ const EditProfile: React.FC = () => {
             labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
           >
             <Input
-              type='text'
+              type='url'
               value={data.website}
               onChange={handleTextChange('website')}
               placeholder={intl.formatMessage(messages.websitePlaceholder)}
