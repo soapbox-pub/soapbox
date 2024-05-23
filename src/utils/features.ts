@@ -465,7 +465,7 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     emojiReacts: any([
       v.software === PLEROMA && gte(v.version, '2.0.0'),
-      v.software === DITTO,
+      features.includes('pleroma_emoji_reactions'),
     ]),
 
     /**
