@@ -184,7 +184,7 @@ const getInstanceFeatures = (instance: Instance) => {
      * Ability to set one's website on their profile.
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountWebsite: v.software === TRUTHSOCIAL,
+    accountWebsite: v.software === TRUTHSOCIAL || v.software === DITTO,
 
     /**
      * Ability to manage announcements by admins.
@@ -700,6 +700,12 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.5.54'),
     ]),
+
+    /**
+     * Ability to set one's lightning address on their profile.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    lightning: v.software === DITTO,
 
     /**
      * Can create, view, and manage lists.

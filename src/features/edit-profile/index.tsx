@@ -56,6 +56,7 @@ const messages = defineMessages({
   websitePlaceholder: { id: 'edit_profile.fields.website_placeholder', defaultMessage: 'Display a Link' },
   locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
   nip05Placeholder: { id: 'edit_profile.fields.nip05_placeholder', defaultMessage: 'user@{domain}' },
+  lud16Placeholder: { id: 'edit_profile.fields.lud16_placeholder', defaultMessage: 'user@example.com' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
 
@@ -128,6 +129,11 @@ interface AccountCredentials {
   birthday?: string;
   /** Nostr NIP-05 identifier. */
   nip05?: string;
+  /** 
+   * Lightning address.  
+   * https://github.com/lnurl/luds/blob/luds/16.md
+   */
+  lud16?: string;
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -151,6 +157,7 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     location: account.location,
     birthday: account.pleroma?.birthday ?? undefined,
     nip05: account.source?.nostr?.nip05 ?? '',
+    lud16: account?.nostr?.lud16 ?? '',
   };
 };
 
@@ -354,12 +361,25 @@ const EditProfile: React.FC = () => {
           </FormGroup>
         )}
 
+        {features.lightning && (
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.lud16_label' defaultMessage='Lightning Address' />}
+          >
+            <Input
+              type='email'
+              value={data.lud16}
+              onChange={handleTextChange('lud16')}
+              placeholder={intl.formatMessage(messages.lud16Placeholder)}
+            />
+          </FormGroup>
+        )}
+
         {features.accountWebsite && (
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
           >
             <Input
-              type='text'
+              type='url'
               value={data.website}
               onChange={handleTextChange('website')}
               placeholder={intl.formatMessage(messages.websitePlaceholder)}
