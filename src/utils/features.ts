@@ -463,7 +463,10 @@ const getInstanceFeatures = (instance: Instance) => {
      * @see GET /api/v1/pleroma/statuses/:id/reactions/:emoji?
      * @see DELETE /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
-    emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
+    emojiReacts: any([
+      v.software === PLEROMA && gte(v.version, '2.0.0'),
+      features.includes('pleroma_emoji_reactions'),
+    ]),
 
     /**
      * Ability to add emoji reactions to a status available in Mastodon forks.
