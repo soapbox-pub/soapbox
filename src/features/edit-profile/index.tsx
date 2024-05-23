@@ -130,8 +130,9 @@ interface AccountCredentials {
   /** Nostr NIP-05 identifier. */
   nip05?: string;
   /** 
-   * Lightning address.
-   * https://github.com/lnurl/luds/blob/luds/16.md */
+   * Lightning address.  
+   * https://github.com/lnurl/luds/blob/luds/16.md
+   */
   lud16?: string;
 }
 
