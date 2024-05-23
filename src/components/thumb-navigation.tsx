@@ -67,7 +67,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
       <ThumbNavigationLink
         src={require('@tabler/icons/outline/search.svg')}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Search' />}
+        text={<FormattedMessage id='navigation.search' defaultMessage='Discover' />}
         to='/search'
         exact
       />
