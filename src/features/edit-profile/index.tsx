@@ -129,8 +129,9 @@ interface AccountCredentials {
   birthday?: string;
   /** Nostr NIP-05 identifier. */
   nip05?: string;
-  /** Lightning address.
-   *  https://github.com/lnurl/luds/blob/luds/16.md */
+  /** 
+   * Lightning address.
+   * https://github.com/lnurl/luds/blob/luds/16.md */
   lud16?: string;
 }
 
@@ -359,7 +360,7 @@ const EditProfile: React.FC = () => {
           </FormGroup>
         )}
 
-        {features.accountLud16 && (
+        {features.lightning && (
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.lud16_label' defaultMessage='Lightning Address' />}
           >

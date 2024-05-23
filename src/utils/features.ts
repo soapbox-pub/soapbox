@@ -158,12 +158,6 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
 
     /**
-     * Ability to set one's lightning address on their profile.
-     * @see PATCH /api/v1/accounts/update_credentials
-     */
-    accountLud16: v.software === DITTO,
-
-    /**
      * Move followers to a different ActivityPub account.
      * @see POST /api/pleroma/move_account
      */
@@ -703,6 +697,12 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.5.54'),
     ]),
+
+    /**
+     * Ability to set one's lightning address on their profile.
+     * @see PATCH /api/v1/accounts/update_credentials
+     */
+    lightning: v.software === DITTO,
 
     /**
      * Can create, view, and manage lists.
