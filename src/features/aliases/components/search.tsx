@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Search' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Discover' },
 });
 
 const Search: React.FC = () => {

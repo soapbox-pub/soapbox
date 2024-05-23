@@ -125,7 +125,7 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/search'
           icon={require('@tabler/icons/outline/search.svg')}
-          text={<FormattedMessage id='tabs_bar.search' defaultMessage='Search' />}
+          text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
         />
 
         {account && (

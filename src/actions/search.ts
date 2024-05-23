@@ -52,7 +52,7 @@ const clearSearchResults = () => ({
 const submitSearch = (filter?: SearchFilter) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const value = getState().search.value;
-    const type = filter || getState().search.filter || 'accounts';
+    const type = filter || getState().search.filter || 'statuses';
     const accountId = getState().search.accountId;
 
     // An empty search doesn't return any results
