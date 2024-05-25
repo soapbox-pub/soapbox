@@ -529,6 +529,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.version, '3.5.0'),
       v.software === PLEROMA && gte(v.version, '2.5.51') && v.build === REBASED,
       v.software === TAKAHE,
+      v.software === DITTO,
     ]),
 
     /** Whether the instance federates. */
