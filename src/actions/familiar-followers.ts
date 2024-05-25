@@ -17,7 +17,7 @@ export const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: A
     id: accountId,
   });
 
-  api(getState).get(`/api/v1/accounts/familiar_followers?id=${accountId}`)
+  api(getState).get(`/api/v1/accounts/familiar_followers?id[]=${accountId}`)
     .then(({ data }) => {
       const accounts = data.find(({ id }: { id: string }) => id === accountId).accounts;
 
