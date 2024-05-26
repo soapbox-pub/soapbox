@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Stack } from 'soapbox/components/ui';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useGroupsPath, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
 
 import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
@@ -26,7 +26,6 @@ const SidebarNavigation = () => {
   const features = useFeatures();
   const { isDeveloper } = useSettings();
   const { account } = useOwnAccount();
-  const groupsPath = useGroupsPath();
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
@@ -142,7 +141,7 @@ const SidebarNavigation = () => {
 
             {features.groups && (
               <SidebarNavigationLink
-                to={groupsPath}
+                to='/groups'
                 icon={require('@tabler/icons/outline/circles.svg')}
                 activeIcon={require('@tabler/icons/filled/circles.svg')}
                 text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
