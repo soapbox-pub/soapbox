@@ -11,7 +11,7 @@ import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useGroupsPath, useFeatures, useInstance } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 import type { List as ImmutableList } from 'immutable';
@@ -88,7 +88,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const groupsPath = useGroupsPath();
   const instance = useInstance();
 
   const closeButtonRef = React.useRef(null);
@@ -210,7 +209,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                   {features.groups && (
                     <SidebarLink
-                      to={groupsPath}
+                      to='/groups'
                       icon={require('@tabler/icons/outline/circles.svg')}
                       text={intl.formatMessage(messages.groups)}
                       onClick={onClose}

@@ -3,12 +3,11 @@ import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';
 import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useAppSelector, useFeatures, useGroupsPath, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const { account } = useOwnAccount();
   const features = useFeatures();
-  const groupsPath = useGroupsPath();
 
   const { unreadChatsCount } = useStatContext();
 
@@ -60,7 +59,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
           src={require('@tabler/icons/outline/circles.svg')}
           activeSrc={require('@tabler/icons/filled/circles.svg')}
           text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
-          to={groupsPath}
+          to='/groups'
           exact
         />
       )}
