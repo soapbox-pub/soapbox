@@ -99,5 +99,6 @@ export const loginWithCode = (code: string) =>
       .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token as string, baseURL)))
       .then((account: { id: string }) => dispatch(switchAccount(account.id)))
+      .then(() => localStorage.removeItem('soapbox:external:baseurl'))
       .then(() => window.location.href = '/');
   };
