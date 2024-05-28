@@ -339,7 +339,8 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
       return;
     }
 
-    const mentions: string[] | null = status.match(/(?:^|\s)@([a-z\d_-]+(?:@[^@\s]+)?)/gi);
+    // https://stackoverflow.com/a/30007882 for domain regex
+    const mentions: string[] | null = status.match(/(?:^|\s)@([a-z\d_-]+(?:@(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]+)?)/gi);
 
     if (mentions) {
       to = to.union(mentions.map(mention => mention.trim().slice(1)));
