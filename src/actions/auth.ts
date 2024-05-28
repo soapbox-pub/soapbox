@@ -224,6 +224,11 @@ export const logOut = () =>
         // Clear the account from Sentry.
         unsetSentryAccount();
 
+        // Remove external auth entries.
+        localStorage.removeItem('soapbox:external:app');
+        localStorage.removeItem('soapbox:external:baseurl');
+        localStorage.removeItem('soapbox:external:scopes');
+
         dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
 
         toast.success(messages.loggedOut);
