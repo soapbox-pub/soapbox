@@ -1,14 +1,31 @@
-import { nip19 } from 'nostr-tools';
+import { RootState, type AppDispatch } from 'soapbox/store';
 
-import { type AppDispatch } from 'soapbox/store';
+import { authLoggedIn, verifyCredentials } from './auth';
+import { obtainOAuthToken } from './oauth';
 
-import { verifyCredentials } from './auth';
+const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 
 /** Log in with a Nostr pubkey. */
 function logInNostr(pubkey: string) {
-  return (dispatch: AppDispatch) => {
-    const npub = nip19.npubEncode(pubkey);
-    return dispatch(verifyCredentials(npub));
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(setNostrPubkey(pubkey));
+
+    const secret = sessionStorage.getItem('soapbox:nip46:secret');
+    if (!secret) {
+      throw new Error('No secret found in session storage');
+    }
+
+    const relay = getState().instance.nostr?.relay;
+
+    const token = await dispatch(obtainOAuthToken({
+      grant_type: 'nostr',
+      pubkey,
+      relays: relay ? [relay] : undefined,
+      secret,
+    }));
+
+    const { access_token } = dispatch(authLoggedIn(token));
+    return await dispatch(verifyCredentials(access_token as string));
   };
 }
 
@@ -23,4 +40,11 @@ function nostrExtensionLogIn() {
   };
 }
 
-export { logInNostr, nostrExtensionLogIn };
+function setNostrPubkey(pubkey: string) {
+  return {
+    type: NOSTR_PUBKEY_SET,
+    pubkey,
+  };
+}
+
+export { logInNostr, nostrExtensionLogIn, setNostrPubkey, NOSTR_PUBKEY_SET };

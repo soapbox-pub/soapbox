@@ -3,11 +3,15 @@ import { useEffect, useState } from 'react';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NConnect } from 'soapbox/features/nostr/NConnect';
 
+const secretStorageKey = 'soapbox:nip46:secret';
+
+sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
+
 function useSignerStream() {
   const { relay, signer } = useNostr();
   const [pubkey, setPubkey] = useState<string | undefined>(undefined);
 
-  const storageKey = `soapbox:nostr:auth:${pubkey}`;
+  const authStorageKey = `soapbox:nostr:auth:${pubkey}`;
 
   useEffect(() => {
     if (signer) {
@@ -21,8 +25,12 @@ function useSignerStream() {
     const connect = new NConnect({
       relay,
       signer,
-      onAuthorize: (authorizedPubkey) => localStorage.setItem(storageKey, authorizedPubkey),
-      authorizedPubkey: localStorage.getItem(storageKey) ?? undefined,
+      onAuthorize(authorizedPubkey) {
+        localStorage.setItem(authStorageKey, authorizedPubkey);
+        sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
+      },
+      authorizedPubkey: localStorage.getItem(authStorageKey) ?? undefined,
+      getSecret: () => sessionStorage.getItem(secretStorageKey)!,
     });
 
     return () => {

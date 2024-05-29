@@ -5,6 +5,7 @@ interface NConnectOpts {
   signer: NostrSigner;
   authorizedPubkey: string | undefined;
   onAuthorize(pubkey: string): void;
+  getSecret(): string;
 }
 
 export class NConnect {
@@ -13,8 +14,8 @@ export class NConnect {
   private signer: NostrSigner;
   private authorizedPubkey: string | undefined;
   private onAuthorize: (pubkey: string) => void;
+  private getSecret: () => string;
 
-  public secret = crypto.randomUUID();
   private controller = new AbortController();
 
   constructor(opts: NConnectOpts) {
@@ -22,6 +23,7 @@ export class NConnect {
     this.signer = opts.signer;
     this.authorizedPubkey = opts.authorizedPubkey;
     this.onAuthorize = opts.onAuthorize;
+    this.getSecret = opts.getSecret;
 
     this.open();
   }
@@ -120,8 +122,7 @@ export class NConnect {
   private async handleConnect(pubkey: string, request: NostrConnectRequest & { method: 'connect' }) {
     const [remotePubkey, secret] = request.params;
 
-    if (secret === this.secret && remotePubkey === await this.signer.getPublicKey()) {
-      this.secret = crypto.randomUUID();
+    if (secret === this.getSecret() && remotePubkey === await this.signer.getPublicKey()) {
       this.authorizedPubkey = pubkey;
       this.onAuthorize(pubkey);
 
