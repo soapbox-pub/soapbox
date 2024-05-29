@@ -42,6 +42,7 @@ import {
   UnauthorizedModal,
   VideoModal,
   EditRuleModal,
+  ZapPayRequestModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import ModalLoading from './modal-loading';
@@ -88,6 +89,7 @@ const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'SELECT_BOOKMARK_FOLDER': SelectBookmarkFolderModal,
   'UNAUTHORIZED': UnauthorizedModal,
   'VIDEO': VideoModal,
+  'ZAP_PAY_REQUEST': ZapPayRequestModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
