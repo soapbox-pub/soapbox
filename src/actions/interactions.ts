@@ -314,18 +314,30 @@ const undislikeFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const zap = (status: StatusEntity, amount: number) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
+const zap = (status: StatusEntity, amount: number, comment:string) => (dispatch: AppDispatch, getState: () => RootState) => {
+  if (!isLoggedIn(getState)) return;
 
-    dispatch(zapRequest(status));
+  dispatch(zapRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/zap`, { amount }).then(function(response) {
+  return api(getState).post(`/api/v1/statuses/${status.id}/zap`, { amount, comment: comment ?? '' }).then(async function(response) {
+    const invoice = response.headers['ln-invoice'];
+    if (!invoice) throw Error('Could not generate invoice');
+    if (!window.webln) return invoice;
+
+    try {
+      await window.webln?.enable();
+      await window.webln?.sendPayment(invoice);
       dispatch(zapSuccess(status));
-    }).catch(function(error) {
-      dispatch(zapFail(status, error));
-    });
-  };
+      return undefined;
+    } catch (e) { // In case it fails we just return the invoice so the QR code can be created
+      console.log(e);
+      return invoice;
+    }
+  }).catch(function(e) {
+    console.log(e);
+    dispatch(zapFail(status, e));
+  });
+};
 
 const zapRequest = (status: StatusEntity) => ({
   type: ZAP_REQUEST,
