@@ -53,7 +53,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {features.followedHashtagsList && (
             <FooterLink to='/followed_tags'><FormattedMessage id='navigation_bar.followed_tags' defaultMessage='Followed hashtags' /></FooterLink>
           )}
-          {features.federating && (
+          {features.domainBlocks && (
             <FooterLink to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></FooterLink>
           )}
           {account.admin && (
