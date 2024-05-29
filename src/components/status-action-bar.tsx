@@ -6,7 +6,7 @@ import { blockAccount } from 'soapbox/actions/accounts';
 import { launchChat } from 'soapbox/actions/chats';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
 import { editEvent } from 'soapbox/actions/events';
-import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup, zap } from 'soapbox/actions/interactions';
+import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup } from 'soapbox/actions/interactions';
 import { openModal } from 'soapbox/actions/modals';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { initMuteModal } from 'soapbox/actions/mutes';
@@ -195,9 +195,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleZapClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(zap(status, 1337));
+      dispatch(openModal('ZAP_PAY_REQUEST', { status, account: status.account }));
     } else {
-      onOpenUnauthorizedModal('ZAP');
+      onOpenUnauthorizedModal('ZAP_PAY_REQUEST');
     }
   };
 
