@@ -1,137 +1,35 @@
-import { NostrEvent, NostrConnectResponse, NSchema as n } from '@nostrify/nostrify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { nwcRequestSchema } from 'soapbox/schemas/nostr';
+import { NConnect } from 'soapbox/features/nostr/NConnect';
 
 function useSignerStream() {
-  const { relay, pubkey, signer } = useNostr();
+  const { relay, signer } = useNostr();
+  const [pubkey, setPubkey] = useState<string | undefined>(undefined);
 
-  async function sendConnect(response: NostrConnectResponse) {
-    if (!relay || !pubkey || !signer) return;
-
-    const event = await signer.signEvent({
-      kind: 24133,
-      content: await signer.nip04!.encrypt(pubkey, JSON.stringify(response)),
-      tags: [['p', pubkey]],
-      created_at: Math.floor(Date.now() / 1000),
-    });
-
-    relay.event(event);
-  }
-
-  async function handleConnectEvent(event: NostrEvent) {
-    if (!relay || !pubkey || !signer) return;
-    const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
-
-    const reqMsg = n.json().pipe(n.connectRequest()).safeParse(decrypted);
-    if (!reqMsg.success) {
-      console.warn(decrypted);
-      console.warn(reqMsg.error);
-      return;
-    }
-
-    const request = reqMsg.data;
-
-    switch (request.method) {
-      case 'connect':
-        return sendConnect({
-          id: request.id,
-          result: 'ack',
-        });
-      case 'sign_event':
-        return sendConnect({
-          id: request.id,
-          result: JSON.stringify(await signer.signEvent(JSON.parse(request.params[0]))),
-        });
-      case 'ping':
-        return sendConnect({
-          id: request.id,
-          result: 'pong',
-        });
-      case 'get_relays':
-        return sendConnect({
-          id: request.id,
-          result: JSON.stringify(await signer.getRelays?.() ?? []),
-        });
-      case 'get_public_key':
-        return sendConnect({
-          id: request.id,
-          result: await signer.getPublicKey(),
-        });
-      case 'nip04_encrypt':
-        return sendConnect({
-          id: request.id,
-          result: await signer.nip04!.encrypt(request.params[0], request.params[1]),
-        });
-      case 'nip04_decrypt':
-        return sendConnect({
-          id: request.id,
-          result: await signer.nip04!.decrypt(request.params[0], request.params[1]),
-        });
-      case 'nip44_encrypt':
-        return sendConnect({
-          id: request.id,
-          result: await signer.nip44!.encrypt(request.params[0], request.params[1]),
-        });
-      case 'nip44_decrypt':
-        return sendConnect({
-          id: request.id,
-          result: await signer.nip44!.decrypt(request.params[0], request.params[1]),
-        });
-      default:
-        return sendConnect({
-          id: request.id,
-          result: '',
-          error: `Unrecognized method: ${request.method}`,
-        });
-    }
-  }
-
-  async function handleWalletEvent(event: NostrEvent) {
-    if (!relay || !pubkey || !signer) return;
-
-    const decrypted = await signer.nip04!.decrypt(pubkey, event.content);
-
-    const reqMsg = n.json().pipe(nwcRequestSchema).safeParse(decrypted);
-    if (!reqMsg.success) {
-      console.warn(decrypted);
-      console.warn(reqMsg.error);
-      return;
-    }
-
-    await window.webln?.enable();
-    await window.webln?.sendPayment(reqMsg.data.params.invoice);
-  }
-
-  async function handleEvent(event: NostrEvent) {
-    switch (event.kind) {
-      case 24133:
-        await handleConnectEvent(event);
-        break;
-      case 23194:
-        await handleWalletEvent(event);
-        break;
-    }
-  }
+  const storageKey = `soapbox:nostr:auth:${pubkey}`;
 
   useEffect(() => {
-    if (!relay || !pubkey) return;
+    if (signer) {
+      signer.getPublicKey().then(setPubkey).catch(console.warn);
+    }
+  }, [signer]);
 
-    const controller = new AbortController();
-    const signal = controller.signal;
+  useEffect(() => {
+    if (!relay || !signer || !pubkey) return;
 
-    (async() => {
-      for await (const msg of relay.req([{ kinds: [24133, 23194], authors: [pubkey], limit: 0 }], { signal })) {
-        if (msg[0] === 'EVENT') handleEvent(msg[2]);
-      }
-    })();
+    const connect = new NConnect({
+      relay,
+      signer,
+      onAuthorize: (authorizedPubkey) => localStorage.setItem(storageKey, authorizedPubkey),
+      authorizedPubkey: localStorage.getItem(storageKey) ?? undefined,
+    });
 
     return () => {
-      controller.abort();
+      connect.close();
     };
 
-  }, [relay, pubkey, signer]);
+  }, [relay, signer, pubkey]);
 }
 
 export { useSignerStream };

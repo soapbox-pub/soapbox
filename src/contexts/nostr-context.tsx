@@ -7,7 +7,6 @@ import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
   relay?: NRelay;
-  pubkey?: string;
   signer?: NostrSigner;
 }
 
@@ -24,7 +23,6 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const { account } = useOwnAccount();
 
   const url = instance.nostr?.relay;
-  const pubkey = instance.nostr?.pubkey;
   const accountPubkey = account?.nostr.pubkey;
 
   const signer = useMemo(
@@ -42,7 +40,7 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   }, [url]);
 
   return (
-    <NostrContext.Provider value={{ relay, pubkey, signer }}>
+    <NostrContext.Provider value={{ relay, signer }}>
       {children}
     </NostrContext.Provider>
   );
