@@ -18,7 +18,7 @@ function logInNostr(pubkey: string) {
     const relay = getState().instance.nostr?.relay;
 
     const token = await dispatch(obtainOAuthToken({
-      grant_type: 'nostr',
+      grant_type: 'nostr_bunker',
       pubkey,
       relays: relay ? [relay] : undefined,
       secret,
