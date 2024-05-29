@@ -12,7 +12,6 @@ import { preload } from '../actions/preload';
 import { store } from '../store';
 
 import SoapboxHead from './soapbox-head';
-import SoapboxInstance from './soapbox-instance';
 import SoapboxLoad from './soapbox-load';
 import SoapboxMount from './soapbox-mount';
 
@@ -32,13 +31,11 @@ const Soapbox: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <StatProvider>
           <NostrProvider>
-            <SoapboxInstance>
-              <SoapboxHead>
-                <SoapboxLoad>
-                  <SoapboxMount />
-                </SoapboxLoad>
-              </SoapboxHead>
-            </SoapboxInstance>
+            <SoapboxHead>
+              <SoapboxLoad>
+                <SoapboxMount />
+              </SoapboxLoad>
+            </SoapboxHead>
           </NostrProvider>
         </StatProvider>
       </QueryClientProvider>

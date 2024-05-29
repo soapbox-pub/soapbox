@@ -103,7 +103,7 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
   const state = getState();
   const accessToken = getToken(state, authType);
   const me = state.me;
-  const baseURL = me ? getAuthBaseURL(state, me) : localStorage.getItem('soapbox:external:baseurl') ?? '';
+  const baseURL = me ? getAuthBaseURL(state, me) : '';
 
   const relayUrl = state.getIn(['instance', 'nostr', 'relay']) as string | undefined;
   const pubkey = state.getIn(['instance', 'nostr', 'pubkey']) as string | undefined;
