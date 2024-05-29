@@ -268,7 +268,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
       {features.blocks && <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />}
-      {features.federating && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
+      {features.domainBlocks && <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />}
       <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters/new' page={DefaultPage} component={EditFilter} content={children} />}
       {(features.filters || features.filtersV2) && <WrappedRoute path='/filters/:id' page={DefaultPage} component={EditFilter} content={children} />}
