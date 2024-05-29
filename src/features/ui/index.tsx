@@ -13,6 +13,7 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
 import { useUserStream } from 'soapbox/api/hooks';
+import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
@@ -461,6 +462,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   }, []);
 
   useUserStream();
+  useSignerStream();
 
   // The user has logged in
   useEffect(() => {
