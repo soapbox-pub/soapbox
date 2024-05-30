@@ -4,6 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
+import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import {
   useAppSelector,
@@ -42,6 +43,8 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [messages, setMessages] = useState<Record<string, string>>({});
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  useSignerStream();
 
   /** Whether to display a loading indicator. */
   const showLoading = [

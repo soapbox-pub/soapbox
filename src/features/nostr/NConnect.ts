@@ -32,7 +32,7 @@ export class NConnect {
     const pubkey = await this.signer.getPublicKey();
     const signal = this.controller.signal;
 
-    for await (const msg of this.relay.req([{ kinds: [24133], '#p': [pubkey], limit: 0 }], { signal })) {
+    for await (const msg of this.relay.req([{ kinds: [24133], '#p': [pubkey] }], { signal })) {
       if (msg[0] === 'EVENT') {
         const event = msg[2];
         this.handleEvent(event);
@@ -61,11 +61,7 @@ export class NConnect {
 
     // Prevent unauthorized access.
     if (pubkey !== this.authorizedPubkey) {
-      return this.sendResponse(pubkey, {
-        id: request.id,
-        result: '',
-        error: 'Unauthorized',
-      });
+      return;
     }
 
     // Authorized methods.
