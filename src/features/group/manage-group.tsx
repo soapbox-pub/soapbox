@@ -6,7 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { useDeleteGroup, useGroup } from 'soapbox/api/hooks';
 import List, { ListItem } from 'soapbox/components/list';
 import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useBackend, useGroupsPath } from 'soapbox/hooks';
+import { useAppDispatch, useBackend } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
 import { TRUTHSOCIAL } from 'soapbox/utils/features';
@@ -38,7 +38,6 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
 
   const backend = useBackend();
   const dispatch = useAppDispatch();
-  const groupsPath = useGroupsPath();
   const history = useHistory();
   const intl = useIntl();
 
@@ -70,7 +69,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
         deleteGroup.mutate(group.id, {
           onSuccess() {
             toast.success(intl.formatMessage(messages.deleteSuccess));
-            history.push(groupsPath);
+            history.push('/groups');
           },
         });
       },

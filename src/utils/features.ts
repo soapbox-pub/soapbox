@@ -401,6 +401,17 @@ const getInstanceFeatures = (instance: Instance) => {
     dislikes: v.software === FRIENDICA && gte(v.version, '2023.3.0'),
 
     /**
+     * Ability to block users by domain.
+     * @see GET /api/v1/domain_blocks
+     * @see POST /api/v1/domain_blocks
+     * @see DELETE /api/v1/domain_blocks
+     */
+    domainBlocks: federation.enabled && any([
+      v.software === MASTODON && gte(v.compatVersion, '1.4.0'),
+      v.software === PLEROMA,
+    ]),
+
+    /**
      * Allow to register on a given domain
      * @see GET /api/v1/pleroma/admin/domains
      * @see POST /api/v1/pleroma/admin/domains
@@ -529,6 +540,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === MASTODON && gte(v.version, '3.5.0'),
       v.software === PLEROMA && gte(v.version, '2.5.51') && v.build === REBASED,
       v.software === TAKAHE,
+      v.software === DITTO,
     ]),
 
     /** Whether the instance federates. */

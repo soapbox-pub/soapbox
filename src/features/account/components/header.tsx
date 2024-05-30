@@ -464,7 +464,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (!account.local) {
+    if (!account.local && features.domainBlocks) {
       const domain = account.fqn.split('@')[1];
 
       menu.push(null);

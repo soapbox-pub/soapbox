@@ -66,7 +66,7 @@ const fetchSoapboxConfig = (host: string | null) =>
           dispatch(importSoapboxConfig(data.soapbox_fe, host));
           return data.soapbox_fe;
         } else {
-          return dispatch(fetchSoapboxJson(host));
+          return dispatch(soapboxConfigFail(new Error('Not found'), host));
         }
       });
     } else {
