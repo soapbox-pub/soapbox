@@ -1640,5 +1640,6 @@
   "who_to_follow.title": "People To Follow",
   "zap.send_to": "Send zaps to {target}",
   "zap.unit": "Zap amount in sats",
-  "zap.comment_input.placeholder":"Optional comment" 
+  "zap.comment_input.placeholder":"Optional comment",
+  "zap.open_wallet": "Open Wallet"
 }
