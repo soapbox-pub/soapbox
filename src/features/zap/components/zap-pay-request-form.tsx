@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { zap } from 'soapbox/actions/interactions';
-import { closeModal } from 'soapbox/actions/modals';
+import { openModal, closeModal } from 'soapbox/actions/modals';
 import Account from 'soapbox/components/account';
 import { Stack, Button, Select } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -36,6 +36,7 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
         return;
       }
       // open QR code modal
+      dispatch(openModal('ZAP_INVOICE', { invoice, account }));
     }
   };
 
