@@ -17,6 +17,9 @@ function logInNostr(pubkey: string) {
 
     const relay = getState().instance.nostr?.relay;
 
+    // HACK: waits 1 second to ensure the relay subscription is open
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     const token = await dispatch(obtainOAuthToken({
       grant_type: 'nostr_bunker',
       pubkey,
