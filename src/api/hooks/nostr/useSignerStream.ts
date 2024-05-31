@@ -15,7 +15,7 @@ function useSignerStream() {
 
   useEffect(() => {
     if (signer) {
-      signer.getPublicKey().then(setPubkey).catch(console.warn);
+      signer.getPublicKey().then((pubkey) => setPubkey(pubkey)).catch(console.warn);
     }
   }, [signer]);
 
