@@ -11,6 +11,7 @@ import SiteLogo from 'soapbox/components/site-logo';
 import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { isStandalone } from 'soapbox/utils/state';
 
 import ProfileDropdown from './profile-dropdown';
@@ -33,6 +34,7 @@ const Navbar = () => {
   const { isOpen } = useRegistrationStatus();
   const { account } = useOwnAccount();
   const node = useRef(null);
+  const isMobile = useIsMobile();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -72,7 +74,14 @@ const Navbar = () => {
   if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
 
   return (
-    <nav className='sticky top-0 z-50 bg-white shadow black:border-b black:border-b-gray-800 black:bg-black dark:bg-primary-900' ref={node} data-testid='navbar'>
+    <nav
+      className={clsx(
+        'sticky top-0 z-50 border-gray-200 bg-white shadow black:border-b black:border-b-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900',
+        { 'border-b': isMobile },
+      )}
+      ref={node}
+      data-testid='navbar'
+    >
       <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
