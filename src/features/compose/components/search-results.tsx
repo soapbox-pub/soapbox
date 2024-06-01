@@ -62,7 +62,7 @@ const SearchResults = () => {
         name: 'accounts',
       },
     );
-  
+
     items.push(
       {
         text: intl.formatMessage(messages.hashtags),
@@ -70,7 +70,7 @@ const SearchResults = () => {
         name: 'hashtags',
       },
     );
-  
+
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
 
@@ -224,7 +224,7 @@ const SearchResults = () => {
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
-          className={clsx({
+          listClassName={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
           itemClassName={clsx({
