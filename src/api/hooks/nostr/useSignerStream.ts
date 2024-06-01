@@ -14,9 +14,19 @@ function useSignerStream() {
   const authStorageKey = `soapbox:nostr:auth:${pubkey}`;
 
   useEffect(() => {
+    let isCancelled = false;
+
     if (signer) {
-      signer.getPublicKey().then((pubkey) => setPubkey(pubkey)).catch(console.warn);
+      signer.getPublicKey().then((newPubkey) => {
+        if (!isCancelled) {
+          setPubkey(newPubkey);
+        }
+      }).catch(console.warn);
     }
+
+    return () => {
+      isCancelled = true;
+    };
   }, [signer]);
 
   useEffect(() => {
@@ -36,7 +46,6 @@ function useSignerStream() {
     return () => {
       connect.close();
     };
-
   }, [relay, signer, pubkey]);
 }
 
