@@ -62,7 +62,7 @@ const HomeTimeline: React.FC = () => {
   }, [isPartial]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent={!isMobile} withHeader={false}>
+    <Column className='py-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} withHeader={false}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           className='black:p-4 black:sm:p-5'
