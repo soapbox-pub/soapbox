@@ -1638,8 +1638,8 @@
   "video.play": "Play",
   "video.unmute": "Unmute sound",
   "who_to_follow.title": "People To Follow",
+  "zap.comment_input.placeholder": "Optional comment",
+  "zap.open_wallet": "Open Wallet",
   "zap.send_to": "Send zaps to {target}",
-  "zap.unit": "Zap amount in sats",
-  "zap.comment_input.placeholder":"Optional comment",
-  "zap.open_wallet": "Open Wallet"
+  "zap.unit": "Zap amount in sats"
 }
