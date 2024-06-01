@@ -15,6 +15,7 @@ import {
   BirthdayPanel,
   CtaBanner,
   AnnouncementsPanel,
+  NostrPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDraggedFiles, useAppDispatch } from 'soapbox/hooks';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile';
@@ -96,22 +97,23 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {me && features.announcements && (
           <AnnouncementsPanel />
         )}
-        {features.trends && (
-          <TrendsPanel limit={5} />
-        )}
-        {(hasPatron && me) && (
-          <FundingPanel />
-        )}
         {(hasCrypto && cryptoLimit > 0 && me) && (
           <CryptoDonatePanel limit={cryptoLimit} />
         )}
-        <PromoPanel />
+        <NostrPanel />
+        {(hasPatron && me) && (
+          <FundingPanel />
+        )}
         {features.birthdays && (
           <BirthdayPanel limit={10} />
+        )}
+        {features.trends && (
+          <TrendsPanel limit={5} />
         )}
         {me && features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
+        <PromoPanel />
         <LinkFooter />
       </Layout.Aside>
     </>
