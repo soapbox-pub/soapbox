@@ -8,7 +8,7 @@ import { useAccount } from 'soapbox/api/hooks';
 import Hashtag from 'soapbox/components/hashtag';
 import IconButton from 'soapbox/components/icon-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { HStack, Tabs, Text } from 'soapbox/components/ui';
+import { HStack, Spinner, Tabs, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
@@ -172,6 +172,8 @@ const SearchResults = () => {
           />
         </div>
       );
+    } else {
+      noResultsMessage = <Spinner />;
     }
   }
 
