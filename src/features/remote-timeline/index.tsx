@@ -7,6 +7,7 @@ import { useRemoteStream } from 'soapbox/api/hooks';
 import IconButton from 'soapbox/components/icon-button';
 import { Column, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch, useSettings, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 import Timeline from '../ui/components/timeline';
 
@@ -32,6 +33,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const next = useAppSelector(state => state.timelines.get('remote')?.next);
 
   const pinned = settings.remote_timeline.pinnedHosts.includes(instance);
+  const isMobile = useIsMobile();
 
   const handleCloseClick: React.MouseEventHandler = () => {
     history.push('/timeline/fediverse');
@@ -48,7 +50,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   }, [onlyMedia]);
 
   return (
-    <Column label={instance} transparent>
+    <Column label={instance} transparent={!isMobile}>
       {instance && <PinnedHostsPicker host={instance} />}
 
       {!pinned && (
@@ -76,7 +78,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
             values={{ instance }}
           />
         }
-        divideType={theme === 'black' ? 'border' : 'space'}
+        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

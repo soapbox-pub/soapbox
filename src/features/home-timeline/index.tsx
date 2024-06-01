@@ -7,6 +7,7 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Column, Stack, Text } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppSelector, useAppDispatch, useFeatures, useInstance, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -20,6 +21,7 @@ const HomeTimeline: React.FC = () => {
   const theme = useTheme();
 
   const polling = useRef<NodeJS.Timeout | null>(null);
+  const isMobile = useIsMobile();
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const next = useAppSelector(state => state.timelines.get('home')?.next);
@@ -60,14 +62,14 @@ const HomeTimeline: React.FC = () => {
   }, [isPartial]);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent withHeader={false}>
+    <Column className='py-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} withHeader={false}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           className='black:p-4 black:sm:p-5'
           scrollKey='home_timeline'
           onLoadMore={handleLoadMore}
           timelineId='home'
-          divideType={theme === 'black' ? 'border' : 'space'}
+          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
           showAds
           emptyMessage={
             <Stack space={1}>

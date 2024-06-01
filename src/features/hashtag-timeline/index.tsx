@@ -8,6 +8,7 @@ import List, { ListItem } from 'soapbox/components/list';
 import { Column, Toggle } from 'soapbox/components/ui';
 import Timeline from 'soapbox/features/ui/components/timeline';
 import { useAppDispatch, useAppSelector, useFeatures, useLoggedIn, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 interface IHashtagTimeline {
   params?: {
@@ -24,6 +25,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const next = useAppSelector(state => state.timelines.get(`hashtag:${id}`)?.next);
   const { isLoggedIn } = useLoggedIn();
   const theme = useTheme();
+  const isMobile = useIsMobile();
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandHashtagTimeline(id, { url: next, maxId }));
@@ -50,7 +52,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column label={`#${id}`} transparent>
+    <Column label={`#${id}`} transparent={!isMobile}>
       {features.followHashtags && isLoggedIn && (
         <List>
           <ListItem
@@ -69,7 +71,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
         timelineId={`hashtag:${id}`}
         onLoadMore={handleLoadMore}
         emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
-        divideType={theme === 'black' ? 'border' : 'space'}
+        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

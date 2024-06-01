@@ -8,6 +8,7 @@ import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status-qu
 import StatusList from 'soapbox/components/status-list';
 import { Column } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },
@@ -21,6 +22,7 @@ const Quotes: React.FC = () => {
   const intl = useIntl();
   const { statusId } = useParams<{ statusId: string }>();
   const theme = useTheme();
+  const isMobile = useIsMobile();
 
   const statusIds = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'items'], ImmutableOrderedSet<string>()));
   const isLoading = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'isLoading'], true));
@@ -37,7 +39,7 @@ const Quotes: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.quotes' defaultMessage='This post has not been quoted yet.' />;
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} transparent>
+    <Column label={intl.formatMessage(messages.heading)} transparent={!isMobile}>
       <StatusList
         className='black:p-4 black:sm:p-5'
         statusIds={statusIds as ImmutableOrderedSet<string>}
@@ -47,7 +49,7 @@ const Quotes: React.FC = () => {
         onLoadMore={() => handleLoadMore(statusId, dispatch)}
         onRefresh={handleRefresh}
         emptyMessage={emptyMessage}
-        divideType={theme === 'black' ? 'border' : 'space'}
+        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );
