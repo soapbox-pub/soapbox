@@ -9,6 +9,7 @@ import { useListStream } from 'soapbox/api/hooks';
 import MissingIndicator from 'soapbox/components/missing-indicator';
 import { Column, Button, Spinner } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 import Timeline from '../ui/components/timeline';
 
@@ -16,6 +17,7 @@ const ListTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
   const theme = useTheme();
+  const isMobile = useIsMobile();
 
   const list = useAppSelector((state) => state.lists.get(id));
   const next = useAppSelector(state => state.timelines.get(`list:${id}`)?.next);
@@ -60,14 +62,14 @@ const ListTimeline: React.FC = () => {
   );
 
   return (
-    <Column label={title} transparent>
+    <Column label={title} transparent={!isMobile}>
       <Timeline
         className='black:p-4 black:sm:p-5'
         scrollKey='list_timeline'
         timelineId={`list:${id}`}
         onLoadMore={handleLoadMore}
         emptyMessage={emptyMessage}
-        divideType={theme === 'black' ? 'border' : 'space'}
+        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

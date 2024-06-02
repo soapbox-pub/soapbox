@@ -15,8 +15,10 @@ import {
   BirthdayPanel,
   CtaBanner,
   AnnouncementsPanel,
+  NostrPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDraggedFiles, useAppDispatch } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
 import ComposeForm from '../features/compose/components/compose-form';
@@ -36,6 +38,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   const composeId = 'home';
   const composeBlock = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const hasPatron = soapboxConfig.extensions.getIn(['patron', 'enabled']) === true;
   const hasCrypto = typeof soapboxConfig.cryptoAddresses.getIn([0, 'ticker']) === 'string';
@@ -50,12 +53,13 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   return (
     <>
-      <Layout.Main className='space-y-3 pt-3 black:space-y-0 sm:pt-0 dark:divide-gray-800'>
+      <Layout.Main className={clsx('black:space-y-0 dark:divide-gray-800', { 'pt-3 sm:pt-0 space-y-3': !isMobile })}>
         {me && (
           <Card
-            className={clsx('relative z-[1] transition black:border-b black:border-gray-800', {
+            className={clsx('relative z-[1] border-gray-200 transition black:border-b black:border-gray-800 dark:border-gray-800', {
               'border-2 border-primary-600 border-dashed z-[99]': isDragging,
               'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
+              'border-b': isMobile,
             })}
             variant='rounded'
             ref={composeBlock}
@@ -93,22 +97,23 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {me && features.announcements && (
           <AnnouncementsPanel />
         )}
-        {features.trends && (
-          <TrendsPanel limit={5} />
-        )}
-        {(hasPatron && me) && (
-          <FundingPanel />
-        )}
         {(hasCrypto && cryptoLimit > 0 && me) && (
           <CryptoDonatePanel limit={cryptoLimit} />
         )}
-        <PromoPanel />
+        <NostrPanel />
+        {(hasPatron && me) && (
+          <FundingPanel />
+        )}
         {features.birthdays && (
           <BirthdayPanel limit={10} />
+        )}
+        {features.trends && (
+          <TrendsPanel limit={5} />
         )}
         {me && features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
+        <PromoPanel />
         <LinkFooter />
       </Layout.Aside>
     </>
