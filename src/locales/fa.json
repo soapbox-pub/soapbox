@@ -1035,7 +1035,7 @@
   "theme_toggle.light": "Light",
   "theme_toggle.system": "System",
   "thread_login.login": "Log in",
-  "thread_login.message": "Join {siteTitle} to get the full story and details.",
+  "thread_login.message": "Become a part of the {siteTitle} community.",
   "thread_login.signup": "Sign up",
   "thread_login.title": "Continue the conversation",
   "time_remaining.days": "{number, plural, one {# روز} other {# روز}} باقی مانده",
