@@ -18,7 +18,7 @@ const ThreadLoginCta: React.FC = () => {
         <Text>
           <FormattedMessage
             id='thread_login.message'
-            defaultMessage='Join {siteTitle} to get the full story and details.'
+            defaultMessage='Become a part of the {siteTitle} community.'
             values={{ siteTitle: instance.title }}
           />
         </Text>
