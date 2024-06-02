@@ -1148,6 +1148,7 @@
   "new_group_panel.title": "Crear un Grupo",
   "nostr_extension.found": "<link>Iniciar sesión</link> con la extensión del navegador.",
   "nostr_extension.not_found": "No se ha encontrado la extensión del navegador.",
+  "nostr_panel.message": "Conéctese con cualquier cliente de Nostr.",
   "nostr_relays.read_only": "Solo lectura",
   "nostr_relays.read_write": "Lectura y escritura",
   "nostr_relays.title": "Relés",
@@ -1637,5 +1638,9 @@
   "video.pause": "Pausar",
   "video.play": "Reproducir",
   "video.unmute": "Dejar de silenciar sonido",
-  "who_to_follow.title": "Who To Follow"
+  "who_to_follow.title": "Who To Follow",
+  "zap.comment_input.placeholder": "Comentario opcional",
+  "zap.open_wallet": "Abrir Wallet",
+  "zap.send_to": "Enviar zaps a {target}",
+  "zap.unit": "Cantidad de zap en el sats"
 }
