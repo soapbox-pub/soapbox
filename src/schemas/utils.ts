@@ -47,4 +47,7 @@ function coerceObject<T extends z.ZodRawShape>(shape: T) {
   return z.object({}).passthrough().catch({}).pipe(z.object(shape));
 }
 
-export { filteredArray, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
+/** Validates a hex color code. */
+const hexColorSchema = z.string().regex(/^#([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i);
+
+export { filteredArray, hexColorSchema, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
