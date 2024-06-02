@@ -314,7 +314,7 @@ const undislikeFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const zap = (status: StatusEntity, amount: number, comment:string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const zap = (status: StatusEntity, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return;
 
   dispatch(zapRequest(status));
@@ -330,11 +330,9 @@ const zap = (status: StatusEntity, amount: number, comment:string) => (dispatch:
       dispatch(zapSuccess(status));
       return undefined;
     } catch (e) { // In case it fails we just return the invoice so the QR code can be created
-      console.log(e);
       return invoice;
     }
   }).catch(function(e) {
-    console.log(e);
     dispatch(zapFail(status, e));
   });
 };
