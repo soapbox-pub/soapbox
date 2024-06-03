@@ -339,7 +339,7 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
       return;
     }
 
-    const mentions: string[] | null = status.match(/(?:^|\s)@([a-z\d_-]+(?:@[^@\s]+)?)/gi);
+    const mentions: string[] | null = status.match(/(?:^|\s)@(?:([\w.+-]+)@)?([\w_-]+(\.[\w_-]+)+)/gi);
 
     if (mentions) {
       to = to.union(mentions.map(mention => mention.trim().slice(1)));
