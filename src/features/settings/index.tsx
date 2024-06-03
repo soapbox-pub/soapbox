@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
+import CopyableInput from 'soapbox/components/copyable-input';
 import List, { ListItem } from 'soapbox/components/list';
-import { Card, CardBody, CardHeader, CardTitle, Column, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import { Card, CardBody, CardHeader, CardTitle, Column, FormGroup, Text } from 'soapbox/components/ui';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
 
@@ -44,6 +45,7 @@ const Settings = () => {
   const mfa = useAppSelector((state) => state.security.get('mfa'));
   const features = useFeatures();
   const { account } = useOwnAccount();
+  const instance = useInstance();
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -166,6 +168,20 @@ const Settings = () => {
                   <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteAccount)}</Text>} to='/settings/account' />
                 )}
               </List>
+            </CardBody>
+          </>
+        )}
+
+        {instance.nostr && (
+          <>
+            <CardHeader>
+              <CardTitle title={<FormattedMessage id='nostr_panel.title' defaultMessage='Nostr Relay' />} />
+            </CardHeader>
+
+            <CardBody className='pb-3'>
+              <FormGroup hintText={<FormattedMessage id='nostr_panel.message' defaultMessage='Connect with any Nostr client.' />}>
+                <CopyableInput value={instance.nostr.relay} />
+              </FormGroup>
             </CardBody>
           </>
         )}
