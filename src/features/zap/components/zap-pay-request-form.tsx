@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import Account from 'soapbox/components/account';
-import { Stack, Button, Select } from 'soapbox/components/ui';
+import { Stack, Button, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
@@ -23,7 +23,7 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
-  const [zapAmount, setZapAmount] = useState(1);
+  const [zapAmount, setZapAmount] = useState(500);
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -40,34 +40,26 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
     }
   };
 
-  const zapOptions = () => {
-    return (
-      [
-        <option key={1} disabled>
-          <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
-        </option>,
-        <option key={2} value={1} defaultValue={1}>1 😐</option>,
-        <option key={3} value={500}>500 👍</option>,
-        <option key={4} value={666}>666 😈 </option>,
-        <option key={5} value={1000}>1k 🚀</option>,
-      ]
-    );
-  };
-
   return (
-    <Stack element='form' onSubmit={handleSubmit}>
+    <Stack space={3} element='form' onSubmit={handleSubmit}>
       <Account account={account} showProfileHoverCard={false} />
-      <Select
-        onChange={e => setZapAmount(Number(e.target.value))}
-        children={zapOptions()}
-        size={zapOptions().length}
-      />
-      <input
-        type='text'
-        onChange={e => setZapComment(e.target.value)}
-        placeholder={intl.formatMessage(messages.zap_commentPlaceholder)}
-      />
-      <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={intl.formatMessage(messages.zap_button)} />
+
+      <div className='flex justify-center'>
+        <Input type='text' min={1} value={zapAmount} className='lg border-ul max-w-20 border-neutral-200 bg-inherit pb-1 text-center text-3xl font-bold outline-none focus:ring-0' />
+        <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
+      </div>
+
+      <div className='flex justify-center '>
+        <Button onClick={_ => setZapAmount(1)} className='m-1' type='button' theme='muted' text='😐 1' />
+        <Button onClick={_ => setZapAmount(500)} className='m-1' type='button' theme='primary' text='👍 500' />
+        <Button onClick={_ => setZapAmount(666)} className='m-1' type='button' theme='muted'  text='😈 666' />
+        <Button onClick={_ => setZapAmount(1000)} className='m-1' type='button' theme='muted' text='🚀 1K' />
+      </div>
+
+      <div className='flex w-full'>
+        <Input className='w-10/12' onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+        <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={intl.formatMessage(messages.zap_button)} />
+      </div>
     </Stack>
   );
 };
