@@ -1149,6 +1149,7 @@
   "nostr_extension.found": "<link>Iniciar sesión</link> con la extensión del navegador.",
   "nostr_extension.not_found": "No se ha encontrado la extensión del navegador.",
   "nostr_panel.message": "Conéctese con cualquier cliente de Nostr.",
+  "nostr_panel.title": "Relés de Nostr",
   "nostr_relays.read_only": "Solo lectura",
   "nostr_relays.read_write": "Lectura y escritura",
   "nostr_relays.title": "Relés",
