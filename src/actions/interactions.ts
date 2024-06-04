@@ -319,7 +319,7 @@ const zap = (account: AccountEntity, status: StatusEntity | undefined, amount: n
 
   if (status) dispatch(zapRequest(status));
 
-  return api(getState).post('/api/v1/ditto/zap', { amount, comment: comment ?? '', account_id: account.id, status_id: status?.id ?? '' }).then(async function(response) {
+  return api(getState).post('/api/v1/ditto/zap', { amount, comment, account_id: account.id, status_id: status?.id }).then(async function(response) {
     const { invoice } =  response.data;
     if (!invoice) throw Error('Could not generate invoice');
     if (!window.webln) return invoice;
