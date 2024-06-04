@@ -27,17 +27,15 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
-    if (status) {
-      const invoice = await dispatch(zap(status, zapAmount * 1000, zapComment));
-      // If invoice is undefined it means the user has paid through his extension
-      // In this case, we simply close the modal
-      if (!invoice) {
-        dispatch(closeModal('ZAP_PAY_REQUEST'));
-        return;
-      }
-      // open QR code modal
-      dispatch(openModal('ZAP_INVOICE', { invoice, account }));
+    const invoice = await dispatch(zap(account, status, zapAmount * 1000, zapComment));
+    // If invoice is undefined it means the user has paid through his extension
+    // In this case, we simply close the modal
+    if (!invoice) {
+      dispatch(closeModal('ZAP_PAY_REQUEST'));
+      return;
     }
+    // open QR code modal
+    dispatch(openModal('ZAP_INVOICE', { invoice, account }));
   };
 
   const zapOptions = () => {
