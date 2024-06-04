@@ -314,7 +314,7 @@ const undislikeFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const zap = (account: AccountEntity, status: StatusEntity|undefined, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const zap = (account: AccountEntity, status: StatusEntity | undefined, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return;
 
   if (status) dispatch(zapRequest(status));
