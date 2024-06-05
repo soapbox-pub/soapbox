@@ -66,11 +66,11 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <div className='flex justify-center '>
-        <Button onClick={_ => setZapAmount(50)} className='m-1' type='button' theme={zapAmount === 50 ? 'primary' : 'muted'} text='👍 50' />
-        <Button onClick={_ => setZapAmount(200)} className='m-1' type='button' theme={zapAmount === 200 ? 'primary' : 'muted'} text='🩵  200' />
-        <Button onClick={_ => setZapAmount(1_000)} className='m-1' type='button' theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='🤩 1K' />
-        <Button onClick={_ => setZapAmount(3_000)} className='m-1' type='button' theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='🔥 3K' />
-        <Button onClick={_ => setZapAmount(5_000)} className='m-1' type='button' theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='🧙 5K' />
+        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' theme={zapAmount === 50 ? 'primary' : 'muted'} text='👍 50' />
+        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' theme={zapAmount === 200 ? 'primary' : 'muted'} text='🩵  200' />
+        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='🤩 1K' />
+        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='🔥 3K' />
+        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='🧙 5K' />
       </div>
 
       <div className='flex justify-center'>
