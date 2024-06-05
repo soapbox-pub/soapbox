@@ -76,7 +76,7 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       <div className='flex justify-center'>
         <Input
           type='text' onChange={handleCustomAmount} value={zapAmount}
-          className='border-ul max-w-28 border-neutral-200 p-0.5 text-center font-bold outline-none focus:ring-0 sm:!text-2xl dark:bg-transparent'
+          className='border-ul max-w-28 border-neutral-200 p-0.5 text-center !text-2xl font-bold outline-none focus:ring-0 dark:bg-transparent'
         />
       </div>
 
