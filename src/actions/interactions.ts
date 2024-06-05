@@ -12,7 +12,7 @@ import { openModal } from './modals';
 import { expandGroupFeaturedTimeline } from './timelines';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -314,26 +314,26 @@ const undislikeFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const zap = (status: StatusEntity, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const zap = (account: AccountEntity, status: StatusEntity | undefined, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return;
 
-  dispatch(zapRequest(status));
+  if (status) dispatch(zapRequest(status));
 
-  return api(getState).post(`/api/v1/statuses/${status.id}/zap`, { amount, comment: comment ?? '' }).then(async function(response) {
-    const invoice = response.headers['ln-invoice'];
+  return api(getState).post('/api/v1/ditto/zap', { amount, comment, account_id: account.id, status_id: status?.id }).then(async function(response) {
+    const { invoice } =  response.data;
     if (!invoice) throw Error('Could not generate invoice');
     if (!window.webln) return invoice;
 
     try {
       await window.webln?.enable();
       await window.webln?.sendPayment(invoice);
-      dispatch(zapSuccess(status));
+      if (status) dispatch(zapSuccess(status));
       return undefined;
     } catch (e) { // In case it fails we just return the invoice so the QR code can be created
       return invoice;
     }
   }).catch(function(e) {
-    dispatch(zapFail(status, e));
+    if (status) dispatch(zapFail(status, e));
   });
 };
 
