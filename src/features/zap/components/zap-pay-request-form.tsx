@@ -74,7 +74,10 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <div className='flex justify-center'>
-        <Input type='text' onChange={handleCustomAmount} value={zapAmount} className='border-ul max-w-28 border-neutral-200 p-0.5 text-center font-bold outline-none focus:ring-0 sm:text-2xl dark:bg-transparent' />
+        <Input
+          type='text' onChange={handleCustomAmount} value={zapAmount}
+          className='border-ul max-w-28 border-neutral-200 p-0.5 text-center font-bold outline-none focus:ring-0 sm:!text-2xl dark:bg-transparent'
+        />
       </div>
 
       <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
