@@ -15,8 +15,8 @@ interface IZapPayRequestForm {
 }
 
 const messages = defineMessages({
-  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap' },
-  zap_button: { id: 'zap.button.text.raw', defaultMessage: 'Zap' },
+  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
+  zap_button: { id: 'zap.button.text.raw', defaultMessage: 'Zap {amount} sats' },
   zap_commentPlaceholder: { id: 'zap.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
 
