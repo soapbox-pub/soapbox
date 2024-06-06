@@ -53,11 +53,4 @@
     );
   }
 
-  .border-ul {
-    border: none;
-    border-radius: 0;
-    border-bottom: .25rem solid rgb(var(--color-gray-500) / var(--tw-border-opacity));
-    box-shadow: none;
-  }
-
 }
