@@ -2,8 +2,8 @@ import React from 'react';
 
 import { approveUsers, deleteUsers } from 'soapbox/actions/admin';
 import { useAccount } from 'soapbox/api/hooks';
+import Account from 'soapbox/components/account';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
-import { Stack, HStack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
 
 interface IUnapprovedAccount {
@@ -23,24 +23,18 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const handleReject = () => dispatch(deleteUsers([account.id]));
 
   return (
-    <HStack space={4} justifyContent='between'>
-      <Stack space={1}>
-        <Text weight='semibold'>
-          @{account.acct}
-        </Text>
-        <Text tag='blockquote' size='sm'>
-          {adminAccount?.invite_request || ''}
-        </Text>
-      </Stack>
-
-      <Stack justifyContent='center'>
+    <Account
+      key={account.id}
+      account={account}
+      note={adminAccount?.invite_request || ''}
+      action={(
         <AuthorizeRejectButtons
           onAuthorize={handleApprove}
           onReject={handleReject}
-          countdown={3000}
+          countdown={1000}
         />
-      </Stack>
-    </HStack>
+      )}
+    />
   );
 };
 
