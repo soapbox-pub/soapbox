@@ -27,7 +27,7 @@ const AccountAuthorize: React.FC<IAccountAuthorize> = ({ id }) => {
           <AuthorizeRejectButtons
             onAuthorize={onAuthorize}
             onReject={onReject}
-            countdown={3000}
+            countdown={1000}
           />
         }
       />
