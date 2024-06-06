@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import Account from 'soapbox/components/account';
-import { Stack, Button, Select } from 'soapbox/components/ui';
+import { Stack, Button, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
@@ -15,7 +15,8 @@ interface IZapPayRequestForm {
 }
 
 const messages = defineMessages({
-  zap_button: { id: 'status.zap', defaultMessage: 'Zap' },
+  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
+  zap_button: { id: 'zap.button.text.raw', defaultMessage: 'Zap {amount} sats' },
   zap_commentPlaceholder: { id: 'zap.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
 
@@ -23,7 +24,8 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
-  const [zapAmount, setZapAmount] = useState(1);
+  // amount in millisatoshi
+  const [zapAmount, setZapAmount] = useState(50);
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -38,34 +40,48 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
     dispatch(openModal('ZAP_INVOICE', { invoice, account }));
   };
 
-  const zapOptions = () => {
-    return (
-      [
-        <option key={1} disabled>
-          <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
-        </option>,
-        <option key={2} value={1} defaultValue={1}>1 😐</option>,
-        <option key={3} value={500}>500 👍</option>,
-        <option key={4} value={666}>666 😈 </option>,
-        <option key={5} value={1000}>1k 🚀</option>,
-      ]
-    );
+  const handleCustomAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e?.preventDefault();
+    const inputAmount = e.target.value.replace(/[^0-9]/g, '');
+
+    const maxSendable = 250000000;
+    // multiply by 1000 to convert from satoshi to millisatoshi
+    if (maxSendable * 1000 > Number(inputAmount)) {
+      setZapAmount(Number(inputAmount));
+    }
+  };
+
+  const renderZapButtonText = () => {
+    if (zapAmount >= 1000) {
+      return intl.formatMessage(messages.zap_button_rounded, { amount: Math.round((zapAmount / 1000) * 10) / 10 });
+    }
+    return intl.formatMessage(messages.zap_button, { amount: zapAmount });
   };
 
   return (
-    <Stack element='form' onSubmit={handleSubmit}>
+    <Stack space={3} element='form' onSubmit={handleSubmit}>
       <Account account={account} showProfileHoverCard={false} />
-      <Select
-        onChange={e => setZapAmount(Number(e.target.value))}
-        children={zapOptions()}
-        size={zapOptions().length}
-      />
-      <input
-        type='text'
-        onChange={e => setZapComment(e.target.value)}
-        placeholder={intl.formatMessage(messages.zap_commentPlaceholder)}
-      />
-      <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={intl.formatMessage(messages.zap_button)} />
+      <div>
+        <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
+      </div>
+
+      <div className='flex justify-center '>
+        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' theme={zapAmount === 50 ? 'primary' : 'muted'} text='👍 50' />
+        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' theme={zapAmount === 200 ? 'primary' : 'muted'} text='🩵  200' />
+        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='🤩 1K' />
+        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='🔥 3K' />
+        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='🧙 5K' />
+      </div>
+
+      <div className='flex justify-center'>
+        <Input
+          type='text' onChange={handleCustomAmount} value={zapAmount}
+          className='box-shadow:none max-w-28 rounded-none border-0 border-b-4 p-0.5 text-center !text-2xl font-bold !ring-0 dark:bg-transparent'
+        />
+      </div>
+
+      <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+      <Button className='m-auto w-auto shadow-[0_4px_rgba(18,95,139,1)]' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
     </Stack>
   );
 };

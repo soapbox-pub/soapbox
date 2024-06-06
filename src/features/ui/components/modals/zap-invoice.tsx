@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
 import CopyableInput from 'soapbox/components/copyable-input';
-import { Modal, Button } from 'soapbox/components/ui';
+import { Modal, Button, Stack } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -34,11 +34,15 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, onClose }) =
 
   return (
     <Modal title={renderTitle()} onClose={onClickClose}>
-      <QRCodeCanvas value={invoice} />
-      <CopyableInput value={invoice} />
-      <a href={'lightning:' + invoice}>
-        <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
-      </a>
+      <Stack space={3} className='m-auto items-center'>
+        <QRCodeCanvas value={invoice} />
+        <div className='w-full'>
+          <CopyableInput value={invoice} />
+        </div>
+        <a href={'lightning:' + invoice}>
+          <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
+        </a>
+      </Stack>
     </Modal>
   );
 };
