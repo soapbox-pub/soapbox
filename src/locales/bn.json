@@ -67,7 +67,6 @@
   "column.aliases": "Account aliases",
   "column.aliases.delete": "Delete",
   "column.blocks": "যাদের বন্ধ করে রাখা হয়েছে",
-  "column.community": "স্থানীয় সময়সারি",
   "column.direct": "সরাসরি লেখা",
   "column.domain_blocks": "সরিয়ে ফেলা ওয়েবসাইট",
   "column.export_data": "Export data",

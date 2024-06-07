@@ -67,7 +67,6 @@
   "column.aliases": "Account aliases",
   "column.aliases.delete": "Delete",
   "column.blocks": "Estetyt käyttäjät",
-  "column.community": "Paikallinen aikajana",
   "column.direct": "Viestit",
   "column.domain_blocks": "Piilotetut verkkotunnukset",
   "column.export_data": "Export data",

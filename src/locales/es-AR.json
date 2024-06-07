@@ -116,7 +116,6 @@
   "column.aliases": "Account aliases",
   "column.aliases.delete": "Delete",
   "column.blocks": "Usuarios bloqueados",
-  "column.community": "Línea temporal local",
   "column.direct": "Mensajes directos",
   "column.domain_blocks": "Dominios ocultos",
   "column.export_data": "Export data",
