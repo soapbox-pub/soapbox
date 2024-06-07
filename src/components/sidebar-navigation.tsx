@@ -178,8 +178,8 @@ const SidebarNavigation = () => {
             {(account || !restrictUnauth.timelines.local) && (
               <SidebarNavigationLink
                 to='/timeline/local'
-                icon={features.federating ? require('@tabler/icons/outline/users-group.svg') : require('@tabler/icons/outline/world.svg')}
-                text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
+                icon={features.federating ? require('@tabler/icons/outline/at.svg') : require('@tabler/icons/outline/world.svg')}
+                text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
               />
             )}
 

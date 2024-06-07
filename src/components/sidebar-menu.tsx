@@ -248,8 +248,8 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                     <SidebarLink
                       to='/timeline/local'
-                      icon={features.federating ? require('@tabler/icons/outline/users-group.svg') : require('@tabler/icons/outline/world.svg')}
-                      text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                      icon={features.federating ? require('@tabler/icons/outline/at.svg') : require('@tabler/icons/outline/world.svg')}
+                      text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                       onClick={onClose}
                     />
 
