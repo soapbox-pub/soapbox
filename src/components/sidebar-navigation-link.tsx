@@ -57,7 +57,7 @@ const SidebarNavigationLink = React.forwardRef((props: ISidebarNavigationLink, r
         />
       </span>
 
-      <Text weight='semibold' theme='inherit'>{text}</Text>
+      <Text weight='semibold' theme='inherit' truncate>{text}</Text>
     </NavLink>
   );
 });
