@@ -39,7 +39,7 @@ const SearchPage: React.FC<ISearchPage> = ({ children }) => {
           <TrendsPanel limit={5} />
         )}
 
-        {me && features.suggestions && (
+        {features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
 

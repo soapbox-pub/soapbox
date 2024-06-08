@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Text, Widget } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import PlaceholderSidebarSuggestions from 'soapbox/features/placeholder/components/placeholder-sidebar-suggestions';
+import { useOwnAccount } from 'soapbox/hooks';
 import { useDismissSuggestion, useSuggestions } from 'soapbox/queries/suggestions';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
@@ -20,6 +21,7 @@ interface IWhoToFollowPanel {
 const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
   const intl = useIntl();
 
+  const { account } = useOwnAccount();
   const { data: suggestions, isFetching } = useSuggestions();
   const dismissSuggestion = useDismissSuggestion();
 
@@ -54,7 +56,7 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
             id={suggestion.account}
             actionIcon={require('@tabler/icons/outline/x.svg')}
             actionTitle={intl.formatMessage(messages.dismissSuggestion)}
-            onActionClick={handleDismiss}
+            onActionClick={account ? handleDismiss : undefined}
           />
         ))
       )}

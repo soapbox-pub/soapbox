@@ -36,7 +36,7 @@ const DefaultPage: React.FC<IDefaultPage> = ({ children }) => {
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
-        {me && features.suggestions && (
+        {features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter key='link-footer' />
