@@ -36,7 +36,7 @@ const StatusPage: React.FC<IStatusPage> = ({ children }) => {
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
-        {me && features.suggestions && (
+        {features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter />

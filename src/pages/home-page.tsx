@@ -108,7 +108,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
-        {me && features.suggestions && (
+        {features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
         <PromoPanel />

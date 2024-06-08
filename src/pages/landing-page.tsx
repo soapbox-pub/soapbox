@@ -5,6 +5,7 @@ import {
   TrendsPanel,
   SignUpPanel,
   CtaBanner,
+  WhoToFollowPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { useAppSelector, useFeatures } from 'soapbox/hooks';
 
@@ -34,6 +35,9 @@ const LandingPage: React.FC<ILandingPage> = ({ children }) => {
         )}
         {features.trends && (
           <TrendsPanel limit={5} />
+        )}
+        {features.suggestions && (
+          <WhoToFollowPanel limit={3} />
         )}
         <LinkFooter />
       </Layout.Aside>

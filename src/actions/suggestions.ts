@@ -56,11 +56,8 @@ const fetchSuggestionsV2 = (params: Record<string, any> = {}) =>
 const fetchSuggestions = (params: Record<string, any> = { limit: 50 }) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const me = state.me;
     const instance = state.instance;
     const features = getFeatures(instance);
-
-    if (!me) return null;
 
     if (features.suggestionsV2) {
       return dispatch(fetchSuggestionsV2(params))
