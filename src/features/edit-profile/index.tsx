@@ -129,8 +129,8 @@ interface AccountCredentials {
   birthday?: string;
   /** Nostr NIP-05 identifier. */
   nip05?: string;
-  /** 
-   * Lightning address.  
+  /**
+   * Lightning address.
    * https://github.com/lnurl/luds/blob/luds/16.md
    */
   lud16?: string;

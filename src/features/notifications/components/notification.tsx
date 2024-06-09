@@ -1,19 +1,21 @@
 import React, { useCallback } from 'react';
-import { defineMessages, useIntl, FormattedMessage, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
+import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose';
 import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
+import { patchMe } from 'soapbox/actions/me';
 import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
-import { HStack, Text, Emoji } from 'soapbox/components/ui';
+import { HStack, Text, Emoji, Button, Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
 import { makeGetNotification } from 'soapbox/selectors';
+import toast from 'soapbox/toast';
 import { NotificationType, validType } from 'soapbox/utils/notification';
 
 import type { ScrollPosition } from 'soapbox/components/status';
@@ -56,6 +58,7 @@ const icons: Record<NotificationType, string> = {
   'pleroma:event_reminder': require('@tabler/icons/outline/calendar-time.svg'),
   'pleroma:participation_request': require('@tabler/icons/outline/calendar-event.svg'),
   'pleroma:participation_accepted': require('@tabler/icons/outline/calendar-event.svg'),
+  'ditto:name_grant': require('@tabler/icons/outline/user-check.svg'),
 };
 
 const nameMessage = defineMessage({
@@ -63,7 +66,7 @@ const nameMessage = defineMessage({
   defaultMessage: '{link}{others}',
 });
 
-const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
+const notificationMessages: Record<NotificationType, MessageDescriptor> = defineMessages({
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -132,29 +135,32 @@ const messages: Record<NotificationType, MessageDescriptor> = defineMessages({
     id: 'notification.pleroma:participation_accepted',
     defaultMessage: 'You were accepted to join the event',
   },
+  'ditto:name_grant': {
+    id: 'notification.ditto:name_grant',
+    defaultMessage: 'You were granted the name {acct}',
+  },
+});
+
+const messages = defineMessages({
+  updateNameSuccess: { id: 'notification.update_name_success', defaultMessage: 'Name updated successfully' },
 });
 
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
   account: AccountEntity,
-  totalCount: number | null,
+  acct: string | undefined,
   targetName: string,
   instanceTitle: string,
 ): React.ReactNode => {
   const link = buildLink(account);
   const name = intl.formatMessage(nameMessage, {
     link,
-    others: totalCount && totalCount > 0 ? (
-      <FormattedMessage
-        id='notification.others'
-        defaultMessage='+ {count, plural, one {# other} other {# others}}'
-        values={{ count: totalCount - 1 }}
-      />
-    ) : '',
+    others: '',
   });
 
-  return intl.formatMessage(messages[type], {
+  return intl.formatMessage(notificationMessages[type], {
+    acct,
     name,
     targetName,
     instance: instanceTitle,
@@ -274,6 +280,11 @@ const Notification: React.FC<INotification> = (props) => {
     }
   };
 
+  const updateName = async (name: string) => {
+    await dispatch(patchMe({ nip05: name }));
+    toast.success(messages.updateNameSuccess);
+  };
+
   const renderIcon = (): React.ReactNode => {
     if (type === 'pleroma:emoji_reaction' && notification.emoji) {
       return (
@@ -349,19 +360,32 @@ const Notification: React.FC<INotification> = (props) => {
             showGroup={false}
           />
         ) : null;
+      case 'ditto:name_grant':
+        return (
+          <Stack className='p-4'>
+            <Button onClick={() => updateName(notification.name)}>
+              <FormattedMessage
+                id='notification.set_name' defaultMessage='Set name to {name}'
+                values={{ name: notification.name }}
+              />
+            </Button>
+          </Stack>
+        );
       default:
         return null;
     }
   };
 
+  const acct = notification.name;
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, notification.total_count, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, acct, targetName, instance.title) : null;
 
   const ariaLabel = validType(type) ? (
     notificationForScreenReader(
       intl,
-      intl.formatMessage(messages[type], {
+      intl.formatMessage(notificationMessages[type], {
+        acct,
         name: account && typeof account === 'object' ? account.acct : '',
         targetName,
       }),
