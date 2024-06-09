@@ -39,6 +39,10 @@ const ADMIN_USERS_APPROVE_REQUEST = 'ADMIN_USERS_APPROVE_REQUEST';
 const ADMIN_USERS_APPROVE_SUCCESS = 'ADMIN_USERS_APPROVE_SUCCESS';
 const ADMIN_USERS_APPROVE_FAIL    = 'ADMIN_USERS_APPROVE_FAIL';
 
+const ADMIN_USERS_REJECT_REQUEST = 'ADMIN_USERS_REJECT_REQUEST';
+const ADMIN_USERS_REJECT_SUCCESS = 'ADMIN_USERS_REJECT_SUCCESS';
+const ADMIN_USERS_REJECT_FAIL    = 'ADMIN_USERS_REJECT_FAIL';
+
 const ADMIN_USERS_DEACTIVATE_REQUEST = 'ADMIN_USERS_DEACTIVATE_REQUEST';
 const ADMIN_USERS_DEACTIVATE_SUCCESS = 'ADMIN_USERS_DEACTIVATE_SUCCESS';
 const ADMIN_USERS_DEACTIVATE_FAIL    = 'ADMIN_USERS_DEACTIVATE_FAIL';
@@ -309,56 +313,80 @@ const deactivateUsers = (accountIds: string[], reportId?: string) =>
     }
   };
 
-const deleteUsers = (accountIds: string[]) =>
+const deleteUser = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = accountIdsToAccts(getState(), accountIds);
-    dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountIds });
+    const nicknames = accountIdsToAccts(getState(), [accountId]);
+    dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountId });
     return api(getState)
       .delete('/api/v1/pleroma/admin/users', { data: { nicknames } })
       .then(({ data: nicknames }) => {
-        dispatch({ type: ADMIN_USERS_DELETE_SUCCESS, nicknames, accountIds });
+        dispatch({ type: ADMIN_USERS_DELETE_SUCCESS, nicknames, accountId });
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, accountIds });
+        dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, accountId });
       });
   };
 
-const approveMastodonUsers = (accountIds: string[]) =>
+const approveMastodonUser = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) =>
-    Promise.all(accountIds.map(accountId => {
-      api(getState)
-        .post(`/api/v1/admin/accounts/${accountId}/approve`)
-        .then(({ data: user }) => {
-          dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users: [user], accountIds: [accountId] });
-        }).catch(error => {
-          dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds: [accountId] });
-        });
-    }));
+    api(getState)
+      .post(`/api/v1/admin/accounts/${accountId}/approve`)
+      .then(({ data: user }) => {
+        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, user, accountId });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountId });
+      });
 
-const approvePleromaUsers = (accountIds: string[]) =>
+const approvePleromaUser = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const nicknames = accountIdsToAccts(getState(), accountIds);
+    const nicknames = accountIdsToAccts(getState(), [accountId]);
     return api(getState)
       .patch('/api/v1/pleroma/admin/users/approve', { nicknames })
       .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, accountIds });
+        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, user: users[0], accountId });
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds });
+        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountId });
       });
   };
 
-const approveUsers = (accountIds: string[]) =>
+const rejectMastodonUser = (accountId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
+      .post(`/api/v1/admin/accounts/${accountId}/reject`)
+      .then(({ data: user }) => {
+        dispatch({ type: ADMIN_USERS_REJECT_SUCCESS, user, accountId });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_REJECT_FAIL, error, accountId });
+      });
+
+const approveUser = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
 
     const instance = state.instance;
     const features = getFeatures(instance);
 
-    dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountIds });
+    dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountId });
 
     if (features.mastodonAdmin) {
-      return dispatch(approveMastodonUsers(accountIds));
+      return dispatch(approveMastodonUser(accountId));
     } else {
-      return dispatch(approvePleromaUsers(accountIds));
+      return dispatch(approvePleromaUser(accountId));
+    }
+  };
+
+const rejectUser = (accountId: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    const state = getState();
+
+    const instance = state.instance;
+    const features = getFeatures(instance);
+
+    dispatch({ type: ADMIN_USERS_REJECT_REQUEST, accountId });
+
+    if (features.mastodonAdmin) {
+      return dispatch(rejectMastodonUser(accountId));
+    } else {
+      return dispatch(deleteUser(accountId));
     }
   };
 
@@ -562,6 +590,9 @@ export {
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
   ADMIN_USERS_APPROVE_FAIL,
+  ADMIN_USERS_REJECT_REQUEST,
+  ADMIN_USERS_REJECT_SUCCESS,
+  ADMIN_USERS_REJECT_FAIL,
   ADMIN_USERS_DEACTIVATE_REQUEST,
   ADMIN_USERS_DEACTIVATE_SUCCESS,
   ADMIN_USERS_DEACTIVATE_FAIL,
@@ -597,8 +628,9 @@ export {
   closeReports,
   fetchUsers,
   deactivateUsers,
-  deleteUsers,
-  approveUsers,
+  deleteUser,
+  approveUser,
+  rejectUser,
   deleteStatus,
   toggleStatusSensitivity,
   tagUsers,

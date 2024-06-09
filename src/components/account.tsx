@@ -71,6 +71,7 @@ const ProfilePopper: React.FC<IProfilePopper> = ({ condition, wrapper, children 
 };
 
 export interface IAccount {
+  acct?: string;
   account: AccountSchema;
   action?: React.ReactElement;
   actionAlignment?: 'center' | 'top';
@@ -99,6 +100,7 @@ export interface IAccount {
 }
 
 const Account = ({
+  acct,
   account,
   actionType,
   action,
@@ -228,7 +230,7 @@ const Account = ({
 
             <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1}>
-                <Text theme='muted' size='sm' direction='ltr' truncate>@{username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{acct ?? username}</Text>
 
                 {account.pleroma?.favicon && (
                   <InstanceFavicon account={account} disabled={!withLinkToProfile} />

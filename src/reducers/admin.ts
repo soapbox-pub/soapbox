@@ -19,6 +19,8 @@ import {
   ADMIN_USERS_DELETE_SUCCESS,
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
+  ADMIN_USERS_REJECT_REQUEST,
+  ADMIN_USERS_REJECT_SUCCESS,
 } from 'soapbox/actions/admin';
 import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers';
 import { normalizeId } from 'soapbox/utils/normalizers';
@@ -120,22 +122,18 @@ function importUsers(state: State, users: APIUser[], filters: Filter[], page: nu
   });
 }
 
-function deleteUsers(state: State, accountIds: string[]): State {
+function deleteUser(state: State, accountId: string): State {
   return state.withMutations(state => {
-    accountIds.forEach(id => {
-      state.update('awaitingApproval', orderedSet => orderedSet.delete(id));
-      state.deleteIn(['users', id]);
-    });
+    state.update('awaitingApproval', orderedSet => orderedSet.delete(accountId));
+    state.deleteIn(['users', accountId]);
   });
 }
 
-function approveUsers(state: State, users: APIUser[]): State {
+function approveUser(state: State, user: APIUser): State {
+  const normalizedUser = fixUser(user);
   return state.withMutations(state => {
-    users.forEach(user => {
-      const normalizedUser = fixUser(user);
-      state.update('awaitingApproval', orderedSet => orderedSet.delete(user.id));
-      state.setIn(['users', user.id], normalizedUser);
-    });
+    state.update('awaitingApproval', orderedSet => orderedSet.delete(user.id));
+    state.setIn(['users', user.id], normalizedUser);
   });
 }
 
@@ -207,11 +205,13 @@ export default function admin(state: State = ReducerRecord(), action: AnyAction)
       return importUsers(state, action.users, action.filters, action.page);
     case ADMIN_USERS_DELETE_REQUEST:
     case ADMIN_USERS_DELETE_SUCCESS:
-      return deleteUsers(state, action.accountIds);
+    case ADMIN_USERS_REJECT_REQUEST:
+    case ADMIN_USERS_REJECT_SUCCESS:
+      return deleteUser(state, action.accountId);
     case ADMIN_USERS_APPROVE_REQUEST:
-      return state.update('awaitingApproval', set => set.subtract(action.accountIds));
+      return state.update('awaitingApproval', set => set.remove(action.accountId));
     case ADMIN_USERS_APPROVE_SUCCESS:
-      return approveUsers(state, action.users);
+      return approveUser(state, action.user);
     default:
       return state;
   }
