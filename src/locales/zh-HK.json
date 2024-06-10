@@ -622,7 +622,6 @@
   "notification.mentioned": "{name} 提到了你",
   "notification.move": "{name} 移動到了 {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} 其他通知",
   "notification.pleroma:chat_mention": "{name} 給你發送了訊息",
   "notification.pleroma:emoji_reaction": "{name} 用表情回應了你的帖文",
   "notification.poll": "你參與的一項投票已經結束",

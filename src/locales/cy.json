@@ -392,7 +392,6 @@
   "notification.follow_request": "Hoffai {name} eich dilyn chi",
   "notification.mention": "Soniodd {name} amdanoch chi",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.pleroma:chat_mention": "Anfonodd {name} neges atoch",
   "notification.pleroma:participation_accepted": "Derbyniwyd eich cais i ymuno â'r digwyddiad",
   "notification.pleroma:participation_request": "Hoffai {name} ymuno â'ch digwyddiad",

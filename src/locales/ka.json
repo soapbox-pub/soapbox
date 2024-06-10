@@ -237,7 +237,6 @@
   "notification.follow": "{name} გამოგყვათ",
   "notification.mention": "{name}-მა გასახელათ",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count} {count, plural, one {other} other {others}}",
   "notification.reblog": "{name}-მა დაბუსტა თქვენი სტატუსი",
   "notifications.filter.favourites": "Favorites",
   "notifications.group": "{count} შეტყობინება",

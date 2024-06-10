@@ -1054,7 +1054,6 @@
   "notification.mentioned": "{name} senden bahsetti",
   "notification.move": "{name}, {targetName} konumuna taşındı",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} diğer",
   "notification.pleroma:chat_mention": "{name} sana bir mesaj gönderdi",
   "notification.pleroma:emoji_reaction": "{name} gönderinize tepki verdi",
   "notification.pleroma:event_reminder": "Katıldığınız bir etkinlik yakında başlıyor",

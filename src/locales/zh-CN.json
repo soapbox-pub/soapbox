@@ -1067,7 +1067,6 @@
   "notification.mentioned": "{name} 提及了您",
   "notification.move": "{name} 移动到了 {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count} 条其它通知",
   "notification.pleroma:chat_mention": "{name} 给您发送了信息",
   "notification.pleroma:emoji_reaction": "{name} 表情回应了您的帖文",
   "notification.pleroma:event_reminder": "您参加的一项活动即将开始",

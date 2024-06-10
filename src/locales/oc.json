@@ -668,7 +668,6 @@
   "notification.mentioned": "{name} mentioned you",
   "notification.move": "{name} moved to {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.pleroma:chat_mention": "{name} sent you a message",
   "notification.pleroma:emoji_reaction": "{name} reacted to your post",
   "notification.poll": "Avètz participat a un sondatge que ven de s’acabar",

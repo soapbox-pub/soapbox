@@ -253,7 +253,6 @@
   "notification.follow": "{name} మిమ్మల్ని అనుసరిస్తున్నారు",
   "notification.mention": "{name} మిమ్మల్ని ప్రస్తావించారు",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "మీరు పాల్గొనిన ఎన్సిక ముగిసినది",
   "notification.reblog": "{name} మీ స్టేటస్ ను బూస్ట్ చేసారు",
   "notifications.filter.all": "అన్నీ",

@@ -1168,7 +1168,6 @@
   "notification.mentioned": "{name} mentioned you",
   "notification.move": "{name} moved to {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count, plural, one {# otro} other {# otros}}",
   "notification.pleroma:chat_mention": "{name} sent you a message",
   "notification.pleroma:emoji_reaction": "{name} reacted to your post",
   "notification.pleroma:event_reminder": "Un evento en el que participas empezará pronto",

@@ -262,7 +262,6 @@
   "notification.follow": "{name} está a seguila",
   "notification.mention": "{name} mencionoute",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "Unha sondaxe na que votou xa rematou",
   "notification.reblog": "{name} promoveu o seu estado",
   "notifications.filter.all": "Todo",

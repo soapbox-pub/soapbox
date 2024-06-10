@@ -261,7 +261,6 @@
   "notification.follow": "{name} ได้ติดตามคุณ",
   "notification.mention": "{name} ได้กล่าวถึงคุณ",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "โพลที่คุณได้ลงคะแนนได้สิ้นสุดแล้ว",
   "notification.reblog": "{name} ได้ดันสถานะของคุณ",
   "notifications.filter.all": "ทั้งหมด",

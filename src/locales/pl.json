@@ -1106,7 +1106,6 @@
   "notification.mentioned": "{name} wspomniał(a) o tobie",
   "notification.move": "{name} przeniósł(-osła) się na {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count} więcej",
   "notification.pleroma:chat_mention": "{name} wysłał(a) Ci wiadomośść",
   "notification.pleroma:emoji_reaction": "{name} zareagował(a) na Twój wpis",
   "notification.pleroma:event_reminder": "Wydarzenie w którym bierzesz udział wkrótce się zaczyna",

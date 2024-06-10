@@ -1068,7 +1068,6 @@
   "notification.mentioned": "{name} menyebutmu",
   "notification.move": "{name} pindah ke {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {hitung, jamak, satu {# lainnya} lainnya {# lainnya}}",
   "notification.pleroma:chat_mention": "{name} mengirimimu pesan",
   "notification.pleroma:emoji_reaction": "{name} bereaksi terhadap postingan Anda",
   "notification.pleroma:event_reminder": "Acara yang Anda ikuti akan segera dimulai",

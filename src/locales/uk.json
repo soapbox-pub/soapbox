@@ -318,7 +318,6 @@
   "notification.follow_request": "{name} відправив(-ла) запит на підписку",
   "notification.mention": "{name} згадав(-ла) Вас",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "Опитування, у якому ви голосували, закінчилося",
   "notification.reblog": "{name} передмухнув(-ла) Ваш допис",
   "notifications.filter.all": "Усі",

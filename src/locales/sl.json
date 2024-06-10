@@ -257,7 +257,6 @@
   "notification.follow": "{name} vam sledi",
   "notification.mention": "{name} vas je omenil/a",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "Glasovanje, v katerem ste sodelovali, se je končalo",
   "notification.reblog": "{name} je spodbudil/a vaš status",
   "notifications.filter.all": "Vse",

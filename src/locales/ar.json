@@ -1076,7 +1076,6 @@
   "notification.mentioned": "{name} أشار إليك",
   "notification.move": "{name} تغير إلى {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count, plural, one {# آخر} other {# آخرون}}",
   "notification.pleroma:chat_mention": "{name} أرسل لك رسالة",
   "notification.pleroma:emoji_reaction": "تفاعل {name} مع منشورك",
   "notification.pleroma:event_reminder": "يبدأ الحدث الذي تشارك فيه قريبًا",

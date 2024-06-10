@@ -668,7 +668,6 @@
   "notification.mentioned": "{name} mentioned you",
   "notification.move": "{name} 𐑥𐑵𐑝𐑛 𐑑 {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.pleroma:chat_mention": "{name} 𐑕𐑧𐑯𐑑 𐑿 𐑩 𐑥𐑧𐑕𐑦𐑡",
   "notification.pleroma:emoji_reaction": "{name} 𐑮𐑦𐑨𐑒𐑑𐑩𐑛 𐑑 𐑘𐑹 𐑐𐑴𐑕𐑑",
   "notification.poll": "A 𐑐𐑴𐑤 𐑿 𐑣𐑨𐑝 𐑝𐑴𐑑𐑩𐑛 𐑦𐑯 𐑣𐑨𐑟 𐑧𐑯𐑛𐑩𐑛",

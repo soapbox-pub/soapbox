@@ -306,7 +306,6 @@
   "notification.follow": "{name} te empezó a seguir",
   "notification.mention": "{name} te mencionó",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "Finalizó una encuesta en la que votaste",
   "notification.reblog": "{name} retooteó tu estado",
   "notifications.filter.all": "Todas",

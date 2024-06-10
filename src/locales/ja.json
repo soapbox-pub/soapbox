@@ -1000,7 +1000,6 @@
   "notification.mention": "{name}さんがあなたに返信しました",
   "notification.mentioned": "{name} があなたをメンションしました",
   "notification.name": "{link}{others}",
-  "notification.others": "+ {count} {count, plural, one {other} other {others}}",
   "notification.pleroma:chat_mention": "{name}さんがあなたにメッセージを送りました",
   "notification.pleroma:emoji_reaction": "{name}さんがあなたの投稿に反応しました",
   "notification.pleroma:participation_request": "{name} があなたのイベントに参加を申請しています",

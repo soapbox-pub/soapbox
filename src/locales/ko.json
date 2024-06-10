@@ -668,7 +668,6 @@
   "notification.mentioned": "{name} mentioned you",
   "notification.move": "{name} moved to {targetName}",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.pleroma:chat_mention": "{name} sent you a message",
   "notification.pleroma:emoji_reaction": "{name} reacted to your post",
   "notification.poll": "당신이 참여 한 투표가 종료되었습니다",

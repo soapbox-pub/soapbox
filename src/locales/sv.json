@@ -257,7 +257,6 @@
   "notification.follow": "{name} följer dig",
   "notification.mention": "{name} nämnde dig",
   "notification.name": "{link}{others}",
-  "notification.others": " + {count} {count, plural, one {other} other {others}}",
   "notification.poll": "En omröstning du röstat i har avslutats",
   "notification.reblog": "{name} knuffade din status",
   "notifications.filter.all": "Alla",
