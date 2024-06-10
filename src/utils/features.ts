@@ -944,6 +944,9 @@ const getInstanceFeatures = (instance: Instance) => {
      */
     resetPassword: v.software === PLEROMA,
 
+    /** Admin can revoke the user's identity (without deleting their account). */
+    revokeName: v.software === DITTO,
+
     /**
      * Ability to post statuses in Markdown, BBCode, and HTML.
      * @see POST /api/v1/statuses

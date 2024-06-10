@@ -270,6 +270,14 @@ const fetchUsers = (filters: string[] = [], page = 1, query?: string | null, pag
     }
   };
 
+const revokeName = (accountId: string, reportId?: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) =>
+    api(getState)
+      .post(`/api/v1/admin/accounts/${accountId}/action`, {
+        type: 'revoke_name',
+        report_id: reportId,
+      });
+
 const deactivateMastodonUsers = (accountIds: string[], reportId?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     Promise.all(accountIds.map(accountId => {
@@ -631,6 +639,7 @@ export {
   deleteUser,
   approveUser,
   rejectUser,
+  revokeName,
   deleteStatus,
   toggleStatusSensitivity,
   tagUsers,

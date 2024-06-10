@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { setBadges as saveBadges } from 'soapbox/actions/admin';
+import { revokeName, setBadges as saveBadges } from 'soapbox/actions/admin';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import { useAccount } from 'soapbox/api/hooks';
 import { useSuggest, useVerify } from 'soapbox/api/hooks/admin';
@@ -25,6 +25,7 @@ const messages = defineMessages({
   userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
   userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
   badgesSaved: { id: 'admin.users.badges_saved_message', defaultMessage: 'Custom badges updated.' },
+  revokedName: { id: 'admin.users.revoked_name_message', defaultMessage: 'Name revoked.' },
 });
 
 interface IAccountModerationModal {
@@ -86,6 +87,12 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
 
   const handleDeactivate = () => {
     dispatch(deactivateUserModal(intl, account.id));
+  };
+
+  const handleRevokeName = () => {
+    dispatch(revokeName(account.id))
+      .then(() => toast.success(intl.formatMessage(messages.revokedName)))
+      .catch(() => {});
   };
 
   const handleDelete = () => {
@@ -151,6 +158,13 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
         </List>
 
         <List>
+          {features.revokeName && (
+            <ListItem
+              label={<FormattedMessage id='account_moderation_modal.fields.revoke_name' defaultMessage='Revoke name' />}
+              onClick={handleRevokeName}
+            />
+          )}
+
           <ListItem
             label={<FormattedMessage id='account_moderation_modal.fields.deactivate' defaultMessage='Deactivate account' />}
             onClick={handleDeactivate}
