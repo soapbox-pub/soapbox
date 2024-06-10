@@ -75,6 +75,7 @@ export const StatusRecord = ImmutableRecord({
   reblogged: false,
   reblogs_count: 0,
   replies_count: 0,
+  zaps_amount: 0,
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
