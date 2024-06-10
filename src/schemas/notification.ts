@@ -10,7 +10,6 @@ const baseNotificationSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   id: z.string(),
   type: z.string(),
-  total_count: z.number().optional().catch(undefined), // TruthSocial
 });
 
 const mentionNotificationSchema = baseNotificationSchema.extend({
@@ -82,6 +81,11 @@ const participationAcceptedNotificationSchema = baseNotificationSchema.extend({
   status: statusSchema,
 });
 
+const nameGrantNotificationSchema = baseNotificationSchema.extend({
+  type: z.literal('ditto:name_grant'),
+  name: z.string(),
+});
+
 const notificationSchema = z.discriminatedUnion('type', [
   mentionNotificationSchema,
   statusNotificationSchema,
@@ -97,6 +101,7 @@ const notificationSchema = z.discriminatedUnion('type', [
   eventReminderNotificationSchema,
   participationRequestNotificationSchema,
   participationAcceptedNotificationSchema,
+  nameGrantNotificationSchema,
 ]);
 
 type Notification = z.infer<typeof notificationSchema>;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { approveUsers, deleteUsers } from 'soapbox/actions/admin';
+import { approveUser, rejectUser } from 'soapbox/actions/admin';
 import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
@@ -14,18 +14,19 @@ interface IUnapprovedAccount {
 const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const dispatch = useAppDispatch();
 
-  const { account } = useAccount(accountId);
   const adminAccount = useAppSelector(state => state.admin.users.get(accountId));
+  const { account } = useAccount(adminAccount?.account || undefined);
 
-  if (!account) return null;
+  if (!adminAccount || !account) return null;
 
-  const handleApprove = () => dispatch(approveUsers([account.id]));
-  const handleReject = () => dispatch(deleteUsers([account.id]));
+  const handleApprove = () => dispatch(approveUser(adminAccount.id));
+  const handleReject = () => dispatch(rejectUser(adminAccount.id));
 
   return (
     <Account
-      key={account.id}
+      key={adminAccount.id}
       account={account}
+      acct={`${adminAccount.username}@${adminAccount.domain}`}
       note={adminAccount?.invite_request || ''}
       action={(
         <AuthorizeRejectButtons
