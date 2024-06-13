@@ -5,6 +5,7 @@ interface NConnectOpts {
   signer: NostrSigner;
   authorizedPubkey: string | undefined;
   onAuthorize(pubkey: string): void;
+  onSubscribed(): void;
   getSecret(): string;
 }
 
@@ -14,6 +15,7 @@ export class NConnect {
   private signer: NostrSigner;
   private authorizedPubkey: string | undefined;
   private onAuthorize: (pubkey: string) => void;
+  private onSubscribed: () => void;
   private getSecret: () => string;
 
   private controller = new AbortController();
@@ -23,6 +25,7 @@ export class NConnect {
     this.signer = opts.signer;
     this.authorizedPubkey = opts.authorizedPubkey;
     this.onAuthorize = opts.onAuthorize;
+    this.onSubscribed = opts.onSubscribed;
     this.getSecret = opts.getSecret;
 
     this.open();
@@ -32,7 +35,10 @@ export class NConnect {
     const pubkey = await this.signer.getPublicKey();
     const signal = this.controller.signal;
 
-    for await (const msg of this.relay.req([{ kinds: [24133], '#p': [pubkey] }], { signal })) {
+    const sub = this.relay.req([{ kinds: [24133], '#p': [pubkey] }], { signal });
+    this.onSubscribed();
+
+    for await (const msg of sub) {
       if (msg[0] === 'EVENT') {
         const event = msg[2];
         this.handleEvent(event);

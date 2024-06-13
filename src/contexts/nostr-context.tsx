@@ -8,6 +8,8 @@ import { useInstance } from 'soapbox/hooks/useInstance';
 interface NostrContextType {
   relay?: NRelay;
   signer?: NostrSigner;
+  hasNostr: boolean;
+  isRelayOpen: boolean;
 }
 
 const NostrContext = createContext<NostrContextType | undefined>(undefined);
@@ -18,7 +20,10 @@ interface NostrProviderProps {
 
 export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const instance = useInstance();
+  const hasNostr = !!instance.nostr;
+
   const [relay, setRelay] = useState<NRelay1>();
+  const [isRelayOpen, setIsRelayOpen] = useState(false);
 
   const { account } = useOwnAccount();
 
@@ -30,17 +35,24 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
     [accountPubkey],
   );
 
+  const handleRelayOpen = () => {
+    setIsRelayOpen(true);
+  };
+
   useEffect(() => {
     if (url) {
-      setRelay(new NRelay1(url));
+      const relay = new NRelay1(url);
+      relay.socket.underlyingWebsocket.addEventListener('open', handleRelayOpen);
+      setRelay(relay);
     }
     return () => {
+      relay?.socket.underlyingWebsocket.removeEventListener('open', handleRelayOpen);
       relay?.close();
     };
   }, [url]);
 
   return (
-    <NostrContext.Provider value={{ relay, signer }}>
+    <NostrContext.Provider value={{ relay, signer, isRelayOpen, hasNostr }}>
       {children}
     </NostrContext.Provider>
   );
