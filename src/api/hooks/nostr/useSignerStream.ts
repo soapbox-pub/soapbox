@@ -8,7 +8,10 @@ const secretStorageKey = 'soapbox:nip46:secret';
 sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
 
 function useSignerStream() {
-  const { relay, signer } = useNostr();
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isSubscribing, setIsSubscribing] = useState(true);
+
+  const { relay, signer, hasNostr } = useNostr();
   const [pubkey, setPubkey] = useState<string | undefined>(undefined);
 
   const authStorageKey = `soapbox:nostr:auth:${pubkey}`;
@@ -16,7 +19,7 @@ function useSignerStream() {
   useEffect(() => {
     let isCancelled = false;
 
-    if (signer) {
+    if (signer && hasNostr) {
       signer.getPublicKey().then((newPubkey) => {
         if (!isCancelled) {
           setPubkey(newPubkey);
@@ -27,7 +30,7 @@ function useSignerStream() {
     return () => {
       isCancelled = true;
     };
-  }, [signer]);
+  }, [signer, hasNostr]);
 
   useEffect(() => {
     if (!relay || !signer || !pubkey) return;
@@ -39,6 +42,10 @@ function useSignerStream() {
         localStorage.setItem(authStorageKey, authorizedPubkey);
         sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
       },
+      onSubscribed() {
+        setIsSubscribed(true);
+        setIsSubscribing(false);
+      },
       authorizedPubkey: localStorage.getItem(authStorageKey) ?? undefined,
       getSecret: () => sessionStorage.getItem(secretStorageKey)!,
     });
@@ -47,6 +54,11 @@ function useSignerStream() {
       connect.close();
     };
   }, [relay, signer, pubkey]);
+
+  return {
+    isSubscribed,
+    isSubscribing,
+  };
 }
 
 export { useSignerStream };

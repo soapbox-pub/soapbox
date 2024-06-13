@@ -6,6 +6,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import {
   useAppSelector,
   useAppDispatch,
@@ -44,7 +45,8 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  useSignerStream();
+  const { hasNostr, isRelayOpen } = useNostr();
+  const { isSubscribed } = useSignerStream();
 
   /** Whether to display a loading indicator. */
   const showLoading = [
@@ -53,6 +55,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     !isLoaded,
     localeLoading,
     swUpdating,
+    hasNostr && (!isRelayOpen || !isSubscribed),
   ].some(Boolean);
 
   // Load the user's locale
