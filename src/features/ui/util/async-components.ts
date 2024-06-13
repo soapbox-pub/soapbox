@@ -178,3 +178,4 @@ export const EditRuleModal = lazy(() => import('soapbox/features/ui/components/m
 export const AdminNostrRelays = lazy(() => import('soapbox/features/admin/nostr-relays'));
 export const ZapPayRequestModal = lazy(() => import('soapbox/features/ui/components/modals/zap-pay-request'));
 export const ZapInvoiceModal = lazy(() => import('soapbox/features/ui/components/modals/zap-invoice'));
+export const ZapsModal = lazy(() => import('soapbox/features/ui/components/modals/zaps-modal'));

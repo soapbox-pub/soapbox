@@ -84,6 +84,10 @@ const ZAP_REQUEST = 'ZAP_REQUEST';
 const ZAP_SUCCESS = 'ZAP_SUCCESS';
 const ZAP_FAIL    = 'ZAP_FAIL';
 
+const ZAPS_FETCH_REQUEST = 'ZAPS_FETCH_REQUEST';
+const ZAPS_FETCH_SUCCESS = 'ZAPS_FETCH_SUCCESS';
+const ZAPS_FETCH_FAIL    = 'ZAPS_FETCH_FAIL';
+
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
@@ -625,6 +629,35 @@ const fetchReactionsFail = (id: string, error: unknown) => ({
   error,
 });
 
+const fetchZaps = (id: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    dispatch(fetchZapsRequest(id));
+
+    api(getState).get(`/api/v1/ditto/statuses/${id}/zapped_by`).then(response => {
+      dispatch(importFetchedAccounts((response.data as APIEntity[]).map(({ account }) => account).flat()));
+      dispatch(fetchZapsSuccess(id, response.data));
+    }).catch(error => {
+      dispatch(fetchZapsFail(id, error));
+    });
+  };
+
+const fetchZapsRequest = (id: string) => ({
+  type: ZAPS_FETCH_REQUEST,
+  id,
+});
+
+const fetchZapsSuccess = (id: string, zaps: APIEntity[]) => ({
+  type: ZAPS_FETCH_SUCCESS,
+  id,
+  zaps,
+});
+
+const fetchZapsFail = (id: string, error: unknown) => ({
+  type: REACTIONS_FETCH_FAIL,
+  id,
+  error,
+});
+
 const pin = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
@@ -802,6 +835,9 @@ export {
   REBLOGS_EXPAND_FAIL,
   ZAP_REQUEST,
   ZAP_FAIL,
+  ZAPS_FETCH_REQUEST,
+  ZAPS_FETCH_SUCCESS,
+  ZAPS_FETCH_FAIL,
   reblog,
   unreblog,
   toggleReblog,
@@ -872,4 +908,5 @@ export {
   remoteInteractionSuccess,
   remoteInteractionFail,
   zap,
+  fetchZaps,
 };

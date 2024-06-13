@@ -810,6 +810,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             active={status.zapped}
             text={withLabels ? intl.formatMessage(messages.zap) : undefined}
             theme={statusActionButtonTheme}
+            count={status?.zaps_amount ? status.zaps_amount / 1000 : 0}
           />
         )}
 
