@@ -93,8 +93,8 @@ const ReactionListRecord = ImmutableRecord({
 
 export const ZapRecord = ImmutableRecord({
   account: '',
-  zap_comment: '',
-  zap_amount: 0, // in millisats
+  comment: '',
+  amount: 0, // in millisats
 });
 
 const ZapListRecord = ImmutableRecord({
