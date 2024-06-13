@@ -44,6 +44,7 @@ import {
   EditRuleModal,
   ZapPayRequestModal,
   ZapInvoiceModal,
+  ZapsModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import ModalLoading from './modal-loading';
@@ -90,6 +91,7 @@ const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'SELECT_BOOKMARK_FOLDER': SelectBookmarkFolderModal,
   'UNAUTHORIZED': UnauthorizedModal,
   'VIDEO': VideoModal,
+  'ZAPS': ZapsModal,
   'ZAP_INVOICE': ZapInvoiceModal,
   'ZAP_PAY_REQUEST': ZapPayRequestModal,
 };
