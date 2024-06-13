@@ -11,8 +11,8 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IAccountWithZaps {
   id: string;
-  zap_comment: string;
-  zap_amount: number;
+  comment: string;
+  amount: number;
 }
 
 interface IZapsModal {
@@ -28,7 +28,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
   const accounts = useMemo((): ImmutableList<IAccountWithZaps> | undefined => {
     if (!zaps) return;
 
-    return zaps.map(({ account, zap_amount, zap_comment }) =>({ id: account, zap_amount, zap_comment })).flatten() as ImmutableList<IAccountWithZaps>;
+    return zaps.map(({ account, amount, comment }) =>({ id: account, amount, comment })).flatten() as ImmutableList<IAccountWithZaps>;
   }, [zaps]);
 
   const fetchData = () => {
@@ -63,9 +63,9 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
           return (
             <div>
               <Text weight='bold'>
-                {shortNumberFormat(account.zap_amount / 1000)}
+                {shortNumberFormat(account.amount / 1000)}
               </Text>
-              <AccountContainer key={account.id} id={account.id} note={account.zap_comment} emoji='⚡' />
+              <AccountContainer key={account.id} id={account.id} note={account.comment} emoji='⚡' />
             </div>
           );
         },
