@@ -55,7 +55,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     !isLoaded,
     localeLoading,
     swUpdating,
-    hasNostr && (!isRelayOpen || !isSubscribed),
+    hasNostr && me && (!isRelayOpen || !isSubscribed),
   ].some(Boolean);
 
   // Load the user's locale
