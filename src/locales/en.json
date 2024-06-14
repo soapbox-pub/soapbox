@@ -649,6 +649,7 @@
   "edit_identity.pending_names_title": "Requested Names",
   "edit_identity.reason_placeholder": "Why do you want this name?",
   "edit_identity.request": "Request",
+  "edit_identity.requested": "Name requested",
   "edit_password.header": "Change Password",
   "edit_profile.error": "Profile update failed",
   "edit_profile.fields.accepts_email_list_label": "Subscribe to newsletter",
