@@ -6,6 +6,7 @@ import { patchMe } from 'soapbox/actions/me';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui';
 import { useApi, useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
+import { queryClient } from 'soapbox/queries/client';
 import { adminAccountSchema } from 'soapbox/schemas/admin-account';
 import toast from 'soapbox/toast';
 
@@ -19,6 +20,7 @@ const messages = defineMessages({
   success: { id: 'edit_profile.success', defaultMessage: 'Your profile has been successfully saved!' },
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   placeholder: { id: 'edit_identity.reason_placeholder', defaultMessage: 'Why do you want this name?' },
+  requested: { id: 'edit_identity.requested', defaultMessage: 'Name requested' },
 });
 
 /** EditIdentity component. */
@@ -27,7 +29,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
   const instance = useInstance();
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
-  const { mutate } = useRequestName();
+  const { mutate, isPending } = useRequestName();
 
   const { data: approvedNames } = useNames();
   const { data: pendingNames } = usePendingNames();
@@ -49,24 +51,34 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
   const submit = () => {
     const name = `${username}@${instance.domain}`;
-    mutate({ name, reason });
+
+    mutate({ name, reason }, {
+      onSuccess() {
+        toast.success(intl.formatMessage(messages.requested));
+        queryClient.invalidateQueries({
+          queryKey: ['names', 'pending'],
+        });
+        setUsername('');
+      },
+    });
   };
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <div className='space-y-4'>
         <Form>
-          <UsernameInput value={username} onChange={(e) => setUsername(e.target.value)} />
+          <UsernameInput value={username} onChange={(e) => setUsername(e.target.value)} disabled={isPending} />
           <Textarea
             name='reason'
             placeholder={intl.formatMessage(messages.placeholder)}
             maxLength={500}
             onChange={(e) => setReason(e.target.value)}
+            disabled={isPending}
             value={reason}
             autoGrow
             required
           />
-          <Button theme='accent' onClick={submit}>
+          <Button theme='accent' onClick={submit} disabled={isPending}>
             <FormattedMessage id='edit_identity.request' defaultMessage='Request' />
           </Button>
         </Form>
