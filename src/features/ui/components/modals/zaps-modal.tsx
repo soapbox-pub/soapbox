@@ -59,13 +59,13 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
         style={{ height: '80vh' }}
         useWindowScroll={false}
       >
-        {accounts.map((account) => {
+        {accounts.map((account, index) => {
           return (
-            <div>
+            <div key={index}>
               <Text weight='bold'>
                 {shortNumberFormat(account.amount / 1000)}
               </Text>
-              <AccountContainer key={account.id} id={account.id} note={account.comment} emoji='⚡' />
+              <AccountContainer id={account.id} note={account.comment} emoji='⚡' />
             </div>
           );
         },
