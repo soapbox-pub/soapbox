@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   OrderedSet as ImmutableOrderedSet,
   Record as ImmutableRecord,
+  List as ImmutableList,
 } from 'immutable';
 import { AnyAction } from 'redux';
 
@@ -98,7 +99,7 @@ export const ZapRecord = ImmutableRecord({
 });
 
 const ZapListRecord = ImmutableRecord({
-  items: ImmutableOrderedSet<Zap>(),
+  items: ImmutableList<Zap>(),
   isLoading: false,
 });
 
@@ -203,7 +204,7 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
       }));
     case ZAPS_FETCH_SUCCESS:
       return state.setIn(['zapped_by', action.id], ZapListRecord({
-        items: ImmutableOrderedSet<Zap>(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
+        items: ImmutableList(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
           ...zap,
           account: account.id,
         }))),
