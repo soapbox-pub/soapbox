@@ -1434,10 +1434,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-5.0.8.tgz#9b3df61f884f46e12d3eca46e75517fde58da68e"
   integrity sha512-vjnNX8zQCSp4HadUJ3gpZiizCsK/ROjgGMpd4bcRxuyiTNGGMaznmKbhqdyVeFVap1sX8h2Qu380awaotey/mQ==
 
-"@fontsource/tajawal@^5.0.8":
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/@fontsource/tajawal/-/tajawal-5.0.8.tgz#cd8a593ec5062b283b093b56ee5d38b6b97fa93d"
-  integrity sha512-KILlXB6B8YYcssz3pccPs/4s1XcXwTWogCtE4Ag3oTpK+81DIQLc2b9o77UiBP4yC17MmqeOp1lvoaJQP80RoA==
+"@fontsource/vazirmatn@^5.0.20":
+  version "5.0.20"
+  resolved "https://registry.yarnpkg.com/@fontsource/vazirmatn/-/vazirmatn-5.0.20.tgz#9e8d56b712f6c397e7a6c63498a2fecca9fde9a3"
+  integrity sha512-5h9bKrZjJ3U7C5tj2OtGdDBWGzS+acOOFhlonYlNekS4vNzcwMU7qkKADHTZYGQrMqhpUNKqGwHEHlxXqZpXmQ==
 
 "@formatjs/cli@^6.2.0":
   version "6.2.0"
