@@ -17,7 +17,7 @@ interface IGroupCard {
 const GroupCard: React.FC<IGroupCard> = ({ group }) => {
   return (
     <Stack
-      className='relative h-[240px] rounded-lg border border-solid border-gray-300 bg-white black:bg-white dark:border-primary-800 dark:bg-primary-900'
+      className='relative h-[240px] rounded-lg border border-solid border-gray-300 bg-white black:bg-black dark:border-primary-800 dark:bg-primary-900'
       data-testid='group-card'
     >
       {/* Group Cover Image */}
