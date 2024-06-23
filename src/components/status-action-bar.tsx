@@ -464,9 +464,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     if (features.federating && !account.local) {
-      const ditto: string | undefined = status.ditto?.get('external');
+      const ditto: string | undefined = status.ditto?.get('external_url');
       const { hostname: domain } = new URL(ditto || status.uri);
-      
+
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         icon: require('@tabler/icons/outline/external-link.svg'),
