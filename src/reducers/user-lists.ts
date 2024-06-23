@@ -66,6 +66,7 @@ import {
   DISLIKES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
   ZAPS_FETCH_SUCCESS,
+  ZAPS_EXPAND_SUCCESS,
 } from 'soapbox/actions/interactions';
 import {
   NOTIFICATIONS_UPDATE,
@@ -99,6 +100,7 @@ export const ZapRecord = ImmutableRecord({
 });
 
 const ZapListRecord = ImmutableRecord({
+  next: null as string | null,
   items: ImmutableList<Zap>(),
   isLoading: false,
 });
@@ -207,8 +209,19 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
         items: ImmutableList(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
           ...zap,
           account: account.id,
-        }))),
+        }))), next: action.next,
       }));
+    case ZAPS_EXPAND_SUCCESS:
+      return state.updateIn(['zapped_by', action.id], map => {
+        return (map as List)
+          .set('next', action.next)
+          .set('isLoading', false)
+          .update('items', list => (list as Items).concat(ImmutableList(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
+            ...zap,
+            account: account.id,
+          })))));
+      });
+
     case NOTIFICATIONS_UPDATE:
       return action.notification.type === 'follow_request' ? normalizeFollowRequest(state, action.notification) : state;
     case FOLLOW_REQUESTS_FETCH_SUCCESS:
