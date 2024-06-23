@@ -464,11 +464,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
     }
 
     if (features.federating && !account.local) {
-      const { hostname: domain } = new URL(status.uri);
+      const ditto: string | undefined = status.ditto?.get('external');
+      const { hostname: domain } = new URL(ditto || status.uri);
+      
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         icon: require('@tabler/icons/outline/external-link.svg'),
-        href: status.uri,
+        href: ditto || status.uri,
         target: '_blank',
       });
     }
