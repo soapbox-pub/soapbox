@@ -311,9 +311,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    const ditto = account.ditto.external_url ? new URL(account.ditto.external_url).host : undefined;
-    if (features.federating && (!account.local || ditto)) {
-      const domain = ditto || account.fqn.split('@')[1];
+    const externalNostrUrl = account.ditto.external_url ? new URL(account.ditto.external_url).host : undefined;
+    if (features.federating && (!account.local || externalNostrUrl)) {
+      const domain = externalNostrUrl || account.fqn.split('@')[1];
       const url = account.ditto.external_url || account.url;
 
       if (domain && url) {
