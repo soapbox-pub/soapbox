@@ -25,7 +25,7 @@ const statusPleromaSchema = z.object({
 });
 
 const statusDittoSchema = z.object({
-  external: z.string().optional().catch(undefined),
+  external_url: z.string().optional().catch(undefined),
 });
 
 const baseStatusSchema = z.object({
