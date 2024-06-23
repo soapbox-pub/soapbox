@@ -43,6 +43,7 @@ const baseAccountSchema = z.object({
   ditto: coerceObject({
     accepts_zaps: z.boolean().catch(false),
     is_registered: z.boolean().catch(false),
+    external_url: z.string().optional().catch(undefined),
   }),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),

@@ -24,6 +24,10 @@ const statusPleromaSchema = z.object({
   quote_visible: z.boolean().catch(true),
 });
 
+const statusDittoSchema = z.object({
+  external_url: z.string().optional().catch(undefined),
+});
+
 const baseStatusSchema = z.object({
   account: accountSchema,
   application: z.object({
@@ -51,6 +55,7 @@ const baseStatusSchema = z.object({
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),
   pleroma: statusPleromaSchema.optional().catch(undefined),
+  ditto: statusDittoSchema.optional().catch(undefined),
   reactions: filteredArray(emojiReactionSchema),
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),

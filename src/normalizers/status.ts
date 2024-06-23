@@ -67,6 +67,7 @@ export const StatusRecord = ImmutableRecord({
   muted: false,
   pinned: false,
   pleroma: ImmutableMap<string, any>(),
+  ditto: ImmutableMap<string, any>(),
   poll: null as EmbeddedEntity<Poll>,
   quote: null as EmbeddedEntity<any>,
   quotes_count: 0,
