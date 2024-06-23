@@ -311,14 +311,19 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    if (features.federating && !account.local) {
-      const domain = account.fqn.split('@')[1];
+    const ditto = account.ditto.external ? new URL(account.ditto.external).host : undefined;
+    if (features.federating && (!account.local || ditto)) {
+      const domain = ditto || account.fqn.split('@')[1];
+      const url = account.ditto.external || account.url;
 
-      menu.push({
-        text: intl.formatMessage(messages.profileExternal, { domain }),
-        action: () => onProfileExternal(account.url),
-        icon: require('@tabler/icons/outline/external-link.svg'),
-      });
+      if (domain && url) {
+        menu.push({
+          text: intl.formatMessage(messages.profileExternal, { domain }),
+          action: () => onProfileExternal(url),
+          icon: require('@tabler/icons/outline/external-link.svg'),
+          href: url,
+        });
+      }
     }
 
     menu.push({
