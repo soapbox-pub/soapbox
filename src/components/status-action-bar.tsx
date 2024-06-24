@@ -430,6 +430,18 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       }
     }
 
+    if (features.federating && !account.local) {
+      const externalNostrUrl: string | undefined = status.ditto?.get('external_url');
+      const { hostname: domain } = new URL(externalNostrUrl || status.uri);
+
+      menu.push({
+        text: intl.formatMessage(messages.external, { domain }),
+        icon: require('@tabler/icons/outline/external-link.svg'),
+        href: externalNostrUrl || status.uri,
+        target: '_blank',
+      });
+    }
+
     if (!me) {
       return menu;
     }
@@ -460,18 +472,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text: intl.formatMessage(status.pleroma.get('bookmark_folder') ? messages.bookmarkChangeFolder : messages.bookmarkSetFolder),
         action: handleBookmarkFolderClick,
         icon: require('@tabler/icons/outline/folders.svg'),
-      });
-    }
-
-    if (features.federating && !account.local) {
-      const externalNostrUrl: string | undefined = status.ditto?.get('external_url');
-      const { hostname: domain } = new URL(externalNostrUrl || status.uri);
-
-      menu.push({
-        text: intl.formatMessage(messages.external, { domain }),
-        icon: require('@tabler/icons/outline/external-link.svg'),
-        href: externalNostrUrl || status.uri,
-        target: '_blank',
       });
     }
 
