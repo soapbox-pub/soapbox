@@ -401,7 +401,7 @@
   "compose_form.poll.remove_option": "Ukloni ovaj odgovor",
   "compose_form.poll.switch_to_multiple": "Promijenite anketu da omogućite više izbora",
   "compose_form.poll.switch_to_single": "Promijenite anketu kako biste omogućili jedan izbor",
-  "compose_form.poll_placeholder": "Dodajte temu ankete...",
+  "compose_form.poll_placeholder": "Dodajte temu ankete…",
   "compose_form.publish": "Objavi",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.save_changes": "Spremi promjene",
