@@ -228,6 +228,7 @@
   "bookmarks.edit_folder": "Uredi mapu",
   "boost_modal.combo": "Možeš pritisnuti {combo} kako bi ovo preskočio sljedeći put",
   "boost_modal.title": "Proslijediti objavu?",
+  "bundle_column_error.body": "Nešto nije u redu prilikom učitavanja ove stranice.",
   "bundle_column_error.retry": "Pokušaj ponovo",
   "bundle_column_error.title": "Mrežna greška",
   "card.back.label": "Natrag",
