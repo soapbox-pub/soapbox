@@ -1316,7 +1316,7 @@
   "reply_mentions.reply_empty": "Odgovaranje na objavu",
   "report.block": "Blokiraj {target}",
   "report.block_hint": "Želite li također blokirati ovaj račun?",
-  "report.chat_message.context": "Prilikom prijavljivanja korisničke poruke, pet poruka prije i pet poruka nakon one odabrane bit će proslijeđeno našem timu za moderiranje radi konteksta.",
+  "report.chat_message.context": "Prilikom prijavljivanja korisničke poruke, pet poruka prije i pet poruka nakon odabrane poruke će se proslijediti našem timu za moderiranje radi konteksta.",
   "report.chat_message.title": "Poruka prijave",
   "report.confirmation.content": "Ako utvrdimo da ovaj {entity} krši {link} poduzet ćemo daljnje mjere po tom pitanju.",
   "report.confirmation.entity.account": "račun",
