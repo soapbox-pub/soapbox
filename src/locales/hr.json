@@ -1327,6 +1327,7 @@
   "report.forward_hint": "The account is from another server. Send a copy of the report there as well?",
   "report.group.title": "Prijavi grupu",
   "report.next": "Dalje",
+  "report.other_actions.add_additional": "Želite li ovom izvješću dodati dodatne statuse?",
   "report.other_actions.add_more": "Dodaj više",
   "report.other_actions.hide_additional": "Sakrij dodatna stanja",
   "report.placeholder": "Dodatni komentari",
