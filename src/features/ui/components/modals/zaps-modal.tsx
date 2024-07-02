@@ -2,7 +2,7 @@ import { List as ImmutableList } from 'immutable';
 import React, { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchZaps } from 'soapbox/actions/interactions';
+import { fetchZaps, expandZaps } from 'soapbox/actions/interactions';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Modal, Spinner, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
@@ -23,7 +23,7 @@ interface IZapsModal {
 const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
   const zaps = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.items);
-
+  const next = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.next);
 
   const accounts = useMemo((): ImmutableList<IAccountWithZaps> | undefined => {
     if (!zaps) return;
@@ -43,6 +43,13 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
     onClose('ZAPS');
   };
 
+  const handleLoadMore = () => {
+    if (next) {
+      console.log('next, zaps modal: ', next);
+      dispatch(expandZaps(statusId, next!));
+    }
+  };
+
   let body;
 
   if (!zaps || !accounts) {
@@ -58,14 +65,16 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
         itemClassName='pb-3'
         style={{ height: '80vh' }}
         useWindowScroll={false}
+        onLoadMore={handleLoadMore}
+        hasMore={!!next}
       >
-        {accounts.map((account) => {
+        {accounts.map((account, index) => {
           return (
-            <div>
+            <div key={index}>
               <Text weight='bold'>
                 {shortNumberFormat(account.amount / 1000)}
               </Text>
-              <AccountContainer key={account.id} id={account.id} note={account.comment} emoji='⚡' />
+              <AccountContainer id={account.id} note={account.comment} emoji='⚡' />
             </div>
           );
         },

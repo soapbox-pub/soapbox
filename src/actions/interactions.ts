@@ -88,6 +88,9 @@ const ZAPS_FETCH_REQUEST = 'ZAPS_FETCH_REQUEST';
 const ZAPS_FETCH_SUCCESS = 'ZAPS_FETCH_SUCCESS';
 const ZAPS_FETCH_FAIL    = 'ZAPS_FETCH_FAIL';
 
+const ZAPS_EXPAND_SUCCESS = 'ZAPS_EXPAND_SUCCESS';
+const ZAPS_EXPAND_FAIL = 'ZAPS_EXPAND_FAIL';
+
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
@@ -634,8 +637,9 @@ const fetchZaps = (id: string) =>
     dispatch(fetchZapsRequest(id));
 
     api(getState).get(`/api/v1/ditto/statuses/${id}/zapped_by`).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts((response.data as APIEntity[]).map(({ account }) => account).flat()));
-      dispatch(fetchZapsSuccess(id, response.data));
+      dispatch(fetchZapsSuccess(id, response.data, next ? next.uri : null));
     }).catch(error => {
       dispatch(fetchZapsFail(id, error));
     });
@@ -646,14 +650,40 @@ const fetchZapsRequest = (id: string) => ({
   id,
 });
 
-const fetchZapsSuccess = (id: string, zaps: APIEntity[]) => ({
+const fetchZapsSuccess = (id: string, zaps: APIEntity[], next: string | null) => ({
   type: ZAPS_FETCH_SUCCESS,
   id,
   zaps,
+  next,
 });
 
 const fetchZapsFail = (id: string, error: unknown) => ({
   type: REACTIONS_FETCH_FAIL,
+  id,
+  error,
+});
+
+const expandZaps = (id: string, path: string) =>
+  (dispatch: AppDispatch, getState: () => RootState) => {
+    api(getState).get(path).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      dispatch(importFetchedAccounts(response.data.map((item: APIEntity) => item.account)));
+      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.account.id)));
+      dispatch(expandZapsSuccess(id, response.data, next ? next.uri : null));
+    }).catch(error => {
+      dispatch(expandZapsFail(id, error));
+    });
+  };
+
+const expandZapsSuccess = (id: string, zaps: APIEntity[], next: string | null) => ({
+  type: ZAPS_EXPAND_SUCCESS,
+  id,
+  zaps,
+  next,
+});
+
+const expandZapsFail = (id: string, error: unknown) => ({
+  type: ZAPS_EXPAND_FAIL,
   id,
   error,
 });
@@ -838,6 +868,8 @@ export {
   ZAPS_FETCH_REQUEST,
   ZAPS_FETCH_SUCCESS,
   ZAPS_FETCH_FAIL,
+  ZAPS_EXPAND_SUCCESS,
+  ZAPS_EXPAND_FAIL,
   reblog,
   unreblog,
   toggleReblog,
@@ -909,4 +941,5 @@ export {
   remoteInteractionFail,
   zap,
   fetchZaps,
+  expandZaps,
 };
