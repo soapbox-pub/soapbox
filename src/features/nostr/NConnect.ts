@@ -35,7 +35,7 @@ export class NConnect {
     const pubkey = await this.signer.getPublicKey();
     const signal = this.controller.signal;
 
-    const sub = this.relay.req([{ kinds: [24133], '#p': [pubkey] }], { signal });
+    const sub = this.relay.req([{ kinds: [24133], '#p': [pubkey], limit: 0 }], { signal });
     this.onSubscribed();
 
     for await (const msg of sub) {
