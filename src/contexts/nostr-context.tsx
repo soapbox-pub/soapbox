@@ -32,7 +32,7 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
 
   const signer = useMemo(
     () => (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr,
-    [accountPubkey],
+    [accountPubkey, window.nostr],
   );
 
   const handleRelayOpen = () => {
