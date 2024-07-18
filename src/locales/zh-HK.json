@@ -378,7 +378,7 @@
   "edit_profile.hints.discoverable": "在配置文件目錄中顯示帳户並允許外部服務索引",
   "edit_profile.hints.hide_network": "您追蹤的人和追蹤您的人不會顯示在您的個人資料中",
   "edit_profile.hints.locked": "需要您手動批准追蹤請求",
-  "edit_profile.hints.meta_fields": "你能在個人資料頁面上最多顯示  {count} 行自定義列",
+  "edit_profile.hints.meta_fields": "你能在個人資料頁面上最多顯示 {count} 行自定義列。",
   "edit_profile.hints.stranger_notifications": "僅顯示來自您追蹤的人的通知",
   "edit_profile.save": "儲存",
   "edit_profile.success": "個人資料已儲存",
