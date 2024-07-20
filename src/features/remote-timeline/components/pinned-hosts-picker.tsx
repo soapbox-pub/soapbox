@@ -15,13 +15,14 @@ const PinnedHostsPicker: React.FC<IPinnedHostsPicker> = ({ host: activeHost }) =
   if (!pinnedHosts.length) return null;
 
   return (
-    <HStack className='mb-4' space={2}>
+    <HStack className='mb-4 flex-wrap items-start justify-evenly'>
       {pinnedHosts.map((host) => (
         <Button
           key={host}
           to={`/timeline/${host}`}
           size='sm'
           theme={host === activeHost ? 'accent' : 'secondary'}
+          className='m-1 w-40 p-1'
         >
           {host}
         </Button>
