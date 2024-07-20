@@ -6,7 +6,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { blockAccount, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
+import { blockAccount, lookupAccountInRelay, pinAccount, removeFromFollowers, unblockAccount, unmuteAccount, unpinAccount } from 'soapbox/actions/accounts';
 import { mentionCompose, directCompose } from 'soapbox/actions/compose';
 import { blockDomain, unblockDomain } from 'soapbox/actions/domain-blocks';
 import { openModal } from 'soapbox/actions/modals';
@@ -62,6 +62,8 @@ const messages = defineMessages({
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   removeFromFollowers: { id: 'account.remove_from_followers', defaultMessage: 'Remove this follower' },
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
+  lookupAccount: { id: 'status.lookup_account', defaultMessage: 'Get profile from relays' },
+  lookupAccountWithNotes: { id: 'status.lookup_account', defaultMessage: 'Get profile with notes from relays' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   search: { id: 'account.search', defaultMessage: 'Search from @{name}' },
   searchSelf: { id: 'account.search_self', defaultMessage: 'Search your posts' },
@@ -214,6 +216,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onModerate = () => {
     dispatch(openModal('ACCOUNT_MODERATION', { accountId: account.id }));
+  };
+
+  const onLookupAccount = (withNotes: boolean) => {
+    dispatch(lookupAccountInRelay(account.id, account.username, withNotes));
   };
 
   const onRemoveFromFollowers = () => {
@@ -501,6 +507,18 @@ const Header: React.FC<IHeader> = ({ account }) => {
         text: intl.formatMessage(messages.adminAccount, { name: account.username }),
         action: onModerate,
         icon: require('@tabler/icons/outline/gavel.svg'),
+      });
+
+      menu.push({
+        text: intl.formatMessage(messages.lookupAccount, { name: account.username }),
+        action: (_) => onLookupAccount(false),
+        icon: require('@tabler/icons/outline/eye.svg'),
+      });
+
+      menu.push({
+        text: intl.formatMessage(messages.lookupAccountWithNotes, { name: account.username }),
+        action: (_) => onLookupAccount(true),
+        icon: require('@tabler/icons/outline/eye.svg'),
       });
     }
 
