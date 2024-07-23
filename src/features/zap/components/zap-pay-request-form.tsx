@@ -81,7 +81,7 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
-      <Button className='m-auto w-auto shadow-[0_4px_rgba(18,95,139,1)]' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
+      <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
     </Stack>
   );
 };
