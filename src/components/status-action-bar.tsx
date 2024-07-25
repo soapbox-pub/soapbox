@@ -558,11 +558,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         action: handleMuteClick,
         icon: require('@tabler/icons/outline/volume-3.svg'),
       });
-      menu.push({
-        text: intl.formatMessage(messages.block, { name: username }),
-        action: handleBlockClick,
-        icon: require('@tabler/icons/outline/ban.svg'),
-      });
+      if (features.blocks) {
+        menu.push({
+          text: intl.formatMessage(messages.block, { name: username }),
+          action: handleBlockClick,
+          icon: require('@tabler/icons/outline/ban.svg'),
+        });
+      }
       menu.push({
         text: intl.formatMessage(messages.report, { name: username }),
         action: handleReport,

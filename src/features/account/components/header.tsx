@@ -371,11 +371,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         to: '/mutes',
         icon: require('@tabler/icons/outline/circle-x.svg'),
       });
-      menu.push({
-        text: intl.formatMessage(messages.blocks),
-        to: '/blocks',
-        icon: require('@tabler/icons/outline/ban.svg'),
-      });
+      if (features.blocks) {
+        menu.push({
+          text: intl.formatMessage(messages.blocks),
+          to: '/blocks',
+          icon: require('@tabler/icons/outline/ban.svg'),
+        });
+      }
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.username }),
@@ -453,18 +455,20 @@ const Header: React.FC<IHeader> = ({ account }) => {
         });
       }
 
-      if (account.relationship?.blocking) {
-        menu.push({
-          text: intl.formatMessage(messages.unblock, { name: account.username }),
-          action: onBlock,
-          icon: require('@tabler/icons/outline/ban.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.block, { name: account.username }),
-          action: onBlock,
-          icon: require('@tabler/icons/outline/ban.svg'),
-        });
+      if (features.blocks) {
+        if (account.relationship?.blocking) {
+          menu.push({
+            text: intl.formatMessage(messages.unblock, { name: account.username }),
+            action: onBlock,
+            icon: require('@tabler/icons/outline/ban.svg'),
+          });
+        } else {
+          menu.push({
+            text: intl.formatMessage(messages.block, { name: account.username }),
+            action: onBlock,
+            icon: require('@tabler/icons/outline/ban.svg'),
+          });
+        }
       }
 
       menu.push({

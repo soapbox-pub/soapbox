@@ -85,7 +85,7 @@ const Settings = () => {
         <CardBody>
           <List>
             <ListItem label={intl.formatMessage(messages.mutes)} to='/mutes' />
-            <ListItem label={intl.formatMessage(messages.blocks)} to='/blocks' />
+            {features.blocks && (<ListItem label={intl.formatMessage(messages.blocks)} to='/blocks' />)}
           </List>
         </CardBody>
 
