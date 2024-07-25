@@ -23,30 +23,30 @@ const ActionsModal: React.FC<IActionsModal> = ({ status, actions, onClick, onClo
   const renderAction = (action: MenuItem | null, i: number) => {
     if (action === null) {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
-    } else if (action.text !== 'Blocks') {
-      const { icon = null, text, meta = null, active = false, href = '#', destructive } = action;
-        
-      const Comp = href === '#' ? 'button' : 'a';
-      const compProps = href === '#' ? { onClick: onClick } : { href: href, rel: 'noopener' };
-
-      return (
-        <li key={`${text}-${i}`}>
-          <HStack
-            {...compProps}
-            space={2.5}
-            data-index={i}
-            className={clsx('w-full', { active, destructive })}
-            element={Comp}
-          >
-            {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
-            <div>
-              <div className={clsx({ 'actions-modal__item-label': !!meta })}>{text}</div>
-              <div>{meta}</div>
-            </div>
-          </HStack>
-        </li>
-      );
     }
+
+    const { icon = null, text, meta = null, active = false, href = '#', destructive } = action;
+
+    const Comp = href === '#' ? 'button' : 'a';
+    const compProps = href === '#' ? { onClick: onClick } : { href: href, rel: 'noopener' };
+
+    return (
+      <li key={`${text}-${i}`}>
+        <HStack
+          {...compProps}
+          space={2.5}
+          data-index={i}
+          className={clsx('w-full', { active, destructive })}
+          element={Comp}
+        >
+          {icon && <Icon title={text} src={icon} role='presentation' tabIndex={-1} />}
+          <div>
+            <div className={clsx({ 'actions-modal__item-label': !!meta })}>{text}</div>
+            <div>{meta}</div>
+          </div>
+        </HStack>
+      </li>
+    );
   };
 
   return (
