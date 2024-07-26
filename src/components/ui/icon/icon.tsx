@@ -22,19 +22,24 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
 }
 
 /** Renders and SVG icon with optional counter. */
-const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => (
-  <div
-    className='relative flex shrink-0 flex-col'
-    data-testid={filteredProps['data-testid'] || 'icon'}
-  >
-    {count ? (
-      <span className='absolute -right-3 -top-2 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
-        <Counter count={count} countMax={countMax} />
-      </span>
-    ) : null}
+const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => {
 
-    <SvgIcon src={src} size={size} alt={alt} {...filteredProps} />
-  </div>
-);
+  const isSVG = src.endsWith('.svg');
+
+  return (
+    <div
+      className='relative flex shrink-0 flex-col'
+      data-testid={filteredProps['data-testid'] || 'icon'}
+    >
+      {count ? (
+        <span className='absolute -right-3 -top-2 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
+          <Counter count={count} countMax={countMax} />
+        </span>
+      ) : null}
+      {isSVG ? (<SvgIcon src={src} size={size} alt={alt} {...filteredProps} />) : (<img src={src} width={size} height={size} alt={alt} {...filteredProps} />) }
+
+    </div>
+  );
+};
 
 export default Icon;

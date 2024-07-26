@@ -7,6 +7,8 @@ import Account from 'soapbox/components/account';
 import { Stack, Button, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import icons from '../../../components/ui/icon';
+
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
 interface IZapPayRequestForm {
@@ -66,11 +68,11 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <div className='flex justify-center '>
-        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' theme={zapAmount === 50 ? 'primary' : 'muted'} text='👍 50' />
-        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' theme={zapAmount === 200 ? 'primary' : 'muted'} text='🩵  200' />
-        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='🤩 1K' />
-        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='🔥 3K' />
-        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='🧙 5K' />
+        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' icon={icons.coinIcon} iconSize={3} theme={zapAmount === 50 ? 'primary' : 'muted'} text='50' />
+        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' icon={icons.coinStack} iconSize={4} theme={zapAmount === 200 ? 'primary' : 'muted'} text='200' />
+        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' icon={icons.pileCoin} iconSize={5} theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='1K' />
+        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' icon={icons.moneyBag} iconSize={5} theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='3K' />
+        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' icon={icons.chestIcon} iconSize={5} theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='5K' />
       </div>
 
       <div className='flex justify-center'>

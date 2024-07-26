@@ -23,6 +23,8 @@ interface IButton {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   /** A predefined button size. */
   size?: ButtonSizes;
+  /** A predefined icon size. */
+  iconSize?: number;
   /** Text inside the button. Takes precedence over `children`. */
   text?: React.ReactNode;
   /** Makes the button into a navlink, if provided. */
@@ -40,6 +42,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     children,
     disabled = false,
     icon,
+    iconSize = 4,
     onClick,
     size = 'md',
     text,
@@ -63,7 +66,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='h-4 w-4' />;
+    return <Icon src={icon} className={`h-${iconSize} w-${iconSize}`} />;
   };
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {
