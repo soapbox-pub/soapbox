@@ -21,7 +21,7 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
   'data-testid'?: string;
 }
 
-/** Renders and SVG icon with optional counter. */
+/** Renders an SVG or image icon with optional counter. */
 const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => {
 
   const isSVG = src.endsWith('.svg');
