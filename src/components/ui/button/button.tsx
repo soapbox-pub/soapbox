@@ -41,7 +41,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     block = false,
     children,
     disabled = false,
-    element = 'svg',
+    element,
     icon,
     onClick,
     size = 'md',
