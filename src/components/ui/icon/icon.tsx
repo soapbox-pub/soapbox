@@ -24,7 +24,7 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
 }
 
 /** Renders an SVG or image icon with optional counter. */
-const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, element, ...filteredProps }): JSX.Element => {
+const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, element = 'svg', ...filteredProps }): JSX.Element => {
   return (
     <div
       className='relative flex shrink-0 flex-col'
