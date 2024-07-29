@@ -17,15 +17,14 @@ interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
   src: string;
   /** Width and height of the icon in pixels. */
   size?: number;
+  /** Specifies the media element type as 'svg' or 'img'. */
+  element?: 'svg' | 'img';
   /** Override the data-testid */
   'data-testid'?: string;
 }
 
 /** Renders an SVG or image icon with optional counter. */
-const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredProps }): JSX.Element => {
-
-  const isSVG = src.endsWith('.svg');
-
+const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, element, ...filteredProps }): JSX.Element => {
   return (
     <div
       className='relative flex shrink-0 flex-col'
@@ -36,7 +35,7 @@ const Icon: React.FC<IIcon> = ({ src, alt, count, size, countMax, ...filteredPro
           <Counter count={count} countMax={countMax} />
         </span>
       ) : null}
-      {isSVG ? (<SvgIcon src={src} size={size} alt={alt} {...filteredProps} />) : (<img src={src} width={size} height={size} alt={alt} {...filteredProps} />) }
+      {element === 'svg' ? (<SvgIcon src={src} size={size} alt={alt} {...filteredProps} />) : (<img src={src} width={size} height={size} alt={alt} {...filteredProps} />) }
 
     </div>
   );
