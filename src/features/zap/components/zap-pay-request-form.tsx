@@ -14,7 +14,6 @@ import { useAppDispatch } from 'soapbox/hooks';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
-
 interface IZapPayRequestForm {
   status?: StatusEntity;
   account: AccountEntity;
