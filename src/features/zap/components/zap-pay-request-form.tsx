@@ -3,6 +3,11 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
+import chestIcon from 'soapbox/assets/icons/blue-chest.png';
+import coinStack from 'soapbox/assets/icons/coin-stack.png';
+import coinIcon from 'soapbox/assets/icons/coin.png';
+import moneyBag from 'soapbox/assets/icons/money-bag.png';
+import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import Account from 'soapbox/components/account';
 import { Stack, Button, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -66,11 +71,11 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <div className='flex justify-center '>
-        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' theme={zapAmount === 50 ? 'primary' : 'muted'} text='👍 50' />
-        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' theme={zapAmount === 200 ? 'primary' : 'muted'} text='🩵  200' />
-        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='🤩 1K' />
-        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='🔥 3K' />
-        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='🧙 5K' />
+        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' iconElement='img' icon={coinIcon} theme={zapAmount === 50 ? 'primary' : 'muted'} text='50' />
+        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' iconElement='img' icon={coinStack} theme={zapAmount === 200 ? 'primary' : 'muted'} text='200' />
+        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' iconElement='img' icon={pileCoin} theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='1K' />
+        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' iconElement='img' icon={moneyBag} theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='3K' />
+        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' iconElement='img' icon={chestIcon} theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='5K' />
       </div>
 
       <div className='flex justify-center'>
