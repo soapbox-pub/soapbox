@@ -71,11 +71,11 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
       </div>
 
       <div className='flex justify-center '>
-        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' element='img' icon={coinIcon} theme={zapAmount === 50 ? 'primary' : 'muted'} text='50' />
-        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' element='img' icon={coinStack} theme={zapAmount === 200 ? 'primary' : 'muted'} text='200' />
-        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' element='img' icon={pileCoin} theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='1K' />
-        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' element='img' icon={moneyBag} theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='3K' />
-        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' element='img' icon={chestIcon} theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='5K' />
+        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' iconElement='img' icon={coinIcon} theme={zapAmount === 50 ? 'primary' : 'muted'} text='50' />
+        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' iconElement='img' icon={coinStack} theme={zapAmount === 200 ? 'primary' : 'muted'} text='200' />
+        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' iconElement='img' icon={pileCoin} theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='1K' />
+        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' iconElement='img' icon={moneyBag} theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='3K' />
+        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' iconElement='img' icon={chestIcon} theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='5K' />
       </div>
 
       <div className='flex justify-center'>
