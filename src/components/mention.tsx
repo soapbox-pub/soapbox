@@ -17,8 +17,8 @@ const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) 
   const handleClick: React.MouseEventHandler = (e) => {
     if (disabled) {
       e.preventDefault();
-      e.stopPropagation();
     }
+    e.stopPropagation();
   };
 
   return (
@@ -28,6 +28,7 @@ const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) 
         className='text-primary-600 hover:underline dark:text-accent-blue'
         onClick={handleClick}
         dir='ltr'
+        // eslint-disable-next-line formatjs/no-literal-string-in-jsx
       >
         @{shortenNostr(username)}
       </Link>

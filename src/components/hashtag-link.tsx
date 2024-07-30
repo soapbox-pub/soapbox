@@ -7,6 +7,7 @@ interface IHashtagLink {
 }
 
 const HashtagLink: React.FC<IHashtagLink> = ({ hashtag }) => (
+  // eslint-disable-next-line formatjs/no-literal-string-in-jsx
   <Link to={`/tags/${hashtag}`}>
     #{hashtag}
   </Link>
