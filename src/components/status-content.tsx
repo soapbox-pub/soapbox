@@ -97,18 +97,31 @@ const StatusContent: React.FC<IStatusContent> = ({
       if (domNode instanceof Element && domNode.name === 'a') {
         const classes = domNode.attribs.class?.split(' ');
 
+        if (classes?.includes('hashtag')) {
+          const child = domToReact(domNode.children as DOMNode[]);
+
+          const hashtag: string | undefined = (() => {
+            // Mastodon wraps the hashtag in a span, with a sibling text node containing the hashtag.
+            if (Array.isArray(child) && child.length) {
+              if (child[0]?.props?.children === '#' && typeof child[1] === 'string') {
+                return child[1];
+              }
+            }
+            // Pleroma renders a string directly inside the hashtag link.
+            if (typeof child === 'string') {
+              return child.replace(/^#/, '');
+            }
+          })();
+
+          if (hashtag) {
+            return <HashtagLink hashtag={hashtag} />;
+          }
+        }
+
         if (classes?.includes('mention')) {
           const mention = status.mentions.find(({ url }) => domNode.attribs.href === url);
           if (mention) {
             return <Mention mention={mention} />;
-          }
-        }
-
-        if (classes?.includes('hashtag')) {
-          const child = domToReact(domNode.children as DOMNode[]);
-          const hashtag = typeof child === 'string' ? child.replace(/^#/, '') : undefined;
-          if (hashtag) {
-            return <HashtagLink hashtag={hashtag} />;
           }
         }
 
