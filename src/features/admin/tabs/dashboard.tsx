@@ -120,6 +120,11 @@ const Dashboard: React.FC = () => {
             label={<FormattedMessage id='column.admin.nostr_relays' defaultMessage='Relays' />}
           />
         )}
+        
+        <ListItem
+          to='/soapbox/admin/zap'
+          label={<FormattedMessage id='column.admin.zap_split' defaultMessage='Zap Split' />}
+        />
       </List>
 
       {account.admin && (

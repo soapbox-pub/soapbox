@@ -347,6 +347,7 @@
   "column.admin.reports.menu.moderation_log": "Moderation Log",
   "column.admin.rules": "Instance rules",
   "column.admin.users": "Users",
+  "column.admin.zap_split": "Zap Split",
   "column.aliases": "Account aliases",
   "column.aliases.create_error": "Error creating alias",
   "column.aliases.delete": "Delete",

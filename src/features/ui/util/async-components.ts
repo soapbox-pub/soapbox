@@ -80,6 +80,7 @@ export const ChatWidget = lazy(() => import('soapbox/features/chats/components/c
 export const ServerInfo = lazy(() => import('soapbox/features/server-info'));
 export const Dashboard = lazy(() => import('soapbox/features/admin'));
 export const ModerationLog = lazy(() => import('soapbox/features/admin/moderation-log'));
+export const ZapSplit = lazy(() => import('soapbox/features/admin/zap-split'));
 export const ThemeEditor = lazy(() => import('soapbox/features/theme-editor'));
 export const UserPanel = lazy(() => import('soapbox/features/ui/components/user-panel'));
 export const PromoPanel = lazy(() => import('soapbox/features/ui/components/promo-panel'));
