@@ -430,7 +430,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       }
     }
 
-    if (features.federating) {
+    if (features.federating && (status.ditto?.get('external_url') || !account.local)) {
       const externalNostrUrl: string | undefined = status.ditto?.get('external_url');
       const { hostname: domain } = new URL(externalNostrUrl || status.uri);
 
