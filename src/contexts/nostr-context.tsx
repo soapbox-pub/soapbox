@@ -28,7 +28,7 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const { account } = useOwnAccount();
 
   const url = instance.nostr?.relay;
-  const accountPubkey = useAppSelector((state) => account?.nostr.pubkey ?? state.meta.pubkey);
+  const accountPubkey = useAppSelector((state) => state.meta.pubkey ?? account?.nostr.pubkey);
 
   const signer = useMemo(
     () => (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr,

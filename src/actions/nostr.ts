@@ -27,6 +27,8 @@ function logInNostr(pubkey: string) {
       secret,
     }));
 
+    dispatch(setNostrPubkey(undefined));
+
     const { access_token } = dispatch(authLoggedIn(token));
     return await dispatch(verifyCredentials(access_token as string));
   };
@@ -43,7 +45,7 @@ function nostrExtensionLogIn() {
   };
 }
 
-function setNostrPubkey(pubkey: string) {
+function setNostrPubkey(pubkey: string | undefined) {
   return {
     type: NOSTR_PUBKEY_SET,
     pubkey,
