@@ -43,7 +43,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const handleNext = async () => {
     const signer = NKeys.add(secretKey);
     const pubkey = await signer.getPublicKey();
-    dispatch(logInNostr(pubkey));
+    dispatch(logInNostr(pubkey, true));
     onClose();
   };
 
