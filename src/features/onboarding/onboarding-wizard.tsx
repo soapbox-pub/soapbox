@@ -45,7 +45,7 @@ const OnboardingWizard = () => {
     <SuggestedAccountsStep onNext={handleNextStep} />,
   ];
 
-  if (features.federating){
+  if (features.federating && !features.nostr) {
     steps.push(<FediverseStep onNext={handleNextStep} />);
   }
 
