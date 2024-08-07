@@ -1,19 +1,25 @@
 import React from 'react';
 
 import { Card, CardBody, Stack, Text } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+
+const closeIcon = require('@tabler/icons/outline/x.svg');
 
 interface IBigCard {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   children: React.ReactNode;
+  onClose?: boolean;
+  buttonEvent?(): void;
 }
 
-const BigCard: React.FC<IBigCard> = ({ title, subtitle, children }) => {
+const BigCard: React.FC<IBigCard> = ({ title, subtitle, children, buttonEvent, onClose = false }) => {
   return (
     <Card variant='rounded' size='xl'>
-      <CardBody>
+      <CardBody className='relative'>
         <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
           <Stack space={2}>
+            {onClose && (<IconButton src={closeIcon} className='absolute right-[2%]  text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' onClick={buttonEvent} />)}
             <Text size='2xl' align='center' weight='bold'>{title}</Text>
             {subtitle && <Text theme='muted' align='center'>{subtitle}</Text>}
           </Stack>
