@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
+import { endOnboarding } from 'soapbox/actions/onboarding';
 import { BigCard } from 'soapbox/components/big-card';
 import { Avatar, Button, Icon, Spinner, Stack } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
@@ -64,10 +65,16 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
     }).catch(console.error);
   };
 
+  const handleComplete = () => {
+    dispatch(endOnboarding());
+  };
+
   return (
     <BigCard
       title={<FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />}
+      buttonEvent={handleComplete}
       subtitle={<FormattedMessage id='onboarding.avatar.subtitle' defaultMessage='Just have fun with it.' />}
+      onClose
     >
       <Stack space={10}>
         <div className='relative mx-auto rounded-full bg-gray-200'>

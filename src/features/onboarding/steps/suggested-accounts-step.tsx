@@ -2,13 +2,16 @@ import debounce from 'lodash/debounce';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { endOnboarding } from 'soapbox/actions/onboarding';
 import { BigCard } from 'soapbox/components/big-card';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
+import { useAppDispatch } from 'soapbox/hooks';
 import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
 
 const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
+  const dispatch = useAppDispatch();
   const { data, fetchNextPage, hasNextPage, isFetching } = useOnboardingSuggestions();
 
   const handleLoadMore = debounce(() => {
@@ -18,6 +21,10 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
 
     return fetchNextPage();
   }, 300);
+
+  const handleComplete = () => {
+    dispatch(endOnboarding());
+  };
 
   const renderSuggestions = () => {
     if (!data) {
@@ -70,6 +77,8 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     <BigCard
       title={<FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />}
       subtitle={<FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />}
+      buttonEvent={handleComplete}
+      onClose
     >
       {renderBody()}
 

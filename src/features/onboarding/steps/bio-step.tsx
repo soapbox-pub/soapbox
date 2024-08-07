@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
+import { endOnboarding } from 'soapbox/actions/onboarding';
 import { BigCard } from 'soapbox/components/big-card';
 import { Button, FormGroup, Stack, Textarea } from 'soapbox/components/ui';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
@@ -43,10 +44,16 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
       });
   };
 
+  const handleComplete = () => {
+    dispatch(endOnboarding());
+  };
+  
   return (
     <BigCard
       title={<FormattedMessage id='onboarding.note.title' defaultMessage='Write a short bio' />}
       subtitle={<FormattedMessage id='onboarding.note.subtitle' defaultMessage='You can always edit this later.' />}
+      buttonEvent={handleComplete}
+      onClose
     >
       <Stack space={5}>
         <div>

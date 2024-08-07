@@ -3,6 +3,7 @@ import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
+import { endOnboarding } from 'soapbox/actions/onboarding';
 import { BigCard } from 'soapbox/components/big-card';
 import StillImage from 'soapbox/components/still-image';
 import { Avatar, Button, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
@@ -67,10 +68,16 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
     }).catch(console.error);
   };
 
+  const handleComplete = () => {
+    dispatch(endOnboarding());
+  };
+
   return (
     <BigCard
       title={<FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />}
       subtitle={<FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />}
+      buttonEvent={handleComplete}
+      onClose
     >
       <Stack space={10}>
         <div className='rounded-lg border border-solid border-gray-200 dark:border-gray-800'>
