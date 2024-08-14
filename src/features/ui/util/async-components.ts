@@ -164,6 +164,7 @@ export const AccountNotePanel = lazy(() => import('soapbox/features/ui/component
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));
 export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal'));
+export const OnboardingFlowModal = lazy(() => import ('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-flow-modal'));
 export const BookmarkFolders = lazy(() => import('soapbox/features/bookmark-folders'));
 export const EditBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/edit-bookmark-folder-modal'));
 export const SelectBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/select-bookmark-folder-modal'));
