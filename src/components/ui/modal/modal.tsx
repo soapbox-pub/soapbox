@@ -45,8 +45,12 @@ interface IModal {
   confirmationFullWidth?: boolean;
   /** Callback when the modal is closed. */
   onClose?: () => void;
-  /** Set whether the modal has padding. */
+  /** Sets whether the modal will have a custom padding different from the default one. */
   padding?: string;
+  /** Sets whether the modal will have a custom shadow different from the default one. */
+  shadow?: string;
+  /** Sets whether the modal will have a custom background different from the default one. */
+  background?: string;
   /** Callback when the secondary action is chosen. */
   secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Secondary button text. */
@@ -76,6 +80,8 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   confirmationFullWidth,
   onClose,
   padding = 'p-6',
+  shadow = 'shadow-xl',
+  background = 'bg-white',
   secondaryAction,
   secondaryDisabled = false,
   secondaryText,
@@ -98,7 +104,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
     <div
       ref={ref}
       data-testid='modal'
-      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white text-start align-middle text-gray-900 shadow-xl transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', padding , widths[width])}
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl text-start align-middle text-gray-900 transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', padding, background, shadow , widths[width])}
     >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>
