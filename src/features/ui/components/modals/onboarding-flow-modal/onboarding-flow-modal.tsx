@@ -75,7 +75,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
 
   return (
     <Stack space={4} className='w-full'>
-      <Modal width='2xl' onClose={handleComplete} padding='p-0' background='bg-transparent' shadow='shadow-none'>
+      <Modal width='2xl' onClose={handleComplete} theme='transparent'>
         <Stack space={4}>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
