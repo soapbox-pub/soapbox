@@ -13,6 +13,11 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
+const themes = {
+  normal: 'bg-white p-6 shadow-xl',
+  transparent: 'bg-transparent p-0 shadow-none',
+};
+
 const widths = {
   xs: 'max-w-xs',
   sm: 'max-w-sm',
@@ -45,6 +50,8 @@ interface IModal {
   confirmationFullWidth?: boolean;
   /** Callback when the modal is closed. */
   onClose?: () => void;
+  /** Theme for the modal. */
+  theme?: keyof typeof themes;
   /** Callback when the secondary action is chosen. */
   secondaryAction?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   /** Secondary button text. */
@@ -73,6 +80,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   confirmationTheme,
   confirmationFullWidth,
   onClose,
+  theme = 'normal',
   secondaryAction,
   secondaryDisabled = false,
   secondaryText,
@@ -95,7 +103,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
     <div
       ref={ref}
       data-testid='modal'
-      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl bg-white p-6 text-start align-middle text-gray-900 shadow-xl transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', widths[width])}
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl text-start align-middle text-gray-900 transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', widths[width], themes[theme])}
     >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>

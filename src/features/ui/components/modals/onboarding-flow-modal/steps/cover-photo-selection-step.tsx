@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import React from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
-import { BigCard } from 'soapbox/components/big-card';
 import StillImage from 'soapbox/components/still-image';
-import { Avatar, Button, Icon, Spinner, Stack, Text } from 'soapbox/components/ui';
+import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isDefaultHeader } from 'soapbox/utils/accounts';
@@ -13,12 +13,19 @@ import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
 
+const closeIcon = require('@tabler/icons/outline/x.svg');
+
 const messages = defineMessages({
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
 
-const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
+interface ICoverPhotoSelectionModal {
+  onClose?(): void;
+  onNext: () => void;
+}
+
+const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose, onNext }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
@@ -27,7 +34,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const [selectedFile, setSelectedFile] = React.useState<string | null>();
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [isDisabled, setDisabled] = React.useState<boolean>(true);
-  const isDefault = account ? isDefaultHeader(account.header) : false;
+  const isDefault = account ? isDefaultHeader(account.avatar) : false;
 
   const openFilePicker = () => {
     fileInput.current?.click();
@@ -68,23 +75,36 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   };
 
   return (
-    <BigCard
-      title={<FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />}
-      subtitle={<FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />}
-    >
-      <Stack space={10}>
-        <div className='rounded-lg border border-solid border-gray-200 dark:border-gray-800'>
+
+    <Stack space={10} justifyContent='center' alignItems='center' className='w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+
+      <div className='relative w-full'>
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -top-[6%] right-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
+        <Stack space={2} justifyContent='center' alignItems='center' className='bg-grey-500 border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
+          <Text size='2xl' align='center' weight='bold'>
+            <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
+          </Text>
+          <Text theme='muted' align='center'>
+            <FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />
+          </Text>
+        </Stack>
+      </div>
+
+      <Stack space={10} justifyContent='center' alignItems='center' className='w-full'>
+        <div className='w-2/3 rounded-lg border border-solid border-gray-200 dark:border-gray-800'>
           <div
             role='button'
-            className='relative flex h-24 items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
+            className='relative flex h-24 w-full items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
           >
-            {selectedFile || account?.header && (
-              <StillImage
-                src={selectedFile || account.header}
-                alt={intl.formatMessage(messages.header)}
-                className='absolute inset-0 rounded-t-md object-cover'
-              />
-            )}
+            <div className='flex h-24 w-full overflow-hidden rounded-t-md'>
+              {selectedFile || account?.header && (
+                <StillImage
+                  src={selectedFile || account.header}
+                  alt={intl.formatMessage(messages.header)}
+                  className='absolute inset-0 w-full rounded-t-md object-cover'
+                />
+              )}
+            </div>
 
             {isSubmitting && (
               <div
@@ -119,7 +139,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
           </div>
         </div>
 
-        <Stack justifyContent='center' space={2}>
+        <Stack justifyContent='center' space={2} className='w-2/3'>
           <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
             {isSubmitting ? (
               <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
@@ -128,15 +148,14 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
             )}
           </Button>
 
-          {isDisabled && (
-            <Button block theme='tertiary' type='button' onClick={onNext}>
-              <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
-            </Button>
-          )}
+          <Button block theme='tertiary' type='button' onClick={onNext}>
+            <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
+          </Button>
         </Stack>
       </Stack>
-    </BigCard>
+    </Stack>
   );
 };
 
-export default CoverPhotoSelectionStep;
+
+export default CoverPhotoSelectionModal;

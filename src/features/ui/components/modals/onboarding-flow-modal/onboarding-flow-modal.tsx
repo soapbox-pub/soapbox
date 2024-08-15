@@ -3,21 +3,22 @@ import React from 'react';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import { endOnboarding } from 'soapbox/actions/onboarding';
-import LandingGradient from 'soapbox/components/landing-gradient';
-import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
+import { Stack, Modal, HStack } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
-import AvatarSelectionStep from './steps/avatar-selection-step';
+import AvatarSelectionModal from './steps/avatar-step';
 import BioStep from './steps/bio-step';
-import CompletedStep from './steps/completed-step';
-import CoverPhotoSelectionStep from './steps/cover-photo-selection-step';
+import CompletedModal from './steps/completed-step';
+import CoverPhotoSelectionModal from './steps/cover-photo-selection-step';
 import DisplayNameStep from './steps/display-name-step';
-import FediverseStep from './steps/fediverse-step';
-import SuggestedAccountsStep from './steps/suggested-accounts-step';
+import SuggestedAccountsModal from './steps/suggested-accounts-step';
 
-const OnboardingWizard = () => {
+interface IOnboardingFlowModal {
+  onClose(): void;
+}
+
+const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
-  const features = useFeatures();
 
   const [currentStep, setCurrentStep] = React.useState<number>(0);
 
@@ -29,27 +30,28 @@ const OnboardingWizard = () => {
     setCurrentStep((prevStep) => Math.max(0, prevStep - 1));
   };
 
+  const handleDotClick = (nextStep: number) => {
+    setCurrentStep(nextStep);
+  };
+
   const handleNextStep = () => {
     setCurrentStep((prevStep) => Math.min(prevStep + 1, steps.length - 1));
   };
 
   const handleComplete = () => {
     dispatch(endOnboarding());
+    onClose();
   };
 
   const steps = [
-    <AvatarSelectionStep onNext={handleNextStep} />,
-    <DisplayNameStep onNext={handleNextStep} />,
-    <BioStep onNext={handleNextStep} />,
-    <CoverPhotoSelectionStep onNext={handleNextStep} />,
-    <SuggestedAccountsStep onNext={handleNextStep} />,
+    <AvatarSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
+    <DisplayNameStep onClose={handleComplete} onNext={handleNextStep} />,
+    <BioStep onClose={handleComplete} onNext={handleNextStep} />,
+    <CoverPhotoSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
+    <SuggestedAccountsModal onClose={handleComplete} onNext={handleNextStep} />,
   ];
 
-  if (features.federating && !features.nostr) {
-    steps.push(<FediverseStep onNext={handleNextStep} />);
-  }
-
-  steps.push(<CompletedStep onComplete={handleComplete} />);
+  steps.push(<CompletedModal onComplete={handleComplete} />);
 
   const handleKeyUp = ({ key }: KeyboardEvent): void => {
     switch (key) {
@@ -62,10 +64,6 @@ const OnboardingWizard = () => {
     }
   };
 
-  const handleDotClick = (nextStep: number) => {
-    setCurrentStep(nextStep);
-  };
-
   React.useEffect(() => {
     document.addEventListener('keyup', handleKeyUp);
 
@@ -74,15 +72,14 @@ const OnboardingWizard = () => {
     };
   }, []);
 
-  return (
-    <div data-testid='onboarding-wizard'>
-      <LandingGradient />
 
-      <main className='flex h-screen flex-col overflow-x-hidden'>
-        <div className='flex h-full flex-col items-center justify-center'>
+  return (
+    <Stack space={4} className='w-full'>
+      <Modal width='2xl' onClose={handleComplete} theme='transparent'>
+        <Stack space={4}>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
-              <div key={i} className='w-full max-w-[100vw] py-6 sm:mx-auto sm:max-w-lg md:max-w-2xl'>
+              <div key={i} className='w-full'>
                 <div
                   className={clsx({
                     'transition-opacity ease-linear': true,
@@ -95,7 +92,6 @@ const OnboardingWizard = () => {
               </div>
             ))}
           </ReactSwipeableViews>
-
           <HStack space={3} alignItems='center' justifyContent='center' className='relative'>
             {steps.map((_, i) => (
               <button
@@ -110,10 +106,10 @@ const OnboardingWizard = () => {
               />
             ))}
           </HStack>
-        </div>
-      </main>
-    </div>
+        </Stack>
+      </Modal>
+    </Stack>
   );
 };
 
-export default OnboardingWizard;
+export default OnboardingFlowModal;

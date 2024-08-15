@@ -121,7 +121,6 @@ export const SettingsStore = lazy(() => import('soapbox/features/developers/sett
 export const TestTimeline = lazy(() => import('soapbox/features/test-timeline'));
 export const ServiceWorkerInfo = lazy(() => import('soapbox/features/developers/service-worker-info'));
 export const DatePicker = lazy(() => import('soapbox/features/birthdays/date-picker'));
-export const OnboardingWizard = lazy(() => import('soapbox/features/onboarding/onboarding-wizard'));
 export const CompareHistoryModal = lazy(() => import('soapbox/features/ui/components/modals/compare-history-modal'));
 export const AuthTokenList = lazy(() => import('soapbox/features/auth-token-list'));
 export const FamiliarFollowersModal = lazy(() => import('soapbox/features/ui/components/modals/familiar-followers-modal'));
@@ -164,6 +163,7 @@ export const AccountNotePanel = lazy(() => import('soapbox/features/ui/component
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));
 export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal'));
+export const OnboardingFlowModal = lazy(() => import ('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-flow-modal'));
 export const BookmarkFolders = lazy(() => import('soapbox/features/bookmark-folders'));
 export const EditBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/edit-bookmark-folder-modal'));
 export const SelectBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/select-bookmark-folder-modal'));
