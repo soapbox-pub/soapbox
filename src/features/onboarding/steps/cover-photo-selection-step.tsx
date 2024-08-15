@@ -85,14 +85,15 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
             role='button'
             className='relative flex h-24 items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
           >
-            {selectedFile || account?.header && (
-              <StillImage
-                src={selectedFile || account.header}
-                alt={intl.formatMessage(messages.header)}
-                className='absolute inset-0 rounded-t-md object-cover'
-              />
-            )}
-
+            <div className='flex h-24 w-full overflow-hidden rounded-t-md'>
+              {selectedFile || account?.header && (
+                <StillImage
+                  src={selectedFile || account.header}
+                  alt={intl.formatMessage(messages.header)}
+                  className='absolute inset-0 w-full rounded-t-md object-cover'
+                />
+              )}
+            </div>
             {isSubmitting && (
               <div
                 className='absolute inset-0 flex items-center justify-center rounded-t-md bg-white/80 dark:bg-primary-900/80'
