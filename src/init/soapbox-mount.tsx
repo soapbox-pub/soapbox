@@ -5,14 +5,15 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 // @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
+import { openModal } from 'soapbox/actions/modals';
 import * as BuildConfig from 'soapbox/build-config';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
 import {
   ModalContainer,
-  OnboardingWizard,
 } from 'soapbox/features/ui/util/async-components';
 import {
+  useAppDispatch,
   useAppSelector,
   useLoggedIn,
   useOwnAccount,
@@ -30,10 +31,15 @@ const SoapboxMount = () => {
 
   const { isLoggedIn } = useLoggedIn();
   const { account } = useOwnAccount();
+  const dispatch = useAppDispatch();
+
   const soapboxConfig = useSoapboxConfig();
 
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
+  if (showOnboarding) {
+    dispatch(openModal('ONBOARDING_FLOW'));
+  }
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
@@ -64,10 +70,7 @@ const SoapboxMount = () => {
 
               <Route>
                 <Suspense fallback={<LoadingScreen />}>
-                  {showOnboarding
-                    ? <OnboardingWizard />
-                    : <UI />
-                  }
+                  <UI />
                 </Suspense>
 
                 <Suspense>
