@@ -2,12 +2,11 @@ import { RootState, type AppDispatch } from 'soapbox/store';
 
 import { authLoggedIn, verifyCredentials } from './auth';
 import { obtainOAuthToken } from './oauth';
-import { startOnboarding } from './onboarding';
 
 const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 
 /** Log in with a Nostr pubkey. */
-function logInNostr(pubkey: string, onboard = false) {
+function logInNostr(pubkey: string) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(setNostrPubkey(pubkey));
 
@@ -27,10 +26,6 @@ function logInNostr(pubkey: string, onboard = false) {
       relays: relay ? [relay] : undefined,
       secret,
     }));
-
-    if (onboard) {
-      dispatch(startOnboarding());
-    }
 
     dispatch(setNostrPubkey(undefined));
 
