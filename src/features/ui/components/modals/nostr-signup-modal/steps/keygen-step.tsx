@@ -4,9 +4,11 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { logInNostr } from 'soapbox/actions/nostr';
+import { startOnboarding } from 'soapbox/actions/onboarding';
 import CopyableInput from 'soapbox/components/copyable-input';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import { download } from 'soapbox/utils/download';
@@ -19,6 +21,7 @@ interface IKeygenStep {
 const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const instance = useInstance();
   const dispatch = useAppDispatch();
+  const { relay } = useNostr();
 
   const secretKey = useMemo(() => generateSecretKey(), []);
   const pubkey = useMemo(() => getPublicKey(secretKey), [secretKey]);
@@ -43,7 +46,23 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const handleNext = async () => {
     const signer = NKeys.add(secretKey);
     const pubkey = await signer.getPublicKey();
-    dispatch(logInNostr(pubkey, true));
+    const now = Math.floor(Date.now() / 1000);
+
+    const events = await Promise.all([
+      signer.signEvent({ kind: 0, content: JSON.stringify({}), tags: [], created_at: now }),
+      signer.signEvent({ kind: 3, content: '', tags: [], created_at: now }),
+      signer.signEvent({ kind: 10000, content: '', tags: [], created_at: now }),
+      signer.signEvent({ kind: 10001, content: '', tags: [], created_at: now }),
+      signer.signEvent({ kind: 10002, content: '', tags: [], created_at: now }),
+      signer.signEvent({ kind: 10003, content: '', tags: [], created_at: now }),
+      signer.signEvent({ kind: 30078, content: '', tags: [['d', 'pub.ditto.pleroma_settings_store']], created_at: now }),
+    ]);
+
+    await Promise.all(events.map((event) => relay?.event(event)));
+
+    await dispatch(logInNostr(pubkey));
+    dispatch(startOnboarding());
+
     onClose();
   };
 
