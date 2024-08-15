@@ -78,11 +78,9 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
         <Stack space={2} justifyContent='center' alignItems='center' className='border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
           <Text size='2xl' align='center' weight='bold'>
             <FormattedMessage id='onboarding.avatar.title' defaultMessage={'Choose a profile picture'} />
-            {/* Colocar o titulo aqui */}
           </Text>
           <Text theme='muted' align='center'>
             <FormattedMessage id='onboarding.avatar.subtitle' defaultMessage={'Just have fun with it.'} />
-            {/* Colocar o subtitulo aqui */}
           </Text>
         </Stack>
       </div>
