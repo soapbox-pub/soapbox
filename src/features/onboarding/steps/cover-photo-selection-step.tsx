@@ -76,8 +76,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
     <BigCard
       title={<FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />}
       subtitle={<FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />}
-      buttonEvent={handleComplete}
-      onClose
+      onClose={handleComplete}
     >
       <Stack space={10}>
         <div className='rounded-lg border border-solid border-gray-200 dark:border-gray-800'>

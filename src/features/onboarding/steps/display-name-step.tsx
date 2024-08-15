@@ -63,8 +63,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
     <BigCard
       title={<FormattedMessage id='onboarding.display_name.title' defaultMessage='Choose a display name' />}
       subtitle={<FormattedMessage id='onboarding.display_name.subtitle' defaultMessage='You can always edit this later.' />}
-      buttonEvent={handleComplete}
-      onClose
+      onClose={handleComplete}
     >
       <Stack space={5}>
         <FormGroup

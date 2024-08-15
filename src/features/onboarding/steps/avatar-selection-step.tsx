@@ -72,9 +72,8 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   return (
     <BigCard
       title={<FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />}
-      buttonEvent={handleComplete}
       subtitle={<FormattedMessage id='onboarding.avatar.subtitle' defaultMessage='Just have fun with it.' />}
-      onClose
+      onClose={handleComplete}
     >
       <Stack space={10}>
         <div className='relative mx-auto rounded-full bg-gray-200'>

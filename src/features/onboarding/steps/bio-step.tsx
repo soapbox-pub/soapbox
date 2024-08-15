@@ -52,8 +52,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
     <BigCard
       title={<FormattedMessage id='onboarding.note.title' defaultMessage='Write a short bio' />}
       subtitle={<FormattedMessage id='onboarding.note.subtitle' defaultMessage='You can always edit this later.' />}
-      buttonEvent={handleComplete}
-      onClose
+      onClose={handleComplete}
     >
       <Stack space={5}>
         <div>

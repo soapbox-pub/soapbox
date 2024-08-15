@@ -77,8 +77,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     <BigCard
       title={<FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />}
       subtitle={<FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />}
-      buttonEvent={handleComplete}
-      onClose
+      onClose={handleComplete}
     >
       {renderBody()}
 
