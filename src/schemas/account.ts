@@ -131,12 +131,6 @@ const getDomain = (url: string) => {
   } else if (atCount !== 1) {
     return '';
   }
-
-  try {
-    return new URL(url).host;
-  } catch (e) {
-    return '';
-  }
 };
 
 const filterBadges = (tags?: string[]) =>
