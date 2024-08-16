@@ -155,7 +155,6 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
 
   const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
   const domain = getDomain(account.url || account.uri);
-  // console.log(account.acct, account.url, account.uri)
 
   if (pleroma) {
     pleroma.birthday = pleroma.birthday || other_settings?.birthday;
