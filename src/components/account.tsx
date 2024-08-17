@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -27,6 +27,9 @@ const messages = defineMessages({
 
 const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
+  const [missing, setMissing] = useState<boolean>(false);
+
+  const handleError = () => setMissing(true);
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
@@ -41,7 +44,7 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
     }
   };
 
-  if (!account.pleroma?.favicon) {
+  if (missing || !account.pleroma?.favicon) {
     return null;
   }
 
@@ -51,7 +54,13 @@ const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
       onClick={handleClick}
       disabled={disabled}
     >
-      <img src={account.pleroma.favicon} alt='' title={account.domain} className='max-h-full w-full' />
+      <img
+        src={account.pleroma.favicon}
+        alt=''
+        title={account.domain}
+        className='max-h-full w-full'
+        onError={handleError}
+      />
     </button>
   );
 };
