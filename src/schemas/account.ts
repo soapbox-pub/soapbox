@@ -45,6 +45,7 @@ const baseAccountSchema = z.object({
     is_registered: z.boolean().catch(false),
     external_url: z.string().optional().catch(undefined),
   }),
+  domain: z.string().optional().catch(undefined),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),
   followers_count: z.number().catch(0),
@@ -145,7 +146,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
   }));
 
   const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
-  const domain = getDomain(account.url || account.uri);
+  const domain = account.domain ?? getDomain(account.url || account.uri);
 
   if (pleroma) {
     pleroma.birthday = pleroma.birthday || other_settings?.birthday;
