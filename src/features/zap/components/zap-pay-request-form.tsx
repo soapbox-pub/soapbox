@@ -8,8 +8,9 @@ import coinStack from 'soapbox/assets/icons/coin-stack.png';
 import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
+import questionIcon from 'soapbox/assets/icons/questionIcon.svg';
 import Account from 'soapbox/components/account';
-import { Stack, Button, Input } from 'soapbox/components/ui';
+import { Stack, HStack, Button, Input } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
@@ -64,7 +65,7 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
   };
 
   return (
-    <Stack space={3} element='form' onSubmit={handleSubmit}>
+    <Stack space={3} alignItems='center' element='form' onSubmit={handleSubmit} >
       <Account account={account} showProfileHoverCard={false} />
       <div>
         <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
@@ -85,8 +86,17 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
         />
       </div>
 
-      <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+      <div className='w-full'>
+        <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+      </div>
+
       <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
+      <HStack justifyContent='center' space={2}>
+        <p className='text-sm'>To suport Ditto, 'amount' sats will deducted</p>
+        <a className='flex gap-2' href='/'>
+          <img src={questionIcon} className='w-4' alt='' />
+        </a>
+      </HStack>
     </Stack>
   );
 };
