@@ -1649,6 +1649,10 @@
   "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.comment_input.placeholder": "Optional comment",
   "zap.open_wallet": "Open Wallet",
+  "zap.next": "Next",
   "zap.send_to": "Send zaps to {target}",
-  "zap.unit": "Zap amount in sats"
+  "zap.unit": "Zap amount in sats",
+  "zap_split.question": "Why am I paying this?",
+  "zap_split.text": "Your support will help us build an unstoppable empire and rule the galaxy!",
+  "zap_split.title": "Zap Split"
 }
