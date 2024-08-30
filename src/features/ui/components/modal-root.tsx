@@ -44,6 +44,7 @@ import {
   VideoModal,
   EditRuleModal,
   ZapPayRequestModal,
+  ZapSplitModal,
   ZapInvoiceModal,
   ZapsModal,
 } from 'soapbox/features/ui/util/async-components';
@@ -96,6 +97,7 @@ const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
   'ZAPS': ZapsModal,
   'ZAP_INVOICE': ZapInvoiceModal,
   'ZAP_PAY_REQUEST': ZapPayRequestModal,
+  'ZAP_SPLIT': ZapSplitModal,
 };
 
 export type ModalType = keyof typeof MODAL_COMPONENTS | null;
