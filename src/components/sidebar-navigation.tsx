@@ -160,6 +160,7 @@ const SidebarNavigation = () => {
               icon={require('@tabler/icons/outline/settings.svg')}
               activeIcon={require('@tabler/icons/filled/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
+              count={features.nip05 && account.acct !== account.source?.nostr?.nip05 ? 1 : 0}
             />
 
             {account.staff && (

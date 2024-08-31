@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchMfa } from 'soapbox/actions/mfa';
 import CopyableInput from 'soapbox/components/copyable-input';
 import List, { ListItem } from 'soapbox/components/list';
-import { Card, CardBody, CardHeader, CardTitle, Column, FormGroup, Text } from 'soapbox/components/ui';
+import { Card, CardBody, CardHeader, CardTitle, Column, Counter, FormGroup, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks';
 
 import Preferences from '../preferences';
@@ -71,7 +71,10 @@ const Settings = () => {
             </ListItem>
             {features.nip05 && (
               <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
-                <span className='max-w-full truncate'>{account?.source?.nostr?.nip05}</span>
+                <span className='max-w-full truncate'>
+                  {account?.source?.nostr?.nip05}
+                  {features.nip05 && <Counter count={1} />}
+                </span>
               </ListItem>
             )}
             {features.nostr && <ListItem label={intl.formatMessage(messages.editRelays)} to='/settings/relays' />}
