@@ -1164,6 +1164,8 @@
   "nostr_relays.write_only": "Somente escrita",
   "nostr_signup.key-add.title": "Importar Chave",
   "nostr_signup.key.title": "Você precisa de uma chave para continuar",
+  "nostr_signup.key_generate": "Gerar chave",
+  "nostr_signup.has_key": "Eu já tenho uma chave",
   "nostr_signup.keygen.title": "Sua nova chave",
   "nostr_signup.siwe.action": "Faça login com a extensão",
   "nostr_signup.siwe.alt": "Faça login com a chave",
