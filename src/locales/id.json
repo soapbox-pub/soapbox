@@ -410,7 +410,7 @@
   "compose_event.upload_banner": "Unggah spanduk acara",
   "compose_form.direct_message_warning": "This toot will only be visible to all the mentioned users.",
   "compose_form.event_placeholder": "Posting ke acara ini",
-  "compose_form.hashtag_warning": "Toot ini tidak akan ada dalam daftar tagar manapun karena telah di set sebagai tidak terdaftar. Hanya postingan publik yang bisa dicari dengan tagar.",
+  "compose_form.hashtag_warning": "Post ini tidak akan ada dalam daftar tagar manapun karena telah di set sebagai tidak terdaftar. Hanya postingan publik yang bisa dicari dengan tagar.",
   "compose_form.lock_disclaimer": "Akun anda tidak {locked}. Semua orang dapat mengikuti anda untuk melihat postingan khusus untuk pengikut anda.",
   "compose_form.lock_disclaimer.lock": "terkunci",
   "compose_form.markdown.marked": "Markdown postingan diaktifkan",
