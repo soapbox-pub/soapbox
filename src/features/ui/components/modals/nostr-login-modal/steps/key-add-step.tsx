@@ -61,7 +61,7 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
             </FormGroup>
 
             <Button theme='accent' size='lg' type='submit' disabled={!nsec}>
-              Add Key
+              <FormattedMessage id='nostr_signup.key-add.key_button' defaultMessage='Add Key' />
             </Button>
           </Stack>
         </Form>

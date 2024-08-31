@@ -1163,6 +1163,7 @@
   "nostr_relays.title": "Relays",
   "nostr_relays.write_only": "Somente escrita",
   "nostr_signup.key-add.title": "Importar Chave",
+  "nostr_signup.key-add.key_button": "Adicionar chave",
   "nostr_signup.key.title": "Você precisa de uma chave para continuar",
   "nostr_signup.key_generate": "Gerar chave",
   "nostr_signup.has_key": "Eu já tenho uma chave",
