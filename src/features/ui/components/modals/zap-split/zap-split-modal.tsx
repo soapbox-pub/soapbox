@@ -27,6 +27,7 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zap
   const intl = useIntl();
   const hasZapSplit = true;
   const [invoice, setInvoice] = useState<string | null>(null);
+  const [widthModal, setWidthModal] = useState<'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined>('sm');
 
 
   const onClickClose = () => {
@@ -50,16 +51,21 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zap
     }
 
     setInvoice(invoice);
+    setWidthModal('xl');
   };
 
   useEffect(() => {
     handleSubmit();
   }, []);
 
+  const step = 2 ;
+  const amountAdm = 3;
 
   return (
-    <Modal title={renderTitle()} onClose={onClickClose} className='max-w-[350px] sm:max-w-xl'>
-      <div className='flex flex-col sm:flex-row'>
+    <Modal
+      title={renderTitle()} onClose={onClickClose} width={widthModal}
+    >
+      <div className='relative flex flex-col sm:flex-row'>
         <ZapSplit account={account} status={status} zapAmount={50} />
 
         {invoice &&  <div className='border-grey-500 mt-4 flex w-full border-t pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>
@@ -75,12 +81,17 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zap
               <a href={'lightning:' + invoice}>
                 <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
               </a>
-              {hasZapSplit ? <a href={'lightning:' + invoice}>
+              {hasZapSplit &&
                 <Button type='button' theme='muted' className='!font-bold' text={intl.formatMessage(messages.zap_next)} />
-              </a> : null}
+              }
             </HStack>
           </Stack>
         </div>}
+        <p className='absolute -bottom-4 -right-2'>
+          <span className='font-bold'>
+            {step}/{amountAdm}
+          </span>
+        </p>
       </div>
     </Modal>
   );

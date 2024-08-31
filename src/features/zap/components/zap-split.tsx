@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account';
-import { Stack, HStack } from 'soapbox/components/ui';
+import { Stack } from 'soapbox/components/ui';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
@@ -19,8 +19,10 @@ const ZapSplit = ({ account, status, amountAdm = 3, zapAmount = 50, step = 2 }: 
     <Stack space={10} alignItems='center' className='relative pb-4 pt-2'>
 
       <Stack space={4} justifyContent='center' className='w-full' alignItems='center'>
-        <Stack className='w-4/5'>
-          <Account account={account} showProfileHoverCard={false} />
+        <Stack justifyContent='center' alignItems='center' className='w-3/5 sm:w-4/5'>
+          <div>
+            <Account account={account} showProfileHoverCard={false} />
+          </div>
         </Stack>
         <div className='bg-grey-500 dark:border-grey-800 -mx-4 w-full border-b border-solid sm:-mx-10' />
 
@@ -43,18 +45,13 @@ const ZapSplit = ({ account, status, amountAdm = 3, zapAmount = 50, step = 2 }: 
         </div>
       </div>
 
-      <HStack justifyContent='center' space={2}>
-        <a className='flex gap-2' href='/'>
-          <p className='text-sm'>
-            <FormattedMessage id='zap_split.question' defaultMessage='Why am I paying this?' />
-          </p>
-        </a>
-        <p className='absolute right-2'>
-          <span className='font-bold'>
-            {step}/{amountAdm}
-          </span>
+
+      <a className='flex gap-2' href='/'>
+        <p className='text-sm'>
+          <FormattedMessage id='zap_split.question' defaultMessage='Why am I paying this?' />
         </p>
-      </HStack>
+      </a>
+
     </Stack>
   );
 };
