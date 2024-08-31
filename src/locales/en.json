@@ -1163,6 +1163,8 @@
   "nostr_relays.write_only": "Write-only",
   "nostr_signup.key-add.title": "Import Key",
   "nostr_signup.key.title": "You need a key to continue",
+  "nostr_signup.key_generate": "Generate key",
+  "nostr_signup.has_key": "I already have a key",
   "nostr_signup.keygen.title": "Your new key",
   "nostr_signup.siwe.action": "Sign in with extension",
   "nostr_signup.siwe.alt": "Sign in with key",
