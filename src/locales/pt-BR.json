@@ -1515,7 +1515,7 @@
   "status.edited": "Editado em {date}",
   "status.embed": "Incorporar",
   "status.external": "Ver postagem em {domain}",
-  "status.favourite": "Adicionar aos favoritos",
+  "status.favourite": "Like",
   "status.filtered": "Filtrado",
   "status.group": "Postado no {group}",
   "status.group_mod_delete": "Excluir post do grupo",
