@@ -6,6 +6,7 @@ import CopyableInput from 'soapbox/components/copyable-input';
 import List, { ListItem } from 'soapbox/components/list';
 import { Card, CardBody, CardHeader, CardTitle, Column, Counter, FormGroup, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
 
 import Preferences from '../preferences';
 
@@ -46,6 +47,7 @@ const Settings = () => {
   const features = useFeatures();
   const { account } = useOwnAccount();
   const instance = useInstance();
+  const settingsNotifications = useSettingsNotifications();
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -73,7 +75,7 @@ const Settings = () => {
               <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
                 <span className='max-w-full truncate'>
                   {account?.source?.nostr?.nip05}
-                  {features.nip05 && <Counter count={1} />}
+                  {settingsNotifications.has('needsNip05') && <Counter count={1} />}
                 </span>
               </ListItem>
             )}
