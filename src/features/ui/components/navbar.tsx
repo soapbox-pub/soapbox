@@ -8,10 +8,11 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { openModal } from 'soapbox/actions/modals';
 import { openSidebar } from 'soapbox/actions/sidebar';
 import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
+import { Avatar, Button, Counter, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
 import { isStandalone } from 'soapbox/utils/state';
 
 import ProfileDropdown from './profile-dropdown';
@@ -35,6 +36,7 @@ const Navbar = () => {
   const { account } = useOwnAccount();
   const node = useRef(null);
   const isMobile = useIsMobile();
+  const settingsNotifications = useSettingsNotifications();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -86,7 +88,12 @@ const Navbar = () => {
         <div className='relative flex h-12 justify-between lg:h-16'>
           {account && (
             <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:left-auto rtl:right-0'>
-              <button onClick={onOpenSidebar}>
+              <button onClick={onOpenSidebar} className='relative'>
+                {settingsNotifications.size ? (
+                  <span className='absolute -right-3 -top-1 z-10 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
+                    <Counter count={settingsNotifications.size} />
+                  </span>
+                ) : null}
                 <Avatar src={account.avatar} size={34} />
               </button>
             </div>

@@ -5,6 +5,7 @@ import { Stack } from 'soapbox/components/ui';
 import { useStatContext } from 'soapbox/contexts/stat-context';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
 import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
 
 import DropdownMenu, { Menu } from './dropdown-menu';
 import SidebarNavigationLink from './sidebar-navigation-link';
@@ -30,6 +31,7 @@ const SidebarNavigation = () => {
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const settingsNotifications = useSettingsNotifications();
 
   const restrictUnauth = instance.pleroma.metadata.restrict_unauthenticated;
 
@@ -160,6 +162,7 @@ const SidebarNavigation = () => {
               icon={require('@tabler/icons/outline/settings.svg')}
               activeIcon={require('@tabler/icons/filled/settings.svg')}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
+              count={settingsNotifications.size}
             />
 
             {account.staff && (

@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
+import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui';
-import { useApi, useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useInstance, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { adminAccountSchema } from 'soapbox/schemas/admin-account';
 import toast from 'soapbox/toast';
@@ -33,9 +34,19 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
   const { data: approvedNames } = useNames();
   const { data: pendingNames } = usePendingNames();
+  const { dismissedSettingsNotifications } = useSettings();
 
   const [username, setUsername] = useState<string>('');
   const [reason, setReason] = useState<string>('');
+
+  useEffect(() => {
+    const dismissed = new Set(dismissedSettingsNotifications);
+
+    if (!dismissed.has('needsNip05')) {
+      dismissed.add('needsNip05');
+      dispatch(changeSetting(['dismissedSettingsNotifications'], [...dismissed]));
+    }
+  }, []);
 
   if (!account) return null;
 

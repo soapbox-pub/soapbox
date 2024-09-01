@@ -73,6 +73,8 @@ const settingsSchema = z.object({
       show: z.boolean().catch(true),
     }),
   }),
+  /** Settings notifications that have been dismissed. See `useSettingsNotifications` hook. */
+  dismissedSettingsNotifications: z.array(z.string()).catch([]),
 });
 
 type Settings = z.infer<typeof settingsSchema>;
