@@ -12,6 +12,7 @@ import Account from 'soapbox/components/account';
 import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 import type { List as ImmutableList } from 'immutable';
@@ -48,13 +49,14 @@ interface ISidebarLink {
   icon: string;
   text: string | JSX.Element;
   onClick: React.EventHandler<React.MouseEvent>;
+  count?: number;
 }
 
-const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick }) => {
+const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick, count }) => {
   const body = (
     <HStack space={2} alignItems='center'>
       <div className='relative inline-flex rounded-full bg-primary-50 p-2 dark:bg-gray-800'>
-        <Icon src={icon} className='h-5 w-5 text-primary-500' />
+        <Icon src={icon} className='h-5 w-5 text-primary-500' count={count} />
       </div>
 
       <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
@@ -89,6 +91,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const instance = useInstance();
+  const settingsNotifications = useSettingsNotifications();
 
   const closeButtonRef = React.useRef(null);
 
@@ -286,6 +289,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     icon={require('@tabler/icons/outline/settings.svg')}
                     text={intl.formatMessage(messages.preferences)}
                     onClick={onClose}
+                    count={settingsNotifications.size}
                   />
 
                   {features.federating && (
