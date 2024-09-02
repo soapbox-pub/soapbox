@@ -70,6 +70,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
           queryKey: ['names', 'pending'],
         });
         setUsername('');
+        setReason('');
       },
     });
   };
