@@ -647,7 +647,7 @@
   "edit_federation.unlisted": "Force posts unlisted",
   "edit_identity.names_title": "Names",
   "edit_identity.pending_names_title": "Requested Names",
-  "edit_identity.reason_placeholder": "Why do you want this name?",
+  "edit_identity.reason_placeholder": "Why do you want to be part of the {siteTitle} community?",
   "edit_identity.request": "Request",
   "edit_identity.requested": "Name requested",
   "edit_password.header": "Change Password",
