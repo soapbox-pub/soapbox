@@ -20,6 +20,8 @@ export const NotificationRecord = ImmutableRecord({
   emoji_url: null as string | null, // pleroma:emoji_reaction
   id: '',
   name: '', // ditto:name_grant
+  amount: 0, // ditto:zap
+  message: '', // ditto:zap
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move
   type: '',
