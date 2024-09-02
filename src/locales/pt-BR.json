@@ -192,7 +192,7 @@
   "admin.users.user_unsuggested_message": "@{acct} foi dessugerido",
   "admin.users.user_unverified_message": "@{acct} foi desverificado",
   "admin.users.user_verified_message": "@{acct} foi verificado",
-  "admin_nav.awaiting_approval": "Aguardando Aprovação",
+  "admin_nav.awaiting_approval": "Fila",
   "admin_nav.dashboard": "Painel de Controle",
   "admin_nav.reports": "Relatórios",
   "alert.unexpected.body": "Pedimos desculpas pela interrupção. Se o problema persistir, entre em contato com nossa equipe de suporte. Você também pode tentar {clearCookies} (isso irá desconectá-lo).",
