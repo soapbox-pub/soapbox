@@ -4,10 +4,13 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
 import CopyableInput from 'soapbox/components/copyable-input';
-import { Modal, Button, Stack } from 'soapbox/components/ui';
+import { Modal, Button, Stack, Avatar } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
+
+const closeIcon = require('@tabler/icons/outline/x.svg');
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
@@ -32,9 +35,15 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, onClose }) =
     return <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />;
   };
 
+
   return (
-    <Modal title={renderTitle()} onClose={onClickClose}>
-      <Stack space={3} className='m-auto items-center'>
+    <Modal width='sm'>
+      <Stack space={6} className='relative m-auto' alignItems='center' >
+        <Avatar src={account.avatar} size={64} />
+        <h3 className='text-xl font-bold'>
+          {renderTitle()}
+        </h3>
+        <IconButton src={closeIcon} onClick={onClickClose} className='absolute -top-[8%] right-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
         <QRCodeCanvas value={invoice} />
         <div className='w-full'>
           <CopyableInput value={invoice} />
