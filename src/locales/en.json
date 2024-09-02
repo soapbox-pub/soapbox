@@ -1168,6 +1168,7 @@
   "nostr_signup.siwe.alt": "Sign in with key",
   "nostr_signup.siwe.title": "Sign in",
   "notification.ditto:name_grant": "You were granted the name {acct}",
+  "notification.ditto:zap": "{name} sent you {amount} sats",
   "notification.favourite": "{name} liked your post",
   "notification.follow": "{name} followed you",
   "notification.follow_request": "{name} has requested to follow you",
