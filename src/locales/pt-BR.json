@@ -1172,7 +1172,7 @@
   "nostr_signup.siwe.alt": "Faça login com a chave",
   "nostr_signup.siwe.title": "Entrar",
   "notification.ditto:name_grant": "Você recebeu o nome {acct}",
-  "notification.favourite": "{name} adicionou a sua postagem aos favoritos",
+  "notification.favourite": "{name} curtiu a sua postagem",
   "notification.follow": "{name} te seguiu",
   "notification.follow_request": "{name} solicitou para te seguir",
   "notification.group_favourite": "{name} curtiu seu post no grupo",
