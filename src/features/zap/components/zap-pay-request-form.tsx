@@ -11,9 +11,8 @@ import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import questionIcon from 'soapbox/assets/icons/questionIcon.svg';
 import Account from 'soapbox/components/account';
 import { Stack, HStack, Button, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-// import { useApi, useAppDispatch } from 'soapbox/hooks';
-// import { zapSplitSchema } from 'soapbox/schemas/zap-split';
+import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { type ZapSplitData } from 'soapbox/schemas/zap-split';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
@@ -29,29 +28,44 @@ const messages = defineMessages({
 });
 
 const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
-  // const api = useApi();
+  const api = useApi();
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
   // amount in millisatoshi
   const [zapAmount, setZapAmount] = useState(50);
 
-  // const fetchZapSplit = async (id: string) => {
-  //   return await api.get(`/api/v1/ditto/${id}/zap_splits`);
-  // };
+  const fetchZapSplit = async (id: string) => {
+    return await api.get(`/api/v1/ditto/${id}/zap_splits`);
+  };
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
-    // const hasZapSplit = await fetchZapSplit(status!.id);
-    // const teste = zapSplitSchema.parse(hasZapSplit.data);
-    const invoice = await dispatch(zap(account, status, zapAmount * 1000, zapComment));
+    const zapArrays: ZapSplitData[] = (await fetchZapSplit(status!.id)).data;
 
+    let newZapAmount = zapAmount;
+    const zapSplitAccounts: ZapSplitData[] = [];
+
+    if (zapArrays) { 
+      const totalWeight = zapArrays.reduce((e,b) => e + b.weight, (0));
+      zapArrays.forEach((zapSplit) => {
+        if (zapSplit.account.id === account.id){
+          newZapAmount = zapSplit.weight * (zapAmount / totalWeight);
+        } else {
+          zapSplitAccounts.push(zapSplit);
+        }
+      });
+    }
+
+    const invoice = await dispatch(zap(account, status, newZapAmount * 1000, zapComment));
     // If invoice is undefined it means the user has paid through his extension
     // In this case, we simply close the modal
     if (!invoice) {
       dispatch(closeModal('ZAP_PAY_REQUEST'));
       // Dispatch the adm account
-      // hasZapSplit && dispatch(openModal('ZAP_SPLIT', { account }));
+      if (zapArrays) {
+        dispatch(openModal('ZAP_SPLIT', { zapSplitAccounts, status, zapAmount }));
+      }
       return;
     }
     // open QR code modal

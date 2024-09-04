@@ -9,12 +9,10 @@ import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbo
 interface IZapSplit {
   status?: StatusEntity;
   account: AccountEntity;
-  amountAdm?: number;
-  zapAmount?: number;
-  step?: number;
 }
 
-const ZapSplit = ({ account, status, amountAdm = 3, zapAmount = 50, step = 2 }: IZapSplit) => {
+const ZapSplit = ({ account, status }: IZapSplit) => {
+  const zapAmount = 50;
   return (
     <Stack space={10} alignItems='center' className='relative pb-4 pt-2'>
 
