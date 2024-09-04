@@ -65,7 +65,7 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zap
       title={renderTitle()} onClose={onClickClose} width={widthModal}
     >
       <div className='relative flex flex-col sm:flex-row'>
-        <ZapSplit account={account} status={status} zapAmount={50} />
+        <ZapSplit account={account} status={status} />
 
         {invoice &&  <div className='border-grey-500 mt-4 flex w-full border-t pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>
           <Stack space={6} className='relative m-auto' alignItems='center'>
