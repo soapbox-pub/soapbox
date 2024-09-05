@@ -9,6 +9,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
 import Icon from 'soapbox/components/icon';
+import Status from 'soapbox/components/status';
 import { HStack, Text, Emoji, Button, Stack } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account-container';
 import StatusContainer from 'soapbox/containers/status-container';
@@ -59,6 +60,7 @@ const icons: Record<NotificationType, string> = {
   'pleroma:participation_request': require('@tabler/icons/outline/calendar-event.svg'),
   'pleroma:participation_accepted': require('@tabler/icons/outline/calendar-event.svg'),
   'ditto:name_grant': require('@tabler/icons/outline/user-check.svg'),
+  'ditto:zap': require('@tabler/icons/outline/bolt.svg'),
 };
 
 const nameMessage = defineMessage({
@@ -139,6 +141,10 @@ const notificationMessages: Record<NotificationType, MessageDescriptor> = define
     id: 'notification.ditto:name_grant',
     defaultMessage: 'You were granted the name {acct}',
   },
+  'ditto:zap': {
+    id: 'notification.ditto:zap',
+    defaultMessage: '{name} sent you {amount} sats',
+  },
 });
 
 const messages = defineMessages({
@@ -152,6 +158,7 @@ const buildMessage = (
   acct: string | undefined,
   targetName: string,
   instanceTitle: string,
+  amount: number,
 ): React.ReactNode => {
   const link = buildLink(account);
   const name = intl.formatMessage(nameMessage, {
@@ -161,6 +168,7 @@ const buildMessage = (
 
   return intl.formatMessage(notificationMessages[type], {
     acct,
+    amount,
     name,
     targetName,
     instance: instanceTitle,
@@ -309,6 +317,29 @@ const Notification: React.FC<INotification> = (props) => {
   const renderContent = () => {
     switch (type as NotificationType) {
       case 'follow':
+      case 'ditto:zap':
+        if (!status) {
+          return account && typeof account === 'object' ? (
+            <AccountContainer
+              id={account.id}
+              hidden={hidden}
+              avatarSize={avatarSize}
+              withRelationship
+            />
+          ) : null;
+        } else {
+          return status && typeof status === 'object' ? (
+            <Status
+              id={status.id}
+              status={status}
+              hidden={hidden}
+              onMoveDown={handleMoveDown}
+              onMoveUp={handleMoveUp}
+              avatarSize={avatarSize}
+              showGroup={false}
+            />
+          ) : null;
+        }
       case 'user_approved':
         return account && typeof account === 'object' ? (
           <AccountContainer
@@ -379,7 +410,7 @@ const Notification: React.FC<INotification> = (props) => {
   const acct = notification.name;
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, acct, targetName, instance.title) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, acct, targetName, instance.title, notification.amount / 1000) : null;
 
   const ariaLabel = validType(type) ? (
     notificationForScreenReader(
