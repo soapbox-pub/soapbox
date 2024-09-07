@@ -58,11 +58,10 @@ For detailed guides, see these pages:
 
 ## Contributing
 
-We welcome contributions to this project.
-To contribute, see [Contributing to Soapbox](https://docs.soapbox.pub/soapbox/contributing/).
+We welcome contributions to this project!
 
-Translators can help by providing [translations through Weblate](https://hosted.weblate.org/projects/soapbox-pub/soapbox/).
-Native speakers from all around the world are welcome!
+- [Making a Merge Request](https://docs.soapbox.pub/soapbox/contributing/)
+- [Contributing Translations](https://docs.soapbox.pub/soapbox/translations/)
 
 # Project Philosophy
 
