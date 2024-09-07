@@ -316,7 +316,6 @@
   "notifications.filter.polls": "Resultados de la encuesta",
   "notifications.group": "{count} notificaciones",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.header": "Reset Password",
   "password_reset.reset": "Reset password",

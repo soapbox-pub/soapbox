@@ -178,7 +178,6 @@
   "notifications.filter.favourites": "Favorites",
   "notifications.group": "{count} notifications",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.fields.email_placeholder": "Адрес на е-поща",
   "password_reset.fields.username_placeholder": "Адрес на е-поща или потребителско име",

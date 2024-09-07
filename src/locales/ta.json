@@ -266,7 +266,6 @@
   "notifications.filter.polls": "கருத்துக்கணிப்பு முடிவுகள்",
   "notifications.group": "{count} notifications",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.header": "Reset Password",
   "password_reset.reset": "Reset password",
