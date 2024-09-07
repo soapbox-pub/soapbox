@@ -143,7 +143,7 @@ const notificationMessages: Record<NotificationType, MessageDescriptor> = define
   },
   'ditto:zap': {
     id: 'notification.ditto:zap',
-    defaultMessage: '{name} sent you {amount} sats',
+    defaultMessage: '{name} zapped you {amount} sats',
   },
 });
 
