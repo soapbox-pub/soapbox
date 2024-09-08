@@ -148,6 +148,7 @@ const SearchResults = () => {
           id={statusId}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
+          variant='slim'
         />
       ));
       resultsIds = results.statuses;
@@ -159,6 +160,7 @@ const SearchResults = () => {
           id={statusId}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
+          variant='slim'
         />
       ));
       resultsIds = trendingStatuses;
@@ -229,7 +231,7 @@ const SearchResults = () => {
           listClassName={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={clsx({
+          itemClassName={clsx('px-4', {
             'pb-4': selectedFilter === 'accounts',
             'pb-3': selectedFilter === 'hashtags',
           })}

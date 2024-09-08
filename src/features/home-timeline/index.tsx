@@ -70,7 +70,6 @@ const HomeTimeline: React.FC = () => {
           onLoadMore={handleLoadMore}
           timelineId='home'
           divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
-          showAds
           emptyMessage={
             <Stack space={1}>
               <Text size='xl' weight='medium' align='center'>

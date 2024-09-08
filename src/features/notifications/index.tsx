@@ -16,7 +16,8 @@ import ScrollTopButton from 'soapbox/components/scroll-top-button';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Column, Portal } from 'soapbox/components/ui';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useSettings, useTheme } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
 import FilterBar from './components/filter-bar';
 import Notification from './components/notification';
@@ -57,6 +58,9 @@ const Notifications = () => {
   // const isUnread = useAppSelector(state => state.notifications.unread > 0);
   const hasMore = useAppSelector(state => state.notifications.hasMore);
   const totalQueuedNotificationsCount = useAppSelector(state => state.notifications.totalQueuedNotificationsCount || 0);
+
+  const theme = useTheme();
+  const isMobile = useIsMobile();
 
   const node = useRef<VirtuosoHandle>(null);
   const column = useRef<HTMLDivElement>(null);
@@ -174,7 +178,12 @@ const Notifications = () => {
   );
 
   return (
-    <Column ref={column} label={intl.formatMessage(messages.title)} withHeader={false}>
+    <Column
+      ref={column}
+      label={intl.formatMessage(messages.title)}
+      withHeader={false}
+      className={clsx({ '!p-0': isMobile || theme === 'black' })}
+    >
       {filterBarContainer}
 
       <Portal>
