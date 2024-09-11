@@ -1,5 +1,4 @@
 import React  from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';
 
@@ -18,13 +17,10 @@ const ZapPayRequestModal: React.FC<IZapPayRequestModal> = ({ account, status, on
     onClose('ZAP_PAY_REQUEST');
   };
 
-  const renderTitle = () => {
-    return <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />;
-  };
 
   return (
-    <Modal title={renderTitle()} onClose={onClickClose}>
-      <ZapPayRequestForm account={account} status={status} />
+    <Modal width='lg'>
+      <ZapPayRequestForm account={account} status={status} onClose={onClickClose} />
     </Modal>
   );
 };

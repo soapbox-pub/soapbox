@@ -8,15 +8,21 @@ import coinStack from 'soapbox/assets/icons/coin-stack.png';
 import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
-import Account from 'soapbox/components/account';
-import { Stack, Button, Input } from 'soapbox/components/ui';
+import DisplayNameInline from 'soapbox/components/display-name-inline';
+import { Stack, Button, Input, Avatar } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
 
+import ZapButton from './zap-button/zap-button';
+
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
+
+const closeIcon = require('@tabler/icons/outline/x.svg');
 
 interface IZapPayRequestForm {
   status?: StatusEntity;
   account: AccountEntity;
+  onClose?(): void;
 }
 
 const messages = defineMessages({
@@ -25,12 +31,15 @@ const messages = defineMessages({
   zap_commentPlaceholder: { id: 'zap.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
 
-const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
+const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
   // amount in millisatoshi
   const [zapAmount, setZapAmount] = useState(50);
+  const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
+  const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
+
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -64,28 +73,34 @@ const ZapPayRequestForm = ({ account, status }: IZapPayRequestForm) => {
   };
 
   return (
-    <Stack space={3} element='form' onSubmit={handleSubmit}>
-      <Account account={account} showProfileHoverCard={false} />
-      <div>
-        <FormattedMessage id='zap.unit' defaultMessage='Zap amount in sats' />
-      </div>
+    <Stack space={4} element='form' onSubmit={handleSubmit} justifyContent='center' alignItems='center' className='relative'>
+      <Stack space={2} justifyContent='center' alignItems='center' >
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-[1%] -top-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
+        <span className='display-name__account text-base'>
+          <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
+        </span>
+        <Avatar src={account.avatar} size={50} />
+        <DisplayNameInline account={account} />
+      </Stack>
 
       <div className='flex justify-center '>
-        <Button onClick={() => setZapAmount(50)} className='m-1' type='button' iconElement='img' icon={coinIcon} theme={zapAmount === 50 ? 'primary' : 'muted'} text='50' />
-        <Button onClick={() => setZapAmount(200)} className='m-1' type='button' iconElement='img' icon={coinStack} theme={zapAmount === 200 ? 'primary' : 'muted'} text='200' />
-        <Button onClick={() => setZapAmount(1_000)} className='m-1' type='button' iconElement='img' icon={pileCoin} theme={zapAmount === 1_000 ? 'primary' : 'muted'} text='1K' />
-        <Button onClick={() => setZapAmount(3_000)} className='m-1' type='button' iconElement='img' icon={moneyBag} theme={zapAmount === 3_000 ? 'primary' : 'muted'} text='3K' />
-        <Button onClick={() => setZapAmount(5_000)} className='m-1' type='button' iconElement='img' icon={chestIcon} theme={zapAmount === 5_000 ? 'primary' : 'muted'} text='5K' />
+        {ZAP_AMOUNTS.map((amount, i) => <ZapButton onClick={() => setZapAmount(amount)} className='m-0.5 sm:m-1' selected={zapAmount === amount} icon={ZAP_ICONS[i]} amount={amount} />)}
       </div>
 
-      <div className='flex justify-center'>
-        <Input
-          type='text' onChange={handleCustomAmount} value={zapAmount}
-          className='box-shadow:none max-w-28 rounded-none border-0 border-b-4 p-0.5 text-center !text-2xl font-bold !ring-0 dark:bg-transparent'
-        />
-      </div>
+      <Stack space={2}>
+        <div className='relative flex items-end justify-center gap-4'>
+          <Input
+            type='text' onChange={handleCustomAmount} value={zapAmount}
+            className='box-shadow:none max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 sm:max-w-28 sm:p-0.5 sm:!text-4xl dark:bg-transparent'
+          />
+          <p className='absolute -right-10 font-bold sm:-right-12 sm:text-xl'>sats</p>
+        </div>
 
-      <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+      </Stack>
+
+      <div className='w-full'>
+        <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+      </div>
       <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
     </Stack>
   );
