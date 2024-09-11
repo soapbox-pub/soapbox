@@ -1,49 +1,62 @@
-import { QRCodeCanvas } from 'qrcode.react';
-import React, { useEffect, useState }  from 'react';
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import React, { useState, useEffect }  from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useDispatch } from 'react-redux';
+
 
 import { zap } from 'soapbox/actions/interactions';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Modal, Button, Stack, HStack } from 'soapbox/components/ui';
-import ZapSplit from 'soapbox/features/zap/components/zap-split';
-import { useAppDispatch } from 'soapbox/hooks';
+import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit';
+import { Modal } from 'soapbox/components/ui';
+import ZapSplit from 'soapbox/features/ui/components/modals/zap-split/zap-split';
+import { ZapSplitData } from 'soapbox/schemas/zap-split';
 
-import type { Status as StatusEntity, Account as AccountEntity   } from 'soapbox/types/entities';
-
-const messages = defineMessages({
-  zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
-  zap_next: { id: 'zap.next', defaultMessage: 'Next' },
-});
+import type { AppDispatch } from 'soapbox/store';
 
 interface IZapSplitModal {
-  account: AccountEntity;
-  status?: StatusEntity;
+  zapSplitAccounts: ZapSplitData[];
+  splitValues: SplitValue[];
   onClose:(type?: string) => void;
-  zapAmount: number;
 }
 
-const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zapAmount = 50 }) => {
-  const dispatch = useAppDispatch();
-  const intl = useIntl();
-  const [invoice, setInvoice] = useState<string | null>(null);
-  const [widthModal, setWidthModal] = useState<'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined>('sm');
+// interface IZapSplits {
+//   acc: ZapSplitData;
+//   amount: number;
+//   setWidth: React.Dispatch<React.SetStateAction<'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined>>;
+//   setStep: React.Dispatch<React.SetStateAction<number>>;
+// }
 
+const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, splitValues }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [widthModal, setWidthModal] = useState<
+    'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined
+  >('sm');
+  const [invoice, setInvoice] = useState(null);
 
-  const onClickClose = () => {
-    onClose('ZAP_SPLIT');
+  const handleNextStep = () => {
+    setInvoice(null);
+    setWidthModal('sm');
+    setCurrentStep((prevStep) => Math.min(prevStep + 1, zapSplitAccounts.length - 1));
   };
 
-  const renderTitle = () => {
-    return <FormattedMessage id='zap_split.title' defaultMessage='Zap Split' />;
-  };
+  const formatedData = zapSplitAccounts.map((splitData) => {
+    const amount =
+      splitValues.find((item) => item.id === splitData.account.id)?.amountSplit ??
+      0;
+    return {
+      acc: splitData,
+      zapAmount: amount,
+    };
+  });
 
-  const renderTitleQr = () => {
-    return <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />;
-  };
 
   const handleSubmit = async () => {
     const zapComment = '';
-    const invoice = await dispatch(zap(account, status, zapAmount * 1000, zapComment));
+    const account = formatedData[currentStep].acc.account;
+    const zapAmount = formatedData[currentStep].zapAmount;
+
+    const invoice = await dispatch(
+      zap(account, undefined, zapAmount * 1000, zapComment),
+    );
 
     if (!invoice) {
       return;
@@ -54,39 +67,41 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ account, status, onClose, zap
   };
 
   useEffect(() => {
-    handleSubmit();
-  }, []);
+    if (formatedData.length > 0) {
+      handleSubmit();
+    }
+  }, [currentStep]);
 
-  const step = 2 ;
-  const amountAdm = 3;
+  const onClickClose = () => {
+    onClose('ZAP_SPLIT');
+  };
+
+  const handleFinish = () => {
+    onClose('ZAP_SPLIT');
+  };
+
+  const renderTitle = () => {
+    return (
+      <FormattedMessage id='zap_split.title' defaultMessage='Zap Split' />
+    );
+  };
 
   return (
-    <Modal
-      title={renderTitle()} onClose={onClickClose} width={widthModal}
-    >
+    <Modal title={renderTitle()} onClose={onClickClose} width={widthModal}>
       <div className='relative flex flex-col sm:flex-row'>
-        <ZapSplit account={account} status={status} />
-
-        {invoice &&  <div className='border-grey-500 mt-4 flex w-full border-t pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>
-          <Stack space={6} className='relative m-auto' alignItems='center'>
-            <h3 className='text-xl font-bold'>
-              {renderTitleQr()}
-            </h3>
-            <QRCodeCanvas value={invoice} />
-            <div className='w-full'>
-              <CopyableInput value={invoice} />
-            </div>
-            <HStack space={2}>
-              <a href={'lightning:' + invoice}>
-                <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
-              </a>
-              <Button type='button' theme='muted' className='!font-bold' text={intl.formatMessage(messages.zap_next)} />
-            </HStack>
-          </Stack>
-        </div>}
+        {formatedData.length > 0 && (
+          <ZapSplit
+            zapData={formatedData[currentStep].acc}
+            zapAmount={formatedData[currentStep].zapAmount}
+            invoice={invoice}
+            onNext={handleNextStep}
+            isLastStep={currentStep === zapSplitAccounts.length - 1}
+            onFinish={handleFinish}
+          />
+        )}
         <p className='absolute -bottom-4 -right-2'>
           <span className='font-bold'>
-            {step}/{amountAdm}
+            {currentStep + 1}/{zapSplitAccounts.length}
           </span>
         </p>
       </div>
