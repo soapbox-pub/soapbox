@@ -37,6 +37,9 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
   const [zapComment, setZapComment] = useState('');
   // amount in millisatoshi
   const [zapAmount, setZapAmount] = useState(50);
+  const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
+  const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
+
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -81,11 +84,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       </Stack>
 
       <div className='flex justify-center '>
-        <ZapButton onClick={() => setZapAmount(50)} className='m-1' theme={zapAmount === 50 ? 'primary' : 'muted'} icon={coinIcon} text='50' />
-        <ZapButton onClick={() => setZapAmount(200)} className='m-1' theme={zapAmount === 200 ? 'primary' : 'muted'} icon={coinStack} text='200' />
-        <ZapButton onClick={() => setZapAmount(1_000)} className='m-1' theme={zapAmount === 1_000 ? 'primary' : 'muted'} icon={pileCoin} text='1K' />
-        <ZapButton onClick={() => setZapAmount(3_000)} className='m-1' theme={zapAmount === 3_000 ? 'primary' : 'muted'} icon={moneyBag} text='3K' />
-        <ZapButton onClick={() => setZapAmount(5_000)} className='m-1' theme={zapAmount === 5_000 ? 'primary' : 'muted'} icon={chestIcon} text='5K' />
+        {ZAP_AMOUNTS.map((amount, i) => <ZapButton onClick={() => setZapAmount(amount)} className='m-0.5 sm:m-1' selected={zapAmount === amount} icon={ZAP_ICONS[i]} amount={amount} />)}
       </div>
 
       <Stack space={2}>
