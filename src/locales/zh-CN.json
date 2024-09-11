@@ -1649,6 +1649,5 @@
   "zap.button.text.rounded": "打闪 {amount}K 聪",
   "zap.comment_input.placeholder": "可选评论",
   "zap.open_wallet": "打开钱包",
-  "zap.send_to": "发送打闪给 {target}",
-  "zap.unit": "打闪金额（聪）"
+  "zap.send_to": "发送打闪给 {target}"
 }

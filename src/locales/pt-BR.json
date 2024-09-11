@@ -1652,6 +1652,5 @@
   "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
-  "zap.send_to": "Enviar zaps para {target}",
-  "zap.unit": "Quantidade de zap em sats"
+  "zap.send_to": "Enviar zaps para {target}"
 }
