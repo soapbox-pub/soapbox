@@ -49,7 +49,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
     const zapSplitAccounts = zapArrays.filter(zapData => zapData.account.id !== account.id);
-    // const splitData = [hasZapSplit, zapSplitAccounts, splitValues];
+    const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     const invoice = hasZapSplit ? await dispatch(zap(account, status, zapSplitData.receiveAmount * 1000, zapComment)) : await dispatch(zap(account, status, zapAmount * 1000, zapComment));
     // If invoice is undefined it means the user has paid through his extension
@@ -64,7 +64,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       return;
     }
     // open QR code modal
-    dispatch(openModal('ZAP_INVOICE', { account, invoice, hasZapSplit, zapSplitAccounts, splitValues }));
+    dispatch(openModal('ZAP_INVOICE', { account, invoice, splitData }));
   };
 
   const handleCustomAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
