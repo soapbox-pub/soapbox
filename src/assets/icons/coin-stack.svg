@@ -1,12 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    version="1.1"
-   viewBox="0 0 78.199997 75.250015"
+   viewBox="0 0 115 115"
    id="svg108"
-   width="78.199997"
-   height="75.250015"
+   width="115"
+   height="115"
+   sodipodi:docname="coin-stack.svg"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.8458425"
+     inkscape:cx="12.650033"
+     inkscape:cy="73.089077"
+     inkscape:window-width="1920"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g108" />
   <defs
      id="defs1">
     <style
@@ -82,7 +104,8 @@
      id="g108"
      transform="translate(-210.9,-211.9)">
     <g
-       id="Layer_1">
+       id="Layer_1"
+       transform="translate(18.4,19.874994)">
       <g
          id="g107">
         <g

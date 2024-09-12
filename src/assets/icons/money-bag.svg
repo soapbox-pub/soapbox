@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
    version="1.1"
-   viewBox="0 0 89.384354 97"
+   viewBox="0 0 115 115"
    id="svg35"
-   width="89.384354"
-   height="97"
+   width="115"
+   height="115"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
@@ -79,7 +79,7 @@
   <!-- Generator: Adobe Illustrator 28.6.0, SVG Export Plug-In . SVG Version: 1.2.0 Build 709)  -->
   <g
      id="g35"
-     transform="translate(-205.36126,-201)">
+     transform="translate(-192.55343,-190.95006)">
     <g
        id="Layer_1">
       <path
@@ -115,7 +115,7 @@
       </g>
       <polygon
          class="cls-11"
-         points="233.1,277.7 236.5,275.5 237.1,276.6 233.7,278.8 "
+         points="236.5,275.5 237.1,276.6 233.7,278.8 233.1,277.7 "
          id="polygon3" />
       <g
          id="g4">
@@ -141,7 +141,7 @@
          id="line4" />
       <polygon
          class="cls-11"
-         points="234.6,280.1 237.9,278 238.6,278.9 235.4,281.1 "
+         points="237.9,278 238.6,278.9 235.4,281.1 234.6,280.1 "
          id="polygon4" />
       <line
          class="cls-7"
@@ -152,35 +152,35 @@
          id="line5" />
       <polygon
          class="cls-11"
-         points="236.4,282.3 239.7,280.3 240.6,281.2 237.4,283.2 "
+         points="239.7,280.3 240.6,281.2 237.4,283.2 236.4,282.3 "
          id="polygon5" />
       <polygon
          class="cls-11"
-         points="238.7,284.3 242,282.5 243.1,283.2 239.9,285 "
+         points="242,282.5 243.1,283.2 239.9,285 238.7,284.3 "
          id="polygon6" />
       <polygon
          class="cls-11"
-         points="241.6,286.1 244.6,284.2 245.8,284.8 243.2,286.6 "
+         points="244.6,284.2 245.8,284.8 243.2,286.6 241.6,286.1 "
          id="polygon7" />
       <polygon
          class="cls-11"
-         points="245.7,287.3 248.1,285.7 249.4,286.1 247.4,287.7 "
+         points="248.1,285.7 249.4,286.1 247.4,287.7 245.7,287.3 "
          id="polygon8" />
       <polygon
          class="cls-11"
-         points="232,275 235.4,273 235.8,274.1 232.5,276.2 "
+         points="235.4,273 235.8,274.1 232.5,276.2 232,275 "
          id="polygon9" />
       <polygon
          class="cls-11"
-         points="231.5,271.8 234.6,270 234.8,271.2 231.8,273 "
+         points="234.6,270 234.8,271.2 231.8,273 231.5,271.8 "
          id="polygon10" />
       <polygon
          class="cls-11"
-         points="231.5,268.5 234.2,267 234.3,268.1 231.5,269.6 "
+         points="234.2,267 234.3,268.1 231.5,269.6 231.5,268.5 "
          id="polygon11" />
       <polygon
          class="cls-11"
-         points="232.6,264.3 234.5,263.3 234.4,264.3 232.3,265.4 "
+         points="234.5,263.3 234.4,264.3 232.3,265.4 232.6,264.3 "
          id="polygon12" />
       <line
          class="cls-7"
