@@ -10,9 +10,10 @@ import coinIcon from 'soapbox/assets/icons/coin.svg';
 import moneyBag from 'soapbox/assets/icons/money-bag.svg';
 import pileCoin from 'soapbox/assets/icons/pile-coin.svg';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
-import { Stack, Button, Input, Avatar } from 'soapbox/components/ui';
+import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 import ZapButton from './zap-button/zap-button';
 
@@ -28,7 +29,6 @@ interface IZapPayRequestForm {
 }
 
 const messages = defineMessages({
-  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
   zap_button: { id: 'zap.button.text.raw', defaultMessage: 'Zap {amount} sats' },
   zap_commentPlaceholder: { id: 'zap.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
@@ -64,20 +64,18 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
     }
   };
 
-  const renderZapButtonText = () => {
-    if (zapAmount >= 1000) {
-      return intl.formatMessage(messages.zap_button_rounded, { amount: Math.round((zapAmount / 1000) * 10) / 10 });
-    }
-    return intl.formatMessage(messages.zap_button, { amount: zapAmount });
-  };
-
   return (
     <Stack space={4} element='form' onSubmit={handleSubmit} justifyContent='center' alignItems='center' className='relative'>
       <Stack space={2} justifyContent='center' alignItems='center' >
-        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-[1%] -top-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <span className='display-name__account text-base'>
+        <IconButton
+          src={closeIcon}
+          onClick={onClose}
+          className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+        />
+
+        <Text weight='semibold'>
           <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
-        </span>
+        </Text>
         <Avatar src={account.avatar} size={50} />
         <DisplayNameInline account={account} />
       </Stack>
@@ -100,7 +98,10 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
             type='text' onChange={handleCustomAmount} value={zapAmount}
             className='max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 sm:max-w-28 sm:p-0.5 sm:!text-4xl dark:bg-transparent'
           />
-          <p className='absolute -right-10 font-bold sm:-right-12 sm:text-xl'>sats</p>
+          {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
+          <p className='absolute -right-10 font-bold sm:-right-12 sm:text-xl'>
+            sats
+          </p>
         </div>
 
       </Stack>
@@ -108,7 +109,16 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       <div className='w-full'>
         <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
       </div>
-      <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />
+
+      <Button
+        className='m-auto w-auto'
+        type='submit'
+        theme='primary'
+        icon={require('@tabler/icons/outline/bolt.svg')}
+        disabled={zapAmount < 1 ? true : false}
+      >
+        {intl.formatMessage(messages.zap_button, { amount: shortNumberFormat(zapAmount) })}
+      </Button>
     </Stack>
   );
 };
