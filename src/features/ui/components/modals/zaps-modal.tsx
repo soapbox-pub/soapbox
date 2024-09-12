@@ -45,7 +45,6 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
 
   const handleLoadMore = () => {
     if (next) {
-      console.log('next, zaps modal: ', next);
       dispatch(expandZaps(statusId, next!));
     }
   };

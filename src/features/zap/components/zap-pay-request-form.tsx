@@ -1,13 +1,14 @@
+import closeIcon from '@tabler/icons/outline/x.svg';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
-import chestIcon from 'soapbox/assets/icons/blue-chest.png';
-import coinStack from 'soapbox/assets/icons/coin-stack.png';
-import coinIcon from 'soapbox/assets/icons/coin.png';
-import moneyBag from 'soapbox/assets/icons/money-bag.png';
-import pileCoin from 'soapbox/assets/icons/pile-coin.png';
+import chestIcon from 'soapbox/assets/icons/chest.svg';
+import coinStack from 'soapbox/assets/icons/coin-stack.svg';
+import coinIcon from 'soapbox/assets/icons/coin.svg';
+import moneyBag from 'soapbox/assets/icons/money-bag.svg';
+import pileCoin from 'soapbox/assets/icons/pile-coin.svg';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
 import { Stack, Button, Input, Avatar } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
@@ -17,7 +18,8 @@ import ZapButton from './zap-button/zap-button';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
+const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
 
 interface IZapPayRequestForm {
   status?: StatusEntity;
@@ -37,9 +39,6 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
   const [zapComment, setZapComment] = useState('');
   // amount in millisatoshi
   const [zapAmount, setZapAmount] = useState(50);
-  const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
-  const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
-
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -91,7 +90,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         <div className='relative flex items-end justify-center gap-4'>
           <Input
             type='text' onChange={handleCustomAmount} value={zapAmount}
-            className='box-shadow:none max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 sm:max-w-28 sm:p-0.5 sm:!text-4xl dark:bg-transparent'
+            className='max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 sm:max-w-28 sm:p-0.5 sm:!text-4xl dark:bg-transparent'
           />
           <p className='absolute -right-10 font-bold sm:-right-12 sm:text-xl'>sats</p>
         </div>
