@@ -19,7 +19,7 @@ const ZapPayRequestModal: React.FC<IZapPayRequestModal> = ({ account, status, on
 
 
   return (
-    <Modal width='lg'>
+    <Modal width='2xl'>
       <ZapPayRequestForm account={account} status={status} onClose={onClickClose} />
     </Modal>
   );
