@@ -1,8 +1,7 @@
 import React  from 'react';
 
 import { Modal } from 'soapbox/components/ui';
-
-import ZapPayRequestForm from '../../../zap/components/zap-pay-request-form';
+import ZapPayRequestForm from 'soapbox/features/zap/components/zap-pay-request-form';
 
 import type { Status as StatusEntity, Account as AccountEntity   } from 'soapbox/types/entities';
 

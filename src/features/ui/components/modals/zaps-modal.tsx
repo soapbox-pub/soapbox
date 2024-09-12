@@ -28,7 +28,9 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
   const accounts = useMemo((): ImmutableList<IAccountWithZaps> | undefined => {
     if (!zaps) return;
 
-    return zaps.map(({ account, amount, comment }) =>({ id: account, amount, comment })).flatten() as ImmutableList<IAccountWithZaps>;
+    return zaps
+      .map(({ account, amount, comment }) => ({ id: account, amount, comment }))
+      .flatten() as ImmutableList<IAccountWithZaps>;
   }, [zaps]);
 
   const fetchData = () => {
@@ -45,7 +47,6 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
 
   const handleLoadMore = () => {
     if (next) {
-      console.log('next, zaps modal: ', next);
       dispatch(expandZaps(statusId, next!));
     }
   };
