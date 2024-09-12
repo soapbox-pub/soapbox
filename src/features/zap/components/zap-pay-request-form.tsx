@@ -82,7 +82,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         <DisplayNameInline account={account} />
       </Stack>
 
-      <div className='flex justify-center '>
+      <div className='flex justify-center'>
         {ZAP_AMOUNTS.map((amount, i) => <ZapButton onClick={() => setZapAmount(amount)} className='m-0.5 sm:m-1' selected={zapAmount === amount} icon={ZAP_ICONS[i]} amount={amount} />)}
       </div>
 
