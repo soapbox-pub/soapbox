@@ -4,11 +4,11 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
-import chestIcon from 'soapbox/assets/icons/chest.svg';
-import coinStack from 'soapbox/assets/icons/coin-stack.svg';
-import coinIcon from 'soapbox/assets/icons/coin.svg';
-import moneyBag from 'soapbox/assets/icons/money-bag.svg';
-import pileCoin from 'soapbox/assets/icons/pile-coin.svg';
+import chestIcon from 'soapbox/assets/icons/chest.png';
+import coinStack from 'soapbox/assets/icons/coin-stack.png';
+import coinIcon from 'soapbox/assets/icons/coin.png';
+import moneyBag from 'soapbox/assets/icons/money-bag.png';
+import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
 import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
@@ -19,8 +19,13 @@ import ZapButton from './zap-button/zap-button';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
-const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
-const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
+const ZAP_PRESETS = [
+  { amount: 50, icon: coinIcon },
+  { amount: 200, icon: coinStack },
+  { amount: 1_000, icon: pileCoin },
+  { amount: 3_000, icon: moneyBag },
+  { amount: 5_000, icon: chestIcon },
+];
 
 interface IZapPayRequestForm {
   status?: StatusEntity;
@@ -81,12 +86,12 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       </Stack>
 
       <div className='flex justify-center'>
-        {ZAP_AMOUNTS.map((amount, i) => (
+        {ZAP_PRESETS.map(({ amount, icon }) => (
           <ZapButton
             onClick={() => setZapAmount(amount)}
             className='m-0.5 sm:m-1'
             selected={zapAmount === amount}
-            icon={ZAP_ICONS[i]}
+            icon={icon}
             amount={amount}
           />
         ))}
