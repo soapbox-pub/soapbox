@@ -48,7 +48,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     const pubkey = await signer.getPublicKey();
     const now = Math.floor(Date.now() / 1000);
 
-    const events = await Promise.all([
+    const [kind0, ...events] = await Promise.all([
       signer.signEvent({ kind: 0, content: JSON.stringify({}), tags: [], created_at: now }),
       signer.signEvent({ kind: 3, content: '', tags: [], created_at: now }),
       signer.signEvent({ kind: 10000, content: '', tags: [], created_at: now }),
@@ -58,6 +58,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
       signer.signEvent({ kind: 30078, content: '', tags: [['d', 'pub.ditto.pleroma_settings_store']], created_at: now }),
     ]);
 
+    await relay?.event(kind0);
     await Promise.all(events.map((event) => relay?.event(event)));
 
     await dispatch(logInNostr(pubkey));
