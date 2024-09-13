@@ -135,7 +135,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           <span className='text-[10px] sm:text-xs'>
             <FormattedMessage
               id='zap.split_message.deducted'
-              defaultMessage='To suport {instance}, {amountDeducted} sats will deducted*' values={{ instance: account.display_name, amountDeducted: zapSplitData.splitAmount }}
+              defaultMessage='{amountDeducted} sats will deducted*' values={{ instance: account.display_name, amountDeducted: zapSplitData.splitAmount }}
             />
           </span>
 

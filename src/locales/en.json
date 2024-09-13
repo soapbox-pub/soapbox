@@ -1652,7 +1652,7 @@
   "zap.next": "Next",
   "zap.open_wallet": "Open Wallet",
   "zap.send_to": "Send zaps to {target}",
-  "zap.split_message.deducted": "To suport {instance}, {amountDeducted} sats will deducted*",
+  "zap.split_message.deducted": "{amountDeducted} sats will deducted*",
   "zap.split_message.receiver": "{receiver} will receive {amountReceiver} sats*",
   "zap_split.question": "Why am I paying this?",
   "zap_split.text": "Your support will help us build an unstoppable empire and rule the galaxy!",
