@@ -1649,7 +1649,6 @@
   "video.unmute": "Reativar som",
   "who_to_follow.title": "Quem seguir",
   "zap.button.text.raw": "Zap {amount} sats",
-  "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
   "zap.send_to": "Enviar zaps para {target}"
