@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 interface IZapSplit {
   zapData: ZapSplitData;
-  invoice: any;
+  invoice: string | undefined;
   zapAmount: number;
   modalStep?: React.Dispatch<React.SetStateAction<number>>;
   onNext: () => void;
