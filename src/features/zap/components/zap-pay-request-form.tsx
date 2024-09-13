@@ -54,7 +54,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
     const invoice = hasZapSplit ? await dispatch(zap(account, status, zapSplitData.receiveAmount * 1000, zapComment)) : await dispatch(zap(account, status, zapAmount * 1000, zapComment));
     // If invoice is undefined it means the user has paid through his extension
     // In this case, we simply close the modal
-    console.log(invoice);
+
     if (!invoice) {
       dispatch(closeModal('ZAP_PAY_REQUEST'));
       // Dispatch the adm account
@@ -64,6 +64,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       return;
     }
     // open QR code modal
+    dispatch(closeModal('ZAP_PAY_REQUEST'));
     dispatch(openModal('ZAP_INVOICE', { account, invoice, splitData }));
   };
 

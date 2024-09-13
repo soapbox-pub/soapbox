@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-import { accountSchema } from './account';
+import { type Account, accountSchema } from './account';
 
-const addMethodsToAccount = (account: any) => {
+const addMethodsToAccount = (account: Account) => {
   return {
     ...account,
-    get: (key: string) => account[key],
-    getIn: (path: string[]) => path.reduce((acc, key) => acc[key], account),
+    get: (key: string) => (account as any)[key],
+    getIn: (path: string[]) => path.reduce((acc, key) => (acc as any)[key], account),
     toJS: () => account,  
   };
 };
