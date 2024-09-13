@@ -2,7 +2,6 @@ import React, { useState, useEffect }  from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-
 import { zap } from 'soapbox/actions/interactions';
 import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit';
 import { Modal } from 'soapbox/components/ui';
@@ -17,23 +16,16 @@ interface IZapSplitModal {
   onClose:(type?: string) => void;
 }
 
-// interface IZapSplits {
-//   acc: ZapSplitData;
-//   amount: number;
-//   setWidth: React.Dispatch<React.SetStateAction<'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined>>;
-//   setStep: React.Dispatch<React.SetStateAction<number>>;
-// }
-
 const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, splitValues }) => {
   const dispatch = useDispatch<AppDispatch>();
   const [currentStep, setCurrentStep] = useState(0);
   const [widthModal, setWidthModal] = useState<
     'xl' | 'xs' | 'sm' | 'md' | 'lg' | '2xl' | '3xl' | '4xl' | undefined
   >('sm');
-  const [invoice, setInvoice] = useState(null);
+  const [invoice, setInvoice] = useState(undefined);
 
   const handleNextStep = () => {
-    setInvoice(null);
+    setInvoice(undefined);
     setWidthModal('sm');
     setCurrentStep((prevStep) => Math.min(prevStep + 1, zapSplitAccounts.length - 1));
   };
@@ -59,6 +51,11 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
     );
 
     if (!invoice) {
+      if (currentStep === zapSplitAccounts.length - 1) {
+        onClose('ZAP_SPLIT');
+        return;
+      }
+      handleNextStep();
       return;
     }
 
