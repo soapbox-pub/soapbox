@@ -1508,7 +1508,7 @@
   "status.cancel_reblog_private": "Cancelar compartilhamento",
   "status.cannot_reblog": "Esta postagem não pode ser compartilhada",
   "status.chat": "Conversar com @{name}",
-  "status.copy": "Copiar o link para o status",
+  "status.copy": "Copiar o link da postagem",
   "status.delete": "Excluir",
   "status.detailed_status": "Visão detalhada da conversa",
   "status.direct": "Enviar mensagem direta para @{name}",
