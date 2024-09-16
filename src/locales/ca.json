@@ -389,7 +389,6 @@
   "notifications.group": "{count} notificacions",
   "notifications.queue_label": "Feu clic per veure {count} nou {count, plural, one {notification} altra {notifications}}",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.header": "Reset Password",
   "password_reset.reset": "Reset password",

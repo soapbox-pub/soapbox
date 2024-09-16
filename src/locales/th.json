@@ -271,7 +271,6 @@
   "notifications.filter.polls": "ผลลัพธ์โพล",
   "notifications.group": "{count} การแจ้งเตือน",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.header": "Reset Password",
   "password_reset.reset": "Reset password",

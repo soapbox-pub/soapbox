@@ -257,7 +257,6 @@
   "notifications.filter.mentions": "Përmendje",
   "notifications.group": "{count}s njoftime",
   "oauth_consumer.tooltip": "Sign in with {provider}",
-  "onboarding.fediverse.next": "Next",
   "onboarding.next": "Next",
   "password_reset.header": "Reset Password",
   "password_reset.reset": "Reset password",
