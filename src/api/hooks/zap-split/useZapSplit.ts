@@ -5,7 +5,7 @@ import { type ZapSplitData } from 'soapbox/schemas/zap-split';
 
 import type { Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
-type SplitValue = {
+interface SplitValue {
   id: string;
   amountSplit: number;
 };
