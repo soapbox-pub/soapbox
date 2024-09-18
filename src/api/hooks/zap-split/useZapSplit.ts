@@ -13,8 +13,7 @@ interface SplitValue {
 const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) => {
   const api = useApi();
   const [zapArrays, setZapArrays] = useState<ZapSplitData[]>([]);
-  const [zapSplitData, setZapSplitData] = useState({ splitAmount: 3, receiveAmount: 47,
-    splitValues: Array() });
+  const [zapSplitData, setZapSplitData] = useState({ splitAmount: 3, receiveAmount: 47, splitValues: [] });
 
   const fetchZapSplit = async (id: string) => {
     return await api.get(`/api/v1/ditto/${id}/zap_splits`);
