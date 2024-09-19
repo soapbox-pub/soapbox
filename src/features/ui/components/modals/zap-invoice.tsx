@@ -36,7 +36,6 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { hasZapSplit, zapSplitAccounts, splitValues } = splitData;
-
   const onClickClose = () => {
     onClose('ZAP_INVOICE');
     dispatch(closeModal('ZAP_PAY_REQUEST'));
