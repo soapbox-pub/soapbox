@@ -48,21 +48,18 @@ const ZapButton = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX
       onClick={onClick}
       ref={ref}
       type={type}
-      data-testid='button'
-    >
-      <div className={clsx(className, { 'flex flex-col items-center w-14 !box-border place-content-center border font-medium p-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 appearance-none transition-all sm:p-4 sm:w-20': true,
+      className={clsx(className, '!box-border flex flex-1 appearance-none flex-col place-content-center items-center rounded-xl border p-2 font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 sm:w-20', {
         'select-none disabled:opacity-75 disabled:cursor-default': disabled,
         'bg-primary-500 hover:bg-primary-400 dark:hover:bg-primary-600 border-transparent focus:bg-primary-500 text-gray-100 focus:ring-primary-300': selected,
         'border border-solid bg-transparent border-gray-400 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 focus:border-primary-500 text-gray-900 dark:text-gray-100 focus:ring-primary-500': !selected })}
-      >
-        <img className='w-16' src={icon} alt='stack coin' />
-        <span className='text-base sm:text-2xl'>
-          <p>
-            {shortNumberFormat(amount)}
-          </p>
-        </span>
+    >
+      <img className='w-full flex-1' src={icon} alt='' />
 
-      </div>
+      <span className='justify-self-end text-base sm:text-2xl'>
+        <p>
+          {shortNumberFormat(amount)}
+        </p>
+      </span>
     </button>
   );
 

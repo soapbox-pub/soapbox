@@ -31,11 +31,11 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
 
         <Stack space={3} alignItems='center'>
           <Button theme='accent' size='lg' onClick={() => setStep('keygen')}>
-            Generate key
+            <FormattedMessage id='nostr_signup.key_generate' defaultMessage='Generate key' />
           </Button>
 
           <Button theme='transparent' onClick={onAltClick}>
-            I already have a key
+            <FormattedMessage id='nostr_signup.has_key' defaultMessage='I already have a key' />
           </Button>
         </Stack>
       </Stack>

@@ -5,19 +5,27 @@ import { Link } from 'react-router-dom';
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
 import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit';
-import chestIcon from 'soapbox/assets/icons/blue-chest.png';
+import chestIcon from 'soapbox/assets/icons/chest.png';
 import coinStack from 'soapbox/assets/icons/coin-stack.png';
 import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
-import DisplayNameRow from 'soapbox/components/display-name-row';
-import { Stack, Button, Input, Avatar } from 'soapbox/components/ui';
+import DisplayNameInline from 'soapbox/components/display-name-inline';
+import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import ZapButton from './zap-button/zap-button';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
+
+const ZAP_PRESETS = [
+  { amount: 50, icon: coinIcon },
+  { amount: 200, icon: coinStack },
+  { amount: 1_000, icon: pileCoin },
+  { amount: 3_000, icon: moneyBag },
+  { amount: 5_000, icon: chestIcon },
+];
 
 interface IZapPayRequestForm {
   status?: StatusEntity;
@@ -42,8 +50,6 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
   const { zapArrays, zapSplitData, receiveAmount } = useZapSplit(status, account);
   const splitValues = zapSplitData.splitValues;
   const hasZapSplit = zapArrays.length > 0;
-  const ZAP_AMOUNTS = [50, 200, 1_000, 3_000, 5_000];
-  const ZAP_ICONS = [coinIcon, coinStack, pileCoin, moneyBag, chestIcon];
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -92,16 +98,29 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
   return (
     <Stack space={4} element='form' onSubmit={handleSubmit} justifyContent='center' alignItems='center' className='relative'>
       <Stack space={2} justifyContent='center' alignItems='center' >
-        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-[1%] -top-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <span className='display-name__account text-base'>
+        <IconButton
+          src={closeIcon}
+          onClick={onClose}
+          className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+        />
+
+        <Text weight='semibold'>
           <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
-        </span>
+        </Text>
         <Avatar src={account.avatar} size={50} />
-        <DisplayNameRow account={account} />
+        <DisplayNameInline account={account} />
       </Stack>
 
-      <div className='flex justify-center '>
-        {ZAP_AMOUNTS.map((amount, i) => <ZapButton onClick={() => setZapAmount(amount)} className='m-0.5 sm:m-1' selected={zapAmount === amount} icon={ZAP_ICONS[i]} amount={amount} />)}
+      <div className='flex w-full justify-center'>
+        {ZAP_PRESETS.map(({ amount, icon }) => (
+          <ZapButton
+            onClick={() => setZapAmount(amount)}
+            className='m-0.5 sm:m-1'
+            selected={zapAmount === amount}
+            icon={icon}
+            amount={amount}
+          />
+        ))}
       </div>
 
       <Stack space={2}>

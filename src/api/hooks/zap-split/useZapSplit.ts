@@ -8,12 +8,12 @@ import type { Account as AccountEntity, Status as StatusEntity   } from 'soapbox
 interface SplitValue {
   id: string;
   amountSplit: number;
-};
+}
 
 const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) => {
   const api = useApi();
   const [zapArrays, setZapArrays] = useState<ZapSplitData[]>([]);
-  const [zapSplitData, setZapSplitData] = useState({ splitAmount: 3, receiveAmount: 47, splitValues: [] });
+  const [zapSplitData, setZapSplitData] = useState<{splitAmount: number; receiveAmount: number; splitValues: SplitValue[]}>({ splitAmount: 3, receiveAmount: 47, splitValues: [] });
 
   const fetchZapSplit = async (id: string) => {
     return await api.get(`/api/v1/ditto/${id}/zap_splits`);

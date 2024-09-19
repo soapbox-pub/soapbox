@@ -30,7 +30,7 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
     setCurrentStep((prevStep) => Math.min(prevStep + 1, zapSplitAccounts.length - 1));
   };
 
-  const formatedData = zapSplitAccounts.map((splitData) => {
+  const formattedData = zapSplitAccounts.map((splitData) => {
     const amount =
       splitValues.find((item) => item.id === splitData.account.id)?.amountSplit ??
       0;
@@ -43,8 +43,8 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
 
   const handleSubmit = async () => {
     const zapComment = '';
-    const account = formatedData[currentStep].acc.account;
-    const zapAmount = formatedData[currentStep].zapAmount;
+    const account = formattedData[currentStep].acc.account;
+    const zapAmount = formattedData[currentStep].zapAmount;
 
     const invoice = await dispatch(
       zap(account, undefined, zapAmount * 1000, zapComment),
@@ -64,7 +64,7 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
   };
 
   useEffect(() => {
-    if (formatedData.length > 0) {
+    if (formattedData.length > 0) {
       handleSubmit();
     }
   }, [currentStep]);
@@ -86,10 +86,10 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
   return (
     <Modal title={renderTitle()} onClose={onClickClose} width={widthModal}>
       <div className='relative flex flex-col sm:flex-row'>
-        {formatedData.length > 0 && (
+        {formattedData.length > 0 && (
           <ZapSplit
-            zapData={formatedData[currentStep].acc}
-            zapAmount={formatedData[currentStep].zapAmount}
+            zapData={formattedData[currentStep].acc}
+            zapAmount={formattedData[currentStep].zapAmount}
             invoice={invoice}
             onNext={handleNextStep}
             isLastStep={currentStep === zapSplitAccounts.length - 1}

@@ -1,11 +1,12 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
+import { changeSetting } from 'soapbox/actions/settings';
 import List, { ListItem } from 'soapbox/components/list';
 import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui';
-import { useApi, useAppDispatch, useInstance, useOwnAccount } from 'soapbox/hooks';
+import { useApi, useAppDispatch, useInstance, useOwnAccount, useSettings } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { adminAccountSchema } from 'soapbox/schemas/admin-account';
 import toast from 'soapbox/toast';
@@ -19,7 +20,7 @@ const messages = defineMessages({
   unverified: { id: 'edit_profile.fields.nip05_unverified', defaultMessage: 'Name could not be verified and won\'t be used.' },
   success: { id: 'edit_profile.success', defaultMessage: 'Your profile has been successfully saved!' },
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
-  placeholder: { id: 'edit_identity.reason_placeholder', defaultMessage: 'Why do you want this name?' },
+  placeholder: { id: 'edit_identity.reason_placeholder', defaultMessage: 'Why do you want to be part of the {siteTitle} community?' },
   requested: { id: 'edit_identity.requested', defaultMessage: 'Name requested' },
 });
 
@@ -33,9 +34,19 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
   const { data: approvedNames } = useNames();
   const { data: pendingNames } = usePendingNames();
+  const { dismissedSettingsNotifications } = useSettings();
 
   const [username, setUsername] = useState<string>('');
   const [reason, setReason] = useState<string>('');
+
+  useEffect(() => {
+    const dismissed = new Set(dismissedSettingsNotifications);
+
+    if (!dismissed.has('needsNip05')) {
+      dismissed.add('needsNip05');
+      dispatch(changeSetting(['dismissedSettingsNotifications'], [...dismissed]));
+    }
+  }, []);
 
   if (!account) return null;
 
@@ -59,6 +70,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
           queryKey: ['names', 'pending'],
         });
         setUsername('');
+        setReason('');
       },
     });
   };
@@ -70,7 +82,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
           <UsernameInput value={username} onChange={(e) => setUsername(e.target.value)} disabled={isPending} />
           <Textarea
             name='reason'
-            placeholder={intl.formatMessage(messages.placeholder)}
+            placeholder={intl.formatMessage(messages.placeholder, { siteTitle: instance.title })}
             maxLength={500}
             onChange={(e) => setReason(e.target.value)}
             disabled={isPending}
