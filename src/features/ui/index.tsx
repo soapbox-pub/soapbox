@@ -140,6 +140,7 @@ import {
   NostrRelays,
   Bech32Redirect,
   Relays,
+  ManageZapSplit,
   Rules,
   AdminNostrRelays,
 } from './util/async-components';
@@ -331,6 +332,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={AdminPage} component={ManageZapSplit} content={children} exact />
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />
