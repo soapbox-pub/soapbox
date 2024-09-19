@@ -54,13 +54,7 @@ const ManageZapSplit: React.FC = () => {
       <Stack space={4} >
         <List>
           {formattedData.map((data) => (
-            <ListItem
-              key={data.account.id} label={''
-                // <div className='max-w-xs'>
-                //   <Account account={data.account} showProfileHoverCard={false} />
-                // </div>
-              }
-            >
+            <ListItem key={data.account.id} label={''}>
               <div className='relative flex w-full flex-col items-start justify-center gap-4 sm:flex-row sm:justify-between'>
                 <div className='flex w-60 justify-center sm:justify-start '>
                   <Account account={data.account} showProfileHoverCard={false} />
