@@ -1650,6 +1650,7 @@
   "video.unmute": "Unmute sound",
   "who_to_follow.title": "People To Follow",
   "zap.button.text.raw": "Zap {amount} sats",
+  "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.comment_input.placeholder": "Optional comment",
   "zap.finish": "Finish",
   "zap.next": "Next",
