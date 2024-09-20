@@ -10,10 +10,25 @@ interface SplitValue {
   amountSplit: number;
 }
 
+/**
+* Custom hook to handle the logic for zap split calculations.
+*
+* This hook fetches zap split data from the server and calculates the amount to be received
+* by the main account and the split amounts for other associated accounts.
+*
+* @param {StatusEntity | undefined} status - The current status entity.
+* @param {AccountEntity} account - The account for which the zap split calculation is done.
+* 
+* @returns {Object} An object containing the zap split arrays, zap split data, and a function to calculate the received amount.
+* 
+* @property {ZapSplitData[]} zapArrays - Array of zap split data returned from the API.
+* @property {Object} zapSplitData - Contains the total split amount, amount to receive, and individual split values.
+* @property {Function} receiveAmount - A function to calculate the zap amount based on the split configuration.
+*/
 const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) => {
   const api = useApi();
   const [zapArrays, setZapArrays] = useState<ZapSplitData[]>([]);
-  const [zapSplitData, setZapSplitData] = useState<{splitAmount: number; receiveAmount: number; splitValues: SplitValue[]}>({ splitAmount: 3, receiveAmount: 47, splitValues: [] });
+  const [zapSplitData, setZapSplitData] = useState<{splitAmount: number; receiveAmount: number; splitValues: SplitValue[]}>({ splitAmount: Number(), receiveAmount: Number(), splitValues: [] });
 
   const fetchZapSplit = async (id: string) => {
     return await api.get(`/api/v1/ditto/${id}/zap_splits`);
@@ -26,6 +41,12 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
     }
   };
 
+  /**
+   * Calculates and updates the zap amount that the main account will receive
+   * and the split amounts for other accounts.
+   *
+   * @param {number} zapAmount - The total amount of zaps to be split.
+   */
   const receiveAmount = (zapAmount: number) => {
     if (zapArrays.length > 0) {
       const zapAmountPrincipal = zapArrays.find((zapSplit: ZapSplitData) => zapSplit.account.id === account.id);
