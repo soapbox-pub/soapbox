@@ -158,7 +158,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           </span>
 
           <Link to={'/'} className='text-xs underline'>
-            <img src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-5' alt='info-square-rounded' />
+            <img src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
           </Link>
 
         </div>
