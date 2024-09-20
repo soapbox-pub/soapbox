@@ -5,7 +5,6 @@ import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 
-
 import type { Account } from 'soapbox/schemas';
 
 interface IDisplayName {
