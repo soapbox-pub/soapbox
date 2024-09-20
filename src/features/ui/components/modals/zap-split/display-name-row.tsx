@@ -1,11 +1,10 @@
 import React from 'react';
 
+import { HStack, Text } from 'soapbox/components/ui';
+import VerificationBadge from 'soapbox/components/verification-badge';
 import { useSoapboxConfig } from 'soapbox/hooks';
+import { getAcct } from 'soapbox/utils/accounts';
 
-import { getAcct } from '../utils/accounts';
-
-import { HStack, Text } from './ui';
-import VerificationBadge from './verification-badge';
 
 import type { Account } from 'soapbox/schemas';
 
@@ -13,7 +12,15 @@ interface IDisplayName {
   account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>;
   withSuffix?: boolean;
 }
-
+/**
+ * This component is different from other display name components because it displays the name inline.
+ *
+ * @param {IDisplayName} props - The properties for this component.
+ * @param {Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>} props.account - The account object contains all the metadata for an account, such as the display name, ID, and more.
+ * @param {boolean} [props.withSuffix=true] - Determines whether to show the account suffix (eg, @danidfra).
+ *
+ * @returns {JSX.Element} The DisplayNameRow component.
+ */
 const DisplayNameRow: React.FC<IDisplayName> = ({ account, withSuffix = true }) => {
   const { displayFqn = false } = useSoapboxConfig();
   const { verified } = account;
