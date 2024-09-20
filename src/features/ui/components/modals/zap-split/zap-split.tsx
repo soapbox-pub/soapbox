@@ -32,26 +32,29 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
 
 
   return (
-    <div className='flex flex-col items-center justify-center sm:flex-row'>
-      <Stack space={10} alignItems='center' className='relative pb-4 pt-2'>
+    <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
+      <Stack space={10} alignItems='center' className='relative flex w-full pb-4 pt-2 sm:w-[80%]'>
 
         <Stack space={4} justifyContent='center' className='w-full' alignItems='center'>
-          <Stack justifyContent='center' alignItems='center' className='w-3/5 sm:w-4/5'>
+          <Stack justifyContent='center' alignItems='center' className='w-3/5 max-w-[190px] sm:w-4/5'>
             <div>
               <Account account={account} showProfileHoverCard={false} />
             </div>
           </Stack>
           <div className='bg-grey-500 dark:border-grey-800 -mx-4 w-full border-b border-solid sm:-mx-10' />
 
-          <Stack justifyContent='center' alignItems='center' className='w-full text-center' space={4}>
-            {/* In the next change, this part will be editable */}
+          <Stack justifyContent='center' alignItems='center' className='min-w-72 text-center' space={4}>
             <h3 className='text-xl font-bold'>
-              Latvian creator of world
+              Help this community grow!
             </h3>
 
-            {/* In the next change, this part will be editable */}
-            <p className='w-3/5'>
-              <FormattedMessage id='zap_split.text' defaultMessage='Your support will help us build an unstoppable empire and rule the galaxy!' />
+            <p className='flex h-[90px] w-3/5 items-center justify-center'>
+              {zapData.message ||
+              <FormattedMessage
+                id='zap_split.text'
+                defaultMessage='Your support will help us build an unstoppable empire and rule the galaxy!'
+              />
+              }
             </p>
           </Stack>
         </Stack>
