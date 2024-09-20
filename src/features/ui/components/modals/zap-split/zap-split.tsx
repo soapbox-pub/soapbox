@@ -27,7 +27,11 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
   const intl = useIntl();
 
   const renderTitleQr = () => {
-    return <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />;
+    return (
+      <div className='max-w-[280px] truncate'>
+        <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
+      </div>
+    );
   };
 
 
