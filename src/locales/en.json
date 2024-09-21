@@ -1038,6 +1038,8 @@
   "manage.zap_split.new_account": "Account:",
   "manage.zap_split.new_account_message": "Message:",
   "manage.zap_split.save": "Save",
+  "manage.zap_split.fees_error_message": "The fees cannot exceed 50% of the total zap.",
+  "manage.zap_split.fail_request": "Failed to update fees.",
   "manage_group.blocked_members": "Banned Members",
   "manage_group.confirmation.copy": "Copy link",
   "manage_group.confirmation.info_1": "As the owner of this group, you can assign staff, delete posts and much more.",
