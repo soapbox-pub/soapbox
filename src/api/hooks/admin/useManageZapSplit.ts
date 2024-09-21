@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
+import { defineMessages } from 'react-intl';
 
 import { useApi } from 'soapbox/hooks';
 import { baseZapAccountSchema, ZapSplitData } from 'soapbox/schemas/zap-split';
+import toast from 'soapbox/toast';
 
 import { type INewAccount } from '../../../features/admin/manage-zap-split';
+
+const messages = defineMessages({
+  zapSplitFee: { id: 'manage.zap_split.fees_error_message', defaultMessage: 'The fees cannot exceed 50% of the total zap.' },
+  errorMessage: { id: 'manage.zap_split.fail_request', defaultMessage: 'Failed to update fees.' },
+  sucessMessage: { id: 'manage.zap_split.success_request', defaultMessage: 'Fees updated successfully.' },
+});
 
 export const useManageZapSplit = () => {
   const api = useApi();
@@ -56,16 +64,23 @@ export const useManageZapSplit = () => {
         };
       }
 
-      console.log('Enviando Zap Split data com nova conta (se houver):', updatedZapSplits);
+      const totalWeight = Object.values(updatedZapSplits).reduce((acc, currentValue) => {
+        return acc + currentValue.weight;
+      }, 0);
+
+      if (totalWeight > 50) {
+        toast.error(messages.zapSplitFee);
+        return;
+      }
 
       await api.put('/api/v1/admin/ditto/zap_splits', updatedZapSplits);
-
-      console.log('Dados enviados com sucesso:', updatedZapSplits);
-
-      await fetchZapSplitData();
     } catch (error) {
-      console.error('Erro ao enviar Zap Split data:', error);
+      toast.error(messages.errorMessage);
+      return;
     }
+
+    await fetchZapSplitData();
+    toast.success(messages.sucessMessage);
   };
 
   const removeAccount = async (accountId: string) => {
