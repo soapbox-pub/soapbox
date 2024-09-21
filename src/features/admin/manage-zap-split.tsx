@@ -30,7 +30,6 @@ const ManageZapSplit: React.FC = () => {
 
   const handleNewAccount = () => {
     setHasNewAccount(false);
-    console.log(newAccount);
 
     sendNewSplit(newAccount);
 
