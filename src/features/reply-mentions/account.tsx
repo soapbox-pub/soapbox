@@ -49,7 +49,7 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
 
   return (
     <HStack space={1} alignItems='center' justifyContent='between' className='p-2.5'>
-      <div className='w-full'>
+      <div className='w-5/6'>
         <AccountComponent account={account} withRelationship={false} withLinkToProfile={false} />
       </div>
       {!author && button}
