@@ -17,5 +17,6 @@
       "url": "https://docs.renovatebot.com/renovate-schema.json"
     }
   ],
-  "scss.validate": false
+  "scss.validate": false,
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

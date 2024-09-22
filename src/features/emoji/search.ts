@@ -1,3 +1,4 @@
+// @ts-ignore
 import Index from '@akryum/flexsearch-es';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
@@ -43,7 +44,7 @@ const search = (
   custom_emojis?: ImmutableList<ImmutableMap<string, string>>,
 ): Emoji[] => {
   return index.search(str, maxResults)
-    .flatMap((id) => {
+    .flatMap((id: any) => {
       if (typeof id !== 'string') return;
 
       if (id[0] === 'c' && custom_emojis) {
