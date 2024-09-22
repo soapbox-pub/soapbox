@@ -6,7 +6,7 @@ export const ChatRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,
   id: '',
   unread: 0,
-  last_message: '' as string || null,
+  last_message: '' as string | null,
   updated_at: '',
 });
 

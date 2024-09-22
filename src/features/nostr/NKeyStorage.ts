@@ -85,25 +85,25 @@ export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
     return this.get(pubkey)!;
   }
 
-  *entries(): IterableIterator<[string, NostrSigner]> {
+  *entries(): MapIterator<[string, NostrSigner]> {
     for (const [pubkey] of this.#keypairs) {
       yield [pubkey, this.get(pubkey)!];
     }
   }
 
-  *keys(): IterableIterator<string> {
+  *keys(): MapIterator<string> {
     for (const pubkey of this.#keypairs.keys()) {
       yield pubkey;
     }
   }
 
-  *values(): IterableIterator<NostrSigner> {
+  *values(): MapIterator<NostrSigner> {
     for (const pubkey of this.#keypairs.keys()) {
       yield this.get(pubkey)!;
     }
   }
 
-  [Symbol.iterator](): IterableIterator<[string, NostrSigner]> {
+  [Symbol.iterator](): MapIterator<[string, NostrSigner]> {
     return this.entries();
   }
 
