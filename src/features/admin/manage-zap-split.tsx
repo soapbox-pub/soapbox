@@ -21,6 +21,12 @@ interface INewAccount{
   weight: number;
 }
 
+/**
+ * Main component that handles the logic and UI for managing accounts in Zap Split.
+ * Allows the user to view and edit associated accounts, adjust weights, and add new accounts.
+ *
+ * @returns A component that renders the Zap Split account management interface.
+ */
 const ManageZapSplit: React.FC = () => {
   const intl = useIntl();
   const { formattedData, weights, message, handleMessageChange, handleWeightChange, sendNewSplit, removeAccount } = useManageZapSplit();
@@ -28,6 +34,10 @@ const ManageZapSplit: React.FC = () => {
   const [newWeight, setNewWeight] = useState(0.05);
   const [newAccount, setNewAccount] = useState<INewAccount>({ acc: '', message: '', weight: Number((newWeight * 100).toFixed()) });
 
+  /**
+  * Function that handles submitting a new account to Zap Split. It resets the form and triggers
+  * the submission of the account with the current data.
+  */
   const handleNewAccount = () => {
     setHasNewAccount(false);
 
@@ -37,6 +47,11 @@ const ManageZapSplit: React.FC = () => {
     setNewAccount(({ acc: '', message: '', weight: Number((newWeight * 100).toFixed()) }));
   };
 
+  /**
+  * Updates the weight of the new account and adjusts the `newAccount` state with the new weight value.
+  *
+  * @param newWeight - The new weight assigned to the account.
+  */
   const handleChange = (newWeight: number) => {
     setNewWeight(newWeight);
     setNewAccount((previousValue) => ({
@@ -44,6 +59,12 @@ const ManageZapSplit: React.FC = () => {
       weight: Number((newWeight * 100).toFixed()) }));
   };
 
+  /**
+  * Formats the weight value into an integer representing the percentage.
+  *
+  * @param weight - The weight as a decimal number (e.g., 0.05).
+  * @returns The formatted weight as an integer (e.g., 5 for 5%).
+  */
   const formattedWeight = (weight: number) =>{
     return Number((weight * 100).toFixed());
   };
