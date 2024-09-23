@@ -9,6 +9,7 @@ import { type INewAccount } from '../../../features/admin/manage-zap-split';
 
 const messages = defineMessages({
   zapSplitFee: { id: 'manage.zap_split.fees_error_message', defaultMessage: 'The fees cannot exceed 50% of the total zap.' },
+  fetchErrorMessage: { id: 'manage.zap_split.fetch_fail_request', defaultMessage: 'Failed to fetch Zap Split data.' },
   errorMessage: { id: 'manage.zap_split.fail_request', defaultMessage: 'Failed to update fees.' },
   sucessMessage: { id: 'manage.zap_split.success_request', defaultMessage: 'Fees updated successfully.' },
 });
@@ -32,7 +33,7 @@ export const useManageZapSplit = () => {
         setWeights(initialWeights);
       }
     } catch (error) {
-      console.error('Erro ao buscar Zap Split data:', error);
+      toast.error(messages.fetchErrorMessage);
     }
   };
 
