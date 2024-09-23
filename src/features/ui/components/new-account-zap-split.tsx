@@ -46,35 +46,34 @@ const AddNewAccount: React.FC<AddNewAccountProps> = ({
 
   return (
     <ListItem label={<div className='' />}>
-      <div className='relative flex w-full flex-col items-center justify-between gap-6 pt-2 md:flex-row md:pt-0'>
-        <div className='item-center flex flex-col justify-start gap-4 md:w-full md:flex-row'>
+      <div className='relative flex w-full flex-col items-center justify-between gap-4 pt-2 md:flex-row md:pt-0'>
 
-          {accountSelected ?
-            <div className='flex items-center md:w-40'>
-              <Account account={accountSelected} />
-            </div>
-            :
-            <div className='flex w-full flex-col items-start justify-center'>
-              <FormattedMessage id='manage.zap_split.new_account' defaultMessage='Account:' />
-              <SearchZapSplit autosuggest onChange={setAccountSelected} />
-            </div>
-          }
-
-          <div className='flex w-full flex-col justify-center md:items-start'>
-            <FormattedMessage id='manage.zap_split.new_account_message' defaultMessage='Message:' />
-            <Input
-              value={newAccount.message}
-              onChange={(e) =>
-                setNewAccount((previousValue) => ({
-                  ...previousValue,
-                  message: e.target.value,
-                }))
-              }
-            />
+        {accountSelected ?
+          <div className='flex w-full items-center md:w-60 '>
+            <Account account={accountSelected} />
           </div>
+          :
+          <div className='flex w-[96%] flex-col items-start justify-center md:max-w-60'>
+            <FormattedMessage id='manage.zap_split.new_account' defaultMessage='Account:' />
+            <SearchZapSplit autosuggest onChange={setAccountSelected} />
+          </div>
+        }
+
+        <div className='flex w-[96%] flex-col justify-center md:w-full'>
+          <FormattedMessage id='manage.zap_split.new_account_message' defaultMessage='Message:' />
+          <Input
+            className='md:-mt-1'
+            value={newAccount.message}
+            onChange={(e) =>
+              setNewAccount((previousValue) => ({
+                ...previousValue,
+                message: e.target.value,
+              }))
+            }
+          />
         </div>
 
-        <HStack space={2} className='w-full md:flex-1 md:justify-end'>
+        <HStack space={2} className='w-full md:justify-end'>
           <div className='flex w-[96%] flex-col md:w-40'>
             {formattedWeight(newWeight)}%
             <Slider value={newWeight} onChange={(e) => handleChange(e)} />
