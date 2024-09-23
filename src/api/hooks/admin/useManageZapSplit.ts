@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
+import { type INewAccount } from 'soapbox/features/admin/manage-zap-split';
 import { useApi } from 'soapbox/hooks';
 import { baseZapAccountSchema, ZapSplitData } from 'soapbox/schemas/zap-split';
 import toast from 'soapbox/toast';
 
-import { type INewAccount } from '../../../features/admin/manage-zap-split';
 
 const messages = defineMessages({
   zapSplitFee: { id: 'manage.zap_split.fees_error_message', defaultMessage: 'The fees cannot exceed 50% of the total zap.' },
@@ -18,6 +18,7 @@ export const useManageZapSplit = () => {
   const api = useApi();
   const [formattedData, setFormattedData] = useState<ZapSplitData[]>([]);
   const [weights, setWeights] = useState<{ [id: string]: number }>({});
+  const [message, setMessage] = useState<{ [id: string]: string }>({});
 
   const fetchZapSplitData = async () => {
     try {
@@ -31,6 +32,11 @@ export const useManageZapSplit = () => {
           return acc;
         }, {} as { [id: string]: number });
         setWeights(initialWeights);
+        const initialMessages = normalizedData.reduce((acc, item) => {
+          acc[item.account.id] = item.message;
+          return acc;
+        }, {} as { [id: string]: string });
+        setMessage(initialMessages);
       }
     } catch (error) {
       toast.error(messages.fetchErrorMessage);
@@ -48,11 +54,18 @@ export const useManageZapSplit = () => {
     }));
   };
 
-  const sendNewSplit = async (newAccount?: INewAccount) => {
+  const handleMessageChange = (accountId: string, newMessage: string) => {
+    setMessage((prevMessage) => ({
+      ...prevMessage,
+      [accountId]: newMessage,
+    }));
+  };
+
+  const sendNewSplit = async (newAccount?: INewAccount, newMessage?: string) => {
     try {
       const updatedZapSplits = formattedData.reduce((acc: { [id: string]: { message: string; weight: number } }, zapData) => {
         acc[zapData.account.id] = {
-          message: zapData.message,
+          message: message[zapData.account.id] || zapData.message,
           weight: weights[zapData.account.id] || zapData.weight,
         };
         return acc;
@@ -95,6 +108,8 @@ export const useManageZapSplit = () => {
   return {
     formattedData,
     weights,
+    message,
+    handleMessageChange,
     handleWeightChange,
     sendNewSplit,
     removeAccount,

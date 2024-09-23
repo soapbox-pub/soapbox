@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import List, { ListItem } from 'soapbox/components/list';
-import { Button, Column, HStack, Stack } from 'soapbox/components/ui';
+import { Button, Column, HStack, Input, Stack } from 'soapbox/components/ui';
 
 import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit';
 import AddNewAccount from '../ui/components/new-account-zap-split';
@@ -23,7 +23,7 @@ interface INewAccount{
 
 const ManageZapSplit: React.FC = () => {
   const intl = useIntl();
-  const { formattedData, weights, handleWeightChange, sendNewSplit, removeAccount } = useManageZapSplit();
+  const { formattedData, weights, message, handleMessageChange, handleWeightChange, sendNewSplit, removeAccount } = useManageZapSplit();
   const [hasNewAccount, setHasNewAccount] = useState(false);
   const [newWeight, setNewWeight] = useState(0.05);
   const [newAccount, setNewAccount] = useState<INewAccount>({ acc: '', message: '', weight: Number((newWeight * 100).toFixed()) });
@@ -54,17 +54,28 @@ const ManageZapSplit: React.FC = () => {
         <List>
           {formattedData.map((data) => (
             <ListItem key={data.account.id} label={''}>
-              <div className='relative flex w-full flex-col items-start justify-center gap-4 sm:flex-row sm:justify-between'>
-                <div className='flex w-60 justify-center sm:justify-start '>
+              <div className='relative flex w-full flex-col items-start justify-center gap-4 pt-2 md:flex-row md:items-center md:justify-between md:pt-0'>
+                <div className='flex min-w-60 items-center  justify-center md:justify-start'>
                   <Account account={data.account} showProfileHoverCard={false} />
                 </div>
-                <HStack space={2} className='w-full sm:justify-end'>
+
+                <div className='flex w-[96%] flex-col justify-center md:w-full'>
+                  <FormattedMessage id='manage.zap_split.new_account_message' defaultMessage='Message:' />
+                  <Input
+                    className='md:-mt-1'
+                    value={message[data.account.id] || ''}
+                    onChange={(e) =>
+                      handleMessageChange(data.account.id, e.target.value)
+                    }
+                  />
+                </div>
+                <HStack space={2} className='w-full md:justify-end'>
                   <ZapSplitSlider
-                    width='w-[96%] sm:w-40'
+                    width='w-[96%] md:w-40'
                     initialWeight={weights[data.account.id] || 0}
                     onWeightChange={(weight) => handleWeightChange(data.account.id, weight)}
                   />
-                  <Button type='button' className='absolute right-0 top-2 sm:relative sm:right-0 sm:top-0' size='xs' icon={closeIcon} theme='transparent' onClick={() => removeAccount(data.account.id)} />
+                  <Button type='button' className='absolute right-0 top-0 md:relative' size='xs' icon={closeIcon} theme='transparent' onClick={() => removeAccount(data.account.id)} />
                 </HStack>
               </div>
             </ListItem>
