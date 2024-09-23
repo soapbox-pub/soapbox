@@ -1037,6 +1037,7 @@
   "manage.zap_split.add_new_account": "Add New Account",
   "manage.zap_split.fail_request": "Failed to update fees.",
   "manage.zap_split.fees_error_message": "The fees cannot exceed 50% of the total zap.",
+  "manage.zap_split.fetch_fail_request": "Failed to fetch Zap Split data.",
   "manage.zap_split.new_account": "Account:",
   "manage.zap_split.new_account_message": "Message:",
   "manage.zap_split.save": "Save",
