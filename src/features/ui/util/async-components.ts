@@ -163,7 +163,6 @@ export const AccountNotePanel = lazy(() => import('soapbox/features/ui/component
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor'));
 export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal'));
-export const OnboardingFlowModal = lazy(() => import ('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-flow-modal'));
 export const BookmarkFolders = lazy(() => import('soapbox/features/bookmark-folders'));
 export const EditBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/edit-bookmark-folder-modal'));
 export const SelectBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/select-bookmark-folder-modal'));
@@ -172,6 +171,7 @@ export const Domains = lazy(() => import('soapbox/features/admin/domains'));
 export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal'));
 export const NostrRelays = lazy(() => import('soapbox/features/nostr-relays'));
 export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Redirect'));
+export const ManageZapSplit = lazy(() => import('soapbox/features/admin/manage-zap-split'));
 export const Relays = lazy(() => import('soapbox/features/admin/relays'));
 export const Rules = lazy(() => import('soapbox/features/admin/rules'));
 export const EditRuleModal = lazy(() => import('soapbox/features/ui/components/modals/edit-rule-modal'));
