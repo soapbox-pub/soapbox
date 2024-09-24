@@ -1651,5 +1651,11 @@
   "zap.button.text.raw": "Zap {amount} sats",
   "zap.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
-  "zap.send_to": "Enviar zaps para {target}"
+  "zap.send_to": "Enviar zaps para {target}",
+  "zap.split_message.deducted": "{amountDeducted} sats serão deduzidos*",
+  "zap.split_message.receiver": "{receiver} receberá {amountReceiver} sats*",
+  "zap.unit": "Quantidade de zap em sats",
+  "zap_split.question": "Por que estou pagando isso?",
+  "zap_split.text": "Seu apoio nos ajudará a construir um império imparável e governar a galáxia!",
+  "zap_split.title": "Divisão de Zap"
 }
