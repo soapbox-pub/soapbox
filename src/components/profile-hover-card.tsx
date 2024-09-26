@@ -1,7 +1,7 @@
+import { useFloating } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
-import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
@@ -87,7 +87,12 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
     };
   }, []);
 
-  const { styles, attributes } = usePopper(targetRef, popperElement);
+  const { floatingStyles } = useFloating({
+    elements: {
+      floating: popperElement,
+      reference: targetRef,
+    },
+  });
 
   if (!account) return null;
   const accountBio = { __html: account.note_emojified };
@@ -102,8 +107,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
+      style={floatingStyles}
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >

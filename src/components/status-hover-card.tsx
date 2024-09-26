@@ -1,6 +1,6 @@
+import { useFloating } from '@floating-ui/react';
 import clsx from 'clsx';
 import React, { useEffect, useState, useCallback } from 'react';
-import { usePopper } from 'react-popper';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -46,8 +46,12 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
     };
   }, []);
 
-  const { styles, attributes } = usePopper(targetRef, popperElement, {
+  const { floatingStyles } = useFloating({
     placement: 'top',
+    elements: {
+      floating: popperElement,
+      reference: targetRef,
+    },
   });
 
   const handleMouseEnter = useCallback((): React.MouseEventHandler => {
@@ -85,8 +89,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
         'opacity-0 pointer-events-none': !visible,
       })}
       ref={setPopperElement}
-      style={styles.popper}
-      {...attributes.popper}
+      style={floatingStyles}
       onMouseEnter={handleMouseEnter()}
       onMouseLeave={handleMouseLeave()}
     >
