@@ -23,7 +23,7 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
   const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [error, setError] = useState<unknown>();
-  const [componentStack, setComponentStack] = useState<string>();
+  const [componentStack, setComponentStack] = useState<string | null | undefined>();
   const [browser, setBrowser] = useState<Bowser.Parser.Parser>();
   const [sentryEventId, setSentryEventId] = useState<string>();
 
