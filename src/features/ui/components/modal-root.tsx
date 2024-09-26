@@ -51,7 +51,7 @@ import {
 import ModalLoading from './modal-loading';
 
 /* eslint sort-keys: "error" */
-const MODAL_COMPONENTS: Record<string, React.LazyExoticComponent<any>> = {
+const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
   'ACCOUNT_MODERATION': AccountModerationModal,
   'ACTIONS': ActionsModal,
   'BIRTHDAYS': BirthdaysModal,

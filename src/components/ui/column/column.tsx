@@ -64,7 +64,7 @@ export interface IColumn {
 }
 
 /** A backdrop for the main section of the UI. */
-const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
+const Column = React.forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Element => {
   const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
   const [isScrolled, setIsScrolled] = useState(false);
