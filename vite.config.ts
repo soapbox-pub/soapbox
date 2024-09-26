@@ -66,7 +66,6 @@ export default defineConfig(({ command }) => ({
           compileTime(),
         ],
       },
-      manifestFilename: 'manifest.json',
       manifest: {
         name: 'Soapbox',
         short_name: 'Soapbox',
