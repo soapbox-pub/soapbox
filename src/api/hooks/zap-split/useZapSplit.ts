@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useApi } from 'soapbox/hooks';
-import { type ZapSplitData } from 'soapbox/schemas/zap-split';
+import { baseZapAccountSchema, type ZapSplitData } from 'soapbox/schemas/zap-split';
 
 import type { Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
@@ -37,7 +37,10 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
   const loadZapSplitData = async () => {
     if (status) {
       const data = (await fetchZapSplit(status.id)).data;
-      setZapArrays(data);
+      if (data) {
+        const normalizedData = data.map((dataSplit: ZapSplitData) => baseZapAccountSchema.parse(dataSplit));
+        setZapArrays(normalizedData);
+      }
     }
   };
 
@@ -50,13 +53,18 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
   const receiveAmount = (zapAmount: number) => {
     if (zapArrays.length > 0) {
       const zapAmountPrincipal = zapArrays.find((zapSplit: ZapSplitData) => zapSplit.account.id === account.id);
+      const formattedZapAmountPrincipal = { 
+        account: zapAmountPrincipal?.account,
+        message: zapAmountPrincipal?.message,
+        weight: zapArrays.filter((zapSplit: ZapSplitData) => zapSplit.account.id === account.id).reduce((acc:number, zapData: ZapSplitData) => acc + zapData.weight, 0),
+      };
       const zapAmountOthers = zapArrays.filter((zapSplit: ZapSplitData) => zapSplit.account.id !== account.id);
 
       const totalWeightSplit = zapAmountOthers.reduce((e: number, b: ZapSplitData) => e + b.weight, 0);
       const totalWeight = zapArrays.reduce((e: number, b: ZapSplitData) => e + b.weight, 0);
 
       if (zapAmountPrincipal) {
-        const receiveZapAmount = Math.floor(zapAmountPrincipal.weight * (zapAmount / totalWeight));
+        const receiveZapAmount = Math.floor(formattedZapAmountPrincipal.weight * (zapAmount / totalWeight));
         const splitResult = zapAmount - receiveZapAmount;
 
         let totalRoundedSplit = 0;
