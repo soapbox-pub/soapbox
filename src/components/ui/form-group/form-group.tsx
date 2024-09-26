@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import Checkbox from '../checkbox/checkbox';
 import HStack from '../hstack/hstack';
@@ -21,7 +20,7 @@ interface IFormGroup {
 /** Input container with label. Renders the child. */
 const FormGroup: React.FC<IFormGroup> = (props) => {
   const { children, errors = [], labelText, labelTitle, hintText } = props;
-  const formFieldId: string = useMemo(() => `field-${uuidv4()}`, []);
+  const formFieldId: string = useMemo(() => `field-${crypto.randomUUID()}`, []);
   const inputChildren = React.Children.toArray(children);
   const hasError = errors?.length > 0;
 

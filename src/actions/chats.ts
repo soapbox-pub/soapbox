@@ -1,5 +1,4 @@
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { v4 as uuidv4 } from 'uuid';
 
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
@@ -103,7 +102,7 @@ const fetchChatMessages = (chatId: string, maxId: string | null = null) =>
 
 const sendChatMessage = (chatId: string, params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const uuid = `末_${Date.now()}_${uuidv4()}`;
+    const uuid = `末_${Date.now()}_${crypto.randomUUID()}`;
     const me = getState().me;
     dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params, uuid, me });
     return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {

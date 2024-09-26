@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 import { SelectDropdown } from '../features/forms';
 
@@ -26,7 +25,7 @@ interface IListItem {
 }
 
 const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onSelect, isSelected }) => {
-  const id = uuidv4();
+  const id = crypto.randomUUID();
   const domId = `list-group-${id}`;
 
   const onKeyDown = (e: React.KeyboardEvent) => {

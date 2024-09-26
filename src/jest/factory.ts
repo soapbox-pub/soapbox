@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
-
 import {
   accountSchema,
   cardSchema,
@@ -29,8 +27,8 @@ import type { PartialDeep } from 'type-fest';
 
 function buildAccount(props: PartialDeep<Account> = {}): Account {
   return accountSchema.parse(Object.assign({
-    id: uuidv4(),
-    url: `https://soapbox.test/users/${uuidv4()}`,
+    id: crypto.randomUUID(),
+    url: `https://soapbox.test/users/${crypto.randomUUID()}`,
   }, props));
 }
 
@@ -42,23 +40,23 @@ function buildCard(props: PartialDeep<Card> = {}): Card {
 
 function buildGroup(props: PartialDeep<Group> = {}): Group {
   return groupSchema.parse(Object.assign({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     owner: {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
     },
   }, props));
 }
 
 function buildGroupRelationship(props: PartialDeep<GroupRelationship> = {}): GroupRelationship {
   return groupRelationshipSchema.parse(Object.assign({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
   }, props));
 }
 
 function buildGroupTag(props: PartialDeep<GroupTag> = {}): GroupTag {
   return groupTagSchema.parse(Object.assign({
-    id: uuidv4(),
-    name: uuidv4(),
+    id: crypto.randomUUID(),
+    name: crypto.randomUUID(),
   }, props));
 }
 
@@ -67,7 +65,7 @@ function buildGroupMember(
   accountProps: PartialDeep<Account> = {},
 ): GroupMember {
   return groupMemberSchema.parse(Object.assign({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     account: buildAccount(accountProps),
     role: GroupRoles.USER,
   }, props));
@@ -79,13 +77,13 @@ function buildInstance(props: PartialDeep<Instance> = {}) {
 
 function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship {
   return relationshipSchema.parse(Object.assign({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
   }, props));
 }
 
 function buildStatus(props: PartialDeep<Status> = {}) {
   return statusSchema.parse(Object.assign({
-    id: uuidv4(),
+    id: crypto.randomUUID(),
     account: buildAccount(),
   }, props));
 }

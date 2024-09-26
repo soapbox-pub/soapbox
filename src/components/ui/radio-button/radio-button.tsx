@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import HStack from '../hstack/hstack';
 
@@ -15,7 +14,7 @@ interface IRadioButton {
  * A group for radio input with label.
  */
 const RadioButton: React.FC<IRadioButton> = ({ name, value, checked, onChange, label }) => {
-  const formFieldId: string = useMemo(() => `radio-${uuidv4()}`, []);
+  const formFieldId: string = useMemo(() => `radio-${crypto.randomUUID()}`, []);
 
   return (
     <HStack alignItems='center' space={3}>

@@ -1,7 +1,6 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { defineMessage } from 'react-intl';
 import { createSelector } from 'reselect';
-import { v4 as uuid } from 'uuid';
 
 import { patchMe } from 'soapbox/actions/me';
 import messages from 'soapbox/messages';
@@ -163,9 +162,9 @@ const defaultSettings = ImmutableMap({
   }),
 
   columns: ImmutableList([
-    ImmutableMap({ id: 'COMPOSE', uuid: uuid(), params: {} }),
-    ImmutableMap({ id: 'HOME', uuid: uuid(), params: {} }),
-    ImmutableMap({ id: 'NOTIFICATIONS', uuid: uuid(), params: {} }),
+    ImmutableMap({ id: 'COMPOSE', uuid: crypto.randomUUID(), params: {} }),
+    ImmutableMap({ id: 'HOME', uuid: crypto.randomUUID(), params: {} }),
+    ImmutableMap({ id: 'NOTIFICATIONS', uuid: crypto.randomUUID(), params: {} }),
   ]),
 
   remote_timeline: ImmutableMap({
