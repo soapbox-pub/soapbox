@@ -22,15 +22,13 @@
   },
   "scripts": {
     "start": "npx vite serve",
-    "dev": "${npm_execpath} run start",
+    "dev": "npx vite serve",
     "build": "npx vite build --emptyOutDir",
     "preview": "npx vite preview",
     "audit:fix": "npx yarn-audit-fix",
     "i18n": "npx formatjs extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --out-file build/messages.json && npx formatjs compile build/messages.json --out-file src/locales/en.json",
     "test": "npx vitest",
-    "test:coverage": "${npm_execpath} run test --coverage",
-    "test:all": "${npm_execpath} run test:coverage && ${npm_execpath} run lint",
-    "lint": "${npm_execpath} run lint:js && ${npm_execpath} run lint:sass",
+    "lint": "npm run lint:js && npm run lint:sass",
     "lint:js": "npx eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx . --cache",
     "lint:sass": "npx stylelint src/styles/**/*.scss",
     "prepare": "husky install"
