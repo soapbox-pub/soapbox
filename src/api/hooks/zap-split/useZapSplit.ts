@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useApi } from 'soapbox/hooks';
-import { type ZapSplitData } from 'soapbox/schemas/zap-split';
+import { baseZapAccountSchema, type ZapSplitData } from 'soapbox/schemas/zap-split';
 
 import type { Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
 
@@ -37,7 +37,10 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
   const loadZapSplitData = async () => {
     if (status) {
       const data = (await fetchZapSplit(status.id)).data;
-      setZapArrays(data);
+      if (data) {
+        const normalizedData = data.map((dataSplit: ZapSplitData) => baseZapAccountSchema.parse(dataSplit));
+        setZapArrays(normalizedData);
+      }
     }
   };
 
