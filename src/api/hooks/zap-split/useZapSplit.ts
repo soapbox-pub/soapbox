@@ -50,13 +50,18 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
   const receiveAmount = (zapAmount: number) => {
     if (zapArrays.length > 0) {
       const zapAmountPrincipal = zapArrays.find((zapSplit: ZapSplitData) => zapSplit.account.id === account.id);
+      const formattedZapAmountPrincipal = { 
+        account: zapAmountPrincipal?.account,
+        message: zapAmountPrincipal?.message,
+        weight: zapArrays.filter((zapSplit: ZapSplitData) => zapSplit.account.id === account.id).reduce((acc:number, zapData: ZapSplitData) => acc + zapData.weight, 0),
+      };
       const zapAmountOthers = zapArrays.filter((zapSplit: ZapSplitData) => zapSplit.account.id !== account.id);
 
       const totalWeightSplit = zapAmountOthers.reduce((e: number, b: ZapSplitData) => e + b.weight, 0);
       const totalWeight = zapArrays.reduce((e: number, b: ZapSplitData) => e + b.weight, 0);
 
       if (zapAmountPrincipal) {
-        const receiveZapAmount = Math.floor(zapAmountPrincipal.weight * (zapAmount / totalWeight));
+        const receiveZapAmount = Math.floor(formattedZapAmountPrincipal.weight * (zapAmount / totalWeight));
         const splitResult = zapAmount - receiveZapAmount;
 
         let totalRoundedSplit = 0;
