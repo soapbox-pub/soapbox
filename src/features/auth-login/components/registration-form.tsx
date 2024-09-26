@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce';
 import React, { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
 
 import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
@@ -55,7 +54,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   const [captchaLoading, setCaptchaLoading] = useState(true);
   const [submissionLoading, setSubmissionLoading] = useState(false);
   const [params, setParams] = useState(ImmutableMap<string, any>());
-  const [captchaIdempotencyKey, setCaptchaIdempotencyKey] = useState(uuidv4());
+  const [captchaIdempotencyKey, setCaptchaIdempotencyKey] = useState(crypto.randomUUID());
   const [usernameUnavailable, setUsernameUnavailable] = useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [passwordMismatch, setPasswordMismatch] = useState(false);
@@ -228,7 +227,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
   };
 
   const refreshCaptcha = () => {
-    setCaptchaIdempotencyKey(uuidv4());
+    setCaptchaIdempotencyKey(crypto.randomUUID());
     updateParams({ captcha_solution: '' });
   };
 
