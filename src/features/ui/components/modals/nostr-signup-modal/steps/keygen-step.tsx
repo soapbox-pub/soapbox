@@ -74,22 +74,24 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
 
         <Stack alignItems='center'>
           <Button theme='primary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
-            Download key
+            <FormattedMessage id='nostr_signup.keygen.download_key_button' defaultMessage='Download key' />
           </Button>
         </Stack>
 
-        <FormGroup labelText='Secret key'>
+        <FormGroup labelText={<FormattedMessage id='nostr_signup.keygen.label_text' defaultMessage='Secret Key' />}>
           <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
         </FormGroup>
 
         <Stack className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
-          <Text>Back up your secret key in a secure place. If lost, your account cannot be recovered. Never share your secret key with anyone.</Text>
+          <Text>
+            <FormattedMessage id='nostr_signup.keygen.text' defaultMessage='Back up your secret key in a secure place. If lost, your account cannot be recovered. Never share your secret key with anyone.' />
+          </Text>
         </Stack>
 
         <Stack alignItems='end'>
           <Tooltip text='Download your key to continue' disabled={downloaded}>
             <Button theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
-              Next
+              <FormattedMessage id='nostr_signup.keygen.next' defaultMessage='Next' />
             </Button>
           </Tooltip>
         </Stack>
