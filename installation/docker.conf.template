@@ -62,7 +62,7 @@ server {
 
   # Backend routes.
   # These are routes to the backend's API and important rendered pages.
-  location ~ ^/(api|oauth|auth|admin|pghero|sidekiq|manifest.json|media|nodeinfo|unsubscribe|.well-known/(webfinger|host-meta|nodeinfo|change-password)|@(.+)/embed$) {
+  location ~ ^/(api|oauth|auth|admin|pghero|sidekiq|manifest.webmanifest|media|nodeinfo|unsubscribe|.well-known/(webfinger|host-meta|nodeinfo|change-password)|@(.+)/embed$) {
     try_files /dev/null @backend;
   }
 

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { v4 as uuidv4 } from 'uuid';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
 import { getHost } from 'soapbox/actions/instance';
@@ -51,7 +50,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
 
   const [colors, setColors] = useState(soapbox.colors.toJS() as any);
   const [submitting, setSubmitting] = useState(false);
-  const [resetKey, setResetKey] = useState(uuidv4());
+  const [resetKey, setResetKey] = useState(crypto.randomUUID());
 
   const fileInput = useRef<HTMLInputElement>(null);
 
@@ -77,7 +76,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   };
 
   const setTheme = (theme: any) => {
-    setResetKey(uuidv4());
+    setResetKey(crypto.randomUUID());
     setTimeout(() => setColors(theme));
   };
 

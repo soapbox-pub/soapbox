@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
-import { v4 as uuid } from 'uuid';
 
 import { isNativeEmoji } from 'soapbox/features/emoji';
 import { Account } from 'soapbox/schemas';
@@ -150,7 +149,7 @@ const appendMedia = (compose: Compose, media: APIEntity, defaultSensitive?: bool
     map.update('media_attachments', list => list.push(normalizeAttachment(media)));
     map.set('is_uploading', false);
     map.set('resetFileKey', Math.floor((Math.random() * 0x10000)));
-    map.set('idempotencyKey', uuid());
+    map.set('idempotencyKey', crypto.randomUUID());
 
     if (prevSize === 0 && (defaultSensitive || compose.spoiler)) {
       map.set('sensitive', true);
@@ -163,7 +162,7 @@ const removeMedia = (compose: Compose, mediaId: string) => {
 
   return compose.withMutations(map => {
     map.update('media_attachments', list => list.filterNot(item => item.id === mediaId));
-    map.set('idempotencyKey', uuid());
+    map.set('idempotencyKey', crypto.randomUUID());
 
     if (prevSize === 1) {
       map.set('sensitive', false);
@@ -180,7 +179,7 @@ const insertSuggestion = (compose: Compose, position: number, token: string | nu
       map.set('focusDate', new Date());
       map.set('caretPosition', position + completion.length + 1);
     }
-    map.set('idempotencyKey', uuid());
+    map.set('idempotencyKey', crypto.randomUUID());
   });
 };
 
@@ -205,7 +204,7 @@ const insertEmoji = (compose: Compose, position: number, emojiData: Emoji, needs
     text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,
     focusDate: new Date(),
     caretPosition: position + emoji.length + 1,
-    idempotencyKey: uuid(),
+    idempotencyKey: crypto.randomUUID(),
   });
 };
 
@@ -274,7 +273,7 @@ const updateCompose = (state: State, key: string, updater: (compose: Compose) =>
   state.update(key, state.get('default')!, updater);
 
 export const initialState: State = ImmutableMap({
-  default: ReducerCompose({ idempotencyKey: uuid(), resetFileKey: getResetFileKey() }),
+  default: ReducerCompose({ idempotencyKey: crypto.randomUUID(), resetFileKey: getResetFileKey() }),
 });
 
 export default function compose(state = initialState, action: ComposeAction | EventsAction | MeAction | SettingsAction | TimelineAction) {
@@ -282,27 +281,27 @@ export default function compose(state = initialState, action: ComposeAction | Ev
     case COMPOSE_TYPE_CHANGE:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('content_type', action.value);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_SPOILERNESS_CHANGE:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('spoiler_text', '');
         map.set('spoiler', !compose.spoiler);
         map.set('sensitive', !compose.spoiler);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_SPOILER_TEXT_CHANGE:
       return updateCompose(state, action.id, compose => compose
         .set('spoiler_text', action.text)
-        .set('idempotencyKey', uuid()));
+        .set('idempotencyKey', crypto.randomUUID()));
     case COMPOSE_VISIBILITY_CHANGE:
       return updateCompose(state, action.id, compose => compose
         .set('privacy', action.value)
-        .set('idempotencyKey', uuid()));
+        .set('idempotencyKey', crypto.randomUUID()));
     case COMPOSE_CHANGE:
       return updateCompose(state, action.id, compose => compose
         .set('text', action.text)
-        .set('idempotencyKey', uuid()));
+        .set('idempotencyKey', crypto.randomUUID()));
     case COMPOSE_REPLY:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         const defaultCompose = state.get('default')!;
@@ -314,7 +313,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
         map.set('content_type', defaultCompose.content_type);
         if (action.preserveSpoilers && action.status.spoiler_text) {
           map.set('spoiler', true);
@@ -326,7 +325,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
         map.set('in_reply_to', action.status.get('id'));
         map.set('to', statusToMentionsArray(action.status, action.account));
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_QUOTE:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
@@ -339,7 +338,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
         map.set('content_type', defaultCompose.content_type);
         map.set('spoiler', false);
         map.set('spoiler_text', '');
@@ -362,7 +361,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
       return updateCompose(state, action.id, () => state.get('default')!.withMutations(map => {
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
         map.set('in_reply_to', action.id.startsWith('reply:') ? action.id.slice(6) : null);
         if (action.id.startsWith('group:')) {
           map.set('privacy', 'group');
@@ -388,7 +387,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.update('text', text => [text.trim(), `@${action.account.acct} `].filter((str) => str.length !== 0).join(' '));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_DIRECT:
       return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
@@ -396,7 +395,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.set('privacy', 'direct');
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_GROUP_POST:
       return updateCompose(state, action.id, compose => compose.withMutations(map => {
@@ -404,7 +403,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.set('group_id', action.group_id);
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
       }));
     case COMPOSE_SUGGESTIONS_CLEAR:
       return updateCompose(state, action.id, compose => compose.update('suggestions', list => list?.clear()).set('suggestion_token', null));
@@ -449,7 +448,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         map.set('privacy', action.status.get('visibility'));
         map.set('focusDate', new Date());
         map.set('caretPosition', null);
-        map.set('idempotencyKey', uuid());
+        map.set('idempotencyKey', crypto.randomUUID());
         map.set('content_type', action.contentType || 'text/plain');
         map.set('quote', action.status.getIn(['quote', 'id']) as string);
         map.set('group_id', action.status.getIn(['group', 'id']) as string);
