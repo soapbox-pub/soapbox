@@ -12,6 +12,7 @@ import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
 import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -158,7 +159,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           </span>
 
           <Link to={'/'} className='text-xs underline'>
-            <img src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
+            <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
           </Link>
 
         </div>
