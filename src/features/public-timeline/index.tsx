@@ -64,7 +64,7 @@ const PublicTimeline = () => {
   }, []);
 
   return (
-    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} feature={<LanguageDropdown />}>
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} action={<LanguageDropdown />} actionRightPosition>
       <PinnedHostsPicker />
 
       {showExplanationBox && (
