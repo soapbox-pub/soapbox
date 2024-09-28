@@ -61,11 +61,13 @@ export interface IColumn {
   action?: React.ReactNode;
   /** Column size, inherited from Card. */
   size?: CardSizes;
+  /** Extra feature. */
+  feature?: JSX.Element;
 }
 
 /** A backdrop for the main section of the UI. */
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size, feature } = props;
   const soapboxConfig = useSoapboxConfig();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -97,20 +99,24 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
 
       <Card size={size} variant={transparent ? undefined : 'rounded'} className={className}>
         {withHeader && (
-          <ColumnHeader
-            label={label}
-            backHref={backHref}
-            className={clsx({
-              'rounded-t-3xl': !isScrolled && !transparent,
-              'sticky top-12 z-10 bg-white/90 dark:bg-primary-900/90 black:bg-black/90 backdrop-blur lg:top-16': !transparent,
-              'p-4 sm:p-0 sm:pb-4 black:p-4': transparent,
-              '-mt-4 p-4': size !== 'lg' && !transparent,
-              '-mt-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
-            })}
-            action={action}
-          />
-        )}
+          <div className='flex justify-between'>
+            <ColumnHeader
+              label={label}
+              backHref={backHref}
+              className={clsx({
+                'rounded-t-3xl': !isScrolled && !transparent,
+                'sticky top-12 z-10 bg-white/90 dark:bg-primary-900/90 black:bg-black/90 backdrop-blur lg:top-16': !transparent,
+                'p-4 sm:p-0 sm:pb-4 black:p-4': transparent,
+                '-mt-4 p-4': size !== 'lg' && !transparent,
+                '-mt-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
+              })}
+              action={action}
+            />
 
+            {feature}
+
+          </div>
+        )}
         <CardBody className={bodyClassName}>
           {children}
         </CardBody>
