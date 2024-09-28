@@ -19,6 +19,7 @@ export type Menu = Array<MenuItem | null>;
 
 interface IDropdownMenu {
   children?: React.ReactElement;
+  modal?: boolean;
   disabled?: boolean;
   items: Menu;
   onClose?: () => void;
@@ -35,6 +36,7 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 const DropdownMenu = (props: IDropdownMenu) => {
   const {
     children,
+    modal = false,
     disabled,
     items,
     onClose,
@@ -90,7 +92,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
    * On mobile screens, let's replace the Popper dropdown with a Modal.
    */
   const handleOpen = () => {
-    if (userTouching.matches) {
+    if (userTouching.matches || modal) {
       dispatch(
         openModal('ACTIONS', {
           status: filteredProps.status,
@@ -111,7 +113,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   const handleClose = () => {
     (refs.reference.current as HTMLButtonElement)?.focus();
 
-    if (userTouching.matches) {
+    if (userTouching.matches || modal) {
       dispatch(closeModal('ACTIONS'));
     } else {
       closeDropdownMenu();
