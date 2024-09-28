@@ -3,10 +3,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
 import { usePublicStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
+import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown/language-dropdown';
 import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 
@@ -57,8 +58,13 @@ const PublicTimeline = () => {
     dispatch(expandPublicTimeline({ onlyMedia }));
   }, [onlyMedia]);
 
+  useEffect(() => {
+    dispatch(clearTimeline('public'));
+    dispatch(expandPublicTimeline({ url: '/api/v1/timelines/public' }));
+  }, []);
+
   return (
-    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent={!isMobile}>
+    <Column className='-mt-3 sm:mt-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} feature={<LanguageDropdown />}>
       <PinnedHostsPicker />
 
       {showExplanationBox && (
