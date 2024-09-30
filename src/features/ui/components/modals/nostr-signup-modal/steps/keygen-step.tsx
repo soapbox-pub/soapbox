@@ -7,7 +7,7 @@ import { logInNostr } from 'soapbox/actions/nostr';
 import { startOnboarding } from 'soapbox/actions/onboarding';
 import CopyableInput from 'soapbox/components/copyable-input';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, FormGroup, Text, Tooltip } from 'soapbox/components/ui';
+import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
@@ -68,33 +68,33 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signup.keygen.title' defaultMessage='Your new key' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='nostr_signup.keygen.title' defaultMessage='Your new key' />} width='sm' onClose={onClose}>
       <Stack className='my-3' space={9}>
         <EmojiGraphic emoji='🔑' />
-
-        <Stack alignItems='center'>
-          <Button theme='primary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
-            <FormattedMessage id='nostr_signup.keygen.download_key_button' defaultMessage='Download key' />
-          </Button>
-        </Stack>
 
         <FormGroup labelText={<FormattedMessage id='nostr_signup.keygen.label_text' defaultMessage='Secret Key' />}>
           <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
         </FormGroup>
 
         <Stack className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
-          <Text>
+          <Text size='xs' className='text-justify' >
             <FormattedMessage id='nostr_signup.keygen.text' defaultMessage='Back up your secret key in a secure place. If lost, your account cannot be recovered. Never share your secret key with anyone.' />
           </Text>
         </Stack>
 
-        <Stack alignItems='end'>
+
+        <HStack space={6} justifyContent='center' >
+          <Button theme='secondary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
+            <FormattedMessage id='nostr_signup.keygen.download_key_button' defaultMessage='Download key' />
+          </Button>
+
           <Tooltip text='Download your key to continue' disabled={downloaded}>
             <Button theme='accent' disabled={!downloaded} size='lg' onClick={handleNext}>
               <FormattedMessage id='nostr_signup.keygen.next' defaultMessage='Next' />
             </Button>
           </Tooltip>
-        </Stack>
+        </HStack>
+
       </Stack>
     </Modal>
   );

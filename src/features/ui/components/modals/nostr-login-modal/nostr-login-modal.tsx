@@ -17,7 +17,7 @@ const NostrLoginModal: React.FC<INostrLoginModal> = ({ onClose, step: firstStep 
 
   switch (step) {
     case 'extension':
-      return <ExtensionStep onClickAlt={() => setStep('key-add')} onClose={handleClose} />;
+      return <ExtensionStep onClickAlt={() => setStep('key-add')} onClose={handleClose} isLogin />;
     case 'key-add':
       return <KeyAddStep onClose={handleClose} />;
     default:
