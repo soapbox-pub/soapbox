@@ -58,7 +58,7 @@ const LanguageDropdown = () => {
   return (
     <DropdownMenu items={newMenu} modal>
       { languageIcon === '' ?
-        <SvgIcon src={require('@tabler/icons/outline/world.svg')} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 sm:mr-4' />
+        <SvgIcon src={require('@tabler/icons/outline/world.svg')} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 sm:mr-4 dark:text-white' />
 
         :
         <button type='button' className='flex h-full rounded-lg border-2 border-gray-700 px-1 text-gray-700 hover:cursor-pointer hover:border-gray-500 hover:text-gray-500 sm:mr-4 dark:border-white dark:text-white dark:hover:border-gray-700' onClick={() => dispatch(openDropdownMenu())}>
