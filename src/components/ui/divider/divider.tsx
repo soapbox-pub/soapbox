@@ -18,7 +18,7 @@ const Divider = ({ text, textSize = 'md' }: IDivider) => (
 
     {text && (
       <div className='relative flex justify-center'>
-        <span className='bg-white px-2 text-gray-700 dark:bg-gray-900 dark:text-gray-600' data-testid='divider-text'>
+        <span className='bg-white px-2 text-gray-700 dark:bg-primary-900 dark:text-gray-600' data-testid='divider-text'>
           <Text size={textSize} tag='span' theme='inherit'>{text}</Text>
         </span>
       </div>
