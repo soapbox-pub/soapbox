@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { logInNostr } from 'soapbox/actions/nostr';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, Input, FormGroup, Form } from 'soapbox/components/ui';
+import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -43,9 +43,8 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signup.key-add.title' defaultMessage='Import Key' />} onClose={onClose}>
+    <Modal title={<FormattedMessage id='nostr_signup.key-add.title' defaultMessage='Import Key' />} width='sm' onClose={onClose}>
       <Stack className='my-3' space={6}>
-        <NostrExtensionIndicator />
 
         <EmojiGraphic emoji='🔑' />
 
@@ -60,11 +59,20 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
               />
             </FormGroup>
 
-            <Button theme='accent' size='lg' type='submit' disabled={!nsec}>
-              <FormattedMessage id='nostr_signup.key-add.key_button' defaultMessage='Add Key' />
-            </Button>
+            <Stack space={2}>
+              <Button theme='accent' size='lg' type='submit' disabled={!nsec}>
+                <FormattedMessage id='nostr_signup.key-add.key_button' defaultMessage='Add Key' />
+              </Button>
+
+              <Divider text='or' />
+
+              <NostrExtensionIndicator />
+            </Stack>
+
           </Stack>
         </Form>
+
+
       </Stack>
     </Modal>
   );
