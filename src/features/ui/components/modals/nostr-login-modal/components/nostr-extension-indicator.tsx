@@ -16,7 +16,7 @@ const NostrExtensionIndicator: React.FC = () => {
   };
 
   return (
-    <Stack space={2} className='rounded-lg bg-gray-100 p-2 dark:bg-gray-800'>
+    <Stack space={2} className='flex items-center rounded-lg bg-gray-100 p-2 dark:bg-gray-800'>
       <Text size='xs'>
         {window.nostr ? (
           <FormattedMessage

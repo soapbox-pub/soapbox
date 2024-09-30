@@ -11,7 +11,7 @@ interface INostrSignupModal {
   onClose: (type?: string) => void;
 }
 
-const NostrSigninModal: React.FC<INostrSignupModal> = ({ onClose }) => {
+const NostrSignUpModal: React.FC<INostrSignupModal> = ({ onClose }) => {
   const [step, setStep] = useState<Step>(window.nostr ? 'extension' : 'key');
 
   const handleClose = () => onClose('NOSTR_SIGNUP');
@@ -28,6 +28,6 @@ const NostrSigninModal: React.FC<INostrSignupModal> = ({ onClose }) => {
   }
 };
 
-export default NostrSigninModal;
+export default NostrSignUpModal;
 
 export type { Step };
