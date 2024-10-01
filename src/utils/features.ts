@@ -900,6 +900,9 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === DITTO,
     ]),
 
+    /** Ability to filter the public timeline by language. */
+    publicTimelineLanguage: v.software === DITTO,
+
     /**
      * Ability to quote posts in statuses.
      * @see POST /api/v1/statuses
