@@ -53,7 +53,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
     <SuggestedAccountsModal onClose={handleComplete} onNext={handleNextStep} />,
   ];
 
-  steps.push(<CompletedModal onComplete={handleComplete} />);
+  steps.push(<CompletedModal onComplete={handleComplete} onClose={handleComplete} />);
 
   const handleKeyUp = ({ key }: KeyboardEvent): void => {
     switch (key) {
