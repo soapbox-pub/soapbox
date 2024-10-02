@@ -59,15 +59,13 @@ export interface IColumn {
   children?: React.ReactNode;
   /** Action for the ColumnHeader, displayed at the end. */
   action?: React.ReactNode;
-  /** Determines if the action for the ColumnHeader is displayed on the right. */
-  actionRightPosition?: boolean;
   /** Column size, inherited from Card. */
   size?: CardSizes;
 }
 
 /** A backdrop for the main section of the UI. */
 const Column = React.forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, actionRightPosition, size } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -108,7 +106,6 @@ const Column = React.forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Eleme
               'p-4 sm:p-0 sm:pb-4 black:p-4': transparent,
               '-mt-4 p-4': size !== 'lg' && !transparent,
               '-mt-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
-              'w-full': actionRightPosition,
             })}
             action={action}
           />

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal } from 'soapbox/components/ui';
+import { Button, Stack, Modal, Text, Divider } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import NostrExtensionIndicator from '../../nostr-login-modal/components/nostr-extension-indicator';
@@ -23,9 +23,12 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
   };
 
   return (
-    <Modal title={<FormattedMessage id='nostr_signup.key.title' defaultMessage='You need a key to continue' />} onClose={onClose}>
-      <Stack className='my-3' space={6}>
-        <NostrExtensionIndicator />
+    <Modal title={<FormattedMessage id='nostr_signup.siwe.title' defaultMessage='Sign up' />} width='sm' onClose={onClose}>
+      <Stack className='my-3' alignItems='center' space={6}>
+
+        <Text weight='semibold'>
+          <FormattedMessage id='nostr_signup.key.title' defaultMessage='You need a key to continue' />
+        </Text>
 
         <EmojiGraphic emoji='🔑' />
 
@@ -38,6 +41,13 @@ const KeyStep: React.FC<IKeyStep> = ({ setStep, onClose }) => {
             <FormattedMessage id='nostr_signup.has_key' defaultMessage='I already have a key' />
           </Button>
         </Stack>
+
+
+      </Stack>
+
+      <Stack space={4}>
+        <Divider text='or' />
+        <NostrExtensionIndicator />
       </Stack>
     </Modal>
   );
