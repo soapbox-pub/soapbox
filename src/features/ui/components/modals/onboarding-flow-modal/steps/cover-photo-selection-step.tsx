@@ -76,10 +76,10 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
 
   return (
 
-    <Stack space={10} justifyContent='center' alignItems='center' className='w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
 
-      <div className='relative w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute -top-[6%] right-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
+      <div className='w-full'>
+        <IconButton src={closeIcon} onClick={onClose} className='absolute right-2 top-2 text-gray-500 hover:text-gray-700 sm:right-6 sm:top-5 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
         <Stack space={2} justifyContent='center' alignItems='center' className='bg-grey-500 border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
           <Text size='2xl' align='center' weight='bold'>
             <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
@@ -90,8 +90,8 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
         </Stack>
       </div>
 
-      <Stack space={10} justifyContent='center' alignItems='center' className='w-full'>
-        <div className='w-2/3 rounded-lg border border-solid border-gray-200 dark:border-gray-800'>
+      <Stack space={2} justifyContent='center' alignItems='center' className='w-full'>
+        <div className='w-full rounded-lg border border-solid border-gray-200 sm:w-2/3 dark:border-gray-800'>
           <div
             role='button'
             className='relative flex h-24 w-full items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
