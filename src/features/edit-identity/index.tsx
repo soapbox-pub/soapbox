@@ -160,7 +160,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
   );
 };
 
-const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
+export const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
   const intl = useIntl();
   const instance = useInstance();
 
