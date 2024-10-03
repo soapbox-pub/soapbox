@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, useOwnAccount, usePrevious } from 'soapbox/hooks';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
@@ -69,6 +69,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { configuration } = useInstance();
+  const { account } = useOwnAccount();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
@@ -108,7 +109,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const isEmpty = !(fulltext.trim() || anyMedia);
   const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty && !isUploading;
   const shouldAutoFocus = autoFocus && !showSearch;
-  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
+  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars && account?.source?.nostr?.nip05 !== undefined;
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
