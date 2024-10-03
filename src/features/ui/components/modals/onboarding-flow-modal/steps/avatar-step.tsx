@@ -3,8 +3,8 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
-import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { Button, Stack, Avatar, Icon, Spinner } from 'soapbox/components/ui';
+import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isDefaultAvatar } from 'soapbox/utils/accounts';
@@ -12,12 +12,9 @@ import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
-
 const messages = defineMessages({
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
-
 
 interface IAvatarSelectionModal {
   onClose?(): void;
@@ -73,17 +70,7 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
   return (
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
 
-      <div className='w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute right-2 top-2 text-gray-500 hover:text-gray-700 sm:right-6 sm:top-5 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <Stack space={2} justifyContent='center' alignItems='center' className='border-grey-200 dark:border-grey-800 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10'>
-          <Text size='2xl' align='center' weight='bold'>
-            <FormattedMessage id='onboarding.avatar.title' defaultMessage={'Choose a profile picture'} />
-          </Text>
-          <Text theme='muted' align='center'>
-            <FormattedMessage id='onboarding.avatar.subtitle' defaultMessage={'Just have fun with it.'} />
-          </Text>
-        </Stack>
-      </div>
+      <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.avatar.title' defaultMessage={'Choose a profile picture'} />} subtitle={<FormattedMessage id='onboarding.avatar.subtitle' defaultMessage={'Just have fun with it.'} />} />
 
       <div className='relative mx-auto rounded-full bg-gray-200'>
         {account && (
@@ -111,7 +98,7 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
         <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
       </div>
 
-      <Stack justifyContent='center' space={2} className='w-2/3'>
+      <Stack justifyContent='center' space={2} className='w-full sm:w-2/3'>
         <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
           {isSubmitting ? (
             <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />

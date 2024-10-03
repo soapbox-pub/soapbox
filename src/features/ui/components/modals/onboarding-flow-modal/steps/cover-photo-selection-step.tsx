@@ -5,15 +5,13 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { patchMe } from 'soapbox/actions/me';
 import StillImage from 'soapbox/components/still-image';
 import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 import { isDefaultHeader } from 'soapbox/utils/accounts';
 import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
-
-const closeIcon = require('@tabler/icons/outline/x.svg');
 
 const messages = defineMessages({
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
@@ -78,17 +76,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
 
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
 
-      <div className='w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute right-2 top-2 text-gray-500 hover:text-gray-700 sm:right-6 sm:top-5 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <Stack space={2} justifyContent='center' alignItems='center' className='bg-grey-500 border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
-          <Text size='2xl' align='center' weight='bold'>
-            <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
-          </Text>
-          <Text theme='muted' align='center'>
-            <FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />
-          </Text>
-        </Stack>
-      </div>
+      <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />} subtitle={<FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />} />
 
       <Stack space={2} justifyContent='center' alignItems='center' className='w-full'>
         <div className='w-full rounded-lg border border-solid border-gray-200 sm:w-2/3 dark:border-gray-800'>
@@ -139,7 +127,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
           </div>
         </div>
 
-        <Stack justifyContent='center' space={2} className='w-2/3'>
+        <Stack justifyContent='center' space={2} className='w-full sm:w-2/3'>
           <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
             {isSubmitting ? (
               <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />

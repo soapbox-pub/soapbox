@@ -4,11 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import AccountContainer from 'soapbox/containers/account-container';
+import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
 import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
-
-const closeIcon = require('@tabler/icons/outline/x.svg');
 
 interface ICoverPhotoSelectionModal {
   onClose?(): void;
@@ -31,7 +29,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
       return null;
     }
     return (
-      <div className='flex flex-col sm:pb-10 sm:pt-4'>
+      <div className='flex flex-col sm:pb-4 sm:pt-0'>
         <ScrollableList
           isLoading={isFetching}
           scrollKey='suggestions'
@@ -76,24 +74,14 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
 
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
 
-      <div className='w-5/6 sm:w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute right-2 top-2 text-gray-500 hover:text-gray-700 sm:right-6 sm:top-5 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <Stack space={2} justifyContent='center' alignItems='center' className='bg-grey-500 border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
-          <Text size='2xl' align='center' weight='bold'>
-            <FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />
-          </Text>
-          <Text theme='muted' align='center'>
-            <FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />
-          </Text>
-        </Stack>
-      </div>
+      <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />} subtitle={<FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />} />
 
-      <Stack space={5} justifyContent='center' alignItems='center' className='w-full'>
+      <Stack justifyContent='center' alignItems='center' className='w-full gap-5 sm:gap-0'>
         <div className='w-full sm:w-2/3'>
           {renderBody()}
         </div>
 
-        <Stack justifyContent='center' space={2} className='w-2/3'>
+        <Stack justifyContent='center' space={2} className='w-full sm:w-2/3'>
           <Button block theme='primary' type='button' onClick={onNext}>
             <FormattedMessage id='onboarding.done' defaultMessage='Done' />
           </Button>

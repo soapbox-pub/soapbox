@@ -2,21 +2,18 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Button, Stack, Text, FormGroup, Input, HStack, Icon, Textarea, Popover } from 'soapbox/components/ui';
+import { Button, Stack, Text, FormGroup, HStack, Textarea, Popover } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { UsernameInput } from 'soapbox/features/edit-identity/index';
+import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
 import { useApi, useInstance } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import toast from 'soapbox/toast';
-
-
-const closeIcon = require('@tabler/icons/outline/x.svg');
 
 const messages = defineMessages({
   title: { id: 'onboarding.display_identity.title', defaultMessage: 'Choose an Identity' },
   subtitle: { id: 'onboarding.display_identity.subtitle', defaultMessage: 'You can always edit this later.' },
   label: { id: 'onboarding.display_identity.label', defaultMessage: 'Identity' },
-  username: { id: 'onboarding.display_identity.fields.nip05_label', defaultMessage: 'Username' },
   helpText: { id: 'onboarding.display_identity.help_text', defaultMessage: 'This identifier is a unique username that represents you on the platform. It is automatically generated based on the site, ensuring that you have a distinct identity to interact with other users. This username can be used to personalize your experience and facilitate communication within the community.' },
   placeholder: { id: 'onboarding.display_identity.fields.reason_placeholder', defaultMessage: 'Why do you want to be part of the {siteTitle} community?' },
   requested: { id: 'onboarding.display_identity.request', defaultMessage: 'Username requested' },
@@ -44,24 +41,6 @@ function useRequestName() {
   });
 }
 
-const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
-  const intl = useIntl();
-  const instance = useInstance();
-
-  return (
-    <Input
-      placeholder={intl.formatMessage(messages.username)}
-      append={(
-        <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
-          <Icon className='h-4 w-4' src={require('@tabler/icons/outline/at.svg')} />
-          <span>{instance.domain}</span>
-        </HStack>
-      )}
-      {...props}
-    />
-  );
-};
-
 const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }) => {
   const intl = useIntl();
   const instance = useInstance();
@@ -86,8 +65,6 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
         queryClient.invalidateQueries({
           queryKey: ['names', 'pending'],
         });
-        // setUsername('');
-        // setReason('');
         setSubmitting(false);
       }, onError() {
         toast.error(intl.formatMessage(messages.error));
@@ -96,20 +73,9 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
   };
 
   return (
-
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
 
-      <div className='w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute right-2 top-2 text-gray-500 hover:text-gray-700 sm:right-6 sm:top-5 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
-        <Stack space={2} justifyContent='center' alignItems='center' className='bg-grey-500 border-grey-200 -mx-4 mb-4 border-b border-solid pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
-          <Text size='2xl' align='center' weight='bold'>
-            {intl.formatMessage(messages.title)}
-          </Text>
-          <Text theme='muted' align='center'>
-            {intl.formatMessage(messages.subtitle)}
-          </Text>
-        </Stack>
-      </div>
+      <HeaderSteps onClose={onClose} title={intl.formatMessage(messages.title)} subtitle={intl.formatMessage(messages.subtitle)} />
 
       <Stack space={5} justifyContent='center' alignItems='center' className='w-full'>
         <div className='w-full sm:w-3/4'>
@@ -135,9 +101,7 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
             }
           >
             <Stack space={4}>
-
               <UsernameInput value={username} onChange={(e) => setUsername(e.target.value)} />
-
               <Textarea
                 name='reason'
                 placeholder={intl.formatMessage(messages.placeholder, { siteTitle: instance.title })}
@@ -147,13 +111,11 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
                 autoGrow
                 required
               />
-
             </Stack>
-
           </FormGroup>
         </div>
 
-        <Stack justifyContent='center' space={2} className='w-2/3'>
+        <Stack justifyContent='center' space={2} className='w-full sm:w-3/4'>
           <Button block theme='primary' type='button' onClick={handleSubmit} disabled={isDisabled || isSubmitting}>
             {isSubmitting ? (
               intl.formatMessage(messages.saving)
