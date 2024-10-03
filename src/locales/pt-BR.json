@@ -478,6 +478,8 @@
   "compose_form.markdown.marked": "Markdown do post ativado",
   "compose_form.markdown.unmarked": "Markdown do post desativado",
   "compose_form.message": "Mensagem",
+  "compose_form.warning": "Aviso: Para postar, é necessário ter um nome de usuário válido. Por favor, configure seu nome de usuário em 'Configurações > Identidade', antes de continuar.",
+  "compose_form.warning_waiting": "Aviso: Para postar, é necessário ter um nome de usuário válido. Sua solicitação de nome de usuário está pendente de validação. Por favor, aguarde até que seu usuário seja validado.",
   "compose_form.placeholder": "No que você está pensando?",
   "compose_form.poll.add_option": "Adicionar uma resposta",
   "compose_form.poll.duration": "Duração da enquete",
