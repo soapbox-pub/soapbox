@@ -17,7 +17,7 @@ const formatterLanguage = (lang: {}) => {
 };
 
 /**
- *
+ * A dropdown menu component for selecting the display language of the public timeline.
  */
 const LanguageDropdown = () => {
   const dispatch = useAppDispatch();
