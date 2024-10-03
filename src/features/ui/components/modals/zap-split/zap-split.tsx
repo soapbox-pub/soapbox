@@ -4,7 +4,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';
 import CopyableInput from 'soapbox/components/copyable-input';
-import { Button, Stack, HStack } from 'soapbox/components/ui';
+import { Button, Stack, HStack, Popover, Text } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { ZapSplitData } from 'soapbox/schemas/zap-split';
 
 const messages = defineMessages({
@@ -69,12 +70,22 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
           </div>
         </div>
 
-
-        <a className='flex gap-2' href='/'>
+        <HStack space={2}>
           <p className='text-sm'>
             <FormattedMessage id='zap_split.question' defaultMessage='Why am I paying this?' />
           </p>
-        </a>
+          <Popover
+            interaction='hover' content={
+              <Text className='w-48 text-justify sm:w-72'>
+                <FormattedMessage id='zap.info_message' defaultMessage='When sending a zap to another person, a small fee will be deducted. This fee is used to cover the costs of the service and ensure that you can continue using the platform efficiently. Thank you for your understanding and for being a part of our community!' />
+              </Text>
+            }
+          >
+            <div>
+              <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4 hover:cursor-pointer' alt='info' />
+            </div>
+          </Popover>
+        </HStack>
 
       </Stack>
       {invoice &&  <div className='border-grey-500 mt-4 flex w-full border-t pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>

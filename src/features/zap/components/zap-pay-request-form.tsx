@@ -10,7 +10,7 @@ import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
-import { Stack, Button, Input, Avatar, Text, Popover } from 'soapbox/components/ui';
+import { Stack, Button, Input, Avatar, Text, Popover, HStack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -149,7 +149,8 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
 
         <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={'Zap sats'} disabled={zapAmount < 1 ? true : false} />
 
-        <div className='flex items-center justify-center gap-2 sm:gap-4'>
+        <HStack alignItems='center' justifyContent='center' space={2}>
+
           <span className='text-[10px] sm:text-xs'>
             <FormattedMessage
               id='zap.split_message.deducted'
@@ -168,8 +169,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
               <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4 hover:cursor-pointer' alt='info' />
             </div>
           </Popover>
-
-        </div>
+        </HStack>
       </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
 
     </Stack>
