@@ -1661,7 +1661,7 @@
   "zap.button.text.raw": "Zap {amount} sats",
   "zap.comment_input.placeholder": "Comentário opcional",
   "zap.finish":"Finalizar",
-  "zap.info_message": "Ao enviar um zap para outra pessoa, uma pequena taxa será descontada. Essa taxa é utilizada para cobrir os custos do serviço e garantir que você possa continuar a usar a plataforma de forma eficiente. Agradecemos por sua compreensão e por fazer parte da nossa comunidade!",
+  "zap.info_message": "Ao enviar um zap para outra pessoa, uma pequena taxa será descontada. Essa taxa é utilizada para cobrir os custos do serviço. Agradecemos por sua compreensão e por fazer parte da nossa comunidade!",
   "zap.next": "Próximo",
   "zap.open_wallet": "Abrir Carteira",
   "zap.send_to": "Enviar zaps para {target}",

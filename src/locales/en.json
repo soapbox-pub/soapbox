@@ -1673,7 +1673,7 @@
   "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.comment_input.placeholder": "Optional comment",
   "zap.finish": "Finish",
-  "zap.info_message": "When sending a zap to another person, a small fee will be deducted. This fee is used to cover the costs of the service and ensure that you can continue using the platform efficiently. Thank you for your understanding and for being a part of our community!",
+  "zap.info_message": "When sending a zap to another person, a small fee will be deducted. The fee is used to cover the costs of the service. Thank you for your understanding and for being a part of our community!",
   "zap.next": "Next",
   "zap.open_wallet": "Open Wallet",
   "zap.send_to": "Send zaps to {target}",
