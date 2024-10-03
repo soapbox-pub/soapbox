@@ -96,7 +96,7 @@ const Popover: React.FC<IPopover> = (props) => {
             }}
             className={
               clsx({
-                'z-40 rounded-lg bg-white shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700': true,
+                'z-[101] rounded-lg bg-white shadow-2xl dark:bg-gray-900 dark:ring-2 dark:ring-primary-700': true,
                 'p-6': !isFlush,
               })
             }
@@ -107,7 +107,7 @@ const Popover: React.FC<IPopover> = (props) => {
             <FloatingArrow
               ref={arrowRef}
               context={context}
-              className='-ml-2 fill-white dark:hidden' /** -ml-2 to fix offcenter arrow */
+              className='fill-white dark:hidden'
               tipRadius={3}
             />
           </div>

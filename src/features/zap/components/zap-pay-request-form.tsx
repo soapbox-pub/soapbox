@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 
 import { zap } from 'soapbox/actions/interactions';
 import { openModal, closeModal } from 'soapbox/actions/modals';
@@ -11,7 +10,7 @@ import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline';
-import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
+import { Stack, Button, Input, Avatar, Text, Popover } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch } from 'soapbox/hooks';
@@ -158,9 +157,17 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
             />
           </span>
 
-          <Link to={'/'} className='text-xs underline'>
-            <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
-          </Link>
+          <Popover
+            interaction='hover' content={
+              <Text className='w-48 text-justify sm:w-72'>
+                <FormattedMessage id='zap.info_message' defaultMessage='When sending a zap to another person, a small fee will be deducted. This fee is used to cover the costs of the service and ensure that you can continue using the platform efficiently. Thank you for your understanding and for being a part of our community!' />
+              </Text>
+            }
+          >
+            <div>
+              <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4 hover:cursor-pointer' alt='info' />
+            </div>
+          </Popover>
 
         </div>
       </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
