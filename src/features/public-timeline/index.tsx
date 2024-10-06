@@ -25,7 +25,7 @@ const PublicTimeline = () => {
   const features = useFeatures();
   const theme = useTheme();
 
-  const [language, setLanguage] = useState<string>('');
+  const [language, setLanguage] = useState<string>(localStorage.getItem('soapbox:global:language') || '');
 
   const instance = useInstance();
   const settings = useSettings();
@@ -57,9 +57,8 @@ const PublicTimeline = () => {
   usePublicStream({ onlyMedia, language });
 
   useEffect(() => {
-    if (language) {
-      dispatch(clearTimeline('public'));
-    }
+    dispatch(clearTimeline('public'));
+    localStorage.setItem('soapbox:global:language', language);
   }, [language]);
 
   useEffect(() => {
