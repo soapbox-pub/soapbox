@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { expandPublicTimeline } from 'soapbox/actions/timelines';
+import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
 import { usePublicStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
@@ -57,8 +57,14 @@ const PublicTimeline = () => {
   usePublicStream({ onlyMedia, language });
 
   useEffect(() => {
+    if (language) {
+      dispatch(clearTimeline('public'));
+    }
+  }, [language]);
+
+  useEffect(() => {
     dispatch(expandPublicTimeline({ onlyMedia, language }));
-  }, [onlyMedia]);
+  }, [onlyMedia, language]);
 
   return (
     <Column

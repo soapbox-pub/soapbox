@@ -11,7 +11,7 @@ function usePublicStream({ onlyMedia, language }: UsePublicStreamOpts = {}) {
     `public${onlyMedia ? ':media' : ''}`,
     null,
     null,
-    { enabled: !language },
+    { enabled: !language }, // TODO: support language streaming
   );
 }
 
