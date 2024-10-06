@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { openDropdownMenu } from 'soapbox/actions/dropdown-menu';
-import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
+import DropdownMenu, { MenuItem } from 'soapbox/components/dropdown-menu';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { languages } from 'soapbox/features/preferences';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const formatterLanguage = (lang: {}) => {
-
   const sigLanguage = Object.keys(lang).sort().map((sig) => {
     return sig.substring(0, 2);
   });
@@ -16,28 +14,20 @@ const formatterLanguage = (lang: {}) => {
   return [...new Set(sigLanguage)];
 };
 
+interface ILanguageDropdown {
+  language: string;
+  setLanguage(language: string): void;
+}
+
 /**
- *
+ * Let the user select a language to filter the public timeline.
  */
-const LanguageDropdown = () => {
+const LanguageDropdown: React.FC<ILanguageDropdown> = ({ language, setLanguage }) => {
   const dispatch = useAppDispatch();
-  const [languageIcon, setLanguageIcon] = useState('');
-
-  const handleChangeLanguage = (language?: string) => {
-    if (language) {
-      dispatch(clearTimeline('public'));
-      dispatch(expandPublicTimeline({ url: `/api/v1/timelines/public?language=${language}` }));
-    } else {
-      dispatch(clearTimeline('public'));
-      dispatch(expandPublicTimeline({ url: '/api/v1/timelines/public' }));
-    }
-  };
-
   const formattedLanguage = formatterLanguage(languages);
 
-  const newMenu: any[] = [{ icon: require('@tabler/icons/outline/world.svg'), text: 'Default', action: () => {
-    setLanguageIcon('');
-    handleChangeLanguage();
+  const newMenu: MenuItem[] = [{ icon: require('@tabler/icons/outline/world.svg'), text: 'Default', action: () => {
+    setLanguage('');
   } }];
 
   formattedLanguage.map((lg: string) => {
@@ -47,8 +37,7 @@ const LanguageDropdown = () => {
       newMenu.push({
         text: `${lg.toUpperCase()} - ${languageText}`,
         action: () => {
-          setLanguageIcon(lg.toUpperCase());
-          handleChangeLanguage(lg);
+          setLanguage(lg.toUpperCase());
         },
       });
     }
@@ -57,14 +46,13 @@ const LanguageDropdown = () => {
 
   return (
     <DropdownMenu items={newMenu} modal>
-      { languageIcon === '' ?
-        <SvgIcon src={require('@tabler/icons/outline/world.svg')} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 sm:mr-4 dark:text-white' />
-
-        :
+      {language ? (
         <button type='button' className='flex h-full rounded-lg border-2 border-gray-700 px-1 text-gray-700 hover:cursor-pointer hover:border-gray-500 hover:text-gray-500 sm:mr-4 dark:border-white dark:text-white dark:hover:border-gray-700' onClick={() => dispatch(openDropdownMenu())}>
-          {languageIcon}
+          {language}
         </button>
-      }
+      ) : (
+        <SvgIcon src={require('@tabler/icons/outline/world.svg')} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 sm:mr-4 dark:text-white' />
+      )}
     </DropdownMenu>
   );
 };

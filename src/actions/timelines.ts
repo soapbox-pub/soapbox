@@ -213,8 +213,8 @@ const expandHomeTimeline = ({ url, maxId }: ExpandHomeTimelineOpts = {}, done = 
   return expandTimeline('home', endpoint, params, done);
 };
 
-const expandPublicTimeline = ({ url, maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
-  expandTimeline(`public${onlyMedia ? ':media' : ''}`, url || '/api/v1/timelines/public', url ? {} : { max_id: maxId, only_media: !!onlyMedia }, done);
+const expandPublicTimeline = ({ url, maxId, onlyMedia, language }: Record<string, any> = {}, done = noOp) =>
+  expandTimeline(`public${onlyMedia ? ':media' : ''}`, url || '/api/v1/timelines/public', url ? {} : { max_id: maxId, only_media: !!onlyMedia, language }, done);
 
 const expandRemoteTimeline = (instance: string, { url, maxId, onlyMedia }: Record<string, any> = {}, done = noOp) =>
   expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, url || '/api/v1/timelines/public', url ? {} : { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);

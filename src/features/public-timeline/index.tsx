@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings';
-import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
+import { expandPublicTimeline } from 'soapbox/actions/timelines';
 import { usePublicStream } from 'soapbox/api/hooks';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import { Accordion, Column } from 'soapbox/components/ui';
@@ -24,6 +24,8 @@ const PublicTimeline = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const theme = useTheme();
+
+  const [language, setLanguage] = useState<string>('');
 
   const instance = useInstance();
   const settings = useSettings();
@@ -52,24 +54,18 @@ const PublicTimeline = () => {
     return dispatch(expandPublicTimeline({ onlyMedia }));
   };
 
-  usePublicStream({ onlyMedia });
+  usePublicStream({ onlyMedia, language });
 
   useEffect(() => {
-    dispatch(expandPublicTimeline({ onlyMedia }));
+    dispatch(expandPublicTimeline({ onlyMedia, language }));
   }, [onlyMedia]);
-
-  useEffect(() => {
-    dispatch(clearTimeline('public'));
-    dispatch(expandPublicTimeline({ url: '/api/v1/timelines/public' }));
-  }, []);
 
   return (
     <Column
       className='-mt-3 sm:mt-0'
       label={intl.formatMessage(messages.title)}
       transparent={!isMobile}
-      action={features.publicTimelineLanguage ? <LanguageDropdown /> : null}
-      // actionRightPosition
+      action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
     >
       <PinnedHostsPicker />
 
