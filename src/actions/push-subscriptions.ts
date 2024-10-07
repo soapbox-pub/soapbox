@@ -18,7 +18,15 @@ const PUSH_SUBSCRIPTION_DELETE_FAIL    = 'PUSH_SUBSCRIPTION_DELETE_FAIL';
 
 import type { AppDispatch, RootState } from 'soapbox/store';
 
-const createPushSubscription = (params: Record<string, any>) =>
+interface CreatePushSubscriptionParams {
+  subscription: PushSubscriptionJSON;
+  data?: {
+    alerts?: Record<string, boolean>;
+    policy?: 'all' | 'followed' | 'follower' | 'none';
+  };
+}
+
+const createPushSubscription = (params: CreatePushSubscriptionParams) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_CREATE_REQUEST, params });
     return api(getState).post('/api/v1/push/subscription', params).then(({ data: subscription }) =>
