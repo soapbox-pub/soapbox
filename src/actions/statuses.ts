@@ -316,11 +316,12 @@ const toggleStatusHidden = (status: Status) => {
   }
 };
 
-const translateStatus = (id: string, targetLanguage?: string) => (dispatch: AppDispatch, getState: () => RootState) => {
+const translateStatus = (id: string, lang?: string) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch({ type: STATUS_TRANSLATE_REQUEST, id });
 
   api(getState).post(`/api/v1/statuses/${id}/translate`, {
-    target_language: targetLanguage,
+    lang, // Mastodon API
+    target_language: lang, // HACK: Rebased and Pleroma compatibility
   }).then(response => {
     dispatch({
       type: STATUS_TRANSLATE_SUCCESS,
