@@ -30,7 +30,7 @@ describe('deleteStatus()', () => {
 
   describe('if logged out', () => {
     beforeEach(() => {
-      const state = rootState.set('me', null);
+      const state = { ...rootState, me: null };
       store = mockStore(state);
     });
 
@@ -49,11 +49,14 @@ describe('deleteStatus()', () => {
     });
 
     beforeEach(() => {
-      const state = rootState
-        .set('me', '1234')
-        .set('statuses', fromJS({
+      const state = {
+        ...rootState,
+        me: '1234',
+        statuses: fromJS({
           [statusId]: cachedStatus,
-        }) as any);
+        }) as any,
+      };
+
       store = mockStore(state);
     });
 

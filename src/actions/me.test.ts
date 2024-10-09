@@ -37,23 +37,25 @@ describe('fetchMe()', () => {
     const token = '123';
 
     beforeEach(() => {
-      const state = rootState
-        .set('auth', ReducerRecord({
+      const state = {
+        ...rootState,
+        auth: ReducerRecord({
           me: accountUrl,
           users: ImmutableMap({
             [accountUrl]: AuthUserRecord({
               'access_token': token,
             }),
           }),
-        }))
-        .set('entities', {
+        }),
+        entities: {
           'ACCOUNTS': {
             store: {
               [accountUrl]: buildAccount({ url: accountUrl }),
             },
             lists: {},
           },
-        });
+        },
+      };
 
       store = mockStore(state);
     });

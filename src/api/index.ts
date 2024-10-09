@@ -105,8 +105,8 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
   const me = state.me;
   const baseURL = me ? getAuthBaseURL(state, me) : '';
 
-  const relayUrl = state.getIn(['instance', 'nostr', 'relay']) as string | undefined;
-  const pubkey = state.getIn(['instance', 'nostr', 'pubkey']) as string | undefined;
+  const relayUrl = state.instance?.nostr?.relay;
+  const pubkey = state.instance?.nostr?.pubkey;
   const nostrSign = Boolean(relayUrl && pubkey);
 
   return baseClient(accessToken, baseURL, nostrSign);
