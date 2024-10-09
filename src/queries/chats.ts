@@ -79,7 +79,7 @@ const isLastMessage = (chatMessageId: string): boolean => {
 
 const useChatMessages = (chat: IChat) => {
   const api = useApi();
-  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
+  const isBlocked = useAppSelector((state) => state.relationships.getIn([chat.account.id, 'blocked_by']));
 
   const getChatMessages = async (chatId: string, pageParam?: any): Promise<PaginatedResult<ChatMessage>> => {
     const nextPageLink = pageParam?.link;
