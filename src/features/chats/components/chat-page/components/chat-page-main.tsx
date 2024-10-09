@@ -60,7 +60,7 @@ const ChatPageMain = () => {
 
   const handleUpdateChat = (value: MessageExpirationValues) => updateChat.mutate({ message_expiration: value });
 
-  const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
+  const isBlocking = useAppSelector((state) => state.relationships.getIn([chat?.account?.id, 'blocking']));
 
   const handleBlockUser = () => {
     dispatch(openModal('CONFIRM', {
