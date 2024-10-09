@@ -16,7 +16,7 @@ describe('fetchBlocks()', () => {
 
   describe('if logged out', () => {
     beforeEach(() => {
-      const state = rootState.set('me', null);
+      const state = { ...rootState, me: null };
       store = mockStore(state);
     });
 
@@ -30,7 +30,7 @@ describe('fetchBlocks()', () => {
 
   describe('if logged in', () => {
     beforeEach(() => {
-      const state = rootState.set('me', '1234');
+      const state = { ...rootState, me: '1234' };
       store = mockStore(state);
     });
 
@@ -89,7 +89,7 @@ describe('expandBlocks()', () => {
 
   describe('if logged out', () => {
     beforeEach(() => {
-      const state = rootState.set('me', null);
+      const state = { ...rootState, me: null };
       store = mockStore(state);
     });
 
@@ -103,15 +103,18 @@ describe('expandBlocks()', () => {
 
   describe('if logged in', () => {
     beforeEach(() => {
-      const state = rootState.set('me', '1234');
+      const state = { ...rootState, me: '1234' };
       store = mockStore(state);
     });
 
     describe('without a url', () => {
       beforeEach(() => {
-        const state = rootState
-          .set('me', '1234')
-          .set('user_lists', UserListsRecord({ blocks: ListRecord({ next: null }) }));
+        const state = {
+          ...rootState,
+          me: '1234',
+          user_lists: UserListsRecord({ blocks: ListRecord({ next: null }) }),
+        };
+
         store = mockStore(state);
       });
 
@@ -125,9 +128,11 @@ describe('expandBlocks()', () => {
 
     describe('with a url', () => {
       beforeEach(() => {
-        const state = rootState
-          .set('me', '1234')
-          .set('user_lists', UserListsRecord({ blocks: ListRecord({ next: 'example' }) }));
+        const state = {
+          ...rootState,
+          me: '1234',
+          user_lists: UserListsRecord({ blocks: ListRecord({ next: 'example' }) }),
+        };
         store = mockStore(state);
       });
 

@@ -1,5 +1,4 @@
-import { Record as ImmutableRecord } from 'immutable';
-import { combineReducers } from 'redux-immutable';
+import { combineReducers } from '@reduxjs/toolkit';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import * as BuildConfig from 'soapbox/build-config';
@@ -120,39 +119,29 @@ const reducers = {
   user_lists,
 };
 
-// Build a default state from all reducers: it has the key and `undefined`
-export const StateRecord = ImmutableRecord(
-  Object.keys(reducers).reduce((params: Record<string, any>, reducer) => {
-    params[reducer] = undefined;
-    return params;
-  }, {}),
-);
+const appReducer = combineReducers(reducers);
 
-const appReducer = combineReducers(reducers, StateRecord);
+type AppState = ReturnType<typeof appReducer>;
 
 // Clear the state (mostly) when the user logs out
-const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
+const logOut = (state: AppState): ReturnType<typeof appReducer> => {
   if (BuildConfig.NODE_ENV === 'production') {
     location.href = '/login';
   }
 
-  const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];
+  const newState = rootReducer(undefined, { type: '' });
 
-  return StateRecord(
-    whitelist.reduce((acc: Record<string, any>, curr) => {
-      acc[curr] = state.get(curr);
-      return acc;
-    }, {}),
-  ) as unknown as ReturnType<typeof appReducer>;
+  const { instance, soapbox, custom_emojis, auth } = state;
+  return { ...newState, instance, soapbox, custom_emojis, auth };
 };
 
 const rootReducer: typeof appReducer = (state, action) => {
   switch (action.type) {
     case AUTH_LOGGED_OUT:
-      return appReducer(logOut(state), action);
+      return appReducer(logOut(state as AppState), action);
     default:
       return appReducer(state, action);
   }
 };
 
-export default rootReducer;
+export default appReducer;

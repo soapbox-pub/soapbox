@@ -147,7 +147,6 @@
     "react-swipeable-views": "^0.14.0",
     "react-virtuoso": "^4.10.4",
     "redux": "^5.0.0",
-    "redux-immutable": "^4.0.0",
     "redux-thunk": "^3.1.0",
     "reselect": "^5.0.0",
     "sass": "^1.69.5",

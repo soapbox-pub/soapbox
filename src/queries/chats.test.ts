@@ -116,11 +116,11 @@ describe('useChatMessages', () => {
 
   describe('when the user is blocked', () => {
     beforeEach(() => {
-      const state = rootState
-        .set(
-          'relationships',
-          ImmutableMap({ '1': buildRelationship({ blocked_by: true }) }),
-        );
+      const state = {
+        ...rootState,
+        relationships: ImmutableMap({ '1': buildRelationship({ blocked_by: true }) }),
+      };
+
       store = mockStore(state);
     });
 
