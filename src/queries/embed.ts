@@ -21,9 +21,8 @@ type Embed = {
 export default function useEmbed(url: string) {
   const api = useApi();
 
-  const getEmbed = async() => {
-    const { data } = await api.get('/api/oembed', { params: { url } });
-    return data;
+  const getEmbed = async (): Promise<Embed> => {
+    return api.get<Embed>('/api/oembed', { searchParams: { url } }).json();
   };
 
   return useQuery<Embed>({

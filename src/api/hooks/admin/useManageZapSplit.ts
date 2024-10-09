@@ -32,7 +32,7 @@ export const useManageZapSplit = () => {
   */
   const fetchZapSplitData = async () => {
     try {
-      const { data } = await api.get<ZapSplitData[]>('/api/v1/ditto/zap_splits');
+      const data = await api.get<ZapSplitData[]>('/api/v1/ditto/zap_splits').json();
       if (data) {
         const normalizedData = data.map((dataSplit) => baseZapAccountSchema.parse(dataSplit));
         setFormattedData(normalizedData);
@@ -134,7 +134,7 @@ export const useManageZapSplit = () => {
   const removeAccount = async (accountId: string) => {
     const isToDelete = [(formattedData.find(item => item.account.id === accountId))?.account.id];
 
-    await api.delete('/api/v1/admin/ditto/zap_splits/', { data: isToDelete });
+    await api.delete('/api/v1/admin/ditto/zap_splits/', { json: isToDelete });
     await fetchZapSplitData();
   };
 

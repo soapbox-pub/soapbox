@@ -29,10 +29,10 @@ function useEntityActions<TEntity extends Entity = Entity, Data = any>(
     useDeleteEntity(entityType, (entityId) => api.delete(endpoints.delete!.replace(/:id/g, entityId)));
 
   const { createEntity, isSubmitting: createSubmitting } =
-    useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, data), opts);
+    useCreateEntity<TEntity, Data>(path, (data) => api.post(endpoints.post!, { json: data }), opts);
 
   const { createEntity: updateEntity, isSubmitting: updateSubmitting } =
-    useCreateEntity<TEntity, Data>(path, (data) => api.patch(endpoints.patch!, data), opts);
+    useCreateEntity<TEntity, Data>(path, (data) => api.patch(endpoints.patch!, { json: data }), opts);
 
   return {
     createEntity,

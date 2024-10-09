@@ -29,7 +29,7 @@ function useSuggest() {
     const accts = accountIdsToAccts(getState(), accountIds);
     suggestEffect(accountIds, true);
     try {
-      await api.patch('/api/v1/pleroma/admin/users/suggest', { nicknames: accts });
+      await api.patch('/api/v1/pleroma/admin/users/suggest', { json: { nicknames: accts } });
       callbacks?.onSuccess?.();
     } catch (e) {
       callbacks?.onError?.(e);
@@ -41,7 +41,7 @@ function useSuggest() {
     const accts = accountIdsToAccts(getState(), accountIds);
     suggestEffect(accountIds, false);
     try {
-      await api.patch('/api/v1/pleroma/admin/users/unsuggest', { nicknames: accts });
+      await api.patch('/api/v1/pleroma/admin/users/unsuggest', { json: { nicknames: accts } });
       callbacks?.onSuccess?.();
     } catch (e) {
       callbacks?.onError?.(e);

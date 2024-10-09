@@ -1,6 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useEntity } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
+import { useApi } from 'soapbox/hooks';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig';
 import { type PatronUser, patronUserSchema } from 'soapbox/schemas';
 

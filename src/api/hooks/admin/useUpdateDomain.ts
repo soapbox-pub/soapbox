@@ -9,7 +9,7 @@ const useUpdateDomain = (id: string) => {
   const api = useApi();
 
   const { createEntity, ...rest } = useCreateEntity([Entities.DOMAINS], (params: Omit<CreateDomainParams, 'domain'>) =>
-    api.patch(`/api/v1/pleroma/admin/domains/${id}`, params), { schema: domainSchema });
+    api.patch(`/api/v1/pleroma/admin/domains/${id}`, { json: params }), { schema: domainSchema });
 
   return {
     updateDomain: createEntity,

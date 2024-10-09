@@ -187,7 +187,7 @@ function useRequestName() {
   const api = useApi();
 
   return useMutation({
-    mutationFn: (data: NameRequestData) => api.post('/api/v1/ditto/names', data),
+    mutationFn: (data: NameRequestData) => api.post('/api/v1/ditto/names', { json: data }),
   });
 }
 
@@ -197,7 +197,7 @@ function useNames() {
   return useQuery({
     queryKey: ['names', 'approved'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=true');
+      const data = await api.get('/api/v1/ditto/names?approved=true').json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],
@@ -210,7 +210,7 @@ function usePendingNames() {
   return useQuery({
     queryKey: ['names', 'pending'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=false');
+      const data = await api.get('/api/v1/ditto/names?approved=false').json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],

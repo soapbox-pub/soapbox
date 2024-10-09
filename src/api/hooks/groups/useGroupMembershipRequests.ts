@@ -1,6 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useDismissEntity, useEntities } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
+import { useApi } from 'soapbox/hooks';
 import { accountSchema } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 

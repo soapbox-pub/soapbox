@@ -1,8 +1,7 @@
 import { importEntities } from 'soapbox/entity-store/actions';
 import { Entities } from 'soapbox/entity-store/entities';
 import { useTransaction } from 'soapbox/entity-store/hooks';
-import { useAppDispatch, useLoggedIn } from 'soapbox/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
+import { useApi, useAppDispatch, useLoggedIn } from 'soapbox/hooks';
 import { relationshipSchema } from 'soapbox/schemas';
 
 interface FollowOpts {
@@ -56,8 +55,8 @@ function useFollow() {
     followEffect(accountId);
 
     try {
-      const response = await api.post(`/api/v1/accounts/${accountId}/follow`, options);
-      const result = relationshipSchema.safeParse(response.data);
+      const response = await api.post(`/api/v1/accounts/${accountId}/follow`, { json: options });
+      const result = relationshipSchema.safeParse(await response.json());
       if (result.success) {
         dispatch(importEntities([result.data], Entities.RELATIONSHIPS));
       }

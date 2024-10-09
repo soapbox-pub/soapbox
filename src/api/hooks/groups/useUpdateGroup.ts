@@ -17,7 +17,8 @@ function useUpdateGroup(groupId: string) {
   const api = useApi();
 
   const { createEntity, ...rest } = useCreateEntity([Entities.GROUPS], (params: UpdateGroupParams) => {
-    return api.put(`/api/v1/groups/${groupId}`, params, {
+    return api.put(`/api/v1/groups/${groupId}`, {
+      json: params,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

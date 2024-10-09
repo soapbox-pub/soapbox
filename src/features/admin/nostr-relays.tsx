@@ -20,7 +20,7 @@ const AdminNostrRelays: React.FC = () => {
   const [relays, setRelays] = useState<RelayData[]>(result.data ?? []);
 
   const mutation = useMutation({
-    mutationFn: async () => api.put('/api/v1/admin/ditto/relays', relays),
+    mutationFn: async () => api.put('/api/v1/admin/ditto/relays', { json: relays }),
   });
 
   const handleSubmit = () => {

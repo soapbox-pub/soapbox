@@ -6,8 +6,6 @@ import { adminAnnouncementSchema, type AdminAnnouncement } from 'soapbox/schemas
 
 import { useAnnouncements as useUserAnnouncements } from '../announcements';
 
-import type { AxiosResponse } from 'axios';
-
 interface CreateAnnouncementParams {
   content: string;
   starts_at?: string | null;
@@ -24,7 +22,7 @@ const useAnnouncements = () => {
   const userAnnouncements = useUserAnnouncements();
 
   const getAnnouncements = async () => {
-    const { data } = await api.get<AdminAnnouncement[]>('/api/v1/pleroma/admin/announcements');
+    const data = await api.get<AdminAnnouncement[]>('/api/v1/pleroma/admin/announcements').json();
 
     const normalizedData = data.map((announcement) => adminAnnouncementSchema.parse(announcement));
     return normalizedData;
@@ -40,12 +38,14 @@ const useAnnouncements = () => {
     mutate: createAnnouncement,
     isPending: isCreating,
   } = useMutation({
-    mutationFn: (params: CreateAnnouncementParams) => api.post('/api/v1/pleroma/admin/announcements', params),
+    mutationFn: (params: CreateAnnouncementParams) => api.post('/api/v1/pleroma/admin/announcements', { json: params }),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
         [...prevResult, adminAnnouncementSchema.parse(data)],
-      ),
+      );
+    },
     onSettled: () => userAnnouncements.refetch(),
   });
 
@@ -53,12 +53,14 @@ const useAnnouncements = () => {
     mutate: updateAnnouncement,
     isPending: isUpdating,
   } = useMutation({
-    mutationFn: ({ id, ...params }: UpdateAnnouncementParams) => api.patch(`/api/v1/pleroma/admin/announcements/${id}`, params),
+    mutationFn: ({ id, ...params }: UpdateAnnouncementParams) => api.patch(`/api/v1/pleroma/admin/announcements/${id}`, { json: params }),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
         prevResult.map((announcement) => announcement.id === data.id ? adminAnnouncementSchema.parse(data) : announcement),
-      ),
+      );
+    },
     onSettled: () => userAnnouncements.refetch(),
   });
 

@@ -14,7 +14,8 @@ function useUpdateBookmarkFolder(folderId: string) {
   const { createEntity, ...rest } = useCreateEntity(
     [Entities.BOOKMARK_FOLDERS],
     (params: UpdateBookmarkFolderParams) =>
-      api.patch(`/api/v1/pleroma/bookmark_folders/${folderId}`, params, {
+      api.patch(`/api/v1/pleroma/bookmark_folders/${folderId}`, {
+        json: params,
         headers: {
           'Content-Type': 'multipart/form-data',
         },

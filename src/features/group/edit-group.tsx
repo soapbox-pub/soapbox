@@ -67,10 +67,10 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
         invalidate();
         toast.success(intl.formatMessage(messages.groupSaved));
       },
-      onError(error) {
-        const message = (error.response?.data as any)?.error;
+      async onError(error) {
+        const message = (await error.response.json() as any)?.error;
 
-        if (error.response?.status === 422 && typeof message !== 'undefined') {
+        if (error.response.status === 422 && message) {
           toast.error(message);
         }
       },

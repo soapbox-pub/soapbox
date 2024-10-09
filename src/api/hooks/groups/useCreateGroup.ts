@@ -17,7 +17,8 @@ function useCreateGroup() {
   const api = useApi();
 
   const { createEntity, ...rest } = useCreateEntity([Entities.GROUPS, 'search', ''], (params: CreateGroupParams) => {
-    return api.post('/api/v1/groups', params, {
+    return api.post('/api/v1/groups', {
+      json: params,
       headers: {
         'Content-Type': 'multipart/form-data',
       },

@@ -1,5 +1,4 @@
 import type { Entity } from '../types';
-import type { AxiosResponse } from 'axios';
 import type z from 'zod';
 
 type EntitySchema<TEntity extends Entity = Entity> = z.ZodType<TEntity, z.ZodTypeDef, any>;
@@ -35,7 +34,7 @@ interface EntityCallbacks<Value, Error = unknown> {
  * Passed into hooks to make requests.
  * Must return an Axios response.
  */
-type EntityFn<T> = (value: T) => Promise<AxiosResponse>
+type EntityFn<T> = (value: T) => Promise<Response>
 
 export type {
   EntitySchema,

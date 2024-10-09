@@ -40,15 +40,15 @@ const useUpdateCredentials = () => {
   const dispatch = useAppDispatch();
 
   return useMutation({
-    mutationFn: (data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', data),
+    mutationFn: (data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', { json: data }),
     onMutate(variables) {
       const cachedAccount = account;
       dispatch(patchMeSuccess({ ...account, ...variables }));
 
       return { cachedAccount };
     },
-    onSuccess(response) {
-      dispatch(patchMeSuccess(response.data));
+    async onSuccess(response) {
+      dispatch(patchMeSuccess(await response.json()));
       toast.success('Chat Settings updated successfully');
     },
     onError(_error, _variables, context: any) {

@@ -24,7 +24,7 @@ const useAnnouncements = () => {
   const api = useApi();
 
   const getAnnouncements = async () => {
-    const { data } = await api.get<Announcement[]>('/api/v1/announcements');
+    const data = await api.get<Announcement[]>('/api/v1/announcements').json();
 
     const normalizedData = data?.map((announcement) => announcementSchema.parse(announcement));
     return normalizedData;

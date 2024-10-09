@@ -1,7 +1,7 @@
+import LinkHeader from 'http-link-header';
 import { useEffect } from 'react';
 import z from 'zod';
 
-import { getNextLink, getPrevLink } from 'soapbox/api';
 import { useApi } from 'soapbox/hooks/useApi';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector';
@@ -66,13 +66,16 @@ function useEntities<TEntity extends Entity>(
     dispatch(entitiesFetchRequest(entityType, listKey));
     try {
       const response = await req();
-      const entities = filteredArray(schema).parse(response.data);
-      const parsedCount = realNumberSchema.safeParse(response.headers['x-total-count']);
+      const json = await response.json();
+      const entities = filteredArray(schema).parse(json);
+      const parsedCount = realNumberSchema.safeParse(response.headers.get('x-total-count'));
       const totalCount = parsedCount.success ? parsedCount.data : undefined;
+      const linkHeader = response.headers.get('link');
+      const links = linkHeader ? new LinkHeader(linkHeader) : undefined;
 
       dispatch(entitiesFetchSuccess(entities, entityType, listKey, pos, {
-        next: getNextLink(response),
-        prev: getPrevLink(response),
+        next: links?.refs.find((link) => link.rel === 'next')?.uri,
+        prev: links?.refs.find((link) => link.rel === 'prev')?.uri,
         totalCount: Number(totalCount) >= entities.length ? totalCount : undefined,
         fetching: false,
         fetched: true,

@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios';
+import { HTTPError } from 'ky';
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { z } from 'zod';
@@ -70,9 +70,9 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
             setCurrentStep(Steps.THREE);
             setGroup(group);
           },
-          onError(error) {
-            if (error instanceof AxiosError) {
-              const msg = z.object({ error: z.string() }).safeParse(error.response?.data);
+          async onError(error) {
+            if (error instanceof HTTPError) {
+              const msg = z.object({ error: z.string() }).safeParse(await error.response.json());
               if (msg.success) {
                 toast.error(msg.data.error);
               }
