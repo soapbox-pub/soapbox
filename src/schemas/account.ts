@@ -110,8 +110,9 @@ const baseAccountSchema = z.object({
     nostr: z.object({
       nip05: z.string().optional().catch(undefined),
     }).optional().catch(undefined),
-    ditto: z.object({
-      captcha_solved: z.boolean().catch(true) }),
+    ditto: coerceObject({
+      captcha_solved: z.boolean().catch(true),
+    }),
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),

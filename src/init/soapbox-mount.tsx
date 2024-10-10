@@ -35,7 +35,7 @@ const SoapboxMount = () => {
 
   const soapboxConfig = useSoapboxConfig();
 
-  const showCaptcha = account && !account?.source?.ditto.captcha_solved;
+  const showCaptcha = account && account?.source?.ditto.captcha_solved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
 
