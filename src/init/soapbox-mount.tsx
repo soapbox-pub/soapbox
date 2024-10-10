@@ -35,11 +35,18 @@ const SoapboxMount = () => {
 
   const soapboxConfig = useSoapboxConfig();
 
+  const showCaptcha = account && !account?.source?.ditto.captcha_solved;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
+
+  if (showCaptcha) {
+    dispatch(openModal('CAPTCHA'));
+  }
+
   if (showOnboarding) {
     dispatch(openModal('ONBOARDING_FLOW'));
   }
+  
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol

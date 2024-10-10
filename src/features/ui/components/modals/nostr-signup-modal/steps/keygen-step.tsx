@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
 import { logInNostr } from 'soapbox/actions/nostr';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import CopyableInput from 'soapbox/components/copyable-input';
@@ -72,7 +71,6 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
       dispatch(closeSidebar());
     }
 
-    await dispatch(openModal('CAPTCHA'));
   };
 
   return (

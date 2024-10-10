@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals';
-import { startOnboarding } from 'soapbox/actions/onboarding';
 import { useApi, useAppDispatch, useInstance } from 'soapbox/hooks';
 import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha';
 import toast from 'soapbox/toast';
@@ -73,7 +72,6 @@ const useCaptcha = () => {
 
           dispatch(closeModal('CAPTCHA'));
           toast.success(messages.sucessMessage);
-          dispatch(startOnboarding());
         });
       } catch (e) {
         setTryAgain(true);
