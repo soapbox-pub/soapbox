@@ -1,10 +1,10 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import useCaptcha from 'soapbox/api/hooks/captcha/useCaptcha';
 import { Button, Spinner, Stack, Text } from 'soapbox/components/ui';
 
-import { PuzzleCaptcha } from './puzzle';
-import useCaptcha from './useCaptcha';
+import { PuzzleCaptcha } from './components/puzzle';
 
 const Captcha: React.FC = () => {
   const {

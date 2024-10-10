@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { cancelReplyCompose } from 'soapbox/actions/compose';
 import { cancelEventCompose } from 'soapbox/actions/events';
 import { openModal, closeModal } from 'soapbox/actions/modals';
+import { startOnboarding } from 'soapbox/actions/onboarding';
 import { useAppDispatch, usePrevious } from 'soapbox/hooks';
 
 import type { ModalType } from 'soapbox/features/ui/components/modal-root';
@@ -111,6 +112,9 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
         }));
       } else if ((hasComposeContent || hasEventComposeContent) && type === 'CONFIRM') {
         dispatch(closeModal('CONFIRM'));
+      } else if (type === 'CAPTCHA') {
+        dispatch(startOnboarding());
+        onClose();
       } else {
         onClose();
       }

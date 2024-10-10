@@ -5,12 +5,14 @@ import { FormattedMessage } from 'react-intl';
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import { logInNostr } from 'soapbox/actions/nostr';
+import { closeSidebar } from 'soapbox/actions/sidebar';
 import CopyableInput from 'soapbox/components/copyable-input';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
 
@@ -21,6 +23,7 @@ interface IKeygenStep {
 const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const instance = useInstance();
   const dispatch = useAppDispatch();
+  const isMobile = useIsMobile();
   const { relay } = useNostr();
 
   const secretKey = useMemo(() => generateSecretKey(), []);
@@ -64,6 +67,11 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     await dispatch(logInNostr(pubkey));
 
     onClose();
+
+    if (isMobile) {
+      dispatch(closeSidebar());
+    }
+
     await dispatch(openModal('CAPTCHA'));
   };
 
