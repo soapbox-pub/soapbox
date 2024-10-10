@@ -46,6 +46,7 @@ import {
   ZapSplitModal,
   ZapInvoiceModal,
   ZapsModal,
+  CaptchaModal,
 } from 'soapbox/features/ui/util/async-components';
 
 import ModalLoading from './modal-loading';
@@ -56,6 +57,7 @@ const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
   'ACTIONS': ActionsModal,
   'BIRTHDAYS': BirthdaysModal,
   'BOOST': BoostModal,
+  'CAPTCHA': CaptchaModal,
   'COMPARE_HISTORY': CompareHistoryModal,
   'COMPONENT': ComponentModal,
   'COMPOSE': ComposeModal,
