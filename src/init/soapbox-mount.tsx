@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
@@ -39,9 +39,11 @@ const SoapboxMount = () => {
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
 
-  if (showCaptcha) {
-    dispatch(openModal('CAPTCHA'));
-  }
+  useEffect(() => {
+    if (showCaptcha) {
+      dispatch(openModal('CAPTCHA'));
+    }
+  }, [showCaptcha]);
 
   if (showOnboarding) {
     dispatch(openModal('ONBOARDING_FLOW'));
