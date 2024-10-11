@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
@@ -35,11 +35,20 @@ const SoapboxMount = () => {
 
   const soapboxConfig = useSoapboxConfig();
 
+  const showCaptcha = account && account?.source?.ditto.captcha_solved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
+
+  useEffect(() => {
+    if (showCaptcha) {
+      dispatch(openModal('CAPTCHA'));
+    }
+  }, [showCaptcha]);
+
   if (showOnboarding) {
     dispatch(openModal('ONBOARDING_FLOW'));
   }
+  
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
   // @ts-ignore: I don't actually know what these should be, lol
