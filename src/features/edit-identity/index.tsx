@@ -197,7 +197,8 @@ function useNames() {
   return useQuery({
     queryKey: ['names', 'approved'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=true');
+      const response = await api.get('/api/v1/ditto/names?approved=true');
+      const data = await response.json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],
@@ -210,7 +211,8 @@ function usePendingNames() {
   return useQuery({
     queryKey: ['names', 'pending'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=false');
+      const response = await api.get('/api/v1/ditto/names?approved=false');
+      const data = await response.json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],

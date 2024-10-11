@@ -2,8 +2,8 @@ import { useInfiniteQuery, useMutation, keepPreviousData } from '@tanstack/react
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccounts } from 'soapbox/actions/importer';
-import { getLinks } from 'soapbox/api';
 import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { getPagination } from 'soapbox/utils/pagination';
 
 import { PaginatedResult, removePageItem } from '../utils/queries';
 
@@ -32,18 +32,19 @@ const useSuggestions = () => {
 
   const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v2/suggestions';
-    const response = await api.get<Suggestion[]>(endpoint);
-    const hasMore = !!response.headers.link;
-    const nextLink = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
+    const response = await api.get(endpoint);
+    const { next } = getPagination(response);
+    const hasMore = !!next;
 
-    const accounts = response.data.map(({ account }) => account);
+    const data: Suggestion[] = await response.json();
+    const accounts = data.map(({ account }) => account);
     const accountIds = accounts.map((account) => account.id);
     dispatch(importFetchedAccounts(accounts));
     dispatch(fetchRelationships(accountIds));
 
     return {
-      result: response.data.map(x => ({ ...x, account: x.account.id })),
-      link: nextLink,
+      result: data.map(x => ({ ...x, account: x.account.id })),
+      link: next,
       hasMore,
     };
   };
@@ -90,18 +91,19 @@ function useOnboardingSuggestions() {
 
   const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[]; link: string | undefined; hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
-    const response = await api.get<Suggestion[]>(link);
-    const hasMore = !!response.headers.link;
-    const nextLink = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
+    const response = await api.get(link);
+    const { next } = getPagination(response);
+    const hasMore = !!next;
 
-    const accounts = response.data.map(({ account }) => account);
+    const data: Suggestion[] = await response.json();
+    const accounts = data.map(({ account }) => account);
     const accountIds = accounts.map((account) => account.id);
     dispatch(importFetchedAccounts(accounts));
     dispatch(fetchRelationships(accountIds));
 
     return {
-      data: response.data,
-      link: nextLink,
+      data: data,
+      link: next,
       hasMore,
     };
   };

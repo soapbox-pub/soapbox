@@ -4,8 +4,6 @@ import { useApi } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { domainSchema, type Domain } from 'soapbox/schemas';
 
-import type { AxiosResponse } from 'axios';
-
 interface CreateDomainParams {
   domain: string;
   public: boolean;
@@ -20,7 +18,8 @@ const useDomains = () => {
   const api = useApi();
 
   const getDomains = async () => {
-    const { data } = await api.get<Domain[]>('/api/v1/pleroma/admin/domains');
+    const response = await api.get('/api/v1/pleroma/admin/domains');
+    const data: Domain[] = await response.json();
 
     const normalizedData = data.map((domain) => domainSchema.parse(domain));
     return normalizedData;
@@ -38,10 +37,12 @@ const useDomains = () => {
   } = useMutation({
     mutationFn: (params: CreateDomainParams) => api.post('/api/v1/pleroma/admin/domains', params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'domains'], (prevResult: ReadonlyArray<Domain>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'domains'], (prevResult: ReadonlyArray<Domain>) =>
         [...prevResult, domainSchema.parse(data)],
-      ),
+      );
+    },
   });
 
   const {
@@ -50,10 +51,12 @@ const useDomains = () => {
   } = useMutation({
     mutationFn: ({ id, ...params }: UpdateDomainParams) => api.patch(`/api/v1/pleroma/admin/domains/${id}`, params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'domains'], (prevResult: ReadonlyArray<Domain>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'domains'], (prevResult: ReadonlyArray<Domain>) =>
         prevResult.map((domain) => domain.id === data.id ? domainSchema.parse(data) : domain),
-      ),
+      );
+    },
   });
 
   const {

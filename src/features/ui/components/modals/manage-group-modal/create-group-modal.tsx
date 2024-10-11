@@ -1,8 +1,8 @@
-import { AxiosError } from 'axios';
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks';
 import { Modal, Stack } from 'soapbox/components/ui';
 import { useDebounce } from 'soapbox/hooks';
@@ -70,11 +70,15 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
             setCurrentStep(Steps.THREE);
             setGroup(group);
           },
-          onError(error) {
-            if (error instanceof AxiosError) {
-              const msg = z.object({ error: z.string() }).safeParse(error.response?.data);
-              if (msg.success) {
-                toast.error(msg.data.error);
+          async onError(error) {
+            if (error instanceof HTTPError) {
+              try {
+                const data = await error.response.json();
+                const msg = z.object({ error: z.string() }).parse(data);
+                toast.error(msg.error);
+
+              } catch {
+                // Do nothing
               }
             }
           },

@@ -6,8 +6,6 @@ import { adminAnnouncementSchema, type AdminAnnouncement } from 'soapbox/schemas
 
 import { useAnnouncements as useUserAnnouncements } from '../announcements';
 
-import type { AxiosResponse } from 'axios';
-
 interface CreateAnnouncementParams {
   content: string;
   starts_at?: string | null;
@@ -24,7 +22,8 @@ const useAnnouncements = () => {
   const userAnnouncements = useUserAnnouncements();
 
   const getAnnouncements = async () => {
-    const { data } = await api.get<AdminAnnouncement[]>('/api/v1/pleroma/admin/announcements');
+    const response = await api.get('/api/v1/pleroma/admin/announcements');
+    const data: AdminAnnouncement[] = await response.json();
 
     const normalizedData = data.map((announcement) => adminAnnouncementSchema.parse(announcement));
     return normalizedData;
@@ -42,10 +41,12 @@ const useAnnouncements = () => {
   } = useMutation({
     mutationFn: (params: CreateAnnouncementParams) => api.post('/api/v1/pleroma/admin/announcements', params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
         [...prevResult, adminAnnouncementSchema.parse(data)],
-      ),
+      );
+    },
     onSettled: () => userAnnouncements.refetch(),
   });
 
@@ -55,10 +56,12 @@ const useAnnouncements = () => {
   } = useMutation({
     mutationFn: ({ id, ...params }: UpdateAnnouncementParams) => api.patch(`/api/v1/pleroma/admin/announcements/${id}`, params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'announcements'], (prevResult: ReadonlyArray<AdminAnnouncement>) =>
         prevResult.map((announcement) => announcement.id === data.id ? adminAnnouncementSchema.parse(data) : announcement),
-      ),
+      );
+    },
     onSettled: () => userAnnouncements.refetch(),
   });
 

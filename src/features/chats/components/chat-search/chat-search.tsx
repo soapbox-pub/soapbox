@@ -49,11 +49,13 @@ const ChatSearch = (props: IChatSearch) => {
       const data = error.response?.data as any;
       toast.error(data?.error);
     },
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
+      const data = await response.json();
+
       if (isMainPage) {
-        history.push(`/chats/${response.data.id}`);
+        history.push(`/chats/${data.id}`);
       } else {
-        changeScreen(ChatWidgetScreens.CHAT, response.data.id);
+        changeScreen(ChatWidgetScreens.CHAT, data.id);
       }
 
       queryClient.invalidateQueries({ queryKey: ChatKeys.chatSearch() });

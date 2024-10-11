@@ -1,7 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities';
 import { useBatchedEntities } from 'soapbox/entity-store/hooks/useBatchedEntities';
-import { useLoggedIn } from 'soapbox/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
+import { useApi, useLoggedIn } from 'soapbox/hooks';
 import { type Relationship, relationshipSchema } from 'soapbox/schemas';
 
 function useRelationships(listKey: string[], ids: string[]) {

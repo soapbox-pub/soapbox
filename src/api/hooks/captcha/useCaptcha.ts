@@ -35,14 +35,11 @@ const useCaptcha = () => {
     try {
       const topI = getRandomNumber(0, (356 - 61));
       const leftI = getRandomNumber(0, (330 - 61));
-      const { data } = await api.get('/api/v1/ditto/captcha');
-      if (data) {
-        const normalizedData = captchaSchema.parse(data);
-        setCaptcha(normalizedData);
-        setYPosition(topI);
-        setXPosition(leftI);
-      }
-
+      const response = await api.get('/api/v1/ditto/captcha');
+      const data = captchaSchema.parse(await response.json());
+      setCaptcha(data);
+      setYPosition(topI);
+      setXPosition(leftI);
     } catch (error) {
       toast.error('Error loading captcha:');
     }

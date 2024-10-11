@@ -46,7 +46,7 @@ function useVerify() {
     const accts = accountIdsToAccts(getState(), accountIds);
     verifyEffect(accountIds, false);
     try {
-      await api.delete('/api/v1/pleroma/admin/users/tag', { data: { nicknames: accts, tags: ['verified'] } });
+      await api.request('DELETE', '/api/v1/pleroma/admin/users/tag', { nicknames: accts, tags: ['verified'] });
       callbacks?.onSuccess?.();
     } catch (e) {
       callbacks?.onError?.(e);

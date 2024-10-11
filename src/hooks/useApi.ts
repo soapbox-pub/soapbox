@@ -1,9 +1,12 @@
-import api from 'soapbox/api';
+import { MastodonClient } from 'soapbox/api/MastodonClient';
 
-import { useGetState } from './useGetState';
+import { useAppSelector } from './useAppSelector';
+import { useOwnAccount } from './useOwnAccount';
 
-/** Use stateful Axios client with auth from Redux. */
-export const useApi = () => {
-  const getState = useGetState();
-  return api(getState);
-};
+export function useApi(): MastodonClient {
+  const { account } = useOwnAccount();
+  const accessToken = useAppSelector((state) => account ? state.auth.users.get(account.url)?.access_token : undefined);
+  const baseUrl = account ? new URL(account.url).origin : location.origin;
+
+  return new MastodonClient(baseUrl, accessToken);
+}

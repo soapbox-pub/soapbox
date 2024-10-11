@@ -11,7 +11,7 @@ function usePendingGroups() {
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, account?.id!, 'pending'],
     () => api.get('/api/v1/groups', {
-      params: {
+      searchParams: {
         pending: true,
       },
     }),

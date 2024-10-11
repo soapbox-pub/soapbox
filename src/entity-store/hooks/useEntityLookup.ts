@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector';
 import { useLoading } from 'soapbox/hooks/useLoading';
@@ -36,7 +36,8 @@ function useEntityLookup<TEntity extends Entity>(
   const fetchEntity = async () => {
     try {
       const response = await setPromise(entityFn());
-      const entity = schema.parse(response.data);
+      const json = await response.json();
+      const entity = schema.parse(json);
       setFetchedEntity(entity);
       dispatch(importEntities([entity], entityType));
     } catch (e) {
@@ -57,8 +58,8 @@ function useEntityLookup<TEntity extends Entity>(
     fetchEntity,
     isFetching,
     isLoading,
-    isUnauthorized: error instanceof AxiosError && error.response?.status === 401,
-    isForbidden: error instanceof AxiosError && error.response?.status === 403,
+    isUnauthorized: error instanceof HTTPError && error.response.status === 401,
+    isForbidden: error instanceof HTTPError && error.response.status === 403,
   };
 }
 
