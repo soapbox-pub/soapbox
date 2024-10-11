@@ -27,7 +27,7 @@ const messages = defineMessages({
 /** EditIdentity component. */
 const EditIdentity: React.FC<IEditIdentity> = () => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
   const { mutate, isPending } = useRequestName();
@@ -162,7 +162,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
 const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   return (
     <Input

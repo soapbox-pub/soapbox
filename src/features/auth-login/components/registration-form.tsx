@@ -42,7 +42,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
 
   const { locale } = useSettings();
   const features = useFeatures();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const needsConfirmation = instance.pleroma.metadata.account_activation_required;
   const needsApproval = instance.registrations.approval_required;

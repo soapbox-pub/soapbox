@@ -29,7 +29,7 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
   const intl = useIntl();
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { isOpen } = useRegistrationStatus();
 
   const username = useAppSelector(state => selectAccount(state, accountId!)?.display_name);

@@ -19,7 +19,7 @@ interface NostrProviderProps {
 }
 
 export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const hasNostr = !!instance.nostr;
 
   const [relay, setRelay] = useState<NRelay1>();

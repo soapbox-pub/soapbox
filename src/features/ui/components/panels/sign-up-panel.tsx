@@ -6,7 +6,7 @@ import { Button, Stack, Text } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
 
 const SignUpPanel = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { nostrSignup } = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);

@@ -31,7 +31,7 @@ interface IEditGroup {
 
 const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const { group, isLoading } = useGroup(groupId);
   const { updateGroup } = useUpdateGroup(groupId);

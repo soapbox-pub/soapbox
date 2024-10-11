@@ -22,7 +22,7 @@ interface IBirthdayInput {
 const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) => {
   const intl = useIntl();
   const features = useFeatures();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const supportsBirthdays = features.birthdays;
   const minAge = instance.pleroma.metadata.birthday_min_age;

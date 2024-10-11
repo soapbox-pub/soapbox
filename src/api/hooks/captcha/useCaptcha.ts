@@ -22,7 +22,7 @@ function getRandomNumber(min: number, max: number): number {
 
 const useCaptcha = () => {
   const api = useApi();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const [captcha, setCaptcha] = useState<CaptchaData>();
