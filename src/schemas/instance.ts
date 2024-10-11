@@ -305,5 +305,6 @@ const instanceSchema = z.preprocess((data: any) => {
 }));
 
 type Instance = z.infer<typeof instanceSchema>;
+type InstanceV1 = z.infer<typeof instanceV1Schema>;
 
-export { instanceSchema, Instance };
+export { instanceSchema, Instance, instanceV1Schema, InstanceV1 };

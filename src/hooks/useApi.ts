@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { MastodonClient } from 'soapbox/api/MastodonClient';
 
 import { useAppSelector } from './useAppSelector';
@@ -8,5 +10,7 @@ export function useApi(): MastodonClient {
   const accessToken = useAppSelector((state) => account ? state.auth.users.get(account.url)?.access_token : undefined);
   const baseUrl = account ? new URL(account.url).origin : location.origin;
 
-  return new MastodonClient(baseUrl, accessToken);
+  return useMemo(() => {
+    return new MastodonClient(baseUrl, accessToken);
+  }, [baseUrl, accessToken]);
 }
