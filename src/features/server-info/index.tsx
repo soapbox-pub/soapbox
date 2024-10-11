@@ -13,7 +13,7 @@ const messages = defineMessages({
 
 const ServerInfo = () => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>

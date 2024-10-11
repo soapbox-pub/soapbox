@@ -12,7 +12,7 @@ const messages = defineMessages({
 
 const CryptoDonate: React.FC = (): JSX.Element => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const [explanationBoxExpanded, toggleExplanationBox] = useState(true);
 

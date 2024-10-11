@@ -110,7 +110,7 @@ interface IPollForm {
 const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const { configuration } = useInstance();
+  const { instance } = useInstance();
 
   const compose = useCompose(composeId);
 
@@ -121,7 +121,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
   const {
     max_options: maxOptions,
     max_characters_per_option: maxOptionChars,
-  } = configuration.polls;
+  } = instance.configuration.polls;
 
   const onRemoveOption = (index: number) => dispatch(removePollOption(composeId, index));
   const onChangeOption = (index: number, title: string) => dispatch(changePollOption(composeId, index, title));

@@ -15,7 +15,7 @@ import { SiteBanner } from './components/site-banner';
 
 const LandingTimeline = () => {
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const theme = useTheme();
   const isMobile = useIsMobile();
 

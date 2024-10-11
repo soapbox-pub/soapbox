@@ -20,7 +20,7 @@ interface IKeygenStep {
 }
 
 const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const dispatch = useAppDispatch();
   const isMobile = useIsMobile();
   const { relay } = useNostr();

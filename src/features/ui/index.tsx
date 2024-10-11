@@ -157,7 +157,7 @@ interface ISwitchingColumnsArea {
 }
 
 const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const features = useFeatures();
   const { search } = useLocation();
   const { isLoggedIn } = useLoggedIn();

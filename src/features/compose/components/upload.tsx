@@ -15,7 +15,8 @@ interface IUploadCompose {
 
 const UploadCompose: React.FC<IUploadCompose> = ({ composeId, id, onSubmit, onDragStart, onDragEnter, onDragEnd }) => {
   const dispatch = useAppDispatch();
-  const { pleroma: { metadata: { description_limit: descriptionLimit } } } = useInstance();
+  const { instance } = useInstance();
+  const { pleroma: { metadata: { description_limit: descriptionLimit } } } = instance;
 
   const media = useCompose(composeId).media_attachments.find(item => item.id === id)!;
 
