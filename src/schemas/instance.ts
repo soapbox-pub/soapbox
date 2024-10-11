@@ -208,6 +208,8 @@ const instanceV2Schema = coerceObject({
   domain: z.string().catch(''),
   icon: filteredArray(instanceIconSchema),
   languages: filteredArray(z.string()),
+  nostr: nostrSchema.optional().catch(undefined),
+  pleroma: pleromaSchema,
   registrations: registrationsSchema,
   rules: filteredArray(ruleSchema),
   source_url: z.string().url().optional().catch(undefined),
@@ -229,6 +231,8 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
     domain: v1.uri,
     icon: [],
     languages: v1.languages,
+    nostr: v1.nostr,
+    pleroma: v1.pleroma,
     registrations: {
       approval_required: v1.approval_required,
       enabled: v1.registrations,
