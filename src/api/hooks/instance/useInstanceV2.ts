@@ -3,7 +3,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useApi } from 'soapbox/hooks';
 import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance';
 
-interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retry' | 'retryOnMount'> {
+interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retry' | 'retryOnMount' | 'staleTime'> {
   /** The base URL of the instance. */
   baseUrl?: string;
 }

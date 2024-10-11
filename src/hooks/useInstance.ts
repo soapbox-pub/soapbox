@@ -8,14 +8,14 @@ import { instanceV2Schema, upgradeInstance } from 'soapbox/schemas/instance';
 
 import { useAppDispatch } from './useAppDispatch';
 
-interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retryOnMount'> {
+interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retryOnMount' | 'staleTime'> {
   /** The base URL of the instance. */
   baseUrl?: string;
 }
 
 /** Get the Instance for the current backend. */
 export function useInstance(opts: Opts = {}) {
-  const { baseUrl, retryOnMount = false } = opts;
+  const { baseUrl, retryOnMount = false, staleTime = Infinity } = opts;
 
   function retry(failureCount: number, error: Error): boolean {
     if (error instanceof HTTPError && error.response.status === 404) {
@@ -25,8 +25,8 @@ export function useInstance(opts: Opts = {}) {
     }
   }
 
-  const v2 = useInstanceV2({ baseUrl, retry, retryOnMount });
-  const v1 = useInstanceV1({ baseUrl, retry, retryOnMount, enabled: v2.isError });
+  const v2 = useInstanceV2({ baseUrl, retry, retryOnMount, staleTime });
+  const v1 = useInstanceV1({ baseUrl, retry, retryOnMount, staleTime, enabled: v2.isError });
 
   const instance = useMemo(() => {
     if (v2.instance) {
