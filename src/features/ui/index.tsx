@@ -35,7 +35,6 @@ import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
 import { getVapidKey } from 'soapbox/utils/auth';
-import { isStandalone } from 'soapbox/utils/state';
 
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
@@ -157,11 +156,10 @@ interface ISwitchingColumnsArea {
 }
 
 const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => {
-  const { instance } = useInstance();
+  const { instance, isNotFound } = useInstance();
   const features = useFeatures();
   const { search } = useLocation();
   const { isLoggedIn } = useLoggedIn();
-  const standalone = useAppSelector(isStandalone);
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
   const hasCrypto = cryptoAddresses.size > 0;
@@ -173,7 +171,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
   // Ex: use /login instead of /auth, but redirect /auth to /login
   return (
     <Switch>
-      {standalone && <Redirect from='/' to='/login/external' exact />}
+      {isNotFound && <Redirect from='/' to='/login/external' exact />}
 
       <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
@@ -388,11 +386,11 @@ const UI: React.FC<IUI> = ({ children }) => {
   const node = useRef<HTMLDivElement | null>(null);
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
+  const instance = useInstance();
   const features = useFeatures();
   const vapidKey = useAppSelector(state => getVapidKey(state));
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.isOpen);
-  const standalone = useAppSelector(isStandalone);
 
   const { isDragging } = useDraggedFiles(node);
 
@@ -503,7 +501,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
           <Layout>
             <Layout.Sidebar>
-              {!standalone && <SidebarNavigation />}
+              {instance.isSuccess && <SidebarNavigation />}
             </Layout.Sidebar>
 
             <SwitchingColumnsArea>

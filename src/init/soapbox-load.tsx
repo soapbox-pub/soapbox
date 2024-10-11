@@ -68,14 +68,14 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    if (instance.isSuccess) {
+    if (!instance.isLoading) {
       dispatch(loadInitial()).then(() => {
         setIsLoaded(true);
       }).catch(() => {
         setIsLoaded(true);
       });
     }
-  }, [instance.isSuccess]);
+  }, [instance.isLoading]);
 
   // intl is part of loading.
   // It's important nothing in here depends on intl.
