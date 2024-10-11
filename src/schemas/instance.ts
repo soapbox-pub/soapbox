@@ -30,13 +30,17 @@ const fixVersion = (version: string) => {
 };
 
 const configurationSchema = coerceObject({
+  accounts: coerceObject({
+    max_featured_tags: z.number().optional().catch(undefined),
+    max_pinned_statuses: z.number().optional().catch(undefined),
+  }),
   chats: coerceObject({
-    max_characters: z.number().catch(5000),
-    max_media_attachments: z.number().catch(1),
+    max_characters: z.number().catch(Infinity),
+    max_media_attachments: z.number().catch(Infinity),
   }),
   groups: coerceObject({
-    max_characters_description: z.number().catch(160),
-    max_characters_name: z.number().catch(50),
+    max_characters_description: z.number().catch(Infinity),
+    max_characters_name: z.number().catch(Infinity),
   }),
   media_attachments: coerceObject({
     image_matrix_limit: z.number().optional().catch(undefined),
@@ -68,11 +72,14 @@ const configurationSchema = coerceObject({
   urls: coerceObject({
     streaming: z.string().url().optional().catch(undefined),
   }),
+  vapid: coerceObject({
+    public_key: z.string().optional().catch(undefined),
+  }),
 });
 
 const contactSchema = coerceObject({
   contact_account: accountSchema.optional().catch(undefined),
-  email: z.string().email().catch(''),
+  email: z.string().email().optional().catch(undefined),
 });
 
 const nostrSchema = coerceObject({
@@ -145,7 +152,7 @@ const pleromaPollLimitsSchema = coerceObject({
   min_expiration: z.number().optional().catch(undefined),
 });
 
-const registrations = coerceObject({
+const registrationsSchema = coerceObject({
   approval_required: z.boolean().catch(false),
   enabled: z.boolean().catch(false),
   message: z.string().optional().catch(undefined),
@@ -158,7 +165,17 @@ const statsSchema = coerceObject({
 });
 
 const thumbnailSchema = coerceObject({
-  url: z.string().catch(''),
+  blurhash: z.string().optional().catch(undefined),
+  url: z.string().url().optional().catch(undefined),
+  versions: coerceObject({
+    '@1x': z.string().url().optional().catch(undefined),
+    '@2x': z.string().url().optional().catch(undefined),
+  }),
+});
+
+const instanceIconSchema = coerceObject({
+  size: z.string().optional().catch(undefined),
+  src: z.string().url().optional().catch(undefined),
 });
 
 const usageSchema = coerceObject({
@@ -192,6 +209,23 @@ const instanceV1Schema = coerceObject({
   urls: coerceObject({
     streaming_api: z.string().url().optional().catch(undefined),
   }),
+  usage: usageSchema,
+  version: z.string().catch('0.0.0'),
+});
+
+const instanceV2Schema = coerceObject({
+  api_versions: z.record(z.string(), z.number()).catch({}),
+  configuration: configurationSchema,
+  contact: contactSchema,
+  description: z.string().catch(''),
+  domain: z.string().catch(''),
+  icon: filteredArray(instanceIconSchema),
+  languages: filteredArray(z.string()),
+  registrations: registrationsSchema,
+  rules: filteredArray(ruleSchema),
+  source_url: z.string().url().optional().catch(undefined),
+  thumbnail: thumbnailSchema,
+  title: z.string().catch(''),
   usage: usageSchema,
   version: z.string().catch('0.0.0'),
 });
@@ -269,7 +303,7 @@ const instanceSchema = z.preprocess((data: any) => {
   languages: z.string().array().catch([]),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
-  registrations: registrations,
+  registrations: registrationsSchema,
   rules: filteredArray(ruleSchema),
   stats: statsSchema,
   thumbnail: thumbnailSchema,
@@ -306,5 +340,6 @@ const instanceSchema = z.preprocess((data: any) => {
 
 type Instance = z.infer<typeof instanceSchema>;
 type InstanceV1 = z.infer<typeof instanceV1Schema>;
+type InstanceV2 = z.infer<typeof instanceV2Schema>;
 
-export { instanceSchema, Instance, instanceV1Schema, InstanceV1 };
+export { instanceSchema, Instance, instanceV1Schema, InstanceV1, instanceV2Schema, InstanceV2 };
