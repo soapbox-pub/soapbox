@@ -23,7 +23,7 @@ const Directory = () => {
   const dispatch = useAppDispatch();
   const { search } = useLocation();
   const params = new URLSearchParams(search);
-  const instance = useInstance();
+  const { instance } = useInstance();
   const features = useFeatures();
 
   const accountIds = useAppSelector((state) => state.user_lists.directory.items);

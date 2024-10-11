@@ -9,7 +9,7 @@ import { getTextDirection } from 'soapbox/utils/rtl';
 import { LogoText } from './logo-text';
 
 const SiteBanner: React.FC = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const description = DOMPurify.sanitize(instance.description);
 
   return (

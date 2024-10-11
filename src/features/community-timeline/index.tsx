@@ -13,7 +13,7 @@ import Timeline from '../ui/components/timeline';
 const CommunityTimeline = () => {
   const dispatch = useAppDispatch();
   const theme = useTheme();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const settings = useSettings();
   const onlyMedia = settings.community.other.onlyMedia;

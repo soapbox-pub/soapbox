@@ -46,7 +46,7 @@ const Settings = () => {
   const mfa = useAppSelector((state) => state.security.get('mfa'));
   const features = useFeatures();
   const { account } = useOwnAccount();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const settingsNotifications = useSettingsNotifications();
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);

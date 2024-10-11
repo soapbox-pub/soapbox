@@ -24,7 +24,7 @@ interface IDetailsStep {
 const DetailsStep: React.FC<IDetailsStep> = ({ params, onChange }) => {
   const intl = useIntl();
   const debounce = useDebounce;
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const {
     display_name: displayName = '',

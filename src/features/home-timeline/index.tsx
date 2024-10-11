@@ -17,7 +17,7 @@ const HomeTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const theme = useTheme();
 
   const polling = useRef<NodeJS.Timeout | null>(null);

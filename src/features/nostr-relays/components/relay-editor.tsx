@@ -38,7 +38,7 @@ interface RelayData {
 }
 
 const RelayField: StreamfieldComponent<RelayData> = ({ value, onChange }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const handleChange = (key: string): React.ChangeEventHandler<HTMLInputElement> => {
     return e => {

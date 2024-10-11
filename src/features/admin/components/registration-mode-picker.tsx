@@ -36,7 +36,7 @@ const modeFromInstance = ({ registrations }: Instance): RegistrationMode => {
 const RegistrationModePicker: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const mode = modeFromInstance(instance);
 

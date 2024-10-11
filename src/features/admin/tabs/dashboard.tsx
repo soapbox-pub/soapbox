@@ -14,7 +14,7 @@ import RegistrationModePicker from '../components/registration-mode-picker';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const features = useFeatures();
   const { account } = useOwnAccount();
 

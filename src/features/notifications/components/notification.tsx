@@ -198,7 +198,7 @@ const Notification: React.FC<INotification> = (props) => {
 
   const history = useHistory();
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const type = notification.type;
   const { account, status } = notification;

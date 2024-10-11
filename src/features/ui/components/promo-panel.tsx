@@ -5,7 +5,7 @@ import { Widget, Stack, Text } from 'soapbox/components/ui';
 import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';
 
 const PromoPanel: React.FC = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { promoPanel } = useSoapboxConfig();
   const { locale } = useSettings();
 

@@ -27,7 +27,7 @@ const PublicTimeline = () => {
 
   const [language, setLanguage] = useState<string>(localStorage.getItem('soapbox:global:language') || '');
 
-  const instance = useInstance();
+  const { instance } = useInstance();
   const settings = useSettings();
   const onlyMedia = settings.public.other.onlyMedia;
   const next = useAppSelector(state => state.timelines.get('public')?.next);

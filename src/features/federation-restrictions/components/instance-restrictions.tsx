@@ -34,7 +34,7 @@ interface IInstanceRestrictions {
 }
 
 const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const renderRestrictions = () => {
     const items = [];

@@ -6,7 +6,7 @@ import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 /** Prompts logged-out users to log in when viewing a thread. */
 const ThreadLoginCta: React.FC = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { displayCta } = useSoapboxConfig();
 
   if (!displayCta) return null;
