@@ -1,16 +1,12 @@
 /* eslint sort-keys: "error" */
 import z from 'zod';
 
-import { PLEROMA, parseVersion } from 'soapbox/utils/features';
-
 import { accountSchema } from './account';
 import { mrfSimpleSchema } from './pleroma';
 import { ruleSchema } from './rule';
 import { coerceObject, filteredArray, mimeSchema } from './utils';
 
-const getAttachmentLimit = (software: string | null) => software === PLEROMA ? Infinity : 4;
-
-const fixVersion = (version: string) => {
+const versionSchema = z.string().catch('0.0.0').transform((version) => {
   // Handle Mastodon release candidates
   if (new RegExp(/[0-9.]+rc[0-9]+/g).test(version)) {
     version = version.split('rc').join('-rc');
@@ -27,7 +23,7 @@ const fixVersion = (version: string) => {
   }
 
   return version;
-};
+});
 
 const configurationSchema = coerceObject({
   accounts: coerceObject({
@@ -78,7 +74,7 @@ const configurationSchema = coerceObject({
 });
 
 const contactSchema = coerceObject({
-  contact_account: accountSchema.optional().catch(undefined),
+  account: accountSchema.optional().catch(undefined),
   email: z.string().email().optional().catch(undefined),
 });
 
@@ -145,13 +141,6 @@ const pleromaSchema = coerceObject({
   vapid_public_key: z.string().catch(''),
 });
 
-const pleromaPollLimitsSchema = coerceObject({
-  max_expiration: z.number().optional().catch(undefined),
-  max_option_chars: z.number().optional().catch(undefined),
-  max_options: z.number().optional().catch(undefined),
-  min_expiration: z.number().optional().catch(undefined),
-});
-
 const registrationsSchema = coerceObject({
   approval_required: z.boolean().catch(false),
   enabled: z.boolean().catch(false),
@@ -180,7 +169,7 @@ const instanceIconSchema = coerceObject({
 
 const usageSchema = coerceObject({
   users: coerceObject({
-    active_month: z.number().catch(0),
+    active_month: z.number().optional().catch(undefined),
   }),
 });
 
@@ -193,12 +182,11 @@ const instanceV1Schema = coerceObject({
   email: z.string().email().catch(''),
   feature_quote: z.boolean().catch(false),
   fedibird_capabilities: z.array(z.string()).catch([]),
-  languages: z.string().array().catch([]),
+  languages: filteredArray(z.string()),
   max_media_attachments: z.number().optional().catch(undefined),
   max_toot_chars: z.number().optional().catch(undefined),
   nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
-  poll_limits: pleromaPollLimitsSchema,
   registrations: z.boolean().catch(false),
   rules: filteredArray(ruleSchema),
   short_description: z.string().catch(''),
@@ -209,8 +197,7 @@ const instanceV1Schema = coerceObject({
   urls: coerceObject({
     streaming_api: z.string().url().optional().catch(undefined),
   }),
-  usage: usageSchema,
-  version: z.string().catch('0.0.0'),
+  version: versionSchema,
 });
 
 const instanceV2Schema = coerceObject({
@@ -227,119 +214,41 @@ const instanceV2Schema = coerceObject({
   thumbnail: thumbnailSchema,
   title: z.string().catch(''),
   usage: usageSchema,
-  version: z.string().catch('0.0.0'),
+  version: versionSchema,
 });
 
-const instanceSchema = z.preprocess((data: any) => {
-  if (data.domain) return data;
-
-  const {
-    approval_required,
-    configuration,
-    contact_account,
-    description,
-    description_limit,
-    email,
-    max_media_attachments,
-    max_toot_chars,
-    poll_limits,
-    pleroma,
-    registrations,
-    short_description,
-    thumbnail,
-    uri,
-    urls,
-    ...instance
-  } = instanceV1Schema.parse(data);
-
-  const { software } = parseVersion(instance.version);
-
+function upgradeInstance(v1: InstanceV1): InstanceV2 {
   return {
-    ...instance,
-    configuration: {
-      ...configuration,
-      polls: {
-        ...configuration.polls,
-        max_characters_per_option: configuration.polls.max_characters_per_option ?? poll_limits.max_option_chars ?? 25,
-        max_expiration: configuration.polls.max_expiration ?? poll_limits.max_expiration ?? 2629746,
-        max_options: configuration.polls.max_options ?? poll_limits.max_options ?? 4,
-        min_expiration: configuration.polls.min_expiration ?? poll_limits.min_expiration ?? 300,
-      },
-      statuses: {
-        ...configuration.statuses,
-        max_characters: configuration.statuses.max_characters ?? max_toot_chars ?? 500,
-        max_media_attachments: configuration.statuses.max_media_attachments ?? max_media_attachments ?? getAttachmentLimit(software),
-      },
-      urls: {
-        streaming: urls.streaming_api,
-      },
-    },
+    api_versions: {},
+    configuration: v1.configuration,
     contact: {
-      account: contact_account,
-      email: email,
+      account: v1.contact_account,
+      email: v1.email,
     },
-    description: short_description || description,
-    domain: uri,
-    pleroma: {
-      ...pleroma,
-      metadata: {
-        ...pleroma.metadata,
-        description_limit,
+    description: v1.short_description,
+    domain: v1.uri,
+    icon: [],
+    languages: v1.languages,
+    registrations: {
+      approval_required: v1.approval_required,
+      enabled: v1.registrations,
+    },
+    rules: v1.rules,
+    thumbnail: {
+      url: v1.thumbnail,
+      versions: {
+        '@1x': v1.thumbnail,
       },
     },
-    registrations: {
-      approval_required: approval_required,
-      enabled: registrations,
+    title: v1.title,
+    usage: {
+      users: {},
     },
-    thumbnail: { url: thumbnail },
+    version: v1.version,
   };
-}, coerceObject({
-  configuration: configurationSchema,
-  contact: contactSchema,
-  description: z.string().catch(''),
-  domain: z.string().catch(''),
-  feature_quote: z.boolean().catch(false),
-  fedibird_capabilities: z.array(z.string()).catch([]),
-  languages: z.string().array().catch([]),
-  nostr: nostrSchema.optional().catch(undefined),
-  pleroma: pleromaSchema,
-  registrations: registrationsSchema,
-  rules: filteredArray(ruleSchema),
-  stats: statsSchema,
-  thumbnail: thumbnailSchema,
-  title: z.string().catch(''),
-  usage: usageSchema,
-  version: z.string().catch('0.0.0'),
-}).transform(({ configuration, ...instance }) => {
-  const version = fixVersion(instance.version);
+}
 
-  const polls = {
-    ...configuration.polls,
-    max_characters_per_option: configuration.polls.max_characters_per_option ?? 25,
-    max_expiration: configuration.polls.max_expiration ?? 2629746,
-    max_options: configuration.polls.max_options ?? 4,
-    min_expiration: configuration.polls.min_expiration ?? 300,
-  };
-
-  const statuses = {
-    ...configuration.statuses,
-    max_characters: configuration.statuses.max_characters ?? 500,
-    max_media_attachments: configuration.statuses.max_media_attachments ?? 4,
-  };
-
-  return {
-    ...instance,
-    configuration: {
-      ...configuration,
-      polls,
-      statuses,
-    },
-    version,
-  };
-}));
-
-type Instance = z.infer<typeof instanceSchema>;
 type InstanceV1 = z.infer<typeof instanceV1Schema>;
 type InstanceV2 = z.infer<typeof instanceV2Schema>;
 
-export { instanceSchema, Instance, instanceV1Schema, InstanceV1, instanceV2Schema, InstanceV2 };
+export { instanceV1Schema, InstanceV1, instanceV2Schema, InstanceV2, upgradeInstance };
