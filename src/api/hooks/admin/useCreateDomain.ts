@@ -11,8 +11,11 @@ interface CreateDomainParams {
 const useCreateDomain = () => {
   const api = useApi();
 
-  const { createEntity, ...rest } = useCreateEntity([Entities.DOMAINS], (params: CreateDomainParams) =>
-    api.post('/api/v1/pleroma/admin/domains', { json: params }), { schema: domainSchema });
+  const { createEntity, ...rest } = useCreateEntity(
+    [Entities.DOMAINS],
+    (params: CreateDomainParams) => api.post('/api/v1/pleroma/admin/domains', params),
+    { schema: domainSchema },
+  );
 
   return {
     createDomain: createEntity,

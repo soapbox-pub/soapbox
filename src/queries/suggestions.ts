@@ -32,11 +32,11 @@ const useSuggestions = () => {
 
   const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v2/suggestions';
-    const response = await api.get<Suggestion[]>(endpoint);
+    const response = await api.get(endpoint);
     const { next } = getPagination(response);
     const hasMore = !!next;
 
-    const data = await response.json();
+    const data: Suggestion[] = await response.json();
     const accounts = data.map(({ account }) => account);
     const accountIds = accounts.map((account) => account.id);
     dispatch(importFetchedAccounts(accounts));
@@ -91,11 +91,11 @@ function useOnboardingSuggestions() {
 
   const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[]; link: string | undefined; hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
-    const response = await api.get<Suggestion[]>(link);
+    const response = await api.get(link);
     const { next } = getPagination(response);
     const hasMore = !!next;
 
-    const data = await response.json();
+    const data: Suggestion[] = await response.json();
     const accounts = data.map(({ account }) => account);
     const accountIds = accounts.map((account) => account.id);
     dispatch(importFetchedAccounts(accounts));

@@ -55,7 +55,7 @@ function useFollow() {
     followEffect(accountId);
 
     try {
-      const response = await api.post(`/api/v1/accounts/${accountId}/follow`, { json: options });
+      const response = await api.post(`/api/v1/accounts/${accountId}/follow`, options);
       const result = relationshipSchema.safeParse(await response.json());
       if (result.success) {
         dispatch(importEntities([result.data], Entities.RELATIONSHIPS));

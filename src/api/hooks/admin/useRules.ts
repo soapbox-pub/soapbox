@@ -21,7 +21,8 @@ const useRules = () => {
   const api = useApi();
 
   const getRules = async () => {
-    const data = await api.get<AdminRule[]>('/api/v1/pleroma/admin/rules').json();
+    const response = await api.get('/api/v1/pleroma/admin/rules');
+    const data: AdminRule[] = await response.json();
 
     const normalizedData = data.map((rule) => adminRuleSchema.parse(rule));
     return normalizedData;
@@ -37,7 +38,7 @@ const useRules = () => {
     mutate: createRule,
     isPending: isCreating,
   } = useMutation({
-    mutationFn: (params: CreateRuleParams) => api.post('/api/v1/pleroma/admin/rules', { json: params }),
+    mutationFn: (params: CreateRuleParams) => api.post('/api/v1/pleroma/admin/rules', params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();
@@ -51,7 +52,7 @@ const useRules = () => {
     mutate: updateRule,
     isPending: isUpdating,
   } = useMutation({
-    mutationFn: ({ id, ...params }: UpdateRuleParams) => api.patch(`/api/v1/pleroma/admin/rules/${id}`, { json: params }),
+    mutationFn: ({ id, ...params }: UpdateRuleParams) => api.patch(`/api/v1/pleroma/admin/rules/${id}`, params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();

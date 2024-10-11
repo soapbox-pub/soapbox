@@ -1,6 +1,6 @@
-import { HTTPError } from 'ky';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 import { useLoading } from 'soapbox/hooks/useLoading';
 

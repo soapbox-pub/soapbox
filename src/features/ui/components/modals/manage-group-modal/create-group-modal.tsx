@@ -1,8 +1,8 @@
-import { HTTPError } from 'ky';
 import React, { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks';
 import { Modal, Stack } from 'soapbox/components/ui';
 import { useDebounce } from 'soapbox/hooks';
@@ -72,9 +72,13 @@ const CreateGroupModal: React.FC<ICreateGroupModal> = ({ onClose }) => {
           },
           async onError(error) {
             if (error instanceof HTTPError) {
-              const msg = z.object({ error: z.string() }).safeParse(await error.response.json());
-              if (msg.success) {
-                toast.error(msg.data.error);
+              try {
+                const data = await error.response.json();
+                const msg = z.object({ error: z.string() }).parse(data);
+                toast.error(msg.error);
+
+              } catch {
+                // Do nothing
               }
             }
           },

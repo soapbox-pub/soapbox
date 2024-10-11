@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { HTTPError } from 'ky';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useApi } from 'soapbox/hooks/useApi';
 import { useFeatures } from 'soapbox/hooks/useFeatures';
 
@@ -19,9 +19,8 @@ function useGroupValidation(name: string = '') {
 
   const getValidation = async () => {
     try {
-      return api.get<Validation>('/api/v1/groups/validate', {
-        searchParams: { name },
-      }).json();
+      const response = await api.get('/api/v1/groups/validate', { searchParams: { name } });
+      return response.json();
     } catch (e) {
       if (e instanceof HTTPError && e.response.status === 422) {
         return e.response.json();

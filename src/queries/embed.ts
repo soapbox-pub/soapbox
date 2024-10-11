@@ -22,7 +22,8 @@ export default function useEmbed(url: string) {
   const api = useApi();
 
   const getEmbed = async (): Promise<Embed> => {
-    return api.get<Embed>('/api/oembed', { searchParams: { url } }).json();
+    const response = await api.get('/api/oembed', { searchParams: { url } });
+    return response.json();
   };
 
   return useQuery<Embed>({

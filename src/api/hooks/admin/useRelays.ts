@@ -8,9 +8,10 @@ const useRelays = () => {
   const api = useApi();
 
   const getRelays = async () => {
-    const data = await api.get<{ relays: Relay[] }>('/api/v1/pleroma/admin/relay').json();
+    const response = await api.get('/api/v1/pleroma/admin/relay');
+    const relays: Relay[] = await response.json();
 
-    const normalizedData = data.relays?.map((relay) => relaySchema.parse(relay));
+    const normalizedData = relays?.map((relay) => relaySchema.parse(relay));
     return normalizedData;
   };
 
@@ -24,7 +25,7 @@ const useRelays = () => {
     mutate: followRelay,
     isPending: isPendingFollow,
   } = useMutation({
-    mutationFn: (relayUrl: string) => api.post('/api/v1/pleroma/admin/relays', { json: { relay_url: relayUrl } }),
+    mutationFn: (relayUrl: string) => api.post('/api/v1/pleroma/admin/relays', { relay_url: relayUrl }),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();
@@ -38,9 +39,9 @@ const useRelays = () => {
     mutate: unfollowRelay,
     isPending: isPendingUnfollow,
   } = useMutation({
-    mutationFn: (relayUrl: string) => api.delete('/api/v1/pleroma/admin/relays', {
-      json: { relay_url: relayUrl },
-    }),
+    mutationFn: async (relayUrl: string) => {
+      await api.request('DELETE', '/api/v1/pleroma/admin/relays', { relay_url: relayUrl });
+    },
     retry: false,
     onSuccess: (_, relayUrl) =>
       queryClient.setQueryData(['admin', 'relays'], (prevResult: ReadonlyArray<Relay>) =>

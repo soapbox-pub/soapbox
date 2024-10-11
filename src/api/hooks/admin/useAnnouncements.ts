@@ -22,7 +22,8 @@ const useAnnouncements = () => {
   const userAnnouncements = useUserAnnouncements();
 
   const getAnnouncements = async () => {
-    const data = await api.get<AdminAnnouncement[]>('/api/v1/pleroma/admin/announcements').json();
+    const response = await api.get('/api/v1/pleroma/admin/announcements');
+    const data: AdminAnnouncement[] = await response.json();
 
     const normalizedData = data.map((announcement) => adminAnnouncementSchema.parse(announcement));
     return normalizedData;
@@ -38,7 +39,7 @@ const useAnnouncements = () => {
     mutate: createAnnouncement,
     isPending: isCreating,
   } = useMutation({
-    mutationFn: (params: CreateAnnouncementParams) => api.post('/api/v1/pleroma/admin/announcements', { json: params }),
+    mutationFn: (params: CreateAnnouncementParams) => api.post('/api/v1/pleroma/admin/announcements', params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();
@@ -53,7 +54,7 @@ const useAnnouncements = () => {
     mutate: updateAnnouncement,
     isPending: isUpdating,
   } = useMutation({
-    mutationFn: ({ id, ...params }: UpdateAnnouncementParams) => api.patch(`/api/v1/pleroma/admin/announcements/${id}`, { json: params }),
+    mutationFn: ({ id, ...params }: UpdateAnnouncementParams) => api.patch(`/api/v1/pleroma/admin/announcements/${id}`, params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();

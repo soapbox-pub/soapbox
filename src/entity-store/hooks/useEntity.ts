@@ -1,7 +1,7 @@
-import { HTTPError } from 'ky';
 import { useEffect, useState } from 'react';
 import z from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector';
 import { useLoading } from 'soapbox/hooks/useLoading';
@@ -68,8 +68,8 @@ function useEntity<TEntity extends Entity>(
     isLoading,
     isLoaded,
     error,
-    isUnauthorized: error instanceof HTTPError && error.response?.status === 401,
-    isForbidden: error instanceof HTTPError && error.response?.status === 403,
+    isUnauthorized: error instanceof HTTPError && error.response.status === 401,
+    isForbidden: error instanceof HTTPError && error.response.status === 403,
   };
 }
 

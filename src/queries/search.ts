@@ -12,13 +12,11 @@ export default function useAccountSearch(q: string) {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || '/api/v1/accounts/search';
 
-    const response = await api.get<Account[]>(uri, {
-      json: {
-        params: {
-          q,
-          limit: 10,
-          followers: true,
-        },
+    const response = await api.get(uri, {
+      searchParams: {
+        q,
+        limit: 10,
+        followers: true,
       },
     });
     const data = await response.json();

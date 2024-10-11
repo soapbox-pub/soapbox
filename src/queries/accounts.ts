@@ -40,7 +40,7 @@ const useUpdateCredentials = () => {
   const dispatch = useAppDispatch();
 
   return useMutation({
-    mutationFn: (data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', { json: data }),
+    mutationFn: (data: UpdateCredentialsData) => api.patch('/api/v1/accounts/update_credentials', data),
     onMutate(variables) {
       const cachedAccount = account;
       dispatch(patchMeSuccess({ ...account, ...variables }));

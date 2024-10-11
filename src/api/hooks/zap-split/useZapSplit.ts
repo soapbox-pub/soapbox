@@ -30,13 +30,12 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
   const [zapArrays, setZapArrays] = useState<ZapSplitData[]>([]);
   const [zapSplitData, setZapSplitData] = useState<{splitAmount: number; receiveAmount: number; splitValues: SplitValue[]}>({ splitAmount: Number(), receiveAmount: Number(), splitValues: [] });
 
-  const fetchZapSplit = (id: string) => {
-    return api.get<ZapSplitData[]>(`/api/v1/ditto/${id}/zap_splits`);
-  };
+  const fetchZapSplit = (id: string) => api.get(`/api/v1/ditto/${id}/zap_splits`);
 
   const loadZapSplitData = async () => {
     if (status) {
-      const data = await fetchZapSplit(status.id).json();
+      const response = await fetchZapSplit(status.id);
+      const data: ZapSplitData[] = await response.json();
       if (data) {
         const normalizedData = data.map((dataSplit) => baseZapAccountSchema.parse(dataSplit));
         setZapArrays(normalizedData);

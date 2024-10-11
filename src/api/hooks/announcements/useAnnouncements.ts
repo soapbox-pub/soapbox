@@ -24,7 +24,8 @@ const useAnnouncements = () => {
   const api = useApi();
 
   const getAnnouncements = async () => {
-    const data = await api.get<Announcement[]>('/api/v1/announcements').json();
+    const response = await api.get('/api/v1/announcements');
+    const data: Announcement[] = await response.json();
 
     const normalizedData = data?.map((announcement) => announcementSchema.parse(announcement));
     return normalizedData;
@@ -39,8 +40,10 @@ const useAnnouncements = () => {
   const {
     mutate: addReaction,
   } = useMutation({
-    mutationFn: ({ announcementId, name }: { announcementId: string; name: string }) =>
-      api.put<Announcement>(`/api/v1/announcements/${announcementId}/reactions/${name}`),
+    mutationFn: async ({ announcementId, name }: { announcementId: string; name: string }): Promise<Announcement> => {
+      const response = await api.put(`/api/v1/announcements/${announcementId}/reactions/${name}`);
+      return response.json();
+    },
     retry: false,
     onMutate: ({ announcementId: id, name }) => {
       queryClient.setQueryData(['announcements'], (prevResult: Announcement[]) =>
@@ -63,8 +66,10 @@ const useAnnouncements = () => {
   const {
     mutate: removeReaction,
   } = useMutation({
-    mutationFn: ({ announcementId, name }: { announcementId: string; name: string }) =>
-      api.delete<Announcement>(`/api/v1/announcements/${announcementId}/reactions/${name}`),
+    mutationFn: async ({ announcementId, name }: { announcementId: string; name: string }): Promise<Announcement> => {
+      const response = await api.delete(`/api/v1/announcements/${announcementId}/reactions/${name}`);
+      return response.json();
+    },
     retry: false,
     onMutate: ({ announcementId: id, name }) => {
       queryClient.setQueryData(['announcements'], (prevResult: Announcement[]) =>

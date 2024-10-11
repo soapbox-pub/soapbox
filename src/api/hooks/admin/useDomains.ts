@@ -18,7 +18,8 @@ const useDomains = () => {
   const api = useApi();
 
   const getDomains = async () => {
-    const data = await api.get<Domain[]>('/api/v1/pleroma/admin/domains').json();
+    const response = await api.get('/api/v1/pleroma/admin/domains');
+    const data: Domain[] = await response.json();
 
     const normalizedData = data.map((domain) => domainSchema.parse(domain));
     return normalizedData;
@@ -34,7 +35,7 @@ const useDomains = () => {
     mutate: createDomain,
     isPending: isCreating,
   } = useMutation({
-    mutationFn: (params: CreateDomainParams) => api.post('/api/v1/pleroma/admin/domains', { json: params }),
+    mutationFn: (params: CreateDomainParams) => api.post('/api/v1/pleroma/admin/domains', params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();
@@ -48,7 +49,7 @@ const useDomains = () => {
     mutate: updateDomain,
     isPending: isUpdating,
   } = useMutation({
-    mutationFn: ({ id, ...params }: UpdateDomainParams) => api.patch(`/api/v1/pleroma/admin/domains/${id}`, { json: params }),
+    mutationFn: ({ id, ...params }: UpdateDomainParams) => api.patch(`/api/v1/pleroma/admin/domains/${id}`, params),
     retry: false,
     onSuccess: async (response: Response) => {
       const data = await response.json();
