@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 interface IPuzzleCaptcha {
   bg: string;
@@ -31,14 +31,25 @@ export const PuzzleCaptcha: React.FC<IPuzzleCaptcha> = ({ bg, puzzle, position, 
     onChange(newPosition);
   };
 
-  const handleTouchMove = (event: React.TouchEvent<HTMLImageElement>) => {
-    const touch = event.touches[0];
-    const dropArea = ref.current?.getBoundingClientRect();
-    if (!dropArea) return;
+  useEffect(() => {
+    const imgElement = ref.current;
 
-    const newPosition = calculateNewPosition(touch.clientX, touch.clientY, 61, 61, dropArea);
-    onChange(newPosition);
-  };
+    const touchMoveHandler = (event: TouchEvent) => {
+      event.preventDefault();
+      const touch = event.touches[0];
+      const dropArea = imgElement?.getBoundingClientRect();
+      if (!dropArea) return;
+
+      const newPosition = calculateNewPosition(touch.clientX, touch.clientY, 61, 61, dropArea);
+      onChange(newPosition);
+    };
+
+    imgElement?.addEventListener('touchmove', touchMoveHandler, { passive: false });
+
+    return () => {
+      imgElement?.removeEventListener('touchmove', touchMoveHandler);
+    };
+  }, [onChange]);
 
   return (
     <div id='drop-area' ref={ref} className='relative'>
@@ -49,7 +60,6 @@ export const PuzzleCaptcha: React.FC<IPuzzleCaptcha> = ({ bg, puzzle, position, 
         onPointerDown={(e) => e.currentTarget.setPointerCapture(e.pointerId)}
         onPointerMove={handlePointerMove}
         onPointerUp={(e) => e.currentTarget.releasePointerCapture(e.pointerId)}
-        onTouchMove={handleTouchMove}
         style={{
           filter: 'drop-shadow(2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 -2px 0 #fff)',
           left: position.x,
