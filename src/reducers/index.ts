@@ -1,7 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
-import * as BuildConfig from 'soapbox/build-config';
 import entities from 'soapbox/entity-store/reducer';
 
 import accounts_meta from './accounts-meta';
@@ -119,29 +117,4 @@ const reducers = {
   user_lists,
 };
 
-const appReducer = combineReducers(reducers);
-
-type AppState = ReturnType<typeof appReducer>;
-
-// Clear the state (mostly) when the user logs out
-const logOut = (state: AppState): ReturnType<typeof appReducer> => {
-  if (BuildConfig.NODE_ENV === 'production') {
-    location.href = '/login';
-  }
-
-  const newState = rootReducer(undefined, { type: '' });
-
-  const { instance, soapbox, custom_emojis, auth } = state;
-  return { ...newState, instance, soapbox, custom_emojis, auth };
-};
-
-const rootReducer: typeof appReducer = (state, action) => {
-  switch (action.type) {
-    case AUTH_LOGGED_OUT:
-      return appReducer(logOut(state as AppState), action);
-    default:
-      return appReducer(state, action);
-  }
-};
-
-export default appReducer;
+export default combineReducers(reducers);

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { instanceSchema } from 'soapbox/schemas';
+import { instanceV1Schema, instanceV2Schema } from 'soapbox/schemas/instance';
 import { RootState } from 'soapbox/store';
 import { getAuthUserUrl, getMeUrl } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
@@ -28,7 +28,7 @@ export const fetchInstance = createAsyncThunk<InstanceData, InstanceData['host']
   async(host, { dispatch, getState, rejectWithValue }) => {
     try {
       const { data } = await api(getState).get('/api/v1/instance');
-      const instance = instanceSchema.parse(data);
+      const instance = instanceV1Schema.parse(data);
       const features = getFeatures(instance);
 
       if (features.instanceV2) {
@@ -46,7 +46,8 @@ export const fetchInstanceV2 = createAsyncThunk<InstanceData, InstanceData['host
   'instanceV2/fetch',
   async(host, { getState, rejectWithValue }) => {
     try {
-      const { data: instance } = await api(getState).get('/api/v2/instance');
+      const { data } = await api(getState).get('/api/v2/instance');
+      const instance = instanceV2Schema.parse(data);
       return { instance, host };
     } catch (e) {
       return rejectWithValue(e);

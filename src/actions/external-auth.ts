@@ -9,10 +9,9 @@
 import { createApp } from 'soapbox/actions/apps';
 import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { instanceSchema, type Instance } from 'soapbox/schemas';
+import { InstanceV1, instanceV1Schema } from 'soapbox/schemas/instance';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
-import { getQuirks } from 'soapbox/utils/quirks';
 import { getInstanceScopes } from 'soapbox/utils/scopes';
 
 import { baseClient } from '../api';
@@ -22,36 +21,33 @@ import type { AppDispatch, RootState } from 'soapbox/store';
 const fetchExternalInstance = (baseURL?: string) => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => instanceSchema.parse(instance))
+    .then(({ data: instance }) => instanceV1Schema.parse(instance))
     .catch(error => {
       if (error.response?.status === 401) {
         // Authenticated fetch is enabled.
         // Continue with a limited featureset.
-        return instanceSchema.parse({});
+        return instanceV1Schema.parse({});
       } else {
         throw error;
       }
     });
 };
 
-const createExternalApp = (instance: Instance, baseURL?: string) =>
+const createExternalApp = (instance: InstanceV1, baseURL?: string) =>
   (dispatch: AppDispatch, _getState: () => RootState) => {
-    // Mitra: skip creating the auth app
-    if (getQuirks(instance).noApps) return new Promise(f => f({}));
-
     const params = {
       client_name: sourceCode.displayName,
       redirect_uris: `${window.location.origin}/login/external`,
       website: sourceCode.homepage,
-      scopes: getInstanceScopes(instance),
+      scopes: getInstanceScopes(instance.version),
     };
 
     return dispatch(createApp(params, baseURL));
   };
 
-const externalAuthorize = (instance: Instance, baseURL: string) =>
+const externalAuthorize = (instance: InstanceV1, baseURL: string) =>
   (dispatch: AppDispatch, _getState: () => RootState) => {
-    const scopes = getInstanceScopes(instance);
+    const scopes = getInstanceScopes(instance.version);
 
     return dispatch(createExternalApp(instance, baseURL)).then((app) => {
       const { client_id, redirect_uri } = app as Record<string, string>;

@@ -4,7 +4,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { updateConfig } from 'soapbox/actions/admin';
 import { RadioGroup, RadioItem } from 'soapbox/components/radio';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import { Instance } from 'soapbox/schemas';
+import { InstanceV2 } from 'soapbox/schemas/instance';
 import toast from 'soapbox/toast';
 
 type RegistrationMode = 'open' | 'approval' | 'closed';
@@ -27,7 +27,7 @@ const generateConfig = (mode: RegistrationMode) => {
   }];
 };
 
-const modeFromInstance = ({ registrations }: Instance): RegistrationMode => {
+const modeFromInstance = ({ registrations }: InstanceV2): RegistrationMode => {
   if (registrations.approval_required && registrations.enabled) return 'approval';
   return registrations.enabled ? 'open' : 'closed';
 };

@@ -15,10 +15,9 @@ import {
   type GroupTag,
   type Relationship,
   type Status,
-  Instance,
-  instanceSchema,
 } from 'soapbox/schemas';
 import { GroupRoles } from 'soapbox/schemas/group-member';
+import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance';
 
 import type { PartialDeep } from 'type-fest';
 
@@ -71,8 +70,8 @@ function buildGroupMember(
   }, props));
 }
 
-function buildInstance(props: PartialDeep<Instance> = {}) {
-  return instanceSchema.parse(props);
+function buildInstance(props: PartialDeep<InstanceV2> = {}) {
+  return instanceV2Schema.parse(props);
 }
 
 function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship {
