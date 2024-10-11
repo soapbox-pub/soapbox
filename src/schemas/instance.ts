@@ -27,8 +27,8 @@ const versionSchema = z.string().catch('0.0.0').transform((version) => {
 
 const configurationSchema = coerceObject({
   accounts: coerceObject({
-    max_featured_tags: z.number().optional().catch(undefined),
-    max_pinned_statuses: z.number().optional().catch(undefined),
+    max_featured_tags: z.number().catch(Infinity),
+    max_pinned_statuses: z.number().catch(Infinity),
   }),
   chats: coerceObject({
     max_characters: z.number().catch(Infinity),
@@ -48,18 +48,18 @@ const configurationSchema = coerceObject({
     video_size_limit: z.number().optional().catch(undefined),
   }),
   polls: coerceObject({
-    max_characters_per_option: z.number().optional().catch(undefined),
-    max_expiration: z.number().optional().catch(undefined),
-    max_options: z.number().optional().catch(undefined),
-    min_expiration: z.number().optional().catch(undefined),
+    max_characters_per_option: z.number().catch(Infinity),
+    max_expiration: z.number().catch(Infinity),
+    max_options: z.number().catch(Infinity),
+    min_expiration: z.number().catch(Infinity),
   }),
   reactions: coerceObject({
     max_reactions: z.number().catch(0),
   }),
   statuses: coerceObject({
     characters_reserved_per_url: z.number().optional().catch(undefined),
-    max_characters: z.number().optional().catch(undefined),
-    max_media_attachments: z.number().optional().catch(undefined),
+    max_characters: z.number().catch(Infinity),
+    max_media_attachments: z.number().catch(Infinity),
 
   }),
   translation: coerceObject({

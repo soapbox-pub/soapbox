@@ -3,7 +3,7 @@ import React from 'react';
 
 import { buildAccount } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { instanceSchema } from 'soapbox/schemas';
+import { instanceV1Schema } from 'soapbox/schemas/instance';
 
 import Discover from './discover';
 
@@ -32,9 +32,8 @@ const store: any = {
       },
     }),
   },
-  instance: instanceSchema.parse({
+  instance: instanceV1Schema.parse({
     version: '3.4.1 (compatible; TruthSocial 1.0.0)',
-    software: 'TRUTHSOCIAL',
   }),
 };
 

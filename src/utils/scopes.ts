@@ -1,15 +1,14 @@
 
 import { PLEROMA, parseVersion } from './features';
 
-import type { Instance } from 'soapbox/schemas';
 import type { RootState } from 'soapbox/store';
 
 /**
  * Get the OAuth scopes to use for login & signup.
  * Mastodon will refuse scopes it doesn't know, so care is needed.
  */
-const getInstanceScopes = (instance: Instance) => {
-  const v = parseVersion(instance.version);
+const getInstanceScopes = (version: string) => {
+  const v = parseVersion(version);
 
   switch (v.software) {
     case PLEROMA:
@@ -20,7 +19,7 @@ const getInstanceScopes = (instance: Instance) => {
 };
 
 /** Convenience function to get scopes from instance in store. */
-const getScopes = (state: RootState) => getInstanceScopes(state.instance);
+const getScopes = (state: RootState) => getInstanceScopes(state.instance.version);
 
 export {
   getInstanceScopes,

@@ -3,7 +3,7 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { type Instance, instanceSchema } from 'soapbox/schemas';
+import { InstanceV1, instanceV1Schema, InstanceV2, instanceV2Schema, upgradeInstance } from 'soapbox/schemas/instance';
 import KVStore from 'soapbox/storage/kv-store';
 import { ConfigDB } from 'soapbox/utils/config-db';
 
@@ -13,22 +13,20 @@ import {
 } from '../actions/instance';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
 
-const initialState: Instance = instanceSchema.parse({});
+const initialState: InstanceV2 = instanceV2Schema.parse({});
 
-const importInstance = (_state: Instance, instance: APIEntity): Instance => {
-  return instanceSchema.parse(instance);
+const importInstanceV1 = (_state: InstanceV2, instance: InstanceV1): InstanceV2 => {
+  return upgradeInstance(instanceV1Schema.parse(instance));
 };
 
-const importInstanceV2 = (state: Instance, data: APIEntity): Instance => {
-  const instance = instanceSchema.parse(data);
-  return { ...instance, stats: state.stats };
+const importInstanceV2 = (_state: InstanceV2, data: InstanceV2): InstanceV2 => {
+  return instanceV2Schema.parse(data);
 };
 
-const preloadImport = (state: Instance, action: Record<string, any>, path: string) => {
+const preloadImport = (state: InstanceV2, action: Record<string, any>, path: string) => {
   const instance = action.data[path];
-  return instance ? importInstance(state, instance) : state;
+  return instance ? importInstanceV1(state, instance) : state;
 };
 
 const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) => {
@@ -38,7 +36,7 @@ const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) 
   return v ? v.getIn(['tuple', 1]) : undefined;
 };
 
-const importConfigs = (state: Instance, configs: ImmutableList<any>) => {
+const importConfigs = (state: InstanceV2, configs: ImmutableList<any>) => {
   // FIXME: This is pretty hacked together. Need to make a cleaner map.
   const config = ConfigDB.find(configs, ':pleroma', ':instance');
   const simplePolicy = ConfigDB.toSimplePolicy(configs);
@@ -63,7 +61,7 @@ const importConfigs = (state: Instance, configs: ImmutableList<any>) => {
   });
 };
 
-const handleAuthFetch = (state: Instance) => {
+const handleAuthFetch = (state: InstanceV1 | InstanceV2) => {
   // Authenticated fetch is enabled, so make the instance appear censored
   return {
     ...state,
@@ -97,7 +95,7 @@ const persistInstanceV2 = ({ instance }: { instance: { domain: string } }, host:
   }
 };
 
-const handleInstanceFetchFail = (state: Instance, error: Record<string, any>) => {
+const handleInstanceFetchFail = (state: InstanceV2, error: Record<string, any>) => {
   if (error.response?.status === 401) {
     return handleAuthFetch(state);
   } else {
@@ -111,7 +109,7 @@ export default function instance(state = initialState, action: AnyAction) {
       return preloadImport(state, action, '/api/v1/instance');
     case fetchInstance.fulfilled.type:
       persistInstance(action.payload);
-      return importInstance(state, action.payload.instance);
+      return importInstanceV1(state, action.payload.instance);
     case fetchInstanceV2.fulfilled.type:
       persistInstanceV2(action.payload);
       return importInstanceV2(state, action.payload.instance);
