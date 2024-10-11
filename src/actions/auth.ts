@@ -200,7 +200,7 @@ export const logIn = (username: string, password: string) =>
 export const deleteSession = () =>
   (dispatch: AppDispatch, getState: () => RootState) => api(getState).delete('/api/sign_out');
 
-export const logOut = (refresh?: boolean) =>
+export const logOut = (refresh = true) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
@@ -227,7 +227,7 @@ export const logOut = (refresh?: boolean) =>
         localStorage.removeItem('soapbox:external:baseurl');
         localStorage.removeItem('soapbox:external:scopes');
 
-        dispatch({ type: AUTH_LOGGED_OUT, account, standalone: refresh });
+        dispatch({ type: AUTH_LOGGED_OUT, account, refresh });
 
         toast.success(messages.loggedOut);
       });

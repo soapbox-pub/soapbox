@@ -378,10 +378,10 @@ const userSwitched = (oldState: State, state: State) => {
 };
 
 const maybeReload = (oldState: State, state: State, action: AnyAction) => {
-  const loggedOutStandalone = action.type === AUTH_LOGGED_OUT && action.standalone;
+  const shouldRefresh = action.type === AUTH_LOGGED_OUT && action.refresh;
   const switched = userSwitched(oldState, state);
 
-  if (switched || loggedOutStandalone) {
+  if (switched || shouldRefresh) {
     reload();
   }
 };
