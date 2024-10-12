@@ -17,16 +17,8 @@ interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retryOnMount'
 export function useInstance(opts: Opts = {}) {
   const { baseUrl, retryOnMount = false, staleTime = Infinity } = opts;
 
-  function retry(failureCount: number, error: Error): boolean {
-    if (error instanceof HTTPError && error.response.status === 404) {
-      return false;
-    } else {
-      return failureCount < 3;
-    }
-  }
-
-  const v2 = useInstanceV2({ baseUrl, retry, retryOnMount, staleTime });
-  const v1 = useInstanceV1({ baseUrl, retry, retryOnMount, staleTime, enabled: v2.isError });
+  const v2 = useInstanceV2({ baseUrl, retryOnMount, staleTime });
+  const v1 = useInstanceV1({ baseUrl, retryOnMount, staleTime, enabled: v2.isError });
 
   const instance = useMemo(() => {
     if (v2.instance) {
