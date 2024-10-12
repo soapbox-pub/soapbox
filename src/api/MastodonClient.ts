@@ -84,7 +84,7 @@ export class MastodonClient {
     const response = await this.fetch(request);
 
     if (!response.ok) {
-      throw new HTTPError(response);
+      throw new HTTPError(response, request);
     }
 
     return response;
