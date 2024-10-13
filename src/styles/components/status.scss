@@ -1,5 +1,7 @@
 .status {
   @apply min-h-[54px] cursor-default;
+  opacity: 1;
+  animation: fade 150ms linear;
 
   @supports (-ms-overflow-style: -ms-autohiding-scrollbar) {
     // Add margin to avoid Edge auto-hiding scrollbar appearing over content.
@@ -11,8 +13,6 @@
     0% { opacity: 0; }
     100% { opacity: 1; }
   }
-  opacity: 1;
-  animation: fade 150ms linear;
 }
 
 [column-type='filled'] .status__wrapper,
