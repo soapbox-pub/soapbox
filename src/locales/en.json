@@ -1240,7 +1240,7 @@
   "onboarding.bio.hint": "Max 500 characters",
   "onboarding.bio.placeholder": "Tell the world a little about yourself…",
   "onboarding.display_identity.fields.reason_placeholder": "Why do you want to be part of the {siteTitle} community?",
-  "onboarding.display_identity.help_text": "This identifier is a unique username that represents you on the platform. It is automatically generated based on the site, ensuring that you have a distinct identity to interact with other users. This username can be used to personalize your experience and facilitate communication within the community.",
+  "onboarding.display_identity.help_text": "This identifier is a unique username that represents you on the platform. This username can be used to personalize your experience and facilitate communication within the community.",
   "onboarding.display_identity.label": "Identity",
   "onboarding.display_identity.request": "Username requested",
   "onboarding.display_identity.subtitle": "You can always edit this later.",

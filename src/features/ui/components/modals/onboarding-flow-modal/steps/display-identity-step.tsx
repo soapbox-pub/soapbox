@@ -14,7 +14,7 @@ const messages = defineMessages({
   title: { id: 'onboarding.display_identity.title', defaultMessage: 'Choose an Identity' },
   subtitle: { id: 'onboarding.display_identity.subtitle', defaultMessage: 'You can always edit this later.' },
   label: { id: 'onboarding.display_identity.label', defaultMessage: 'Identity' },
-  helpText: { id: 'onboarding.display_identity.help_text', defaultMessage: 'This identifier is a unique username that represents you on the platform. It is automatically generated based on the site, ensuring that you have a distinct identity to interact with other users. This username can be used to personalize your experience and facilitate communication within the community.' },
+  helpText: { id: 'onboarding.display_identity.help_text', defaultMessage: 'This identifier is a unique username that represents you on the platform. This username can be used to personalize your experience and facilitate communication within the community.' },
   placeholder: { id: 'onboarding.display_identity.fields.reason_placeholder', defaultMessage: 'Why do you want to be part of the {siteTitle} community?' },
   requested: { id: 'onboarding.display_identity.request', defaultMessage: 'Username requested' },
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
