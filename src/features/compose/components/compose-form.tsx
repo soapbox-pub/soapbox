@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor, $getRoot } from 'lexical';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
-import { Link, useHistory } from 'react-router-dom';
+import { defineMessages, useIntl } from 'react-intl';
+import { useHistory } from 'react-router-dom';
 import { length } from 'stringz';
 
 import {
@@ -17,7 +17,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import { Button, HStack, Stack } from 'soapbox/components/ui';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, useOwnAccount, usePrevious } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
 
 import QuotedStatusContainer from '../containers/quoted-status-container';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container';
@@ -39,7 +39,6 @@ import SpoilerInput from './spoiler-input';
 import TextCharacterCounter from './text-character-counter';
 import UploadForm from './upload-form';
 import VisualCharacterCounter from './visual-character-counter';
-import Warning from './warning';
 
 import type { Emoji } from 'soapbox/features/emoji';
 
@@ -68,13 +67,11 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { account } = useOwnAccount();
   const { instance } = useInstance();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
   const maxTootChars = instance.configuration.statuses.max_characters;
-  const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 
   const {
@@ -109,7 +106,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const isEmpty = !(fulltext.trim() || anyMedia);
   const condensed = shouldCondense && !isDraggedOver && !composeFocused && isEmpty && !isUploading;
   const shouldAutoFocus = autoFocus && !showSearch;
-  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars && account?.source?.nostr?.nip05 !== undefined;
+  const canSubmit = !!editorRef.current && !isSubmitting && !isUploading && !isChangingUpload && !isEmpty && length(fulltext) <= maxTootChars;
 
   const getClickableArea = () => {
     return clickableAreaRef ? clickableAreaRef.current : formRef.current;
@@ -247,25 +244,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   return (
     <Stack className='w-full' space={4} ref={formRef} onClick={handleClick} element='form' onSubmit={handleSubmit}>
-      {scheduledStatusCount > 0 && !event && !group && (
-        <Warning
-          message={(
-            <FormattedMessage
-              id='compose_form.scheduled_statuses.message'
-              defaultMessage='You have scheduled posts. {click_here} to see them.'
-              values={{ click_here: (
-                <Link to='/scheduled_statuses'>
-                  <FormattedMessage
-                    id='compose_form.scheduled_statuses.click_here'
-                    defaultMessage='Click here'
-                  />
-                </Link>
-              ) }}
-            />)
-          }
-        />
-      )}
-
       <WarningContainer composeId={id} />
 
       {!shouldCondense && !event && !group && groupId && <ReplyGroupIndicator composeId={id} />}

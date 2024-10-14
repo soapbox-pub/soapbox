@@ -18,8 +18,7 @@ import { $createParagraphNode, $createTextNode, $getRoot, type LexicalEditor } f
 import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Warning from 'soapbox/features/compose/components/warning';
-import { useAppDispatch, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks';
 
 import { useNodes } from './nodes';
 import AutosuggestPlugin from './plugins/autosuggest-plugin';
@@ -85,8 +84,6 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
 }, ref) => {
   const dispatch = useAppDispatch();
   const nodes = useNodes();
-  const { account } = useOwnAccount();
-  const settingsNotifications = useSettingsNotifications();
 
   const [suggestionsHidden, setSuggestionsHidden] = useState(true);
 
@@ -135,9 +132,6 @@ const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      { account?.source?.nostr?.nip05 === undefined ?
-        <Warning message={settingsNotifications.has('needsNip05') ? <FormattedMessage id='compose_form.warning' defaultMessage={'Warning: To post, you need a valid username. Please configure your username in \'Settings > Identity\' before continuing.'} /> : <FormattedMessage id='compose_form.warning_waiting' defaultMessage='Warning: To post, you need a valid username. Your username request is pending validation. Please wait until your username is validated.' />} /> : null
-      }
       <div className={clsx('relative', className)}>
         <PlainTextPlugin
           contentEditable={
