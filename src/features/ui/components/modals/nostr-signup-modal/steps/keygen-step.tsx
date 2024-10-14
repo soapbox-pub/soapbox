@@ -63,9 +63,9 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     await relay?.event(kind0);
     await Promise.all(events.map((event) => relay?.event(event)));
 
-    await dispatch(logInNostr(pubkey));
-
     onClose();
+
+    await dispatch(logInNostr(pubkey));
 
     if (isMobile) {
       dispatch(closeSidebar());
