@@ -1181,7 +1181,7 @@
   "nostr_signup.captcha_instruction": "Complete the puzzle by dragging the puzzle piece to the correct position.",
   "nostr_signup.captcha_message.error": "It seems an error has occurred. Please try again. If the problem persists, please contact us.",
   "nostr_signup.captcha_message.misbehaving": "It looks like we're experiencing issues with the {instance}. Please try again. If the error persists, try again later.",
-  "nostr_signup.captcha_message.sucess": "Incredible! You've successfully completed the captcha. Let's move on to the next step!",
+  "nostr_signup.captcha_message.sucess": "Incredible! You've successfully completed the captcha.",
   "nostr_signup.captcha_message.wrong": "Oops! It looks like your captcha response was incorrect. Please try again.",
   "nostr_signup.captcha_reset_button": "Reset puzzle",
   "nostr_signup.captcha_title": "Human Verification",

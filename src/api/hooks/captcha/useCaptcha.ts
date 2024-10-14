@@ -10,7 +10,7 @@ import toast from 'soapbox/toast';
 
 
 const messages = defineMessages({
-  sucessMessage: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha. Let\'s move on to the next step!' },
+  sucessMessage: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha.' },
   wrongMessage: { id: 'nostr_signup.captcha_message.wrong', defaultMessage: 'Oops! It looks like your captcha response was incorrect. Please try again.' },
   errorMessage: { id: 'nostr_signup.captcha_message.error', defaultMessage: 'It seems an error has occurred. Please try again. If the problem persists, please contact us.' },
   misbehavingMessage: { id: 'nostr_signup.captcha_message.misbehaving', defaultMessage: 'It looks like we\'re experiencing issues with the {instance}. Please try again. If the error persists, try again later.' },
