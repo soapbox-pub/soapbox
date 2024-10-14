@@ -5,9 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { logInNostr } from 'soapbox/actions/nostr';
 import { closeSidebar } from 'soapbox/actions/sidebar';
-import CopyableInput from 'soapbox/components/copyable-input';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack } from 'soapbox/components/ui';
+import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
@@ -43,8 +42,6 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     setDownloaded(true);
   };
 
-  const handleCopy = () => setDownloaded(true);
-
   const handleNext = async () => {
     const signer = NKeys.add(secretKey);
     const pubkey = await signer.getPublicKey();
@@ -79,7 +76,13 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
         <EmojiGraphic emoji='🔑' />
 
         <FormGroup labelText={<FormattedMessage id='nostr_signup.keygen.label_text' defaultMessage='Secret Key' />}>
-          <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
+          <Input
+            type={'password'}
+            value={nsec}
+            className='rounded-lg'
+            outerClassName='grow'
+            readOnly
+          />
         </FormGroup>
 
         <Stack className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
