@@ -1,13 +1,13 @@
 import alexJson from 'soapbox/__fixtures__/pleroma-account.json';
-import { instanceSchema } from 'soapbox/schemas';
+import { instanceV1Schema } from 'soapbox/schemas/instance';
 
 import { buildAccount } from './factory';
 
 /** Store with registrations open. */
-const storeOpen = { instance: instanceSchema.parse({ registrations: true }) };
+const storeOpen = { instance: instanceV1Schema.parse({ registrations: true }) };
 
 /** Store with registrations closed. */
-const storeClosed = { instance: instanceSchema.parse({ registrations: false }) };
+const storeClosed = { instance: instanceV1Schema.parse({ registrations: false }) };
 
 /** Store with a logged-in user. */
 const storeLoggedIn = {

@@ -16,7 +16,7 @@ interface IExtensionStep {
 
 const ExtensionStep: React.FC<IExtensionStep> = ({ isLogin, onClickAlt, onClose }) => {
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { logo } = useSoapboxConfig();
 
   const handleClose = () => {

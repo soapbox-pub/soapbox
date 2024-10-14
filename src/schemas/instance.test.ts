@@ -1,6 +1,6 @@
-import { instanceSchema } from './instance';
+import { instanceV1Schema } from './instance';
 
-describe('instanceSchema.parse()', () => {
+describe('instanceV1Schema.parse()', () => {
   it('normalizes an empty Map', () => {
     const expected = {
       configuration: {
@@ -67,7 +67,7 @@ describe('instanceSchema.parse()', () => {
       version: '0.0.0',
     };
 
-    const result = instanceSchema.parse({});
+    const result = instanceV1Schema.parse({});
     expect(result).toMatchObject(expected);
   });
 
@@ -89,7 +89,7 @@ describe('instanceSchema.parse()', () => {
       },
     };
 
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
     expect(result).toMatchObject(expected);
   });
 
@@ -119,7 +119,7 @@ describe('instanceSchema.parse()', () => {
       },
     };
 
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
     expect(result).toMatchObject(expected);
   });
 
@@ -141,13 +141,13 @@ describe('instanceSchema.parse()', () => {
       },
     };
 
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
     expect(result).toMatchObject(expected);
   });
 
   it('normalizes Fedibird instance', () => {
     const instance = require('soapbox/__fixtures__/fedibird-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     // Sets description_limit
     expect(result.pleroma.metadata.description_limit).toEqual(1500);
@@ -158,7 +158,7 @@ describe('instanceSchema.parse()', () => {
 
   it('normalizes Mitra instance', () => {
     const instance = require('soapbox/__fixtures__/mitra-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     // Adds configuration and description_limit
     expect(result.configuration).toBeTruthy();
@@ -167,7 +167,7 @@ describe('instanceSchema.parse()', () => {
 
   it('normalizes GoToSocial instance', () => {
     const instance = require('soapbox/__fixtures__/gotosocial-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     // Normalizes max_toot_chars
     expect(result.configuration.statuses.max_characters).toEqual(5000);
@@ -180,7 +180,7 @@ describe('instanceSchema.parse()', () => {
 
   it('normalizes Friendica instance', () => {
     const instance = require('soapbox/__fixtures__/friendica-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     // Normalizes max_toot_chars
     expect(result.configuration.statuses.max_characters).toEqual(200000);
@@ -193,20 +193,20 @@ describe('instanceSchema.parse()', () => {
 
   it('normalizes a Mastodon RC version', () => {
     const instance = require('soapbox/__fixtures__/mastodon-instance-rc.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     expect(result.version).toEqual('3.5.0-rc1');
   });
 
   it('normalizes Pixelfed instance', () => {
     const instance = require('soapbox/__fixtures__/pixelfed-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
     expect(result.title).toBe('pixelfed');
   });
 
   it('renames Akkoma to Pleroma', () => {
     const instance = require('soapbox/__fixtures__/akkoma-instance.json');
-    const result = instanceSchema.parse(instance);
+    const result = instanceV1Schema.parse(instance);
 
     expect(result.version).toEqual('2.7.2 (compatible; Pleroma 2.4.50+akkoma)');
 

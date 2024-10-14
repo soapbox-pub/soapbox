@@ -53,8 +53,8 @@ const GroupActionButton = ({ group }: IGroupActionButton) => {
           : intl.formatMessage(messages.joinSuccess),
       );
     },
-    onError(error) {
-      const message = (error.response?.data as any).error;
+    async onError(error) {
+      const message = (await error.response.json() as any).error;
       if (message) {
         toast.error(message);
       }

@@ -104,13 +104,13 @@ const ReportModal = ({ onClose }: IReportModal) => {
   const entityType = useAppSelector((state) => state.reports.new.entityType);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isSubmitting = useAppSelector((state) => state.reports.new.isSubmitting);
-  const { rules } = useInstance();
+  const { instance } = useInstance();
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
   const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
   const selectedChatMessage = useAppSelector((state) => state.reports.new.chat_message);
   const selectedGroup = useAppSelector((state) => state.reports.new.group);
 
-  const shouldRequireRule = rules.length > 0;
+  const shouldRequireRule = instance.rules.length > 0;
 
   const isReportingAccount = entityType === ReportableEntities.ACCOUNT;
   const isReportingStatus = entityType === ReportableEntities.STATUS;

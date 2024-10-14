@@ -44,6 +44,7 @@ describe('instance reducer', () => {
       expect(state.registrations).toBe(false);
 
       // After importing the configs, registration will be open
+      // @ts-ignore don't know why the type is not working
       const result = reducer(state, action);
       expect(result.registrations).toBe(true);
     });

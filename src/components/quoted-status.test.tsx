@@ -22,7 +22,7 @@ describe('<QuotedStatus />', () => {
       contentHtml: 'hello world',
     }) as ReducerStatus;
 
-    const state = rootState.setIn(['accounts', '1'], account);
+    const state = rootState/*.accounts.set('1', account)*/;
 
     render(<QuotedStatus status={status} />, undefined, state);
     screen.getByText(/hello world/i);

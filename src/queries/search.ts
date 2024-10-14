@@ -1,32 +1,32 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { getNextLink } from 'soapbox/api';
 import { useApi } from 'soapbox/hooks';
 import { Account } from 'soapbox/types/entities';
+import { getPagination } from 'soapbox/utils/pagination';
 import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
 
 export default function useAccountSearch(q: string) {
   const api = useApi();
 
-  const getAccountSearch = async(q: string, pageParam: { link?: string }): Promise<PaginatedResult<Account>> => {
+  const getAccountSearch = async (q: string, pageParam: { link?: string }): Promise<PaginatedResult<Account>> => {
     const nextPageLink = pageParam?.link;
     const uri = nextPageLink || '/api/v1/accounts/search';
 
     const response = await api.get(uri, {
-      params: {
+      searchParams: {
         q,
         limit: 10,
         followers: true,
       },
     });
-    const { data } = response;
+    const data = await response.json();
 
-    const link = getNextLink(response);
-    const hasMore = !!link;
+    const { next } = getPagination(response);
+    const hasMore = !!next;
 
     return {
       result: data,
-      link,
+      link: next,
       hasMore,
     };
   };

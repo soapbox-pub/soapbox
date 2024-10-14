@@ -17,16 +17,18 @@ const account = buildAccount({
   },
 });
 
-const store = rootState
-  .set('me', id)
-  .set('entities', {
+const store = {
+  ...rootState,
+  me: id,
+  entities: {
     'ACCOUNTS': {
       store: {
         [id]: account,
       },
       lists: {},
     },
-  });
+  },
+};
 
 describe('<ChatWidget />', () => {
   describe('when on the /chats endpoint', () => {

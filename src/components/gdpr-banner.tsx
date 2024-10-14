@@ -13,7 +13,7 @@ const GdprBanner: React.FC = () => {
   const [shown, setShown] = useState<boolean>(acceptedGdpr);
   const [slideout, setSlideout] = useState(false);
 
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { gdprUrl } = useSoapboxConfig();
 
   const handleAccept = () => {

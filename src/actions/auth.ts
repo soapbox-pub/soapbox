@@ -24,7 +24,6 @@ import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { normalizeUsername } from 'soapbox/utils/input';
 import { getScopes } from 'soapbox/utils/scopes';
-import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
 
@@ -201,11 +200,10 @@ export const logIn = (username: string, password: string) =>
 export const deleteSession = () =>
   (dispatch: AppDispatch, getState: () => RootState) => api(getState).delete('/api/sign_out');
 
-export const logOut = () =>
+export const logOut = (refresh = true) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
-    const standalone = isStandalone(state);
 
     if (!account) return dispatch(noOp);
 
@@ -229,7 +227,7 @@ export const logOut = () =>
         localStorage.removeItem('soapbox:external:baseurl');
         localStorage.removeItem('soapbox:external:scopes');
 
-        dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
+        dispatch({ type: AUTH_LOGGED_OUT, account, refresh });
 
         toast.success(messages.loggedOut);
       });

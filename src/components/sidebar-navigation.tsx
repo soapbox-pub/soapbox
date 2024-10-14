@@ -23,7 +23,7 @@ const SidebarNavigation = () => {
   const intl = useIntl();
   const { unreadChatsCount } = useStatContext();
 
-  const instance = useInstance();
+  const { instance } = useInstance();
   const features = useFeatures();
   const { isDeveloper } = useSettings();
   const { account } = useOwnAccount();

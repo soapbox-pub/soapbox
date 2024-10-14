@@ -4,13 +4,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { logInNostr } from 'soapbox/actions/nostr';
-import { startOnboarding } from 'soapbox/actions/onboarding';
-import CopyableInput from 'soapbox/components/copyable-input';
+import { closeSidebar } from 'soapbox/actions/sidebar';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack } from 'soapbox/components/ui';
+import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { download } from 'soapbox/utils/download';
 import { slugify } from 'soapbox/utils/input';
 
@@ -19,8 +19,9 @@ interface IKeygenStep {
 }
 
 const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const dispatch = useAppDispatch();
+  const isMobile = useIsMobile();
   const { relay } = useNostr();
 
   const secretKey = useMemo(() => generateSecretKey(), []);
@@ -41,8 +42,6 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     setDownloaded(true);
   };
 
-  const handleCopy = () => setDownloaded(true);
-
   const handleNext = async () => {
     const signer = NKeys.add(secretKey);
     const pubkey = await signer.getPublicKey();
@@ -61,10 +60,14 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
     await relay?.event(kind0);
     await Promise.all(events.map((event) => relay?.event(event)));
 
-    await dispatch(logInNostr(pubkey));
-    dispatch(startOnboarding());
-
     onClose();
+
+    await dispatch(logInNostr(pubkey));
+
+    if (isMobile) {
+      dispatch(closeSidebar());
+    }
+
   };
 
   return (
@@ -73,7 +76,13 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
         <EmojiGraphic emoji='🔑' />
 
         <FormGroup labelText={<FormattedMessage id='nostr_signup.keygen.label_text' defaultMessage='Secret Key' />}>
-          <CopyableInput value={nsec} type='password' onCopy={handleCopy} />
+          <Input
+            type={'password'}
+            value={nsec}
+            className='rounded-lg'
+            outerClassName='grow'
+            readOnly
+          />
         </FormGroup>
 
         <Stack className='rounded-xl bg-gray-100 p-4 dark:bg-gray-800'>
@@ -81,7 +90,6 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
             <FormattedMessage id='nostr_signup.keygen.text' defaultMessage='Back up your secret key in a secure place. If lost, your account cannot be recovered. Never share your secret key with anyone.' />
           </Text>
         </Stack>
-
 
         <HStack space={6} justifyContent='center' >
           <Button theme='secondary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>

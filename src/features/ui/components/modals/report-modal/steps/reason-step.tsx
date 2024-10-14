@@ -31,8 +31,11 @@ const ReasonStep: React.FC<IReasonStep> = () => {
 
   const entityType = useAppSelector((state) => state.reports.new.entityType);
   const comment = useAppSelector((state) => state.reports.new.comment);
-  const { rules } = useInstance();
   const ruleIds = useAppSelector((state) => state.reports.new.rule_ids);
+
+  const { instance } = useInstance();
+  const { rules } = instance;
+
   const shouldRequireRule = rules.length > 0;
 
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

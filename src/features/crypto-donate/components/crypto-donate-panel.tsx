@@ -18,7 +18,7 @@ interface ICryptoDonatePanel {
 const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Element | null => {
   const intl = useIntl();
   const history = useHistory();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const addresses = useSoapboxConfig().get('cryptoAddresses');
 

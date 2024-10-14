@@ -96,7 +96,7 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
     if (!isSubmitDisabled && !createChatMessage.isPending) {
       submitMessage();
 
-      if (!chat.accepted) {
+      if (chat.accepted === false) {
         acceptChat.mutate();
       }
     }

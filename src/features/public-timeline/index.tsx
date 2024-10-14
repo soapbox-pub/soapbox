@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -25,7 +25,9 @@ const PublicTimeline = () => {
   const features = useFeatures();
   const theme = useTheme();
 
-  const instance = useInstance();
+  const [language, setLanguage] = useState<string>(localStorage.getItem('soapbox:global:language') || '');
+
+  const { instance } = useInstance();
   const settings = useSettings();
   const onlyMedia = settings.public.other.onlyMedia;
   const next = useAppSelector(state => state.timelines.get('public')?.next);
@@ -52,24 +54,23 @@ const PublicTimeline = () => {
     return dispatch(expandPublicTimeline({ onlyMedia }));
   };
 
-  usePublicStream({ onlyMedia });
-
-  useEffect(() => {
-    dispatch(expandPublicTimeline({ onlyMedia }));
-  }, [onlyMedia]);
+  usePublicStream({ onlyMedia, language });
 
   useEffect(() => {
     dispatch(clearTimeline('public'));
-    dispatch(expandPublicTimeline({ url: '/api/v1/timelines/public' }));
-  }, []);
+    localStorage.setItem('soapbox:global:language', language);
+  }, [language]);
+
+  useEffect(() => {
+    dispatch(expandPublicTimeline({ onlyMedia, language }));
+  }, [onlyMedia, language]);
 
   return (
     <Column
       className='-mt-3 sm:mt-0'
       label={intl.formatMessage(messages.title)}
       transparent={!isMobile}
-      action={features.publicTimelineLanguage ? <LanguageDropdown /> : null}
-      // actionRightPosition
+      action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
     >
       <PinnedHostsPicker />
 

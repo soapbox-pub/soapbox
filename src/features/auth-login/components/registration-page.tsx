@@ -10,7 +10,7 @@ import { useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 
 import RegistrationForm from './registration-form';
 
 const RegistrationPage: React.FC = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { isOpen } = useRegistrationStatus();
   const { nostrSignup } = useFeatures();
   const dispatch = useAppDispatch();

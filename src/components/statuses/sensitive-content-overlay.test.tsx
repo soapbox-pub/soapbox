@@ -94,10 +94,12 @@ describe('<SensitiveContentOverlay />', () => {
 
     beforeEach(() => {
       status = normalizeStatus({ sensitive: true }) as ReducerStatus;
-      store = rootState
-        .set('settings', ImmutableMap({
+      store = {
+        ...rootState,
+        settings: ImmutableMap({
           displayMedia: 'show_all',
-        }));
+        }),
+      };
     });
 
     it('displays the "Under review" warning', () => {

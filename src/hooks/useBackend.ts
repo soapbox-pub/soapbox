@@ -8,7 +8,7 @@ import { useInstance } from './useInstance';
  * @returns Backend
  */
 const useBackend = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   return parseVersion(instance.version);
 };

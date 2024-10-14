@@ -111,6 +111,8 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
         }));
       } else if ((hasComposeContent || hasEventComposeContent) && type === 'CONFIRM') {
         dispatch(closeModal('CONFIRM'));
+      } else if (type === 'CAPTCHA') {
+        return;
       } else {
         onClose();
       }

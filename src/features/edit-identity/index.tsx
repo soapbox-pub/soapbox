@@ -27,7 +27,7 @@ const messages = defineMessages({
 /** EditIdentity component. */
 const EditIdentity: React.FC<IEditIdentity> = () => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
   const { mutate, isPending } = useRequestName();
@@ -162,7 +162,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
 const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   return (
     <Input
@@ -197,7 +197,8 @@ function useNames() {
   return useQuery({
     queryKey: ['names', 'approved'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=true');
+      const response = await api.get('/api/v1/ditto/names?approved=true');
+      const data = await response.json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],
@@ -210,7 +211,8 @@ function usePendingNames() {
   return useQuery({
     queryKey: ['names', 'pending'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/ditto/names?approved=false');
+      const response = await api.get('/api/v1/ditto/names?approved=false');
+      const data = await response.json();
       return adminAccountSchema.array().parse(data);
     },
     placeholderData: [],

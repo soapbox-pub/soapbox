@@ -10,7 +10,7 @@ function useTimelineStream(...args: Parameters<typeof connectTimelineStream>) {
   const { enabled = true } = args[4] ?? {};
 
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const stream = useRef<(() => void) | null>(null);
 
   const accessToken = useAppSelector(getAccessToken);

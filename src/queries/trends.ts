@@ -11,7 +11,8 @@ export default function useTrends() {
   const dispatch = useAppDispatch();
 
   const getTrends = async() => {
-    const { data } = await api.get<any[]>('/api/v1/trends');
+    const response = await api.get('/api/v1/trends');
+    const data: Tag[] = await response.json();
 
     dispatch(fetchTrendsSuccess(data));
 

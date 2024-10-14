@@ -23,7 +23,6 @@ import './styles/i18n/javanese.css';
 import './styles/application.scss';
 import './styles/tailwind.css';
 
-import './precheck';
 import ready from './ready';
 import { registerSW, lockSW } from './utils/sw';
 

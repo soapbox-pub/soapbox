@@ -21,7 +21,7 @@ const status = normalizeStatus({
 }) as ReducerStatus;
 
 describe('<Status />', () => {
-  const state = rootState.setIn(['accounts', '1'], account);
+  const state = rootState/*.accounts.set('1', account)*/;
 
   it('renders content', () => {
     render(<Status status={status} />, undefined, state);

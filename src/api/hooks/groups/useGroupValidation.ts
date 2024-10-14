@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useApi } from 'soapbox/hooks/useApi';
 import { useFeatures } from 'soapbox/hooks/useFeatures';
 
@@ -16,19 +17,17 @@ function useGroupValidation(name: string = '') {
   const api = useApi();
   const features = useFeatures();
 
-  const getValidation = async() => {
-    const { data } = await api.get<Validation>('/api/v1/groups/validate', {
-      params: { name },
-    })
-      .catch((error) => {
-        if (error.response.status === 422) {
-          return { data: error.response.data };
-        }
+  const getValidation = async () => {
+    try {
+      const response = await api.get('/api/v1/groups/validate', { searchParams: { name } });
+      return response.json();
+    } catch (e) {
+      if (e instanceof HTTPError && e.response.status === 422) {
+        return e.response.json();
+      }
 
-        throw error;
-      });
-
-    return data;
+      throw e;
+    }
   };
 
   const queryInfo = useQuery<Validation>({
