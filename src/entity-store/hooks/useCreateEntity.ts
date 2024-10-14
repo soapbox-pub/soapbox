@@ -1,6 +1,6 @@
-import { AxiosError } from 'axios';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
 import { useLoading } from 'soapbox/hooks/useLoading';
 
@@ -25,11 +25,11 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(
   const [isSubmitting, setPromise] = useLoading();
   const { entityType, listKey } = parseEntitiesPath(expandedPath);
 
-  async function createEntity(data: Data, callbacks: EntityCallbacks<TEntity, AxiosError> = {}): Promise<void> {
+  async function createEntity(data: Data, callbacks: EntityCallbacks<TEntity, HTTPError> = {}): Promise<void> {
     try {
       const result = await setPromise(entityFn(data));
       const schema = opts.schema || z.custom<TEntity>();
-      const entity = schema.parse(result.data);
+      const entity = schema.parse(await result.json());
 
       // TODO: optimistic updating
       dispatch(importEntities([entity], entityType, listKey, 'start'));
@@ -38,7 +38,7 @@ function useCreateEntity<TEntity extends Entity = Entity, Data = unknown>(
         callbacks.onSuccess(entity);
       }
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (error instanceof HTTPError) {
         if (callbacks.onError) {
           callbacks.onError(error);
         }

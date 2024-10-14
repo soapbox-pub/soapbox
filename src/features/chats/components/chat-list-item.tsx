@@ -35,8 +35,8 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
 
   const { isUsingMainChatPage } = useChatContext();
   const { deleteChat } = useChatActions(chat?.id as string);
-  const isBlocked = useAppSelector((state) => state.getIn(['relationships', chat.account.id, 'blocked_by']));
-  const isBlocking = useAppSelector((state) => state.getIn(['relationships', chat?.account?.id, 'blocking']));
+  const isBlocked = useAppSelector((state) => state.relationships.getIn([chat.account.id, 'blocked_by']));
+  const isBlocking = useAppSelector((state) => state.relationships.getIn([chat?.account?.id, 'blocking']));
 
   const menu = useMemo((): Menu => [{
     text: intl.formatMessage(messages.leaveChat),

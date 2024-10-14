@@ -13,8 +13,8 @@ const useFetchRelationships = () => {
 
       return api.get(`/api/v1/accounts/relationships?${ids}`);
     },
-    onSuccess(response) {
-      dispatch(fetchRelationshipsSuccess(response.data));
+    async onSuccess(response) {
+      dispatch(fetchRelationshipsSuccess(await response.json()));
     },
     onError(error) {
       dispatch(fetchRelationshipsFail(error));

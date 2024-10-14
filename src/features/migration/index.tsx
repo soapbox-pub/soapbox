@@ -21,7 +21,7 @@ const messages = defineMessages({
 const Migration = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const cooldownPeriod = instance.pleroma.metadata.migration_cooldown_period;
 

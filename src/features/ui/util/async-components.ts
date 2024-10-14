@@ -181,3 +181,4 @@ export const ZapPayRequestModal = lazy(() => import('soapbox/features/ui/compone
 export const ZapInvoiceModal = lazy(() => import('soapbox/features/ui/components/modals/zap-invoice'));
 export const ZapsModal = lazy(() => import('soapbox/features/ui/components/modals/zaps-modal'));
 export const ZapSplitModal = lazy(() => import('soapbox/features/ui/components/modals/zap-split/zap-split-modal'));
+export const CaptchaModal = lazy(() => import('soapbox/features/ui/components/modals/captcha-modal/captcha-modal'));

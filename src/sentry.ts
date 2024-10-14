@@ -2,8 +2,7 @@ import { NODE_ENV } from 'soapbox/build-config';
 import sourceCode from 'soapbox/utils/code';
 
 import type { Account } from './schemas';
-import type { CaptureContext, UserFeedback } from '@sentry/types';
-import type { SetOptional } from 'type-fest';
+import type { CaptureContext, SendFeedbackParams } from '@sentry/types';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {
@@ -13,7 +12,7 @@ async function startSentry(dsn: string): Promise<void> {
     dsn,
     debug: false,
     enabled: NODE_ENV === 'production',
-    integrations: [new Sentry.BrowserTracing()],
+    integrations: [Sentry.browserTracingIntegration()],
 
     // Filter events.
     // https://docs.sentry.io/platforms/javascript/configuration/filtering/
@@ -72,9 +71,9 @@ async function captureSentryException (
 }
 
 /** Capture user feedback and report it to Sentry. */
-async function captureSentryFeedback(feedback: SetOptional<UserFeedback, 'name' | 'email'>): Promise<void> {
+async function captureSentryFeedback(feedback: SendFeedbackParams): Promise<void> {
   const Sentry = await import('@sentry/react');
-  Sentry.captureUserFeedback(feedback as UserFeedback);
+  Sentry.captureFeedback(feedback);
 }
 
 export {

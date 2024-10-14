@@ -1,5 +1,4 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getNextLinkName } from 'soapbox/utils/quirks';
 
 import api, { getLinks } from '../api';
 
@@ -18,14 +17,13 @@ const BLOCKS_EXPAND_FAIL = 'BLOCKS_EXPAND_FAIL';
 
 const fetchBlocks = () => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
-  const nextLinkName = getNextLinkName(getState);
 
   dispatch(fetchBlocksRequest());
 
   return api(getState)
     .get('/api/v1/blocks')
     .then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);
@@ -54,7 +52,6 @@ function fetchBlocksFail(error: unknown) {
 
 const expandBlocks = () => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return null;
-  const nextLinkName = getNextLinkName(getState);
 
   const url = getState().user_lists.blocks.next;
 
@@ -67,7 +64,7 @@ const expandBlocks = () => (dispatch: AppDispatch, getState: () => RootState) =>
   return api(getState)
     .get(url)
     .then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedAccounts(response.data));
       dispatch(expandBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);

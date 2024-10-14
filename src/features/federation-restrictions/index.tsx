@@ -21,7 +21,7 @@ const messages = defineMessages({
 
 const FederationRestrictions = () => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const getHosts = useCallback(makeGetHosts(), []);
 

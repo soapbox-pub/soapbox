@@ -33,10 +33,10 @@ const UploadButton: React.FC<IUploadButton> = ({
   icon,
 }) => {
   const intl = useIntl();
-  const { configuration } = useInstance();
+  const { instance } = useInstance();
 
   const fileElement = useRef<HTMLInputElement>(null);
-  const attachmentTypes = configuration.media_attachments.supported_mime_types;
+  const attachmentTypes = instance.configuration.media_attachments.supported_mime_types;
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.files?.length) {

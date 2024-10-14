@@ -47,8 +47,8 @@ const useUpdateCredentials = () => {
 
       return { cachedAccount };
     },
-    onSuccess(response) {
-      dispatch(patchMeSuccess(response.data));
+    async onSuccess(response) {
+      dispatch(patchMeSuccess(await response.json()));
       toast.success('Chat Settings updated successfully');
     },
     onError(_error, _variables, context: any) {

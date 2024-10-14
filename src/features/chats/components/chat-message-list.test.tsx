@@ -68,9 +68,11 @@ Object.assign(navigator, {
   },
 });
 
-const store = rootState
-  .set('me', '1')
-  .set('instance', buildInstance({ version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)' }));
+const store = {
+  ...rootState,
+  me: '1',
+  instance: buildInstance({ version: '3.4.1 (compatible; TruthSocial 1.0.0+unreleased)' }),
+};
 
 const renderComponentWithChatContext = () => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>

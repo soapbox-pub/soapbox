@@ -194,7 +194,7 @@ const ProfileField: StreamfieldComponent<AccountCredentialsField> = ({ value, on
 const EditProfile: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const instance = useInstance();
+  const { instance } = useInstance();
 
   const { account } = useOwnAccount();
   const features = useFeatures();

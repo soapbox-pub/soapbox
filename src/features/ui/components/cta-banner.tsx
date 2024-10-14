@@ -5,7 +5,7 @@ import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
 import { useAppSelector, useInstance, useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
 
 const CtaBanner = () => {
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { isOpen } = useRegistrationStatus();
   const { displayCta } = useSoapboxConfig();
   const me = useAppSelector((state) => state.me);

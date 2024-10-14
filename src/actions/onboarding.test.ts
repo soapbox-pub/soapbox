@@ -16,7 +16,8 @@ describe('checkOnboarding()', () => {
   it('does nothing if localStorage item is not set', async() => {
     mockGetItem = vi.fn().mockReturnValue(null);
 
-    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
+    const state = { ...rootState };
+    state.onboarding.needsOnboarding = false;
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -29,7 +30,8 @@ describe('checkOnboarding()', () => {
   it('does nothing if localStorage item is invalid', async() => {
     mockGetItem = vi.fn().mockReturnValue('invalid');
 
-    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
+    const state = { ...rootState };
+    state.onboarding.needsOnboarding = false;
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -42,7 +44,8 @@ describe('checkOnboarding()', () => {
   it('dispatches the correct action', async() => {
     mockGetItem = vi.fn().mockReturnValue('1');
 
-    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
+    const state = { ...rootState };
+    state.onboarding.needsOnboarding = false;
     const store = mockStore(state);
 
     await store.dispatch(checkOnboardingStatus());
@@ -65,7 +68,8 @@ describe('startOnboarding()', () => {
   });
 
   it('dispatches the correct action', async() => {
-    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
+    const state = { ...rootState };
+    state.onboarding.needsOnboarding = false;
     const store = mockStore(state);
 
     await store.dispatch(startOnboarding());
@@ -88,7 +92,8 @@ describe('endOnboarding()', () => {
   });
 
   it('dispatches the correct action', async() => {
-    const state = rootState.setIn(['onboarding', 'needsOnboarding'], false);
+    const state = { ...rootState };
+    state.onboarding.needsOnboarding = false;
     const store = mockStore(state);
 
     await store.dispatch(endOnboarding());

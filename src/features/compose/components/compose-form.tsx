@@ -68,11 +68,11 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { configuration } = useInstance();
+  const { instance } = useInstance();
 
   const compose = useCompose(id);
   const showSearch = useAppSelector((state) => state.search.submitted && !state.search.hidden);
-  const maxTootChars = configuration.statuses.max_characters;
+  const maxTootChars = instance.configuration.statuses.max_characters;
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const features = useFeatures();
 

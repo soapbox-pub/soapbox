@@ -14,7 +14,7 @@ function useGroupSearch(search: string) {
   const { entities, ...result } = useEntities<Group>(
     [Entities.GROUPS, 'discover', 'search', search],
     () => api.get('/api/v1/groups/search', {
-      params: {
+      searchParams: {
         q: search,
       },
     }),

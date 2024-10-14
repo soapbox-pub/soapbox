@@ -4,8 +4,6 @@ import { useApi } from 'soapbox/hooks';
 import { queryClient } from 'soapbox/queries/client';
 import { adminRuleSchema, type AdminRule } from 'soapbox/schemas';
 
-import type { AxiosResponse } from 'axios';
-
 interface CreateRuleParams {
   priority?: number;
   text: string;
@@ -23,7 +21,8 @@ const useRules = () => {
   const api = useApi();
 
   const getRules = async () => {
-    const { data } = await api.get<AdminRule[]>('/api/v1/pleroma/admin/rules');
+    const response = await api.get('/api/v1/pleroma/admin/rules');
+    const data: AdminRule[] = await response.json();
 
     const normalizedData = data.map((rule) => adminRuleSchema.parse(rule));
     return normalizedData;
@@ -41,10 +40,12 @@ const useRules = () => {
   } = useMutation({
     mutationFn: (params: CreateRuleParams) => api.post('/api/v1/pleroma/admin/rules', params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'rules'], (prevResult: ReadonlyArray<AdminRule>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'rules'], (prevResult: ReadonlyArray<AdminRule>) =>
         [...prevResult, adminRuleSchema.parse(data)],
-      ),
+      );
+    },
   });
 
   const {
@@ -53,10 +54,12 @@ const useRules = () => {
   } = useMutation({
     mutationFn: ({ id, ...params }: UpdateRuleParams) => api.patch(`/api/v1/pleroma/admin/rules/${id}`, params),
     retry: false,
-    onSuccess: ({ data }: AxiosResponse) =>
-      queryClient.setQueryData(['admin', 'rules'], (prevResult: ReadonlyArray<AdminRule>) =>
+    onSuccess: async (response: Response) => {
+      const data = await response.json();
+      return queryClient.setQueryData(['admin', 'rules'], (prevResult: ReadonlyArray<AdminRule>) =>
         prevResult.map((rule) => rule.id === data.id ? adminRuleSchema.parse(data) : rule),
-      ),
+      );
+    },
   });
 
   const {

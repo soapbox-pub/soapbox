@@ -6,7 +6,7 @@ import lt from 'semver/functions/lt';
 import semverParse from 'semver/functions/parse';
 
 import { custom } from 'soapbox/custom';
-import { type Instance } from 'soapbox/schemas';
+import { InstanceV1, InstanceV2 } from 'soapbox/schemas/instance';
 
 /** Import custom overrides, if exists */
 const overrides = custom('features');
@@ -102,7 +102,7 @@ export const REBASED = 'soapbox';
 export const UNRELEASED = 'unreleased';
 
 /** Parse features for the given instance */
-const getInstanceFeatures = (instance: Instance) => {
+const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
   const v = parseVersion(instance.version);
   const { features, federation } = instance.pleroma.metadata;
 
@@ -711,6 +711,7 @@ const getInstanceFeatures = (instance: Instance) => {
     instanceV2: any([
       v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.5.54'),
+      v.software === DITTO,
     ]),
 
     /**
@@ -911,7 +912,7 @@ const getInstanceFeatures = (instance: Instance) => {
       v.software === FRIENDICA && gte(v.version, '2023.3.0'),
       v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
       features.includes('quote_posting'),
-      instance.feature_quote === true,
+      'feature_quote' in instance && instance.feature_quote === true,
     ]),
 
     /**
@@ -1086,7 +1087,7 @@ export type Features = ReturnType<typeof getInstanceFeatures>;
 
 /** Detect backend features to conditionally render elements */
 export const getFeatures = createSelector([
-  (instance: Instance) => instance,
+  (instance: InstanceV1 | InstanceV2) => instance,
 ], (instance): Features => {
   const features = getInstanceFeatures(instance);
   return Object.assign(features, overrides) as Features;

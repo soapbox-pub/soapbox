@@ -101,8 +101,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
       const data = error.response?.data as any;
       toast.error(data?.error);
     },
-    onSuccess: (response) => {
-      history.push(`/chats/${response.data.id}`);
+    onSuccess: async (response) => {
+      const data = await response.json();
+      history.push(`/chats/${data.id}`);
       queryClient.invalidateQueries({
         queryKey: ChatKeys.chatSearch(),
       });

@@ -5,7 +5,6 @@
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import * as BuildConfig from 'soapbox/build-config';
-import { isPrerendered } from 'soapbox/precheck';
 import { selectOwnAccount } from 'soapbox/selectors';
 import { isURL } from 'soapbox/utils/auth';
 
@@ -19,15 +18,6 @@ export const displayFqn = (state: RootState): boolean => {
 /** Whether the instance exposes instance blocks through the API. */
 export const federationRestrictionsDisclosed = (state: RootState): boolean => {
   return !!state.instance.pleroma.metadata.federation.mrf_policies;
-};
-
-/**
- * Determine whether Soapbox is running in standalone mode.
- * Standalone mode runs separately from any backend and can login anywhere.
- */
-export const isStandalone = (state: RootState): boolean => {
-  const instanceFetchFailed = state.meta.instance_fetch_failed;
-  return isURL(BuildConfig.BACKEND_URL) ? false : (!isPrerendered && instanceFetchFailed);
 };
 
 const getHost = (url: any): string => {

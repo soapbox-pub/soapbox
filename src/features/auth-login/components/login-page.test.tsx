@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { render, screen } from 'soapbox/jest/test-helpers';
-import { instanceSchema } from 'soapbox/schemas';
+import { instanceV1Schema } from 'soapbox/schemas/instance';
 
 import LoginPage from './login-page';
 
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {
     const store = {
-      instance: instanceSchema.parse({
+      instance: instanceV1Schema.parse({
         version: '2.7.2 (compatible; Pleroma 2.3.0)',
       }),
     };

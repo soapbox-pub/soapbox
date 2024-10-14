@@ -14,7 +14,8 @@ export function useAdminNostrRelays() {
   return useQuery({
     queryKey: ['NostrRelay'],
     queryFn: async () => {
-      const { data } = await api.get('/api/v1/admin/ditto/relays');
+      const response = await api.get('/api/v1/admin/ditto/relays');
+      const data = await response.json();
       return relayEntitySchema.array().parse(data);
     },
   });

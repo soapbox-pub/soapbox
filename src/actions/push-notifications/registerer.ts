@@ -45,7 +45,7 @@ const unsubscribe = ({ registration, subscription }: {
 const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const alerts = getState().push_notifications.alerts.toJS();
-    const params = { subscription, data: { alerts } };
+    const params = { subscription: subscription.toJSON(), data: { alerts } };
 
     if (me) {
       const data = pushNotificationsSetting.get(me);
@@ -54,7 +54,7 @@ const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
       }
     }
 
-    return dispatch(createPushSubscription(params) as any);
+    return dispatch(createPushSubscription(params));
   };
 
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload
