@@ -45,28 +45,28 @@ const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
   }
 
   if (account?.source?.nostr?.nip05 === undefined) {
-    if (settingsNotifications.has('needsNip05')) {
-      return (
-        <FormattedMessage
-          id='compose_form.nip05.warning'
-          defaultMessage={'You don\'t have a username configured. {click} to set one up.'}
-          values={{
-            click: (
-              <Link to='/settings/identity'>
-                <FormattedMessage id='compose_form.nip05.warning.click' defaultMessage='Click here' />
-              </Link>
-            ),
-          }}
-        />
-      );
-    } else {
-      return (
-        <FormattedMessage
-          id='compose_form.nip05.pending'
-          defaultMessage='Your username request is under review.'
-        />
-      );
-    }
+    return (
+      <Warning
+        message={(settingsNotifications.has('needsNip05')) ? (
+          <FormattedMessage
+            id='compose_form.nip05.warning'
+            defaultMessage={'You don\'t have a username configured. {click} to set one up.'}
+            values={{
+              click: (
+                <Link to='/settings/identity'>
+                  <FormattedMessage id='compose_form.nip05.warning.click' defaultMessage='Click here' />
+                </Link>
+              ),
+            }}
+          />
+        ) : (
+          <FormattedMessage
+            id='compose_form.nip05.pending'
+            defaultMessage='Your username request is under review.'
+          />
+        )}
+      />
+    );
   }
 
   if (needsLockWarning) {
