@@ -8,7 +8,7 @@ import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { expandNotifications } from 'soapbox/actions/notifications';
-import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
+import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
@@ -16,7 +16,7 @@ import { useUserStream } from 'soapbox/api/hooks';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn, useApi } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -380,6 +380,7 @@ interface IUI {
 }
 
 const UI: React.FC<IUI> = ({ children }) => {
+  const api = useApi();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const node = useRef<HTMLDivElement | null>(null);
@@ -470,7 +471,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
   useEffect(() => {
     if (vapidKey) {
-      dispatch(registerPushNotifications(vapidKey));
+      registerPushNotifications(api, vapidKey).catch(console.warn);
     }
   }, [vapidKey]);
 
