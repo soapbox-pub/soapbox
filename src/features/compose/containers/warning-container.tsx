@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAppSelector, useCompose, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks';
+import { useAppSelector, useCompose, useFeatures, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks';
 import { selectOwnAccount } from 'soapbox/selectors';
 
 import Warning from '../components/warning';
@@ -18,6 +18,7 @@ const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
   const { account } = useOwnAccount();
   const settingsNotifications = useSettingsNotifications();
+  const features = useFeatures();
 
   const needsLockWarning = useAppSelector((state) => compose.privacy === 'private' && !selectOwnAccount(state)!.locked);
   const hashtagWarning = (compose.privacy !== 'public' && compose.privacy !== 'group') && APPROX_HASHTAG_RE.test(compose.text);
@@ -44,7 +45,7 @@ const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
     );
   }
 
-  if (account?.source?.nostr?.nip05 === undefined) {
+  if (features.nostr && account?.source?.nostr?.nip05 === undefined) {
     return (
       <Warning
         message={(settingsNotifications.has('needsNip05')) ? (
