@@ -34,7 +34,6 @@ import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
-import { getVapidKey } from 'soapbox/utils/auth';
 
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
@@ -388,7 +387,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const { account } = useOwnAccount();
   const instance = useInstance();
   const features = useFeatures();
-  const vapidKey = useAppSelector(state => getVapidKey(state));
+  const vapidKey = instance.instance.configuration.vapid.public_key;
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.isOpen);
 
@@ -470,7 +469,9 @@ const UI: React.FC<IUI> = ({ children }) => {
   }, [!!account]);
 
   useEffect(() => {
-    dispatch(registerPushNotifications());
+    if (vapidKey) {
+      dispatch(registerPushNotifications(vapidKey));
+    }
   }, [vapidKey]);
 
   const shouldHideFAB = (): boolean => {
