@@ -39,7 +39,6 @@ import patron from './patron';
 import pending_statuses from './pending-statuses';
 import polls from './polls';
 import profile_hover_card from './profile-hover-card';
-import push_notifications from './push-notifications';
 import relationships from './relationships';
 import reports from './reports';
 import scheduled_statuses from './scheduled-statuses';
@@ -97,7 +96,6 @@ const reducers = {
   pending_statuses,
   polls,
   profile_hover_card,
-  push_notifications,
   relationships,
   reports,
   scheduled_statuses,

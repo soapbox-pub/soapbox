@@ -1,10 +1,12 @@
 import { z } from 'zod';
 
+import { coerceObject } from './utils';
+
 /** https://docs.joinmastodon.org/entities/WebPushSubscription/ */
 const webPushSubscriptionSchema = z.object({
   id: z.coerce.string(),
   endpoint: z.string().url(),
-  alerts: z.object({
+  alerts: coerceObject({
     mention: z.boolean().optional(),
     status: z.boolean().optional(),
     reblog: z.boolean().optional(),
@@ -15,7 +17,7 @@ const webPushSubscriptionSchema = z.object({
     update: z.boolean().optional(),
     'admin.sign_up': z.boolean().optional(),
     'admin.report': z.boolean().optional(),
-  }).optional(),
+  }),
   server_key: z.string(),
 });
 
