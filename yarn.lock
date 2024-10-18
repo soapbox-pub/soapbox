@@ -1004,10 +1004,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-3.0.0.tgz#798622546b63847e82389e473fd67f2707d82247"
   integrity sha512-hBI9tfBtuPIi885ZsZ32IMEU/5nlZH/KOVYJCOh7gyMxaVLGmLedYqFN6Ui1LXkI8JlC8IsuC0rF0btcRZKd5g==
 
-"@emoji-mart/data@^1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@emoji-mart/data/-/data-1.1.2.tgz#777c976f8f143df47cbb23a7077c9ca9fe5fc513"
-  integrity sha512-1HP8BxD2azjqWJvxIaWAMyTySeZY0Osr83ukYjltPVkNXeJvTz7yDrPLBtnrD5uqJ3tg4CcLuuBW09wahqL/fg==
+"@emoji-mart/data@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@emoji-mart/data/-/data-1.2.1.tgz#0ad70c662e3bc603e23e7d98413bd1e64c4fcb6c"
+  integrity sha512-no2pQMWiBy6gpBEiqGeU77/bFejDqUTRY7KX+0+iur13op3bqUsXdnwoZs6Xb1zbv0gAj5VvS1PWoUUckSr5Dw==
 
 "@es-joy/jsdoccomment@~0.41.0":
   version "0.41.0"
@@ -4224,15 +4224,15 @@ electron-to-chromium@^1.5.28:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.5.28.tgz#aee074e202c6ee8a0030a9c2ef0b3fe9f967d576"
   integrity sha512-VufdJl+rzaKZoYVUijN13QcXVF5dWPZANeFTLNy+OSpHdDL5ynXTF35+60RSBbaQYB1ae723lQXHCrf4pyLsMw==
 
-emoji-datasource@14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-14.0.0.tgz#99529a62f3a86546fc670c09b672ddc9f24f3d44"
-  integrity sha512-SoOv0lSa+9/2X9ulSRDhu2u1zAOaOv5vtMY3OYUDcQCoReEh0/3eQAMuBM9LyD7Hy3G4K7mDPDqVeHUWvy7cow==
+emoji-datasource@15.0.1:
+  version "15.0.1"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-15.0.1.tgz#6cc7676e4d48d7559c2e068ffcacf84ec653584c"
+  integrity sha512-aF5Q6LCKXzJzpG4K0ETiItuzz0xLYxNexR9qWw45/shuuEDWZkOIbeGHA23uopOSYA/LmeZIXIFsySCx+YKg2g==
 
-emoji-mart@^5.5.2:
-  version "5.5.2"
-  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.5.2.tgz#3ddbaf053139cf4aa217650078bc1c50ca8381af"
-  integrity sha512-Sqc/nso4cjxhOwWJsp9xkVm8OF5c+mJLZJFoFfzRuKO+yWiN7K8c96xmtughYb0d/fZ8UC6cLIQ/p4BR6Pv3/A==
+emoji-mart@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/emoji-mart/-/emoji-mart-5.6.0.tgz#71b3ed0091d3e8c68487b240d9d6d9a73c27f023"
+  integrity sha512-eJp3QRe79pjwa+duv+n7+5YsNhRcMl812EcFVwrnRvYKoNPoQb5qxU8DG6Bgwji0akHdp6D4Ln6tYLG58MFSow==
 
 emoji-regex@10.3.0, emoji-regex@^10.2.1:
   version "10.3.0"
