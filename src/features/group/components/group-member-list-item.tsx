@@ -14,8 +14,7 @@ import PlaceholderAccount from 'soapbox/features/placeholder/components/placehol
 import { useAppDispatch, useFeatures } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
 import toast from 'soapbox/toast';
-
-import { MAX_ADMIN_COUNT } from '../group-members';
+import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups';
 
 import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
 import type { Group, GroupMember } from 'soapbox/types/entities';

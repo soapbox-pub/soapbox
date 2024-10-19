@@ -6,6 +6,7 @@ import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { useFeatures } from 'soapbox/hooks';
 import { GroupRoles } from 'soapbox/schemas/group-member';
+import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account';
 
@@ -17,8 +18,6 @@ import type { Group } from 'soapbox/types/entities';
 interface IGroupMembers {
   params: { groupId: string };
 }
-
-export const MAX_ADMIN_COUNT = 5;
 
 const GroupMembers: React.FC<IGroupMembers> = (props) => {
   const { groupId } = props.params;
