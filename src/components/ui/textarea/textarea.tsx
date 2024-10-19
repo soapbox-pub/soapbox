@@ -91,7 +91,7 @@ const Textarea = React.forwardRef(({
         ref={ref}
         rows={rows}
         onChange={handleChange}
-        className={clsx('block w-full rounded-md text-gray-900 placeholder:text-gray-600 sm:text-sm dark:text-gray-100 dark:placeholder:text-gray-600', {
+        className={clsx('block w-full rounded-md text-gray-900 placeholder:text-gray-600 dark:text-gray-100 dark:placeholder:text-gray-600 sm:text-sm', {
           'bg-white dark:bg-transparent shadow-sm border-gray-400 dark:border-gray-800 dark:ring-1 dark:ring-gray-800 focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500':
             theme === 'default',
           'bg-transparent border-0 focus:border-0 focus:ring-0': theme === 'transparent',

@@ -29,7 +29,7 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
     >
       <Link to={`/group/${group.slug}`}>
         <Stack
-          className='aspect-h-7 aspect-w-10 h-full w-full overflow-hidden rounded-lg'
+          className='aspect-h-7 aspect-w-10 size-full overflow-hidden rounded-lg'
           ref={ref}
           style={{ minHeight: 180 }}
         >

@@ -59,7 +59,7 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickIcon }
     <div onKeyDown={handleKeyDown}>
       <div
         ref={target}
-        className='flex h-[38px] w-[38px] cursor-pointer items-center justify-center text-lg'
+        className='flex size-[38px] cursor-pointer items-center justify-center text-lg'
         title={title}
         aria-label={title}
         aria-expanded={active}

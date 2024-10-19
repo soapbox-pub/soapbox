@@ -69,7 +69,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
         >
           <Icon
             src={require('@tabler/icons/outline/chevron-left.svg')}
-            className='h-5 w-5 text-black dark:text-white'
+            className='size-5 text-black dark:text-white'
           />
         </button>
       </div>
@@ -101,7 +101,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
         >
           <Icon
             src={require('@tabler/icons/outline/chevron-right.svg')}
-            className='h-5 w-5 text-black dark:text-white'
+            className='size-5 text-black dark:text-white'
           />
         </button>
       </div>

@@ -18,7 +18,7 @@ const Color: React.FC<IColor> = ({ color, onChange }) => {
 
   return (
     <ColorWithPicker
-      className='h-full w-full'
+      className='size-full'
       value={color}
       onChange={handleChange}
     />

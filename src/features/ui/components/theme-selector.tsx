@@ -42,7 +42,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
     <label>
       <div className='relative rounded-md shadow-sm'>
         <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
-          <Icon src={themeIconSrc} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
+          <Icon src={themeIconSrc} className='size-4 text-gray-600 dark:text-gray-700' />
         </div>
 
         <Select
@@ -57,7 +57,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         </Select>
 
         <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
-          <Icon src={require('@tabler/icons/outline/chevron-down.svg')} className='h-4 w-4 text-gray-600 dark:text-gray-700' />
+          <Icon src={require('@tabler/icons/outline/chevron-down.svg')} className='size-4 text-gray-600 dark:text-gray-700' />
         </div>
       </div>
     </label>

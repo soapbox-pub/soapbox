@@ -32,7 +32,7 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 
   return (
     <button className={clsx(className)} onClick={handleClick} tabIndex={tabIndex}>
-      <EmojiComponent className='h-6 w-6 duration-100 hover:scale-110' emoji={emoji} />
+      <EmojiComponent className='size-6 duration-100 hover:scale-110' emoji={emoji} />
     </button>
   );
 };

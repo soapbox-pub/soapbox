@@ -320,7 +320,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
             <div
               ref={arrowRef}
               style={arrowProps}
-              className='pointer-events-none absolute z-[-1] h-3 w-3 bg-white black:bg-black dark:bg-gray-900'
+              className='pointer-events-none absolute z-[-1] size-3 bg-white black:bg-black dark:bg-gray-900'
             />
           </div>
         </Portal>

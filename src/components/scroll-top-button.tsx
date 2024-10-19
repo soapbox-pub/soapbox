@@ -91,7 +91,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
         onClick={handleClick}
       >
         <Icon
-          className='h-4 w-4'
+          className='size-4'
           src={require('@tabler/icons/outline/arrow-bar-to-up.svg')}
         />
 

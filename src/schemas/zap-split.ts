@@ -7,7 +7,7 @@ const addMethodsToAccount = (account: Account) => {
     ...account,
     get: (key: string) => (account as any)[key],
     getIn: (path: string[]) => path.reduce((acc, key) => (acc as any)[key], account),
-    toJS: () => account,  
+    toJS: () => account,
   };
 };
 

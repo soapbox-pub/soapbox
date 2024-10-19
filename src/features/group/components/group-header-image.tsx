@@ -31,7 +31,7 @@ const GroupHeaderImage: React.FC<IGroupHeaderImage> = ({ className, group }) => 
       >
         <Icon
           src={require('@tabler/icons/outline/photo-off.svg')}
-          className='h-6 w-6 text-gray-500 dark:text-gray-700'
+          className='size-6 text-gray-500 dark:text-gray-700'
         />
       </div>
     );

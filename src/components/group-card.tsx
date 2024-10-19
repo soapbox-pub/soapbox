@@ -24,7 +24,7 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
       <Stack grow className='relative basis-1/2 rounded-t-lg bg-primary-100 dark:bg-gray-800'>
         <GroupHeaderImage
           group={group}
-          className='absolute inset-0 h-full w-full rounded-t-lg object-cover'
+          className='absolute inset-0 size-full rounded-t-lg object-cover'
         />
       </Stack>
 
@@ -39,7 +39,7 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
           <Text size='lg' weight='bold' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
 
           {group.relationship?.pending_requests && (
-            <div className='h-2 w-2 rounded-full bg-secondary-500' />
+            <div className='size-2 rounded-full bg-secondary-500' />
           )}
         </HStack>
 

@@ -69,7 +69,7 @@ const IconPickerMenu: React.FC<IIconPickerMenu> = ({ icons, onClose, onPick, sty
           title={name}
           onClick={() => handleClick(name)}
         >
-          <i className={clsx(icon, 'h-[1.375rem] w-[1.375rem] text-lg leading-[1.15]')} />
+          <i className={clsx(icon, 'size-[1.375rem] text-lg leading-[1.15]')} />
         </button>
       </li>
     );

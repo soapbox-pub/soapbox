@@ -119,7 +119,7 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
               <a href={url} target='_blank' className='flex items-center space-x-1 truncate'>
                 <span className='truncate'>{url}</span>
                 <Icon
-                  className='h-4 w-4'
+                  className='size-4'
                   src={require('@tabler/icons/outline/external-link.svg')}
                 />
               </a>

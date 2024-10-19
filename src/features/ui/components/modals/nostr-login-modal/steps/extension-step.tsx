@@ -44,7 +44,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ isLogin, onClickAlt, onClose 
         </Text>
 
         {logo ?
-          <div className='h-36 w-36'>
+          <div className='size-36'>
             <img src={logo} alt='' />
           </div>
           :

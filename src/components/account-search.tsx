@@ -77,12 +77,12 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
         >
           <SvgIcon
             src={require('@tabler/icons/outline/search.svg')}
-            className={clsx('h-4 w-4 text-gray-400', { hidden: !isEmpty() })}
+            className={clsx('size-4 text-gray-400', { hidden: !isEmpty() })}
           />
 
           <SvgIcon
             src={require('@tabler/icons/outline/x.svg')}
-            className={clsx('h-4 w-4 text-gray-400', { hidden: isEmpty() })}
+            className={clsx('size-4 text-gray-400', { hidden: isEmpty() })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />
         </div>

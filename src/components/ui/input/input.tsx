@@ -73,7 +73,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
       >
         {icon ? (
           <div className='pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3'>
-            <Icon src={icon} className='h-4 w-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
+            <Icon src={icon} className='size-4 text-gray-700 dark:text-gray-600' aria-hidden='true' />
           </div>
         ) : null}
 
@@ -124,7 +124,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
               >
                 <SvgIcon
                   src={revealed ? require('@tabler/icons/outline/eye-off.svg') : require('@tabler/icons/outline/eye.svg')}
-                  className='h-4 w-4'
+                  className='size-4'
                 />
               </button>
             </div>

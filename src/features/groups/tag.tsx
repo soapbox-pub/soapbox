@@ -67,7 +67,7 @@ const Tag: React.FC<ITag> = (props) => {
             <Icon
               src={require('@tabler/icons/outline/layout-list.svg')}
               className={
-                clsx('h-5 w-5 text-gray-600', {
+                clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.LIST,
                 })
               }
@@ -78,7 +78,7 @@ const Tag: React.FC<ITag> = (props) => {
             <Icon
               src={require('@tabler/icons/outline/layout-grid.svg')}
               className={
-                clsx('h-5 w-5 text-gray-600', {
+                clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.GRID,
                 })
               }

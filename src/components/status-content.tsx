@@ -27,7 +27,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center border-0 bg-transparent p-0 pt-2 text-gray-900 hover:underline active:underline dark:text-gray-300' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block h-5 w-5' src={require('@tabler/icons/outline/chevron-right.svg')} />
+    <Icon className='inline-block size-5' src={require('@tabler/icons/outline/chevron-right.svg')} />
   </button>
 );
 

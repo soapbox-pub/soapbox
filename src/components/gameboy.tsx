@@ -120,7 +120,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
       <canvas
         ref={canvas}
         onClick={handleCanvasClick}
-        className={clsx('h-full w-full bg-black ', {
+        className={clsx('size-full bg-black ', {
           'object-contain': aspect === 'normal',
           'object-cover': aspect === 'stretched',
         })}

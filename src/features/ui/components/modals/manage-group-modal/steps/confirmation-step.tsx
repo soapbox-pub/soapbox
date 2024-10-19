@@ -42,9 +42,9 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
       <Stack space={3}>
         <Stack>
           <label
-            className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 sm:h-36 sm:shadow dark:bg-gray-800 dark:text-accent-blue'
+            className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
           >
-            {group.header && <img className='h-full w-full object-cover' src={group.header} alt='' />}
+            {group.header && <img className='size-full object-cover' src={group.header} alt='' />}
           </label>
 
           <label className='mx-auto -mt-10 cursor-pointer rounded-full bg-primary-500 ring-2 ring-white dark:ring-primary-900'>
@@ -120,7 +120,7 @@ interface IInfoListNumber {
 
 const InfoListNumber: React.FC<IInfoListNumber> = ({ number }) => {
   return (
-    <div className='flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-gray-200 dark:border-gray-800'>
+    <div className='flex size-7 shrink-0 items-center justify-center rounded-full border border-gray-200 dark:border-gray-800'>
       <Text theme='primary' size='sm' weight='bold'>{number}</Text>
     </div>
   );

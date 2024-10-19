@@ -216,7 +216,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
         <Stack space={4}>
           <HStack alignItems='center' space={4} className='rounded-md border border-solid border-gray-400 p-4 dark:border-2 dark:border-gray-800'>
             <div>
-              <Avatar src={account.avatar} className='h-8 w-8' />
+              <Avatar src={account.avatar} className='size-8' />
             </div>
 
             <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>

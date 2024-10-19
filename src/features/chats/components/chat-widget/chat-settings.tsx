@@ -96,7 +96,7 @@ const ChatSettings = () => {
             <button onClick={closeSettings}>
               <Icon
                 src={require('@tabler/icons/outline/arrow-left.svg')}
-                className='h-6 w-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
+                className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
               />
             </button>
 
@@ -136,13 +136,13 @@ const ChatSettings = () => {
 
         <Stack space={5}>
           <button onClick={isBlocking ? handleUnblockUser : handleBlockUser} className='flex w-full items-center space-x-2 text-sm font-bold text-primary-600 dark:text-accent-blue'>
-            <Icon src={require('@tabler/icons/outline/ban.svg')} className='h-5 w-5' />
+            <Icon src={require('@tabler/icons/outline/ban.svg')} className='size-5' />
             <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
           </button>
 
           {features.chatsDelete && (
             <button onClick={handleLeaveChat} className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600'>
-              <Icon src={require('@tabler/icons/outline/logout.svg')} className='h-5 w-5' />
+              <Icon src={require('@tabler/icons/outline/logout.svg')} className='size-5' />
               <span>{intl.formatMessage(messages.leaveChat)}</span>
             </button>
           )}
