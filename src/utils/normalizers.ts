@@ -9,7 +9,7 @@ export const makeEmojiMap = (emojis: any) => emojis.reduce((obj: any, emoji: any
 }, {});
 
 /** Normalize entity ID */
-export const normalizeId = (id: any): string | null => {
+export const normalizeId = (id: unknown): string | null => {
   return z.string().nullable().catch(null).parse(id);
 };
 
