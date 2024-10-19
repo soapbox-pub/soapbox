@@ -17,7 +17,7 @@ const messages = defineMessages({
 /** Possible theme names for an Input. */
 type InputThemes = 'normal' | 'search'
 
-interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
+interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxLength' | 'onChange' | 'onBlur' | 'type' | 'autoComplete' | 'autoCorrect' | 'autoCapitalize' | 'required' | 'disabled' | 'onClick' | 'readOnly' | 'min' | 'max' | 'pattern' | 'onKeyDown' | 'onKeyUp' | 'onFocus' | 'style' | 'id'> {
   /** Put the cursor into the input on mount. */
   autoFocus?: boolean;
   /** The initial text in the input. */
