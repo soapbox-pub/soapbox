@@ -1,5 +1,7 @@
 import { groupSearchHistory } from 'soapbox/settings';
 
+export const MAX_ADMIN_COUNT = 5;
+
 const RECENT_SEARCHES_KEY = 'soapbox:recent-group-searches';
 
 const clearRecentGroupSearches = (currentUserId: string) => groupSearchHistory.remove(currentUserId);

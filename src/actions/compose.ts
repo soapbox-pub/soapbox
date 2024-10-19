@@ -11,8 +11,9 @@ import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
 import { tagHistory } from 'soapbox/settings';
 import toast from 'soapbox/toast';
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures, parseVersion } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features';
 
+import { ComposeSetStatusAction } from './compose-status';
 import { chooseEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadFile, updateMedia } from './media';
@@ -85,8 +86,6 @@ const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE' as const;
 const COMPOSE_ADD_TO_MENTIONS = 'COMPOSE_ADD_TO_MENTIONS' as const;
 const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS' as const;
 
-const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
-
 const COMPOSE_EDITOR_STATE_SET = 'COMPOSE_EDITOR_STATE_SET' as const;
 
 const COMPOSE_CHANGE_MEDIA_ORDER = 'COMPOSE_CHANGE_MEDIA_ORDER' as const;
@@ -101,38 +100,6 @@ const messages = defineMessages({
   replyConfirm: { id: 'confirmations.reply.confirm', defaultMessage: 'Reply' },
   replyMessage: { id: 'confirmations.reply.message', defaultMessage: 'Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?' },
 });
-
-interface ComposeSetStatusAction {
-  type: typeof COMPOSE_SET_STATUS;
-  id: string;
-  status: Status;
-  rawText: string;
-  explicitAddressing: boolean;
-  spoilerText?: string;
-  contentType?: string | false;
-  v: ReturnType<typeof parseVersion>;
-  withRedraft?: boolean;
-}
-
-const setComposeToStatus = (status: Status, rawText: string, spoilerText?: string, contentType?: string | false, withRedraft?: boolean) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const { instance } = getState();
-    const { explicitAddressing } = getFeatures(instance);
-
-    const action: ComposeSetStatusAction = {
-      type: COMPOSE_SET_STATUS,
-      id: 'compose-modal',
-      status,
-      rawText,
-      explicitAddressing,
-      spoilerText,
-      contentType,
-      v: parseVersion(instance.version),
-      withRedraft,
-    };
-
-    dispatch(action);
-  };
 
 const changeCompose = (composeId: string, text: string) => ({
   type: COMPOSE_CHANGE,
@@ -952,11 +919,9 @@ export {
   COMPOSE_SCHEDULE_REMOVE,
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
-  COMPOSE_SET_STATUS,
   COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   COMPOSE_CHANGE_MEDIA_ORDER,
-  setComposeToStatus,
   changeCompose,
   replyCompose,
   cancelReplyCompose,
