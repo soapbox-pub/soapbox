@@ -1,13 +1,30 @@
-import { fromJS } from 'immutable';
-
-import manifestMap from './manifest-map';
-
-// All this does is converts the result from manifest_map.js into an ImmutableMap
-const coinDB = fromJS(manifestMap);
-export default coinDB;
+const coins: Record<string, string> = {
+  aave: 'Aave',
+  ada: 'Cardano',
+  algo: 'Algorand',
+  atom: 'Cosmos',
+  avax: 'Avalanche',
+  bch: 'Bitcoin Cash',
+  btc: 'Bitcoin',
+  dot: 'Polkadot',
+  eos: 'EOS',
+  etc: 'Ethereum Classic',
+  eth: 'Ethereum',
+  fil: 'Filecoin',
+  icp: 'Internet Computer',
+  link: 'Chainlink',
+  ltc: 'Litecoin',
+  matic: 'Polygon',
+  sol: 'Solana',
+  vet: 'VeChain',
+  xlm: 'Stellar',
+  xmr: 'Monero',
+  xrp: 'Ripple',
+  xtz: 'Tezos',
+  zec: 'Zcash',
+};
 
 /** Get title from CoinDB based on ticker symbol */
-export const getTitle = (ticker: string): string => {
-  const title = coinDB.getIn([ticker, 'name']);
-  return typeof title === 'string' ? title : '';
-};
+export function getTitle(ticker: string): string {
+  return coins[ticker] ?? '';
+}
