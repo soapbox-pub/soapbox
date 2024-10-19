@@ -4,7 +4,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 
 import api, { getNextLink } from '../api';
 
-import { setComposeToStatus } from './compose';
+import { setComposeToStatus } from './compose-status';
 import { fetchGroupRelationships } from './groups';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modals';
