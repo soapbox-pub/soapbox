@@ -1,4 +1,5 @@
 // @ts-ignore No types available
+// eslint-disable-next-line import/no-unresolved
 import { WasmBoy } from '@soapbox.pub/wasmboy';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
