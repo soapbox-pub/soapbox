@@ -22,9 +22,9 @@ import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
 import LocationSearch from 'soapbox/components/location-search';
 import { checkEventComposeContent } from 'soapbox/components/modal-root';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
+import { Datetime } from 'soapbox/components/ui/datetime/datetime';
 import AccountContainer from 'soapbox/containers/account-container';
-import { isCurrentOrFutureDate } from 'soapbox/features/compose/components/schedule-form';
-import { ComposeEditor, DatePicker } from 'soapbox/features/ui/util/async-components';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 import UploadButton from './upload-button';
@@ -254,15 +254,10 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.start_time_label' defaultMessage='Event start date' />}
       >
-        <DatePicker
-          showTimeSelect
-          dateFormat='MMMM d, yyyy h:mm aa'
-          timeIntervals={15}
-          wrapperClassName='react-datepicker-wrapper'
-          placeholderText={intl.formatMessage(messages.eventStartTimePlaceholder)}
-          filterDate={isCurrentOrFutureDate}
-          selected={startTime}
+        <Datetime
+          value={startTime}
           onChange={onChangeStartTime}
+          placeholder={intl.formatMessage(messages.eventStartTimePlaceholder)}
         />
       </FormGroup>
       <HStack alignItems='center' space={2}>
@@ -278,15 +273,10 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
         <FormGroup
           labelText={<FormattedMessage id='compose_event.fields.end_time_label' defaultMessage='Event end date' />}
         >
-          <DatePicker
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            placeholderText={intl.formatMessage(messages.eventEndTimePlaceholder)}
-            filterDate={isCurrentOrFutureDate}
-            selected={endTime}
+          <Datetime
+            value={endTime}
             onChange={onChangeEndTime}
+            placeholder={intl.formatMessage(messages.eventEndTimePlaceholder)}
           />
         </FormGroup>
       )}

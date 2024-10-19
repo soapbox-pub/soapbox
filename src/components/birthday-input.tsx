@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import IconButton from 'soapbox/components/icon-button';
-import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { useInstance, useFeatures } from 'soapbox/hooks';
+
+import { Datetime } from './ui/datetime/datetime';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
@@ -28,7 +28,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
   const minAge = instance.pleroma.metadata.birthday_min_age;
 
   const maxDate = useMemo(() => {
-    if (!supportsBirthdays) return null;
+    if (!supportsBirthdays) return;
 
     let maxDate = new Date();
     maxDate = new Date(maxDate.getTime() - minAge * 1000 * 60 * 60 * 24 + maxDate.getTimezoneOffset() * 1000 * 60);
@@ -36,7 +36,7 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
   }, [minAge]);
 
   const selected = useMemo(() => {
-    if (!supportsBirthdays || !value) return null;
+    if (!supportsBirthdays || !value) return;
 
     const date = new Date(value);
     return new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
@@ -44,85 +44,17 @@ const BirthdayInput: React.FC<IBirthdayInput> = ({ value, onChange, required }) 
 
   if (!supportsBirthdays) return null;
 
-  const renderCustomHeader = ({
-    decreaseMonth,
-    increaseMonth,
-    prevMonthButtonDisabled,
-    nextMonthButtonDisabled,
-    decreaseYear,
-    increaseYear,
-    prevYearButtonDisabled,
-    nextYearButtonDisabled,
-    date,
-  }: {
-    decreaseMonth(): void;
-    increaseMonth(): void;
-    prevMonthButtonDisabled: boolean;
-    nextMonthButtonDisabled: boolean;
-    decreaseYear(): void;
-    increaseYear(): void;
-    prevYearButtonDisabled: boolean;
-    nextYearButtonDisabled: boolean;
-    date: Date;
-  }) => {
-    return (
-      <div className='flex flex-col gap-2'>
-        <div className='flex items-center justify-between'>
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/outline/chevron-left.svg')}
-            onClick={decreaseMonth}
-            disabled={prevMonthButtonDisabled}
-            aria-label={intl.formatMessage(messages.previousMonth)}
-            title={intl.formatMessage(messages.previousMonth)}
-          />
-          {intl.formatDate(date, { month: 'long' })}
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/outline/chevron-right.svg')}
-            onClick={increaseMonth}
-            disabled={nextMonthButtonDisabled}
-            aria-label={intl.formatMessage(messages.nextMonth)}
-            title={intl.formatMessage(messages.nextMonth)}
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/outline/chevron-left.svg')}
-            onClick={decreaseYear}
-            disabled={prevYearButtonDisabled}
-            aria-label={intl.formatMessage(messages.previousYear)}
-            title={intl.formatMessage(messages.previousYear)}
-          />
-          {intl.formatDate(date, { year: 'numeric' })}
-          <IconButton
-            className='datepicker__button rtl:rotate-180'
-            src={require('@tabler/icons/outline/chevron-right.svg')}
-            onClick={increaseYear}
-            disabled={nextYearButtonDisabled}
-            aria-label={intl.formatMessage(messages.nextYear)}
-            title={intl.formatMessage(messages.nextYear)}
-          />
-        </div>
-      </div>
-    );
-  };
-
   const handleChange = (date: Date) => onChange(date ? new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 10) : '');
 
   return (
     <div className='relative mt-1 rounded-md shadow-sm'>
-      <DatePicker
-        selected={selected}
-        wrapperClassName='react-datepicker-wrapper'
+      <Datetime
+        value={selected ?? new Date()}
         onChange={handleChange}
-        placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
-        minDate={new Date('1900-01-01')}
-        maxDate={maxDate}
+        placeholder={intl.formatMessage(messages.birthdayPlaceholder)}
+        min={new Date('1900-01-01')}
+        max={maxDate}
         required={required}
-        renderCustomHeader={renderCustomHeader}
-        isClearable={!required}
       />
     </div>
   );
