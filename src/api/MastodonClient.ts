@@ -1,7 +1,7 @@
 import { HTTPError } from './HTTPError';
 
 interface Opts {
-  searchParams?: Record<string, string | number | boolean>;
+  searchParams?: URLSearchParams | Record<string, string | number | boolean>;
   headers?: Record<string, string>;
   signal?: AbortSignal;
 }
@@ -51,9 +51,11 @@ export class MastodonClient {
     const url = new URL(path, this.baseUrl);
 
     if (opts.searchParams) {
-      const params = Object
-        .entries(opts.searchParams)
-        .map(([key, value]) => ([key, String(value)]));
+      const params = opts.searchParams instanceof URLSearchParams
+        ? opts.searchParams
+        : Object
+          .entries(opts.searchParams)
+          .map(([key, value]) => ([key, String(value)]));
 
       url.search = new URLSearchParams(params).toString();
     }

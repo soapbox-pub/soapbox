@@ -1,12 +1,10 @@
-import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { expandUserIndex, fetchUserIndex, setUserIndexQuery } from 'soapbox/actions/admin';
+import { useAdminAccounts } from 'soapbox/api/hooks/admin/useAdminAccounts';
+import Account from 'soapbox/components/account';
 import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Input } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { Column } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.users', defaultMessage: 'Users' },
@@ -15,51 +13,30 @@ const messages = defineMessages({
 });
 
 const UserIndex: React.FC = () => {
-  const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const { isLoading, items, total, query, next } = useAppSelector((state) => state.admin_user_index);
+  const { accounts, isLoading, hasNextPage, fetchNextPage } = useAdminAccounts(['local']);
 
   const handleLoadMore = () => {
-    if (!isLoading) dispatch(expandUserIndex());
+    if (!isLoading) {
+      fetchNextPage();
+    }
   };
-
-  const updateQuery = useCallback(debounce(() => {
-    dispatch(fetchUserIndex());
-  }, 900, { leading: true }), []);
-
-  const handleQueryChange: React.ChangeEventHandler<HTMLInputElement> = e => {
-    dispatch(setUserIndexQuery(e.target.value));
-    updateQuery();
-  };
-
-  useEffect(() => {
-    updateQuery();
-  }, []);
-
-  const hasMore = items.count() < total && !!next;
-
-  const showLoading = isLoading && items.isEmpty();
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      <Input
-        value={query}
-        onChange={handleQueryChange}
-        placeholder={intl.formatMessage(messages.searchPlaceholder)}
-      />
       <ScrollableList
         scrollKey='user-index'
-        hasMore={hasMore}
+        hasMore={hasNextPage}
         isLoading={isLoading}
-        showLoading={showLoading}
+        showLoading={isLoading}
         onLoadMore={handleLoadMore}
         emptyMessage={intl.formatMessage(messages.empty)}
         className='mt-4'
         itemClassName='pb-4'
       >
-        {items.map(id =>
-          <AccountContainer key={id} id={id} withDate />,
+        {accounts.map((account) =>
+          <Account key={account.id} account={account} withDate />,
         )}
       </ScrollableList>
     </Column>

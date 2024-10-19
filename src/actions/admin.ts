@@ -173,16 +173,12 @@ function fetchUsers(filters: string[] = [], page = 1, query?: string | null, pag
 
     try {
       const { data: accounts, ...response } = await api(getState).get(url || '/api/v1/admin/accounts', { params });
-      const next = getLinks(response as AxiosResponse<any, any>).refs.find(link => link.rel === 'next');
-
-      const count = next
-        ? page * pageSize + 1
-        : (page - 1) * pageSize + accounts.length;
+      const next = getLinks(response as AxiosResponse<any, any>).refs.find(link => link.rel === 'next')?.uri;
 
       dispatch(importFetchedAccounts(accounts.map(({ account }: APIEntity) => account)));
       dispatch(fetchRelationships(accounts.map((account_1: APIEntity) => account_1.id)));
-      dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users: accounts, count, pageSize, filters, page, next: next?.uri || false });
-      return { users: accounts, count, pageSize, next: next?.uri || false };
+      dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, accounts, pageSize, filters, page, next });
+      return { accounts, next };
     } catch (error) {
       return dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
     }
@@ -401,13 +397,13 @@ const fetchUserIndex = () =>
 
     dispatch({ type: ADMIN_USER_INDEX_FETCH_REQUEST });
 
-    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize))
+    dispatch(fetchUsers([...filters], page + 1, query, pageSize))
       .then((data: any) => {
         if (data.error) {
           dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
         } else {
-          const { users, count, next } = (data);
-          dispatch({ type: ADMIN_USER_INDEX_FETCH_SUCCESS, users, count, next });
+          const { accounts, next } = data;
+          dispatch({ type: ADMIN_USER_INDEX_FETCH_SUCCESS, accounts, next });
         }
       }).catch(() => {
         dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
@@ -422,13 +418,13 @@ const expandUserIndex = () =>
 
     dispatch({ type: ADMIN_USER_INDEX_EXPAND_REQUEST });
 
-    dispatch(fetchUsers(filters.toJS() as string[], page + 1, query, pageSize, next))
-      .then((data: any) => {
-        if (data.error) {
+    dispatch(fetchUsers([...filters], page + 1, query, pageSize, next))
+      .then((data) => {
+        if ('error' in data) {
           dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
         } else {
-          const { users, count, next } = (data);
-          dispatch({ type: ADMIN_USER_INDEX_EXPAND_SUCCESS, users, count, next });
+          const { accounts, next } = data;
+          dispatch({ type: ADMIN_USER_INDEX_EXPAND_SUCCESS, accounts, next });
         }
       }).catch(() => {
         dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
