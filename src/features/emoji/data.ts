@@ -1,4 +1,4 @@
-import data from '@emoji-mart/data/sets/14/twitter.json';
+import data from '@emoji-mart/data/sets/15/twitter.json';
 
 export interface NativeEmoji {
   unified: string;

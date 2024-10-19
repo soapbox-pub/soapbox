@@ -8,7 +8,7 @@ import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
 import { fetchFilters } from 'soapbox/actions/filters';
 import { fetchMarker } from 'soapbox/actions/markers';
 import { expandNotifications } from 'soapbox/actions/notifications';
-import { register as registerPushNotifications } from 'soapbox/actions/push-notifications';
+import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
 import { expandHomeTimeline } from 'soapbox/actions/timelines';
@@ -16,7 +16,7 @@ import { useUserStream } from 'soapbox/api/hooks';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation';
 import ThumbNavigation from 'soapbox/components/thumb-navigation';
 import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn } from 'soapbox/hooks';
+import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn, useApi } from 'soapbox/hooks';
 import AdminPage from 'soapbox/pages/admin-page';
 import ChatsPage from 'soapbox/pages/chats-page';
 import DefaultPage from 'soapbox/pages/default-page';
@@ -34,7 +34,6 @@ import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
-import { getVapidKey } from 'soapbox/utils/auth';
 
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
@@ -381,6 +380,7 @@ interface IUI {
 }
 
 const UI: React.FC<IUI> = ({ children }) => {
+  const api = useApi();
   const history = useHistory();
   const dispatch = useAppDispatch();
   const node = useRef<HTMLDivElement | null>(null);
@@ -388,7 +388,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const { account } = useOwnAccount();
   const instance = useInstance();
   const features = useFeatures();
-  const vapidKey = useAppSelector(state => getVapidKey(state));
+  const vapidKey = instance.instance.configuration.vapid.public_key;
 
   const dropdownMenuIsOpen = useAppSelector(state => state.dropdown_menu.isOpen);
 
@@ -470,7 +470,9 @@ const UI: React.FC<IUI> = ({ children }) => {
   }, [!!account]);
 
   useEffect(() => {
-    dispatch(registerPushNotifications());
+    if (vapidKey) {
+      registerPushNotifications(api, vapidKey).catch(console.warn);
+    }
   }, [vapidKey]);
 
   const shouldHideFAB = (): boolean => {

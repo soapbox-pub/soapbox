@@ -294,8 +294,7 @@ const useChatActions = (chatId: string) => {
     onError: (_error: any, variables, context: any) => {
       queryClient.setQueryData(['chats', 'messages', variables.chatId], context.prevChatMessages);
     },
-    onSuccess: async (response, variables, context) => {
-      const data = await response.json();
+    onSuccess: (data, variables, context) => {
       const nextChat = { ...chat, last_message: data };
       updatePageItem(ChatKeys.chatSearch(), nextChat, (o, n) => o.id === n.id);
       updatePageItem(

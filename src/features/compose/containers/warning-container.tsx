@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAppSelector, useCompose } from 'soapbox/hooks';
+import { useAppSelector, useCompose, useFeatures, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks';
 import { selectOwnAccount } from 'soapbox/selectors';
 
 import Warning from '../components/warning';
@@ -15,10 +15,60 @@ interface IWarningWrapper {
 
 const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
   const compose = useCompose(composeId);
+  const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
+  const { account } = useOwnAccount();
+  const settingsNotifications = useSettingsNotifications();
+  const features = useFeatures();
 
   const needsLockWarning = useAppSelector((state) => compose.privacy === 'private' && !selectOwnAccount(state)!.locked);
   const hashtagWarning = (compose.privacy !== 'public' && compose.privacy !== 'group') && APPROX_HASHTAG_RE.test(compose.text);
   const directMessageWarning = compose.privacy === 'direct';
+
+  if (scheduledStatusCount > 0) {
+    return (
+      <Warning
+        message={(
+          <FormattedMessage
+            id='compose_form.scheduled_statuses.message'
+            defaultMessage='You have scheduled posts. {click_here} to see them.'
+            values={{ click_here: (
+              <Link to='/scheduled_statuses'>
+                <FormattedMessage
+                  id='compose_form.scheduled_statuses.click_here'
+                  defaultMessage='Click here'
+                />
+              </Link>
+            ) }}
+          />)
+        }
+      />
+    );
+  }
+
+  if (features.nostr && account?.source?.nostr?.nip05 === undefined) {
+    return (
+      <Warning
+        message={(settingsNotifications.has('needsNip05')) ? (
+          <FormattedMessage
+            id='compose_form.nip05.warning'
+            defaultMessage={'You don\'t have a username configured. {click} to set one up.'}
+            values={{
+              click: (
+                <Link to='/settings/identity'>
+                  <FormattedMessage id='compose_form.nip05.warning.click' defaultMessage='Click here' />
+                </Link>
+              ),
+            }}
+          />
+        ) : (
+          <FormattedMessage
+            id='compose_form.nip05.pending'
+            defaultMessage='Your username request is under review.'
+          />
+        )}
+      />
+    );
+  }
 
   if (needsLockWarning) {
     return (
