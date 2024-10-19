@@ -37,7 +37,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
 
   return (
     <div className='flex w-full flex-col items-center justify-center sm:flex-row'>
-      <Stack space={10} alignItems='center' className='relative flex w-full pb-4 pt-2 sm:w-[80%]'>
+      <Stack space={10} alignItems='center' className='relative flex w-full pb-4 pt-2 sm:w-4/5'>
 
         <Stack space={4} justifyContent='center' className='w-full' alignItems='center'>
           <Stack justifyContent='center' alignItems='center' className='w-3/5'>

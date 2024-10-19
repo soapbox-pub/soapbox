@@ -67,13 +67,13 @@ const Accordion: React.FC<IAccordion> = ({ headline, children, menu, expanded = 
             <button onClick={handleAction} title={actionLabel}>
               <Icon
                 src={actionIcon}
-                className='h-5 w-5 text-gray-700 dark:text-gray-600'
+                className='size-5 text-gray-700 dark:text-gray-600'
               />
             </button>
           )}
           <Icon
             src={expanded ? require('@tabler/icons/outline/chevron-up.svg') : require('@tabler/icons/outline/chevron-down.svg')}
-            className='h-5 w-5 text-gray-700 dark:text-gray-600'
+            className='size-5 text-gray-700 dark:text-gray-600'
           />
         </HStack>
       </button>

@@ -80,7 +80,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     return (
       <>
         <div className='-mx-4 -mt-4'>
-          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
+          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
         </div>
 
         <PlaceholderEventHeader />
@@ -360,7 +360,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   return (
     <>
       <div className='-mx-4 -mt-4'>
-        <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
+        <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
           {banner && (
             <a href={banner.url} onClick={handleHeaderClick} target='_blank'>
               <StillImage
@@ -397,7 +397,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                     <Comp key={idx} {...itemProps} className='group'>
                       <div className='flex items-center'>
                         {menuItem.icon && (
-                          <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 flex-none text-gray-400 group-hover:text-gray-500' />
+                          <SvgIcon src={menuItem.icon} className='mr-3 size-5 flex-none text-gray-400 group-hover:text-gray-500' />
                         )}
 
                         <div className='truncate'>{menuItem.text}</div>

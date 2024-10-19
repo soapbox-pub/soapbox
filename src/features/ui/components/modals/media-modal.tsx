@@ -292,11 +292,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               <div className={clsx('absolute inset-y-0 left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
                 <button
                   tabIndex={0}
-                  className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                  className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
                   onClick={handlePrevClick}
                   aria-label={intl.formatMessage(messages.previous)}
                 >
-                  <Icon src={require('@tabler/icons/outline/arrow-left.svg')} className='h-5 w-5' />
+                  <Icon src={require('@tabler/icons/outline/arrow-left.svg')} className='size-5' />
                 </button>
               </div>
             )}
@@ -314,11 +314,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
                 <button
                   tabIndex={0}
-                  className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                  className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
                   onClick={handleNextClick}
                   aria-label={intl.formatMessage(messages.next)}
                 >
-                  <Icon src={require('@tabler/icons/outline/arrow-right.svg')} className='h-5 w-5' />
+                  <Icon src={require('@tabler/icons/outline/arrow-right.svg')} className='size-5' />
                 </button>
               </div>
             )}

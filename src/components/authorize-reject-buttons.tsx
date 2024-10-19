@@ -165,8 +165,8 @@ const AuthorizeRejectButton: React.FC<IAuthorizeRejectButton> = ({ theme, icon, 
           src={isLoading ? require('@tabler/icons/filled/player-stop.svg') : icon}
           onClick={action}
           theme='seamless'
-          className='h-10 w-10 items-center justify-center bg-white focus:!ring-0 dark:!bg-gray-900'
-          iconClassName={clsx('h-6 w-6', {
+          className='size-10 items-center justify-center bg-white focus:!ring-0 dark:!bg-gray-900'
+          iconClassName={clsx('size-6', {
             'text-primary-500': theme === 'primary',
             'text-danger-600': theme === 'danger',
           })}

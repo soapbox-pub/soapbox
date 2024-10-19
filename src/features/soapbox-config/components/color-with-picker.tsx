@@ -42,7 +42,7 @@ const ColorWithPicker: React.FC<IColorWithPicker> = ({ value, onChange, classNam
     <div className={className}>
       <div
         ref={node}
-        className='h-full w-full'
+        className='size-full'
         role='presentation'
         style={{ background: value }}
         title={value}

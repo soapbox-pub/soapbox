@@ -84,7 +84,7 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
 
         <div className='py-8'>
           <div className='mx-auto max-w-xl space-y-2 text-center'>
-            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-500'>
+            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-500 sm:text-4xl'>
               <FormattedMessage id='alert.unexpected.message' defaultMessage='Something went wrong.' />
             </h1>
             <p className='text-lg text-gray-700 dark:text-gray-600'>

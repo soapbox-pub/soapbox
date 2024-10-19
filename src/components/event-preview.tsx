@@ -56,7 +56,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
         {floatingAction && action}
       </div>
       <div className='h-40 bg-primary-200 dark:bg-gray-600'>
-        {banner && <img className='h-full w-full object-cover' src={banner.url} alt={intl.formatMessage(messages.eventBanner)} />}
+        {banner && <img className='size-full object-cover' src={banner.url} alt={intl.formatMessage(messages.eventBanner)} />}
       </div>
       <Stack className='p-2.5' space={2}>
         <HStack space={2} alignItems='center' justifyContent='between'>

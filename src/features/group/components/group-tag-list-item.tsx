@@ -88,7 +88,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
       return (
         <Icon
           src={require('@tabler/icons/filled/pin.svg')}
-          className='h-5 w-5 text-gray-600'
+          className='size-5 text-gray-600'
           data-testid='pin-icon'
         />
       );

@@ -43,7 +43,7 @@ const HomeFAB: React.FC = () => {
     >
       <Icon
         src={require('@tabler/icons/outline/pencil-plus.svg')}
-        className='h-6 w-6'
+        className='size-6'
       />
     </button>
   );
@@ -75,7 +75,7 @@ const GroupFAB: React.FC = () => {
         <Avatar className='-my-3 -ml-2 border-white' size={42} src={group.avatar} />
         <Icon
           src={require('@tabler/icons/outline/pencil-plus.svg')}
-          className='h-6 w-6'
+          className='size-6'
         />
       </HStack>
     </button>

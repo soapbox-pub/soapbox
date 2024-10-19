@@ -209,10 +209,10 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
       <FormGroup
         labelText={<FormattedMessage id='compose_event.fields.banner_label' defaultMessage='Event banner' />}
       >
-        <div className='dark:sm:shadow-inset relative flex h-24 items-center justify-center overflow-hidden rounded-lg bg-primary-100 text-primary-500 sm:h-32 sm:shadow dark:bg-gray-800 dark:text-white'>
+        <div className='dark:sm:shadow-inset relative flex h-24 items-center justify-center overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-white sm:h-32 sm:shadow'>
           {banner ? (
             <>
-              <img className='h-full w-full object-cover' src={banner.url} alt='' />
+              <img className='size-full object-cover' src={banner.url} alt='' />
               <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/outline/x.svg')} onClick={handleClearBanner} />
             </>
           ) : (
@@ -234,7 +234,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
         labelText={<FormattedMessage id='compose_event.fields.description_label' defaultMessage='Event description' />}
       >
         <ComposeEditor
-          className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 sm:text-sm dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500'
+          className='block w-full rounded-md border border-gray-400 bg-white px-3 py-2 text-base text-gray-900 ring-1 placeholder:text-gray-600 focus-within:border-primary-500 focus-within:ring-primary-500 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-100 dark:ring-gray-800 dark:placeholder:text-gray-600 dark:focus-within:border-primary-500 dark:focus-within:ring-primary-500 sm:text-sm'
           placeholderClassName='pt-2'
           composeId='compose-event-modal'
           placeholder={intl.formatMessage(messages.eventDescriptionPlaceholder)}

@@ -44,7 +44,7 @@ const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' })
 
         <Icon
           src={require('@tabler/icons/outline/chevron-right.svg')}
-          className='h-5 w-5 text-gray-600 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-500'
+          className='size-5 text-gray-600 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-500'
         />
       </HStack>
     </Link>

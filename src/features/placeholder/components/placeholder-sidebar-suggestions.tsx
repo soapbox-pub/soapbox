@@ -14,7 +14,7 @@ export default ({ limit }: { limit: number }) => {
         <HStack key={idx} alignItems='center' space={2} className='animate-pulse'>
           <Stack space={3} className='text-center'>
             <div
-              className='mx-auto block h-9 w-9 rounded-full bg-primary-200 dark:bg-primary-700'
+              className='mx-auto block size-9 rounded-full bg-primary-200 dark:bg-primary-700'
             />
           </Stack>
 

@@ -148,7 +148,7 @@ const Upload: React.FC<IUpload> = ({
 
   const uploadIcon = mediaType === 'unknown' && (
     <Icon
-      className='mx-auto my-12 h-16 w-16 text-gray-800 dark:text-gray-200'
+      className='mx-auto my-12 size-16 text-gray-800 dark:text-gray-200'
       src={MIMETYPE_ICONS[mimeType || ''] || defaultIcon}
     />
   );
@@ -225,7 +225,7 @@ const Upload: React.FC<IUpload> = ({
                   'opacity-100': !active,
                 })}
               >
-                <Icon className='h-4 w-4' src={require('@tabler/icons/outline/alert-triangle.svg')} />
+                <Icon className='size-4' src={require('@tabler/icons/outline/alert-triangle.svg')} />
                 <FormattedMessage id='upload_form.description_missing.indicator' defaultMessage='Alt' />
               </span>
             )}

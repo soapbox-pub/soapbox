@@ -15,7 +15,7 @@ export default ({ withJoinAction = true }: { withJoinAction?: boolean }) => {
     >
       <HStack alignItems='center' space={2} className='overflow-hidden'>
         {/* Group Avatar */}
-        <div className='h-11 w-11 rounded-full bg-gray-500 dark:bg-gray-700 dark:ring-primary-900' />
+        <div className='size-11 rounded-full bg-gray-500 dark:bg-gray-700 dark:ring-primary-900' />
 
         <Stack className='text-gray-500 dark:text-gray-700'>
           <Text theme='inherit' weight='bold'>

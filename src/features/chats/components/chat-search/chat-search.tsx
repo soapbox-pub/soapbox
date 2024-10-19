@@ -102,7 +102,7 @@ const ChatSearch = (props: IChatSearch) => {
             <button onClick={clearValue}>
               <Icon
                 src={hasSearchValue ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
-                className='h-4 w-4 text-gray-700 dark:text-gray-600'
+                className='size-4 text-gray-700 dark:text-gray-600'
                 aria-hidden='true'
               />
             </button>

@@ -56,7 +56,7 @@ const SidebarLink: React.FC<ISidebarLink> = ({ href, to, icon, text, onClick, co
   const body = (
     <HStack space={2} alignItems='center'>
       <div className='relative inline-flex rounded-full bg-primary-50 p-2 dark:bg-gray-800'>
-        <Icon src={icon} className='h-5 w-5 text-primary-500' count={count} />
+        <Icon src={icon} className='size-5 text-primary-500' count={count} />
       </div>
 
       <Text tag='span' weight='medium' theme='inherit'>{text}</Text>
@@ -170,7 +170,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
             className='absolute right-0 top-0 -mr-11 mt-2 text-gray-600 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300'
           />
 
-          <div className='relative h-full w-full overflow-auto overflow-y-scroll'>
+          <div className='relative size-full overflow-auto overflow-y-scroll'>
             <div className='p-4'>
               <Stack space={4}>
                 <Link to={`/@${account.acct}`} onClick={onClose}>
@@ -348,7 +348,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
                         <Icon
                           src={require('@tabler/icons/outline/chevron-down.svg')}
-                          className={clsx('h-4 w-4 text-gray-900 transition-transform dark:text-gray-100', {
+                          className={clsx('size-4 text-gray-900 transition-transform dark:text-gray-100', {
                             'rotate-180': switcher,
                           })}
                         />
@@ -360,7 +360,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                         {otherAccounts.map(account => renderAccount(account))}
 
                         <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>
-                          <Icon className='h-4 w-4 text-primary-500' src={require('@tabler/icons/outline/plus.svg')} />
+                          <Icon className='size-4 text-primary-500' src={require('@tabler/icons/outline/plus.svg')} />
                           <Text size='sm' weight='medium'>{intl.formatMessage(messages.addAccount)}</Text>
                         </NavLink>
                       </div>

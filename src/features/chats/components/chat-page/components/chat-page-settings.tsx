@@ -51,7 +51,7 @@ const ChatPageSettings = () => {
       <HStack alignItems='center'>
         <IconButton
           src={require('@tabler/icons/outline/arrow-left.svg')}
-          className='mr-2 h-7 w-7 sm:mr-0 sm:hidden rtl:rotate-180'
+          className='mr-2 size-7 sm:mr-0 sm:hidden rtl:rotate-180'
           onClick={() => history.push('/chats')}
         />
 

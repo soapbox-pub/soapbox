@@ -43,7 +43,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/outline/circle-check.svg')}
-            className='h-6 w-6 text-success-500 dark:text-success-400'
+            className='size-6 text-success-500 dark:text-success-400'
             aria-hidden
           />
         );
@@ -51,7 +51,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/outline/info-circle.svg')}
-            className='h-6 w-6 text-primary-600 dark:text-accent-blue'
+            className='size-6 text-primary-600 dark:text-accent-blue'
             aria-hidden
           />
         );
@@ -59,7 +59,7 @@ const Toast = (props: IToast) => {
         return (
           <Icon
             src={require('@tabler/icons/outline/alert-circle.svg')}
-            className='h-6 w-6 text-danger-600'
+            className='size-6 text-danger-600'
             aria-hidden
           />
         );
@@ -143,7 +143,7 @@ const Toast = (props: IToast) => {
               data-testid='toast-dismiss'
             >
               <span className='sr-only'><FormattedMessage id='lightbox.close' defaultMessage='Close' /></span>
-              <Icon src={require('@tabler/icons/outline/x.svg')} className='h-5 w-5' />
+              <Icon src={require('@tabler/icons/outline/x.svg')} className='size-5' />
             </button>
           </div>
         </HStack>
