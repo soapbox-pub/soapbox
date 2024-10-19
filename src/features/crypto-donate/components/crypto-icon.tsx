@@ -1,12 +1,13 @@
-import genericIcon from 'cryptocurrency-icons/svg/color/generic.svg';
 import React from 'react';
 
+import genericIcon from 'soapbox/assets/cryptocurrency/generic.svg';
+
 /** Get crypto icon URL by ticker symbol, or fall back to generic icon */
-const getIcon = (ticker: string): string => {
-  const modules: Record<string, any> = import.meta.glob('../../../../node_modules/cryptocurrency-icons/svg/color/*.svg', { eager: true });
-  const key = `../../../../node_modules/cryptocurrency-icons/svg/color/${ticker}.svg`;
+function getIcon(ticker: string): string {
+  const modules: Record<string, { default: string }> = import.meta.glob('../../../assets/cryptocurrency/*.svg', { eager: true });
+  const key = `../../../assets/cryptocurrency/${ticker}.svg`;
   return modules[key]?.default || genericIcon;
-};
+}
 
 interface ICryptoIcon {
   ticker: string;
