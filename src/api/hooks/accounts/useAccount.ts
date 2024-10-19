@@ -30,7 +30,7 @@ function useAccount(accountId?: string, opts: UseAccountOpts = {}) {
     isLoading: isRelationshipLoading,
   } = useRelationship(accountId, { enabled: withRelationship });
 
-  const isBlocked = entity?.relationship?.blocked_by === true;
+  const isBlocked = relationship?.blocked_by === true;
   const isUnavailable = (me === entity?.id) ? false : (isBlocked && !features.blockersVisible);
 
   const account = useMemo(

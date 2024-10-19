@@ -9,21 +9,20 @@ import {
   fromJS,
 } from 'immutable';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, EmbeddedEntity, Status } from 'soapbox/types/entities';
 
 export const AdminReportRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as EmbeddedEntity<Account>,
   action_taken: false,
-  action_taken_by_account: null as EmbeddedEntity<Account | ReducerAccount> | null,
-  assigned_account: null as EmbeddedEntity<Account | ReducerAccount> | null,
+  action_taken_by_account: null as EmbeddedEntity<Account> | null,
+  assigned_account: null as EmbeddedEntity<Account> | null,
   category: '',
   comment: '',
   created_at: new Date(),
   id: '',
   rules: ImmutableList<string>(),
   statuses: ImmutableList<EmbeddedEntity<Status>>(),
-  target_account: null as EmbeddedEntity<Account | ReducerAccount>,
+  target_account: null as EmbeddedEntity<Account>,
   updated_at: new Date(),
 });
 

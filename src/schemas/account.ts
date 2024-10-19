@@ -7,6 +7,7 @@ import emojify from 'soapbox/features/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
+import { Relationship } from './relationship';
 import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
@@ -180,6 +181,9 @@ const accountSchema = baseAccountSchema.extend({
   moved: baseAccountSchema.transform(transformAccount).nullable().catch(null),
 }).transform(transformAccount);
 
-type Account = Resolve<z.infer<typeof accountSchema>>;
+type Account = Resolve<z.infer<typeof accountSchema>> & {
+  // FIXME: decouple these in components.
+  relationship?: Relationship;
+}
 
 export { accountSchema, type Account };
