@@ -117,7 +117,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "公告開始日期：",
   "admin.edit_announcement.save": "儲存",
   "admin.edit_announcement.updated": "公告已編輯",
-  "admin.latest_accounts_panel.more": "點擊展開 {count} 個帳戶",
   "admin.latest_accounts_panel.title": "最近加入的帳戶",
   "admin.moderation_log.empty_message": "你還沒有進行任何管理，如果有任何操作，操作歷史就會顯示在這裏。",
   "admin.reports.actions.close": "關閉檢舉",

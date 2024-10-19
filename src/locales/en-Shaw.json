@@ -95,7 +95,6 @@
   "admin.dashcounters.user_count_label": "𐑑𐑴𐑑𐑩𐑤 𐑿𐑟𐑼𐑟",
   "admin.dashwidgets.email_list_header": "𐑰𐑥𐑱𐑤 𐑤𐑦𐑕𐑑",
   "admin.dashwidgets.software_header": "𐑕𐑪𐑓𐑑𐑢𐑺",
-  "admin.latest_accounts_panel.more": "Click to see {count} {count, plural, one {account} other {accounts}}",
   "admin.latest_accounts_panel.title": "𐑤𐑱𐑑𐑩𐑕𐑑 𐑩𐑒𐑬𐑯𐑑𐑕",
   "admin.moderation_log.empty_message": "𐑿 𐑣𐑨𐑝 𐑯𐑪𐑑 𐑐𐑼𐑓𐑹𐑥𐑛 𐑧𐑯𐑦 𐑥𐑪𐑛𐑼𐑱𐑖𐑩𐑯 𐑨𐑒𐑖𐑩𐑯𐑟 𐑘𐑧𐑑. 𐑢𐑧𐑯 𐑿 do, 𐑩 𐑣𐑦𐑕𐑑𐑼𐑦 𐑢𐑦𐑤 𐑚𐑰 𐑖𐑴𐑯 𐑣𐑽.",
   "admin.reports.actions.close": "𐑒𐑤𐑴𐑟",

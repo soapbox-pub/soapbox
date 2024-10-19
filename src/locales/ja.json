@@ -118,7 +118,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "アナウンスの始期:",
   "admin.edit_announcement.save": "保存する",
   "admin.edit_announcement.updated": "アナウンスが編集されました",
-  "admin.latest_accounts_panel.more": "クリックして {count} 人のおすすめユーザーを表示",
   "admin.latest_accounts_panel.title": "最近のアカウント",
   "admin.moderation_log.empty_message": "あなたはまだモデレーションを実施していません。 モデレーションを実施すると、その履歴はここに表示されます。",
   "admin.reports.actions.close": "クローズする",

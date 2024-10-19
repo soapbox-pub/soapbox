@@ -95,7 +95,6 @@
   "admin.dashcounters.user_count_label": "Nutzer",
   "admin.dashwidgets.email_list_header": "Emailliste",
   "admin.dashwidgets.software_header": "Software",
-  "admin.latest_accounts_panel.more": "Klicke, um {count, plural, one {# account} other {# accounts}} zu sehen",
   "admin.latest_accounts_panel.title": "Neueste Accounts",
   "admin.moderation_log.empty_message": "Bisher wurden keine Moderationstätigkeiten durchgeführt. Durchgeführte Modarationstätigkeiten werden hier angezeigt.",
   "admin.reports.actions.close": "Schließen",

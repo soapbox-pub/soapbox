@@ -115,7 +115,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "Duyuru başlıyor:",
   "admin.edit_announcement.save": "Kaydet",
   "admin.edit_announcement.updated": "Duyuru düzenlendi",
-  "admin.latest_accounts_panel.more": "{count, plural, one {# account} kadar hesabı ve diğer {# accounts}} hesapları görmek için tıkla",
   "admin.latest_accounts_panel.title": "Son Hesaplar",
   "admin.moderation_log.empty_message": "Henüz herhangi bir moderasyon işlemi gerçekleştirmediniz. Burada yaptığınız moderasyon işlemlerinin geçmişi gösterilecektir.",
   "admin.reports.actions.close": "Kapat",
