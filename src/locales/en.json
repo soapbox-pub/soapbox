@@ -145,7 +145,6 @@
   "admin.edit_rule.fields.text_placeholder": "Instance rule text",
   "admin.edit_rule.save": "Save",
   "admin.edit_rule.updated": "Rule edited",
-  "admin.latest_accounts_panel.more": "Click to see {count, plural, one {# account} other {# accounts}}",
   "admin.latest_accounts_panel.title": "Latest Accounts",
   "admin.moderation_log.empty_message": "You have not performed any moderation actions yet. When you do, a history will be shown here.",
   "admin.relays.add.fail": "Failed to follow the instance relay",
