@@ -65,7 +65,6 @@
     "@sentry/browser": "^8.34.0",
     "@sentry/react": "^8.34.0",
     "@sentry/types": "^8.34.0",
-    "@soapbox.pub/wasmboy": "^0.8.0",
     "@soapbox/weblock": "npm:@jsr/soapbox__weblock",
     "@tabler/icons": "^3.19.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
