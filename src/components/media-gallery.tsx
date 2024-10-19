@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect, Suspense } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -15,7 +15,7 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
 
-const Gameboy = React.lazy(() => import('./gameboy'));
+// const Gameboy = React.lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -144,7 +144,7 @@ const Item: React.FC<IItem> = ({
   let thumbnail: React.ReactNode = '';
   const ext = attachment.url.split('.').pop()?.toLowerCase();
 
-  if (attachment.type === 'unknown' && ['gb', 'gbc'].includes(ext!)) {
+  /*if (attachment.type === 'unknown' && ['gb', 'gbc'].includes(ext!)) {
     return (
       <div
         className={clsx('media-gallery__item', {
@@ -159,7 +159,7 @@ const Item: React.FC<IItem> = ({
         </Suspense>
       </div>
     );
-  } else if (attachment.type === 'unknown') {
+  } else */if (attachment.type === 'unknown') {
     const filename = truncateFilename(attachment.url, MAX_FILENAME_LENGTH);
     const attachmentIcon = (
       <Icon
