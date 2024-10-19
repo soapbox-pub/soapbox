@@ -29,5 +29,3 @@ const NostrSignUpModal: React.FC<INostrSignupModal> = ({ onClose }) => {
 };
 
 export default NostrSignUpModal;
-
-export type { Step };

@@ -7,10 +7,9 @@ import { Button, Stack, Modal, Text, Divider } from 'soapbox/components/ui';
 import { useAppDispatch } from 'soapbox/hooks';
 
 import NostrExtensionIndicator from '../../nostr-login-modal/components/nostr-extension-indicator';
-import { Step } from '../nostr-signup-modal';
 
 interface IKeyStep {
-  setStep(step: Step): void;
+  setStep(step: 'extension' | 'key' | 'keygen'): void;
   onClose(): void;
 }
 
