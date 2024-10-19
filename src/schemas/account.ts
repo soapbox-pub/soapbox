@@ -7,7 +7,7 @@ import emojify from 'soapbox/features/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 
 import { customEmojiSchema } from './custom-emoji';
-import { relationshipSchema } from './relationship';
+import { Relationship } from './relationship';
 import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
@@ -73,7 +73,7 @@ const baseAccountSchema = z.object({
     birthday: birthdaySchema.nullish().catch(undefined),
     location: z.string().optional().catch(undefined),
   }).optional().catch(undefined),
-  pleroma: z.object({
+  pleroma: coerceObject({
     accepts_chat_messages: z.boolean().catch(false),
     accepts_email_list: z.boolean().catch(false),
     also_known_as: z.array(z.string().url()).catch([]),
@@ -91,12 +91,11 @@ const baseAccountSchema = z.object({
     is_moderator: z.boolean().catch(false),
     is_suggested: z.boolean().catch(false),
     location: z.string().optional().catch(undefined),
-    notification_settings: z.object({
+    notification_settings: coerceObject({
       block_from_strangers: z.boolean().catch(false),
-    }).optional().catch(undefined),
-    relationship: relationshipSchema.optional().catch(undefined),
+    }),
     tags: z.array(z.string()).catch([]),
-  }).optional().catch(undefined),
+  }),
   roles: filteredArray(roleSchema),
   source: z.object({
     approved: z.boolean().catch(true),
@@ -170,13 +169,8 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
     note_emojified: DOMPurify.sanitize(emojify(account.note, customEmojiMap), { USE_PROFILES: { html: true } }),
-    pleroma: (() => {
-      if (!pleroma) return undefined;
-      const { relationship, ...rest } = pleroma;
-      return rest;
-    })(),
+    pleroma,
     roles: account.roles.length ? account.roles : filterBadges(pleroma?.tags),
-    relationship: pleroma?.relationship,
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,
     suspended: account.suspended || pleroma?.deactivated || false,
     verified: account.verified || pleroma?.tags.includes('verified') || false,
@@ -187,6 +181,9 @@ const accountSchema = baseAccountSchema.extend({
   moved: baseAccountSchema.transform(transformAccount).nullable().catch(null),
 }).transform(transformAccount);
 
-type Account = Resolve<z.infer<typeof accountSchema>>;
+type Account = Resolve<z.infer<typeof accountSchema>> & {
+  // FIXME: decouple these in components.
+  relationship?: Relationship;
+}
 
 export { accountSchema, type Account };
