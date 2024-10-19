@@ -4,7 +4,6 @@ import entities from 'soapbox/entity-store/reducer';
 
 import accounts_meta from './accounts-meta';
 import admin from './admin';
-import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import auth from './auth';
 import backups from './backups';
@@ -60,7 +59,6 @@ import user_lists from './user-lists';
 const reducers = {
   accounts_meta,
   admin,
-  admin_user_index,
   aliases,
   auth,
   backups,

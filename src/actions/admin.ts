@@ -70,16 +70,6 @@ const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQ
 const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
 const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
-const ADMIN_USER_INDEX_EXPAND_FAIL    = 'ADMIN_USER_INDEX_EXPAND_FAIL';
-const ADMIN_USER_INDEX_EXPAND_REQUEST = 'ADMIN_USER_INDEX_EXPAND_REQUEST';
-const ADMIN_USER_INDEX_EXPAND_SUCCESS = 'ADMIN_USER_INDEX_EXPAND_SUCCESS';
-
-const ADMIN_USER_INDEX_FETCH_FAIL    = 'ADMIN_USER_INDEX_FETCH_FAIL';
-const ADMIN_USER_INDEX_FETCH_REQUEST = 'ADMIN_USER_INDEX_FETCH_REQUEST';
-const ADMIN_USER_INDEX_FETCH_SUCCESS = 'ADMIN_USER_INDEX_FETCH_SUCCESS';
-
-const ADMIN_USER_INDEX_QUERY_SET = 'ADMIN_USER_INDEX_QUERY_SET';
-
 const fetchConfig = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
@@ -387,51 +377,6 @@ const setRole = (accountId: string, role: 'user' | 'moderator' | 'admin') =>
     }
   };
 
-const setUserIndexQuery = (query: string) => ({ type: ADMIN_USER_INDEX_QUERY_SET, query });
-
-const fetchUserIndex = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const { filters, page, query, pageSize, isLoading } = getState().admin_user_index;
-
-    if (isLoading) return;
-
-    dispatch({ type: ADMIN_USER_INDEX_FETCH_REQUEST });
-
-    dispatch(fetchUsers([...filters], page + 1, query, pageSize))
-      .then((data: any) => {
-        if (data.error) {
-          dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
-        } else {
-          const { accounts, next } = data;
-          dispatch({ type: ADMIN_USER_INDEX_FETCH_SUCCESS, accounts, next });
-        }
-      }).catch(() => {
-        dispatch({ type: ADMIN_USER_INDEX_FETCH_FAIL });
-      });
-  };
-
-const expandUserIndex = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const { filters, page, query, pageSize, isLoading, next, loaded } = getState().admin_user_index;
-
-    if (!loaded || isLoading) return;
-
-    dispatch({ type: ADMIN_USER_INDEX_EXPAND_REQUEST });
-
-    dispatch(fetchUsers([...filters], page + 1, query, pageSize, next))
-      .then((data) => {
-        if ('error' in data) {
-          dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
-        } else {
-          const { accounts, next } = data;
-          dispatch({ type: ADMIN_USER_INDEX_EXPAND_SUCCESS, accounts, next });
-        }
-      }).catch(() => {
-        dispatch({ type: ADMIN_USER_INDEX_EXPAND_FAIL });
-      });
-  };
-
-
 export {
   ADMIN_CONFIG_FETCH_REQUEST,
   ADMIN_CONFIG_FETCH_SUCCESS,
@@ -478,13 +423,6 @@ export {
   ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
   ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
   ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
-  ADMIN_USER_INDEX_EXPAND_FAIL,
-  ADMIN_USER_INDEX_EXPAND_REQUEST,
-  ADMIN_USER_INDEX_EXPAND_SUCCESS,
-  ADMIN_USER_INDEX_FETCH_FAIL,
-  ADMIN_USER_INDEX_FETCH_REQUEST,
-  ADMIN_USER_INDEX_FETCH_SUCCESS,
-  ADMIN_USER_INDEX_QUERY_SET,
   fetchConfig,
   updateConfig,
   updateSoapboxConfig,
@@ -508,7 +446,4 @@ export {
   promoteToModerator,
   demoteToUser,
   setRole,
-  setUserIndexQuery,
-  fetchUserIndex,
-  expandUserIndex,
 };
