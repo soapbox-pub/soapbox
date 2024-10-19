@@ -95,7 +95,6 @@
   "admin.dashcounters.user_count_label": "notendur samtals",
   "admin.dashwidgets.email_list_header": "Netfangalisti",
   "admin.dashwidgets.software_header": "Hugbúnaður",
-  "admin.latest_accounts_panel.more": "Smelltu til að sjá {count} {count, plural, one {notanda} other {notendur}}",
   "admin.latest_accounts_panel.title": "Nýjustu reikningar",
   "admin.moderation_log.empty_message": "Þú hefur ekki framkvæmt neinar aðgerðir sem stjórnandi ennþá. Feril þess birtist hér þegar það gerist.",
   "admin.reports.actions.close": "Loka",

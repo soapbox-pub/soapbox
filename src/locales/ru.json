@@ -117,7 +117,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "Объявление начинается:",
   "admin.edit_announcement.save": "Сохранить",
   "admin.edit_announcement.updated": "Объявление отредактировано",
-  "admin.latest_accounts_panel.more": "Нажмите, чтобы увидеть {count, plural, one {# профиль} few {# профиля} other {# профилей}}",
   "admin.latest_accounts_panel.title": "Последние аккаунты",
   "admin.moderation_log.empty_message": "Пока что вы не проводили работы по модерации. Когда начнёте, здесь появится история.",
   "admin.reports.actions.close": "Закрыть",

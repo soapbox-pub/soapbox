@@ -117,7 +117,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "ההודעה מתחילה ב:",
   "admin.edit_announcement.save": "שמירה",
   "admin.edit_announcement.updated": "ההודעה נערך",
-  "admin.latest_accounts_panel.more": "לחץ כדי לראות {count, plural, one {# חשבון} other {# חשבונות}}",
   "admin.latest_accounts_panel.title": "חשבונות אחרונים",
   "admin.moderation_log.empty_message": "לא ביצעת פעולות ניהול עדיין. כשתבצע, ההיסטוריה תהיה כאן.",
   "admin.reports.actions.close": "סגור",

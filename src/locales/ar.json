@@ -122,7 +122,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "الإعلان يبدأ في:",
   "admin.edit_announcement.save": "حفظ",
   "admin.edit_announcement.updated": "عُدِّلَ الإعلان",
-  "admin.latest_accounts_panel.more": "إضغط لعرض {count, plural, one {# حساب} other {# حسابات}}",
   "admin.latest_accounts_panel.title": "أحدث الحسابات",
   "admin.moderation_log.empty_message": "لم تنفِّذ أيّ عملية إشرافٍ بعد. عندما تفعل سيظهر سجلٌّ لها هنا.",
   "admin.reports.actions.close": "إغلاق",
