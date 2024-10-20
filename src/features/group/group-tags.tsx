@@ -42,7 +42,7 @@ const GroupTopics: React.FC<IGroupTopics> = (props) => {
           <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
             <Icon
               src={require('@tabler/icons/outline/hash.svg')}
-              className='h-6 w-6 text-gray-600'
+              className='size-6 text-gray-600'
             />
           </div>
 

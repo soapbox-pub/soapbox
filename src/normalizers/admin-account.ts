@@ -9,11 +9,10 @@ import {
   fromJS,
 } from 'immutable';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, EmbeddedEntity } from 'soapbox/types/entities';
 
 export const AdminAccountRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as EmbeddedEntity<Account>,
   approved: false,
   confirmed: false,
   created_at: new Date(),

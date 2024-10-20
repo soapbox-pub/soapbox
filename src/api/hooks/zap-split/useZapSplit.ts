@@ -18,9 +18,9 @@ interface SplitValue {
 *
 * @param {StatusEntity | undefined} status - The current status entity.
 * @param {AccountEntity} account - The account for which the zap split calculation is done.
-* 
+*
 * @returns {Object} An object containing the zap split arrays, zap split data, and a function to calculate the received amount.
-* 
+*
 * @property {ZapSplitData[]} zapArrays - Array of zap split data returned from the API.
 * @property {Object} zapSplitData - Contains the total split amount, amount to receive, and individual split values.
 * @property {Function} receiveAmount - A function to calculate the zap amount based on the split configuration.

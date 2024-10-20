@@ -36,7 +36,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
     <label
       ref={picker}
       className={clsx(
-        'dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 sm:h-36 sm:shadow dark:bg-gray-800 dark:text-accent-blue',
+        'dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow',
         {
           'border-2 border-primary-600 border-dashed !z-[99]': isDragging,
           'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,
@@ -45,9 +45,9 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
       title={intl.formatMessage(messages.title)}
       tabIndex={0}
     >
-      {src && <img className='h-full w-full object-cover' src={src} alt='' />}
+      {src && <img className='size-full object-cover' src={src} alt='' />}
       <HStack
-        className={clsx('absolute top-0 h-full w-full transition-opacity', {
+        className={clsx('absolute top-0 size-full transition-opacity', {
           'opacity-0 hover:opacity-90 bg-primary-100 dark:bg-gray-800': src,
         })}
         space={1.5}
@@ -56,7 +56,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
       >
         <Icon
           src={require('@tabler/icons/outline/photo-plus.svg')}
-          className='h-4.5 w-4.5'
+          className='size-4.5'
         />
 
         <Text size='md' theme='primary' weight='semibold'>

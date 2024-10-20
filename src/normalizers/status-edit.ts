@@ -17,11 +17,10 @@ import { pollSchema } from 'soapbox/schemas';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
-import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from 'soapbox/types/entities';
 
 export const StatusEditRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account | ReducerAccount>,
+  account: null as EmbeddedEntity<Account>,
   content: '',
   created_at: new Date(),
   emojis: ImmutableList<Emoji>(),

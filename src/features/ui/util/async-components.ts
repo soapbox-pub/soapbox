@@ -120,7 +120,6 @@ export const CreateApp = lazy(() => import('soapbox/features/developers/apps/cre
 export const SettingsStore = lazy(() => import('soapbox/features/developers/settings-store'));
 export const TestTimeline = lazy(() => import('soapbox/features/test-timeline'));
 export const ServiceWorkerInfo = lazy(() => import('soapbox/features/developers/service-worker-info'));
-export const DatePicker = lazy(() => import('soapbox/features/birthdays/date-picker'));
 export const CompareHistoryModal = lazy(() => import('soapbox/features/ui/components/modals/compare-history-modal'));
 export const AuthTokenList = lazy(() => import('soapbox/features/auth-token-list'));
 export const FamiliarFollowersModal = lazy(() => import('soapbox/features/ui/components/modals/familiar-followers-modal'));

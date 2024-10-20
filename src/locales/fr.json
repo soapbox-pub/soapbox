@@ -145,7 +145,6 @@
   "admin.edit_rule.fields.text_placeholder": "Texte de la règle d'instance",
   "admin.edit_rule.save": "Enregistrer",
   "admin.edit_rule.updated": "Règle éditée",
-  "admin.latest_accounts_panel.more": "Cliquez pour voir {count, plural, one {# account} other {# accounts}}",
   "admin.latest_accounts_panel.title": "Derniers comptes",
   "admin.moderation_log.empty_message": "Vous n'avez pas encore effectué d'acte de modération. Quand vous le ferez, un historique sera montrée ici.",
   "admin.relays.add.fail": "Échec du suivi de l'instance relais",

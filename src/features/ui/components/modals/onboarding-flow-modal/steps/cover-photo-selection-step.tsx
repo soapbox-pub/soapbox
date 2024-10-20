@@ -74,12 +74,12 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
 
   return (
 
-    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
       <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />} subtitle={<FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />} />
 
       <Stack space={2} justifyContent='center' alignItems='center' className='w-full'>
-        <div className='w-full rounded-lg border border-solid border-gray-200 sm:w-2/3 dark:border-gray-800'>
+        <div className='w-full rounded-lg border border-solid border-gray-200 dark:border-gray-800 sm:w-2/3'>
           <div
             role='button'
             className='relative flex h-24 w-full items-center justify-center rounded-t-md bg-gray-200 dark:bg-gray-800'
@@ -111,7 +111,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
               })}
               disabled={isSubmitting}
             >
-              <Icon src={require('@tabler/icons/outline/plus.svg')} className='h-5 w-5 text-white' />
+              <Icon src={require('@tabler/icons/outline/plus.svg')} className='size-5 text-white' />
             </button>
 
             <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

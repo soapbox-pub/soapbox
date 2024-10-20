@@ -136,7 +136,6 @@
   "admin.edit_rule.fields.text_label": "Tekst pravila",
   "admin.edit_rule.save": "Spremi",
   "admin.edit_rule.updated": "Pravilo uređeno",
-  "admin.latest_accounts_panel.more": "Kliknite da vidite {count, plural, one {# račun} few {# računa} other {# računa}}",
   "admin.latest_accounts_panel.title": "Najnoviji računi",
   "admin.moderation_log.empty_message": "Još niste izvršili nijednu radnju moderiranja. Kada to učinite, ovdje će se prikazati povijest.",
   "admin.relays.new.follow": "Prati",

@@ -14,7 +14,7 @@ const UploadProgress: React.FC<IUploadProgress> = ({ progress }) => {
     <HStack alignItems='center' space={2}>
       <Icon
         src={require('@tabler/icons/outline/cloud-upload.svg')}
-        className='h-7 w-7 text-gray-500'
+        className='size-7 text-gray-500'
       />
 
       <Stack space={1}>

@@ -4,7 +4,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { closeModal } from 'soapbox/actions/modals';
 import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
 import { Form, FormGroup, HStack, Modal, Stack, Text, Textarea, Toggle } from 'soapbox/components/ui';
-import { DatePicker } from 'soapbox/features/ui/util/async-components';
+import { Datetime } from 'soapbox/components/ui/datetime/datetime';
 import { useAppDispatch } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
@@ -30,15 +30,15 @@ const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose, anno
   const intl = useIntl();
 
   const [content, setContent] = useState(announcement?.content || '');
-  const [startTime, setStartTime] = useState(announcement?.starts_at ? new Date(announcement.starts_at) : null);
-  const [endTime, setEndTime] = useState(announcement?.ends_at ? new Date(announcement.ends_at) : null);
+  const [startTime, setStartTime] = useState(announcement?.starts_at ? new Date(announcement.starts_at) : undefined);
+  const [endTime, setEndTime] = useState(announcement?.ends_at ? new Date(announcement.ends_at) : undefined);
   const [allDay, setAllDay] = useState(announcement?.all_day || false);
 
   const onChangeContent: React.ChangeEventHandler<HTMLTextAreaElement> = ({ target }) => setContent(target.value);
 
-  const onChangeStartTime = (date: Date | null) => setStartTime(date);
+  const onChangeStartTime = (date: Date | undefined) => setStartTime(date);
 
-  const onChangeEndTime = (date: Date | null) => setEndTime(date);
+  const onChangeEndTime = (date: Date | undefined) => setEndTime(date);
 
   const onChangeAllDay: React.ChangeEventHandler<HTMLInputElement> = ({ target }) => setAllDay(target.checked);
 
@@ -94,29 +94,19 @@ const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose, anno
         <FormGroup
           labelText={<FormattedMessage id='admin.edit_announcement.fields.start_time_label' defaultMessage='Start date' />}
         >
-          <DatePicker
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            placeholderText={intl.formatMessage(messages.announcementStartTimePlaceholder)}
-            selected={startTime}
+          <Datetime
+            value={startTime ?? new Date()}
             onChange={onChangeStartTime}
-            isClearable
+            placeholder={intl.formatMessage(messages.announcementStartTimePlaceholder)}
           />
         </FormGroup>
         <FormGroup
           labelText={<FormattedMessage id='admin.edit_announcement.fields.end_time_label' defaultMessage='End date' />}
         >
-          <DatePicker
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            placeholderText={intl.formatMessage(messages.announcementEndTimePlaceholder)}
-            selected={endTime}
+          <Datetime
+            value={endTime ?? new Date()}
             onChange={onChangeEndTime}
-            isClearable
+            placeholder={intl.formatMessage(messages.announcementEndTimePlaceholder)}
           />
         </FormGroup>
         <HStack alignItems='center' space={2}>

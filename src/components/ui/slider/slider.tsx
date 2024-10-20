@@ -60,7 +60,7 @@ const Slider: React.FC<ISlider> = ({ value, onChange }) => {
       <div className='absolute top-1/2 h-1 w-full -translate-y-1/2 rounded-full bg-primary-200 dark:bg-primary-700' />
       <div className='absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-accent-500' style={{ width: `${value * 100}%` }} />
       <span
-        className='absolute top-1/2 z-[9] -ml-1.5 h-3 w-3 -translate-y-1/2 rounded-full bg-accent-500 shadow'
+        className='absolute top-1/2 z-[9] -ml-1.5 size-3 -translate-y-1/2 rounded-full bg-accent-500 shadow'
         tabIndex={0}
         style={{ left: `${value * 100}%` }}
       />

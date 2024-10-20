@@ -148,7 +148,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
 
   const canvas = (
     <Blurhash
-      className='absolute inset-0 -z-10 h-full w-full'
+      className='absolute inset-0 -z-10 size-full'
       hash={card.blurhash}
     />
   );
@@ -185,7 +185,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                 <button onClick={handleEmbedClick} className='appearance-none text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'>
                   <Icon
                     src={iconVariant}
-                    className='h-6 w-6 text-inherit'
+                    className='size-6 text-inherit'
                   />
                 </button>
 
@@ -199,7 +199,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                   >
                     <Icon
                       src={require('@tabler/icons/outline/external-link.svg')}
-                      className='h-6 w-6 text-inherit'
+                      className='size-6 text-inherit'
                     />
                   </a>
                 )}
@@ -220,7 +220,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     embed = (
       <div className={clsx(
         'status-card__image',
-        'w-full flex-none rounded-l md:h-auto md:w-auto md:flex-auto',
+        'w-full flex-none rounded-l md:size-auto md:flex-auto',
         {
           'h-auto': horizontal,
           'h-[200px]': !horizontal,

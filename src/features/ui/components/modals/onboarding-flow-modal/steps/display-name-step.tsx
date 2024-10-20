@@ -61,7 +61,7 @@ const DisplayNameStep: React.FC<IDisplayNameStep> = ({ onClose, onNext }) => {
 
   return (
 
-    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
       <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.display_name.title' defaultMessage='Choose a display name' />} subtitle={<FormattedMessage id='onboarding.display_name.subtitle' defaultMessage='Show who you are! Create a unique username and leave your mark.' />} />
 

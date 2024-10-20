@@ -1,159 +1,108 @@
-import { createPushSubscription, updatePushSubscription } from 'soapbox/actions/push-subscriptions';
-import { pushNotificationsSetting } from 'soapbox/settings';
-import { getVapidKey } from 'soapbox/utils/auth';
-import { decode as decodeBase64 } from 'soapbox/utils/base64';
-
-import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
-
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Me } from 'soapbox/types/soapbox';
-
-// Taken from https://www.npmjs.com/package/web-push
-const urlBase64ToUint8Array = (base64String: string) => {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
-
-  return decodeBase64(base64);
-};
-
-const getRegistration = () => {
-  if (navigator.serviceWorker) {
-    return navigator.serviceWorker.ready;
-  } else {
-    throw 'Your browser does not support Service Workers.';
-  }
-};
-
-const getPushSubscription = (registration: ServiceWorkerRegistration) =>
-  registration.pushManager.getSubscription()
-    .then(subscription => ({ registration, subscription }));
-
-const subscribe = (registration: ServiceWorkerRegistration, getState: () => RootState) =>
-  registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(getVapidKey(getState())),
-  });
-
-const unsubscribe = ({ registration, subscription }: {
-  registration: ServiceWorkerRegistration;
-  subscription: PushSubscription | null;
-}) =>
-  subscription ? subscription.unsubscribe().then(() => registration) : new Promise<ServiceWorkerRegistration>(r => r(registration));
-
-const sendSubscriptionToBackend = (subscription: PushSubscription, me: Me) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const alerts = getState().push_notifications.alerts.toJS();
-    const params = { subscription: subscription.toJSON(), data: { alerts } };
-
-    if (me) {
-      const data = pushNotificationsSetting.get(me);
-      if (data) {
-        params.data = data;
-      }
-    }
-
-    return dispatch(createPushSubscription(params));
-  };
+/* eslint-disable compat/compat */
+import { HTTPError } from 'soapbox/api/HTTPError';
+import { MastodonClient } from 'soapbox/api/MastodonClient';
+import { WebPushSubscription, webPushSubscriptionSchema } from 'soapbox/schemas/web-push';
+import { decodeBase64Url } from 'soapbox/utils/base64';
 
 // Last one checks for payload support: https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#no-payload
-// eslint-disable-next-line compat/compat
 const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager' in window && 'getKey' in PushSubscription.prototype);
 
-const register = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const me = getState().me;
-    const vapidKey = getVapidKey(getState());
+/**
+ * Register web push notifications.
+ * This function creates a subscription if one hasn't been created already, and syncronizes it with the backend.
+ */
+export async function registerPushNotifications(api: MastodonClient, vapidKey: string) {
+  if (!supportsPushNotifications) {
+    console.warn('Your browser does not support Web Push Notifications.');
+    return;
+  }
 
-    dispatch(setBrowserSupport(supportsPushNotifications));
+  const { subscription, created } = await getOrCreateSubscription(vapidKey);
 
-    if (!supportsPushNotifications) {
-      console.warn('Your browser does not support Web Push Notifications.');
-      return;
+  if (created) {
+    await sendSubscriptionToBackend(api, subscription);
+    return;
+  }
+
+  // We have a subscription, check if it is still valid.
+  const backend = await getBackendSubscription(api);
+
+  // If the VAPID public key did not change and the endpoint corresponds
+  // to the endpoint saved in the backend, the subscription is valid.
+  if (backend && subscriptionMatchesBackend(subscription, backend)) {
+    return;
+  } else {
+    // Something went wrong, try to subscribe again.
+    await subscription.unsubscribe();
+    const newSubscription = await createSubscription(vapidKey);
+    await sendSubscriptionToBackend(api, newSubscription);
+  }
+}
+
+/** Get an existing subscription object from the browser if it exists, or ask the browser to create one. */
+async function getOrCreateSubscription(vapidKey: string): Promise<{ subscription: PushSubscription; created: boolean }> {
+  const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.getSubscription();
+
+  if (subscription) {
+    return { subscription, created: false };
+  } else {
+    const subscription = await createSubscription(vapidKey);
+    return { subscription, created: true };
+  }
+}
+
+/** Request a subscription object from the web browser. */
+async function createSubscription(vapidKey: string): Promise<PushSubscription> {
+  const registration = await navigator.serviceWorker.ready;
+
+  return registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: decodeBase64Url(vapidKey),
+  });
+}
+
+/** Fetch the API for an existing subscription saved in the backend, if any. */
+async function getBackendSubscription(api: MastodonClient): Promise<WebPushSubscription | null> {
+  try {
+    const response = await api.get('/api/v1/push/subscription');
+    const data = await response.json();
+    return webPushSubscriptionSchema.parse(data);
+  } catch (e) {
+    if (e instanceof HTTPError && e.response.status === 404) {
+      return null;
+    } else {
+      throw e;
     }
+  }
+}
 
-    if (!vapidKey) {
-      console.error('The VAPID public key is not set. You will not be able to receive Web Push Notifications.');
-      return;
-    }
-
-    getRegistration()
-      .then(getPushSubscription)
-      // @ts-ignore
-      .then(({ registration, subscription }: {
-        registration: ServiceWorkerRegistration;
-        subscription: PushSubscription | null;
-      }) => {
-        if (subscription !== null) {
-          // We have a subscription, check if it is still valid
-          const currentServerKey = (new Uint8Array(subscription.options.applicationServerKey!)).toString();
-          const subscriptionServerKey = urlBase64ToUint8Array(vapidKey).toString();
-          const serverEndpoint = getState().push_notifications.subscription?.endpoint;
-
-          // If the VAPID public key did not change and the endpoint corresponds
-          // to the endpoint saved in the backend, the subscription is valid
-          if (subscriptionServerKey === currentServerKey && subscription.endpoint === serverEndpoint) {
-            return { subscription };
-          } else {
-            // Something went wrong, try to subscribe again
-            return unsubscribe({ registration, subscription }).then((registration: ServiceWorkerRegistration) => {
-              return subscribe(registration, getState);
-            }).then(
-              (subscription: PushSubscription) => dispatch(sendSubscriptionToBackend(subscription, me) as any));
-          }
-        }
-
-        // No subscription, try to subscribe
-        return subscribe(registration, getState)
-          .then(subscription => dispatch(sendSubscriptionToBackend(subscription, me) as any));
-      })
-      .then(({ subscription }: { subscription: PushSubscription | Record<string, any> }) => {
-        // If we got a PushSubscription (and not a subscription object from the backend)
-        // it means that the backend subscription is valid (and was set during hydration)
-        if (!(subscription instanceof PushSubscription)) {
-          dispatch(setSubscription(subscription as PushSubscription));
-          if (me) {
-            pushNotificationsSetting.set(me, { alerts: subscription.alerts });
-          }
-        }
-      })
-      .catch(error => {
-        if (error.code === 20 && error.name === 'AbortError') {
-          console.warn('Your browser supports Web Push Notifications, but does not seem to implement the VAPID protocol.');
-        } else if (error.code === 5 && error.name === 'InvalidCharacterError') {
-          console.error('The VAPID public key seems to be invalid:', vapidKey);
-        }
-
-        // Clear alerts and hide UI settings
-        dispatch(clearSubscription());
-
-        if (me) {
-          pushNotificationsSetting.remove(me);
-        }
-
-        return getRegistration()
-          .then(getPushSubscription)
-          .then(unsubscribe);
-      })
-      .catch(console.warn);
+/** Publish a new subscription to the backend. */
+async function sendSubscriptionToBackend(api: MastodonClient, subscription: PushSubscription): Promise<WebPushSubscription> {
+  const params = {
+    subscription: subscription.toJSON(),
   };
 
-const saveSettings = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState().push_notifications;
-    const alerts = state.alerts;
-    const data = { alerts };
-    const me = getState().me;
+  const response = await api.post('/api/v1/push/subscription', params);
+  const data = await response.json();
 
-    return dispatch(updatePushSubscription({ data })).then(() => {
-      if (me) {
-        pushNotificationsSetting.set(me, data);
-      }
-    }).catch(console.warn);
-  };
+  return webPushSubscriptionSchema.parse(data);
+}
 
-export {
-  register,
-  saveSettings,
-};
+/** Check if the VAPID key and endpoint of the subscription match the data in the backend. */
+function subscriptionMatchesBackend(subscription: PushSubscription, backend: WebPushSubscription): boolean {
+  const { applicationServerKey } = subscription.options;
+
+  if (subscription.endpoint !== backend.endpoint) {
+    return false;
+  }
+
+  if (!applicationServerKey) {
+    return false;
+  }
+
+  const backendKeyBytes: Uint8Array = decodeBase64Url(backend.server_key);
+  const subscriptionKeyBytes: Uint8Array = new Uint8Array(applicationServerKey);
+
+  return backendKeyBytes.toString() === subscriptionKeyBytes.toString();
+}

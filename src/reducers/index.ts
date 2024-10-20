@@ -4,7 +4,6 @@ import entities from 'soapbox/entity-store/reducer';
 
 import accounts_meta from './accounts-meta';
 import admin from './admin';
-import admin_user_index from './admin-user-index';
 import aliases from './aliases';
 import auth from './auth';
 import backups from './backups';
@@ -39,7 +38,6 @@ import patron from './patron';
 import pending_statuses from './pending-statuses';
 import polls from './polls';
 import profile_hover_card from './profile-hover-card';
-import push_notifications from './push-notifications';
 import relationships from './relationships';
 import reports from './reports';
 import scheduled_statuses from './scheduled-statuses';
@@ -61,7 +59,6 @@ import user_lists from './user-lists';
 const reducers = {
   accounts_meta,
   admin,
-  admin_user_index,
   aliases,
   auth,
   backups,
@@ -97,7 +94,6 @@ const reducers = {
   pending_statuses,
   polls,
   profile_hover_card,
-  push_notifications,
   relationships,
   reports,
   scheduled_statuses,

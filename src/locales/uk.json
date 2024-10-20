@@ -48,7 +48,6 @@
   "admin.dashcounters.status_count_label": "posts",
   "admin.dashwidgets.email_list_header": "Email list",
   "admin.dashwidgets.software_header": "Програмне забезпечення",
-  "admin.latest_accounts_panel.more": "Click to see {count} {count, plural, one {account} other {accounts}}",
   "admin.reports.actions.close": "Закрити",
   "admin.reports.actions.view_status": "Показати статус",
   "admin.reports.report_title": "Report on {acct}",

@@ -25,7 +25,7 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
       className='text-primary-600 dark:text-accent-blue'
     >
       <Icon
-        className='h-4 w-4'
+        className='size-4'
         src={
           isOwner
             ? require('@tabler/icons/outline/users.svg')

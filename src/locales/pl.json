@@ -129,7 +129,6 @@
   "admin.edit_announcement.updated": "Edytowano ogłoszenie",
   "admin.edit_domain.created": "Utworzono domenę",
   "admin.edit_domain.deleted": "Usunięto domenę",
-  "admin.latest_accounts_panel.more": "Naciśnij, aby zobaczyć {count, plural, one {# konto} few {# konta} many {# kont}}",
   "admin.latest_accounts_panel.title": "Najnowsze konta",
   "admin.moderation_log.empty_message": "Nie wykonałeś(-aś) jeszcze żadnych działań moderacyjnych. Kiedy jakieś zostaną wykonane, ich historia pojawi się tutaj.",
   "admin.reports.actions.close": "Zamknij",

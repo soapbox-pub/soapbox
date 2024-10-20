@@ -75,7 +75,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
 
         <div className='col-start-1 row-start-1 flex items-center justify-self-end'>
           <span
-            className={clsx('flex h-6 w-6 flex-none items-center justify-center rounded-full border border-solid', {
+            className={clsx('flex size-6 flex-none items-center justify-center rounded-full border border-solid', {
               'bg-primary-600 border-primary-600 dark:bg-primary-300 dark:border-primary-300': active,
               'border-primary-300 bg-white dark:bg-primary-900 dark:border-primary-500': !active,
             })}
@@ -86,7 +86,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
             aria-label={option.title}
           >
             {active && (
-              <Icon src={require('@tabler/icons/outline/check.svg')} className='h-4 w-4 text-white dark:text-primary-900' />
+              <Icon src={require('@tabler/icons/outline/check.svg')} className='size-4 text-white dark:text-primary-900' />
             )}
           </span>
         </div>
@@ -145,7 +145,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
                 <Icon
                   src={require('@tabler/icons/outline/circle-check.svg')}
                   alt={intl.formatMessage(messages.voted)}
-                  className='h-4 w-4 text-primary-600 dark:fill-white dark:text-primary-800'
+                  className='size-4 text-primary-600 dark:fill-white dark:text-primary-800'
                 />
               ) : (
                 <div className='svg-icon' />

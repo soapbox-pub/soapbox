@@ -52,7 +52,7 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
             <Stack grow className='relative basis-1/2 rounded-t-lg bg-primary-100 dark:bg-gray-800'>
               {group.header && (
                 <img
-                  className='absolute inset-0 h-full w-full rounded-t-lg object-cover'
+                  className='absolute inset-0 size-full rounded-t-lg object-cover'
                   src={group.header}
                   alt=''
                 />

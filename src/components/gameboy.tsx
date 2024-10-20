@@ -1,4 +1,5 @@
 // @ts-ignore No types available
+// eslint-disable-next-line import/no-unresolved
 import { WasmBoy } from '@soapbox.pub/wasmboy';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -120,7 +121,7 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
       <canvas
         ref={canvas}
         onClick={handleCanvasClick}
-        className={clsx('h-full w-full bg-black ', {
+        className={clsx('size-full bg-black ', {
           'object-contain': aspect === 'normal',
           'object-cover': aspect === 'stretched',
         })}

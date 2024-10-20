@@ -35,7 +35,7 @@ const DeletedBlankslate = () => (
     <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
       <Icon
         src={require('@tabler/icons/outline/trash.svg')}
-        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+        className='size-6 text-danger-600 dark:text-danger-400'
       />
     </div>
 
@@ -53,7 +53,7 @@ const PrivacyBlankslate = () => (
     <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>
       <Icon
         src={require('@tabler/icons/outline/eye-off.svg')}
-        className='h-6 w-6 text-gray-600 dark:text-gray-600'
+        className='size-6 text-gray-600 dark:text-gray-600'
       />
     </div>
 
@@ -71,7 +71,7 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
     <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
       <Icon
         src={require('@tabler/icons/outline/ban.svg')}
-        className='h-6 w-6 text-danger-600 dark:text-danger-400'
+        className='size-6 text-danger-600 dark:text-danger-400'
       />
     </div>
 

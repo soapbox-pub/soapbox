@@ -92,12 +92,12 @@ const DropdownMenuItem = ({ index, item, onClick }: IDropdownMenuItem) => {
           })
         }
       >
-        {item.icon && <Icon src={item.icon} className='mr-3 h-5 w-5 flex-none rtl:ml-3 rtl:mr-0' />}
+        {item.icon && <Icon src={item.icon} className='mr-3 size-5 flex-none rtl:ml-3 rtl:mr-0' />}
 
         <span className='truncate font-medium'>{item.text}</span>
 
         {item.count ? (
-          <span className='ml-auto h-5 w-5 flex-none'>
+          <span className='ml-auto size-5 flex-none'>
             <Counter count={item.count} />
           </span>
         ) : null}

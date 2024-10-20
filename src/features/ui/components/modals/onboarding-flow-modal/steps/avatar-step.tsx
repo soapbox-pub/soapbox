@@ -68,7 +68,7 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
     }).catch(console.error);
   };
   return (
-    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
       <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.avatar.title' defaultMessage={'Choose a profile picture'} />} subtitle={<FormattedMessage id='onboarding.avatar.subtitle' defaultMessage={'Just have fun with it.'} />} />
 
@@ -92,7 +92,7 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
           })}
           disabled={isSubmitting}
         >
-          <Icon src={require('@tabler/icons/outline/plus.svg')} className='h-5 w-5 text-white' />
+          <Icon src={require('@tabler/icons/outline/plus.svg')} className='size-5 text-white' />
         </button>
 
         <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

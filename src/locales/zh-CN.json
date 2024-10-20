@@ -145,7 +145,6 @@
   "admin.edit_rule.fields.text_placeholder": "实例规则文本",
   "admin.edit_rule.save": "保存",
   "admin.edit_rule.updated": "已编辑规则",
-  "admin.latest_accounts_panel.more": "点击查看 {count} 个帐号",
   "admin.latest_accounts_panel.title": "最近帐号",
   "admin.moderation_log.empty_message": "您尚未执行过管理操作，若执行过，则历史记录便会显示在这里。",
   "admin.relays.add.fail": "添加实例中继失败",

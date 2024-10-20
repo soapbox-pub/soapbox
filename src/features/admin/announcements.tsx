@@ -115,7 +115,7 @@ const Announcements: React.FC = () => {
           emptyMessage={emptyMessage}
           itemClassName='py-3 first:pt-0 last:pb-0'
           isLoading={isLoading}
-          showLoading={isLoading && !announcements?.length}
+          showLoading={isLoading}
         >
           {announcements!.map((announcement) => (
             <Announcement key={announcement.id} announcement={announcement} />

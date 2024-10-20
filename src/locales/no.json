@@ -114,7 +114,6 @@
   "admin.edit_announcement.fields.start_time_placeholder": "Kunngjøringen starter den:",
   "admin.edit_announcement.save": "Lagre",
   "admin.edit_announcement.updated": "Kunngjøring redigert",
-  "admin.latest_accounts_panel.more": "Klikk for å se {count} {count, plural, one {account} other {accounts}}",
   "admin.latest_accounts_panel.title": "Siste kontoer",
   "admin.moderation_log.empty_message": "Du har ikke utført noen modereringshandlinger ennå. Når du gjør det, vises en historikk her.",
   "admin.reports.actions.close": "Lukk",

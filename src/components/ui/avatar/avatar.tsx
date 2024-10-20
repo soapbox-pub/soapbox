@@ -36,7 +36,7 @@ const Avatar = (props: IAvatar) => {
       >
         <Icon
           src={require('@tabler/icons/outline/photo-off.svg')}
-          className='h-4 w-4 text-gray-500 dark:text-gray-700'
+          className='size-4 text-gray-500 dark:text-gray-700'
         />
       </div>
     );

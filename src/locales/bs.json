@@ -95,7 +95,6 @@
   "admin.dashcounters.user_count_label": "ukupno korisnika",
   "admin.dashwidgets.email_list_header": "Email lista",
   "admin.dashwidgets.software_header": "Softver",
-  "admin.latest_accounts_panel.more": "Kliknite da vidite {count} {count, plural, one {account} other {accounts}}",
   "admin.latest_accounts_panel.title": "Novi profili",
   "admin.moderation_log.empty_message": "Još niste izvršili nikakve radnje moderiranja. Kada to učinite, historija će biti prikazana ovdje.",
   "admin.reports.actions.close": "Zatvori",

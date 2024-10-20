@@ -48,13 +48,13 @@ import {
   COMPOSE_POLL_SETTINGS_CHANGE,
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
-  COMPOSE_SET_STATUS,
   COMPOSE_EVENT_REPLY,
   COMPOSE_EDITOR_STATE_SET,
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   ComposeAction,
   COMPOSE_CHANGE_MEDIA_ORDER,
 } from '../actions/compose';
+import { COMPOSE_SET_STATUS } from '../actions/compose-status';
 import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME, SettingsAction } from '../actions/settings';

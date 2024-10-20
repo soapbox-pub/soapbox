@@ -66,7 +66,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='h-4 w-4' element={iconElement} />;
+    return <Icon src={icon} className='size-4' element={iconElement} />;
   };
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {

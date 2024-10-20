@@ -84,7 +84,6 @@
   "admin.dashcounters.user_count_label": "使用者總數",
   "admin.dashwidgets.email_list_header": "電郵列表",
   "admin.dashwidgets.software_header": "軟體版本",
-  "admin.latest_accounts_panel.more": "點擊展開 {count} 個帳户",
   "admin.latest_accounts_panel.title": "最近加入的帳户",
   "admin.moderation_log.empty_message": "你還沒有進行任何管理，如果有任何操作，操作歷史就會顯示在這裏。",
   "admin.reports.actions.close": "關閉檢舉",

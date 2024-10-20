@@ -115,7 +115,6 @@
   "admin.edit_announcement.fields.content_placeholder": "محتوای اطلاعیه",
   "admin.edit_announcement.fields.end_time_label": "تاریخ پایان",
   "admin.edit_announcement.fields.start_time_label": "تاریخ شروع",
-  "admin.latest_accounts_panel.more": "Click to see {count} {count, plural, one {account} other {accounts}}",
   "admin.latest_accounts_panel.title": "Latest Accounts",
   "admin.moderation_log.empty_message": "You have not performed any moderation actions yet. When you do, a history will be shown here.",
   "admin.reports.actions.close": "Close",

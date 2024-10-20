@@ -152,7 +152,7 @@ const Dashboard: React.FC = () => {
             <span>{sourceCode.displayName} {sourceCode.version}</span>
 
             <Icon
-              className='h-4 w-4'
+              className='size-4'
               src={require('@tabler/icons/outline/external-link.svg')}
             />
           </a>

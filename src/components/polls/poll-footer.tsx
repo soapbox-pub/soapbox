@@ -7,7 +7,6 @@ import { useAppDispatch } from 'soapbox/hooks';
 import RelativeTimestamp from '../relative-timestamp';
 import { Button, HStack, Stack, Text, Tooltip } from '../ui';
 
-import type { Selected } from './poll';
 import type { Poll as PollEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
@@ -18,7 +17,7 @@ const messages = defineMessages({
 interface IPollFooter {
   poll: PollEntity;
   showResults: boolean;
-  selected: Selected;
+  selected: Record<number, boolean>;
 }
 
 const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX.Element => {

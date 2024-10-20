@@ -137,7 +137,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
             <>
               {chat.last_message.unread && (
                 <div
-                  className='h-2 w-2 rounded-full bg-secondary-500'
+                  className='size-2 rounded-full bg-secondary-500'
                   data-testid='chat-unread-indicator'
                 />
               )}

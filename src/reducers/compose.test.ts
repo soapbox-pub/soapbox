@@ -1,6 +1,7 @@
 import { List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
 
 import * as actions from 'soapbox/actions/compose';
+import { COMPOSE_SET_STATUS } from 'soapbox/actions/compose-status';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
@@ -43,7 +44,7 @@ describe('compose reducer', () => {
       const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
-        type: actions.COMPOSE_SET_STATUS,
+        type: COMPOSE_SET_STATUS,
         id: 'compose-modal',
         status: normalizeStatus(fromJS(status)),
         v: { software: 'Pleroma' },
@@ -58,7 +59,7 @@ describe('compose reducer', () => {
       const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
-        type: actions.COMPOSE_SET_STATUS,
+        type: COMPOSE_SET_STATUS,
         id: 'compose-modal',
         status: normalizeStatus(fromJS(status)),
       };
@@ -73,7 +74,7 @@ describe('compose reducer', () => {
       const action = {
         id: 'compose-modal',
         withRedraft: false,
-        type: actions.COMPOSE_SET_STATUS,
+        type: COMPOSE_SET_STATUS,
         status: normalizeStatus(fromJS(status)),
       };
 
@@ -87,7 +88,7 @@ describe('compose reducer', () => {
       const action = {
         id: 'compose-modal',
         withRedraft: true,
-        type: actions.COMPOSE_SET_STATUS,
+        type: COMPOSE_SET_STATUS,
         status: normalizeStatus(fromJS(status)),
       };
 

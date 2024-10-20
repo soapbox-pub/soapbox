@@ -133,7 +133,6 @@
   "admin.edit_domain.deleted": "Dominio eliminato",
   "admin.edit_domain.fields.all_day_hint": "Seleziona per consentire a chiunque di iscriversi e ottenere un username su questo dominio",
   "admin.edit_domain.fields.domain_label": "Dominio",
-  "admin.latest_accounts_panel.more": "Clicca per vedere {count, plural, one {# profilo} other {# profili}}",
   "admin.latest_accounts_panel.title": "Ultimi profili",
   "admin.moderation_log.empty_message": "Non hai ancora moderato nessun profilo. In futuro, qui comparirà lo storico delle moderazioni.",
   "admin.reports.actions.close": "Chiudi",

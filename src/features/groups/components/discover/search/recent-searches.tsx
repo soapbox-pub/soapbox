@@ -60,10 +60,10 @@ export default (props: Props) => {
                   data-testid='recent-search-result'
                 >
                   <HStack alignItems='center' space={2}>
-                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 p-2 dark:bg-gray-800 dark:group-hover:bg-gray-700/20'>
+                    <div className='flex size-10 items-center justify-center rounded-full bg-gray-200 p-2 dark:bg-gray-800 dark:group-hover:bg-gray-700/20'>
                       <Icon
                         src={require('@tabler/icons/outline/search.svg')}
-                        className='h-5 w-5 text-gray-600'
+                        className='size-5 text-gray-600'
                       />
                     </div>
 

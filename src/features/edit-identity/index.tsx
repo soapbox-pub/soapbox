@@ -115,7 +115,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
                         {(account.source?.nostr?.nip05 === identifier && account.acct !== identifier) && (
                           <Tooltip text={intl.formatMessage(messages.unverified)}>
                             <div>
-                              <Emoji className='h-4 w-4' emoji='⚠️' />
+                              <Emoji className='size-4' emoji='⚠️' />
                             </div>
                           </Tooltip>
                         )}
@@ -169,7 +169,7 @@ export const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (prop
       placeholder={intl.formatMessage(messages.username)}
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
-          <Icon className='h-4 w-4' src={require('@tabler/icons/outline/at.svg')} />
+          <Icon className='size-4' src={require('@tabler/icons/outline/at.svg')} />
           <span>{instance.domain}</span>
         </HStack>
       )}

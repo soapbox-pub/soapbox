@@ -223,7 +223,7 @@ const ChatMessage = (props: IChatMessage) => {
             >
               <Icon
                 src={require('@tabler/icons/outline/mood-smile.svg')}
-                className='h-4 w-4'
+                className='size-4'
               />
             </button>
           </ChatMessageReactionWrapper>
@@ -245,7 +245,7 @@ const ChatMessage = (props: IChatMessage) => {
             >
               <Icon
                 src={require('@tabler/icons/outline/dots.svg')}
-                className='h-4 w-4'
+                className='size-4'
               />
             </button>
           </DropdownMenu>
@@ -364,7 +364,7 @@ const ChatMessage = (props: IChatMessage) => {
                       <Icon
                         src={require('@tabler/icons/outline/check.svg')}
                         strokeWidth={3}
-                        className='h-2.5 w-2.5'
+                        className='size-2.5'
                       />
                     </span>
                   ) : (
@@ -372,7 +372,7 @@ const ChatMessage = (props: IChatMessage) => {
                       <Icon
                         src={require('@tabler/icons/outline/check.svg')}
                         strokeWidth={3}
-                        className='h-2.5 w-2.5'
+                        className='size-2.5'
                       />
                     </span>
                   )}

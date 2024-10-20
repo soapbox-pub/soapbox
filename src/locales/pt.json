@@ -145,7 +145,6 @@
   "admin.edit_rule.fields.text_placeholder": "Texto da regra da instância",
   "admin.edit_rule.save": "Gravar",
   "admin.edit_rule.updated": "Regra editada",
-  "admin.latest_accounts_panel.more": "Click to see {count} {count, plural, one {account} other {accounts}}",
   "admin.latest_accounts_panel.title": "Latest Accounts",
   "admin.moderation_log.empty_message": "Ainda não realizaste nenhuma ação de moderação. Quando o fizeres, um histórico será apresentado aqui.",
   "admin.relays.add.fail": "Falha ao seguir a retransmissão da instância",

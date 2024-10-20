@@ -741,7 +741,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         >
           <StatusActionButton
             title={replyTitle}
-            icon={require('@tabler/icons/outline/message-circle-2.svg')}
+            icon={require('@tabler/icons/outline/message-circle.svg')}
             onClick={handleReplyClick}
             count={replyCount}
             text={withLabels ? intl.formatMessage(messages.reply) : undefined}

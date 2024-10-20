@@ -10,8 +10,6 @@ import { Stack, Text } from '../ui';
 import PollFooter from './poll-footer';
 import PollOption from './poll-option';
 
-export type Selected = Record<number, boolean>;
-
 interface IPoll {
   id: string;
   status?: string;
@@ -28,7 +26,7 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
   const isLoggedIn = useAppSelector((state) => state.me);
   const poll = useAppSelector((state) => state.polls.get(id));
 
-  const [selected, setSelected] = useState({} as Selected);
+  const [selected, setSelected] = useState<Record<number, boolean>>({});
 
   const openUnauthorizedModal = () =>
     dispatch(openModal('UNAUTHORIZED', {
@@ -49,7 +47,7 @@ const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
         }
         setSelected(tmp);
       } else {
-        const tmp: Selected = {};
+        const tmp: Record<number, boolean> = {};
         tmp[value] = true;
         setSelected(tmp);
         handleVote(value);

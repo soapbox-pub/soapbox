@@ -1,11 +1,14 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { useApi } from 'soapbox/hooks';
 import { InstanceV1, instanceV1Schema } from 'soapbox/schemas/instance';
 
-interface Opts extends Pick<UseQueryOptions<unknown>, 'enabled' | 'retryOnMount' | 'staleTime'> {
+interface Opts {
   /** The base URL of the instance. */
   baseUrl?: string;
+  enabled?: boolean;
+  retryOnMount?: boolean;
+  staleTime?: number;
 }
 
 /** Get the Instance for the current backend. */

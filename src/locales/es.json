@@ -145,7 +145,6 @@
   "admin.edit_rule.fields.text_placeholder": "Texto de la regla de la instancia",
   "admin.edit_rule.save": "Guardar",
   "admin.edit_rule.updated": "Regla editada",
-  "admin.latest_accounts_panel.more": "Haga clic para ver {contar, plural, una {# cuenta} other {# cuentas}}",
   "admin.latest_accounts_panel.title": "Cuentas más recientes",
   "admin.moderation_log.empty_message": "Aún no has realizado ninguna acción de moderación. Cuando lo hagas, se mostrará un historial aquí.",
   "admin.relays.add.fail": "No se pudo seguir la retransmisión de la instancia",

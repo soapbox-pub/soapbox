@@ -299,7 +299,7 @@ const Notification: React.FC<INotification> = (props) => {
         <Emoji
           emoji={notification.emoji}
           src={notification.emoji_url || undefined}
-          className='h-4 w-4 flex-none'
+          className='size-4 flex-none'
         />
       );
     } else if (validType(type)) {
