@@ -142,6 +142,7 @@ import {
   ManageZapSplit,
   Rules,
   AdminNostrRelays,
+  NostrBunkerLogin,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -359,6 +360,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         <WrappedRoute path='/signup' page={EmptyPage} component={RegistrationPage} publicRoute exact />
       )}
 
+      <WrappedRoute path='/login/nostr' page={DefaultPage} component={NostrBunkerLogin} publicRoute exact />
       <WrappedRoute path='/login/external' page={DefaultPage} component={ExternalLogin} publicRoute exact />
       <WrappedRoute path='/login/add' page={DefaultPage} component={LoginPage} publicRoute exact />
       <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
