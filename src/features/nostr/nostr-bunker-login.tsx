@@ -18,7 +18,8 @@ export const NostrBunkerLogin: React.FC = () => {
     const url = new URL(uri);
     const params = new URLSearchParams(url.search);
 
-    const pubkey = url.pathname.slice(2);
+    // https://github.com/denoland/deno/issues/26440
+    const pubkey = url.hostname || url.pathname.slice(2);
     const secret = params.get('secret');
     const relays = params.getAll('relay');
 
