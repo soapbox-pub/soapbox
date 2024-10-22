@@ -69,7 +69,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
             <Text tag='span' size='sm' weight='medium'>
               <FormattedMessage id='admin.domains.name' defaultMessage='Domain:' />
             </Text>
-            {' '}
+            {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             {domain.domain}
           </Text>
           <Text tag='span' size='sm' weight='medium'>

@@ -41,9 +41,11 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, emojiMap }) => {
             hour={skipTime ? undefined : 'numeric'}
             minute={skipTime ? undefined : '2-digit'}
           />
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           {' '}
           -
           {' '}
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
           <FormattedDate
             value={endsAt}
             hour12

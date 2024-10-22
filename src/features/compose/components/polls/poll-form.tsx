@@ -74,7 +74,7 @@ const Option: React.FC<IOption> = ({
     <HStack alignItems='center' justifyContent='between' space={4}>
       <HStack alignItems='center' space={2} grow>
         <div className='w-6'>
-          <Text weight='bold'>{index + 1}.</Text>
+          <Text weight='bold'>{index + 1}.</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </div>
 
         <AutosuggestInput

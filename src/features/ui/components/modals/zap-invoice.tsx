@@ -57,7 +57,7 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
         <h3 className='text-xl font-bold'>
           {renderTitle()}
         </h3>
-        <IconButton src={closeIcon} onClick={onClickClose} className='absolute -top-[8%] right-[2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
+        <IconButton src={closeIcon} onClick={onClickClose} className='absolute -top-[8%] right-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' />
         <QRCodeCanvas value={invoice} />
         <div className='w-full'>
           <CopyableInput value={invoice} />

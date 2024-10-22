@@ -96,7 +96,7 @@ const ChatSettings = () => {
             <button onClick={closeSettings}>
               <Icon
                 src={require('@tabler/icons/outline/arrow-left.svg')}
-                className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
+                className='size-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
               />
             </button>
 
@@ -112,7 +112,7 @@ const ChatSettings = () => {
           <Avatar src={chat.account.avatar_static} size={50} />
           <Stack>
             <Text weight='semibold'>{chat.account.display_name}</Text>
-            <Text size='sm' theme='primary'>@{chat.account.acct}</Text>
+            <Text size='sm' theme='primary'>@{chat.account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           </Stack>
         </HStack>
 

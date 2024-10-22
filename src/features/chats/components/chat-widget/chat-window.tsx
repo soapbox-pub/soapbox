@@ -73,7 +73,7 @@ const ChatWindow = () => {
               <button onClick={closeChat}>
                 <Icon
                   src={require('@tabler/icons/outline/arrow-left.svg')}
-                  className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
+                  className='size-6 text-gray-600 rtl:rotate-180 dark:text-gray-400'
                 />
               </button>
             )}
@@ -88,7 +88,7 @@ const ChatWindow = () => {
               <Stack alignItems='start'>
                 <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
                   <div className='flex grow items-center space-x-1'>
-                    <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
+                    <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                     {chat.account.verified && <VerificationBadge />}
                   </div>
                 </LinkWrapper>

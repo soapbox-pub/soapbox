@@ -152,7 +152,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
               )}
 
               <div className='text-primary-600 dark:text-white'>
-                <Text weight='medium' theme='inherit'>{Math.round(percent)}%</Text>
+                <Text weight='medium' theme='inherit'>{Math.round(percent)}%</Text>  {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
               </div>
             </HStack>
           </HStack>

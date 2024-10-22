@@ -98,6 +98,7 @@ const ZapSplitModal: React.FC<IZapSplitModal> = ({ zapSplitAccounts, onClose, sp
         )}
         <p className='absolute -bottom-4 -right-2'>
           <span className='font-bold'>
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             {currentStep + 1}/{zapSplitAccounts.length}
           </span>
         </p>

@@ -114,7 +114,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     return (
       <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
         <div>
-          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
+          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50' />
         </div>
 
         <div className='px-4 sm:px-6'>
@@ -137,7 +137,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/outline/ban.svg'),
         heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
-        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
+        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />, // eslint-disable-line formatjs/no-literal-string-in-jsx
         confirm: intl.formatMessage(messages.blockConfirm),
         onConfirm: () => dispatch(blockAccount(account.id)),
         secondary: intl.formatMessage(messages.blockAndReport),
@@ -222,7 +222,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       const unfollowModal = getSettings(getState()).get('unfollowModal');
       if (unfollowModal) {
         dispatch(openModal('CONFIRM', {
-          message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />,
+          message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />, // eslint-disable-line formatjs/no-literal-string-in-jsx
           confirm: intl.formatMessage(messages.removeFromFollowersConfirm),
           onConfirm: () => dispatch(removeFromFollowers(account.id)),
         }));
@@ -660,7 +660,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       )}
 
       <div>
-        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 black:rounded-t-none md:rounded-t-xl lg:h-48 dark:bg-gray-900/50'>
           {renderHeader()}
 
           <div className='absolute left-2 top-2'>

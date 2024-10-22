@@ -20,7 +20,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
         <Link to={`/tags/${hashtag.name}`} className='hover:underline'>
-          <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text>
+          <Text tag='span' size='sm' weight='semibold'>#{hashtag.name}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </Link>
 
         {Boolean(count) && (

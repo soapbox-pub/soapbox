@@ -84,7 +84,7 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
 
         <div className='py-8'>
           <div className='mx-auto max-w-xl space-y-2 text-center'>
-            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-500 sm:text-4xl'>
+            <h1 className='text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-500'>
               <FormattedMessage id='alert.unexpected.message' defaultMessage='Something went wrong.' />
             </h1>
             <p className='text-lg text-gray-700 dark:text-gray-600'>
@@ -105,16 +105,20 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
             </p>
 
             <Text theme='muted'>
+              {/* eslint-disable formatjs/no-literal-string-in-jsx */}
               <Text weight='medium' tag='span' theme='muted'>{sourceCode.displayName}:</Text>
 
               {' '}{sourceCode.version}
+              {/* eslint-enable formatjs/no-literal-string-in-jsx */}
             </Text>
 
             <div className='mt-10'>
               <a href='/' className='text-base font-medium text-primary-600 hover:underline dark:text-accent-blue'>
+                {/* eslint-disable formatjs/no-literal-string-in-jsx */}
                 <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
                 {' '}
                 <span className='inline-block rtl:rotate-180' aria-hidden='true'>&rarr;</span>
+                {/* eslint-enable formatjs/no-literal-string-in-jsx */}
               </a>
             </div>
           </div>

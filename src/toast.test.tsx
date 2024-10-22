@@ -13,6 +13,7 @@ function renderApp() {
     toast,
     ...render(
       <IntlProvider locale='en'>
+        {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         <Toaster />,
       </IntlProvider>,
     ),

@@ -41,7 +41,7 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
             <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
             {account.verified && <VerificationBadge />}
           </div>
-          <Text size='sm' weight='medium' theme='muted' direction='ltr' truncate>@{account.acct}</Text>
+          <Text size='sm' weight='medium' theme='muted' direction='ltr' truncate>@{account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </Stack>
       </HStack>
     </button>

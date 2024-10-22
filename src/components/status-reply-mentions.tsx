@@ -56,7 +56,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
         to={`/@${account.acct}`}
         className='reply-mentions__account max-w-[200px] truncate align-bottom'
         onClick={(e) => e.stopPropagation()}
-      >
+      > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(account.username)}
       </Link>
     );

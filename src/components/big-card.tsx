@@ -16,9 +16,9 @@ const BigCard: React.FC<IBigCard> = ({ title, subtitle, children, onClose }) => 
   return (
     <Card variant='rounded' size='xl'>
       <CardBody className='relative'>
-        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+        <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 sm:-mx-10 sm:pb-10 dark:border-gray-800'>
           <Stack space={2}>
-            {onClose && (<IconButton src={closeIcon} className='absolute right-[2%]  text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' onClick={onClose} />)}
+            {onClose && (<IconButton src={closeIcon} className='absolute right-[2%]  text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' onClick={onClose} />)}
             <Text size='2xl' align='center' weight='bold'>{title}</Text>
             {subtitle && <Text theme='muted' align='center'>{subtitle}</Text>}
           </Stack>

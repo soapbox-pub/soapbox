@@ -59,6 +59,7 @@ const MuteModal = () => {
           <FormattedMessage
             id='confirmations.mute.message'
             defaultMessage='Are you sure you want to mute {name}?'
+            // eslint-disable-next-line formatjs/no-literal-string-in-jsx
             values={{ name: <strong className='break-words'>@{account.acct}</strong> }}
           />
         </Text>
@@ -93,6 +94,7 @@ const MuteModal = () => {
 
             {duration !== 0 && (
               <Stack space={2}>
+                {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
                 <Text weight='medium'><FormattedMessage id='mute_modal.duration' defaultMessage='Duration' />: </Text>
 
                 <DurationSelector onDurationChange={handleChangeMuteDuration} />

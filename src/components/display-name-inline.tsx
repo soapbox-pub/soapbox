@@ -31,12 +31,12 @@ const DisplayNameInline: React.FC<IDisplayName> = ({ account, withSuffix = true 
     </HStack>
   );
 
-  const suffix = (<span className='display-name'>@{getAcct(account, displayFqn)}</span>);
+  const suffix = (<span className='display-name'>@{getAcct(account, displayFqn)}</span>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
   return (
     <div className='flex max-w-80 flex-col items-center justify-center text-center sm:flex-row sm:gap-2'>
       {displayName}
-      <span className='hidden text-xl font-bold sm:block'>-</span>
+      <span className='hidden text-xl font-bold sm:block'>-</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       {withSuffix && suffix}
     </div>
   );

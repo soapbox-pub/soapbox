@@ -39,7 +39,7 @@ const AboutPage: React.FC = () => {
   const alsoAvailable = (defaultLocale) && (
     <div>
       <FormattedMessage id='about.also_available' defaultMessage='Available in:' />
-      {' '}
+      {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
           <a href='#' onClick={() => setLocale(defaultLocale)}>

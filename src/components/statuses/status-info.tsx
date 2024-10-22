@@ -25,7 +25,7 @@ const StatusInfo = (props: IStatusInfo) => {
       <HStack
         space={3}
         alignItems='center'
-        className='cursor-default text-xs font-medium text-gray-700 dark:text-gray-600 rtl:space-x-reverse'
+        className='cursor-default text-xs font-medium text-gray-700 rtl:space-x-reverse dark:text-gray-600'
       >
         <div
           className='flex justify-end'

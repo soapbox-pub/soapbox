@@ -15,7 +15,7 @@ const GroupMemberCount = ({ group }: IGroupMemberCount) => {
     <Link to={`/group/${group.slug}/members`} className='hover:underline'>
       <Text theme='inherit' tag='span' size='sm' weight='medium' data-testid='group-member-count'>
         {shortNumberFormat(group.members_count)}
-        {' '}
+        {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         <FormattedMessage
           id='groups.discover.search.results.member_count'
           defaultMessage='{members, plural, one {member} other {members}}'

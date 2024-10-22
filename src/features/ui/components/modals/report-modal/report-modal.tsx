@@ -266,6 +266,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
       case ReportableEntities.GROUP:
         return intl.formatMessage(messages.reportGroup);
       default:
+        // eslint-disable-next-line formatjs/no-literal-string-in-jsx
         return <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>@{account?.acct}</strong> }} />;
     }
   };

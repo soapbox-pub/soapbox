@@ -8,7 +8,7 @@ import PlaceholderStatusContent from './placeholder-status-content';
 
 /** Fake notification to display while data is loading. */
 const PlaceholderNotification = () => (
-  <div className='bg-white px-4 py-6 black:bg-black dark:bg-primary-900 sm:p-6'>
+  <div className='bg-white px-4 py-6 black:bg-black sm:p-6 dark:bg-primary-900'>
     <div className='w-full animate-pulse'>
       <div className='mb-2'>
         <PlaceholderStatusContent minLength={20} maxLength={20} />
