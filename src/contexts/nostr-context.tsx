@@ -2,7 +2,7 @@ import { NRelay, NRelay1, NostrSigner } from '@nostrify/nostrify';
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { useAppSelector } from 'soapbox/hooks';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
@@ -25,13 +25,11 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const [relay, setRelay] = useState<NRelay1>();
   const [isRelayOpen, setIsRelayOpen] = useState(false);
 
-  const { account } = useOwnAccount();
-
   const url = instance.nostr?.relay;
-  const accountPubkey = useAppSelector((state) => state.meta.pubkey ?? account?.nostr.pubkey);
+  const accountPubkey = useAppSelector(({ meta, auth }) => meta.pubkey ?? auth.users.get(auth.me!)?.id);
 
   const signer = useMemo(
-    () => (accountPubkey ? NKeys.get(accountPubkey) : undefined) ?? window.nostr,
+    () => accountPubkey ? NKeys.get(accountPubkey) ?? window.nostr : undefined,
     [accountPubkey, window.nostr],
   );
 
