@@ -317,7 +317,7 @@
 
     "formatjs/enforce-default-message": "error",
     "formatjs/enforce-id": "error",
-    "formatjs/no-literal-string-in-jsx": "warn"
+    "formatjs/no-literal-string-in-jsx": "error"
   },
   "overrides": [
     {
