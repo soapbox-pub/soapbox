@@ -44,7 +44,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { hasNostr, isRelayOpen } = useNostr();
+  const { hasNostr, isRelayOpen, signer } = useNostr();
   const { isSubscribed } = useSignerStream();
 
   /** Whether to display a loading indicator. */
@@ -55,7 +55,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     localeLoading,
     instance.isLoading,
     swUpdating,
-    hasNostr && me && (!isRelayOpen || !isSubscribed),
+    hasNostr && me && signer && (!isRelayOpen || !isSubscribed),
   ].some(Boolean);
 
   // Load the user's locale
