@@ -44,8 +44,10 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { hasNostr, isRelayOpen } = useNostr();
+  const { hasNostr, isRelayOpen, signer } = useNostr();
   const { isSubscribed } = useSignerStream();
+
+  const nostrLoading = Boolean(hasNostr && signer && (!isRelayOpen || !isSubscribed));
 
   /** Whether to display a loading indicator. */
   const showLoading = [
@@ -55,7 +57,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     localeLoading,
     instance.isLoading,
     swUpdating,
-    hasNostr && me && (!isRelayOpen || !isSubscribed),
+    nostrLoading,
   ].some(Boolean);
 
   // Load the user's locale
@@ -68,14 +70,14 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    if (!instance.isLoading) {
+    if (!instance.isLoading && !nostrLoading) {
       dispatch(loadInitial()).then(() => {
         setIsLoaded(true);
       }).catch(() => {
         setIsLoaded(true);
       });
     }
-  }, [instance.isLoading]);
+  }, [instance.isLoading, nostrLoading]);
 
   // intl is part of loading.
   // It's important nothing in here depends on intl.

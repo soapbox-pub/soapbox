@@ -27,10 +27,10 @@ function logInNostr(pubkey: string) {
       secret,
     }));
 
-    dispatch(setNostrPubkey(undefined));
-
     const { access_token } = dispatch(authLoggedIn(token));
-    return await dispatch(verifyCredentials(access_token as string));
+    await dispatch(verifyCredentials(access_token as string));
+
+    dispatch(setNostrPubkey(undefined));
   };
 }
 
