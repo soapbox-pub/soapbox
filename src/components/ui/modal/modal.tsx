@@ -118,7 +118,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                   src={require('@tabler/icons/outline/arrow-left.svg')}
                   title={intl.formatMessage(messages.back)}
                   onClick={onBack}
-                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
                 />
               )}
 
@@ -131,7 +131,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
                   src={closeIcon}
                   title={intl.formatMessage(messages.close)}
                   onClick={onClose}
-                  className='text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+                  className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
                 />
               )}
             </div>

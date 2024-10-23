@@ -102,7 +102,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         <IconButton
           src={closeIcon}
           onClick={onClose}
-          className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200'
+          className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
         />
 
         <Text weight='semibold'>
@@ -128,7 +128,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         <div className='relative flex items-end justify-center gap-4'>
           <Input
             type='text' onChange={handleCustomAmount} value={zapAmount}
-            className='box-shadow:none max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 sm:max-w-28 sm:p-0.5 sm:!text-4xl dark:bg-transparent'
+            className='box-shadow:none max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 dark:bg-transparent sm:max-w-28 sm:p-0.5 sm:!text-4xl'
           />
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
           {hasZapSplit && <p className='absolute right-0 font-bold sm:-right-6 sm:text-xl'>sats</p>}

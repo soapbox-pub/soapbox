@@ -44,7 +44,7 @@ const Search: React.FC = () => {
         <span style={{ display: 'none' }}>{intl.formatMessage(messages.search)}</span>
 
         <input
-          className='block w-full rounded-full focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500'
+          className='block w-full rounded-full focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 sm:text-sm'
           type='text'
           value={value}
           onChange={handleChange}

@@ -42,7 +42,7 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
       <Stack space={3}>
         <Stack>
           <label
-            className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 sm:h-36 sm:shadow dark:bg-gray-800 dark:text-accent-blue'
+            className='dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow'
           >
             {group.header && <img className='size-full object-cover' src={group.header} alt='' />}
           </label>

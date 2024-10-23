@@ -36,7 +36,7 @@ const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onC
     <label
       ref={picker}
       className={clsx(
-        'dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 sm:h-36 sm:shadow dark:bg-gray-800 dark:text-accent-blue',
+        'dark:sm:shadow-inset relative h-24 w-full cursor-pointer overflow-hidden rounded-lg bg-primary-100 text-primary-500 dark:bg-gray-800 dark:text-accent-blue sm:h-36 sm:shadow',
         {
           'border-2 border-primary-600 border-dashed !z-[99]': isDragging,
           'ring-2 ring-offset-2 ring-primary-600': isDraggedOver,

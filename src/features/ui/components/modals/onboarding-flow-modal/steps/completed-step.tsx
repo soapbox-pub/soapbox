@@ -14,10 +14,10 @@ interface ICompletedModal {
 const CompletedModal: React.FC<ICompletedModal> = ({ onClose, onComplete }) => {
   return (
 
-    <Stack space={10} justifyContent='center' alignItems='center' className='w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black sm:p-10 dark:bg-primary-900 dark:text-gray-100 dark:shadow-none'>
+    <Stack space={10} justifyContent='center' alignItems='center' className='w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
       <div className='relative w-full'>
-        <IconButton src={closeIcon} className='absolute -top-[6%] right-[2%] text-gray-500 hover:text-gray-700 rtl:rotate-180 dark:text-gray-300 dark:hover:text-gray-200' onClick={onClose} />
+        <IconButton src={closeIcon} className='absolute -top-[6%] right-[2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' onClick={onClose} />
         <Stack space={2} justifyContent='center' alignItems='center' className=''>
           <Icon strokeWidth={1} src={require('@tabler/icons/outline/confetti.svg')} className='mx-auto size-16 text-primary-600 dark:text-primary-400' />
           <Text size='2xl' align='center' weight='bold'>
