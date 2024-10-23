@@ -33,11 +33,11 @@ const getMeUrl = (state: RootState) => {
   }
 };
 
-const getMeToken = (state: RootState) => {
+function getMeToken(state: RootState): string | undefined {
   // Fallback for upgrading IDs to URLs
   const accountUrl = getMeUrl(state) || state.auth.me;
-  return state.auth.users.get(accountUrl!)?.access_token;
-};
+  return state.auth.users[accountUrl!]?.access_token;
+}
 
 const fetchMe = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
