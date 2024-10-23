@@ -207,7 +207,7 @@ export default function auth(oldState: SoapboxAuth = initialState, action: Unkno
   }
 
   // Reload the page when the user logs out or switches accounts.
-  if (action.type === AUTH_LOGGED_OUT || oldState.me !== state.me) {
+  if (action.type === AUTH_LOGGED_OUT || (oldState.me && (oldState.me !== state.me))) {
     location.replace('/');
   }
 
