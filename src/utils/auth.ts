@@ -30,13 +30,13 @@ export const isLoggedIn = (getState: () => RootState) => {
   return validId(getState().me);
 };
 
-export const getAppToken = (state: RootState) => state.auth.app.access_token as string;
+export const getAppToken = (state: RootState) => state.auth.app?.access_token;
 
 export const getUserToken = (state: RootState, accountId?: string | false | null) => {
   if (!accountId) return;
   const accountUrl = selectAccount(state, accountId)?.url;
   if (!accountUrl) return;
-  return state.auth.users.get(accountUrl)?.access_token;
+  return state.auth.users[accountUrl]?.access_token;
 };
 
 export const getAccessToken = (state: RootState) => {
@@ -48,7 +48,7 @@ export const getAuthUserId = (state: RootState) => {
   const me = state.auth.me;
 
   return ImmutableList([
-    state.auth.users.get(me!)?.id,
+    state.auth.users[me!]?.id,
     me,
   ].filter(id => id)).find(validId);
 };
@@ -57,7 +57,7 @@ export const getAuthUserUrl = (state: RootState) => {
   const me = state.auth.me;
 
   return ImmutableList([
-    state.auth.users.get(me!)?.url,
+    state.auth.users[me!]?.url,
     me,
   ].filter(url => url)).find(isURL);
 };

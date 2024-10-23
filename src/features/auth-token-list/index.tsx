@@ -73,9 +73,9 @@ const AuthTokenList: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const tokens = useAppSelector(state => state.security.get('tokens').reverse());
-  const currentTokenId = useAppSelector(state => {
-    const currentToken = state.auth.tokens.valueSeq().find((token) => token.me === state.auth.me);
 
+  const currentTokenId = useAppSelector(state => {
+    const currentToken = Object.values(state.auth.tokens).find((token) => token.me === state.auth.me);
     return currentToken?.id;
   });
 
@@ -86,7 +86,7 @@ const AuthTokenList: React.FC = () => {
   const body = tokens ? (
     <div className='grid grid-cols-1 gap-4 sm:grid-cols-2'>
       {tokens.map((token) => (
-        <AuthToken key={token.id} token={token} isCurrent={token.id === currentTokenId} />
+        <AuthToken key={token.id} token={token} isCurrent={token.id.toString() === currentTokenId} />
       ))}
     </div>
   ) : <Spinner />;

@@ -9,7 +9,7 @@ import { useOwnAccount } from './useOwnAccount';
 export function useApi(): MastodonClient {
   const { account } = useOwnAccount();
   const authUserUrl = useAppSelector((state) => state.auth.me);
-  const accessToken = useAppSelector((state) => account ? state.auth.users.get(account.url)?.access_token : undefined);
+  const accessToken = useAppSelector((state) => account ? state.auth.users[account.url]?.access_token : undefined);
   const baseUrl = new URL(BuildConfig.BACKEND_URL || account?.url || authUserUrl || location.origin).origin;
 
   return useMemo(() => {
