@@ -22,6 +22,8 @@ const CaptchaModal: React.FC<ICaptchaModal> = ({ onClose }) => {
     xPosition,
   } = useCaptcha();
 
+  const messageButton = tryAgain ? <FormattedMessage id='nostr_signup.captcha_try_again_button' defaultMessage='Try again' /> : <FormattedMessage id='nostr_signup.captcha_check_button' defaultMessage='Check' />;
+
   return (
     <Modal
       title={<FormattedMessage id='nostr_signup.captcha_title' defaultMessage='Human Verification' />} width='sm'
@@ -46,10 +48,7 @@ const CaptchaModal: React.FC<ICaptchaModal> = ({ onClose }) => {
             >
               {isSubmitting ? (
                 <FormattedMessage id='nostr_signup.captcha_check_button.checking' defaultMessage='Checking…' />
-              ) : (tryAgain ?
-                <FormattedMessage id='nostr_signup.captcha_try_again_button' defaultMessage='Try again' /> :
-                <FormattedMessage id='nostr_signup.captcha_check_button' defaultMessage='Check' />
-              )}
+              ) : messageButton}
             </Button>
             <Button onClick={loadCaptcha}>
               <FormattedMessage id='nostr_signup.captcha_reset_button' defaultMessage='Reset puzzle' />

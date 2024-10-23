@@ -51,7 +51,9 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
     }));
   };
 
-  const domainState = domain.last_checked_at ? (domain.resolves ? 'active' : 'error') : 'pending';
+  const resolveState = domain.resolves ? 'active' : 'error';
+  const domainState = domain.last_checked_at ? resolveState : 'pending';
+
   const domainStateLabel = {
     active: <FormattedMessage id='admin.domains.resolve.success_label' defaultMessage='Resolves correctly' />,
     error: <FormattedMessage id='admin.domains.resolve.fail_label' defaultMessage='Not resolving' />,

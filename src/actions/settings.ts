@@ -241,7 +241,8 @@ const saveSettings = (opts?: SettingOpts) =>
 const getLocale = (state: RootState, fallback = 'en') => {
   const localeWithVariant = (getSettings(state).get('locale') as string).replace('_', '-');
   const locale = localeWithVariant.split('-')[0];
-  return Object.keys(messages).includes(localeWithVariant) ? localeWithVariant : Object.keys(messages).includes(locale) ? locale : fallback;
+  const fallbackLocale = Object.keys(messages).includes(locale) ? locale : fallback;
+  return Object.keys(messages).includes(localeWithVariant) ? localeWithVariant : fallbackLocale;
 };
 
 type SettingsAction =

@@ -88,11 +88,13 @@ const Backups = () => {
     </Card>
   );
 
-  const body = showLoading ? <Spinner /> : backups.isEmpty() ? emptyMessage : (
+  const backupsContent = backups.isEmpty() ? emptyMessage : (
     <div className='mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2'>
       {backups.map((backup) => <Backup key={backup.id} backup={backup} />)}
     </div>
   );
+
+  const body = showLoading ? <Spinner /> : backupsContent;
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
