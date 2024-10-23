@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { NConnect } from 'soapbox/features/nostr/NConnect';
+import { NBunker } from 'soapbox/features/nostr/NBunker';
 
 const secretStorageKey = 'soapbox:nip46:secret';
 
@@ -35,7 +35,7 @@ function useSignerStream() {
   useEffect(() => {
     if (!relay || !signer || !pubkey) return;
 
-    const connect = new NConnect({
+    const bunker = new NBunker({
       relay,
       signer,
       onAuthorize(authorizedPubkey) {
@@ -51,7 +51,7 @@ function useSignerStream() {
     });
 
     return () => {
-      connect.close();
+      bunker.close();
     };
   }, [relay, signer, pubkey]);
 

@@ -1,6 +1,6 @@
 import { NRelay, NostrConnectRequest, NostrConnectResponse, NostrEvent, NostrSigner, NSchema as n } from '@nostrify/nostrify';
 
-interface NConnectOpts {
+interface NBunkerOpts {
   relay: NRelay;
   signer: NostrSigner;
   authorizedPubkey: string | undefined;
@@ -9,7 +9,7 @@ interface NConnectOpts {
   getSecret(): string;
 }
 
-export class NConnect {
+export class NBunker {
 
   private relay: NRelay;
   private signer: NostrSigner;
@@ -20,7 +20,7 @@ export class NConnect {
 
   private controller = new AbortController();
 
-  constructor(opts: NConnectOpts) {
+  constructor(opts: NBunkerOpts) {
     this.relay = opts.relay;
     this.signer = opts.signer;
     this.authorizedPubkey = opts.authorizedPubkey;
