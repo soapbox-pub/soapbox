@@ -160,6 +160,7 @@ const SearchResults = () => {
       ));
       resultsIds = results.statuses;
     } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
+      hasMore = !!nextTrendingStatuses;
       searchResults = trendingStatuses.map((statusId: string) => (
         // @ts-ignore
         <StatusContainer
@@ -231,7 +232,7 @@ const SearchResults = () => {
           scrollKey={`${selectedFilter}:${value}`}
           isLoading={submitted && !loaded}
           showLoading={submitted && !loaded && searchResults?.isEmpty()}
-          hasMore={(!!nextTrendingStatuses) || hasMore}
+          hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
           placeholderCount={20}
