@@ -544,6 +544,7 @@ const Video: React.FC<IVideo> = ({
             {(detailed || fullscreen) && (
               <span>
                 <span className='video-player__time-current'>{formatTime(currentTime)}</span>
+                {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
                 <span className='video-player__time-sep'>/</span>
                 <span className='video-player__time-total'>{formatTime(duration)}</span>
               </span>

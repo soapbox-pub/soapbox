@@ -36,6 +36,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
   return (
     <div className={bodyClass}>
+      {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
       <BackgroundShapes position='absolute' />
 

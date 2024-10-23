@@ -122,6 +122,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
+              {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
               <Text size='sm' theme='muted' direction='ltr' truncate>
                 @{username}
               </Text>
@@ -154,6 +155,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           </HStack>
 
           <HStack alignItems='center' space={0.5}>
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text size='sm' theme='muted' direction='ltr' truncate>
               @{displayFqn ? account.fqn : account.acct}
             </Text>

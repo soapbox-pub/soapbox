@@ -50,7 +50,7 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
               {account.verified && <VerificationBadge />}
             </HStack>
 
-            <Text theme='muted' align='center' size='sm' truncate>@{account.acct}</Text>
+            <Text theme='muted' align='center' size='sm' truncate>@{account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           </Stack>
         </Stack>
       </Link>

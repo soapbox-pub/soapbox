@@ -554,7 +554,7 @@ const Audio: React.FC<IAudio> = (props) => {
             <span className='video-player__time'>
               <span className='video-player__time-current'>{formatTime(Math.floor(currentTime))}</span>
               {getDuration() && (<>
-                <span className='video-player__time-sep'>/</span>
+                <span className='video-player__time-sep'>/</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                 <span className='video-player__time-total'>{formatTime(Math.floor(getDuration()))}</span>
               </>)}
             </span>

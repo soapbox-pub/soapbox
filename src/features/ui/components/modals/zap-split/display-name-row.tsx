@@ -37,11 +37,13 @@ const DisplayNameRow: React.FC<IDisplayName> = ({ account, withSuffix = true }) 
     </HStack>
   );
 
+  // eslint-disable-next-line formatjs/no-literal-string-in-jsx
   const suffix = (<span className='display-name'>@{getAcct(account, displayFqn)}</span>);
 
   return (
     <div className='flex max-w-80 flex-col items-center justify-center text-center sm:flex-row sm:gap-2'>
       {displayName}
+      {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
       <span className='hidden text-2xl font-bold sm:block'>-</span>
       {withSuffix && suffix}
     </div>

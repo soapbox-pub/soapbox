@@ -84,7 +84,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
 
           <Stack alignItems='start' className='overflow-hidden'>
             <div className='flex w-full grow items-center space-x-1'>
-              <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text>
+              <Text weight='bold' size='sm' align='left' truncate>{chat.account?.display_name || `@${chat.account.username}`}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
               {chat.account?.verified && <VerificationBadge />}
             </div>
 

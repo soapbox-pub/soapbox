@@ -94,7 +94,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
           {...conditionalAttributes}
         />
 
-        <span className='media-gallery__gifv__label'>GIF</span>
+        <span className='media-gallery__gifv__label'>GIF</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       </div>
     );
   } else if (attachment.type === 'audio') {

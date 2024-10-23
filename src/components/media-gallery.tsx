@@ -228,7 +228,7 @@ const Item: React.FC<IItem> = ({
           {...conditionalAttributes}
         />
 
-        <span className='media-gallery__gifv__label'>GIF</span>
+        <span className='media-gallery__gifv__label'>GIF</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       </div>
     );
   } else if (attachment.type === 'audio') {
@@ -276,7 +276,7 @@ const Item: React.FC<IItem> = ({
       style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
     >
       {last && total > ATTACHMENT_LIMIT && (
-        <div className='media-gallery__item-overflow'>
+        <div className='media-gallery__item-overflow'> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           +{total - ATTACHMENT_LIMIT + 1}
         </div>
       )}

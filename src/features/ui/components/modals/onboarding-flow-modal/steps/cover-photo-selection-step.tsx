@@ -135,6 +135,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
             )}
 
             <Text weight='bold' size='sm'>{account?.display_name}</Text>
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text theme='muted' size='sm'>@{account?.username}</Text>
           </div>
         </div>

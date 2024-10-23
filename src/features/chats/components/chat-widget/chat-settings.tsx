@@ -112,7 +112,7 @@ const ChatSettings = () => {
           <Avatar src={chat.account.avatar_static} size={50} />
           <Stack>
             <Text weight='semibold'>{chat.account.display_name}</Text>
-            <Text size='sm' theme='primary'>@{chat.account.acct}</Text>
+            <Text size='sm' theme='primary'>@{chat.account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           </Stack>
         </HStack>
 

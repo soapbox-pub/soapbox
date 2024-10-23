@@ -96,7 +96,7 @@ const Report: React.FC<IReport> = ({ id }) => {
             defaultMessage='Report on {acct}'
             values={{ acct: (
               <HoverRefWrapper accountId={targetAccount.id} inline>
-                <Link to={`/@${acct}`} title={acct}>@{acct}</Link>
+                <Link to={`/@${acct}`} title={acct}>@{acct}</Link> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
               </HoverRefWrapper>
             ) }}
           />
@@ -129,14 +129,14 @@ const Report: React.FC<IReport> = ({ id }) => {
           )}
 
           <HStack space={1}>
-            <Text theme='muted' tag='span'>&mdash;</Text>
+            <Text theme='muted' tag='span'>&mdash;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
             <HoverRefWrapper accountId={account.id} inline>
               <Link
                 to={`/@${reporterAcct}`}
                 title={reporterAcct}
                 className='text-primary-600 hover:underline dark:text-accent-blue'
-              >
+              > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                 @{reporterAcct}
               </Link>
             </HoverRefWrapper>

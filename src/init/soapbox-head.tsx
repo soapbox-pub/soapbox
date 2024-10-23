@@ -44,7 +44,9 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
       <Helmet>
         <html lang={locale} className={clsx('h-full', { 'dark': theme === 'dark', 'dark black': theme === 'black' })} />
         <body className={bodyClass} dir={direction} />
+        {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>

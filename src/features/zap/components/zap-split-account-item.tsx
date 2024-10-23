@@ -23,6 +23,7 @@ export const ZapSplitSlider: React.FC<IZapSplitSlider> = ({ initialWeight, onWei
 
   return (
     <div className={clsx('flex flex-col', width)}>
+      {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
       {formattedWeight(value)}%
       <Slider
         value={value}

@@ -239,7 +239,7 @@ const Account = ({
 
             <Stack space={withAccountNote || note ? 1 : 0}>
               <HStack alignItems='center' space={1}>
-                <Text theme='muted' size='sm' direction='ltr' truncate>@{acct ?? username}</Text>
+                <Text theme='muted' size='sm' direction='ltr' truncate>@{acct ?? username}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
                 {account.pleroma?.favicon && (
                   <InstanceFavicon account={account} disabled={!withLinkToProfile} />
@@ -247,7 +247,7 @@ const Account = ({
 
                 {(timestamp) ? (
                   <>
-                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
                     {timestampUrl ? (
                       <Link to={timestampUrl} className='hover:underline' onClick={(event) => event.stopPropagation()}>
@@ -261,7 +261,7 @@ const Account = ({
 
                 {approvalStatus && ['pending', 'rejected'].includes(approvalStatus) && (
                   <>
-                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
                     <Text tag='span' theme='muted' size='sm'>
                       {approvalStatus === 'pending'
@@ -273,7 +273,7 @@ const Account = ({
 
                 {showEdit ? (
                   <>
-                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
                     <Icon className='size-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/pencil.svg')} />
                   </>
@@ -281,7 +281,7 @@ const Account = ({
 
                 {actionType === 'muting' && account.mute_expires_at ? (
                   <>
-                    <Text tag='span' theme='muted' size='sm'>&middot;</Text>
+                    <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
                     <Text theme='muted' size='sm'><RelativeTimestamp timestamp={account.mute_expires_at} futureDate /></Text>
                   </>

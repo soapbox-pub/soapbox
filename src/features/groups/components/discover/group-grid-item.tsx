@@ -58,7 +58,7 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
 
               <HStack alignItems='center' space={1}>
                 <GroupPrivacy group={group} />
-                <span>&bull;</span>
+                <span>&bull;</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                 <GroupMemberCount group={group} />
               </HStack>
             </Stack>

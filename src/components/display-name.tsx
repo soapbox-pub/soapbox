@@ -33,7 +33,7 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
     </HStack>
   );
 
-  const suffix = (<span className='display-name__account'>@{getAcct(account, displayFqn)}</span>);
+  const suffix = (<span className='display-name__account'>@{getAcct(account, displayFqn)}</span>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
   return (
     <span className='display-name' data-testid='display-name'>

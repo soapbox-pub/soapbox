@@ -145,6 +145,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
     >
       <Link to={`/group/${group.slug}/tag/${tag.id}`} className='group grow'>
         <Stack>
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Text
             weight='bold'
             theme={(tag.visible || !isOwner) ? 'default' : 'subtle'}
@@ -153,9 +154,12 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
           >
             #{tag.name}
           </Text>
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
           <Text size='sm' theme={(tag.visible || !isOwner) ? 'muted' : 'subtle'}>
+            {/* eslint-disable formatjs/no-literal-string-in-jsx */}
             {intl.formatMessage(messages.total)}:
             {' '}
+            {/* eslint-enable formatjs/no-literal-string-in-jsx */}
             <Text size='sm' theme='inherit' weight='semibold' tag='span'>
               {shortNumberFormat(tag.uses)}
             </Text>

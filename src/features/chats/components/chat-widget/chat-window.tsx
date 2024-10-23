@@ -88,7 +88,7 @@ const ChatWindow = () => {
               <Stack alignItems='start'>
                 <LinkWrapper enabled={isOpen} to={`/@${chat.account.acct}`}>
                   <div className='flex grow items-center space-x-1'>
-                    <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text>
+                    <Text size='sm' weight='bold' truncate>{chat.account.display_name || `@${chat.account.acct}`}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                     {chat.account.verified && <VerificationBadge />}
                   </div>
                 </LinkWrapper>
