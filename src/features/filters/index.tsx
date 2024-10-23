@@ -86,12 +86,12 @@ const Filters = () => {
                 <Stack className='grow' space={1}>
                   <Text weight='medium'>
                     <FormattedMessage id='filters.filters_list_phrases_label' defaultMessage='Keywords or phrases:' />
-                    {' '}
+                    {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                     <Text theme='muted' tag='span'>{filter.keywords.map(keyword => keyword.keyword).join(', ')}</Text>
                   </Text>
                   <Text weight='medium'>
                     <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
-                    {' '}
+                    {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                     <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
                   </Text>
                   <HStack space={4} wrap>

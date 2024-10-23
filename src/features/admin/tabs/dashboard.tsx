@@ -159,7 +159,7 @@ const Dashboard: React.FC = () => {
         </ListItem>
 
         <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
-          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span>
+          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </ListItem>
       </List>
 

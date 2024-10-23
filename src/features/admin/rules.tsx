@@ -51,7 +51,7 @@ const Rule: React.FC<IRule> = ({ rule }) => {
             <Text tag='span' size='sm' weight='medium'>
               <FormattedMessage id='admin.rule.priority' defaultMessage='Priority:' />
             </Text>
-            {' '}
+            {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             {rule.priority}
           </Text>
         )}

@@ -8,7 +8,7 @@ describe('<Form />', () => {
   it('renders children', () => {
     const onSubmitMock = vi.fn();
     render(
-      <Form onSubmit={onSubmitMock}>children</Form>,
+      <Form onSubmit={onSubmitMock}>children</Form>, // eslint-disable-line formatjs/no-literal-string-in-jsx
     );
 
     expect(screen.getByTestId('form')).toHaveTextContent('children');
@@ -17,7 +17,7 @@ describe('<Form />', () => {
   it('handles onSubmit prop', () => {
     const onSubmitMock = vi.fn();
     render(
-      <Form onSubmit={onSubmitMock}>children</Form>,
+      <Form onSubmit={onSubmitMock}>children</Form>, // eslint-disable-line formatjs/no-literal-string-in-jsx
     );
 
     fireEvent.submit(

@@ -12,7 +12,7 @@ const renderComponent = () => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>
     <ChatProvider>
       <ChatSearch />
-    </ChatProvider>,
+    </ChatProvider>, {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
   </VirtuosoMockContext.Provider>,
 );
 

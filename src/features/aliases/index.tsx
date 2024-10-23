@@ -75,7 +75,7 @@ const Aliases = () => {
             <HStack alignItems='center' justifyContent='between' space={1} key={i} className='p-2'>
               <div>
                 <Text tag='span' theme='muted'><FormattedMessage id='aliases.account_label' defaultMessage='Old account:' /></Text>
-                {' '}
+                {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
                 <Text tag='span'>{alias}</Text>
               </div>
               <div className='flex items-center' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>

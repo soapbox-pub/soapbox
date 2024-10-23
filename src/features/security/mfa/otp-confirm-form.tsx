@@ -66,6 +66,7 @@ const OtpConfirmForm: React.FC = () => {
     <Stack space={4}>
       <Form onSubmit={handleSubmit}>
         <Stack>
+          {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
           <Text weight='semibold' size='lg'>
             1. <FormattedMessage id='mfa.mfa_setup_scan_title' defaultMessage='Scan' />
           </Text>
@@ -78,6 +79,7 @@ const OtpConfirmForm: React.FC = () => {
         <QRCode className='rounded-lg' value={state.qrCodeURI} includeMargin />
         {state.confirmKey}
 
+        {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         <Text weight='semibold' size='lg'>
           2. <FormattedMessage id='mfa.mfa_setup_verify_title' defaultMessage='Verify' />
         </Text>

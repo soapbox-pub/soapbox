@@ -40,7 +40,7 @@ const Relay: React.FC<IRelay> = ({ relay }) => {
             <Text tag='span' size='sm' weight='medium'>
               <FormattedMessage id='admin.relays.url' defaultMessage='Instance URL:' />
             </Text>
-            {' '}
+            {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             {relay.actor}
           </Text>
           {relay.followed_back && (

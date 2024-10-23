@@ -334,6 +334,7 @@ const Status: React.FC<IStatus> = (props) => {
     return (
       <HotKeys handlers={minHandlers}>
         <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Text theme='muted'>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {status.filtered.join(', ')}.
             {' '}
@@ -341,6 +342,7 @@ const Status: React.FC<IStatus> = (props) => {
               <FormattedMessage id='status.show_filter_reason' defaultMessage='Show anyway' />
             </button>
           </Text>
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         </div>
       </HotKeys>
     );

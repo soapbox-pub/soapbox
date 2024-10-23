@@ -51,7 +51,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, emojiMap, sty
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      title={`:${shortCode}:`}
+      title={`:${shortCode}:`} // eslint-disable-line formatjs/no-literal-string-in-jsx
       style={style}
     >
       <span className='block size-4'>
