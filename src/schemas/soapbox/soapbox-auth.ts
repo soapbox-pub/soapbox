@@ -9,8 +9,14 @@ const authUserSchema = z.object({
   url: z.string().url(),
 });
 
+const authAppSchema = applicationSchema.and(
+  z.object({
+    access_token: z.string().optional().catch(undefined),
+  }),
+);
+
 const soapboxAuthSchema = z.object({
-  app: applicationSchema.optional(),
+  app: authAppSchema.optional(),
   tokens: z.record(z.string(), tokenSchema),
   users: z.record(z.string(), authUserSchema),
   me: z.string().url().optional(),

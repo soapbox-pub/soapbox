@@ -15,6 +15,7 @@ import {
   SWITCH_ACCOUNT,
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
+  AUTH_APP_AUTHORIZED,
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
 
@@ -142,6 +143,18 @@ function reducer(state: SoapboxAuth, action: UnknownAction): SoapboxAuth {
     case AUTH_APP_CREATED: {
       const result = applicationSchema.safeParse(action.app);
       return result.success ? importApplication(state, result.data) : state;
+    }
+    case AUTH_APP_AUTHORIZED: {
+      const result = tokenSchema.safeParse(action.token);
+      if (result.success) {
+        return produce(state, draft => {
+          if (draft.app) {
+            draft.app.access_token = result.data.access_token;
+          }
+        });
+      } else {
+        return state;
+      }
     }
     case AUTH_LOGGED_IN: {
       const result = tokenSchema.safeParse(action.token);
