@@ -123,7 +123,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   };
 
   const renderAccount = (account: AccountEntity) => (
-    <a href='#' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
+    <a href='#' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
       <div className='pointer-events-none'>
         <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
       </div>

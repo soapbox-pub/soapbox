@@ -78,7 +78,7 @@ const Backups = () => {
     <Card variant='rounded' size='lg'>
       {intl.formatMessage(messages.emptyMessage, {
         action: (
-          <a href='#' onClick={handleCreateBackup}>
+          <a href='#' onClick={handleCreateBackup}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
             <Text tag='span' theme='primary' size='sm' className='hover:underline'>
               {intl.formatMessage(messages.emptyMessageAction)}
             </Text>

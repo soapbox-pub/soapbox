@@ -442,7 +442,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
           <HStack alignItems='center' space={2}>
             <Icon src={require('@tabler/icons/outline/users.svg')} />
-            <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
+            <a href='#' className='hover:underline' onClick={handleParticipantsClick}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
               <span>
                 <FormattedMessage
                   id='event.participants'

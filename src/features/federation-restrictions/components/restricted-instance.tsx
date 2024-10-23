@@ -25,7 +25,7 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
 
   return (
     <div>
-      <a href='#' className='flex items-center gap-1 py-2.5 no-underline' onClick={toggleExpanded}>
+      <a href='#' className='flex items-center gap-1 py-2.5 no-underline' onClick={toggleExpanded}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
         <Icon src={expanded ? require('@tabler/icons/outline/caret-down.svg') : require('@tabler/icons/outline/caret-right.svg')} />
         <div className={clsx({ 'line-through': remoteInstance.federation.reject })}>
           {remoteInstance.host}

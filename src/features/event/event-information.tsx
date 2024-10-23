@@ -89,7 +89,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       text.push(
         <React.Fragment key='event-map'>
           <br />
-          <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}>
+          <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
             <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
           </a>
         </React.Fragment>,

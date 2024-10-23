@@ -42,7 +42,7 @@ const AboutPage: React.FC = () => {
       {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
-          <a href='#' onClick={() => setLocale(defaultLocale)}>
+          <a href='#' onClick={() => setLocale(defaultLocale)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
             {/* @ts-ignore */}
             {languages[defaultLocale] || defaultLocale}
           </a>
@@ -50,7 +50,7 @@ const AboutPage: React.FC = () => {
         {
           pageLocales?.map(locale => (
             <li className="inline after:content-['_·_'] last:after:content-none" key={locale}>
-              <a href='#' onClick={() => setLocale(locale)}>
+              <a href='#' onClick={() => setLocale(locale)}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
                 {/* @ts-ignore */}
                 {languages[locale] || locale}
               </a>

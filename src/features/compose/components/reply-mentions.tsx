@@ -43,7 +43,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
 
   if (to.size === 0) {
     return (
-      <a href='#' className='reply-mentions' onClick={handleClick}>
+      <a href='#' className='reply-mentions' onClick={handleClick}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
         <FormattedMessage
           id='reply_mentions.reply_empty'
           defaultMessage='Replying to post'
@@ -68,7 +68,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   }
 
   return (
-    <a href='#' className='reply-mentions' onClick={handleClick}>
+    <a href='#' className='reply-mentions' onClick={handleClick}> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}
       <FormattedMessage
         id='reply_mentions.reply'
         defaultMessage='Replying to {accounts}'
