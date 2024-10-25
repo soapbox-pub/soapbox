@@ -400,7 +400,7 @@ const Video: React.FC<IVideo> = ({
   const toggleMute = () => {
     if (video.current) {
       const muted = !video.current.muted;
-      setMuted(!muted);
+      setMuted(muted);
       video.current.muted = muted;
 
       if (muted) {
