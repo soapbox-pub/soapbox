@@ -2,12 +2,11 @@ import React, { Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
-// @ts-ignore: it doesn't have types
-import { ScrollContext } from 'react-router-scroll-4';
 
 import { openModal } from 'soapbox/actions/modals';
 import * as BuildConfig from 'soapbox/build-config';
 import LoadingScreen from 'soapbox/components/loading-screen';
+import { Location, ScrollContext } from 'soapbox/components/scroll-context';
 import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
 import {
   ModalContainer,
@@ -24,6 +23,10 @@ import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
 const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
 const UI = React.lazy(() => import('soapbox/features/ui'));
+
+interface LocationState {
+  soapboxModalKey?: string;
+}
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
@@ -51,10 +54,9 @@ const SoapboxMount = () => {
 
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
-  // @ts-ignore: I don't actually know what these should be, lol
-  const shouldUpdateScroll = (prevRouterProps, { location }) => {
-    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
-  };
+  function shouldUpdateScroll<T extends LocationState>(prev: Location<T> | undefined, location: Location<T>): boolean {
+    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prev?.state?.soapboxModalKey);
+  }
 
   return (
     <SiteErrorBoundary>
