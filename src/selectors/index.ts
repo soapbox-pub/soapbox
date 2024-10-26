@@ -11,7 +11,6 @@ import { getSettings } from 'soapbox/actions/settings';
 import { Entities } from 'soapbox/entity-store/entities';
 import { type MRFSimple } from 'soapbox/schemas/pleroma';
 import { getDomain } from 'soapbox/utils/accounts';
-import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config-db';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldFilter } from 'soapbox/utils/timelines';
@@ -261,34 +260,27 @@ export const makeGetReport = () => {
   );
 };
 
-const getAuthUserIds = createSelector([
-  (state: RootState) => state.auth.users,
-], authUsers => {
-  return authUsers.reduce((ids: ImmutableOrderedSet<string>, authUser) => {
-    try {
-      const id = authUser.id;
-      return validId(id) ? ids.add(id) : ids;
-    } catch {
-      return ids;
-    }
-  }, ImmutableOrderedSet<string>());
-});
-
-export const makeGetOtherAccounts = () => {
+export function makeGetOtherAccounts() {
   return createSelector([
     (state: RootState) => state.entities[Entities.ACCOUNTS]?.store as EntityStore<AccountSchema>,
-    getAuthUserIds,
+    (state: RootState) => state.auth.users,
     (state: RootState) => state.me,
   ],
-  (accounts, authUserIds, me) => {
-    return authUserIds
-      .reduce((list: ImmutableList<any>, id: string) => {
-        if (id === me) return list;
-        const account = accounts[id];
-        return account ? list.push(account) : list;
-      }, ImmutableList());
+  (store, authUsers, me): AccountSchema[] => {
+    const accountIds = Object.values(authUsers).map((authUser) => authUser.id);
+
+    return accountIds.reduce<AccountSchema[]>((accounts, id: string) => {
+      if (id === me) return accounts;
+
+      const account = store[id];
+      if (account) {
+        accounts.push(account);
+      }
+
+      return accounts;
+    }, []);
   });
-};
+}
 
 const getSimplePolicy = createSelector([
   (state: RootState) => state.admin.configs,

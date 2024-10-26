@@ -92,8 +92,8 @@ const createAppToken = () =>
     const app = getState().auth.app;
 
     const params = {
-      client_id:     app.client_id!,
-      client_secret: app.client_secret!,
+      client_id:     app?.client_id,
+      client_secret: app?.client_secret,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
       scope:         getScopes(getState()),
@@ -109,8 +109,8 @@ const createUserToken = (username: string, password: string) =>
     const app = getState().auth.app;
 
     const params = {
-      client_id:     app.client_id!,
-      client_secret: app.client_secret!,
+      client_id:     app?.client_id,
+      client_secret: app?.client_secret,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
@@ -126,8 +126,8 @@ export const otpVerify = (code: string, mfa_token: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const app = getState().auth.app;
     return api(getState, 'app').post('/oauth/mfa/challenge', {
-      client_id: app.client_id,
-      client_secret: app.client_secret,
+      client_id: app?.client_id,
+      client_secret: app?.client_secret,
       mfa_token: mfa_token,
       code: code,
       challenge_type: 'totp',
@@ -208,12 +208,12 @@ export const logOut = (refresh = true) =>
     if (!account) return dispatch(noOp);
 
     const params = {
-      client_id: state.auth.app.client_id!,
-      client_secret: state.auth.app.client_secret!,
-      token: state.auth.users.get(account.url)!.access_token,
+      client_id: state.auth.app?.client_id,
+      client_secret: state.auth.app?.client_secret,
+      token: state.auth.users[account.url]?.access_token,
     };
 
-    return dispatch(revokeOAuthToken(params))
+    return dispatch(revokeOAuthToken(params as Record<string, string>))
       .finally(() => {
         // Clear all stored cache from React Query
         queryClient.invalidateQueries();
@@ -246,7 +246,7 @@ export const switchAccount = (accountId: string, background = false) =>
 export const fetchOwnAccounts = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    return state.auth.users.forEach((user) => {
+    return Object.values(state.auth.users).forEach((user) => {
       const account = selectAccount(state, user.id);
       if (!account) {
         dispatch(verifyCredentials(user.access_token, user.url))

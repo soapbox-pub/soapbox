@@ -15,8 +15,7 @@ import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbo
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
 
-import type { List as ImmutableList } from 'immutable';
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/schemas/account';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -86,7 +85,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const features = useFeatures();
   const me = useAppSelector((state) => state.me);
   const { account } = useAccount(me || undefined);
-  const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
+  const otherAccounts = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
