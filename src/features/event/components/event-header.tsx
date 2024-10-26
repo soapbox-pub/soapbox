@@ -13,7 +13,6 @@ import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions
 import { initMuteModal } from 'soapbox/actions/mutes';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports';
 import { deleteStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
@@ -421,7 +420,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
         <Stack space={1}>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/flag-3.svg')} />
+            <SvgIcon src={require('@tabler/icons/outline/flag-3.svg')} />
             <span>
               <FormattedMessage
                 id='event.organized_by'
@@ -441,8 +440,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           </HStack>
 
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/users.svg')} />
-            <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
+            <SvgIcon src={require('@tabler/icons/outline/users.svg')} />
+            <Button to='#' className='!border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={handleParticipantsClick}>
               <span>
                 <FormattedMessage
                   id='event.participants'
@@ -453,14 +452,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   }}
                 />
               </span>
-            </a>
+            </Button>
           </HStack>
 
           <EventDate status={status} />
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
+              <SvgIcon src={require('@tabler/icons/outline/map-pin.svg')} />
               <span>
                 {event.location.get('name')}
               </span>

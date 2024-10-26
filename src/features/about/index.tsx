@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { fetchAboutPage } from 'soapbox/actions/about';
 import { Navlinks } from 'soapbox/components/navlinks';
-import { Card } from 'soapbox/components/ui';
+import { Button, Card } from 'soapbox/components/ui';
 import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks';
 
 import { languages } from '../preferences';
@@ -42,18 +42,18 @@ const AboutPage: React.FC = () => {
       {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
-          <a href='#' onClick={() => setLocale(defaultLocale)}>
+          <Button to='#' className='!border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={() => setLocale(defaultLocale)}>
             {/* @ts-ignore */}
             {languages[defaultLocale] || defaultLocale}
-          </a>
+          </Button>
         </li>
         {
           pageLocales?.map(locale => (
             <li className="inline after:content-['_·_'] last:after:content-none" key={locale}>
-              <a href='#' onClick={() => setLocale(locale)}>
+              <Button to='#' className='!border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={() => setLocale(locale)}>
                 {/* @ts-ignore */}
                 {languages[locale] || locale}
-              </a>
+              </Button>
             </li>
           ))
         }

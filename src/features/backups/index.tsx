@@ -78,11 +78,11 @@ const Backups = () => {
     <Card variant='rounded' size='lg'>
       {intl.formatMessage(messages.emptyMessage, {
         action: (
-          <a href='#' onClick={handleCreateBackup}>
+          <Button to='#' className='!border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={handleCreateBackup}>
             <Text tag='span' theme='primary' size='sm' className='hover:underline'>
               {intl.formatMessage(messages.emptyMessageAction)}
             </Text>
-          </a>
+          </Button>
         ),
       })}
     </Card>
