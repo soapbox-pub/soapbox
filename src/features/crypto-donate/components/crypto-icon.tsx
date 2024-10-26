@@ -21,6 +21,7 @@ const CryptoIcon: React.FC<ICryptoIcon> = ({ ticker, title, className }): JSX.El
   return (
     <div className={className}>
       <img
+        className='w-full'
         src={getIcon(ticker)}
         alt={title || ticker}
       />
