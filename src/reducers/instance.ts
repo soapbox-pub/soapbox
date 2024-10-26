@@ -7,7 +7,7 @@ import { ConfigDB } from 'soapbox/utils/config-db';
 
 import { fetchInstanceV2 } from '../actions/instance';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const initialState: InstanceV2 = instanceV2Schema.parse({});
 

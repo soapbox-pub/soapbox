@@ -6,7 +6,7 @@ import {
   MUTES_CHANGE_DURATION,
 } from '../actions/mutes';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const NewMuteRecord = ImmutableRecord({
   isSubmitting: false,

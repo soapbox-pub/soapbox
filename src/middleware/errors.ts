@@ -1,6 +1,6 @@
 import toast from 'soapbox/toast';
 
-import type { AnyAction, Middleware } from 'redux';
+import type { AnyAction, Middleware } from '@reduxjs/toolkit';
 
 /** Whether the action is considered a failure. */
 const isFailType = (type: string): boolean => type.endsWith('_FAIL');

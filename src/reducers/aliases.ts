@@ -7,7 +7,7 @@ import {
   ALIASES_FETCH_SUCCESS,
 } from '../actions/aliases';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const ReducerRecord = ImmutableRecord({

@@ -1,10 +1,10 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import {
   Map as ImmutableMap,
   OrderedSet as ImmutableOrderedSet,
   Record as ImmutableRecord,
   List as ImmutableList,
 } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   FOLLOWERS_FETCH_SUCCESS,

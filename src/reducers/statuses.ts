@@ -48,7 +48,7 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const domParser = new DOMParser();

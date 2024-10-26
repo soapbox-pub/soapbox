@@ -2,7 +2,7 @@ import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
 import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const ModalRecord = ImmutableRecord({
   modalType: '',

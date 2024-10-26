@@ -10,7 +10,7 @@ import {
   LIST_EDITOR_REMOVE_SUCCESS,
 } from '../actions/lists';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const ListsRecord = ImmutableRecord({
   items: ImmutableList<string>(),

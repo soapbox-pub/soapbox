@@ -12,7 +12,7 @@ import {
   SUGGESTIONS_V2_FETCH_FAIL,
 } from 'soapbox/actions/suggestions';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const SuggestionRecord = ImmutableRecord({

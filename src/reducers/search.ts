@@ -21,7 +21,7 @@ import {
   SEARCH_RESULTS_CLEAR,
 } from '../actions/search';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity, Tag } from 'soapbox/types/entities';
 
 const ResultsRecord = ImmutableRecord({

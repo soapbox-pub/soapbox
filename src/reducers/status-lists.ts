@@ -66,7 +66,7 @@ import {
   SCHEDULED_STATUS_CANCEL_SUCCESS,
 } from '../actions/scheduled-statuses';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 export const StatusListRecord = ImmutableRecord({

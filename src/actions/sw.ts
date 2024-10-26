@@ -1,4 +1,4 @@
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 /** Sets the ServiceWorker updating state. */
 const SW_UPDATING = 'SW_UPDATING';

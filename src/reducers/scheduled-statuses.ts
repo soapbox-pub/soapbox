@@ -8,7 +8,7 @@ import {
 } from 'soapbox/actions/scheduled-statuses';
 import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { StatusVisibility } from 'soapbox/normalizers/status';
 import type { APIEntity } from 'soapbox/types/entities';
 

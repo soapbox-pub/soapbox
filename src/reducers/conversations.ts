@@ -11,7 +11,7 @@ import {
 } from '../actions/conversations';
 import { compareDate } from '../utils/comparators';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const ConversationRecord = ImmutableRecord({

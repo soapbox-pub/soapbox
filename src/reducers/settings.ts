@@ -1,5 +1,5 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import { Map as ImmutableMap, fromJS } from 'immutable';
-import { AnyAction } from 'redux';
 
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 

@@ -9,7 +9,7 @@ import {
 } from 'soapbox/actions/tags';
 import { normalizeTag } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { Tag } from 'soapbox/types/entities';
 
 const initialState = ImmutableMap<string, Tag>();

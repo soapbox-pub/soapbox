@@ -6,7 +6,7 @@ import {
   TRENDING_STATUSES_EXPAND_SUCCESS,
 } from 'soapbox/actions/trending-statuses';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const ReducerRecord = ImmutableRecord({

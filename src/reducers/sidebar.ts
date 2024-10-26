@@ -1,6 +1,6 @@
 import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions/sidebar';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 type State = {
   sidebarOpen: boolean;

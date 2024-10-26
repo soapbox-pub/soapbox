@@ -19,7 +19,7 @@ import {
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
 
-import type { UnknownAction } from 'redux';
+import type { UnknownAction } from '@reduxjs/toolkit';
 
 const STORAGE_KEY = 'soapbox:auth';
 const SESSION_KEY = 'soapbox:auth:me';

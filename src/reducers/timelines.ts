@@ -31,7 +31,7 @@ import {
   TIMELINE_INSERT,
 } from '../actions/timelines';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { ImportPosition } from 'soapbox/entity-store/types';
 import type { APIEntity, Status } from 'soapbox/types/entities';
 

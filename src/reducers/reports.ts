@@ -14,7 +14,7 @@ import {
   ReportableEntities,
 } from '../actions/reports';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { ChatMessage, Group } from 'soapbox/types/entities';
 
 const NewReportRecord = ImmutableRecord({

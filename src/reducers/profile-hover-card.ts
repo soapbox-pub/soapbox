@@ -6,7 +6,7 @@ import {
   PROFILE_HOVER_CARD_UPDATE,
 } from 'soapbox/actions/profile-hover-card';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const ReducerRecord = ImmutableRecord({
   ref: null as React.MutableRefObject<HTMLDivElement> | null,

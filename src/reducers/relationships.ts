@@ -25,7 +25,7 @@ import {
   ACCOUNTS_IMPORT,
 } from '../actions/importer';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type State = ImmutableMap<string, Relationship>;

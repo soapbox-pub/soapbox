@@ -10,7 +10,7 @@ import {
   REVOKE_TOKEN_SUCCESS,
 } from '../actions/security';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const TokenRecord = ImmutableRecord({
   id: 0,

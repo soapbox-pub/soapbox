@@ -6,7 +6,7 @@ import {
   STATUS_HOVER_CARD_UPDATE,
 } from 'soapbox/actions/status-hover-card';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 export const ReducerRecord = ImmutableRecord({
   ref: null as React.MutableRefObject<HTMLDivElement> | null,

@@ -8,7 +8,7 @@
 
 import { baseClient } from '../api';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 export const APP_CREATE_REQUEST = 'APP_CREATE_REQUEST';
 export const APP_CREATE_SUCCESS = 'APP_CREATE_SUCCESS';

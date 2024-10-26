@@ -4,7 +4,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import { NOSTR_PUBKEY_SET } from 'soapbox/actions/nostr';
 import { SW_UPDATING } from 'soapbox/actions/sw';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const ReducerRecord = ImmutableRecord({
   /** Whether /api/v1/instance 404'd (and we should display the external auth form). */

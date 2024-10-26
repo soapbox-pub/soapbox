@@ -10,8 +10,8 @@ import {
   ME_PATCH_SUCCESS,
 } from '../actions/me';
 
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { AxiosError } from 'axios';
-import type { AnyAction } from 'redux';
 import type { Me } from 'soapbox/types/soapbox';
 
 const initialState: Me = null;

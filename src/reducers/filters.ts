@@ -4,7 +4,7 @@ import { normalizeFilter } from 'soapbox/normalizers';
 
 import { FILTERS_FETCH_SUCCESS } from '../actions/filters';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity, Filter as FilterEntity } from 'soapbox/types/entities';
 
 type State = ImmutableList<FilterEntity>;

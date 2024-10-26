@@ -1,5 +1,5 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import { fromJS, Record as ImmutableRecord } from 'immutable';
-import { AnyAction } from 'redux';
 
 import {
   EDIT_EVENT_APPROVAL_REQUIRED_CHANGE,

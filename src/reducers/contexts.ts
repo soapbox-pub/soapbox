@@ -17,7 +17,7 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { Status } from 'soapbox/schemas';
 
 export const ReducerRecord = ImmutableRecord({

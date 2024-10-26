@@ -3,7 +3,7 @@ import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord }
 import { HISTORY_FETCH_REQUEST, HISTORY_FETCH_SUCCESS, HISTORY_FETCH_FAIL } from 'soapbox/actions/history';
 import { normalizeStatusEdit } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 type StatusEditRecord = ReturnType<typeof normalizeStatusEdit>;
 

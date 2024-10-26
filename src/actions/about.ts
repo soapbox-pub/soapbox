@@ -1,6 +1,6 @@
 import api from '../api';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { RootState } from 'soapbox/store';
 
 const FETCH_ABOUT_PAGE_REQUEST = 'FETCH_ABOUT_PAGE_REQUEST';

@@ -5,7 +5,7 @@ import {
   DROPDOWN_MENU_CLOSE,
 } from '../actions/dropdown-menu';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const ReducerRecord = ImmutableRecord({
   isOpen: false,

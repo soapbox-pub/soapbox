@@ -4,7 +4,7 @@ import { GROUP_FETCH_FAIL, GROUP_DELETE_SUCCESS, GROUP_FETCH_REQUEST } from 'soa
 import { GROUPS_IMPORT } from 'soapbox/actions/importer';
 import { normalizeGroup } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type GroupRecord = ReturnType<typeof normalizeGroup>;

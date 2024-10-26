@@ -25,7 +25,7 @@ import {
 import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers';
 import { normalizeId } from 'soapbox/utils/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 import type { Config } from 'soapbox/utils/config-db';
 

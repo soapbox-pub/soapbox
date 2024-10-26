@@ -8,7 +8,7 @@ import {
   TRENDS_FETCH_FAIL,
 } from '../actions/trends';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity, Tag } from 'soapbox/types/entities';
 
 const ReducerRecord = ImmutableRecord({

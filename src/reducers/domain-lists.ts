@@ -6,7 +6,7 @@ import {
   DOMAIN_UNBLOCK_SUCCESS,
 } from '../actions/domain-blocks';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const BlocksRecord = ImmutableRecord({
   items: ImmutableOrderedSet<string>(),

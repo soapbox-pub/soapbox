@@ -1,5 +1,5 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import { Map as ImmutableMap } from 'immutable';
-import { AnyAction } from 'redux';
 
 import { LOCATION_SEARCH_SUCCESS } from 'soapbox/actions/events';
 import { normalizeLocation } from 'soapbox/normalizers/location';

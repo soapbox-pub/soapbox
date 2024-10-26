@@ -5,7 +5,7 @@ import {
   BACKUPS_CREATE_SUCCESS,
 } from '../actions/backups';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 export const BackupRecord = ImmutableRecord({

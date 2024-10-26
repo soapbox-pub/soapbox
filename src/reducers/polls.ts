@@ -3,7 +3,7 @@ import { Map as ImmutableMap } from 'immutable';
 import { POLLS_IMPORT } from 'soapbox/actions/importer';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { Poll, APIEntity, EmbeddedEntity } from 'soapbox/types/entities';
 
 type State = ImmutableMap<string, Poll>;

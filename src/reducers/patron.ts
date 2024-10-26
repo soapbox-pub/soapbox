@@ -10,7 +10,7 @@ import {
   PATRON_ACCOUNT_FETCH_SUCCESS,
 } from '../actions/patron';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 
 const PatronAccountRecord = ImmutableRecord({
   is_patron: false,

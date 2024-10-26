@@ -14,7 +14,7 @@ import {
   GROUP_BLOCK_SUCCESS,
 } from 'soapbox/actions/groups';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const ListRecord = ImmutableRecord({

@@ -6,7 +6,7 @@ import { addCustomToPool } from 'soapbox/features/emoji/search';
 
 import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 const initialState = ImmutableList<ImmutableMap<string, string>>();

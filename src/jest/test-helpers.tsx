@@ -1,4 +1,5 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
+import { Action, configureStore, type AnyAction } from '@reduxjs/toolkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
@@ -8,8 +9,6 @@ import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { Action, applyMiddleware, createStore } from 'redux';
-import { thunk } from 'redux-thunk';
 
 import { ChatProvider } from 'soapbox/contexts/chat-context';
 import { StatProvider } from 'soapbox/contexts/stat-context';
@@ -17,20 +16,19 @@ import { queryClient } from 'soapbox/queries/client';
 
 import { default as rootReducer } from '../reducers';
 
-import type { AnyAction } from 'redux';
 import type { AppDispatch } from 'soapbox/store';
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
 const rootState = rootReducer(undefined, {} as Action);
-const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>([thunk]);
+const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>();
 
 /** Apply actions to the state, one at a time. */
 const applyActions = (state: any, actions: any, reducer: any) => {
   return actions.reduce((state: any, action: any) => reducer(state, action), state);
 };
 
-const createTestStore = (initialState: any) => createStore(rootReducer, initialState, applyMiddleware(thunk));
+const createTestStore = (initialState: any) => configureStore({ reducer: rootReducer, preloadedState: initialState });
 const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   let store: ReturnType<typeof createTestStore>;
   let appState = rootState;

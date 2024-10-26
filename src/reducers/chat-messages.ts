@@ -12,7 +12,7 @@ import {
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChatMessage } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type ChatMessageRecord = ReturnType<typeof normalizeChatMessage>;

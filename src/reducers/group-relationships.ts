@@ -8,7 +8,7 @@ import {
 } from 'soapbox/actions/groups';
 import { normalizeGroupRelationship } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type GroupRelationshipRecord = ReturnType<typeof normalizeGroupRelationship>;

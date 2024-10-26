@@ -10,7 +10,7 @@ import {
 } from 'soapbox/actions/lists';
 import { normalizeList } from 'soapbox/normalizers';
 
-import type { AnyAction } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
 import type { APIEntity } from 'soapbox/types/entities';
 
 type ListRecord = ReturnType<typeof normalizeList>;
