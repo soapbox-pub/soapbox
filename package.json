@@ -142,7 +142,7 @@
     "react-sticky-box": "^2.0.0",
     "react-swipeable-views": "^0.14.0",
     "react-virtuoso": "^4.10.4",
-    "reselect": "^5.0.0",
+    "reselect": "^5.1.1",
     "sass": "^1.79.5",
     "semver": "^7.3.8",
     "stringz": "^2.0.0",
