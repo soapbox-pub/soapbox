@@ -128,7 +128,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         <div className='relative flex items-end justify-center gap-4'>
           <Input
             type='text' onChange={handleCustomAmount} value={zapAmount}
-            className='box-shadow:none max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold !ring-0 dark:bg-transparent sm:max-w-28 sm:p-0.5 sm:!text-4xl'
+            className='max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold shadow-none !ring-0 dark:bg-transparent sm:max-w-28 sm:p-0.5 sm:!text-4xl'
           />
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
           {hasZapSplit && <p className='absolute right-0 font-bold sm:-right-6 sm:text-xl'>sats</p>}
