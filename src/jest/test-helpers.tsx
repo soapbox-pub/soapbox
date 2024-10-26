@@ -23,6 +23,7 @@ import type { AppDispatch } from 'soapbox/store';
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
 const rootState = rootReducer(undefined, {} as Action);
+// @ts-ignore: ???
 const mockStore = configureMockStore<typeof rootState, AnyAction, AppDispatch>([thunk]);
 
 /** Apply actions to the state, one at a time. */

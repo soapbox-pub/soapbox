@@ -45,7 +45,7 @@ export function useNostrReq(filters: NostrFilter[]): { events: NostrEvent[]; eos
   }, [relay, value]);
 
   return {
-    events: [...nset.current],
+    events: [...nset.current.values()],
     eose,
     closed,
   };

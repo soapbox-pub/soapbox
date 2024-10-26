@@ -1,5 +1,4 @@
 import MockAdapter from 'axios-mock-adapter';
-import { Map as ImmutableMap } from 'immutable';
 
 import { staticClient } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
@@ -23,7 +22,7 @@ describe('fetchAboutPage()', () => {
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'index' },
       { type: FETCH_ABOUT_PAGE_SUCCESS, slug: 'index', html: '<h1>Hello world</h1>' },
     ];
-    const store = mockStore(ImmutableMap());
+    const store = mockStore({});
 
     return store.dispatch(fetchAboutPage()).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
@@ -35,7 +34,7 @@ describe('fetchAboutPage()', () => {
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'asdf' },
       { type: FETCH_ABOUT_PAGE_FAIL, slug: 'asdf', error: new Error('Request failed with status code 404') },
     ];
-    const store = mockStore(ImmutableMap());
+    const store = mockStore({});
 
     return store.dispatch(fetchAboutPage('asdf')).catch(() => {
       expect(store.getActions()).toEqual(expectedActions);
