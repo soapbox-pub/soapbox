@@ -988,6 +988,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === DITTO,
     ]),
 
     /**
