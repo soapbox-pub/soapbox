@@ -1,4 +1,11 @@
-import { NRelay, NostrConnectRequest, NostrConnectResponse, NostrEvent, NostrSigner, NSchema as n } from '@nostrify/nostrify';
+import {
+  NRelay,
+  NostrConnectRequest,
+  NostrConnectResponse,
+  NostrEvent,
+  NostrSigner,
+  NSchema as n,
+} from '@nostrify/nostrify';
 
 interface NBunkerOpts {
   relay: NRelay;
@@ -47,7 +54,7 @@ export class NBunker {
   }
 
   private async handleEvent(event: NostrEvent): Promise<void> {
-    const decrypted = await this.signer.nip04!.decrypt(event.pubkey, event.content);
+    const decrypted = await this.decrypt(event.pubkey, event.content);
     const request = n.json().pipe(n.connectRequest()).safeParse(decrypted);
 
     if (!request.success) {
@@ -144,6 +151,15 @@ export class NBunker {
     });
 
     await this.relay.event(event);
+  }
+
+  /** Auto-decrypt NIP-44 or NIP-04 ciphertext. */
+  private async decrypt(pubkey: string, ciphertext: string): Promise<string> {
+    try {
+      return await this.signer.nip44!.decrypt(pubkey, ciphertext);
+    } catch {
+      return await this.signer.nip04!.decrypt(pubkey, ciphertext);
+    }
   }
 
   close() {
