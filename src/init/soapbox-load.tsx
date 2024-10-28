@@ -3,7 +3,7 @@ import { IntlProvider } from 'react-intl';
 
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
-import { useSignerStream } from 'soapbox/api/hooks/nostr/useSignerStream';
+import { useBunker } from 'soapbox/api/hooks/nostr/useBunker';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import {
@@ -45,7 +45,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { hasNostr, isRelayOpen, signer } = useNostr();
-  const { isSubscribed } = useSignerStream();
+  const { isSubscribed } = useBunker();
 
   const nostrLoading = Boolean(hasNostr && signer && (!isRelayOpen || !isSubscribed));
 

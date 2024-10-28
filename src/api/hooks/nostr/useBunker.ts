@@ -11,7 +11,7 @@ const secretStorageKey = 'soapbox:nip46:secret';
 
 sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
 
-function useSignerStream() {
+function useBunker() {
   const { relay } = useNostr();
 
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -88,4 +88,4 @@ function useSignerStream() {
   };
 }
 
-export { useSignerStream };
+export { useBunker };
