@@ -1154,6 +1154,8 @@
   "new_group_panel.title": "Crear un Grupo",
   "nostr_extension.found": "<link>Iniciar sesión</link> con la extensión del navegador.",
   "nostr_extension.not_found": "No se ha encontrado la extensión del navegador.",
+  "nostr_extension.not_supported": "La extensión del navegador no es compatible. Actualice a la última versión.",
+  "nostr_login.siwe.action": "Iniciar sesión con la extensión",
   "nostr_panel.message": "Conéctese con cualquier cliente de Nostr.",
   "nostr_panel.title": "Relés de Nostr",
   "nostr_relays.read_only": "Solo lectura",
