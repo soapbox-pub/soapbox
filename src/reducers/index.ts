@@ -7,6 +7,7 @@ import admin from './admin';
 import aliases from './aliases';
 import auth from './auth';
 import backups from './backups';
+import bunker from './bunker';
 import chat_message_lists from './chat-message-lists';
 import chat_messages from './chat-messages';
 import chats from './chats';
@@ -56,7 +57,7 @@ import trending_statuses from './trending-statuses';
 import trends from './trends';
 import user_lists from './user-lists';
 
-const reducers = {
+export default combineReducers({
   accounts_meta,
   admin,
   aliases,
@@ -111,6 +112,5 @@ const reducers = {
   trending_statuses,
   trends,
   user_lists,
-};
-
-export default combineReducers(reducers);
+  bunker: bunker.reducer,
+});

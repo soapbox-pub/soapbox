@@ -13,7 +13,7 @@ interface BunkerAuthorization {
   /** User pubkey. Events will be signed by this pubkey. */
   pubkey: string;
   /** Secret key for this connection. NIP-46 responses will be signed by this key. */
-  bunkerSeckey: Uint8Array;
+  bunkerSeckey: `nsec1${string}`;
 }
 
 /**
@@ -29,7 +29,7 @@ interface BunkerConnection {
   /** Pubkey of the app authorized to sign events with this connection. */
   authorizedPubkey: string;
   /** Secret key for this connection. NIP-46 responses will be signed by this key. */
-  bunkerSeckey: Uint8Array;
+  bunkerSeckey: `nsec1${string}`;
 }
 
 export default createSlice({

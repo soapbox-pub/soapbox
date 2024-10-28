@@ -1,59 +1,86 @@
+import { NSecSigner } from '@nostrify/nostrify';
+import { nip19 } from 'nostr-tools';
 import { useEffect, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { NBunker } from 'soapbox/features/nostr/NBunker';
+import { NBunker, NBunkerOpts } from 'soapbox/features/nostr/NBunker';
+import { NKeys } from 'soapbox/features/nostr/keys';
+import { useAppSelector } from 'soapbox/hooks';
 
 const secretStorageKey = 'soapbox:nip46:secret';
 
 sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
 
 function useSignerStream() {
+  const { relay } = useNostr();
+
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(true);
 
-  const { relay, signer, hasNostr } = useNostr();
-  const [pubkey, setPubkey] = useState<string | undefined>(undefined);
+  const authorizations = useAppSelector((state) => state.bunker.authorizations);
 
-  const authStorageKey = `soapbox:nostr:auth:${pubkey}`;
-
-  useEffect(() => {
-    let isCancelled = false;
-
-    if (signer && hasNostr) {
-      signer.getPublicKey().then((newPubkey) => {
-        if (!isCancelled) {
-          setPubkey(newPubkey);
-        }
-      }).catch(console.warn);
+  const connection = useAppSelector((state) => {
+    const accessToken = state.auth.tokens[state.auth.me!]?.access_token;
+    if (accessToken) {
+      return state.bunker.connections.find((conn) => conn.accessToken === accessToken);
     }
-
-    return () => {
-      isCancelled = true;
-    };
-  }, [signer, hasNostr]);
+  });
 
   useEffect(() => {
-    if (!relay || !signer || !pubkey) return;
+    if (!relay || (!connection && !authorizations.length)) return;
 
     const bunker = new NBunker({
       relay,
-      signer,
+      connection: (() => {
+        if (!connection) return;
+        const { authorizedPubkey, bunkerSeckey, pubkey } = connection;
+
+        const user = NKeys.get(pubkey) ?? window.nostr;
+        if (!user) return;
+
+        const decoded = nip19.decode(bunkerSeckey);
+        if (decoded.type !== 'nsec') return;
+
+        return {
+          authorizedPubkey,
+          signers: {
+            user,
+            bunker: new NSecSigner(decoded.data),
+          },
+        };
+      })(),
+      authorizations: authorizations.reduce((result, auth) => {
+        const { secret, pubkey, bunkerSeckey } = auth;
+
+        const user = NKeys.get(pubkey) ?? window.nostr;
+        if (!user) return result;
+
+        const decoded = nip19.decode(bunkerSeckey);
+        if (decoded.type !== 'nsec') return result;
+
+        result.push({
+          secret,
+          signers: {
+            user,
+            bunker: new NSecSigner(decoded.data),
+          },
+        });
+
+        return result;
+      }, [] as NBunkerOpts['authorizations']),
       onAuthorize(authorizedPubkey) {
-        localStorage.setItem(authStorageKey, authorizedPubkey);
         sessionStorage.setItem(secretStorageKey, crypto.randomUUID());
       },
       onSubscribed() {
         setIsSubscribed(true);
         setIsSubscribing(false);
       },
-      authorizedPubkey: localStorage.getItem(authStorageKey) ?? undefined,
-      getSecret: () => sessionStorage.getItem(secretStorageKey)!,
     });
 
     return () => {
       bunker.close();
     };
-  }, [relay, signer, pubkey]);
+  }, [relay, connection, authorizations]);
 
   return {
     isSubscribed,
