@@ -32,7 +32,7 @@ const DisplayNameInline: React.FC<IDisplayName> = ({ account, withSuffix = true 
   );
 
   // eslint-disable-next-line formatjs/no-literal-string-in-jsx
-  const suffix = (<span className='display-name'>@{getAcct(account, displayFqn)}</span>);
+  const suffix = (<span className='relative block max-w-full truncate'>@{getAcct(account, displayFqn)}</span>);
 
   return (
     <div className='flex max-w-80 flex-col items-center justify-center text-center sm:flex-row sm:gap-2'>
