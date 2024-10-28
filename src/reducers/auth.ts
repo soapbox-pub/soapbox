@@ -37,7 +37,7 @@ function getSessionUser(): string | undefined {
 /** Retrieve state from browser storage. */
 function getLocalState(): SoapboxAuth | undefined {
   const data = localStorage.getItem(STORAGE_KEY);
-  const result = jsonSchema.pipe(soapboxAuthSchema).safeParse(data);
+  const result = jsonSchema().pipe(soapboxAuthSchema).safeParse(data);
 
   if (!result.success) {
     return undefined;

@@ -1,4 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { produce } from 'immer';
+import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
+import { z } from 'zod';
+import { create } from 'zustand';
+// eslint-disable-next-line import/extensions
+import { persist } from 'zustand/middleware';
+
+import { filteredArray, jsonSchema } from 'soapbox/schemas/utils';
+
+/** User-facing authorization string. */
+interface BunkerURI {
+  pubkey: string;
+  relays: string[];
+  secret?: string;
+}
 
 /**
  * Temporary authorization details to establish a bunker connection with an app.
@@ -13,7 +27,7 @@ interface BunkerAuthorization {
   /** User pubkey. Events will be signed by this pubkey. */
   pubkey: string;
   /** Secret key for this connection. NIP-46 responses will be signed by this key. */
-  bunkerSeckey: `nsec1${string}`;
+  bunkerSeckey: Uint8Array;
 }
 
 /**
@@ -29,14 +43,137 @@ interface BunkerConnection {
   /** Pubkey of the app authorized to sign events with this connection. */
   authorizedPubkey: string;
   /** Secret key for this connection. NIP-46 responses will be signed by this key. */
-  bunkerSeckey: `nsec1${string}`;
+  bunkerSeckey: Uint8Array;
 }
 
-export default createSlice({
-  name: 'bunker',
-  initialState: {
-    authorizations: [] as BunkerAuthorization[],
-    connections: [] as BunkerConnection[],
-  },
-  reducers: {},
+/** Options for connecting to the bunker. */
+interface BunkerConnectRequest {
+  accessToken: string;
+  authorizedPubkey: string;
+  bunkerPubkey: string;
+  secret: string;
+}
+
+const nsecSchema = z.custom<`nsec1${string}`>((v) => typeof v === 'string' && v.startsWith('nsec1'));
+
+const connectionSchema = z.object({
+  pubkey: z.string(),
+  accessToken: z.string(),
+  authorizedPubkey: z.string(),
+  bunkerSeckey: nsecSchema,
 });
+
+const authorizationSchema = z.object({
+  secret: z.string(),
+  pubkey: z.string(),
+  bunkerSeckey: nsecSchema,
+});
+
+const stateSchema = z.object({
+  connections: filteredArray(connectionSchema),
+  authorizations: filteredArray(authorizationSchema),
+});
+
+interface BunkerState {
+  connections: BunkerConnection[];
+  authorizations: BunkerAuthorization[];
+}
+
+export const useBunkerStore = create<BunkerState>()(
+  persist(
+    (setState, getState) => ({
+      connections: [],
+      authorizations: [],
+
+      /** Generate a new authorization and persist it into the store. */
+      authorize(pubkey: string): BunkerURI {
+        const authorization: BunkerAuthorization = {
+          pubkey,
+          secret: crypto.randomUUID(),
+          bunkerSeckey: generateSecretKey(),
+        };
+
+        setState((state) => {
+          return produce(state, (draft) => {
+            draft.authorizations.push(authorization);
+          });
+        });
+
+        return {
+          pubkey: getPublicKey(authorization.bunkerSeckey),
+          secret: authorization.secret,
+          relays: [],
+        };
+      },
+
+      /** Connect to a bunker using the authorization secret. */
+      connect(request: BunkerConnectRequest): void {
+        const { authorizations } = getState();
+
+        const authorization = authorizations.find(
+          (existing) => existing.secret === request.secret && getPublicKey(existing.bunkerSeckey) === request.bunkerPubkey,
+        );
+
+        if (!authorization) {
+          throw new Error('Authorization not found');
+        }
+
+        const connection: BunkerConnection = {
+          pubkey: authorization.pubkey,
+          accessToken: request.accessToken,
+          authorizedPubkey: request.authorizedPubkey,
+          bunkerSeckey: authorization.bunkerSeckey,
+        };
+
+        setState((state) => {
+          return produce(state, (draft) => {
+            draft.connections.push(connection);
+            draft.authorizations = draft.authorizations.filter((existing) => existing !== authorization);
+          });
+        });
+      },
+    }),
+    {
+      name: 'soapbox:bunker',
+      storage: {
+        getItem(name) {
+          const connections = localStorage.getItem(`${name}:connections`);
+          const authorizations = sessionStorage.getItem(`${name}:authorizations`);
+
+          const state = stateSchema.parse({
+            connections: jsonSchema(nsecReviver).catch([]).parse(connections),
+            authorizations: jsonSchema(nsecReviver).catch([]).parse(authorizations),
+          });
+
+          return { state };
+        },
+        setItem(name, { state }) {
+          localStorage.setItem(`${name}:connections`, JSON.stringify(state.connections, nsecReplacer));
+          sessionStorage.setItem(`${name}:authorizations`, JSON.stringify(state.authorizations, nsecReplacer));
+        },
+        removeItem(name) {
+          localStorage.removeItem(`${name}:connections`);
+          sessionStorage.removeItem(`${name}:authorizations`);
+        },
+      },
+    },
+  ),
+);
+
+/** Encode Uint8Arrays into nsec strings. */
+function nsecReplacer(_key: string, value: unknown): unknown {
+  if (value instanceof Uint8Array) {
+    return nip19.nsecEncode(value);
+  }
+
+  return value;
+}
+
+/** Decode nsec strings into Uint8Arrays. */
+function nsecReviver(_key: string, value: unknown): unknown {
+  if (typeof value === 'string' && value.startsWith('nsec1')) {
+    return nip19.decode(value as `nsec1${string}`).data;
+  }
+
+  return value;
+}
