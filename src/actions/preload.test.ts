@@ -1,5 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
-
 import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
 
@@ -19,7 +17,7 @@ describe('preloadMastodon()', () => {
         .reply(200, {});
     });
 
-    const store = mockStore(ImmutableMap());
+    const store = mockStore({});
     store.dispatch(preloadMastodon(data));
     const actions = store.getActions();
 
