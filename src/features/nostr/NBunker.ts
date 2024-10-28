@@ -63,58 +63,48 @@ export class NBunker {
 
   private async subscribeAuthorization(authorization: NBunkerAuthorization): Promise<void> {
     const { signers } = authorization;
-
     const bunkerPubkey = await signers.bunker.getPublicKey();
-    const signal = this.controller.signal;
 
     const filters: NostrFilter[] = [
       { kinds: [24133], '#p': [bunkerPubkey], limit: 0 },
     ];
 
-    for await (const msg of this.relay.req(filters, { signal })) {
-      if (msg[0] === 'EVENT') {
-        const [,, event] = msg;
-
-        try {
-          const request = await this.decryptRequest(event, signers);
-
-          if (request.method === 'connect') {
-            this.handleConnect(event, request, authorization);
-          }
-        } catch (error) {
-          console.warn(error);
-        }
+    for await (const { event, request } of this.subscribe(filters, signers)) {
+      if (request.method === 'connect') {
+        this.handleConnect(event, request, authorization);
       }
     }
   }
 
   private async subscribeConnection(connection: NBunkerConnection): Promise<void> {
     const { authorizedPubkey, signers } = connection;
-
     const bunkerPubkey = await signers.bunker.getPublicKey();
-    const signal = this.controller.signal;
 
     const filters: NostrFilter[] = [
       { kinds: [24133], authors: [authorizedPubkey], '#p': [bunkerPubkey], limit: 0 },
     ];
+
+    for await (const { event, request } of this.subscribe(filters, signers)) {
+      this.handleRequest(event, request, connection);
+    }
+  }
+
+  private async *subscribe(filters: NostrFilter[], signers: NBunkerSigners): AsyncIterable<{ event: NostrEvent; request: NostrConnectRequest }> {
+    const signal = this.controller.signal;
 
     for await (const msg of this.relay.req(filters, { signal })) {
       if (msg[0] === 'EVENT') {
         const [,, event] = msg;
 
         try {
-          const request = await this.decryptRequest(event, signers);
-          this.handleRequest(event, request, connection);
+          const decrypted = await this.decrypt(signers.bunker, event.pubkey, event.content);
+          const request = n.json().pipe(n.connectRequest()).parse(decrypted);
+          yield { event, request };
         } catch (error) {
           console.warn(error);
         }
       }
     }
-  }
-
-  private async decryptRequest(event: NostrEvent, signers: NBunkerSigners): Promise<NostrConnectRequest> {
-    const decrypted = await this.decrypt(signers.bunker, event.pubkey, event.content);
-    return n.json().pipe(n.connectRequest()).parse(decrypted);
   }
 
   private async handleRequest(event: NostrEvent, request: NostrConnectRequest, connection: NBunkerConnection): Promise<void> {
