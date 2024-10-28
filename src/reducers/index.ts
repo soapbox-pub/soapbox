@@ -7,7 +7,6 @@ import admin from './admin';
 import aliases from './aliases';
 import auth from './auth';
 import backups from './backups';
-import bunker from './bunker';
 import chat_message_lists from './chat-message-lists';
 import chat_messages from './chat-messages';
 import chats from './chats';
@@ -112,5 +111,4 @@ export default combineReducers({
   trending_statuses,
   trends,
   user_lists,
-  bunker: bunker.reducer,
 });

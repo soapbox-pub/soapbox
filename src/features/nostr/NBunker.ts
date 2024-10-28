@@ -27,7 +27,6 @@ export interface NBunkerOpts {
   relay: NRelay;
   connection?: NBunkerConnection;
   authorizations: NBunkerAuthorization[];
-  onAuthorize(pubkey: string): void;
   onSubscribed(): void;
 }
 
@@ -36,7 +35,6 @@ export class NBunker {
   private relay: NRelay;
   private connection?: NBunkerConnection;
   private authorizations: NBunkerAuthorization[];
-  private onAuthorize: (pubkey: string) => void;
   private onSubscribed: () => void;
 
   private controller = new AbortController();
@@ -45,7 +43,6 @@ export class NBunker {
     this.relay = opts.relay;
     this.connection = opts.connection;
     this.authorizations = opts.authorizations;
-    this.onAuthorize = opts.onAuthorize;
     this.onSubscribed = opts.onSubscribed;
 
     this.open();
@@ -171,8 +168,6 @@ export class NBunker {
     const [, secret] = request.params;
 
     if (secret === authorization.secret) {
-      this.onAuthorize(event.pubkey);
-
       await this.sendResponse(event.pubkey, {
         id: request.id,
         result: 'ack',
