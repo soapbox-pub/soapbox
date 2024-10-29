@@ -5,14 +5,18 @@ import { closeModal } from 'soapbox/actions/modals';
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
 import Stack from 'soapbox/components/ui/stack/stack';
 import Text from 'soapbox/components/ui/text/text';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import { useAppDispatch } from 'soapbox/hooks';
 
 const NostrExtensionIndicator: React.FC = () => {
   const dispatch = useAppDispatch();
+  const { relay } = useNostr();
 
   const onClick = () => {
-    dispatch(nostrExtensionLogIn());
-    dispatch(closeModal());
+    if (relay) {
+      dispatch(nostrExtensionLogIn(relay, AbortSignal.timeout(30_000)));
+      dispatch(closeModal());
+    }
   };
 
   function renderBody(): React.ReactNode {

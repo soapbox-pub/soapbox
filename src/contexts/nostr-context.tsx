@@ -1,12 +1,11 @@
-import { NRelay, NRelay1, NostrSigner } from '@nostrify/nostrify';
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { NRelay1, NostrSigner } from '@nostrify/nostrify';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { NKeys } from 'soapbox/features/nostr/keys';
-import { useAppSelector } from 'soapbox/hooks';
+import { useSigner } from 'soapbox/api/hooks/nostr/useSigner';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
-  relay?: NRelay;
+  relay?: NRelay1;
   signer?: NostrSigner;
   hasNostr: boolean;
   isRelayOpen: boolean;
@@ -20,18 +19,14 @@ interface NostrProviderProps {
 
 export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const { instance } = useInstance();
+  const { signer } = useSigner();
+
   const hasNostr = !!instance.nostr;
 
   const [relay, setRelay] = useState<NRelay1>();
   const [isRelayOpen, setIsRelayOpen] = useState(false);
 
   const url = instance.nostr?.relay;
-  const accountPubkey = useAppSelector(({ meta, auth }) => meta.pubkey ?? auth.users[auth.me!]?.id);
-
-  const signer = useMemo(
-    () => accountPubkey ? NKeys.get(accountPubkey) ?? window.nostr : undefined,
-    [accountPubkey, window.nostr],
-  );
 
   const handleRelayOpen = () => {
     setIsRelayOpen(true);

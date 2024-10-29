@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { logInNostr } from 'soapbox/actions/nostr';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -19,6 +20,7 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
   const [error, setError] = useState<string | undefined>();
 
   const dispatch = useAppDispatch();
+  const { relay } = useNostr();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNsec(e.target.value);
@@ -26,13 +28,13 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
   };
 
   const handleSubmit = async () => {
+    if (!relay) return;
     try {
       const result = nip19.decode(nsec);
       if (result.type === 'nsec') {
         const seckey = result.data;
         const signer = NKeys.add(seckey);
-        const pubkey = await signer.getPublicKey();
-        dispatch(logInNostr(pubkey));
+        dispatch(logInNostr(signer, relay, AbortSignal.timeout(30_000)));
         onClose();
         return;
       }

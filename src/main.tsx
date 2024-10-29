@@ -1,3 +1,4 @@
+import { enableMapSet } from 'immer';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -24,6 +25,8 @@ import './styles/tailwind.css';
 
 import ready from './ready';
 import { registerSW, lockSW } from './utils/sw';
+
+enableMapSet();
 
 if (BuildConfig.NODE_ENV === 'production') {
   printConsoleWarning();

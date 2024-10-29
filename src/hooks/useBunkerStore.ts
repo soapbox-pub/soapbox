@@ -1,3 +1,4 @@
+import { NSchema as n, NostrSigner, NSecSigner } from '@nostrify/nostrify';
 import { produce } from 'immer';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 import { z } from 'zod';
@@ -6,13 +7,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { filteredArray, jsonSchema } from 'soapbox/schemas/utils';
-
-/** User-facing authorization string. */
-interface BunkerURI {
-  pubkey: string;
-  relays: string[];
-  secret?: string;
-}
 
 /**
  * Temporary authorization details to establish a bunker connection with an app.
@@ -54,19 +48,17 @@ interface BunkerConnectRequest {
   secret: string;
 }
 
-const nsecSchema = z.custom<`nsec1${string}`>((v) => typeof v === 'string' && v.startsWith('nsec1'));
-
 const connectionSchema = z.object({
   pubkey: z.string(),
   accessToken: z.string(),
   authorizedPubkey: z.string(),
-  bunkerSeckey: nsecSchema,
+  bunkerSeckey: n.bech32('nsec'),
 });
 
 const authorizationSchema = z.object({
   secret: z.string(),
   pubkey: z.string(),
-  bunkerSeckey: nsecSchema,
+  bunkerSeckey: n.bech32('nsec'),
 });
 
 const stateSchema = z.object({
@@ -77,7 +69,7 @@ const stateSchema = z.object({
 interface BunkerState {
   connections: BunkerConnection[];
   authorizations: BunkerAuthorization[];
-  authorize(pubkey: string): BunkerURI;
+  authorize(pubkey: string): { signer: NostrSigner; relays: string[]; secret: string };
   connect(request: BunkerConnectRequest): void;
 }
 
@@ -88,7 +80,7 @@ export const useBunkerStore = create<BunkerState>()(
       authorizations: [],
 
       /** Generate a new authorization and persist it into the store. */
-      authorize(pubkey: string): BunkerURI {
+      authorize(pubkey: string): { signer: NostrSigner; relays: string[]; secret: string } {
         const authorization: BunkerAuthorization = {
           pubkey,
           secret: crypto.randomUUID(),
@@ -102,7 +94,7 @@ export const useBunkerStore = create<BunkerState>()(
         });
 
         return {
-          pubkey: getPublicKey(authorization.bunkerSeckey),
+          signer: new NSecSigner(authorization.bunkerSeckey),
           secret: authorization.secret,
           relays: [],
         };

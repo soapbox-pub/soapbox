@@ -43,8 +43,9 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   };
 
   const handleNext = async () => {
+    if (!relay) return;
+
     const signer = NKeys.add(secretKey);
-    const pubkey = await signer.getPublicKey();
     const now = Math.floor(Date.now() / 1000);
 
     const [kind0, ...events] = await Promise.all([
@@ -57,12 +58,12 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
       signer.signEvent({ kind: 30078, content: '', tags: [['d', 'pub.ditto.pleroma_settings_store']], created_at: now }),
     ]);
 
-    await relay?.event(kind0);
-    await Promise.all(events.map((event) => relay?.event(event)));
+    await relay.event(kind0);
+    await Promise.all(events.map((event) => relay.event(event)));
 
     onClose();
 
-    await dispatch(logInNostr(pubkey));
+    await dispatch(logInNostr(signer, relay, AbortSignal.timeout(30_000)));
 
     if (isMobile) {
       dispatch(closeSidebar());
