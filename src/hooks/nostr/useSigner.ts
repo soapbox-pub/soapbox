@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppSelector } from 'soapbox/hooks';
-import { useBunkerStore } from 'soapbox/hooks/useBunkerStore';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 
 export function useSigner() {
   const { connections } = useBunkerStore();

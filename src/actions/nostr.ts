@@ -2,7 +2,7 @@ import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
 import { generateSecretKey } from 'nostr-tools';
 
 import { NostrRPC } from 'soapbox/features/nostr/NostrRPC';
-import { useBunkerStore } from 'soapbox/hooks/useBunkerStore';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { type AppDispatch } from 'soapbox/store';
 
 import { authLoggedIn, verifyCredentials } from './auth';

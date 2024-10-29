@@ -3,8 +3,6 @@ import { IntlProvider } from 'react-intl';
 
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
-import { useBunker } from 'soapbox/api/hooks/nostr/useBunker';
-import { useSigner } from 'soapbox/api/hooks/nostr/useSigner';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import {
@@ -14,6 +12,8 @@ import {
   useLocale,
   useInstance,
 } from 'soapbox/hooks';
+import { useBunker } from 'soapbox/hooks/nostr/useBunker';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner';
 import MESSAGES from 'soapbox/messages';
 
 /** Load initial data from the backend */

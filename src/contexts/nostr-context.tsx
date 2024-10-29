@@ -1,7 +1,7 @@
 import { NRelay1, NostrSigner } from '@nostrify/nostrify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { useSigner } from 'soapbox/api/hooks/nostr/useSigner';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {

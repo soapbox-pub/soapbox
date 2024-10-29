@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-import { useSigner } from 'soapbox/api/hooks/nostr/useSigner';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { NBunker } from 'soapbox/features/nostr/NBunker';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner';
 
 function useBunker() {
   const { relay } = useNostr();
