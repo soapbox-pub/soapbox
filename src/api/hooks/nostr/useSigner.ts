@@ -1,4 +1,6 @@
+import { NSecSigner } from '@nostrify/nostrify';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppSelector } from 'soapbox/hooks';
@@ -7,15 +9,17 @@ import { useBunkerStore } from 'soapbox/hooks/useBunkerStore';
 export function useSigner() {
   const { connections } = useBunkerStore();
 
-  const pubkey = useAppSelector(({ auth }) => {
-    const accessToken = auth.me ? auth.tokens[auth.me]?.access_token : undefined;
+  const connection = useAppSelector(({ auth }) => {
+    const accessToken = auth.me ? auth.users[auth.me]?.access_token : undefined;
     if (accessToken) {
-      return connections.find((conn) => conn.accessToken === accessToken)?.pubkey;
+      return connections.find((conn) => conn.accessToken === accessToken);
     }
   });
 
+  const { pubkey, bunkerSeckey, authorizedPubkey } = connection ?? {};
+
   const { data: signer, ...rest } = useQuery({
-    queryKey: ['nostr', 'signer', pubkey],
+    queryKey: ['nostr', 'signer', pubkey ?? ''],
     queryFn: async () => {
       if (!pubkey) return null;
 
@@ -28,7 +32,19 @@ export function useSigner() {
 
       return null;
     },
+    enabled: !!pubkey,
   });
 
-  return { signer: signer ?? undefined, ...rest };
+  const bunkerSigner = useMemo(() => {
+    if (bunkerSeckey) {
+      return new NSecSigner(bunkerSeckey);
+    }
+  }, [bunkerSeckey]);
+
+  return {
+    signer: signer ?? undefined,
+    bunkerSigner,
+    authorizedPubkey,
+    ...rest,
+  };
 }
