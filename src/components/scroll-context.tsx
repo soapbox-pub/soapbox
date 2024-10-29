@@ -15,7 +15,7 @@ export const ScrollContext: React.FC<IScrollContext> = ({ shouldUpdateScroll, ch
   const prevLocation = usePrevious(location);
 
   useEffect(() => {
-    if (prevLocation && shouldUpdateScroll(prevLocation, location)) {
+    if (prevLocation && (prevLocation.pathname !== location.pathname) && shouldUpdateScroll(prevLocation, location)) {
       window.scrollTo(0, 0);
     }
   }, [location, shouldUpdateScroll]);
