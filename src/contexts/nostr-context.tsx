@@ -1,12 +1,10 @@
-import { NRelay1, NostrSigner } from '@nostrify/nostrify';
+import { NRelay1 } from '@nostrify/nostrify';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-import { useSigner } from 'soapbox/hooks/nostr/useSigner';
 import { useInstance } from 'soapbox/hooks/useInstance';
 
 interface NostrContextType {
   relay?: NRelay1;
-  signer?: NostrSigner;
   isRelayLoading: boolean;
 }
 
@@ -18,7 +16,6 @@ interface NostrProviderProps {
 
 export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const { instance } = useInstance();
-  const { signer } = useSigner();
 
   const [relay, setRelay] = useState<NRelay1>();
   const [isRelayLoading, setIsRelayLoading] = useState(true);
@@ -44,7 +41,7 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   }, [relayUrl]);
 
   return (
-    <NostrContext.Provider value={{ relay, signer, isRelayLoading }}>
+    <NostrContext.Provider value={{ relay, isRelayLoading }}>
       {children}
     </NostrContext.Provider>
   );
