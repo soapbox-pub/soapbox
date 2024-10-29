@@ -46,6 +46,10 @@ function logInNostr(signer: NostrSigner, relay: NRelay1, signal: AbortSignal) {
         await respond({ result: pubkey });
         break;
       }
+
+      // FIXME: this needs to actually be a full bunker that handles all methods...
+      // maybe NBunker can be modular? It should be okay to make multiple instances of it at once.
+      // Then it could be used for knox too.
     }
 
     if (!authorizedPubkey) {

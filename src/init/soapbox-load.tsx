@@ -4,6 +4,7 @@ import { IntlProvider } from 'react-intl';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { useBunker } from 'soapbox/api/hooks/nostr/useBunker';
+import { useSigner } from 'soapbox/api/hooks/nostr/useSigner';
 import LoadingScreen from 'soapbox/components/loading-screen';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import {
@@ -44,10 +45,12 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { hasNostr, isRelayOpen, signer } = useNostr();
-  const { isSubscribed } = useBunker();
+  const nostr = useNostr();
+  const signer = useSigner();
 
-  const nostrLoading = Boolean(hasNostr && signer && (!isRelayOpen || !isSubscribed));
+  const nostrLoading = Boolean(nostr.isRelayLoading || signer.isLoading);
+
+  useBunker();
 
   /** Whether to display a loading indicator. */
   const showLoading = [

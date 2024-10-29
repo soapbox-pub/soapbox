@@ -7,8 +7,7 @@ import { useInstance } from 'soapbox/hooks/useInstance';
 interface NostrContextType {
   relay?: NRelay1;
   signer?: NostrSigner;
-  hasNostr: boolean;
-  isRelayOpen: boolean;
+  isRelayLoading: boolean;
 }
 
 const NostrContext = createContext<NostrContextType | undefined>(undefined);
@@ -21,31 +20,31 @@ export const NostrProvider: React.FC<NostrProviderProps> = ({ children }) => {
   const { instance } = useInstance();
   const { signer } = useSigner();
 
-  const hasNostr = !!instance.nostr;
-
   const [relay, setRelay] = useState<NRelay1>();
-  const [isRelayOpen, setIsRelayOpen] = useState(false);
+  const [isRelayLoading, setIsRelayLoading] = useState(true);
 
-  const url = instance.nostr?.relay;
+  const relayUrl = instance.nostr?.relay;
 
   const handleRelayOpen = () => {
-    setIsRelayOpen(true);
+    setIsRelayLoading(false);
   };
 
   useEffect(() => {
-    if (url) {
-      const relay = new NRelay1(url);
+    if (relayUrl) {
+      const relay = new NRelay1(relayUrl);
       relay.socket.underlyingWebsocket.addEventListener('open', handleRelayOpen);
       setRelay(relay);
+    } else {
+      setIsRelayLoading(false);
     }
     return () => {
       relay?.socket.underlyingWebsocket.removeEventListener('open', handleRelayOpen);
       relay?.close();
     };
-  }, [url]);
+  }, [relayUrl]);
 
   return (
-    <NostrContext.Provider value={{ relay, signer, isRelayOpen, hasNostr }}>
+    <NostrContext.Provider value={{ relay, signer, isRelayLoading }}>
       {children}
     </NostrContext.Provider>
   );
