@@ -37,6 +37,8 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
       },
     });
 
+    await bunker.waitReady;
+
     const token = await dispatch(obtainOAuthToken({
       grant_type: 'nostr_bunker',
       pubkey: bunkerPubkey,

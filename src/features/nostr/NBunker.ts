@@ -58,7 +58,14 @@ export class NBunker {
   private controller = new AbortController();
   private authorizedPubkeys = new Set<string>();
 
+  /** Wait for the bunker to be ready before sending requests. */
+  public waitReady: Promise<void>;
+  private setReady!: () => void;
+
   constructor(private opts: NBunkerOpts) {
+    this.waitReady = new Promise((resolve) => {
+      this.setReady = resolve;
+    });
     this.open();
   }
 
@@ -73,7 +80,10 @@ export class NBunker {
       { kinds: [24133], '#p': [bunkerPubkey], limit: 0 },
     ];
 
-    for await (const msg of relay.req(filters, { signal })) {
+    const sub = relay.req(filters, { signal });
+    this.setReady();
+
+    for await (const msg of sub) {
       if (msg[0] === 'EVENT') {
         const [,, event] = msg;
 
