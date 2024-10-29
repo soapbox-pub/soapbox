@@ -2,6 +2,8 @@ import { AxiosError } from 'axios';
 import { produce } from 'immer';
 import { z } from 'zod';
 
+import { NKeys } from 'soapbox/features/nostr/keys';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { Account, accountSchema } from 'soapbox/schemas';
 import { Application, applicationSchema } from 'soapbox/schemas/application';
 import { AuthUser, SoapboxAuth, soapboxAuthSchema } from 'soapbox/schemas/soapbox/soapbox-auth';
@@ -105,7 +107,26 @@ function importCredentials(auth: SoapboxAuth, accessToken: string, account: Acco
   });
 }
 
+/** Delete Nostr credentials when an access token is revoked. */
+// TODO: Rework auth so this can all be conrolled from one place.
+function revokeNostr(accessToken: string): void {
+  const { connections, revoke } = useBunkerStore.getState();
+
+  /** User pubkey from token. */
+  const pubkey = connections.find((conn) => conn.accessToken === accessToken)?.pubkey;
+
+  // Revoke the Bunker connection.
+  revoke(accessToken);
+
+  // Revoke the private key, if it exists.
+  if (pubkey) {
+    NKeys.delete(pubkey);
+  }
+}
+
 function deleteToken(auth: SoapboxAuth, accessToken: string): SoapboxAuth {
+  revokeNostr(accessToken);
+
   return produce(auth, draft => {
     delete draft.tokens[accessToken];
 

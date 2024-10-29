@@ -33,6 +33,7 @@ const connectionSchema = z.object({
 interface BunkerState {
   connections: BunkerConnection[];
   connect(connection: BunkerConnection): void;
+  revoke(accessToken: string): void;
 }
 
 export const useBunkerStore = create<BunkerState>()(
@@ -50,7 +51,7 @@ export const useBunkerStore = create<BunkerState>()(
       },
 
       /** Revoke any connections associated with the access token. */
-      revoke(accessToken: string) {
+      revoke(accessToken: string): void {
         setState((state) => {
           return produce(state, (draft) => {
             draft.connections = draft.connections.filter((conn) => conn.accessToken !== accessToken);
