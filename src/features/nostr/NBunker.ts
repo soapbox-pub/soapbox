@@ -18,15 +18,9 @@ interface NBunkerConnection {
   signers: NBunkerSigners;
 }
 
-interface NBunkerAuthorization {
-  secret: string;
-  signers: NBunkerSigners;
-}
-
 export interface NBunkerOpts {
   relay: NRelay;
   connection?: NBunkerConnection;
-  authorizations: NBunkerAuthorization[];
   onSubscribed(): void;
 }
 
@@ -34,7 +28,6 @@ export class NBunker {
 
   private relay: NRelay;
   private connection?: NBunkerConnection;
-  private authorizations: NBunkerAuthorization[];
   private onSubscribed: () => void;
 
   private controller = new AbortController();
@@ -42,7 +35,6 @@ export class NBunker {
   constructor(opts: NBunkerOpts) {
     this.relay = opts.relay;
     this.connection = opts.connection;
-    this.authorizations = opts.authorizations;
     this.onSubscribed = opts.onSubscribed;
 
     this.open();
@@ -52,25 +44,7 @@ export class NBunker {
     if (this.connection) {
       this.subscribeConnection(this.connection);
     }
-    for (const authorization of this.authorizations) {
-      this.subscribeAuthorization(authorization);
-    }
     this.onSubscribed();
-  }
-
-  private async subscribeAuthorization(authorization: NBunkerAuthorization): Promise<void> {
-    const { signers } = authorization;
-    const bunkerPubkey = await signers.bunker.getPublicKey();
-
-    const filters: NostrFilter[] = [
-      { kinds: [24133], '#p': [bunkerPubkey], limit: 0 },
-    ];
-
-    for await (const { event, request } of this.subscribe(filters, signers)) {
-      if (request.method === 'connect') {
-        this.handleConnect(event, request, authorization);
-      }
-    }
   }
 
   private async subscribeConnection(connection: NBunkerConnection): Promise<void> {
@@ -161,17 +135,6 @@ export class NBunker {
           result: '',
           error: `Unrecognized method: ${request.method}`,
         });
-    }
-  }
-
-  private async handleConnect(event: NostrEvent, request: NostrConnectRequest, authorization: NBunkerAuthorization): Promise<void> {
-    const [, secret] = request.params;
-
-    if (secret === authorization.secret) {
-      await this.sendResponse(event.pubkey, {
-        id: request.id,
-        result: 'ack',
-      });
     }
   }
 

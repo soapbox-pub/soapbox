@@ -2,14 +2,14 @@ import { NSecSigner } from '@nostrify/nostrify';
 import { useEffect, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { NBunker, NBunkerOpts } from 'soapbox/features/nostr/NBunker';
+import { NBunker } from 'soapbox/features/nostr/NBunker';
 import { NKeys } from 'soapbox/features/nostr/keys';
 import { useAppSelector } from 'soapbox/hooks';
 import { useBunkerStore } from 'soapbox/hooks/useBunkerStore';
 
 function useBunker() {
   const { relay } = useNostr();
-  const { authorizations, connections } = useBunkerStore();
+  const { connections } = useBunkerStore();
 
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isSubscribing, setIsSubscribing] = useState(true);
@@ -22,7 +22,7 @@ function useBunker() {
   });
 
   useEffect(() => {
-    if (!relay || (!connection && !authorizations.length)) return;
+    if (!relay || !connection) return;
 
     const bunker = new NBunker({
       relay,
@@ -41,22 +41,6 @@ function useBunker() {
           },
         };
       })(),
-      authorizations: authorizations.reduce((result, auth) => {
-        const { secret, pubkey, bunkerSeckey } = auth;
-
-        const user = NKeys.get(pubkey) ?? window.nostr;
-        if (!user) return result;
-
-        result.push({
-          secret,
-          signers: {
-            user,
-            bunker: new NSecSigner(bunkerSeckey),
-          },
-        });
-
-        return result;
-      }, [] as NBunkerOpts['authorizations']),
       onSubscribed() {
         setIsSubscribed(true);
         setIsSubscribing(false);
@@ -66,7 +50,7 @@ function useBunker() {
     return () => {
       bunker.close();
     };
-  }, [relay, connection, authorizations]);
+  }, [relay, connection]);
 
   return {
     isSubscribed,

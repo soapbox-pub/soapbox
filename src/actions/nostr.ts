@@ -1,4 +1,5 @@
-import { NostrSigner, NRelay1 } from '@nostrify/nostrify';
+import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
+import { generateSecretKey } from 'nostr-tools';
 
 import { NostrRPC } from 'soapbox/features/nostr/NostrRPC';
 import { useBunkerStore } from 'soapbox/hooks/useBunkerStore';
@@ -12,9 +13,9 @@ const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 /** Log in with a Nostr pubkey. */
 function logInNostr(signer: NostrSigner, relay: NRelay1, signal: AbortSignal) {
   return async (dispatch: AppDispatch) => {
+    const authorization = generateBunkerAuth();
+
     const pubkey = await signer.getPublicKey();
-    const bunker = useBunkerStore.getState();
-    const authorization = bunker.authorize(pubkey);
     const bunkerPubkey = await authorization.signer.getPublicKey();
 
     const rpc = new NostrRPC(relay, authorization.signer);
@@ -51,16 +52,17 @@ function logInNostr(signer: NostrSigner, relay: NRelay1, signal: AbortSignal) {
       throw new Error('Authorization failed');
     }
 
-    const { access_token } = dispatch(authLoggedIn(await tokenPromise));
+    const accessToken = dispatch(authLoggedIn(await tokenPromise)).access_token as string;
+    const bunkerState = useBunkerStore.getState();
 
-    useBunkerStore.getState().connect({
-      accessToken: access_token as string,
+    bunkerState.connect({
+      pubkey,
+      accessToken,
       authorizedPubkey,
-      bunkerPubkey,
-      secret: authorization.secret,
+      bunkerSeckey: authorization.seckey,
     });
 
-    await dispatch(verifyCredentials(access_token as string));
+    await dispatch(verifyCredentials(accessToken));
   };
 }
 
@@ -71,6 +73,18 @@ function nostrExtensionLogIn(relay: NRelay1, signal: AbortSignal) {
       throw new Error('No Nostr signer available');
     }
     return dispatch(logInNostr(window.nostr, relay, signal));
+  };
+}
+
+/** Generate a bunker authorization object. */
+function generateBunkerAuth() {
+  const secret = crypto.randomUUID();
+  const seckey = generateSecretKey();
+
+  return {
+    secret,
+    seckey,
+    signer: new NSecSigner(seckey),
   };
 }
 
