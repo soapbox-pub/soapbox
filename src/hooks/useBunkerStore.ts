@@ -1,4 +1,3 @@
-import { NSchema as n } from '@nostrify/nostrify';
 import { produce } from 'immer';
 import { nip19 } from 'nostr-tools';
 import { z } from 'zod';
@@ -28,7 +27,7 @@ const connectionSchema = z.object({
   pubkey: z.string(),
   accessToken: z.string(),
   authorizedPubkey: z.string(),
-  bunkerSeckey: n.bech32('nsec'),
+  bunkerSeckey: z.custom<Uint8Array>((value) => value instanceof Uint8Array),
 });
 
 interface BunkerState {
@@ -63,10 +62,12 @@ export const useBunkerStore = create<BunkerState>()(
       name: 'soapbox:bunker',
       storage: {
         getItem(name) {
+          const value = localStorage.getItem(name);
+
           const connections = jsonSchema(nsecReviver)
             .pipe(filteredArray(connectionSchema))
             .catch([])
-            .parse(localStorage.getItem(name));
+            .parse(value);
 
           return { state: { connections } };
         },
