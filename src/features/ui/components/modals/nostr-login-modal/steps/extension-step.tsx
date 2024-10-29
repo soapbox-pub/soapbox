@@ -28,7 +28,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ isLogin, onClickAlt, onClose 
 
   const onClick = () => {
     if (relay) {
-      dispatch(nostrExtensionLogIn(relay, AbortSignal.timeout(30_000)));
+      dispatch(nostrExtensionLogIn(relay));
       onClose();
     }
   };

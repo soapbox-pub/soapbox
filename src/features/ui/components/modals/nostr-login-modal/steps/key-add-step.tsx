@@ -34,7 +34,7 @@ const KeyAddStep: React.FC<IKeyAddStep> = ({ onClose }) => {
       if (result.type === 'nsec') {
         const seckey = result.data;
         const signer = NKeys.add(seckey);
-        dispatch(logInNostr(signer, relay, AbortSignal.timeout(30_000)));
+        dispatch(logInNostr(signer, relay));
         onClose();
         return;
       }

@@ -14,7 +14,7 @@ const NostrExtensionIndicator: React.FC = () => {
 
   const onClick = () => {
     if (relay) {
-      dispatch(nostrExtensionLogIn(relay, AbortSignal.timeout(30_000)));
+      dispatch(nostrExtensionLogIn(relay));
       dispatch(closeModal());
     }
   };

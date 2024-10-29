@@ -1,7 +1,7 @@
 import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
 import { generateSecretKey } from 'nostr-tools';
 
-import { NostrRPC } from 'soapbox/features/nostr/NostrRPC';
+import { NBunker } from 'soapbox/features/nostr/NBunker';
 import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { type AppDispatch } from 'soapbox/store';
 
@@ -11,52 +11,44 @@ import { obtainOAuthToken } from './oauth';
 const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 
 /** Log in with a Nostr pubkey. */
-function logInNostr(signer: NostrSigner, relay: NRelay1, signal: AbortSignal) {
+function logInNostr(signer: NostrSigner, relay: NRelay1) {
   return async (dispatch: AppDispatch) => {
     const authorization = generateBunkerAuth();
 
     const pubkey = await signer.getPublicKey();
     const bunkerPubkey = await authorization.signer.getPublicKey();
 
-    const rpc = new NostrRPC(relay, authorization.signer);
-    const sub = rpc.req([{ kinds: [24133], '#p': [bunkerPubkey], limit: 0 }], { signal: AbortSignal.timeout(1_000) });
+    let authorizedPubkey: string | undefined;
 
-    const tokenPromise = dispatch(obtainOAuthToken({
+    using bunker = new NBunker({
+      relay,
+      userSigner: signer,
+      bunkerSigner: authorization.signer,
+      onConnect(request, event) {
+        const [, secret] = request.params;
+
+        if (secret === authorization.secret) {
+          bunker.authorize(event.pubkey);
+          authorizedPubkey = event.pubkey;
+          return { id: request.id, result: 'ack' };
+        } else {
+          return { id: request.id, result: '', error: 'Invalid secret' };
+        }
+      },
+    });
+
+    const token = await dispatch(obtainOAuthToken({
       grant_type: 'nostr_bunker',
       pubkey: bunkerPubkey,
       relays: [relay.socket.url],
       secret: authorization.secret,
     }));
 
-    let authorizedPubkey: string | undefined;
-
-    for await (const { request, respond, requestEvent } of sub) {
-      if (request.method === 'connect') {
-        const [, secret] = request.params;
-
-        if (secret === authorization.secret) {
-          authorizedPubkey = requestEvent.pubkey;
-          await respond({ result: 'ack' });
-        } else {
-          await respond({ result: '', error: 'Invalid secret' });
-          throw new Error('Invalid secret');
-        }
-      }
-      if (request.method === 'get_public_key') {
-        await respond({ result: pubkey });
-        break;
-      }
-
-      // FIXME: this needs to actually be a full bunker that handles all methods...
-      // maybe NBunker can be modular? It should be okay to make multiple instances of it at once.
-      // Then it could be used for knox too.
-    }
-
     if (!authorizedPubkey) {
       throw new Error('Authorization failed');
     }
 
-    const accessToken = dispatch(authLoggedIn(await tokenPromise)).access_token as string;
+    const accessToken = dispatch(authLoggedIn(token)).access_token as string;
     const bunkerState = useBunkerStore.getState();
 
     bunkerState.connect({
@@ -71,12 +63,12 @@ function logInNostr(signer: NostrSigner, relay: NRelay1, signal: AbortSignal) {
 }
 
 /** Log in with a Nostr extension. */
-function nostrExtensionLogIn(relay: NRelay1, signal: AbortSignal) {
+function nostrExtensionLogIn(relay: NRelay1) {
   return async (dispatch: AppDispatch) => {
     if (!window.nostr) {
       throw new Error('No Nostr signer available');
     }
-    return dispatch(logInNostr(window.nostr, relay, signal));
+    return dispatch(logInNostr(window.nostr, relay));
   };
 }
 

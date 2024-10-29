@@ -19,10 +19,26 @@ export interface NBunkerOpts {
   /**
    * Callback when a `connect` request has been received.
    * This is a good place to call `bunker.authorize()` with the remote client's pubkey.
-   * It's up to the caller to verify the request parameters and secret.
+   * It's up to the caller to verify the request parameters and secret, and then return a response object.
    * All other methods are handled by the bunker automatically.
+   *
+   * ```ts
+   * const bunker = new Bunker({
+   *   ...opts,
+   *   onConnect(request, event) {
+   *     const [, secret] = request.params;
+   *
+   *     if (secret === authorization.secret) {
+   *       bunker.authorize(event.pubkey); // Authorize the pubkey for signer actions.
+   *       return { id: request.id, result: 'ack' }; // Return a success response.
+   *     } else {
+   *       return { id: request.id, result: '', error: 'Invalid secret' };
+   *     }
+   *   },
+   * });
+   * ```
    */
-  onConnect?(request: NostrConnectRequest, event: NostrEvent): Promise<void> | void;
+  onConnect?(request: NostrConnectRequest, event: NostrEvent): Promise<NostrConnectResponse> | NostrConnectResponse;
   /**
    * Callback when an error occurs while parsing a request event.
    * Client errors are not captured here, only errors that occur before arequest's `id` can be known,
@@ -86,7 +102,10 @@ export class NBunker {
     const { pubkey } = event;
 
     if (request.method === 'connect') {
-      onConnect?.(request, event);
+      if (onConnect) {
+        const response = await onConnect(request, event);
+        return this.sendResponse(pubkey, response);
+      }
       return;
     }
 
@@ -191,7 +210,7 @@ export class NBunker {
     this.controller.abort();
   }
 
-  [Symbol.asyncDispose](): void {
+  [Symbol.dispose](): void {
     this.close();
   }
 

@@ -63,7 +63,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
 
     onClose();
 
-    await dispatch(logInNostr(signer, relay, AbortSignal.timeout(30_000)));
+    await dispatch(logInNostr(signer, relay));
 
     if (isMobile) {
       dispatch(closeSidebar());
