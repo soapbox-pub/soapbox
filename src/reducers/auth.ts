@@ -26,6 +26,17 @@ import type { UnknownAction } from 'redux';
 const STORAGE_KEY = 'soapbox:auth';
 const SESSION_KEY = 'soapbox:auth:me';
 
+// Log out legacy Nostr/Ditto users.
+for (let i = 0; i < localStorage.length; i++) {
+  const key = localStorage.key(i);
+
+  if (key && /^soapbox:nostr:auth:[0-9a-f]{64}$/.test(key)) {
+    localStorage.clear();
+    sessionStorage.clear();
+    location.reload();
+  }
+}
+
 /** Get current user's URL from session storage. */
 function getSessionUser(): string | undefined {
   const value = sessionStorage.getItem(SESSION_KEY);
