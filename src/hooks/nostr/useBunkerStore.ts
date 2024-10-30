@@ -1,5 +1,5 @@
+import { NSchema as n } from '@nostrify/nostrify';
 import { produce } from 'immer';
-import { nip19 } from 'nostr-tools';
 import { z } from 'zod';
 import { create } from 'zustand';
 // eslint-disable-next-line import/extensions
@@ -19,15 +19,15 @@ interface BunkerConnection {
   accessToken: string;
   /** Pubkey of the app authorized to sign events with this connection. */
   authorizedPubkey: string;
-  /** Secret key for this connection. NIP-46 responses will be signed by this key. */
-  bunkerSeckey: Uint8Array;
+  /** Pubkey for this connection. Secret key is stored in the keyring. NIP-46 responses will be signed by this key. */
+  bunkerPubkey: string;
 }
 
-const connectionSchema = z.object({
-  pubkey: z.string(),
+const connectionSchema: z.ZodType<BunkerConnection> = z.object({
+  pubkey: n.id(),
   accessToken: z.string(),
-  authorizedPubkey: z.string(),
-  bunkerSeckey: z.custom<Uint8Array>((value) => value instanceof Uint8Array),
+  authorizedPubkey: n.id(),
+  bunkerPubkey: n.id(),
 });
 
 interface BunkerState {
@@ -65,7 +65,7 @@ export const useBunkerStore = create<BunkerState>()(
         getItem(name) {
           const value = localStorage.getItem(name);
 
-          const connections = jsonSchema(nsecReviver)
+          const connections = jsonSchema()
             .pipe(filteredArray(connectionSchema))
             .catch([])
             .parse(value);
@@ -73,7 +73,7 @@ export const useBunkerStore = create<BunkerState>()(
           return { state: { connections } };
         },
         setItem(name, { state }) {
-          localStorage.setItem(name, JSON.stringify(state.connections, nsecReplacer));
+          localStorage.setItem(name, JSON.stringify(state.connections));
         },
         removeItem(name) {
           localStorage.removeItem(name);
@@ -82,21 +82,3 @@ export const useBunkerStore = create<BunkerState>()(
     },
   ),
 );
-
-/** Encode Uint8Arrays into nsec strings. */
-function nsecReplacer(_key: string, value: unknown): unknown {
-  if (value instanceof Uint8Array) {
-    return nip19.nsecEncode(value);
-  }
-
-  return value;
-}
-
-/** Decode nsec strings into Uint8Arrays. */
-function nsecReviver(_key: string, value: unknown): unknown {
-  if (typeof value === 'string' && value.startsWith('nsec1')) {
-    return nip19.decode(value as `nsec1${string}`).data;
-  }
-
-  return value;
-}

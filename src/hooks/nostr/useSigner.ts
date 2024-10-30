@@ -1,6 +1,4 @@
-import { NSecSigner } from '@nostrify/nostrify';
 import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
 
 import { keyring } from 'soapbox/features/nostr/keyring';
 import { useAppSelector } from 'soapbox/hooks';
@@ -16,7 +14,7 @@ export function useSigner() {
     }
   });
 
-  const { pubkey, bunkerSeckey, authorizedPubkey } = connection ?? {};
+  const { pubkey, bunkerPubkey, authorizedPubkey } = connection ?? {};
 
   const { data: signer, ...rest } = useQuery({
     queryKey: ['nostr', 'signer', pubkey ?? ''],
@@ -35,15 +33,9 @@ export function useSigner() {
     enabled: !!pubkey,
   });
 
-  const bunkerSigner = useMemo(() => {
-    if (bunkerSeckey) {
-      return new NSecSigner(bunkerSeckey);
-    }
-  }, [bunkerSeckey]);
-
   return {
     signer: signer ?? undefined,
-    bunkerSigner,
+    bunkerSigner: bunkerPubkey ? keyring.get(bunkerPubkey) : undefined,
     authorizedPubkey,
     ...rest,
   };

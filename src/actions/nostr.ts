@@ -2,6 +2,7 @@ import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
 import { generateSecretKey } from 'nostr-tools';
 
 import { NBunker } from 'soapbox/features/nostr/NBunker';
+import { keyring } from 'soapbox/features/nostr/keyring';
 import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { type AppDispatch } from 'soapbox/store';
 
@@ -53,11 +54,13 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
     const accessToken = dispatch(authLoggedIn(token)).access_token as string;
     const bunkerState = useBunkerStore.getState();
 
+    keyring.add(authorization.seckey);
+
     bunkerState.connect({
       pubkey,
       accessToken,
       authorizedPubkey,
-      bunkerSeckey: authorization.seckey,
+      bunkerPubkey,
     });
 
     await dispatch(verifyCredentials(accessToken));
