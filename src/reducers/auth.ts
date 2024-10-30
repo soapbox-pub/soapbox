@@ -123,15 +123,15 @@ function importCredentials(auth: SoapboxAuth, accessToken: string, account: Acco
 function revokeNostr(accessToken: string): void {
   const { connections, revoke } = useBunkerStore.getState();
 
-  /** User pubkey from token. */
-  const pubkey = connections.find((conn) => conn.accessToken === accessToken)?.pubkey;
-
-  // Revoke the Bunker connection.
-  revoke(accessToken);
-
-  // Revoke the private key, if it exists.
-  if (pubkey) {
-    keyring.delete(pubkey);
+  for (const conn of connections) {
+    if (conn.accessToken === accessToken) {
+      // Revoke the Bunker connection.
+      revoke(accessToken);
+      // Revoke the user's private key.
+      keyring.delete(conn.pubkey);
+      // Revoke the bunker's private key.
+      keyring.delete(conn.bunkerPubkey);
+    }
   }
 }
 
