@@ -1,6 +1,6 @@
-import { NKeyStorage } from './NKeyStorage';
+import { NKeyring } from './NKeyring';
 
-export const NKeys = new NKeyStorage(
+export const NKeys = new NKeyring(
   localStorage,
   'soapbox:nostr:keys',
 );

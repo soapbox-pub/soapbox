@@ -8,7 +8,7 @@ import { z } from 'zod';
  * When instantiated, it will lock the storage key to prevent tampering.
  * Changes to the object will sync to storage.
  */
-export class NKeyStorage implements ReadonlyMap<string, NostrSigner> {
+export class NKeyring implements ReadonlyMap<string, NostrSigner> {
 
   #keypairs = new Map<string, Uint8Array>();
   #storage: Storage;
