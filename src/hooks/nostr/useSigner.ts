@@ -2,7 +2,7 @@ import { NSecSigner } from '@nostrify/nostrify';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { NKeys } from 'soapbox/features/nostr/keys';
+import { keyring } from 'soapbox/features/nostr/keyring';
 import { useAppSelector } from 'soapbox/hooks';
 import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 
@@ -23,7 +23,7 @@ export function useSigner() {
     queryFn: async () => {
       if (!pubkey) return null;
 
-      const signer = NKeys.get(pubkey);
+      const signer = keyring.get(pubkey);
       if (signer) return signer;
 
       if (window.nostr && await window.nostr.getPublicKey() === pubkey) {

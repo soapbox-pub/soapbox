@@ -8,7 +8,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { NKeys } from 'soapbox/features/nostr/keys';
+import { keyring } from 'soapbox/features/nostr/keyring';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { download } from 'soapbox/utils/download';
@@ -45,7 +45,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   const handleNext = async () => {
     if (!relay) return;
 
-    const signer = NKeys.add(secretKey);
+    const signer = keyring.add(secretKey);
     const now = Math.floor(Date.now() / 1000);
 
     const [kind0, ...events] = await Promise.all([

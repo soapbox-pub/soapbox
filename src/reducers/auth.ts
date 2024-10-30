@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { produce } from 'immer';
 import { z } from 'zod';
 
-import { NKeys } from 'soapbox/features/nostr/keys';
+import { keyring } from 'soapbox/features/nostr/keyring';
 import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { Account, accountSchema } from 'soapbox/schemas';
 import { Application, applicationSchema } from 'soapbox/schemas/application';
@@ -131,7 +131,7 @@ function revokeNostr(accessToken: string): void {
 
   // Revoke the private key, if it exists.
   if (pubkey) {
-    NKeys.delete(pubkey);
+    keyring.delete(pubkey);
   }
 }
 
