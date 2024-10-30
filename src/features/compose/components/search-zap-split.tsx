@@ -96,8 +96,6 @@ const SearchZapSplit = (props: ISearchZapSplit) => {
 
   const getAccount = (accountId: string) => (dispatch: any, getState: () => RootState) => {
     const account = selectAccount(getState(), accountId);
-    console.log(account);
-
     props.onChange(account!);
   };
 

@@ -1,4 +1,4 @@
-import { produce, enableMapSet } from 'immer';
+import { produce } from 'immer';
 
 import {
   ENTITIES_IMPORT,
@@ -16,8 +16,6 @@ import { createCache, createList, updateStore, updateList } from './utils';
 
 import type { DeleteEntitiesOpts } from './actions';
 import type { EntitiesTransaction, Entity, EntityCache, EntityListState, ImportPosition } from './types';
-
-enableMapSet();
 
 /** Entity reducer state. */
 interface State {
