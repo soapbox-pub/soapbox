@@ -563,7 +563,6 @@ const Video: React.FC<IVideo> = ({
 
       <div
         className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[15px] opacity-0 transition-opacity duration-100 ease-linear', { 'opacity-100': paused || hovered })}
-        // onClick={handleClickStart}
       >
         <div className='relative h-6 cursor-pointer' onMouseDown={handleMouseDown} onMouseEnter={handleSeekEnter} onMouseLeave={handleSeekLeave} ref={seek}>
           <div
