@@ -20,7 +20,7 @@ const AwaitingApproval: React.FC = () => {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(fetchUsers(['local', 'need_approval']))
+    dispatch(fetchUsers({ pending: true }))
       .then(() => setLoading(false))
       .catch(() => {});
   }, []);
