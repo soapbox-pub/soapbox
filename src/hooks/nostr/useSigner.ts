@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 
 import { keyring } from 'soapbox/features/nostr/keyring';
 import { useAppSelector } from 'soapbox/hooks';
@@ -33,9 +34,15 @@ export function useSigner() {
     enabled: !!pubkey,
   });
 
+  const bunkerSigner = useMemo(() => {
+    if (bunkerPubkey) {
+      return keyring.get(bunkerPubkey);
+    }
+  }, [bunkerPubkey]);
+
   return {
     signer: signer ?? undefined,
-    bunkerSigner: bunkerPubkey ? keyring.get(bunkerPubkey) : undefined,
+    bunkerSigner,
     authorizedPubkey,
     ...rest,
   };
