@@ -15,7 +15,7 @@ const messages = defineMessages({
 const UserIndex: React.FC = () => {
   const intl = useIntl();
 
-  const { accounts, isLoading, hasNextPage, fetchNextPage } = useAdminAccounts(new Set(['local']));
+  const { accounts, isLoading, hasNextPage, fetchNextPage } = useAdminAccounts({ local: true });
 
   const handleLoadMore = () => {
     if (!isLoading) {
