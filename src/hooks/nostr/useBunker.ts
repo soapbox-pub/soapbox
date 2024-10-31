@@ -11,6 +11,8 @@ function useBunker() {
   useEffect(() => {
     if (!relay || !userSigner || !bunkerSigner || !authorizedPubkey) return;
 
+    console.log('bunker opening');
+
     const bunker = new NBunker({
       relay,
       userSigner,
@@ -23,6 +25,7 @@ function useBunker() {
     bunker.authorize(authorizedPubkey);
 
     return () => {
+      console.log('bunker closing');
       bunker.close();
     };
   }, [relay, userSigner, bunkerSigner, authorizedPubkey]);
