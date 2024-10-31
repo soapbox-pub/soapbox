@@ -3,29 +3,25 @@ import { useEntities } from 'soapbox/entity-store/hooks';
 import { useApi } from 'soapbox/hooks';
 import { adminAccountSchema } from 'soapbox/schemas/admin-account';
 
-const allFilters = new Set([
-  'local' as const,
-  'remote' as const,
-  'active' as const,
-  'pending' as const,
-  'disabled' as const,
-  'silenced' as const,
-  'suspended' as const,
-  'sensitized' as const,
-]);
+interface MastodonAdminFilters {
+  local?: boolean;
+  remote?: boolean;
+  active?: boolean;
+  pending?: boolean;
+  disabled?: boolean;
+  silenced?: boolean;
+  suspended?: boolean;
+  sensitized?: boolean;
+}
 
 /** https://docs.joinmastodon.org/methods/admin/accounts/#v1 */
-export function useAdminAccounts(filters: typeof allFilters, limit?: number) {
+export function useAdminAccounts(filters: MastodonAdminFilters, limit?: number) {
   const api = useApi();
 
   const searchParams = new URLSearchParams();
 
-  for (const filter of allFilters) {
-    if (filters.has(filter)) {
-      searchParams.append(filter, 'true');
-    } else {
-      searchParams.append(filter, 'false');
-    }
+  for (const [name, value] of Object.entries(filters)) {
+    searchParams.append(name, value.toString());
   }
 
   if (typeof limit === 'number') {
