@@ -424,7 +424,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
-      dispatch(fetchUsers(['local', 'need_approval']));
+      dispatch(fetchUsers({ pending: true }));
     }
 
     if (account.admin) {

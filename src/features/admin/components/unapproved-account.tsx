@@ -26,7 +26,7 @@ const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
     <Account
       key={adminAccount.id}
       account={account}
-      acct={`${adminAccount.username}@${adminAccount.domain}`}
+      acct={adminAccount.domain ? `${adminAccount.username}@${adminAccount.domain}` : adminAccount.username}
       note={adminAccount?.invite_request || ''}
       action={(
         <AuthorizeRejectButtons

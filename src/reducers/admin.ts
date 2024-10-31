@@ -1,11 +1,9 @@
 import {
   Map as ImmutableMap,
   List as ImmutableList,
-  Set as ImmutableSet,
   Record as ImmutableRecord,
   OrderedSet as ImmutableOrderedSet,
   fromJS,
-  is,
 } from 'immutable';
 
 import {
@@ -64,12 +62,8 @@ type SetKeys = keyof FilterConditionally<State, ImmutableOrderedSet<string>>;
 type APIReport = { id: string; state: string; statuses: any[] };
 type APIUser = { id: string; email: string; nickname: string; registration_reason: string };
 
-type Filter = 'local' | 'need_approval' | 'active';
+type Filters = Record<string, boolean>;
 
-const FILTER_UNAPPROVED: Filter[] = ['local', 'need_approval'];
-const FILTER_LATEST: Filter[]     = ['local', 'active'];
-
-const filtersMatch = (f1: string[], f2: string[]) => is(ImmutableSet(f1), ImmutableSet(f2));
 const toIds = (items: any[]) => items.map(item => item.id);
 
 const mergeSet = (state: State, key: SetKeys, users: APIUser[]): State => {
@@ -82,16 +76,16 @@ const replaceSet = (state: State, key: SetKeys, users: APIUser[]): State => {
   return state.set(key, ImmutableOrderedSet(newIds));
 };
 
-const maybeImportUnapproved = (state: State, users: APIUser[], filters: Filter[]): State => {
-  if (filtersMatch(FILTER_UNAPPROVED, filters)) {
+const maybeImportUnapproved = (state: State, users: APIUser[], filters: Filters): State => {
+  if (filters.pending) {
     return mergeSet(state, 'awaitingApproval', users);
   } else {
     return state;
   }
 };
 
-const maybeImportLatest = (state: State, users: APIUser[], filters: Filter[], page: number): State => {
-  if (page === 1 && filtersMatch(FILTER_LATEST, filters)) {
+const maybeImportLatest = (state: State, users: APIUser[], filters: Filters, page: number): State => {
+  if (page === 1 && !filters.pending) {
     return replaceSet(state, 'latestUsers', users);
   } else {
     return state;
@@ -110,7 +104,7 @@ const fixUser = (user: APIEntity): ReducerAdminAccount => {
   }) as ReducerAdminAccount;
 };
 
-function importUsers(state: State, users: APIUser[], filters: Filter[], page: number): State {
+function importUsers(state: State, users: APIUser[], filters: Filters, page: number): State {
   return state.withMutations(state => {
     maybeImportUnapproved(state, users, filters);
     maybeImportLatest(state, users, filters, page);
@@ -202,7 +196,7 @@ export default function admin(state: State = ReducerRecord(), action: AnyAction)
     case ADMIN_REPORTS_PATCH_SUCCESS:
       return handleReportDiffs(state, action.reports);
     case ADMIN_USERS_FETCH_SUCCESS:
-      return importUsers(state, action.users, action.filters, action.page);
+      return importUsers(state, action.accounts, action.filters, action.page);
     case ADMIN_USERS_DELETE_REQUEST:
     case ADMIN_USERS_DELETE_SUCCESS:
     case ADMIN_USERS_REJECT_REQUEST:

@@ -149,17 +149,14 @@ function closeReports(ids: string[]) {
   return patchReports(ids, 'closed');
 }
 
-function fetchUsers(filters: string[] = [], page = 1, query?: string | null, pageSize = 50, url?: string | null) {
+function fetchUsers(filters: Record<string, boolean>, page = 1, query?: string | null, pageSize = 50, url?: string | null) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
 
     const params: Record<string, any> = {
+      ...filters,
       username: query,
     };
-
-    if (filters.includes('local')) params.local = true;
-    if (filters.includes('active')) params.active = true;
-    if (filters.includes('need_approval')) params.pending = true;
 
     try {
       const { data: accounts, ...response } = await api(getState).get(url || '/api/v1/admin/accounts', { params });
