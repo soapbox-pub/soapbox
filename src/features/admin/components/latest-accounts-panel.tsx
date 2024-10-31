@@ -18,7 +18,14 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   const intl = useIntl();
   const history = useHistory();
 
-  const { accounts } = useAdminAccounts(new Set(['local', 'active']), limit);
+  const { accounts } = useAdminAccounts({
+    local: true,
+    active: true,
+    pending: false,
+    disabled: false,
+    silenced: false,
+    suspended: false,
+  }, limit);
 
   const handleAction = () => {
     history.push('/soapbox/admin/users');
