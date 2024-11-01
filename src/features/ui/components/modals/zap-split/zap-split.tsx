@@ -76,7 +76,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
           </p>
           <Popover
             interaction='hover' content={
-              <Text className='w-48 text-justify sm:w-72'>
+              <Text className='w-48 sm:w-72'>
                 <FormattedMessage id='zap.info_message' defaultMessage='According to the zap tags of this post, a certain amount of fee will be deducted. Thank you for your understanding and contribution!' />
               </Text>
             }
