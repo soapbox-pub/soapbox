@@ -52,10 +52,10 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                 </>
               )}
 
-              <div className='status__content' dangerouslySetInnerHTML={content} />
+              <div className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500' dangerouslySetInnerHTML={content} />
 
               {poll && (
-                <div className='poll'>
+                <div>
                   <Stack>
                     {version.poll.options.map((option: any) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
