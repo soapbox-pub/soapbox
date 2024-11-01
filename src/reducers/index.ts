@@ -56,7 +56,7 @@ import trending_statuses from './trending-statuses';
 import trends from './trends';
 import user_lists from './user-lists';
 
-const reducers = {
+export default combineReducers({
   accounts_meta,
   admin,
   aliases,
@@ -111,6 +111,4 @@ const reducers = {
   trending_statuses,
   trends,
   user_lists,
-};
-
-export default combineReducers(reducers);
+});

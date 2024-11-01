@@ -6,7 +6,7 @@ import { CompatRouter } from 'react-router-dom-v5-compat';
 import { openModal } from 'soapbox/actions/modals';
 import * as BuildConfig from 'soapbox/build-config';
 import LoadingScreen from 'soapbox/components/loading-screen';
-import { Location, ScrollContext } from 'soapbox/components/scroll-context';
+import { ScrollContext } from 'soapbox/components/scroll-context';
 import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
 import {
   ModalContainer,
@@ -23,10 +23,6 @@ import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
 const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
 const UI = React.lazy(() => import('soapbox/features/ui'));
-
-interface LocationState {
-  soapboxModalKey?: string;
-}
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
@@ -54,15 +50,11 @@ const SoapboxMount = () => {
 
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
-  function shouldUpdateScroll<T extends LocationState>(prev: Location<T> | undefined, location: Location<T>): boolean {
-    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prev?.state?.soapboxModalKey);
-  }
-
   return (
     <SiteErrorBoundary>
       <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
         <CompatRouter>
-          <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+          <ScrollContext>
             <Switch>
               {(!isLoggedIn && redirectRootNoLogin) && (
                 <Redirect exact from='/' to={redirectRootNoLogin} />

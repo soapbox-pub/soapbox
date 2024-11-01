@@ -6,6 +6,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
 
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
@@ -129,11 +130,13 @@ const Video: React.FC<IVideo> = ({
   blurhash,
 }) => {
   const intl = useIntl();
+  const isMobile = useIsMobile();
 
   const player = useRef<HTMLDivElement>(null);
   const video = useRef<HTMLVideoElement>(null);
   const seek = useRef<HTMLDivElement>(null);
   const slider = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -144,6 +147,7 @@ const Video: React.FC<IVideo> = ({
   const [containerWidth, setContainerWidth] = useState(width);
   const [fullscreen, setFullscreen] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [volumeHovered, setVolumeHovered] = useState(false);
   const [seekHovered, setSeekHovered] = useState(false);
   const [muted, setMuted] = useState(false);
   const [buffer, setBuffer] = useState(0);
@@ -397,6 +401,36 @@ const Video: React.FC<IVideo> = ({
     setSeekHovered(false);
   };
 
+  const handleVolumeEnter = () => {
+    setVolumeHovered(true);
+  };
+
+  const handleVolumeLeave = () => {
+    setVolumeHovered(false);
+  };
+
+  const handleClickStart = () => {
+    setHovered(true);
+    setHovered(true);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      setHovered(false);
+    }, 2 * 1000);
+
+  };
+
+  const handleOnMouseMove = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    handleClickStart();
+  };
+
   const toggleMute = () => {
     if (video.current) {
       const muted = !video.current.muted;
@@ -434,8 +468,16 @@ const Video: React.FC<IVideo> = ({
     }
   };
 
+  const handleTogglePlay = () => {
+    if (!isMobile || paused || hovered) togglePlay();
+  };
+
   const progress = (currentTime / duration) * 100;
   const playerStyle: React.CSSProperties = {};
+
+  const startTimeout = () => {
+    timeoutRef.current = setTimeout(() => setHovered(false), 1000);
+  };
 
   if (inline && containerWidth) {
     width = containerWidth;
@@ -481,10 +523,13 @@ const Video: React.FC<IVideo> = ({
   return (
     <div
       role='menuitem'
-      className={clsx('relative box-border max-w-full overflow-hidden rounded-[10px] bg-black text-white focus:outline-0', { detailed, 'w-full h-full m-0': fullscreen })}
+      className={clsx('relative box-border flex max-w-full overflow-hidden rounded-[10px] bg-black text-white focus:outline-0', { 'w-full h-full m-0': fullscreen })}
       style={playerStyle}
       ref={player}
       onClick={handleClickRoot}
+      onMouseMove={handleOnMouseMove}
+      onMouseOut={startTimeout}
+      onBlur={startTimeout}
       onKeyDown={handleKeyDown}
       tabIndex={0}
     >
@@ -506,7 +551,7 @@ const Video: React.FC<IVideo> = ({
         })}
         width={width}
         height={height || DEFAULT_HEIGHT}
-        onClick={togglePlay}
+        onClick={handleTogglePlay}
         onKeyDown={handleVideoKeyDown}
         onPlay={handlePlay}
         onPause={handlePause}
@@ -516,7 +561,9 @@ const Video: React.FC<IVideo> = ({
         onVolumeChange={handleVolumeChange}
       />
 
-      <div className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[15px] opacity-0 transition-opacity duration-100 ease-linear', { 'opacity-100': paused || hovered })}>
+      <div
+        className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[15px] opacity-0 transition-opacity duration-100 ease-linear', { 'opacity-100': paused || hovered })}
+      >
         <div className='relative h-6 cursor-pointer' onMouseDown={handleMouseDown} onMouseEnter={handleSeekEnter} onMouseLeave={handleSeekLeave} ref={seek}>
           <div
             style={{
@@ -569,9 +616,9 @@ const Video: React.FC<IVideo> = ({
             </button>
 
             <div
-              className={clsx('relative inline-flex h-6 flex-none cursor-pointer overflow-hidden transition-all duration-100 ease-linear', { 'overflow-visible w-[50px] mr-[16px]': hovered })} onMouseDown={handleVolumeMouseDown} ref={slider}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+              className={clsx('relative inline-flex h-6 flex-none cursor-pointer overflow-hidden transition-all duration-100 ease-linear', { 'overflow-visible w-[50px] mr-[16px]': volumeHovered })} onMouseDown={handleVolumeMouseDown} ref={slider}
+              onMouseEnter={handleVolumeEnter}
+              onMouseLeave={handleVolumeLeave}
             >
               <div
                 className={clsx({ 'bottom-[27px]': fullscreen || detailed })}
@@ -590,7 +637,7 @@ const Video: React.FC<IVideo> = ({
               />
               <div className={clsx('absolute left-0 top-1/2 block h-1 -translate-y-1/2 rounded-md bg-accent-500', { 'bottom-[27px]': fullscreen || detailed })} style={{ width: `${volume * 100}%` }} />
               <span
-                className={clsx('absolute left-0 top-1/2 z-30 -ml-1.5 size-3 -translate-y-1/2 rounded-full bg-accent-500 opacity-0 shadow-[1px_2px_6px_rgba(0,0,0,0.3)] transition-opacity duration-100', { 'opacity-100': hovered, 'bottom-[23px]': fullscreen || detailed })}
+                className={clsx('absolute left-0 top-1/2 z-30 -ml-1.5 size-3 -translate-y-1/2 rounded-full bg-accent-500 opacity-0 shadow-[1px_2px_6px_rgba(0,0,0,0.3)] transition-opacity duration-100', { 'opacity-100': volumeHovered, 'bottom-[23px]': fullscreen || detailed })}
                 tabIndex={0}
                 style={{ left: `${volume * 100}%` }}
               />

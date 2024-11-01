@@ -2,6 +2,8 @@ import { AxiosError } from 'axios';
 import { produce } from 'immer';
 import { z } from 'zod';
 
+import { keyring } from 'soapbox/features/nostr/keyring';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
 import { Account, accountSchema } from 'soapbox/schemas';
 import { Application, applicationSchema } from 'soapbox/schemas/application';
 import { AuthUser, SoapboxAuth, soapboxAuthSchema } from 'soapbox/schemas/soapbox/soapbox-auth';
@@ -24,6 +26,17 @@ import type { UnknownAction } from 'redux';
 const STORAGE_KEY = 'soapbox:auth';
 const SESSION_KEY = 'soapbox:auth:me';
 
+// Log out legacy Nostr/Ditto users.
+for (let i = 0; i < localStorage.length; i++) {
+  const key = localStorage.key(i);
+
+  if (key && /^soapbox:nostr:auth:[0-9a-f]{64}$/.test(key)) {
+    localStorage.clear();
+    sessionStorage.clear();
+    location.reload();
+  }
+}
+
 /** Get current user's URL from session storage. */
 function getSessionUser(): string | undefined {
   const value = sessionStorage.getItem(SESSION_KEY);
@@ -37,7 +50,7 @@ function getSessionUser(): string | undefined {
 /** Retrieve state from browser storage. */
 function getLocalState(): SoapboxAuth | undefined {
   const data = localStorage.getItem(STORAGE_KEY);
-  const result = jsonSchema.pipe(soapboxAuthSchema).safeParse(data);
+  const result = jsonSchema().pipe(soapboxAuthSchema).safeParse(data);
 
   if (!result.success) {
     return undefined;
@@ -105,7 +118,26 @@ function importCredentials(auth: SoapboxAuth, accessToken: string, account: Acco
   });
 }
 
+/** Delete Nostr credentials when an access token is revoked. */
+// TODO: Rework auth so this can all be conrolled from one place.
+function revokeNostr(accessToken: string): void {
+  const { connections, revoke } = useBunkerStore.getState();
+
+  for (const conn of connections) {
+    if (conn.accessToken === accessToken) {
+      // Revoke the Bunker connection.
+      revoke(accessToken);
+      // Revoke the user's private key.
+      keyring.delete(conn.pubkey);
+      // Revoke the bunker's private key.
+      keyring.delete(conn.bunkerPubkey);
+    }
+  }
+}
+
 function deleteToken(auth: SoapboxAuth, accessToken: string): SoapboxAuth {
+  revokeNostr(accessToken);
+
   return produce(auth, draft => {
     delete draft.tokens[accessToken];
 
