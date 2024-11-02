@@ -78,13 +78,13 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     const float = dimensions.float as any || 'left';
     const position = dimensions.pos as any || 'relative';
 
-    return <div key={i} className='media-gallery__item animate-pulse bg-primary-200' style={{ position, float, left, top, right, bottom, height, width }} />;
+    return <div key={i} className='relative float-left box-border block animate-pulse overflow-hidden rounded-sm border-0 bg-primary-200' style={{ position, float, left, top, right, bottom, height, width }} />;
   };
 
   const sizeData = getSizeData(media.size);
 
   return (
-    <div className='media-gallery media-gallery--placeholder' style={sizeData.get('style')} ref={handleRef}>
+    <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={sizeData.get('style')} ref={handleRef}>
       {media.take(4).map((_, i) => renderItem(sizeData.get('itemsDimensions')[i], i))}
     </div>
   );
