@@ -469,7 +469,7 @@ const Video: React.FC<IVideo> = ({
   };
 
   const handleTogglePlay = () => {
-    if (!isMobile) togglePlay();
+    if (!isMobile || paused || hovered) togglePlay();
   };
 
   const progress = (currentTime / duration) * 100;
