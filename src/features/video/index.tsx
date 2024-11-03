@@ -226,6 +226,9 @@ const Video: React.FC<IVideo> = ({
 
         if (video.current) {
           video.current.volume = slideamt;
+          const isMuted = slideamt <= 0;
+          video.current.muted = isMuted;
+          setMuted(isMuted);
         }
 
         setVolume(slideamt);
@@ -386,13 +389,6 @@ const Video: React.FC<IVideo> = ({
     setFullscreen(isFullscreen());
   }, []);
 
-  const handleMouseEnter = () => {
-    setHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
   const handleSeekEnter = () => {
     setSeekHovered(true);
   };
@@ -401,16 +397,19 @@ const Video: React.FC<IVideo> = ({
     setSeekHovered(false);
   };
 
-  const handleVolumeEnter = () => {
+  const handleVolumeEnter = (e: React.MouseEvent) => {
+    if (isMobile) return;
+
     setVolumeHovered(true);
   };
 
-  const handleVolumeLeave = () => {
+  const handleVolumeLeave = (e: React.MouseEvent) => {
+    if (isMobile) return;
+
     setVolumeHovered(false);
   };
 
   const handleClickStart = () => {
-    setHovered(true);
     setHovered(true);
 
     if (timeoutRef.current) {
@@ -562,7 +561,7 @@ const Video: React.FC<IVideo> = ({
       />
 
       <div
-        className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[15px] opacity-0 transition-opacity duration-100 ease-linear', { 'opacity-100': paused || hovered })}
+        className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[15px] opacity-0 transition-opacity duration-100 ease-linear', { 'opacity-100': paused || hovered || volumeHovered })}
       >
         <div className='relative h-6 cursor-pointer' onMouseDown={handleMouseDown} onMouseEnter={handleSeekEnter} onMouseLeave={handleSeekLeave} ref={seek}>
           <div
@@ -606,8 +605,8 @@ const Video: React.FC<IVideo> = ({
               type='button'
               title={intl.formatMessage(muted ? messages.unmute : messages.mute)}
               aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
+              onMouseEnter={handleVolumeEnter}
+              onMouseLeave={handleVolumeLeave}
               className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 focus:text-white focus:opacity-100 active:text-white active:opacity-100 '
                 , { 'py-[10px]': fullscreen })}
               onClick={toggleMute}
