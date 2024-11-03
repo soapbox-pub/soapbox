@@ -3,10 +3,12 @@ import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
-import { HStack, Stack, Text, Icon } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui';
 import { normalizeAttachment } from 'soapbox/normalizers';
 import { addAutoPlay } from 'soapbox/utils/media';
 import { getTextDirection } from 'soapbox/utils/rtl';
+
+import SvgIcon from './ui/icon/svg-icon';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
 
@@ -89,7 +91,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     return (
       <div
         ref={setRef}
-        className='status-card__image status-card-video'
+        className='relative w-2/5 flex-none overflow-hidden'
         dangerouslySetInnerHTML={content}
         style={{ height }}
       />
@@ -106,7 +108,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = clsx('status-card', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const className = clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', { horizontal, compact, interactive }, `status-card--${card.type}`);
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
@@ -135,7 +137,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       )}
       <HStack space={1} alignItems='center'>
         <Text tag='span' theme='muted'>
-          <Icon src={require('@tabler/icons/outline/link.svg')} />
+          <SvgIcon src={require('@tabler/icons/outline/link.svg')} />
         </Text>
         <Text tag='span' theme='muted' size='sm' direction={direction}>
           {card.provider_name}
@@ -160,7 +162,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
         width: horizontal ? width : undefined,
         height: horizontal ? height : undefined,
       }}
-      className='status-card__image-image'
+      className='block size-full bg-cover bg-center object-cover'
     />
   );
 
@@ -175,7 +177,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       }
 
       embed = (
-        <div className='status-card__image'>
+        <div className='relative w-2/5 flex-none overflow-hidden'>
           {canvas}
           {thumbnail}
 
@@ -183,9 +185,9 @@ const PreviewCard: React.FC<IPreviewCard> = ({
             <div className='flex items-center justify-center rounded-full bg-gray-500/90 px-4 py-3 shadow-md dark:bg-gray-700/90'>
               <HStack space={3} alignItems='center'>
                 <button onClick={handleEmbedClick} className='appearance-none text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'>
-                  <Icon
+                  <SvgIcon
                     src={iconVariant}
-                    className='size-6 text-inherit'
+                    className='absolute left-1/2 top-1/2 size-[30px] -translate-x-1/2 -translate-y-1/2 text-inherit'
                   />
                 </button>
 
@@ -197,9 +199,9 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                     rel='noopener'
                     className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
-                    <Icon
+                    <SvgIcon
                       src={require('@tabler/icons/outline/external-link.svg')}
-                      className='size-6 text-inherit'
+                      className='absolute left-1/2 top-1/2 size-[30px] -translate-x-1/2 -translate-y-1/2 text-inherit'
                     />
                   </a>
                 )}
@@ -219,7 +221,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
   } else if (card.image) {
     embed = (
       <div className={clsx(
-        'status-card__image',
+        'relative overflow-hidden',
         'w-full flex-none rounded-l md:size-auto md:flex-auto',
         {
           'h-auto': horizontal,
@@ -236,7 +238,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
   return (
     <a
       href={card.url}
-      className={className}
+      className={clsx(className, 'cursor-pointer hover:bg-gray-100 hover:no-underline dark:hover:bg-primary-800/30')}
       target='_blank'
       rel='noopener'
       ref={setRef}
