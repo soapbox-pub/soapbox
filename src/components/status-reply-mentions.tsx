@@ -39,7 +39,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // Rare, but it can happen.
   if (to.size === 0) {
     return (
-      <div className='reply-mentions'>
+      <div className='mb-1 text-sm text-gray-700 dark:text-gray-600'>
         <FormattedMessage
           id='reply_mentions.reply_empty'
           defaultMessage='Replying to post'
@@ -54,7 +54,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
       <Link
         key={account.id}
         to={`/@${account.acct}`}
-        className='reply-mentions__account max-w-[200px] truncate align-bottom'
+        className='inline-block max-w-[200px] truncate align-bottom text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue' style={{ direction: 'ltr' }}
         onClick={(e) => e.stopPropagation()}
       > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(account.username)}
@@ -81,7 +81,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   }
 
   return (
-    <div className='reply-mentions'>
+    <div className='mb-1 text-sm text-gray-700 dark:text-gray-600'>
       <FormattedMessage
         id='reply_mentions.reply.hoverable'
         defaultMessage='<hover>Replying to</hover> {accounts}'
