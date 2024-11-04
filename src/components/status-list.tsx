@@ -212,10 +212,12 @@ const StatusList: React.FC<IStatusList> = ({
 
   if (isPartial) {
     return (
-      <div className='regeneration-indicator'>
-        <div>
-          <div className='regeneration-indicator__label'>
-            <FormattedMessage id='regeneration_indicator.label' tagName='strong' defaultMessage='Loading…' />
+      <div className='flex flex-1 cursor-default items-center justify-center rounded-lg p-5 text-center text-[16px] font-medium text-gray-900 sm:rounded-none'>
+        <div className='w-full bg-transparent pt-0'>
+          <div>
+            <strong className='mb-2.5 block text-gray-900'>
+              <FormattedMessage id='regeneration_indicator.label' defaultMessage='Loading…' />
+            </strong>
             <FormattedMessage id='regeneration_indicator.sublabel' defaultMessage='Your home feed is being prepared!' />
           </div>
         </div>
