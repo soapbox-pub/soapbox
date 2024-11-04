@@ -1,4 +1,3 @@
-import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
@@ -45,7 +44,7 @@ export const HoverStatusWrapper: React.FC<IHoverStatusWrapper> = ({ statusId, ch
   return (
     <Elem
       ref={ref}
-      className={clsx('hover-status-wrapper', className)}
+      className={className}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
