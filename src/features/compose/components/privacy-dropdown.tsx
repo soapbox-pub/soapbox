@@ -37,9 +37,10 @@ interface IPrivacyDropdownMenu {
   onClose: () => void;
   onChange: (value: string | null) => void;
   unavailable?: boolean;
+  active: boolean;
 }
 
-const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange }) => {
+const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange, active }) => {
   const node = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
 
@@ -120,15 +121,15 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         // It should not be transformed when mounting because the resulting
         // size will be used to determine the coordinate of the menu by
         // react-overlays
-        <div className={clsx('privacy-dropdown__dropdown', placement)} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
+        <div className={clsx('absolute z-[1000] ml-10 overflow-hidden rounded-md bg-white text-sm shadow-lg black:border black:border-gray-800 black:bg-black dark:bg-gray-900', { 'block shadow-md': active })} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined, transformOrigin: placement === 'top' ? '50% 100%' : '50% 0' }} role='listbox' ref={node}>
           {items.map(item => (
-            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
-              <div className='privacy-dropdown__option__icon'>
+            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('group flex cursor-pointer p-2.5 text-sm text-gray-700 hover:bg-gray-100 black:hover:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800', { 'bg-gray-100 dark:bg-gray-800 black:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700': item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+              <div className='mr-2.5 flex items-center justify-center rtl:ml-2.5 rtl:mr-0'>
                 <Icon src={item.icon} />
               </div>
 
-              <div className='privacy-dropdown__option__content'>
-                <strong>{item.text}</strong>
+              <div className={clsx('flex-auto text-primary-600 group-hover:text-black dark:text-primary-400 group-hover:dark:text-white', { 'group-active:text-black group-active:dark:text-white': item.value === value })}>
+                <strong className='block font-medium text-black dark:text-white'>{item.text}</strong>
                 {item.meta}
               </div>
             </div>
@@ -239,8 +240,8 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={clsx('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
-      <div className={clsx('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
+    <div onKeyDown={handleKeyDown} ref={node}>
+      <div className={clsx({ 'rouded-t-md': placement === 'top' && open })}>
         <IconButton
           className={clsx({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
@@ -261,6 +262,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
           onClose={handleClose}
           onChange={onChange}
           placement={placement}
+          active={open}
         />
       </Overlay>
     </div>
