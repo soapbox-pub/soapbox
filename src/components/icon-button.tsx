@@ -66,9 +66,9 @@ const IconButton: React.FC<IIconButton> = ({
     }
   };
 
-  const classes = clsx(className, 'icon-button', {
-    active,
-    disabled,
+  const classes = clsx(className, 'inline-flex cursor-pointer items-center border-0 bg-transparent p-0 text-black opacity-40 transition-opacity duration-100 ease-in hover:opacity-60 hover:transition-colors hover:duration-200 focus:opacity-60 focus:outline-none focus:transition-colors focus:duration-200 dark:text-white', {
+    'opacity-60 outline-none transition-colors duration-200': active,
+    'opacity-20 cursor-default': disabled,
   });
 
   return (
@@ -89,10 +89,10 @@ const IconButton: React.FC<IIconButton> = ({
       disabled={disabled}
       type='button'
     >
-      <div>
+      <div className='flex items-center justify-center'>
         <Icon className={iconClassName} src={src} aria-hidden='true' />
       </div>
-      {text && <span className='icon-button__text'>{text}</span>}
+      {text && <span className='pl-0.5'>{text}</span>}
     </button>
   );
 };
