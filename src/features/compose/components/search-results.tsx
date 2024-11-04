@@ -132,7 +132,7 @@ const SearchResults = () => {
       searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.accounts'
             defaultMessage='There are no people results for "{term}"'
@@ -174,7 +174,7 @@ const SearchResults = () => {
       resultsIds = trendingStatuses;
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.statuses'
             defaultMessage='There are no posts results for "{term}"'
@@ -198,7 +198,7 @@ const SearchResults = () => {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.hashtags'
             defaultMessage='There are no hashtags results for "{term}"'

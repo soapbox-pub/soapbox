@@ -67,7 +67,7 @@ const Favourites: React.FC<IFavourites> = ({ params }) => {
   if (isUnavailable) {
     return (
       <Column>
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
         </div>
       </Column>

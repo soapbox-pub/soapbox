@@ -77,7 +77,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
         ))}
 
         {(!isLoading && attachments.length === 0) && (
-          <div className='empty-column-indicator col-span-2 sm:col-span-3'>
+          <div className='col-span-2 flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300 sm:col-span-3'>
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
         )}
