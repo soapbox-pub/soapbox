@@ -108,7 +108,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', { horizontal, compact, interactive }, `status-card--${card.type}`);
+  const className = clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', { horizontal, compact, interactive, 'flex flex-col md:flex-row': card.type === 'link' });
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
