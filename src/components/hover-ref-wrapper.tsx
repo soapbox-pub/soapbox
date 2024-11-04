@@ -47,7 +47,7 @@ export const HoverRefWrapper: React.FC<IHoverRefWrapper> = ({ accountId, childre
   return (
     <Elem
       ref={ref}
-      className={clsx('hover-ref-wrapper', className)}
+      className={clsx(className)}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
