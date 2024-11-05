@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
+  .mention {
+    @apply text-primary-600 dark:text-accent-blue hover:underline;
+  }
+
   .input.with_label.toggle .label_input {
     display: flex;
     font-size: 14px;
