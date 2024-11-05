@@ -45,7 +45,14 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   };
 
   return (
-    <div className='thumb-navigation'>
+    <div
+      className='hide-scrollbar fixed inset-x-0 bottom-0 z-50 flex w-full border-t border-solid border-gray-200 bg-white/90 shadow-2xl backdrop-blur-md black:bg-black/90 dark:border-gray-800 dark:bg-primary-900/90 lg:hidden' style={{
+        paddingBottom: 'env(safe-area-inset-bottom)', // iOS PWA
+        overflowX: 'auto',
+        scrollbarWidth: 'thin',
+        scrollbarColor: '#fff transparent',
+      }}
+    >
       <ThumbNavigationLink
         src={require('@tabler/icons/outline/home.svg')}
         activeSrc={require('@tabler/icons/filled/home.svg')}

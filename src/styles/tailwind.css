@@ -3,6 +3,14 @@
 @tailwind utilities;
 
 @layer utilities {
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* iOS PWA, Chrome */
+  }
+
   .break-word-nested > p {
     word-break: break-word;
   }
