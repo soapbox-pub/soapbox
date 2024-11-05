@@ -99,7 +99,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (actualStatus.quote) {
     if (actualStatus.pleroma.get('quote_visible', true) === false) {
       quote = (
-        <div className='quoted-actualStatus-tombstone'>
+        <div>
           <p><FormattedMessage id='status.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
@@ -115,8 +115,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   return (
-    <div className='border-box'>
-      <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
+    <div className='box-border'>
+      <div ref={node} tabIndex={-1}>
         {renderStatusInfo()}
 
         <div className='mb-4'>
