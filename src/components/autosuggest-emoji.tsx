@@ -28,7 +28,7 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
   }
 
   return (
-    <div className='autosuggest-emoji' data-testid='emoji'>
+    <div className='autosuggest-emoji flex flex-row items-center justify-start text-[14px] leading-[18px]' data-testid='emoji'>
       <img
         className='emojione'
         src={url}
