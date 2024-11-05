@@ -68,7 +68,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           data-testid='chat-page'
         >
           <Stack
-            className={clsx('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 black:bg-black dark:bg-gray-900 dark:bg-none sm:col-span-3', {
+            className={clsx('col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 black:bg-black dark:inset-0 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
               'hidden sm:block': isSidebarHidden,
             })}
           >
