@@ -136,7 +136,6 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
     );
   };
 
-  
   if (action && features.remoteInteractions && features.federating) {
     return renderRemoteInteractions();
   }
