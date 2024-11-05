@@ -207,7 +207,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   ), [features, id]);
 
   const composeModifiers = !condensed && (
-    <Stack space={4} className='compose-form__modifiers'>
+    <Stack space={4} className='text-sm text-gray-900'>
       <UploadForm composeId={id} onSubmit={handleSubmit} />
       <PollForm composeId={id} />
 
