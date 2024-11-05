@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer utilities {
+  .focusable:focus,
+  .focusable-within:focus-within {
+    outline: 0;
+    @apply ring-2 ring-primary-300;
+  }
+
   .error-column > span {
       @apply max-w-[400px];
     }
