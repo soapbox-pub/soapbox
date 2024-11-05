@@ -3,6 +3,23 @@
 @tailwind utilities;
 
 @layer utilities {
+  .compose-form-warning {
+    strong {
+      @apply font-medium;
+    }
+
+    a {
+      font-weight: 500;
+      text-decoration: underline;
+
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+
   .autosuggest-emoji > img{
     display: block;
     margin-right: 8px;
