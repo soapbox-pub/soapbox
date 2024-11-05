@@ -14,13 +14,3 @@
     @apply text-primary-600 dark:text-primary-400 no-underline hover:underline;
   }
 }
-
-.error-column {
-  flex-direction: column;
-
-  .svg-icon {
-    width: 70px;
-    height: 70px;
-    margin-bottom: 30px;
-  }
-}

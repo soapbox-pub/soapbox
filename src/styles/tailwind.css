@@ -3,6 +3,27 @@
 @tailwind utilities;
 
 @layer utilities {
+  .error-column > span {
+      @apply max-w-[400px];
+    }
+    
+  .error-column {
+    .svg-icon {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 30px;
+    }
+
+    @supports (display: grid) {
+      contain: strict;
+    }
+  
+    a {
+      @apply text-primary-600 dark:text-primary-400 no-underline hover:underline;
+    }
+
+  }
+
   .mention {
     @apply text-primary-600 dark:text-accent-blue hover:underline;
   }
