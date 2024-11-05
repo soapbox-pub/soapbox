@@ -24,7 +24,7 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
   return (
     <div className={containerClass}>
       {props.children}
-      {props.hint && <span className='hint'>{props.hint}</span>}
+      {props.hint && <span>{props.hint}</span>}
     </div>
   );
 };
@@ -45,10 +45,10 @@ export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hin
   return (
     <div className='label_input'>
       <label htmlFor={id}>{label}</label>
-      <div className='label_input__wrapper'>
+      <div>
         {childrenWithProps}
       </div>
-      {hint && <span className='hint'>{hint}</span>}
+      {hint && <span>{hint}</span>}
     </div>
   );
 };

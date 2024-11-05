@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer utilities {
+  .input.with_label.toggle .label_input {
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+  }
+
   .divide-x-dot > *:not(:last-child)::after {
     content: '·';
     padding-right: 4px;
