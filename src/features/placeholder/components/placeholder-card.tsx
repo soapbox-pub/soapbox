@@ -9,7 +9,7 @@ const PlaceholderCard: React.FC = () => (
     'animate-pulse': true,
   })}
   >
-    <div className='primary-500 w-2/5 rounded-l'>&nbsp;</div>
+    <div className='w-2/5 rounded-l'>&nbsp;</div>
 
     <div className='flex w-3/5 flex-col justify-between break-words p-4 text-primary-50'>
       <p>{generateText(randomIntFromInterval(5, 25))}</p>
