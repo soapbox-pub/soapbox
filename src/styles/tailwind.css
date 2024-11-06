@@ -3,6 +3,41 @@
 @tailwind utilities;
 
 @layer utilities {
+  .thread {
+    @apply bg-white;
+  
+    .status--content-wrapper {
+      @apply pl-[54px] rtl:pl-0 rtl:pr-[54px];
+    }
+  }
+
+  .thread__status {
+    @apply relative pb-4;
+
+    .status--wrapper {
+      @apply shadow-none p-0;
+    }
+  }
+
+  .notification .status--wrapper {
+    @apply p-0 shadow-none rounded-none;
+  }
+
+  .status--wrapper {
+    .reply-mentions {
+      display: block;
+  
+      span {
+        cursor: pointer;
+      }
+    }
+  }
+
+  [column-type='filled'] .status--wrapper,
+  [column-type='filled'] .status-placeholder {
+    @apply bg-transparent dark:bg-transparent rounded-none shadow-none;
+  }
+
   .search__icon {
     &::-moz-focus-inner {
       border: 0;

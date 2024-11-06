@@ -33,7 +33,7 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
         </HStack>
       </div>
 
-      <div className='status__content-wrapper mt-4'>
+      <div className='status--content-wrapper mt-4'>
         <PlaceholderStatusContent minLength={5} maxLength={120} />
       </div>
     </div>

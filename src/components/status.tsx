@@ -333,7 +333,7 @@ const Status: React.FC<IStatus> = (props) => {
 
     return (
       <HotKeys handlers={minHandlers}>
-        <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+        <div className={clsx('status--wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
           {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Text theme='muted'>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {status.filtered.join(', ')}.
@@ -412,7 +412,7 @@ const Status: React.FC<IStatus> = (props) => {
       >
         <Card
           variant={variant}
-          className={clsx('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
+          className={clsx('status--wrapper space-y-4', `status-${actualStatus.visibility}`, {
             'py-6 sm:p-5': variant === 'rounded',
             'status-reply': !!status.in_reply_to_id,
             muted,
@@ -436,7 +436,7 @@ const Status: React.FC<IStatus> = (props) => {
             avatarSize={avatarSize}
           />
 
-          <div className='status__content-wrapper'>
+          <div className='status--content-wrapper'>
             <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
 
             <Stack

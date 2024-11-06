@@ -78,7 +78,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
             </HStack>
           </div>
 
-          <div className='status__content-wrapper'>
+          <div className='status--content-wrapper'>
             <StatusReplyMentions status={status} />
 
             <Stack space={4}>
