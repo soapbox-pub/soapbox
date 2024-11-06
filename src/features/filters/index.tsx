@@ -54,7 +54,7 @@ const Filters = () => {
   const emptyMessage = <FormattedMessage id='empty_column.filters' defaultMessage="You haven't created any muted words yet." />;
 
   return (
-    <Column className='filter-settings-panel' label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)}>
       <HStack className='mb-4' space={2} justifyContent='end'>
         <Button
           to='/filters/new'
