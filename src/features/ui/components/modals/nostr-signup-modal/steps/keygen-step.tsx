@@ -8,7 +8,7 @@ import { closeSidebar } from 'soapbox/actions/sidebar';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
 import { useNostr } from 'soapbox/contexts/nostr-context';
-import { NKeys } from 'soapbox/features/nostr/keys';
+import { keyring } from 'soapbox/features/nostr/keyring';
 import { useAppDispatch, useInstance } from 'soapbox/hooks';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile';
 import { download } from 'soapbox/utils/download';
@@ -43,8 +43,9 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
   };
 
   const handleNext = async () => {
-    const signer = NKeys.add(secretKey);
-    const pubkey = await signer.getPublicKey();
+    if (!relay) return;
+
+    const signer = keyring.add(secretKey);
     const now = Math.floor(Date.now() / 1000);
 
     const [kind0, ...events] = await Promise.all([
@@ -57,12 +58,12 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
       signer.signEvent({ kind: 30078, content: '', tags: [['d', 'pub.ditto.pleroma_settings_store']], created_at: now }),
     ]);
 
-    await relay?.event(kind0);
-    await Promise.all(events.map((event) => relay?.event(event)));
+    await relay.event(kind0);
+    await Promise.all(events.map((event) => relay.event(event)));
 
     onClose();
 
-    await dispatch(logInNostr(pubkey));
+    await dispatch(logInNostr(signer, relay));
 
     if (isMobile) {
       dispatch(closeSidebar());

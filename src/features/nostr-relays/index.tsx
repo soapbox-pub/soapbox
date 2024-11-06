@@ -5,6 +5,7 @@ import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui'
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq';
 import { useOwnAccount } from 'soapbox/hooks';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner';
 
 import RelayEditor, { RelayData } from './components/relay-editor';
 
@@ -15,7 +16,8 @@ const messages = defineMessages({
 const NostrRelays = () => {
   const intl = useIntl();
   const { account } = useOwnAccount();
-  const { relay, signer } = useNostr();
+  const { relay } = useNostr();
+  const { signer } = useSigner();
 
   const { events } = useNostrReq(
     account?.nostr?.pubkey
