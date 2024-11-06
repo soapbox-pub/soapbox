@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import CopyableInput from 'soapbox/components/copyable-input';
-import { Text, Stack, HStack, Button } from 'soapbox/components/ui';
+import { Text, Stack, HStack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppDispatch } from 'soapbox/hooks';
 
@@ -42,9 +43,11 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
         <Text weight='bold'>{title || ticker.toUpperCase()}</Text>
 
         <HStack alignItems='center' className='ml-auto'>
-          <Button className='!ml-1 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-0 rtl:ml-0 rtl:mr-1' theme='muted' to='#' onClick={handleModalClick}>
-            <SvgIcon src={require('@tabler/icons/outline/qrcode.svg')} size={20} />
-          </Button>
+          <Link to={'/'} className='inline-flex'>
+            <button className='button-theme-muted !ml-1 space-x-2 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-0 rtl:ml-0 rtl:mr-1 rtl:space-x-reverse' onClick={handleModalClick}>
+              <SvgIcon src={require('@tabler/icons/outline/qrcode.svg')} size={20} />
+            </button>
+          </Link>
 
           {explorerUrl && (
             <a className='ml-1 text-gray-500 rtl:ml-0 rtl:mr-1' href={explorerUrl} target='_blank'>

@@ -441,18 +441,20 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
           <HStack alignItems='center' space={2}>
             <SvgIcon src={require('@tabler/icons/outline/users.svg')} />
-            <Button to='#' className='!border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={handleParticipantsClick}>
-              <span>
-                <FormattedMessage
-                  id='event.participants'
-                  defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
-                  values={{
-                    rawCount: event.participants_count || 0,
-                    count: shortNumberFormat(event.participants_count || 0),
-                  }}
-                />
-              </span>
-            </Button>
+            <Link to={'/'} className='inline-flex'>
+              <button className='button-theme-muted space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleParticipantsClick}>
+                <span>
+                  <FormattedMessage
+                    id='event.participants'
+                    defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
+                    values={{
+                      rawCount: event.participants_count || 0,
+                      count: shortNumberFormat(event.participants_count || 0),
+                    }}
+                  />
+                </span>
+              </button>
+            </Link>
           </HStack>
 
           <EventDate status={status} />

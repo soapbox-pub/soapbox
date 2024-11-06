@@ -9,7 +9,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { closeSidebar } from 'soapbox/actions/sidebar';
 import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
-import { Stack, Divider, HStack, Icon, IconButton, Text, Button } from 'soapbox/components/ui';
+import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
@@ -122,11 +122,13 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   };
 
   const renderAccount = (account: AccountEntity) => (
-    <Button to='#' className='!block !border-none !p-0 !py-2 !text-primary-600  hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue' theme='muted' onClick={handleSwitchAccount(account)} key={account.id}>
-      <div className='pointer-events-none'>
-        <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
-      </div>
-    </Button>
+    <Link to={'/'} className='inline-flex'>
+      <button className='button-theme-muted !block space-x-2 !border-none !p-0 !py-2 !text-primary-600 hover:!underline  focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleSwitchAccount(account)} key={account.id}>
+        <div className='pointer-events-none max-w-[288px]'>
+          <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
+        </div>
+      </button>
+    </Link>
   );
 
   React.useEffect(() => {

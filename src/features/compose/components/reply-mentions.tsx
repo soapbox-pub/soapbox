@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
-import { Button } from 'soapbox/components/ui';
 import { useAppDispatch, useAppSelector, useCompose, useFeatures, useOwnAccount } from 'soapbox/hooks';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
@@ -44,12 +44,14 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
 
   if (to.size === 0) {
     return (
-      <Button to='#' className='mb-1 cursor-pointer !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600' theme='muted' onClick={handleClick}>
-        <FormattedMessage
-          id='reply_mentions.reply_empty'
-          defaultMessage='Replying to post'
-        />
-      </Button>
+      <Link to={'/'} className='inline-flex'>
+        <button className='button-theme-muted mb-1 cursor-pointer space-x-2 !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+          <FormattedMessage
+            id='reply_mentions.reply_empty'
+            defaultMessage='Replying to post'
+          />
+        </button>
+      </Link>
     );
   }
 
@@ -69,15 +71,17 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   }
 
   return (
-    <Button to='#' className='mb-1 cursor-pointer !border-none !p-0 text-sm !text-gray-700 focus:!ring-transparent  focus:ring-offset-0 dark:!text-gray-600' theme='muted' onClick={handleClick}>
-      <FormattedMessage
-        id='reply_mentions.reply'
-        defaultMessage='Replying to {accounts}'
-        values={{
-          accounts: <FormattedList type='conjunction' value={accounts} />,
-        }}
-      />
-    </Button>
+    <Link to={'/'} className='inline-flex'>
+      <button className='button-theme-muted mb-1 cursor-pointer space-x-2 !border-none !p-0 text-sm !text-gray-700 focus:!ring-transparent focus:ring-offset-0  dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+        <FormattedMessage
+          id='reply_mentions.reply'
+          defaultMessage='Replying to {accounts}'
+          values={{
+            accounts: <FormattedList type='conjunction' value={accounts} />,
+          }}
+        />
+      </button>
+    </Link>
   );
 };
 
