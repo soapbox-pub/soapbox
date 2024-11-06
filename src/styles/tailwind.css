@@ -3,6 +3,19 @@
 @tailwind utilities;
 
 @layer utilities {
+  .status {
+    @apply min-h-[54px] cursor-default animate-fade opacity-100;
+  }
+
+  body.rtl {
+    direction: rtl;
+  
+    .status {
+      padding-left: 10px;
+      padding-right: 68px;
+    }
+  }
+
   .thread {
     @apply bg-white;
   

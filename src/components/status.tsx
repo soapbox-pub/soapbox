@@ -412,11 +412,8 @@ const Status: React.FC<IStatus> = (props) => {
       >
         <Card
           variant={variant}
-          className={clsx('status--wrapper space-y-4', `status-${actualStatus.visibility}`, {
-            'py-6 sm:p-5': variant === 'rounded',
-            'status-reply': !!status.in_reply_to_id,
-            muted,
-            read: unread === false,
+          className={clsx('status--wrapper space-y-4', {
+            'py-6 sm:p-5': variant === 'rounded', muted, read: unread === false,
           })}
           data-id={status.id}
         >

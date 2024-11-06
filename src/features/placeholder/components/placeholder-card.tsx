@@ -5,7 +5,7 @@ import { randomIntFromInterval, generateText } from '../utils';
 
 /** Fake link preview to display while data is loading. */
 const PlaceholderCard: React.FC = () => (
-  <div className={clsx('status-card', {
+  <div className={clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', {
     'animate-pulse': true,
   })}
   >
