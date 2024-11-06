@@ -361,7 +361,7 @@ const Status: React.FC<IStatus> = (props) => {
   if (actualStatus.quote) {
     if (actualStatus.pleroma.get('quote_visible', true) === false) {
       quote = (
-        <div className='quoted-status-tombstone'>
+        <div>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
