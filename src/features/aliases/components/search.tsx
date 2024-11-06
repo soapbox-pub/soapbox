@@ -3,8 +3,8 @@ import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases';
-import Icon from 'soapbox/components/icon';
 import { Button } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -53,7 +53,7 @@ const Search: React.FC = () => {
         />
 
         <div role='button' tabIndex={hasValue ? 0 : -1} className='search__icon' onClick={handleClear}>
-          <Icon src={require('@tabler/icons/outline/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
+          <SvgIcon src={require('@tabler/icons/outline/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('pointer-events-none absolute right-4 top-1/2 z-20 inline-block size-4.5 -translate-y-1/2 cursor-default text-[16px] text-gray-400 opacity-0 rtl:left-4 rtl:right-auto', { 'pointer-events-auto opacity-100': hasValue })} />
         </div>
       </label>
       <Button onClick={handleSubmit}>{intl.formatMessage(messages.searchTitle)}</Button>

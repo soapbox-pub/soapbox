@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 @layer utilities {
+  .search__icon {
+    &::-moz-focus-inner {
+      border: 0;
+    }
+  
+    &::-moz-focus-inner,
+    &:focus {
+      outline: 0 !important;
+    }
+  }
+
   .focusable:focus,
   .focusable-within:focus-within {
     outline: 0;
