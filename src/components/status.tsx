@@ -401,6 +401,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
+      {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
       <div
         className={clsx('status cursor-pointer', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
