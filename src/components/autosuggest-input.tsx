@@ -234,7 +234,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
     return menu.map((item, i) => (
       <a
         className={clsx('flex cursor-pointer items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
-        href='#'
+        href='/'
         role='button'
         tabIndex={0}
         onMouseDown={this.handleMenuItemClick(item)}
