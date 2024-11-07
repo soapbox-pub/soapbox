@@ -1,11 +1,11 @@
 import React from 'react';
 
-interface IManageZapSplitPage {
+interface IWidePage {
   children: React.ReactNode;
 }
 
-/** Custom layout for Manage Zap Split on desktop. */
-const ManageZapSplitPage: React.FC<IManageZapSplitPage> = ({ children }) => {
+/** Wide page without any side components. */
+const WidePage: React.FC<IWidePage> = ({ children }) => {
   return (
     <div className='black:border-gray-800 md:col-span-12 lg:col-span-9 lg:black:border-l'>
       {children}
@@ -13,4 +13,4 @@ const ManageZapSplitPage: React.FC<IManageZapSplitPage> = ({ children }) => {
   );
 };
 
-export default ManageZapSplitPage;
+export default WidePage;
