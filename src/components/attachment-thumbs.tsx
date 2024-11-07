@@ -17,11 +17,11 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
   const { media, onClick, sensitive } = props;
   const dispatch = useAppDispatch();
 
-  const fallback = <div className='media-gallery--compact' />;
+  const fallback = <div className='!h-[50px] bg-transparent' />;
   const onOpenMedia = (media: ImmutableList<Attachment>, index: number) => dispatch(openModal('MEDIA', { media, index }));
 
   return (
-    <div className='attachment-thumbs'>
+    <div className='relative'>
       <Suspense fallback={fallback}>
         <MediaGallery
           media={media}
@@ -34,7 +34,11 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
       </Suspense>
 
       {onClick && (
-        <div className='attachment-thumbs__clickable-region' onClick={onClick} />
+        <button
+          className='absolute inset-0 size-full cursor-pointer'
+          onClick={onClick}
+          style={{ background: 'none', border: 'none', padding: 0 }}
+        />
       )}
     </div>
   );

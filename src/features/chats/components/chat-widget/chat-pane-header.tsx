@@ -43,9 +43,11 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
 
         {(typeof unreadCount !== 'undefined' && unreadCount > 0) && (
           <HStack alignItems='center' space={2}>
+            {/* eslint-disable formatjs/no-literal-string-in-jsx */}
             <Text weight='semibold' data-testid='unread-count'>
               ({unreadCount})
             </Text>
+            {/* eslint-enable formatjs/no-literal-string-in-jsx */}
 
             <div className='size-2.5 rounded-full bg-accent-300' />
           </HStack>

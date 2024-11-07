@@ -41,11 +41,13 @@ const DevelopersChallenge = () => {
     <Column label={intl.formatMessage(messages.heading)}>
       <Form onSubmit={handleSubmit}>
         <Text>
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <FormattedMessage
             id='developers.challenge.message'
             defaultMessage='What is the result of calling {function}?'
             values={{ function: <span className='font-mono'>soapbox()</span> }}
           />
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         </Text>
 
         <Text tag='pre' family='mono' theme='muted'>

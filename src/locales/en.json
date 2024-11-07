@@ -1167,6 +1167,7 @@
   "new_group_panel.title": "Create Group",
   "nostr_extension.found": "<link>Sign in</link> with browser extension.",
   "nostr_extension.not_found": "Browser extension not found.",
+  "nostr_extension.not_supported": "Browser extension not supported. Please upgrade to the latest version.",
   "nostr_login.siwe.action": "Log in with extension",
   "nostr_login.siwe.alt": "Log in with key",
   "nostr_login.siwe.sign_up": "Sign Up",

@@ -74,13 +74,13 @@ const ChatMessageListIntro = () => {
         <Text size='lg' align='center'>
           {needsAcceptance ? (
             <>
-              <Text tag='span' weight='semibold'>@{chat.account.acct}</Text>
+              <Text tag='span' weight='semibold'>@{chat.account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
               {' '}
               <Text tag='span'>{intl.formatMessage(messages.intro)}</Text>
             </>
           ) : (
             <Link to={`/@${chat.account.acct}`}>
-              <Text tag='span' theme='inherit' weight='semibold'>@{chat.account.acct}</Text>
+              <Text tag='span' theme='inherit' weight='semibold'>@{chat.account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             </Link>
           )}
         </Text>

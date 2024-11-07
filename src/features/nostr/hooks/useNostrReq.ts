@@ -5,7 +5,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useNostr } from 'soapbox/contexts/nostr-context';
 import { useForceUpdate } from 'soapbox/hooks/useForceUpdate';
 
-/** Streams events from the relay for the given filters. */
+/**
+ * Streams events from the relay for the given filters.
+ *
+ * @deprecated Add a custom HTTP endpoint to Ditto instead.
+ * Integrating Nostr directly has too many problems.
+ * Soapbox should only connect to the Nostr relay to sign events, because it's required for Nostr to work.
+ */
 export function useNostrReq(filters: NostrFilter[]): { events: NostrEvent[]; eose: boolean; closed: boolean } {
   const { relay } = useNostr();
 

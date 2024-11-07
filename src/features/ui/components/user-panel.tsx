@@ -70,6 +70,7 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
           </Link>
 
           <HStack>
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text size='sm' theme='muted' direction='ltr' truncate>
               @{getAcct(account, fqn)}
             </Text>

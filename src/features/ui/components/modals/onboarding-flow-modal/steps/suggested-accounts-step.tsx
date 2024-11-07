@@ -4,9 +4,11 @@ import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';
 import { Button, Stack, Text } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import AccountContainer from 'soapbox/containers/account-container';
-import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
 import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
+
+const closeIcon = require('@tabler/icons/outline/x.svg');
 
 interface ICoverPhotoSelectionModal {
   onClose?(): void;
@@ -74,7 +76,17 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
 
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
-      <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />} subtitle={<FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />} />
+      <div className='relative w-full'>
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-2 -top-6 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
+        <Stack space={2} justifyContent='center' alignItems='center' className='-mx-4 mb-4 border-b border-solid pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+          <Text size='2xl' align='center' weight='bold'>
+            <FormattedMessage id='onboarding.suggestions.title' defaultMessage='Suggested accounts' />
+          </Text>
+          <Text theme='muted' align='center'>
+            <FormattedMessage id='onboarding.suggestions.subtitle' defaultMessage='Here are a few of the most popular accounts you might like.' />
+          </Text>
+        </Stack>
+      </div>
 
       <Stack justifyContent='center' alignItems='center' className='w-full gap-5 sm:gap-0'>
         <div className='w-full sm:w-2/3'>

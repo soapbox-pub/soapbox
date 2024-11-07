@@ -164,7 +164,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/outline/ban.svg'),
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.id)),
       secondary: intl.formatMessage(messages.blockAndReport),

@@ -55,7 +55,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   const accounts = to.slice(0, 2).map((acct: string) => {
     const username = acct.split('@')[0];
     return (
-      <span className='reply-mentions__account'>
+      <span className='reply-mentions__account'> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(username)}
       </span>
     );

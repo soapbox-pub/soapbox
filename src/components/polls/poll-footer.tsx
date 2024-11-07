@@ -63,7 +63,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
               </Text>
             </Tooltip>
 
-            <Text theme='muted'>&middot;</Text>
+            <Text theme='muted'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           </>
         )}
 
@@ -75,7 +75,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
               </Text>
             </button>
 
-            <Text theme='muted'>&middot;</Text>
+            <Text theme='muted'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           </>
         )}
 
@@ -85,7 +85,7 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
 
         {poll.expires_at !== null && (
           <>
-            <Text theme='muted'>&middot;</Text>
+            <Text theme='muted'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             <Text weight='medium' theme='muted' data-testid='poll-expiration'>{timeRemaining}</Text>
           </>
         )}

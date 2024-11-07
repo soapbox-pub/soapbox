@@ -195,7 +195,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
             <>
               <Text tag='span'>{intl.formatMessage(messages.blockedBy)}</Text>
               {' '}
-              <Text tag='span' theme='primary'>@{chat.account.acct}</Text>
+              <Text tag='span' theme='primary'>@{chat.account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             </>
           </Text>
         </Stack>

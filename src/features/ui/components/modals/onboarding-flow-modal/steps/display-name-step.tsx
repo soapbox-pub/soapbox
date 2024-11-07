@@ -2,12 +2,14 @@ import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
-import { Button, Stack, FormGroup, Input } from 'soapbox/components/ui';
-import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
+import { Button, Stack, Text, FormGroup, Input } from 'soapbox/components/ui';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
 import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
+
+const closeIcon = require('@tabler/icons/outline/x.svg');
 
 const messages = defineMessages({
   usernamePlaceholder: { id: 'onboarding.display_name.placeholder', defaultMessage: 'Eg. John Smith' },
@@ -63,7 +65,17 @@ const DisplayNameStep: React.FC<IDisplayNameStep> = ({ onClose, onNext }) => {
 
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
-      <HeaderSteps onClose={onClose} title={<FormattedMessage id='onboarding.display_name.title' defaultMessage='Choose a display name' />} subtitle={<FormattedMessage id='onboarding.display_name.subtitle' defaultMessage='Show who you are! Create a unique username and leave your mark.' />} />
+      <div className='relative w-full'>
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-2 -top-6 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
+        <Stack space={2} justifyContent='center' alignItems='center' className='-mx-4 mb-4 border-b border-solid pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+          <Text size='2xl' align='center' weight='bold'>
+            <FormattedMessage id='onboarding.display_name.title' defaultMessage='Choose a display name' />
+          </Text>
+          <Text theme='muted' align='center'>
+            <FormattedMessage id='onboarding.display_name.subtitle' defaultMessage='You can always edit this later.' />
+          </Text>
+        </Stack>
+      </div>
 
       <Stack space={5} justifyContent='center' alignItems='center' className='w-full'>
         <div className='w-full sm:w-2/3'>

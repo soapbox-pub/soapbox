@@ -27,6 +27,7 @@ export default ({ withJoinAction = true }: { withJoinAction?: boolean }) => {
               {generateText(6)}
             </Text>
 
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <span>&bull;</span>
 
             <Text theme='inherit' tag='span' size='sm' weight='medium'>

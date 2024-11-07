@@ -30,14 +30,16 @@ function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
   }, {});
 }
 
-const jsonSchema = z.string().transform((value, ctx) => {
-  try {
-    return JSON.parse(value) as unknown;
-  } catch (_e) {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Invalid JSON' });
-    return z.NEVER;
-  }
-});
+function jsonSchema(reviver?: (this: any, key: string, value: any) => any) {
+  return z.string().transform((value, ctx) => {
+    try {
+      return JSON.parse(value, reviver) as unknown;
+    } catch (_e) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'Invalid JSON' });
+      return z.NEVER;
+    }
+  });
+}
 
 /** MIME schema, eg `image/png`. */
 const mimeSchema = z.string().regex(/^\w+\/[-+.\w]+$/);

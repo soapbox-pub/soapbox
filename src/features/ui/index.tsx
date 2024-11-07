@@ -29,11 +29,11 @@ import GroupsPendingPage from 'soapbox/pages/groups-pending-page';
 import HomePage from 'soapbox/pages/home-page';
 import LandingPage from 'soapbox/pages/landing-page';
 import ManageGroupsPage from 'soapbox/pages/manage-groups-page';
-import ManageZapSplitPage from 'soapbox/pages/manage-zap-split-page';
 import ProfilePage from 'soapbox/pages/profile-page';
 import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
 import SearchPage from 'soapbox/pages/search-page';
 import StatusPage from 'soapbox/pages/status-page';
+import WidePage from 'soapbox/pages/wide-page';
 
 import BackgroundShapes from './components/background-shapes';
 import FloatingActionButton from './components/floating-action-button';
@@ -142,6 +142,7 @@ import {
   ManageZapSplit,
   Rules,
   AdminNostrRelays,
+  NostrBunkerLogin,
 } from './util/async-components';
 import GlobalHotkeys from './util/global-hotkeys';
 import { WrappedRoute } from './util/react-router-helpers';
@@ -330,7 +331,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
-      <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={ManageZapSplitPage} component={ManageZapSplit} content={children} exact />
+      {features.nostr && <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={WidePage} component={ManageZapSplit} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />
@@ -359,6 +360,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         <WrappedRoute path='/signup' page={EmptyPage} component={RegistrationPage} publicRoute exact />
       )}
 
+      <WrappedRoute path='/login/nostr' page={DefaultPage} component={NostrBunkerLogin} publicRoute exact />
       <WrappedRoute path='/login/external' page={DefaultPage} component={ExternalLogin} publicRoute exact />
       <WrappedRoute path='/login/add' page={DefaultPage} component={LoginPage} publicRoute exact />
       <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
@@ -422,7 +424,7 @@ const UI: React.FC<IUI> = ({ children }) => {
 
     if (account.staff) {
       dispatch(fetchReports({ resolved: false }));
-      dispatch(fetchUsers(['local', 'need_approval']));
+      dispatch(fetchUsers({ pending: true }));
     }
 
     if (account.admin) {

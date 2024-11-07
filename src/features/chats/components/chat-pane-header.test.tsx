@@ -27,7 +27,7 @@ describe('<ChatPaneHeader />', () => {
     describe('when it is a node', () => {
       it('renders the title', () => {
         const title = (
-          <div><p>hello world</p></div>
+          <div><p>hello world</p></div> // eslint-disable-line formatjs/no-literal-string-in-jsx
         );
         render(<ChatPaneHeader title={title} onToggle={vi.fn()} isOpen />);
 

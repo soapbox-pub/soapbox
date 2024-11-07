@@ -4,7 +4,7 @@ import throttle from 'lodash/throttle';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { formatTime, getPointerPosition } from 'soapbox/features/video';
 
 import Visualizer from './visualizer';
@@ -64,10 +64,11 @@ const Audio: React.FC<IAudio> = (props) => {
   const [duration, setDuration] = useState<number | undefined>(undefined);
   const [paused, setPaused] = useState(true);
   const [muted, setMuted] = useState(false);
+  const [preVolume, setPreVolume] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const [dragging, setDragging] = useState(false);
   const [hovered, setHovered] = useState(false);
-
+  const [seekHovered, setSeekHovered] = useState(false);
   const visualizer = useRef<Visualizer>(new Visualizer(TICK_SIZE));
   const audioContext = useRef<AudioContext | null>(null);
 
@@ -150,12 +151,20 @@ const Audio: React.FC<IAudio> = (props) => {
   };
 
   const toggleMute = () => {
-    const nextMuted = !muted;
-
-    setMuted(nextMuted);
-
     if (audio.current) {
-      audio.current.muted = nextMuted;
+      const muted = !audio.current.muted;
+      setMuted(muted);
+      audio.current.muted = muted;
+
+      if (muted) {
+        setPreVolume(audio.current.volume);
+        audio.current.volume = 0;
+        setVolume(0);
+      } else {
+        audio.current.volume = preVolume;
+        setVolume(preVolume);
+      }
+
     }
   };
 
@@ -257,6 +266,14 @@ const Audio: React.FC<IAudio> = (props) => {
 
   const handleMouseLeave = () => {
     setHovered(false);
+  };
+
+  const handleSeekEnter = () => {
+    setSeekHovered(true);
+  };
+
+  const handleSeekLeave = () => {
+    setSeekHovered(false);
   };
 
   const handleLoadedData = () => {
@@ -438,7 +455,8 @@ const Audio: React.FC<IAudio> = (props) => {
 
   return (
     <div
-      className={clsx('audio-player', { editable })}
+      role='menuitem'
+      className={clsx('relative box-border overflow-hidden rounded-[10px] bg-black pb-11', { 'rounded-none h-full': editable })}
       ref={player}
       style={{
         backgroundColor: _getBackgroundColor(),
@@ -446,8 +464,6 @@ const Audio: React.FC<IAudio> = (props) => {
         width: '100%',
         height: fullscreen ? '100%' : (height || props.height),
       }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onClick={e => e.stopPropagation()}
@@ -466,7 +482,7 @@ const Audio: React.FC<IAudio> = (props) => {
       <canvas
         role='button'
         tabIndex={0}
-        className='audio-player__canvas absolute left-0 top-0 w-full'
+        className='absolute left-0 top-0 w-full'
         width={width}
         height={height}
         ref={canvas}
@@ -490,86 +506,95 @@ const Audio: React.FC<IAudio> = (props) => {
         />
       )}
 
-      <div className='video-player__seek' onMouseDown={handleMouseDown} ref={seek}>
+      <div className='relative h-6 cursor-pointer' onMouseDown={handleMouseDown} onMouseEnter={handleSeekEnter} onMouseLeave={handleSeekLeave} ref={seek}>
 
-        <div className='video-player__seek__buffer' style={{ width: `${buffer}%` }} />
+        <div className='absolute top-0 block h-1 rounded-md bg-white/20' style={{ width: `${buffer}%` }} />
 
         <div
-          className='video-player__seek__progress'
+          className='absolute top-0 block h-1 rounded-md bg-accent-500'
           style={{ width: `${progress}%`, backgroundColor: accentColor }}
         />
 
         <span
-          className={clsx('video-player__seek__handle', { active: dragging })}
+          className={clsx('absolute -top-1 z-30 -ml-1.5 size-3 rounded-full bg-accent-500 opacity-0 shadow-[1px_2px_6px_rgba(0,0,0,0.3)] transition-opacity duration-100', { 'opacity-100': dragging || seekHovered })}
           tabIndex={0}
           style={{ left: `${progress}%`, backgroundColor: accentColor }}
           onKeyDown={handleAudioKeyDown}
         />
       </div>
 
-      <div className='video-player__controls active'>
-        <div className='video-player__buttons-bar'>
-          <div className='video-player__buttons left'>
+      <div className={clsx('absolute inset-x-0 bottom-0 z-20 box-border bg-gradient-to-t from-black/70 to-transparent px-[10px] opacity-100 transition-opacity duration-100 ease-linear')}>
+        <div className='my-[-5px] flex justify-between pb-3.5'>
+          <div className='flex w-full flex-auto items-center truncate text-[16px]'>
 
             <button
               type='button'
               title={intl.formatMessage(paused ? messages.play : messages.pause)}
               aria-label={intl.formatMessage(paused ? messages.play : messages.pause)}
-              className='player-button'
+              className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 active:text-white active:opacity-100 ')}
               onClick={togglePlay}
             >
-              <Icon src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
+              <SvgIcon className='w-5' src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
             </button>
 
             <button
               type='button'
               title={intl.formatMessage(muted ? messages.unmute : messages.mute)}
               aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)}
-              className='player-button'
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 active:text-white active:opacity-100')}
               onClick={toggleMute}
             >
-              <Icon src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
+              <SvgIcon className='w-5' src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
             </button>
 
             <div
-              className={clsx('video-player__volume', { active: hovered })}
-              ref={slider}
-              onMouseDown={handleVolumeMouseDown}
+              className={clsx('relative inline-flex h-6 flex-none cursor-pointer overflow-hidden transition-all duration-100 ease-linear', { 'overflow-visible w-[50px] mr-[16px]': hovered })} onMouseDown={handleVolumeMouseDown} ref={slider}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div
-                className='video-player__volume__current'
                 style={{
-                  width: `${volume * 100}%`,
-                  backgroundColor: _getAccentColor(),
+                  content: '',
+                  width: '50px',
+                  background: 'rgba(255, 255, 255, 0.35)',
+                  borderRadius: '4px',
+                  display: 'block',
+                  position: 'absolute',
+                  height: '4px',
+                  left: '0',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
                 }}
               />
-
+              <div className={clsx('absolute left-0 top-1/2 block h-1 -translate-y-1/2 rounded-md bg-accent-500')} style={{ width: `${volume * 100}%` }} />
               <span
-                className='video-player__volume__handle'
+                className={clsx('absolute left-0 top-1/2 z-30 -ml-1.5 size-3 -translate-y-1/2 rounded-full bg-accent-500 opacity-0 shadow-[1px_2px_6px_rgba(0,0,0,0.3)] transition-opacity duration-100', { 'opacity-100': hovered })}
                 tabIndex={0}
-                style={{ left: `${volume * 100}%`, backgroundColor: _getAccentColor() }}
+                style={{ left: `${volume * 100}%` }}
               />
             </div>
 
-            <span className='video-player__time'>
-              <span className='video-player__time-current'>{formatTime(Math.floor(currentTime))}</span>
+            <span className='mx-[5px] inline-flex flex-[0_1_auto] overflow-hidden text-ellipsis'>
+              <span className='text-sm font-medium text-white/75'>{formatTime(Math.floor(currentTime))}</span>
               {getDuration() && (<>
-                <span className='video-player__time-sep'>/</span>
-                <span className='video-player__time-total'>{formatTime(Math.floor(getDuration()))}</span>
+                <span className='mx-1.5 inline-block text-sm font-medium text-white/75'>/</span>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
+                <span className='text-sm font-medium text-white/75'>{formatTime(Math.floor(getDuration()))}</span>
               </>)}
             </span>
           </div>
 
-          <div className='video-player__buttons right'>
+          <div className='flex min-w-[30px] flex-auto items-center truncate text-[16px]'>
             <a
               title={intl.formatMessage(messages.download)}
               aria-label={intl.formatMessage(messages.download)}
-              className='video-player__download__icon player-button'
+              className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 active:text-white active:opacity-100 ')}
               href={src}
               download
               target='_blank'
             >
-              <Icon src={require('@tabler/icons/outline/download.svg')} />
+              <SvgIcon className='w-5' src={require('@tabler/icons/outline/download.svg')} />
             </a>
           </div>
         </div>

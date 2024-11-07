@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
-import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useSettings } from 'soapbox/hooks';
 import { isIOS } from 'soapbox/is-mobile';
 
@@ -80,9 +80,9 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
       conditionalAttributes.autoPlay = true;
     }
     thumbnail = (
-      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className='group relative size-full overflow-hidden'>
         <video
-          className='media-gallery__item-gifv-thumbnail'
+          className='relative top-0 z-10 size-full transform-none cursor-zoom-in rounded-md object-cover'
           aria-label={attachment.description}
           title={attachment.description}
           role='application'
@@ -94,7 +94,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
           {...conditionalAttributes}
         />
 
-        <span className='media-gallery__gifv__label'>GIF</span>
+        <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear  group-hover:opacity-100', { 'hidden': autoPlayGif })}>GIF</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       </div>
     );
   } else if (attachment.type === 'audio') {
@@ -102,28 +102,28 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
     const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
     const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
-      <div className='media-gallery__item-thumbnail'>
-        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/outline/volume.svg')} /></span>
-        <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+      <div className='relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline'>
+        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon  className='size-24' src={require('@tabler/icons/outline/volume.svg')} /></span>
+        <span className='pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear'>{fileExtension}</span>
       </div>
     );
   }
 
   if (!visible) {
     icon = (
-      <span className='media-gallery__item__icons'>
-        <Icon src={require('@tabler/icons/outline/eye-off.svg')} />
+      <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
+        <SvgIcon className='size-24' src={require('@tabler/icons/outline/eye-off.svg')} />
       </span>
     );
   }
 
   return (
     <div className='col-span-1'>
-      <a className='media-gallery__item-thumbnail aspect-1' href={status.url} target='_blank' onClick={handleClick} title={title}>
+      <a className='relative z-[1] block aspect-1 size-full cursor-zoom-in leading-none text-gray-400 no-underline' href={status.url} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
           hash={attachment.blurhash}
-          className={clsx('media-gallery__preview', {
-            'media-gallery__preview--hidden': visible,
+          className={clsx('absolute left-0 top-0 z-0 size-full rounded-lg bg-gray-200 object-cover dark:bg-gray-900', {
+            'hidden': visible,
           })}
         />
         {visible && thumbnail}

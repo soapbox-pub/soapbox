@@ -9,7 +9,7 @@ import PasswordResetConfirm from './password-reset-confirm';
 const TestableComponent = () => (
   <Switch>
     <Route path='/edit' exact><PasswordResetConfirm /></Route>
-    <Route path='/' exact><span data-testid='home'>Homepage</span></Route>
+    <Route path='/' exact><span data-testid='home'>Homepage</span></Route> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
   </Switch>
 );
 

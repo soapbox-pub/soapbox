@@ -34,6 +34,7 @@ export const shortNumberFormat = (number: any, max?: number): React.ReactNode =>
   }
 
   if (max && value > max) {
+    // eslint-disable-next-line formatjs/no-literal-string-in-jsx
     return <span>{max}+</span>;
   }
 

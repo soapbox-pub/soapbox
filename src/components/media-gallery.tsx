@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
-import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still-image';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
@@ -11,6 +10,8 @@ import { truncateFilename } from 'soapbox/utils/media';
 
 import { isIOS } from '../is-mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
+
+import SvgIcon from './ui/icon/svg-icon';
 
 import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
@@ -60,6 +61,7 @@ interface IItem {
   dimensions: Dimensions;
   last?: boolean;
   total: number;
+  compact?: boolean;
 }
 
 const Item: React.FC<IItem> = ({
@@ -71,6 +73,7 @@ const Item: React.FC<IItem> = ({
   dimensions,
   last,
   total,
+  compact,
 }) => {
   const { autoPlayGif } = useSettings();
   const { mediaPreview } = useSoapboxConfig();
@@ -111,15 +114,20 @@ const Item: React.FC<IItem> = ({
     e.stopPropagation();
   };
 
-  const handleVideoHover: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
+  const handleVideoHover = (event: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = event.currentTarget;
     video.playbackRate = 3.0;
     video.play();
   };
 
-  const handleVideoLeave: React.MouseEventHandler<HTMLVideoElement> = ({ currentTarget: video }) => {
+  const handleVideoLeave = (event: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = event.currentTarget;
     video.pause();
     video.currentTime = 0;
   };
+
+  const handleFocus: React.FocusEventHandler<HTMLVideoElement> = handleVideoHover;
+  const handleBlur: React.FocusEventHandler<HTMLVideoElement> = handleVideoLeave;
 
   let width: Dimensions['w'] = 100;
   let height: Dimensions['h'] = '100%';
@@ -144,43 +152,29 @@ const Item: React.FC<IItem> = ({
   let thumbnail: React.ReactNode = '';
   const ext = attachment.url.split('.').pop()?.toLowerCase();
 
-  /*if (attachment.type === 'unknown' && ['gb', 'gbc'].includes(ext!)) {
-    return (
-      <div
-        className={clsx('media-gallery__item', {
-          standalone,
-          'rounded-md': total > 1,
-        })}
-        key={attachment.id}
-        style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
-      >
-        <Suspense fallback={<div  className='media-gallery__item-thumbnail' />}>
-          <Gameboy className='media-gallery__item-thumbnail cursor-default' src={attachment.url} />
-        </Suspense>
-      </div>
-    );
-  } else */if (attachment.type === 'unknown') {
+  if (attachment.type === 'unknown') {
     const filename = truncateFilename(attachment.url, MAX_FILENAME_LENGTH);
     const attachmentIcon = (
-      <Icon
-        className='size-16 text-gray-800 dark:text-gray-200'
+      <SvgIcon
+        className={clsx('size-16 text-gray-800 dark:text-gray-200', { 'size-8': compact })}
         src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/outline/paperclip.svg')}
       />
     );
 
     return (
       <div
-        className={clsx('media-gallery__item', {
+        className={clsx('relative float-left box-border block overflow-hidden rounded-sm border-0', {
           standalone,
           'rounded-md': total > 1,
+          '!size-[50px] !inset-auto !float-left !mr-[50px]': compact,
         })}
         key={attachment.id}
         style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
       >
-        <a className='media-gallery__item-thumbnail' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
-          <Blurhash hash={attachment.blurhash} className='media-gallery__preview' />
-          <span className='media-gallery__item__icons'>{attachmentIcon}</span>
-          <span className='media-gallery__filename__label'>{filename}</span>
+        <a className='relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline' href={attachment.url} target='_blank' style={{ cursor: 'pointer' }}>
+          <Blurhash hash={attachment.blurhash} className='absolute left-0 top-0 z-0 size-full rounded-lg bg-gray-200 object-cover dark:bg-gray-900' />
+          <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>{attachmentIcon}</span>
+          <span className='pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear'>{filename}</span>
         </a>
       </div>
     );
@@ -189,7 +183,7 @@ const Item: React.FC<IItem> = ({
 
     thumbnail = (
       <a
-        className='media-gallery__item-thumbnail'
+        className='relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline'
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
@@ -213,9 +207,9 @@ const Item: React.FC<IItem> = ({
     }
 
     thumbnail = (
-      <div className={clsx('media-gallery__gifv', { autoplay: autoPlayGif })}>
+      <div className='group relative size-full overflow-hidden'>
         <video
-          className='media-gallery__item-gifv-thumbnail'
+          className='relative top-0 z-10 size-full transform-none cursor-zoom-in rounded-md object-cover'
           aria-label={attachment.description}
           title={attachment.description}
           role='application'
@@ -228,61 +222,65 @@ const Item: React.FC<IItem> = ({
           {...conditionalAttributes}
         />
 
-        <span className='media-gallery__gifv__label'>GIF</span>
+        <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear  group-hover:opacity-100', { 'hidden': autoPlayGif })}>GIF</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       </div>
     );
   } else if (attachment.type === 'audio') {
     thumbnail = (
       <a
-        className={clsx('media-gallery__item-thumbnail')}
+        className={clsx('relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
         title={attachment.description}
       >
-        <span className='media-gallery__item__icons'><Icon src={require('@tabler/icons/outline/volume.svg')} /></span>
-        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
+        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon className='size-24' src={require('@tabler/icons/outline/volume.svg')} /></span>
+        <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold uppercase leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear', { 'hidden': compact })}>{ext}</span>
       </a>
     );
   } else if (attachment.type === 'video') {
     thumbnail = (
       <a
-        className={clsx('media-gallery__item-thumbnail')}
+        className={clsx('relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline')}
         href={attachment.url}
         onClick={handleClick}
         target='_blank'
         title={attachment.description}
       >
         <video
+          className='size-full object-cover'
           muted
           loop
           onMouseOver={handleVideoHover}
           onMouseOut={handleVideoLeave}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
         >
           <source src={attachment.url} />
         </video>
-        <span className='media-gallery__file-extension__label uppercase'>{ext}</span>
+        <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold uppercase leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear', { 'hidden': compact })}>{ext}</span>
       </a>
     );
   }
 
   return (
     <div
-      className={clsx('media-gallery__item', `media-gallery__item--${attachment.type}`, {
+      className={clsx('relative float-left box-border block overflow-hidden rounded-sm border-0', {
         standalone,
         'rounded-md': total > 1,
+        '!size-[50px] !inset-auto !float-left !mr-[50px]': compact,
       })}
       key={attachment.id}
       style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}
     >
       {last && total > ATTACHMENT_LIMIT && (
-        <div className='media-gallery__item-overflow'>
+        <div className={clsx('pointer-events-none absolute inset-0 z-[2] flex size-full items-center justify-center bg-white/75 text-center text-[50px] font-bold text-gray-800', { '!text-5': compact })}> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           +{total - ATTACHMENT_LIMIT + 1}
         </div>
       )}
       <Blurhash
         hash={attachment.blurhash}
-        className='media-gallery__preview'
+        className='absolute left-0 top-0 z-0 size-full rounded-lg bg-gray-200 object-cover dark:bg-gray-900'
       />
       {visible && thumbnail}
     </div>
@@ -561,6 +559,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
       dimensions={sizeData.itemsDimensions[i]}
       last={i === ATTACHMENT_LIMIT - 1}
       total={media.size}
+      compact={compact}
     />
   ));
 
@@ -578,7 +577,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
 
   return (
     <div
-      className={clsx(className, 'media-gallery', { 'media-gallery--compact': compact })}
+      className={clsx(className, 'relative isolate box-border h-auto w-full overflow-hidden rounded-lg', { '!h-[50px] bg-transparent': compact })}
       style={sizeData.style}
       ref={node}
     >

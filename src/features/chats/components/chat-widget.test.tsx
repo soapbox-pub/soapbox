@@ -35,8 +35,10 @@ describe('<ChatWidget />', () => {
     it('hides the widget', async () => {
       const App = () => (
         <Switch>
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Route path='/chats' exact><span>Chats page <ChatWidget /></span></Route>
           <Route path='/' exact><span data-testid='home'>Homepage <ChatWidget /></span></Route>
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         </Switch>
       );
 
@@ -85,8 +87,10 @@ describe('<ChatWidget />', () => {
     it('shows the widget', async () => {
       const App = () => (
         <Switch>
+          {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Route path='/chats' exact><span>Chats page <ChatWidget /></span></Route>
           <Route path='/' exact><span data-testid='home'>Homepage <ChatWidget /></span></Route>
+          {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         </Switch>
       );
 

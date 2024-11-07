@@ -12,7 +12,7 @@ describe('<Card />', () => {
           <CardTitle title='Card Title' />
         </CardHeader>
 
-        <CardBody>
+        <CardBody> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
           Card Body
         </CardBody>
       </Card>,

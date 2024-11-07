@@ -133,7 +133,7 @@
     "no-irregular-whitespace": "error",
     "no-loop-func": "error",
     "no-mixed-spaces-and-tabs": "error",
-    "no-nested-ternary": "warn",
+    "no-nested-ternary": "error",
     "no-restricted-imports": [
       "error",
       {
@@ -317,7 +317,7 @@
 
     "formatjs/enforce-default-message": "error",
     "formatjs/enforce-id": "error",
-    "formatjs/no-literal-string-in-jsx": "warn"
+    "formatjs/no-literal-string-in-jsx": "error"
   },
   "overrides": [
     {

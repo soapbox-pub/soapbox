@@ -13,14 +13,14 @@ describe('<Button />', () => {
   });
 
   it('renders the children', () => {
-    render(<Button><p>children</p></Button>);
+    render(<Button><p>children</p></Button>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
     expect(screen.getByRole('button')).toHaveTextContent('children');
   });
 
   it('renders the props.text instead of children', () => {
     const text = 'foo';
-    const children = <p>children</p>;
+    const children = <p>children</p>;  // eslint-disable-line formatjs/no-literal-string-in-jsx
     render(<Button text={text}>{children}</Button>);
 
     expect(screen.getByRole('button')).toHaveTextContent('foo');
@@ -63,13 +63,13 @@ describe('<Button />', () => {
 
   describe('to prop', () => {
     it('renders a link', () => {
-      render(<Button to='/'>link</Button>);
+      render(<Button to='/'>link</Button>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
       expect(screen.getByRole('link')).toBeInTheDocument();
     });
 
     it('does not render a link', () => {
-      render(<Button>link</Button>);
+      render(<Button>link</Button>); //eslint-disable-line formatjs/no-literal-string-in-jsx
 
       expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
@@ -77,13 +77,13 @@ describe('<Button />', () => {
 
   describe('icon prop', () => {
     it('renders an icon', () => {
-      render(<Button icon='icon.png'>button</Button>);
+      render(<Button icon='icon.png'>button</Button>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
       expect(screen.getByTestId('icon')).toBeInTheDocument();
     });
 
     it('does not render an icon', () => {
-      render(<Button>button</Button>);
+      render(<Button>button</Button>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
       expect(screen.queryAllByTestId('icon')).toHaveLength(0);
     });

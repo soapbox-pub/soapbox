@@ -42,8 +42,10 @@ const FundingPanel: React.FC = () => {
   let ratioText;
 
   if (goalReached) {
+    // eslint-disable-next-line formatjs/no-literal-string-in-jsx
     ratioText = <><strong>{moneyFormat(goal)}</strong> per month <span>&mdash; reached!</span></>;
   } else {
+    // eslint-disable-next-line formatjs/no-literal-string-in-jsx
     ratioText = <><strong>{moneyFormat(amount)} out of {moneyFormat(goal)}</strong> per month</>;
   }
 

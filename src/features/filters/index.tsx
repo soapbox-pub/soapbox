@@ -70,50 +70,56 @@ const Filters = () => {
         emptyMessage={emptyMessage}
         itemClassName='pb-4 last:pb-0'
       >
-        {filters.map((filter) => (
-          <div key={filter.id} className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
-            <Stack space={2}>
-              <Stack className='grow' space={1}>
-                <Text weight='medium'>
-                  <FormattedMessage id='filters.filters_list_phrases_label' defaultMessage='Keywords or phrases:' />
-                  {' '}
-                  <Text theme='muted' tag='span'>{filter.keywords.map(keyword => keyword.keyword).join(', ')}</Text>
-                </Text>
-                <Text weight='medium'>
-                  <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
-                  {' '}
-                  <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
-                </Text>
-                <HStack space={4} wrap>
+        {filters.map((filter) => {
+
+          const truthMessageFilter = filter.filter_action === 'hide' ?
+            <FormattedMessage id='filters.filters_list_hide_completely' defaultMessage='Hide content' /> :
+            <FormattedMessage id='filters.filters_list_warn' defaultMessage='Display warning' />;
+
+          const falseMessageFilter = (filter.filter_action === 'hide' ?
+            <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
+            <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />);
+
+          return (
+            <div key={filter.id} className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
+              <Stack space={2}>
+                <Stack className='grow' space={1}>
                   <Text weight='medium'>
-                    {filtersV2 ? (
-                      filter.filter_action === 'hide' ?
-                        <FormattedMessage id='filters.filters_list_hide_completely' defaultMessage='Hide content' /> :
-                        <FormattedMessage id='filters.filters_list_warn' defaultMessage='Display warning' />
-                    ) : (filter.filter_action === 'hide' ?
-                      <FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /> :
-                      <FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' />)}
+                    <FormattedMessage id='filters.filters_list_phrases_label' defaultMessage='Keywords or phrases:' />
+                    {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
+                    <Text theme='muted' tag='span'>{filter.keywords.map(keyword => keyword.keyword).join(', ')}</Text>
                   </Text>
-                  {filter.expires_at && (
+                  <Text weight='medium'>
+                    <FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' />
+                    {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
+                    <Text theme='muted' tag='span'>{filter.context.map(context => contexts[context] ? intl.formatMessage(contexts[context]) : context).join(', ')}</Text>
+                  </Text>
+                  <HStack space={4} wrap>
                     <Text weight='medium'>
-                      {new Date(filter.expires_at).getTime() <= Date.now()
-                        ? <FormattedMessage id='filters.filters_list_expired' defaultMessage='Expired' />
-                        : <RelativeTimestamp timestamp={filter.expires_at} className='whitespace-nowrap' futureDate />}
+                      {filtersV2 ? truthMessageFilter : falseMessageFilter}
                     </Text>
-                  )}
+                    {filter.expires_at && (
+                      <Text weight='medium'>
+                        {new Date(filter.expires_at).getTime() <= Date.now()
+                          ? <FormattedMessage id='filters.filters_list_expired' defaultMessage='Expired' />
+                          : <RelativeTimestamp timestamp={filter.expires_at} className='whitespace-nowrap' futureDate />}
+                      </Text>
+                    )}
+                  </HStack>
+                </Stack>
+                <HStack space={2} justifyContent='end'>
+                  <Button theme='primary' onClick={handleFilterEdit(filter.id)}>
+                    {intl.formatMessage(messages.edit)}
+                  </Button>
+                  <Button theme='danger' onClick={handleFilterDelete(filter.id)}>
+                    {intl.formatMessage(messages.delete)}
+                  </Button>
                 </HStack>
               </Stack>
-              <HStack space={2} justifyContent='end'>
-                <Button theme='primary' onClick={handleFilterEdit(filter.id)}>
-                  {intl.formatMessage(messages.edit)}
-                </Button>
-                <Button theme='danger' onClick={handleFilterDelete(filter.id)}>
-                  {intl.formatMessage(messages.delete)}
-                </Button>
-              </HStack>
-            </Stack>
-          </div>
-        ))}
+            </div>
+          );
+        },
+        )}
       </ScrollableList>
     </Column>
   );

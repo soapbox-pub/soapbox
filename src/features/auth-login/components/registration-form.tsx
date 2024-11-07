@@ -141,13 +141,19 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
         /></p>}
     </>);
 
+    const confirmationHeading = needsConfirmation
+      ? intl.formatMessage(messages.needsConfirmationHeader)
+      : undefined;
+
+    const approvalHeading = needsApproval
+      ? intl.formatMessage(messages.needsApprovalHeader)
+      : undefined;
+
+    const heading = confirmationHeading || approvalHeading;
+
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/outline/check.svg'),
-      heading: needsConfirmation
-        ? intl.formatMessage(messages.needsConfirmationHeader)
-        : needsApproval
-          ? intl.formatMessage(messages.needsApprovalHeader)
-          : undefined,
+      heading: heading,
       message,
       confirm: intl.formatMessage(messages.close),
     }));

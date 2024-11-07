@@ -1,4 +1,10 @@
-import { RootState, type AppDispatch } from 'soapbox/store';
+import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
+import { generateSecretKey } from 'nostr-tools';
+
+import { NBunker } from 'soapbox/features/nostr/NBunker';
+import { keyring } from 'soapbox/features/nostr/keyring';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
+import { type AppDispatch } from 'soapbox/store';
 
 import { authLoggedIn, verifyCredentials } from './auth';
 import { obtainOAuthToken } from './oauth';
@@ -6,42 +12,83 @@ import { obtainOAuthToken } from './oauth';
 const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 
 /** Log in with a Nostr pubkey. */
-function logInNostr(pubkey: string) {
-  return async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(setNostrPubkey(pubkey));
+function logInNostr(signer: NostrSigner, relay: NRelay1) {
+  return async (dispatch: AppDispatch) => {
+    const authorization = generateBunkerAuth();
 
-    const secret = sessionStorage.getItem('soapbox:nip46:secret');
-    if (!secret) {
-      throw new Error('No secret found in session storage');
-    }
+    const pubkey = await signer.getPublicKey();
+    const bunkerPubkey = await authorization.signer.getPublicKey();
 
-    const relay = getState().instance.nostr?.relay;
+    let authorizedPubkey: string | undefined;
 
-    // HACK: waits 1 second to ensure the relay subscription is open
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const bunker = new NBunker({
+      relay,
+      userSigner: signer,
+      bunkerSigner: authorization.signer,
+      onConnect(request, event) {
+        const [, secret] = request.params;
+
+        if (secret === authorization.secret) {
+          bunker.authorize(event.pubkey);
+          authorizedPubkey = event.pubkey;
+          return { id: request.id, result: 'ack' };
+        } else {
+          return { id: request.id, result: '', error: 'Invalid secret' };
+        }
+      },
+    });
+
+    await bunker.waitReady;
 
     const token = await dispatch(obtainOAuthToken({
       grant_type: 'nostr_bunker',
-      pubkey,
-      relays: relay ? [relay] : undefined,
-      secret,
+      pubkey: bunkerPubkey,
+      relays: [relay.socket.url],
+      secret: authorization.secret,
     }));
 
-    dispatch(setNostrPubkey(undefined));
+    if (!authorizedPubkey) {
+      throw new Error('Authorization failed');
+    }
 
-    const { access_token } = dispatch(authLoggedIn(token));
-    return await dispatch(verifyCredentials(access_token as string));
+    const accessToken = dispatch(authLoggedIn(token)).access_token as string;
+    const bunkerState = useBunkerStore.getState();
+
+    keyring.add(authorization.seckey);
+
+    bunkerState.connect({
+      pubkey,
+      accessToken,
+      authorizedPubkey,
+      bunkerPubkey,
+    });
+
+    await dispatch(verifyCredentials(accessToken));
+
+    // TODO: get rid of `vite-plugin-require` and switch to `using` for the bunker. :(
+    bunker.close();
   };
 }
 
 /** Log in with a Nostr extension. */
-function nostrExtensionLogIn() {
+function nostrExtensionLogIn(relay: NRelay1) {
   return async (dispatch: AppDispatch) => {
     if (!window.nostr) {
       throw new Error('No Nostr signer available');
     }
-    const pubkey = await window.nostr.getPublicKey();
-    return dispatch(logInNostr(pubkey));
+    return dispatch(logInNostr(window.nostr, relay));
+  };
+}
+
+/** Generate a bunker authorization object. */
+function generateBunkerAuth() {
+  const secret = crypto.randomUUID();
+  const seckey = generateSecretKey();
+
+  return {
+    secret,
+    seckey,
+    signer: new NSecSigner(seckey),
   };
 }
 

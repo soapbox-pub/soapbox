@@ -6,6 +6,7 @@ import { openModal } from 'soapbox/actions/modals';
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
 import EmojiGraphic from 'soapbox/components/emoji-graphic';
 import { Button, Stack, Modal, Text, Divider, HStack } from 'soapbox/components/ui';
+import { useNostr } from 'soapbox/contexts/nostr-context';
 import { useAppDispatch, useInstance, useSoapboxConfig } from 'soapbox/hooks';
 
 interface IExtensionStep {
@@ -18,6 +19,7 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ isLogin, onClickAlt, onClose 
   const dispatch = useAppDispatch();
   const { instance } = useInstance();
   const { logo } = useSoapboxConfig();
+  const { relay } = useNostr();
 
   const handleClose = () => {
     onClose();
@@ -25,8 +27,10 @@ const ExtensionStep: React.FC<IExtensionStep> = ({ isLogin, onClickAlt, onClose 
   };
 
   const onClick = () => {
-    dispatch(nostrExtensionLogIn());
-    onClose();
+    if (relay) {
+      dispatch(nostrExtensionLogIn(relay));
+      onClose();
+    }
   };
 
   return (

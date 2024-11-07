@@ -94,10 +94,12 @@ const Dashboard: React.FC = () => {
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
 
-        <ListItem
-          to='/soapbox/admin/zap-split'
-          label={<FormattedMessage id='column.admin.zap_split' defaultMessage='Manage Zap Split' />}
-        />
+        {features.nostr && (
+          <ListItem
+            to='/soapbox/admin/zap-split'
+            label={<FormattedMessage id='column.admin.zap_split' defaultMessage='Manage Zap Split' />}
+          />
+        )}
 
         {features.adminAnnouncements && (
           <ListItem
@@ -159,7 +161,7 @@ const Dashboard: React.FC = () => {
         </ListItem>
 
         <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
-          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span>
+          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </ListItem>
       </List>
 

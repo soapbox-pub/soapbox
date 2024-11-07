@@ -75,6 +75,7 @@ const AddNewAccount: React.FC<AddNewAccountProps> = ({
 
         <HStack space={2} className='w-full md:justify-end'>
           <div className='flex w-[96%] flex-col md:w-40'>
+            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             {formattedWeight(newWeight)}%
             <Slider value={newWeight} onChange={(e) => handleChange(e)} />
           </div>
