@@ -14,6 +14,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
+import AudioPlaceHolder from 'soapbox/assets/images/audio-placeholder.png';
+import VideoPlaceHolder from 'soapbox/assets/images/video-placeholder.png';
 import Blurhash from 'soapbox/components/blurhash';
 import { HStack, Icon, IconButton } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional-motion';
@@ -159,9 +161,9 @@ const Upload: React.FC<IUpload> = ({
       case 'image':
         return `url(${media.preview_url})`;
       case 'video':
-        return 'url(\'../assets/images/video-placeholder.png\')';
+        return `url(${VideoPlaceHolder})`;
       default:
-        return 'url(../assets/images/audio-placeholder.png)';
+        return `url(${AudioPlaceHolder})`;
     }
   };
 
