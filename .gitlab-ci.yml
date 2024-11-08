@@ -14,7 +14,7 @@ build:
     - apt-get update -y && apt-get install -y git zip
   script:
     - deno task lint
-    - deno task i18n && git diff --quiet || (echo "Locale files are out of date. Please run `deno task i18n`" && exit 1)
+    - deno task i18n && git diff --quiet || (echo "Locale files are out of date. Please run \"deno task i18n\"" && exit 1)
     - NODE_ENV=production deno task build
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
