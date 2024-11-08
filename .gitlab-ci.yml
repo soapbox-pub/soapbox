@@ -11,7 +11,7 @@ build:
   stage: build
   before_script:
     - deno install
-    - apt-get update -y && apt-get install -y zip
+    - apt-get update -y && apt-get install -y git zip
   script:
     - deno task lint
     - deno task i18n && git diff --quiet || (echo "Locale files are out of date. Please run `deno task i18n`" && exit 1)
