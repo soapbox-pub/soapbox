@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import StillImage from 'soapbox/components/still-image';
@@ -13,7 +13,6 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 
 import SvgIcon from './ui/icon/svg-icon';
 
-import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
 
 // const Gameboy = React.lazy(() => import('./gameboy'));
@@ -22,18 +21,18 @@ const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 interface Dimensions {
-  w: Property.Width | number;
-  h: Property.Height | number;
-  t?: Property.Top;
-  r?: Property.Right;
-  b?: Property.Bottom;
-  l?: Property.Left;
-  float?: Property.Float;
-  pos?: Property.Position;
+  w: CSSProperties['width'];
+  h: CSSProperties['height'];
+  t?: CSSProperties['top'];
+  r?: CSSProperties['right'];
+  b?: CSSProperties['bottom'];
+  l?: CSSProperties['left'];
+  float?: CSSProperties['float'];
+  pos?: CSSProperties['position'];
 }
 
 interface SizeData {
-  style: React.CSSProperties;
+  style: CSSProperties;
   itemsDimensions: Dimensions[];
   size: number;
   width: number;
