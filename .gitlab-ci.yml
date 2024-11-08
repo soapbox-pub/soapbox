@@ -1,4 +1,4 @@
-image: node:22
+image: denoland/deno:2.0.5
 
 default:
   interruptible: true
@@ -10,12 +10,12 @@ stages:
 build:
   stage: build
   before_script:
-    - yarn install --ignore-scripts
+    - deno install
     - apt-get update -y && apt-get install -y zip
   script:
-    - yarn lint
-    - yarn i18n && git diff --quiet || (echo "Locale files are out of date. Please run `yarn i18n`" && exit 1)
-    - NODE_ENV=production yarn build
+    - deno task lint
+    - deno task i18n && git diff --quiet || (echo "Locale files are out of date. Please run `deno task i18n`" && exit 1)
+    - NODE_ENV=production deno task build
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
   artifacts:
