@@ -1,4 +1,3 @@
-
 import PullToRefresh from './pull-to-refresh';
 
 interface IPullable {

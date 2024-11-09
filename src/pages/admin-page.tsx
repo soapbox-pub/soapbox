@@ -1,4 +1,3 @@
-
 import { Layout } from 'soapbox/components/ui';
 import {
   LatestAccountsPanel,

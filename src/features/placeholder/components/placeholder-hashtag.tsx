@@ -1,4 +1,3 @@
-
 import { generateText, randomIntFromInterval } from '../utils';
 
 /** Fake hashtag to display while data is loading. */

@@ -1,4 +1,3 @@
-
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
 import { accountIdsToAccts } from 'soapbox/selectors';

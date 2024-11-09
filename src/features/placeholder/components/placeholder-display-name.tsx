@@ -1,4 +1,3 @@
-
 import { memo } from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';

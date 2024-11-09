@@ -1,4 +1,3 @@
-
 import { Stack } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
 

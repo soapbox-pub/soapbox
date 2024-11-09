@@ -1,4 +1,3 @@
-
 import { ProgressBar } from 'soapbox/components/ui';
 
 interface IChatPendingUpload {

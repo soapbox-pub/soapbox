@@ -1,4 +1,3 @@
-
 import MissingIndicator from '../../components/missing-indicator';
 
 const GenericNotFound = () => (

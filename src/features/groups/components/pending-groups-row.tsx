@@ -1,4 +1,3 @@
-
 import { usePendingGroups } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';
 import { Divider } from 'soapbox/components/ui';

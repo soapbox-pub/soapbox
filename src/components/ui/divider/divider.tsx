@@ -1,4 +1,3 @@
-
 import Text from '../text/text';
 
 import type { Sizes as TextSizes } from '../text/text';

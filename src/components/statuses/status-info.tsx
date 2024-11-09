@@ -1,4 +1,3 @@
-
 import { HStack, Text } from '../ui';
 
 interface IStatusInfo {
