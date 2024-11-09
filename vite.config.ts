@@ -14,6 +14,7 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const { NODE_ENV } = process.env;
 
+// @ts-ignore
 export default defineConfig(({ command }) => ({
   build: {
     assetsDir: 'packs',
