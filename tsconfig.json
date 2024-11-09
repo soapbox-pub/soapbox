@@ -11,6 +11,8 @@
     "allowJs": true,
     "isolatedModules": true,
     "noUnusedLocals": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
