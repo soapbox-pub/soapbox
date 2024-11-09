@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user-lists';

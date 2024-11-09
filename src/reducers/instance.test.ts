@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin';
 
 import reducer from './instance';

@@ -1,5 +1,5 @@
 /* eslint-disable quotes */
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 import fs from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 

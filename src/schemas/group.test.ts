@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import { groupSchema } from './group';
 
 test('groupSchema with a TruthSocial group', async () => {

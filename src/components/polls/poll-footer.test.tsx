@@ -1,7 +1,9 @@
+
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { __stub } from 'soapbox/api';
 import { mockStore, render, screen, rootState } from 'soapbox/jest/test-helpers';

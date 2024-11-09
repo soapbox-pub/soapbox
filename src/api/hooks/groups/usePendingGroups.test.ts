@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, it } from 'vitest';
+
 import { __stub } from 'soapbox/api';
 import { Entities } from 'soapbox/entity-store/entities';
 import { buildAccount, buildGroup } from 'soapbox/jest/factory';

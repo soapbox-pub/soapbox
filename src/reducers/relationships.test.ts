@@ -1,4 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
+import { describe, expect, it } from 'vitest';
+
 
 import lain from 'soapbox/__fixtures__/lain.json';
 import { ACCOUNT_IMPORT } from 'soapbox/actions/importer';

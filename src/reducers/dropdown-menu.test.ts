@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import reducer from './dropdown-menu';
 
 describe('dropdown_menu reducer', () => {

@@ -1,4 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks';
+import { beforeEach, describe, expect, it } from 'vitest';
+
 
 import { listener, mockDisconnect } from './__mocks__/resize-observer';
 import { useDimensions } from './useDimensions';

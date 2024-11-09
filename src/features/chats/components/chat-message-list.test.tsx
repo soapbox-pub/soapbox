@@ -1,6 +1,8 @@
+
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { VirtuosoMockContext } from 'react-virtuoso';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { __stub } from 'soapbox/api';
 import { ChatContext } from 'soapbox/contexts/chat-context';

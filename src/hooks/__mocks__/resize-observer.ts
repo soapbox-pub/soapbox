@@ -1,3 +1,5 @@
+import { vi } from 'vitest';
+
 let listener: ((rect: any) => void) | undefined = undefined;
 const mockDisconnect = vi.fn();
 

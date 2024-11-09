@@ -1,3 +1,5 @@
+import { expect, test } from 'vitest';
+
 import { compareId } from './comparators';
 
 test('compareId', () => {
