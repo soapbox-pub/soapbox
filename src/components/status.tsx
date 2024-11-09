@@ -1,3 +1,6 @@
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import pinnedIcon from '@tabler/icons/outline/pinned.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
@@ -212,7 +215,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/repeat.svg')} className='size-4 text-green-600' />}
+          icon={<Icon src={repeatIcon} className='size-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by_with_group'
@@ -252,7 +255,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/repeat.svg')} className='size-4 text-green-600' />}
+          icon={<Icon src={repeatIcon} className='size-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by'
@@ -279,7 +282,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/pinned.svg')} className='size-4 text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={pinnedIcon} className='size-4 text-gray-600 dark:text-gray-400' />}
           text={
             <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
           }
@@ -289,7 +292,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/circles.svg')} className='size-4 text-primary-600 dark:text-accent-blue' />}
+          icon={<Icon src={circlesIcon} className='size-4 text-primary-600 dark:text-accent-blue' />}
           text={
             <FormattedMessage
               id='status.group'

@@ -1,3 +1,5 @@
+import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { QRCodeCanvas } from 'qrcode.react';
 import React  from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -12,7 +14,7 @@ import { ZapSplitData } from 'soapbox/schemas/zap-split';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
@@ -64,7 +66,7 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
         </div>
         <HStack space={2}>
           <a href={'lightning:' + invoice}>
-            <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
+            <Button type='submit' theme='primary' icon={folderOpenIcon} text={intl.formatMessage(messages.zap_open_wallet)} />
           </a>
           {hasZapSplit && <Button type='button' theme='muted' onClick={handleNext} text={intl.formatMessage(messages.zap_next)} />}
         </HStack>

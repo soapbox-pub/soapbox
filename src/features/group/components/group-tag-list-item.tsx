@@ -1,3 +1,7 @@
+import pinFilledIcon from '@tabler/icons/filled/pin.svg';
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import eyeIcon from '@tabler/icons/outline/eye.svg';
+import pinIcon from '@tabler/icons/outline/pin.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -87,7 +91,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
     if (!isOwner && tag.pinned) {
       return (
         <Icon
-          src={require('@tabler/icons/filled/pin.svg')}
+          src={pinFilledIcon}
           className='size-5 text-gray-600'
           data-testid='pin-icon'
         />
@@ -112,8 +116,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
             theme='transparent'
             src={
               tag.pinned ?
-                require('@tabler/icons/filled/pin.svg') :
-                require('@tabler/icons/outline/pin.svg')
+                pinFilledIcon :
+                pinIcon
             }
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             data-testid='pin-icon'
@@ -128,7 +132,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
           <IconButton
             onClick={togglePin}
             theme='transparent'
-            src={require('@tabler/icons/filled/pin.svg')}
+            src={pinFilledIcon}
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
           />
         </Tooltip>
@@ -185,8 +189,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
               theme='transparent'
               src={
                 tag.visible ?
-                  require('@tabler/icons/outline/eye.svg') :
-                  require('@tabler/icons/outline/eye-off.svg')
+                  eyeIcon :
+                  eyeOffIcon
               }
               iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             />

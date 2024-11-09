@@ -1,3 +1,4 @@
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
@@ -27,7 +28,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   const handleRevoke = () => {
     if (isCurrent)
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/alert-triangle.svg'),
+        icon: alertTriangleIcon,
         heading: intl.formatMessage(messages.revokeSessionHeading),
         message: intl.formatMessage(messages.revokeSessionMessage),
         confirm: intl.formatMessage(messages.revokeSessionConfirm),

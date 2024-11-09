@@ -1,3 +1,7 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
+import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import React, { useState, useEffect } from 'react';
@@ -135,7 +139,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       )}
       <HStack space={1} alignItems='center'>
         <Text tag='span' theme='muted'>
-          <Icon src={require('@tabler/icons/outline/link.svg')} />
+          <Icon src={linkIcon} />
         </Text>
         <Text tag='span' theme='muted' size='sm' direction={direction}>
           {card.provider_name}
@@ -168,10 +172,10 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     if (embedded) {
       embed = renderVideo();
     } else {
-      let iconVariant = require('@tabler/icons/outline/player-play.svg');
+      let iconVariant = playerPlayIcon;
 
       if (card.type === 'photo') {
-        iconVariant = require('@tabler/icons/outline/zoom-in.svg');
+        iconVariant = zoomInIcon;
       }
 
       embed = (
@@ -198,7 +202,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                     className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
                     <Icon
-                      src={require('@tabler/icons/outline/external-link.svg')}
+                      src={externalLinkIcon}
                       className='size-6 text-inherit'
                     />
                   </a>

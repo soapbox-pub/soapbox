@@ -1,3 +1,5 @@
+import bookmarksIcon from '@tabler/icons/outline/bookmarks.svg';
+import folderIcon from '@tabler/icons/outline/folder.svg';
 import React, { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -42,7 +44,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
     <RadioItem
       label={
         <HStack alignItems='center' space={2}>
-          <Icon src={require('@tabler/icons/outline/bookmarks.svg')} size={20} />
+          <Icon src={bookmarksIcon} size={20} />
           <span><FormattedMessage id='bookmark_folders.all_bookmarks' defaultMessage='All bookmarks' /></span>
         </HStack>
       }
@@ -63,7 +65,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
                 src={folder.emoji_url || undefined}
                 className='size-5 flex-none'
               />
-            ) : <Icon src={require('@tabler/icons/outline/folder.svg')} size={20} />}
+            ) : <Icon src={folderIcon} size={20} />}
             <span>{folder.name}</span>
           </HStack>
         }

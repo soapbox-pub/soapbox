@@ -1,3 +1,4 @@
+import helpIcon from '@tabler/icons/outline/help.svg';
 import clsx from 'clsx';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -163,7 +164,7 @@ const Navbar = () => {
                       <Link to='/reset-password'>
                         <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                           <IconButton
-                            src={require('@tabler/icons/outline/help.svg')}
+                            src={helpIcon}
                             className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
                             iconClassName='h-5 w-5'
                           />

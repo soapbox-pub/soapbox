@@ -1,3 +1,4 @@
+import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -39,7 +40,7 @@ const ScheduleButton: React.FC<IScheduleButton> = ({ composeId, disabled }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/outline/calendar-stats.svg')}
+      icon={calendarStatsIcon}
       title={intl.formatMessage(active ? messages.remove_schedule : messages.add_schedule)}
       active={active}
       disabled={disabled}

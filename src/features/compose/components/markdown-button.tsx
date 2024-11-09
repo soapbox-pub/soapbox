@@ -1,3 +1,4 @@
+import markdownIcon from '@tabler/icons/outline/markdown.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -25,7 +26,7 @@ const MarkdownButton: React.FC<IMarkdownButton> = ({ composeId }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/outline/markdown.svg')}
+      icon={markdownIcon}
       title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
       active={active}
       onClick={onClick}

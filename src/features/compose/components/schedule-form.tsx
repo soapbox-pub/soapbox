@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -52,7 +53,7 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
         <IconButton
           iconClassName='h-4 w-4'
           className='bg-transparent text-gray-400 hover:text-gray-600'
-          src={require('@tabler/icons/outline/x.svg')}
+          src={xIcon}
           onClick={handleRemove}
           title={intl.formatMessage(messages.remove)}
         />

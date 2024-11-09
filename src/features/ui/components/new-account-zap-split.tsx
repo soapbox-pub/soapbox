@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -7,7 +8,7 @@ import { Button, HStack, Input, Slider } from 'soapbox/components/ui';
 import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split';
 import { type Account as AccountEntity } from 'soapbox/schemas';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface INewAccount {
   acc: string;

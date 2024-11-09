@@ -1,3 +1,5 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import qrcodeIcon from '@tabler/icons/outline/qrcode.svg';
 import React from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -42,12 +44,12 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
 
         <HStack alignItems='center' className='ml-auto'>
           <a className='ml-1 text-gray-500 rtl:ml-0 rtl:mr-1' href='#' onClick={handleModalClick}>
-            <Icon src={require('@tabler/icons/outline/qrcode.svg')} size={20} />
+            <Icon src={qrcodeIcon} size={20} />
           </a>
 
           {explorerUrl && (
             <a className='ml-1 text-gray-500 rtl:ml-0 rtl:mr-1' href={explorerUrl} target='_blank'>
-              <Icon src={require('@tabler/icons/outline/external-link.svg')} size={20} />
+              <Icon src={externalLinkIcon} size={20} />
             </a>
           )}
         </HStack>

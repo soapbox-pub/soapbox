@@ -1,3 +1,10 @@
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
+import shieldCheckIcon from '@tabler/icons/outline/shield-check.svg';
+import shieldLockIcon from '@tabler/icons/outline/shield-lock.svg';
+import shieldXIcon from '@tabler/icons/outline/shield-x.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -53,7 +60,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (followers_only) {
       items.push((
-        <Restriction key='followersOnly' icon={require('@tabler/icons/outline/lock.svg')}>
+        <Restriction key='followersOnly' icon={lockIcon}>
           <FormattedMessage
             id='federation_restriction.followers_only'
             defaultMessage='Hidden except to followers'
@@ -62,7 +69,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
       ));
     } else if (federated_timeline_removal) {
       items.push((
-        <Restriction key='federatedTimelineRemoval' icon={require('@tabler/icons/outline/lock-open.svg')}>
+        <Restriction key='federatedTimelineRemoval' icon={lockOpenIcon}>
           <FormattedMessage
             id='federation_restriction.federated_timeline_removal'
             defaultMessage='Fediverse timeline removal'
@@ -73,7 +80,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (fullMediaRemoval) {
       items.push((
-        <Restriction key='fullMediaRemoval' icon={require('@tabler/icons/outline/photo-off.svg')}>
+        <Restriction key='fullMediaRemoval' icon={photoOffIcon}>
           <FormattedMessage
             id='federation_restriction.full_media_removal'
             defaultMessage='Full media removal'
@@ -82,7 +89,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
       ));
     } else if (partialMediaRemoval) {
       items.push((
-        <Restriction key='partialMediaRemoval' icon={require('@tabler/icons/outline/photo-off.svg')}>
+        <Restriction key='partialMediaRemoval' icon={photoOffIcon}>
           <FormattedMessage
             id='federation_restriction.partial_media_removal'
             defaultMessage='Partial media removal'
@@ -93,7 +100,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (!fullMediaRemoval && media_nsfw) {
       items.push((
-        <Restriction key='mediaNsfw' icon={require('@tabler/icons/outline/eye-off.svg')}>
+        <Restriction key='mediaNsfw' icon={eyeOffIcon}>
           <FormattedMessage
             id='federation_restriction.media_nsfw'
             defaultMessage='Attachments marked NSFW'
@@ -113,7 +120,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
 
     if (remoteInstance.federation.reject === true) {
       return (
-        <Restriction icon={require('@tabler/icons/outline/shield-x.svg')}>
+        <Restriction icon={shieldXIcon}>
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'
@@ -124,7 +131,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
     } else if (hasRestrictions(remoteInstance)) {
       return (
         <>
-          <Restriction icon={require('@tabler/icons/outline/shield-lock.svg')}>
+          <Restriction icon={shieldLockIcon}>
             <FormattedMessage
               id='remote_instance.federation_panel.some_restrictions_message'
               defaultMessage='{siteTitle} has placed some restrictions on {host}.'
@@ -137,7 +144,7 @@ const InstanceRestrictions: React.FC<IInstanceRestrictions> = ({ remoteInstance 
       );
     } else {
       return (
-        <Restriction icon={require('@tabler/icons/outline/shield-check.svg')}>
+        <Restriction icon={shieldCheckIcon}>
           <FormattedMessage
             id='remote_instance.federation_panel.no_restrictions_message'
             defaultMessage='{siteTitle} has placed no restrictions on {host}.'

@@ -1,3 +1,4 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
@@ -62,7 +63,7 @@ export default (props: Props) => {
                   <HStack alignItems='center' space={2}>
                     <div className='flex size-10 items-center justify-center rounded-full bg-gray-200 p-2 dark:bg-gray-800 dark:group-hover:bg-gray-700/20'>
                       <Icon
-                        src={require('@tabler/icons/outline/search.svg')}
+                        src={searchIcon}
                         className='size-5 text-gray-600'
                       />
                     </div>

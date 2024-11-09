@@ -1,3 +1,4 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -72,7 +73,7 @@ const CardHeader: React.FC<ICardHeader> = ({ className, children, backHref, onBa
 
     return (
       <Comp {...backAttributes} className='rounded-full text-gray-900 focus:ring-2 focus:ring-primary-500 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
-        <SvgIcon src={require('@tabler/icons/outline/arrow-left.svg')} className='size-6 rtl:rotate-180' />
+        <SvgIcon src={arrowLeftIcon} className='size-6 rtl:rotate-180' />
         <span className='sr-only' data-testid='back-button'>{intl.formatMessage(messages.back)}</span>
       </Comp>
     );

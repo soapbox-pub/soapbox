@@ -1,3 +1,5 @@
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
+import exclamationCircleIcon from '@tabler/icons/outline/exclamation-circle.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -25,7 +27,7 @@ const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' })
           })}
           >
             <Icon
-              src={require('@tabler/icons/outline/exclamation-circle.svg')}
+              src={exclamationCircleIcon}
               className={clsx({
                 'h-5 w-5': size === 'md',
                 'h-7 w-7': size === 'lg',
@@ -43,7 +45,7 @@ const PendingItemsRow: React.FC<IPendingItemsRow> = ({ to, count, size = 'md' })
         </HStack>
 
         <Icon
-          src={require('@tabler/icons/outline/chevron-right.svg')}
+          src={chevronRightIcon}
           className='size-5 text-gray-600 transition-colors group-hover:text-gray-700 dark:text-gray-600 dark:group-hover:text-gray-500'
         />
       </HStack>

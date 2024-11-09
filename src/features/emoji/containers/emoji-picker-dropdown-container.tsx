@@ -1,4 +1,5 @@
 import { useFloating, shift } from '@floating-ui/react';
+import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
 import clsx from 'clsx';
 import React, { KeyboardEvent, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -40,7 +41,7 @@ const EmojiPickerDropdownContainer = (
           'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
         })}
         ref={refs.setReference}
-        src={require('@tabler/icons/outline/mood-happy.svg')}
+        src={moodHappyIcon}
         title={title}
         aria-label={title}
         aria-expanded={visible}

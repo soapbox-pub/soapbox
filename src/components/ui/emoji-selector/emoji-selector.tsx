@@ -1,4 +1,5 @@
 import { shift, useFloating, Placement, offset, OffsetOptions } from '@floating-ui/react';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 
@@ -134,7 +135,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
           {all && (
             <IconButton
               className='text-gray-600 hover:text-gray-600 dark:hover:text-white'
-              src={require('@tabler/icons/outline/dots.svg')}
+              src={dotsIcon}
               onClick={handleExpand}
             />
           )}

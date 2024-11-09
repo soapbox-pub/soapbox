@@ -1,3 +1,26 @@
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
+import atIcon from '@tabler/icons/outline/at.svg';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import bookmarkOffIcon from '@tabler/icons/outline/bookmark-off.svg';
+import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import calendarPlusIcon from '@tabler/icons/outline/calendar-plus.svg';
+import circleXIcon from '@tabler/icons/outline/circle-x.svg';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import flag3Icon from '@tabler/icons/outline/flag-3.svg';
+import flagIcon from '@tabler/icons/outline/flag.svg';
+import gavelIcon from '@tabler/icons/outline/gavel.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import pinIcon from '@tabler/icons/outline/pin.svg';
+import pinnedOffIcon from '@tabler/icons/outline/pinned-off.svg';
+import quoteIcon from '@tabler/icons/outline/quote.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import usersIcon from '@tabler/icons/outline/users.svg';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -136,7 +159,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleDeleteClick = () => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
@@ -162,7 +185,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleBlockClick = () => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/ban.svg'),
+      icon: banIcon,
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
@@ -202,19 +225,19 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       {
         text: intl.formatMessage(messages.exportIcs),
         action: handleExportClick,
-        icon: require('@tabler/icons/outline/calendar-plus.svg'),
+        icon: calendarPlusIcon,
       },
       {
         text: intl.formatMessage(messages.copy),
         action: handleCopy,
-        icon: require('@tabler/icons/outline/link.svg'),
+        icon: linkIcon,
       },
     ];
 
     if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
-        icon: require('@tabler/icons/outline/external-link.svg'),
+        icon: externalLinkIcon,
         href: status.uri,
         target: '_blank',
       });
@@ -226,7 +249,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: handleBookmarkClick,
-        icon: status.bookmarked ? require('@tabler/icons/outline/bookmark-off.svg') : require('@tabler/icons/outline/bookmark.svg'),
+        icon: status.bookmarked ? bookmarkOffIcon : bookmarkIcon,
       });
     }
 
@@ -234,14 +257,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(status.reblogged ? messages.unreblog : messages.reblog),
         action: handleReblogClick,
-        icon: require('@tabler/icons/outline/repeat.svg'),
+        icon: repeatIcon,
       });
 
       if (features.quotePosts) {
         menu.push({
           text: intl.formatMessage(messages.quotePost),
           action: handleQuoteClick,
-          icon: require('@tabler/icons/outline/quote.svg'),
+          icon: quoteIcon,
         });
       }
     }
@@ -253,34 +276,34 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
         menu.push({
           text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: handlePinClick,
-          icon: status.pinned ? require('@tabler/icons/outline/pinned-off.svg') : require('@tabler/icons/outline/pin.svg'),
+          icon: status.pinned ? pinnedOffIcon : pinIcon,
         });
       }
 
       menu.push({
         text: intl.formatMessage(messages.delete),
         action: handleDeleteClick,
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         destructive: true,
       });
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: username }),
         action: handleMentionClick,
-        icon: require('@tabler/icons/outline/at.svg'),
+        icon: atIcon,
       });
 
       if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
-          icon: require('@tabler/icons/outline/messages.svg'),
+          icon: messagesIcon,
         });
       } else if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: username }),
           action: handleDirectClick,
-          icon: require('@tabler/icons/outline/mail.svg'),
+          icon: mailIcon,
         });
       }
 
@@ -288,17 +311,17 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: handleMuteClick,
-        icon: require('@tabler/icons/outline/circle-x.svg'),
+        icon: circleXIcon,
       });
       menu.push({
         text: intl.formatMessage(messages.block, { name: username }),
         action: handleBlockClick,
-        icon: require('@tabler/icons/outline/ban.svg'),
+        icon: banIcon,
       });
       menu.push({
         text: intl.formatMessage(messages.report, { name: username }),
         action: handleReport,
-        icon: require('@tabler/icons/outline/flag.svg'),
+        icon: flagIcon,
       });
     }
 
@@ -308,28 +331,28 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(messages.adminAccount, { name: account.username }),
         action: handleModerate,
-        icon: require('@tabler/icons/outline/gavel.svg'),
+        icon: gavelIcon,
       });
 
       if (isAdmin) {
         menu.push({
           text: intl.formatMessage(messages.adminStatus),
           action: handleModerateStatus,
-          icon: require('@tabler/icons/outline/pencil.svg'),
+          icon: pencilIcon,
         });
       }
 
       menu.push({
         text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
         action: handleToggleStatusSensitivity,
-        icon: require('@tabler/icons/outline/alert-triangle.svg'),
+        icon: alertTriangleIcon,
       });
 
       if (account.id !== ownAccount?.id) {
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: handleDeleteStatus,
-          icon: require('@tabler/icons/outline/trash.svg'),
+          icon: trashIcon,
           destructive: true,
         });
       }
@@ -378,7 +401,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           <Menu>
             <MenuButton
               as={IconButton}
-              src={require('@tabler/icons/outline/dots.svg')}
+              src={dotsIcon}
               theme='outlined'
               className='h-[30px] px-2'
               iconClassName='h-4 w-4'
@@ -421,7 +444,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
         <Stack space={1}>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/flag-3.svg')} />
+            <Icon src={flag3Icon} />
             <span>
               <FormattedMessage
                 id='event.organized_by'
@@ -441,7 +464,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           </HStack>
 
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/users.svg')} />
+            <Icon src={usersIcon} />
             <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
               <span>
                 <FormattedMessage
@@ -460,7 +483,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
+              <Icon src={mapPinIcon} />
               <span>
                 {event.location.get('name')}
               </span>

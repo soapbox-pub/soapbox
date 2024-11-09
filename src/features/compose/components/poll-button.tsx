@@ -1,3 +1,4 @@
+import chartBarIcon from '@tabler/icons/outline/chart-bar.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -39,7 +40,7 @@ const PollButton: React.FC<IPollButton> = ({ composeId, disabled }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/outline/chart-bar.svg')}
+      icon={chartBarIcon}
       title={intl.formatMessage(active ? messages.remove_poll : messages.add_poll)}
       active={active}
       disabled={disabled}

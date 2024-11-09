@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -85,7 +86,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
   if (onCancel) {
     actions = {
       onActionClick: handleClose,
-      actionIcon: require('@tabler/icons/outline/x.svg'),
+      actionIcon: xIcon,
       actionAlignment: 'top',
       actionTitle: intl.formatMessage(messages.cancel),
     };

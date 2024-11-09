@@ -1,3 +1,5 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -28,9 +30,9 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   let button;
 
   if (isAdded) {
-    button = <IconButton src={require('@tabler/icons/outline/x.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={xIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/outline/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={plusIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (

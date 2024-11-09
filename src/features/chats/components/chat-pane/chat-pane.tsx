@@ -1,3 +1,4 @@
+import editIcon from '@tabler/icons/outline/edit.svg';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -111,7 +112,7 @@ const ChatPane = () => {
             toggleChatPane();
           }
         }}
-        secondaryActionIcon={require('@tabler/icons/outline/edit.svg')}
+        secondaryActionIcon={editIcon}
       />
 
       {isOpen ? renderBody() : null}

@@ -1,3 +1,4 @@
+import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -33,7 +34,7 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
         dispatch(cancelScheduledStatus(status.id));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/outline/calendar-stats.svg'),
+          icon: calendarStatsIcon,
           heading: intl.formatMessage(messages.deleteHeading),
           message: intl.formatMessage(messages.deleteMessage),
           confirm: intl.formatMessage(messages.deleteConfirm),

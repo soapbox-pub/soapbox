@@ -1,3 +1,5 @@
+import banIcon from '@tabler/icons/outline/ban.svg';
+import checkIcon from '@tabler/icons/outline/check.svg';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -70,14 +72,14 @@ const EventActionButton: React.FC<IEventAction> = ({ status, theme = 'secondary'
   switch (event.join_state) {
     case 'accept':
       buttonLabel = <FormattedMessage id='event.join_state.accept' defaultMessage='Going' />;
-      buttonIcon = require('@tabler/icons/outline/check.svg');
+      buttonIcon = checkIcon;
       break;
     case 'pending':
       buttonLabel = <FormattedMessage id='event.join_state.pending' defaultMessage='Pending' />;
       break;
     case 'reject':
       buttonLabel = <FormattedMessage id='event.join_state.rejected' defaultMessage='Going' />;
-      buttonIcon = require('@tabler/icons/outline/ban.svg');
+      buttonIcon = banIcon;
       buttonDisabled = true;
       break;
     default:

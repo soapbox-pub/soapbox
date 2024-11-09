@@ -1,3 +1,4 @@
+import atIcon from '@tabler/icons/outline/at.svg';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -169,7 +170,7 @@ const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
       placeholder={intl.formatMessage(messages.username)}
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
-          <Icon className='size-4' src={require('@tabler/icons/outline/at.svg')} />
+          <Icon className='size-4' src={atIcon} />
           <span>{instance.domain}</span>
         </HStack>
       )}

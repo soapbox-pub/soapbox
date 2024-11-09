@@ -1,4 +1,6 @@
 import { useFloating } from '@floating-ui/react';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import clsx from 'clsx';
 import throttle from 'lodash/throttle';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -86,14 +88,14 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
     menu.push({
       text: intl.formatMessage(messages.add),
       to: '/login/add',
-      icon: require('@tabler/icons/outline/plus.svg'),
+      icon: plusIcon,
     });
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.acct }),
       to: '/logout',
       action: handleLogOut,
-      icon: require('@tabler/icons/outline/logout.svg'),
+      icon: logoutIcon,
     });
 
     return menu;

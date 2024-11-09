@@ -1,3 +1,4 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import React from 'react';
 import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -103,7 +104,7 @@ const Announcements: React.FC = () => {
       <Stack className='gap-4'>
         <Button
           className='sm:w-fit sm:self-end'
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           onClick={handleCreateAnnouncement}
           theme='secondary'
           block

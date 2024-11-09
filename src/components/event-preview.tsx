@@ -1,3 +1,5 @@
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
+import userIcon from '@tabler/icons/outline/user.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -67,7 +69,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
         <div className='flex flex-wrap gap-x-2 gap-y-1 text-gray-700 dark:text-gray-600'>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/user.svg')} />
+            <Icon src={userIcon} />
             <HStack space={1} alignItems='center' grow>
               <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
               {account.verified && <VerificationBadge />}
@@ -78,7 +80,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
+              <Icon src={mapPinIcon} />
               <span>
                 {event.location.get('name')}
               </span>

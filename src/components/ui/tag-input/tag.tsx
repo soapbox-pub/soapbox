@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 
 import IconButton from '../icon-button/icon-button';
@@ -18,7 +19,7 @@ const Tag: React.FC<ITag> = ({ tag, onDelete }) => {
 
       <IconButton
         iconClassName='h-4 w-4'
-        src={require('@tabler/icons/outline/x.svg')}
+        src={xIcon}
         onClick={() => onDelete(tag)}
       />
     </div>

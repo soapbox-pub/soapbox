@@ -1,3 +1,4 @@
+import cameraPlusIcon from '@tabler/icons/outline/camera-plus.svg';
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -43,7 +44,7 @@ const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ classNam
         })}
       >
         <Icon
-          src={require('@tabler/icons/outline/camera-plus.svg')}
+          src={cameraPlusIcon}
           className='size-5 text-white'
         />
       </HStack>

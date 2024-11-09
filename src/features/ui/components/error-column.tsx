@@ -1,3 +1,4 @@
+import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -32,7 +33,7 @@ const ErrorColumn: React.FC<IErrorColumn> = ({ error, onRetry = () => location.r
         <IconButton
           iconClassName='h-10 w-10'
           title={intl.formatMessage(messages.retry)}
-          src={require('@tabler/icons/outline/refresh.svg')}
+          src={refreshIcon}
           onClick={handleRetry}
         />
 

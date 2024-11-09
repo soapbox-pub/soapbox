@@ -1,3 +1,9 @@
+import arrowsMaximizeIcon from '@tabler/icons/outline/arrows-maximize.svg';
+import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
+import playerPauseIcon from '@tabler/icons/outline/player-pause.svg';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
+import volume3Icon from '@tabler/icons/outline/volume-3.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
@@ -598,7 +604,7 @@ const Video: React.FC<IVideo> = ({
               onClick={togglePlay}
               autoFocus={autoFocus}
             >
-              <SvgIcon className='w-[20px]' src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
+              <SvgIcon className='w-[20px]' src={paused ? playerPlayIcon : playerPauseIcon} />
             </button>
 
             <button
@@ -611,7 +617,7 @@ const Video: React.FC<IVideo> = ({
                 , { 'py-[10px]': fullscreen })}
               onClick={toggleMute}
             >
-              <SvgIcon className='w-[20px]' src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
+              <SvgIcon className='w-[20px]' src={muted ? volume3Icon : volumeIcon} />
             </button>
 
             <div
@@ -665,7 +671,7 @@ const Video: React.FC<IVideo> = ({
                 , { 'py-[10px]': fullscreen })}
               onClick={toggleFullscreen}
             >
-              <SvgIcon className='w-[20px]' src={fullscreen ? require('@tabler/icons/outline/arrows-minimize.svg') : require('@tabler/icons/outline/arrows-maximize.svg')} />
+              <SvgIcon className='w-[20px]' src={fullscreen ? arrowsMinimizeIcon : arrowsMaximizeIcon} />
             </button>
           </div>
         </div>

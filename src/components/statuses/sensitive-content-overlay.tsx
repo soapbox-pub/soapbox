@@ -1,3 +1,8 @@
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import eyeIcon from '@tabler/icons/outline/eye.svg';
+import headsetIcon from '@tabler/icons/outline/headset.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -61,7 +66,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
       dispatch(deleteStatus(status.id, false));
     } else {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         heading: intl.formatMessage(messages.deleteHeading),
         message: intl.formatMessage(messages.deleteMessage),
         confirm: intl.formatMessage(messages.deleteConfirm),
@@ -75,7 +80,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
       {
         text: intl.formatMessage(messages.delete),
         action: handleDeleteStatus,
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         destructive: true,
       },
     ];
@@ -99,7 +104,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
       {visible ? (
         <Button
           text={intl.formatMessage(messages.hide)}
-          icon={require('@tabler/icons/outline/eye-off.svg')}
+          icon={eyeOffIcon}
           onClick={toggleVisibility}
           theme='primary'
           size='sm'
@@ -140,7 +145,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
                         type='button'
                         theme='outline'
                         size='sm'
-                        icon={require('@tabler/icons/outline/headset.svg')}
+                        icon={headsetIcon}
                       >
                         {intl.formatMessage(messages.contact)}
                       </Button>
@@ -153,7 +158,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
                 type='button'
                 theme='outline'
                 size='sm'
-                icon={require('@tabler/icons/outline/eye.svg')}
+                icon={eyeIcon}
                 onClick={toggleVisibility}
               >
                 {intl.formatMessage(messages.show)}
@@ -162,7 +167,7 @@ const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveConte
               {(isUnderReview && isOwnStatus) ? (
                 <DropdownMenu
                   items={menu}
-                  src={require('@tabler/icons/outline/dots.svg')}
+                  src={dotsIcon}
                 />
               ) : null}
             </HStack>

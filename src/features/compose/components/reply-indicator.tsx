@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -29,7 +30,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
   if (!hideActions && onCancel) {
     actions = {
       onActionClick: handleClick,
-      actionIcon: require('@tabler/icons/outline/x.svg'),
+      actionIcon: xIcon,
       actionAlignment: 'top',
       actionTitle: 'Dismiss',
     };

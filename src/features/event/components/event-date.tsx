@@ -1,3 +1,4 @@
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import React from 'react';
 import { FormattedDate } from 'react-intl';
 
@@ -50,7 +51,7 @@ const EventDate: React.FC<IEventDate> = ({ status }) => {
 
   return (
     <HStack alignItems='center' space={2}>
-      <Icon src={require('@tabler/icons/outline/calendar.svg')} />
+      <Icon src={calendarIcon} />
       <span>{date}</span>
     </HStack>
   );

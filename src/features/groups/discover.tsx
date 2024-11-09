@@ -1,3 +1,6 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -36,7 +39,7 @@ const Discover: React.FC = () => {
         <HStack alignItems='center'>
           {isSearching ? (
             <IconButton
-              src={require('@tabler/icons/outline/arrow-left.svg')}
+              src={arrowLeftIcon}
               iconClassName='mr-2 h-5 w-5 fill-current text-gray-600 rtl:rotate-180'
               onClick={cancelSearch}
               data-testid='group-search-icon'
@@ -55,7 +58,7 @@ const Discover: React.FC = () => {
             append={
               <button onClick={clearValue}>
                 <Icon
-                  src={hasSearchValue ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
+                  src={hasSearchValue ? xIcon : searchIcon}
                   className='size-4 text-gray-700 dark:text-gray-600'
                   aria-hidden='true'
                 />

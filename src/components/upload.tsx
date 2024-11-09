@@ -1,3 +1,4 @@
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import bookIcon from '@tabler/icons/outline/book.svg';
 import fileCodeIcon from '@tabler/icons/outline/file-code.svg';
 import fileSpreadsheetIcon from '@tabler/icons/outline/file-spreadsheet.svg';
@@ -240,7 +241,7 @@ const Upload: React.FC<IUpload> = ({
                   'opacity-100': !active,
                 })}
               >
-                <Icon className='size-4' src={require('@tabler/icons/outline/alert-triangle.svg')} />
+                <Icon className='size-4' src={alertTriangleIcon} />
                 <FormattedMessage id='upload_form.description_missing.indicator' defaultMessage='Alt' />
               </span>
             )}

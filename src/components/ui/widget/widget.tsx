@@ -1,3 +1,4 @@
+import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg';
 import React from 'react';
 
 import HStack from 'soapbox/components/ui/hstack/hstack';
@@ -42,7 +43,7 @@ const Widget: React.FC<IWidget> = ({
   title,
   children,
   onActionClick,
-  actionIcon = require('@tabler/icons/outline/arrow-right.svg'),
+  actionIcon = arrowRightIcon,
   actionTitle,
   action,
 }): JSX.Element => {

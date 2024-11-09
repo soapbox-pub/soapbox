@@ -1,3 +1,4 @@
+import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
@@ -35,7 +36,7 @@ const Avatar = (props: IAvatar) => {
         className={clsx('flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900', className)}
       >
         <Icon
-          src={require('@tabler/icons/outline/photo-off.svg')}
+          src={photoOffIcon}
           className='size-4 text-gray-500 dark:text-gray-700'
         />
       </div>
