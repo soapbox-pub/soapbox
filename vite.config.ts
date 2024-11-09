@@ -5,7 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
-import { defineConfig, Plugin, UserConfig } from 'vite';
+import { Connect, defineConfig, Plugin, UserConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
@@ -85,16 +85,19 @@ export default defineConfig(() => {
         title: 'Soapbox Bundle',
       }) as Plugin,
       {
-        name: 'mock-api',
+        // Vite's default behavior is to serve index.html (HTTP 200) for unmatched routes, like a PWA.
+        // Instead, 404 on known backend routes to more closely match a real server.
+        name: 'vite-mastodon-dev',
         configureServer(server) {
-          server.middlewares.use((req, res, next) => {
-            if (/^\/api\//.test(req.url!)) {
-              res.statusCode = 404;
-              res.end('Not Found');
-            } else {
-              next();
-            }
-          });
+          const notFoundHandler: Connect.SimpleHandleFunction = (_req, res) => {
+            res.statusCode = 404;
+            res.end();
+          };
+
+          server.middlewares.use('/api/', notFoundHandler);
+          server.middlewares.use('/oauth/', notFoundHandler);
+          server.middlewares.use('/nodeinfo/', notFoundHandler);
+          server.middlewares.use('/.well-known/', notFoundHandler);
         },
       },
     ],
