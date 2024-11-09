@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 
 const themes = {
   default: 'text-gray-900 dark:text-gray-100',
@@ -86,7 +86,7 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
 }
 
 /** UI-friendly text container with dark mode support. */
-const Text = React.forwardRef<any, IText>(
+const Text = forwardRef<any, IText>(
   (props, ref) => {
     const {
       align,

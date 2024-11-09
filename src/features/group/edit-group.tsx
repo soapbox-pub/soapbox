@@ -1,5 +1,5 @@
 import lockIcon from '@tabler/icons/outline/lock.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks';

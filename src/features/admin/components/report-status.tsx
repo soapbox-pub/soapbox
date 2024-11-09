@@ -1,7 +1,6 @@
 import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { deleteStatusModal } from 'soapbox/actions/moderation';

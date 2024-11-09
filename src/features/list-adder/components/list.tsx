@@ -1,7 +1,6 @@
 import listIcon from '@tabler/icons/outline/list.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists';

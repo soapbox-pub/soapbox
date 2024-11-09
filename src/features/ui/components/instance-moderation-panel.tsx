@@ -1,6 +1,5 @@
 import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
-import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

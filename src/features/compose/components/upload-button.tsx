@@ -1,6 +1,6 @@
 import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
 import photoIcon from '@tabler/icons/outline/photo.svg';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { IconButton } from 'soapbox/components/ui';

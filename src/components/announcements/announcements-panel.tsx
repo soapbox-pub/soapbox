@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
 import { createSelector } from 'reselect';

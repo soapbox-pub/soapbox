@@ -5,7 +5,6 @@ import heartIcon from '@tabler/icons/outline/heart.svg';
 import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { setFilter } from 'soapbox/actions/notifications';

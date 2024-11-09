@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 interface IOutlineBox extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;

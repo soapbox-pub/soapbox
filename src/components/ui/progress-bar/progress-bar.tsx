@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { spring } from 'react-motion';
 
 import Motion from 'soapbox/features/ui/util/optional-motion';

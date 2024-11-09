@@ -22,9 +22,10 @@ import {
   RangeSelection,
   TextNode,
 } from 'lexical';
-import React, {
+import {
   MutableRefObject,
   ReactPortal,
+  startTransition,
   useCallback,
   useEffect,
   useRef,
@@ -99,14 +100,6 @@ const isSelectionOnEntityBoundary = (
     }
     return false;
   });
-};
-
-const startTransition = (callback: () => void) => {
-  if (React.startTransition) {
-    React.startTransition(callback);
-  } else {
-    callback();
-  }
 };
 
 // Got from https://stackoverflow.com/a/42543908/2013580

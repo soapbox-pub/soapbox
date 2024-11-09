@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -11,8 +11,8 @@ export const NostrBunkerLogin: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const [uri, setUri] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [uri, setUri] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     const url = new URL(uri);

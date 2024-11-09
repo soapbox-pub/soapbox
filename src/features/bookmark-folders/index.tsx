@@ -1,6 +1,5 @@
 import bookmarksIcon from '@tabler/icons/outline/bookmarks.svg';
 import folderIcon from '@tabler/icons/outline/folder.svg';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 

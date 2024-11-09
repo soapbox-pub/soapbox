@@ -1,7 +1,7 @@
 import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
 import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
+import { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import StillImage from 'soapbox/components/still-image';
@@ -17,7 +17,7 @@ import SvgIcon from './ui/icon/svg-icon';
 
 import type { List as ImmutableList } from 'immutable';
 
-// const Gameboy = React.lazy(() => import('./gameboy'));
+// const Gameboy = lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;

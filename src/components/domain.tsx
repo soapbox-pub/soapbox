@@ -1,5 +1,4 @@
 import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { unblockDomain } from 'soapbox/actions/domain-blocks';

@@ -2,7 +2,6 @@ import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import userMinusIcon from '@tabler/icons/outline/user-minus.svg';
 import userOffIcon from '@tabler/icons/outline/user-off.svg';
-import React from 'react';
 import { defineMessages, IntlShape } from 'react-intl';
 
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';

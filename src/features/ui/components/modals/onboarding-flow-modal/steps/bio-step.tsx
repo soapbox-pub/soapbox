@@ -1,5 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -27,9 +27,9 @@ const BioStep: React.FC<IBioStep> = ({ onClose, onNext }) => {
   const dispatch = useAppDispatch();
 
   const { account } = useOwnAccount();
-  const [value, setValue] = React.useState<string>(account?.source?.note ?? '');
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [value, setValue] = useState<string>(account?.source?.note ?? '');
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = () => {
     setSubmitting(true);

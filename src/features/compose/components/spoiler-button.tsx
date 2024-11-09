@@ -1,5 +1,4 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeSpoilerness } from 'soapbox/actions/compose';

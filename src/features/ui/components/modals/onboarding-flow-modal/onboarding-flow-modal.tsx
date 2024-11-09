@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import { endOnboarding } from 'soapbox/actions/onboarding';
@@ -20,7 +20,7 @@ interface IOnboardingFlowModal {
 const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
 
   const handleSwipe = (nextStep: number) => {
     setCurrentStep(nextStep);
@@ -64,7 +64,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('keyup', handleKeyUp);
 
     return () => {

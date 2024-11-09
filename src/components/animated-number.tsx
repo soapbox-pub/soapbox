@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
 import { TransitionMotion, spring } from 'react-motion';
 

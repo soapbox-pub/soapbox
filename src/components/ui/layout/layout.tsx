@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import StickyBox from 'react-sticky-box';
 
 interface ISidebar {

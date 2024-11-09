@@ -1,9 +1,9 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 interface ICheckbox extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'disabled' | 'id' | 'name' | 'onChange' | 'checked' | 'required'> { }
 
 /** A pretty checkbox input. */
-const Checkbox = React.forwardRef<HTMLInputElement, ICheckbox>((props, ref) => {
+const Checkbox = forwardRef<HTMLInputElement, ICheckbox>((props, ref) => {
   return (
     <input
       {...props}

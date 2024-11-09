@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
@@ -25,12 +25,12 @@ const PasswordResetConfirm = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [password, setPassword] = React.useState('');
-  const [status, setStatus] = React.useState(Statuses.IDLE);
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState(Statuses.IDLE);
 
   const isLoading = status === Statuses.LOADING;
 
-  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = useCallback((event) => {
     event.preventDefault();
 
     setStatus(Statuses.LOADING);
@@ -39,7 +39,7 @@ const PasswordResetConfirm = () => {
       .catch(() => setStatus(Statuses.FAIL));
   }, [password]);
 
-  const onChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
+  const onChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     setPassword(event.target.value);
   }, []);
 

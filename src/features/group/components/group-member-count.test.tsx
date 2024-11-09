@@ -1,4 +1,3 @@
-import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { buildGroup } from 'soapbox/jest/factory';

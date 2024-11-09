@@ -1,6 +1,6 @@
 import editIcon from '@tabler/icons/outline/edit.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

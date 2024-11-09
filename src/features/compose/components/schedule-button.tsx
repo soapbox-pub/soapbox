@@ -1,5 +1,4 @@
 import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addSchedule, removeSchedule } from 'soapbox/actions/compose';

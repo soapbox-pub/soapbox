@@ -1,7 +1,7 @@
 import { useFloating } from '@floating-ui/react';
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import boltIcon from '@tabler/icons/outline/bolt.svg';
 import infoSquareRoundedIcon from '@tabler/icons/outline/info-square-rounded.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

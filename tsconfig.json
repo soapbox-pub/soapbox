@@ -7,7 +7,7 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "target": "ESNext",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "allowJs": true,
     "isolatedModules": true,
     "moduleResolution": "Bundler",

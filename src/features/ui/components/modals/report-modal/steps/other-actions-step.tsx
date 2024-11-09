@@ -1,7 +1,7 @@
 import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import { OrderedSet } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';

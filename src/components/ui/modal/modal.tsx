@@ -1,7 +1,7 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef, useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Button from '../button/button';
@@ -70,7 +70,7 @@ interface IModal {
 }
 
 /** Displays a modal dialog box. */
-const Modal = React.forwardRef<HTMLDivElement, IModal>(({
+const Modal = forwardRef<HTMLDivElement, IModal>(({
   cancelAction,
   cancelText,
   children,
@@ -93,9 +93,9 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   onBack,
 }, ref) => {
   const intl = useIntl();
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (buttonRef?.current && !skipFocus) {
       buttonRef.current.focus();
     }

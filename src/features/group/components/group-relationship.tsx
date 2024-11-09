@@ -1,6 +1,5 @@
 import gavelIcon from '@tabler/icons/outline/gavel.svg';
 import usersIcon from '@tabler/icons/outline/users.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';

@@ -5,7 +5,6 @@
  */
 
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
-import React from 'react';
 
 import Mention from 'soapbox/components/mention';
 

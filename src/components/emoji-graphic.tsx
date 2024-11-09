@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Emoji from 'soapbox/components/ui/emoji/emoji';
 

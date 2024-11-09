@@ -3,7 +3,7 @@ import editIcon from '@tabler/icons/outline/edit.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -57,7 +57,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   const isLoading = useAppSelector((state) => state.status_lists.get(bookmarksKey)?.isLoading === true);
   const hasMore = useAppSelector((state) => !!state.status_lists.get(bookmarksKey)?.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchBookmarkedStatuses(folderId));
   }, [folderId]);
 

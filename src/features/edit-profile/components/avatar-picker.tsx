@@ -1,6 +1,6 @@
 import cameraPlusIcon from '@tabler/icons/outline/camera-plus.svg';
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Avatar, Icon, HStack } from 'soapbox/components/ui';
@@ -14,7 +14,7 @@ interface IMediaInput {
   disabled?: boolean;
 }
 
-const AvatarPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ className, src, onChange, accept, disabled }, ref) => {
+const AvatarPicker = forwardRef<HTMLInputElement, IMediaInput>(({ className, src, onChange, accept, disabled }, ref) => {
   const picker = useRef<HTMLLabelElement>(null);
 
   const { isDragging, isDraggedOver } = useDraggedFiles(picker, (files) => {

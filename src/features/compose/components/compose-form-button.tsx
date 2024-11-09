@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 import { IconButton } from 'soapbox/components/ui';
 

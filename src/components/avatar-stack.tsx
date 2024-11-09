@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React from 'react';
 
 import { Avatar, HStack } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';

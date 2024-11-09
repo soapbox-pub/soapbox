@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';

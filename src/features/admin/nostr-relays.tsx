@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui';

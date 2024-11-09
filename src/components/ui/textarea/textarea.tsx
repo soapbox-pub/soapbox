@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { useLocale } from 'soapbox/hooks';
@@ -40,7 +40,7 @@ interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 /** Textarea with custom styles. */
-const Textarea = React.forwardRef(({
+const Textarea = forwardRef(({
   isCodeEditor = false,
   hasError = false,
   isResizeable = true,

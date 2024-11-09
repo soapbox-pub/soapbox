@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { fetchFollowedHashtags, expandFollowedHashtags } from 'soapbox/actions/tags';

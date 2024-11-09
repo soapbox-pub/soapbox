@@ -1,5 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchBirthdayReminders } from 'soapbox/actions/accounts';
@@ -37,7 +37,7 @@ const BirthdayPanel = ({ limit }: IBirthdayPanel) => {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     handleFetchBirthdayReminders();
 
     return () => {

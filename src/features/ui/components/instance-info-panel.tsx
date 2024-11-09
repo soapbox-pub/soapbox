@@ -1,6 +1,5 @@
 import pinIcon from '@tabler/icons/outline/pin.svg';
 import pinnedOffIcon from '@tabler/icons/outline/pinned-off.svg';
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { pinHost, unpinHost } from 'soapbox/actions/remote-timeline';

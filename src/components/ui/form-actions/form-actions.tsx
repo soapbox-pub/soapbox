@@ -1,4 +1,3 @@
-import React from 'react';
 
 import HStack from '../hstack/hstack';
 

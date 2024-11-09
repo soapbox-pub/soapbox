@@ -1,7 +1,6 @@
 import checkIcon from '@tabler/icons/outline/check.svg';
 import pointIcon from '@tabler/icons/outline/point.svg';
 import clsx from 'clsx';
-import React from 'react';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';
 

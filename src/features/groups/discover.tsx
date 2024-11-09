@@ -1,7 +1,7 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { HStack, Icon, IconButton, Input, Stack } from 'soapbox/components/ui';

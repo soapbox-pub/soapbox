@@ -1,6 +1,6 @@
 import bookmarksIcon from '@tabler/icons/outline/bookmarks.svg';
 import folderIcon from '@tabler/icons/outline/folder.svg';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { bookmark } from 'soapbox/actions/interactions';

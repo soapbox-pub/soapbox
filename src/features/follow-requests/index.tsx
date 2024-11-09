@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
@@ -24,7 +24,7 @@ const FollowRequests: React.FC = () => {
   const accountIds = useAppSelector((state) => state.user_lists.follow_requests.items);
   const hasMore = useAppSelector((state) => !!state.user_lists.follow_requests.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchFollowRequests());
   }, []);
 

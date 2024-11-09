@@ -1,7 +1,7 @@
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {

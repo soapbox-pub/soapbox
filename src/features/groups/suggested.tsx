@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
@@ -16,7 +16,7 @@ const messages = defineMessages({
   label: { id: 'groups.suggested.label', defaultMessage: 'Suggested Groups' },
 });
 
-const GridList: Components['List'] = React.forwardRef((props, ref) => {
+const GridList: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });

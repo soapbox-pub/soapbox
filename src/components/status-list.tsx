@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useRef, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import LoadGap from 'soapbox/components/load-gap';

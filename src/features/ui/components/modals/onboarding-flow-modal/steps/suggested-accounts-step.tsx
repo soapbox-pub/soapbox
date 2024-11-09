@@ -1,6 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import debounce from 'lodash/debounce';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';

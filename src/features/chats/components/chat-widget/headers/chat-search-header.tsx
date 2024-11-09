@@ -1,5 +1,4 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';

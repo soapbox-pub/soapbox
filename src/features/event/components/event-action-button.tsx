@@ -1,6 +1,5 @@
 import banIcon from '@tabler/icons/outline/ban.svg';
 import checkIcon from '@tabler/icons/outline/check.svg';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { joinEvent, leaveEvent } from 'soapbox/actions/events';

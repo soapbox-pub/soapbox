@@ -1,7 +1,7 @@
 import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
 import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import StillImage from 'soapbox/components/still-image';

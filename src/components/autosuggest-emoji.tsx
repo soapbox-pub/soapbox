@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { isCustomEmoji } from 'soapbox/features/emoji';
 import unicodeMapping from 'soapbox/features/emoji/mapping';

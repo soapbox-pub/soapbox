@@ -1,5 +1,4 @@
 import DOMPurify from 'isomorphic-dompurify';
-import React from 'react';
 
 import Markup from 'soapbox/components/markup';
 import { Stack } from 'soapbox/components/ui';

@@ -1,5 +1,5 @@
 import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';

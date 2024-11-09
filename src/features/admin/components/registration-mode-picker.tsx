@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { updateConfig } from 'soapbox/actions/admin';

@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useEffect, useRef, useMemo, useCallback, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
@@ -30,7 +30,7 @@ const Item: Components<JSX.Element, Context>['Item'] = ({ context, ...rest }) =>
 
 /** Custom Virtuoso List component for the outer container. */
 // Ensure the className winds up here
-const List: Components<JSX.Element, Context>['List'] = React.forwardRef((props, ref) => {
+const List: Components<JSX.Element, Context>['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} className={context?.listClassName} {...rest} />;
 });
@@ -84,7 +84,7 @@ interface IScrollableList extends VirtuosoProps<any, any> {
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility. */
-const ScrollableList = React.forwardRef<VirtuosoHandle, IScrollableList>(({
+const ScrollableList = forwardRef<VirtuosoHandle, IScrollableList>(({
   scrollKey,
   prepend = null,
   alwaysPrepend,

@@ -1,5 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
+import { useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -27,15 +27,15 @@ const DisplayNameStep: React.FC<IDisplayNameStep> = ({ onClose, onNext }) => {
   const dispatch = useAppDispatch();
 
   const { account } = useOwnAccount();
-  const [value, setValue] = React.useState<string>(account?.display_name || '');
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [value, setValue] = useState<string>(account?.display_name || '');
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const trimmedValue = value.trim();
   const isValid = trimmedValue.length > 0;
   const isDisabled = !isValid || value.length > 30;
 
-  const hintText = React.useMemo(() => {
+  const hintText = useMemo(() => {
     const charsLeft = 30 - value.length;
     const suffix = charsLeft === 1 ? 'character remaining' : 'characters remaining';
 

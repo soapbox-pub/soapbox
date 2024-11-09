@@ -3,7 +3,7 @@ import logoutIcon from '@tabler/icons/outline/logout.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import clsx from 'clsx';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

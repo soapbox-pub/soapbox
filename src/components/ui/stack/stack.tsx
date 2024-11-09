@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 
 const spaces = {
   0: 'space-y-0',
@@ -43,7 +43,7 @@ interface IStack extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 /** Vertical stack of child elements. */
-const Stack = React.forwardRef<HTMLDivElement, IStack>((props, ref: React.LegacyRef<HTMLDivElement> | undefined) => {
+const Stack = forwardRef<HTMLDivElement, IStack>((props, ref: React.LegacyRef<HTMLDivElement> | undefined) => {
   const { space, alignItems, justifyContent, className, grow, element = 'div', ...filteredProps } = props;
 
   const Elem = element as 'div';

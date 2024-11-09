@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { changeMediaOrder } from 'soapbox/actions/compose';
 import { HStack } from 'soapbox/components/ui';

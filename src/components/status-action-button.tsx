@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { Text, Icon, Emoji } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -38,7 +38,7 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   theme?: 'default' | 'inverse';
 }
 
-const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
+const StatusActionButton = forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
   const { icon, className, iconClassName, active, color, filled = false, count = 0, emoji, text, theme = 'default', ...filteredProps } = props;
 
   const renderIcon = () => {

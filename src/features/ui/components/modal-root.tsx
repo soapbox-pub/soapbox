@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { PureComponent, Suspense } from 'react';
 
 import Base from 'soapbox/components/modal-root';
 import {
@@ -108,7 +108,7 @@ interface IModalRoot {
   onClose: (type?: ModalType) => void;
 }
 
-export default class ModalRoot extends React.PureComponent<IModalRoot> {
+export default class ModalRoot extends PureComponent<IModalRoot> {
 
   getSnapshotBeforeUpdate() {
     return { visible: !!this.props.type };

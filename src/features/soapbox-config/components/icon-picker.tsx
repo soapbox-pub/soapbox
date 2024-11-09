@@ -1,4 +1,3 @@
-import React from 'react';
 
 import IconPickerDropdown from './icon-picker-dropdown';
 

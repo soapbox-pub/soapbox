@@ -1,5 +1,5 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list';

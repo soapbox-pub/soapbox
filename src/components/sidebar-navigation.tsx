@@ -20,7 +20,6 @@ import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { Stack } from 'soapbox/components/ui';

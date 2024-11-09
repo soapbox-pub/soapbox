@@ -1,6 +1,6 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';

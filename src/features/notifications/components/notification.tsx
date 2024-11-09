@@ -12,7 +12,7 @@ import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import userCheckIcon from '@tabler/icons/outline/user-check.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

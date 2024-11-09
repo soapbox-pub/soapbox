@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 

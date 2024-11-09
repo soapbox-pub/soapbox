@@ -1,6 +1,5 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
-import React from 'react';
 
 import CopyableInput from 'soapbox/components/copyable-input';
 import Icon from 'soapbox/components/icon';

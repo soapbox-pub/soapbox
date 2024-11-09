@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { memo } from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
@@ -19,4 +19,4 @@ const PlaceholderCard: React.FC = () => (
   </div>
 );
 
-export default React.memo(PlaceholderCard);
+export default memo(PlaceholderCard);

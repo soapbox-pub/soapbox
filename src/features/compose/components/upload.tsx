@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { undoUploadCompose, changeUploadCompose } from 'soapbox/actions/compose';
 import Upload from 'soapbox/components/upload';

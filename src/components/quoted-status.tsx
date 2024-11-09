@@ -1,6 +1,6 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

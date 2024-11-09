@@ -4,7 +4,6 @@
  */
 
 import clsx from 'clsx';
-import React from 'react';
 import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
 export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {

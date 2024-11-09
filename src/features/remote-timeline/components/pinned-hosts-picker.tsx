@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Button, HStack } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';

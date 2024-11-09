@@ -1,5 +1,4 @@
 import markdownIcon from '@tabler/icons/outline/markdown.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeContentType } from 'soapbox/actions/compose';

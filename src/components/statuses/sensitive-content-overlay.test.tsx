@@ -1,6 +1,5 @@
 
 import { Map as ImmutableMap } from 'immutable';
-import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { fireEvent, render, rootState, screen } from 'soapbox/jest/test-helpers';

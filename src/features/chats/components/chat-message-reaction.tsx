@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji';

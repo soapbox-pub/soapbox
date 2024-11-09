@@ -1,7 +1,6 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import Blurhash from 'soapbox/components/blurhash';

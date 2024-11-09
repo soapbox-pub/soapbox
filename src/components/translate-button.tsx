@@ -1,5 +1,4 @@
 import languageIcon from '@tabler/icons/outline/language.svg';
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { spring } from 'react-motion';
 
 import Motion from '../../ui/util/optional-motion';

@@ -1,6 +1,5 @@
 import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists';

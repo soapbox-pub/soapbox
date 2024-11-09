@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Textarea, Form, Button, FormGroup, FormActions, Text } from 'soapbox/components/ui';

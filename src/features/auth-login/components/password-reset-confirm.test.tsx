@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 

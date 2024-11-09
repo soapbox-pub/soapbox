@@ -1,7 +1,7 @@
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
 import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
-import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
+import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
@@ -202,4 +202,4 @@ const StatusContent: React.FC<IStatusContent> = ({
   }
 };
 
-export default React.memo(StatusContent);
+export default memo(StatusContent);

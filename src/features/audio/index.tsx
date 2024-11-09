@@ -6,7 +6,7 @@ import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';

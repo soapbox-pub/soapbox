@@ -1,4 +1,3 @@
-import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { ChatProvider } from 'soapbox/contexts/chat-context';

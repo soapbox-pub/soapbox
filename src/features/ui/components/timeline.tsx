@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';

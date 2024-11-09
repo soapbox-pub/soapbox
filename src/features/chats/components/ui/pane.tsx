@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 interface IPane {
   /** Whether the pane is open or minimized. */

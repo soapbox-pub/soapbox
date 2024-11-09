@@ -1,5 +1,5 @@
 import sendIcon from '@tabler/icons/outline/send.svg';
-import React, { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import { unblockAccount } from 'soapbox/actions/accounts';
@@ -53,7 +53,7 @@ interface IChatComposer extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaEl
 }
 
 /** Textarea input for chats. */
-const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>(({
+const ChatComposer = forwardRef<HTMLTextAreaElement | null, IChatComposer>(({
   onKeyDown,
   onChange,
   value,

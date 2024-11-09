@@ -1,5 +1,4 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
 import { Provider } from 'react-redux';
 
 import { NostrProvider } from 'soapbox/contexts/nostr-context';

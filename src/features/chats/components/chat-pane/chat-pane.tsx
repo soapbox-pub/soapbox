@@ -1,5 +1,5 @@
 import editIcon from '@tabler/icons/outline/edit.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Stack } from 'soapbox/components/ui';

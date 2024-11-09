@@ -1,7 +1,6 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Card, CardBody, Spinner } from 'soapbox/components/ui';
 

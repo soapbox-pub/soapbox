@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { expandConversations } from 'soapbox/actions/conversations';

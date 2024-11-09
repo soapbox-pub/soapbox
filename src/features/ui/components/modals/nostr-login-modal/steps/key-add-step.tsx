@@ -1,5 +1,5 @@
 import { nip19 } from 'nostr-tools';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { logInNostr } from 'soapbox/actions/nostr';

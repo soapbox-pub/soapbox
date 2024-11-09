@@ -1,6 +1,5 @@
 import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
 import { QRCodeCanvas } from 'qrcode.react';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account';

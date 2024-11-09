@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { HStack, Textarea } from 'soapbox/components/ui';
 import { Attachment } from 'soapbox/types/entities';
@@ -14,7 +14,7 @@ interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
 }
 
 /** Custom textarea for chats. */
-const ChatTextarea: React.FC<IChatTextarea> = React.forwardRef(({
+const ChatTextarea: React.FC<IChatTextarea> = forwardRef(({
   attachments,
   onDeleteAttachment,
   uploadCount = 0,

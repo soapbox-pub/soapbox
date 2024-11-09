@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { usePendingGroups } from 'soapbox/api/hooks';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row';

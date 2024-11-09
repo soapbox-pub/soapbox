@@ -1,4 +1,3 @@
-import React from 'react';
 
 /** Fullscreen gradient used as a backdrop to public pages. */
 const LandingGradient: React.FC = () => (

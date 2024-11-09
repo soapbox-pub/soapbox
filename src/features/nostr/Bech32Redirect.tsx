@@ -1,5 +1,4 @@
 import { nip19 } from 'nostr-tools';
-import React from 'react';
 import { Redirect } from 'react-router-dom';
 
 import MissingIndicator from 'soapbox/components/missing-indicator';

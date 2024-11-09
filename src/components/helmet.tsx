@@ -1,4 +1,4 @@
-import React from 'react';
+import { useMemo, useEffect } from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
 import { useStatContext } from 'soapbox/contexts/stat-context';
@@ -25,7 +25,7 @@ const Helmet: React.FC<IHelmet> = ({ children }) => {
   const unreadCount = useAppSelector((state) => getNotifTotals(state) + unreadChatsCount);
   const { demetricator } = useSettings();
 
-  const hasUnreadNotifications = React.useMemo(() => !(unreadCount < 1 || demetricator), [unreadCount, demetricator]);
+  const hasUnreadNotifications = useMemo(() => !(unreadCount < 1 || demetricator), [unreadCount, demetricator]);
 
   const addCounter = (string: string) => {
     return hasUnreadNotifications ? `(${unreadCount}) ${string}` : string;
@@ -39,7 +39,7 @@ const Helmet: React.FC<IHelmet> = ({ children }) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     updateFaviconBadge();
   }, [unreadCount, demetricator]);
 

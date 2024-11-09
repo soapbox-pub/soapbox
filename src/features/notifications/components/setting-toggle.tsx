@@ -1,5 +1,4 @@
 import get from 'lodash/get';
-import React from 'react';
 
 import { Toggle } from 'soapbox/components/ui';
 import { Settings } from 'soapbox/schemas/soapbox/settings';

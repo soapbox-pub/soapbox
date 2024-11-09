@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 import Account from 'soapbox/components/account';
 import StatusContent from 'soapbox/components/status-content';

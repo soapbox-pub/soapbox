@@ -1,5 +1,5 @@
 import message2Icon from '@tabler/icons/outline/message-2.svg';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines';

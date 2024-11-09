@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import Icon from '../icon/icon';
@@ -36,7 +36,7 @@ interface IButton {
 }
 
 /** Customizable button element with various themes. */
-const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
+const Button = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
   const {
     block = false,
     children,
@@ -69,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
     return <Icon src={icon} className='size-4' element={iconElement} />;
   };
 
-  const handleClick: React.MouseEventHandler<HTMLButtonElement> = React.useCallback((event) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {
     if (onClick && !disabled) {
       onClick(event);
     }

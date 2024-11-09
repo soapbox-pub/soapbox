@@ -1,4 +1,3 @@
-import React from 'react';
 
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import {

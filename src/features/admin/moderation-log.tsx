@@ -1,4 +1,3 @@
-import React from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { useModerationLog } from 'soapbox/api/hooks/admin';

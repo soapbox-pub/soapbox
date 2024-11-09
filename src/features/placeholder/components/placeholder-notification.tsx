@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 import { HStack } from 'soapbox/components/ui';
 
@@ -33,4 +33,4 @@ const PlaceholderNotification = () => (
   </div>
 );
 
-export default React.memo(PlaceholderNotification);
+export default memo(PlaceholderNotification);

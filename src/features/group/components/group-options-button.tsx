@@ -3,7 +3,7 @@ import flagIcon from '@tabler/icons/outline/flag.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
 import shareIcon from '@tabler/icons/outline/share.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

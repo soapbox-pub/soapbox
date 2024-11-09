@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { changeSetting } from 'soapbox/actions/settings';
 import { useAppDispatch, useSettings } from 'soapbox/hooks';

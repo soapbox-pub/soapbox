@@ -1,5 +1,4 @@
 import cloudUploadIcon from '@tabler/icons/outline/cloud-upload.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Icon, ProgressBar, Stack, Text } from 'soapbox/components/ui';

@@ -1,7 +1,7 @@
 import { shift, useFloating, Placement, offset, OffsetOptions } from '@floating-ui/react';
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import EmojiComponent from 'soapbox/components/ui/emoji/emoji';
 import HStack from 'soapbox/components/ui/hstack/hstack';

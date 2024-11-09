@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, cloneElement } from 'react';
 
 import { Portal } from 'soapbox/components/ui';
 import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
@@ -31,8 +31,8 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
   }, [isOpen]);
 
   return (
-    <React.Fragment>
-      {React.cloneElement(children, {
+    <>
+      {cloneElement(children, {
         ref: setReferenceElement,
         onClick: onToggleVisibility,
       })}
@@ -49,7 +49,7 @@ function ChatMessageReactionWrapper(props: IChatMessageReactionWrapper) {
           />
         </Portal>
       )}
-    </React.Fragment>
+    </>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, forwardRef } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
@@ -41,12 +41,12 @@ const timeChange = (prev: ChatMessageEntity, curr: ChatMessageEntity): TimeForma
 
 const START_INDEX = 10000;
 
-const List: Components['List'] = React.forwardRef((props, ref) => {
+const List: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='mb-2' />;
 });
 
-const Scroller: Components['Scroller'] = React.forwardRef((props, ref) => {
+const Scroller: Components['Scroller'] = forwardRef((props, ref) => {
   const { style, context, ...rest } = props;
 
   return (

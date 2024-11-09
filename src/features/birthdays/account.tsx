@@ -1,5 +1,4 @@
 import balloonIcon from '@tabler/icons/outline/balloon.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useAccount } from 'soapbox/api/hooks';

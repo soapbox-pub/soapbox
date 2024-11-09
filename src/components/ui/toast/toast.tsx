@@ -3,7 +3,6 @@ import circleCheckIcon from '@tabler/icons/outline/circle-check.svg';
 import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
 import toast, { Toast as RHToast } from 'react-hot-toast';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';

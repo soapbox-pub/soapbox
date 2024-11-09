@@ -1,6 +1,6 @@
 import helpIcon from '@tabler/icons/outline/help.svg';
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
 

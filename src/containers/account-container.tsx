@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { useAccount } from 'soapbox/api/hooks';
 import Account, { IAccount } from 'soapbox/components/account';

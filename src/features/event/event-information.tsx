@@ -1,7 +1,7 @@
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import linkIcon from '@tabler/icons/outline/link.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
-import React, { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -64,16 +64,16 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     if (!event.location) return null;
 
     const text = [
-      <React.Fragment key='event-name'>
+      <Fragment key='event-name'>
         {event.location.get('name')}
-      </React.Fragment>,
+      </Fragment>,
     ];
 
     if (event.location.get('street')?.trim()) {
       text.push (
-        <React.Fragment key='event-street'>
+        <Fragment key='event-street'>
           <br />{event.location.get('street')}
-        </React.Fragment>,
+        </Fragment>,
       );
     }
 
@@ -81,21 +81,21 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
     if (address) {
       text.push(
-        <React.Fragment key='event-address'>
+        <Fragment key='event-address'>
           <br />
           {address}
-        </React.Fragment>,
+        </Fragment>,
       );
     }
 
     if (tileServer && event.location.get('latitude')) {
       text.push(
-        <React.Fragment key='event-map'>
+        <Fragment key='event-map'>
           <br />
           <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}>
             <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
           </a>
-        </React.Fragment>,
+        </Fragment>,
       );
     }
 

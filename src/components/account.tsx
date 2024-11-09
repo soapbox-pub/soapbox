@@ -1,5 +1,5 @@
 import pencilIcon from '@tabler/icons/outline/pencil.svg';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

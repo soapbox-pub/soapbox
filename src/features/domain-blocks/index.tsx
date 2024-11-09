@@ -1,5 +1,5 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
@@ -24,7 +24,7 @@ const DomainBlocks: React.FC = () => {
   const domains = useAppSelector((state) => state.domain_lists.blocks.items);
   const hasMore = useAppSelector((state) => !!state.domain_lists.blocks.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchDomainBlocks());
   }, []);
 

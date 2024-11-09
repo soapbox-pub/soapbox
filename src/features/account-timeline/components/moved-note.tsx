@@ -1,5 +1,4 @@
 import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account';

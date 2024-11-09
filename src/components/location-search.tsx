@@ -3,7 +3,7 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { locationSearch } from 'soapbox/actions/events';

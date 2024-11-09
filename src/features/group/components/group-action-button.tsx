@@ -1,4 +1,3 @@
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups';

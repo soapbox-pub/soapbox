@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { TagInput } from 'soapbox/components/ui';

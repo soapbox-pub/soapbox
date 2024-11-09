@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedNumber } from 'react-intl';
 import { Link } from 'react-router-dom';
 

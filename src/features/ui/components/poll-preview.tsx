@@ -1,5 +1,4 @@
 import noop from 'lodash/noop';
-import React from 'react';
 
 import PollOption from 'soapbox/components/polls/poll-option';
 import { Stack } from 'soapbox/components/ui';

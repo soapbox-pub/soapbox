@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeEmail } from 'soapbox/actions/security';
@@ -23,18 +23,18 @@ const EditEmail = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [state, setState] = React.useState(initialState);
-  const [isLoading, setLoading] = React.useState(false);
+  const [state, setState] = useState(initialState);
+  const [isLoading, setLoading] = useState(false);
 
   const { email, password } = state;
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   }, []);
 
-  const handleSubmit = React.useCallback(() => {
+  const handleSubmit = useCallback(() => {
     setLoading(true);
     dispatch(changeEmail(email, password)).then(() => {
       setState(initialState);

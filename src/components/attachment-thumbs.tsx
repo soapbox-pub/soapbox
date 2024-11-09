@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';

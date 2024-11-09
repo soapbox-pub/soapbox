@@ -2,7 +2,6 @@ import buildingCommunityIcon from '@tabler/icons/outline/building-community.svg'
 import homeIcon from '@tabler/icons/outline/home-2.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import roadIcon from '@tabler/icons/outline/road.svg';
-import React from 'react';
 
 import { useAppSelector } from 'soapbox/hooks';
 

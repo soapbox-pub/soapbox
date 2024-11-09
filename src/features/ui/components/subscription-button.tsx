@@ -1,6 +1,5 @@
 import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {

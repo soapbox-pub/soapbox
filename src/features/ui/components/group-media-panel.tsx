@@ -1,5 +1,5 @@
 import { List as ImmutableList } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

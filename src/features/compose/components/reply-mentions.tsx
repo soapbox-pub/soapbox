@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

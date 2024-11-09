@@ -1,5 +1,5 @@
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { SketchPicker, ColorChangeHandler } from 'react-color';
 
 import { isMobile } from 'soapbox/is-mobile';

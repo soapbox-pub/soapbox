@@ -1,4 +1,3 @@
-import React from 'react';
 import PTRComponent from 'react-simple-pull-to-refresh';
 
 import { Spinner } from 'soapbox/components/ui';

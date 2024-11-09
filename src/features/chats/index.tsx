@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { ChatProvider } from 'soapbox/contexts/chat-context';
 

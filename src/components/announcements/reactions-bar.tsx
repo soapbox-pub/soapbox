@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { TransitionMotion, spring } from 'react-motion';
 
 import { useAnnouncements } from 'soapbox/api/hooks/announcements';

@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
+import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 

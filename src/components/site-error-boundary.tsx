@@ -1,4 +1,4 @@
-import React, { type ErrorInfo, useRef, useState } from 'react';
+import { type ErrorInfo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 

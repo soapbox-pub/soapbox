@@ -1,6 +1,6 @@
 import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useDimensions } from 'soapbox/hooks';
 

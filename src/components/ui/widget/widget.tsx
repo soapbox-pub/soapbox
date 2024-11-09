@@ -1,5 +1,4 @@
 import arrowRightIcon from '@tabler/icons/outline/arrow-right.svg';
-import React from 'react';
 
 import HStack from 'soapbox/components/ui/hstack/hstack';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';

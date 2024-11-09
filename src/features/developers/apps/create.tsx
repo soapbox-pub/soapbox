@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { createApp } from 'soapbox/actions/apps';

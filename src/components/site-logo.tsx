@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 import soapboxLogoWhiteSrc from 'soapbox/assets/images/soapbox-logo-white.svg';
 import soapboxLogoSrc from 'soapbox/assets/images/soapbox-logo.svg';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { approveUser, rejectUser } from 'soapbox/actions/admin';
 import { useAccount } from 'soapbox/api/hooks';

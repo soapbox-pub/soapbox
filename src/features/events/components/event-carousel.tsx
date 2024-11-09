@@ -1,6 +1,6 @@
 import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 

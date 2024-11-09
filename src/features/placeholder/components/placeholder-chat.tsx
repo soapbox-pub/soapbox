@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { HStack, Stack } from 'soapbox/components/ui';
 

@@ -30,7 +30,6 @@ import thumbUpIcon from '@tabler/icons/outline/thumb-up.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import uploadIcon from '@tabler/icons/outline/upload.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 

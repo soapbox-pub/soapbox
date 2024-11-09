@@ -9,7 +9,6 @@ import {
 } from '@reach/menu-button';
 import { positionDefault, positionRight } from '@reach/popover';
 import clsx from 'clsx';
-import React from 'react';
 
 import './menu.css';
 

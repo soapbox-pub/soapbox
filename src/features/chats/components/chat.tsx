@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
-import React, { MutableRefObject, useEffect, useState } from 'react';
+import { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media';

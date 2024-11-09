@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { useSuggestedGroups } from 'soapbox/api/hooks';
 import { Widget } from 'soapbox/components/ui';

@@ -1,6 +1,6 @@
 import arrowBarToUpIcon from '@tabler/icons/outline/arrow-bar-to-up.svg';
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
 import { Icon, Text } from 'soapbox/components/ui';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { HStack, Stack, Slider } from 'soapbox/components/ui';
 import { usePrevious } from 'soapbox/hooks';

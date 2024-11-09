@@ -1,7 +1,7 @@
 import downloadIcon from '@tabler/icons/outline/download.svg';
 import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import uploadIcon from '@tabler/icons/outline/upload.svg';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { updateSoapboxConfig } from 'soapbox/actions/admin';
