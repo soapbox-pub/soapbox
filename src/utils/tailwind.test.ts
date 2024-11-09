@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { toTailwind, fromLegacyColors, expandPalette } from './tailwind';
 
 describe('toTailwind()', () => {

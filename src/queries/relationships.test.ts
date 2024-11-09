@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-
 import { __stub } from 'soapbox/api';
 import { buildRelationship } from 'soapbox/jest/factory';
 import { createTestStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';

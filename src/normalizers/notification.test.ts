@@ -1,7 +1,6 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { normalizeNotification } from './notification';
 
 describe('normalizeNotification()', () => {

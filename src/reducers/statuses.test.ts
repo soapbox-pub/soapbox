@@ -4,7 +4,6 @@ import {
 } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {
   STATUS_CREATE_REQUEST,

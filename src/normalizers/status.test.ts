@@ -1,7 +1,6 @@
 import { Record as ImmutableRecord, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { normalizeStatus } from './status';
 
 import type { Poll, Card } from 'soapbox/types/entities';

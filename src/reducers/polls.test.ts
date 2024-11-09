@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { POLLS_IMPORT } from 'soapbox/actions/importer';
 
 import reducer from './polls';

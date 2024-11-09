@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import soapboxConfig from 'soapbox/__fixtures__/admin_api_frontend_config.json';
 import soapbox from 'soapbox/__fixtures__/soapbox.json';
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-
 import { updateNotifications } from 'soapbox/actions/notifications';
 import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers';
 

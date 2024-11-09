@@ -1,7 +1,6 @@
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-
 import { render, screen, rootState } from 'soapbox/jest/test-helpers';
 import { normalizeStatus, normalizeAccount } from 'soapbox/normalizers';
 

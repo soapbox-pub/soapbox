@@ -1,7 +1,6 @@
 import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
-
 import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
 
 import Form from './form';

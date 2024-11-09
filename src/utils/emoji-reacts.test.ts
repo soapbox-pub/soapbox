@@ -1,7 +1,6 @@
 import { List as ImmutableList, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { normalizeStatus } from 'soapbox/normalizers';
 import { emojiReactionSchema } from 'soapbox/schemas';
 

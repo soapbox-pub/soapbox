@@ -1,7 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-
 import { buildInstance } from 'soapbox/jest/factory';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { ReducerCompose } from 'soapbox/reducers/compose';

@@ -1,7 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import * as actions from 'soapbox/actions/conversations';
 
 import reducer from './conversations';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { describe, expect, it } from 'vitest';
 
-
 import { buildAccount, buildRelationship } from 'soapbox/jest/factory';
 import { render, screen } from 'soapbox/jest/test-helpers';
 
