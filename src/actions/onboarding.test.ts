@@ -1,3 +1,5 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { mockStore, mockWindowProperty, rootState } from 'soapbox/jest/test-helpers';
 
 import { checkOnboardingStatus, startOnboarding, endOnboarding } from './onboarding';

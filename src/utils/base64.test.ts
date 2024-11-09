@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { decodeBase64 } from './base64';
 
 describe('decodeBase64', () => {

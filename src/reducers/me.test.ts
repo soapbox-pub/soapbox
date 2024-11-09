@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import reducer from './me';
 
 describe('me reducer', () => {

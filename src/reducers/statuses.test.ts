@@ -2,6 +2,8 @@ import {
   Map as ImmutableMap,
   Record as ImmutableRecord,
 } from 'immutable';
+import { describe, expect, it } from 'vitest';
+
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {

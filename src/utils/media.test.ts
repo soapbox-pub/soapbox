@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { addAutoPlay } from './media';
 
 describe('addAutoPlay()', () => {

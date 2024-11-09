@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import {
   removeVS16s,
   toCodePoints,

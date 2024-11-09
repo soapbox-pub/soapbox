@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import tintify from './colors';
 
 const AZURE = '#0482d8';

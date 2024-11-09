@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import reducer from './domain-lists';
 
 describe('domain_lists reducer', () => {

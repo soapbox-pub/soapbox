@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
 
