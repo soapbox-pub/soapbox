@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -14,7 +15,7 @@ const messages = defineMessages({
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface IBioStep {
   onClose(): void;

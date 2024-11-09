@@ -1,3 +1,4 @@
+import message2Icon from '@tabler/icons/outline/message-2.svg';
 import clsx from 'clsx';
 import React, { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -110,7 +111,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>
             <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
               <Icon
-                src={require('@tabler/icons/outline/message-2.svg')}
+                src={message2Icon}
                 className='size-6 text-gray-600'
               />
             </div>

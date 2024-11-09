@@ -1,3 +1,4 @@
+import worldIcon from '@tabler/icons/outline/world.svg';
 import React from 'react';
 
 import { openDropdownMenu } from 'soapbox/actions/dropdown-menu';
@@ -26,7 +27,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({ language, setLanguage }
   const dispatch = useAppDispatch();
   const formattedLanguages = formatLanguages(languages);
 
-  const newMenu: MenuItem[] = [{ icon: require('@tabler/icons/outline/world.svg'), text: 'Default', action: () => {
+  const newMenu: MenuItem[] = [{ icon: worldIcon, text: 'Default', action: () => {
     setLanguage('');
   } }];
 
@@ -51,7 +52,7 @@ const LanguageDropdown: React.FC<ILanguageDropdown> = ({ language, setLanguage }
           {language.toUpperCase()}
         </button>
       ) : (
-        <SvgIcon src={require('@tabler/icons/outline/world.svg')} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 dark:text-white sm:mr-4' />
+        <SvgIcon src={worldIcon} className='text-gray-700 hover:cursor-pointer hover:text-gray-500 black:absolute black:right-0 black:top-4 black:text-white black:hover:text-gray-600 dark:text-white sm:mr-4' />
       )}
     </DropdownMenu>
   );

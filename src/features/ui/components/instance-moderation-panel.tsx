@@ -1,3 +1,5 @@
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import editIcon from '@tabler/icons/outline/edit.svg';
 import React from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
@@ -35,7 +37,7 @@ const InstanceModerationPanel: React.FC<IInstanceModerationPanel> = ({ host }) =
     return [{
       text: intl.formatMessage(messages.editFederation),
       action: handleEditFederation,
-      icon: require('@tabler/icons/outline/edit.svg'),
+      icon: editIcon,
     }];
   };
 
@@ -45,7 +47,7 @@ const InstanceModerationPanel: React.FC<IInstanceModerationPanel> = ({ host }) =
     <Widget
       title={<FormattedMessage id='remote_instance.federation_panel.heading' defaultMessage='Federation Restrictions' />}
       action={account?.admin ? (
-        <DropdownMenu items={menu} src={require('@tabler/icons/outline/dots-vertical.svg')} />
+        <DropdownMenu items={menu} src={dotsVerticalIcon} />
       ) : undefined}
     >
       <InstanceRestrictions remoteInstance={remoteInstance} />

@@ -1,3 +1,4 @@
+import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
 import { QRCodeCanvas } from 'qrcode.react';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -90,7 +91,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
           </div>
           <HStack space={2}>
             <a href={'lightning:' + invoice}>
-              <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
+              <Button type='submit' theme='primary' icon={folderOpenIcon} text={intl.formatMessage(messages.zap_open_wallet)} />
             </a>
             {isLastStep ? (
               <Button

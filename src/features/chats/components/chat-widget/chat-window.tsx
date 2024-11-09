@@ -1,3 +1,6 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import editIcon from '@tabler/icons/outline/edit.svg';
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
 import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -72,7 +75,7 @@ const ChatWindow = () => {
             {isOpen && (
               <button onClick={closeChat}>
                 <Icon
-                  src={require('@tabler/icons/outline/arrow-left.svg')}
+                  src={arrowLeftIcon}
                   className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
                 />
               </button>
@@ -107,7 +110,7 @@ const ChatWindow = () => {
           </HStack>
         }
         secondaryAction={secondaryAction()}
-        secondaryActionIcon={isOpen ? require('@tabler/icons/outline/info-circle.svg') : require('@tabler/icons/outline/edit.svg')}
+        secondaryActionIcon={isOpen ? infoCircleIcon : editIcon}
         isToggleable={!isOpen}
         isOpen={isOpen}
         onToggle={toggleChatPane}

@@ -1,3 +1,5 @@
+import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import { OrderedSet } from 'immutable';
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -60,7 +62,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
 
                 <div>
                   <Button
-                    icon={require('@tabler/icons/outline/arrows-minimize.svg')}
+                    icon={arrowsMinimizeIcon}
                     theme='tertiary'
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
@@ -71,7 +73,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
               </Stack>
             ) : (
               <Button
-                icon={require('@tabler/icons/outline/plus.svg')}
+                icon={plusIcon}
                 theme='tertiary'
                 size='sm'
                 onClick={() => setShowAdditionalStatuses(true)}

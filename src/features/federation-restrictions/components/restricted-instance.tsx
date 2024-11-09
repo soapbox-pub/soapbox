@@ -1,3 +1,5 @@
+import caretDownIcon from '@tabler/icons/outline/caret-down.svg';
+import caretRightIcon from '@tabler/icons/outline/caret-right.svg';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
@@ -26,7 +28,7 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
   return (
     <div>
       <a href='#' className='flex items-center gap-1 py-2.5 no-underline' onClick={toggleExpanded}>
-        <Icon src={expanded ? require('@tabler/icons/outline/caret-down.svg') : require('@tabler/icons/outline/caret-right.svg')} />
+        <Icon src={expanded ? caretDownIcon : caretRightIcon} />
         <div className={clsx({ 'line-through': remoteInstance.federation.reject })}>
           {remoteInstance.host}
         </div>

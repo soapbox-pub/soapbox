@@ -1,3 +1,4 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import React, { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -120,7 +121,7 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
                 <span className='truncate'>{url}</span>
                 <Icon
                   className='size-4'
-                  src={require('@tabler/icons/outline/external-link.svg')}
+                  src={externalLinkIcon}
                 />
               </a>
             </ListItem>

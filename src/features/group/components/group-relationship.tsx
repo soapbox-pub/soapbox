@@ -1,3 +1,5 @@
+import gavelIcon from '@tabler/icons/outline/gavel.svg';
+import usersIcon from '@tabler/icons/outline/users.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -28,8 +30,8 @@ const GroupRelationship = ({ group }: IGroupRelationship) => {
         className='size-4'
         src={
           isOwner
-            ? require('@tabler/icons/outline/users.svg')
-            : require('@tabler/icons/outline/gavel.svg')
+            ? usersIcon
+            : gavelIcon
         }
       />
 

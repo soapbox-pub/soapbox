@@ -1,3 +1,17 @@
+import atIcon from '@tabler/icons/outline/at.svg';
+import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
+import boltIcon from '@tabler/icons/outline/bolt.svg';
+import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
+import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
+import calendarTimeIcon from '@tabler/icons/outline/calendar-time.svg';
+import chartBarIcon from '@tabler/icons/outline/chart-bar.svg';
+import heartIcon from '@tabler/icons/outline/heart.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
+import userCheckIcon from '@tabler/icons/outline/user-check.svg';
+import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import React, { useCallback } from 'react';
 import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -42,25 +56,25 @@ const buildLink = (account: AccountEntity): JSX.Element => (
 );
 
 const icons: Record<NotificationType, string> = {
-  follow: require('@tabler/icons/outline/user-plus.svg'),
-  follow_request: require('@tabler/icons/outline/user-plus.svg'),
-  mention: require('@tabler/icons/outline/at.svg'),
-  favourite: require('@tabler/icons/outline/heart.svg'),
-  group_favourite: require('@tabler/icons/outline/heart.svg'),
-  reblog: require('@tabler/icons/outline/repeat.svg'),
-  group_reblog: require('@tabler/icons/outline/repeat.svg'),
-  status: require('@tabler/icons/outline/bell-ringing.svg'),
-  poll: require('@tabler/icons/outline/chart-bar.svg'),
-  move: require('@tabler/icons/outline/briefcase.svg'),
-  'pleroma:chat_mention': require('@tabler/icons/outline/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/outline/mood-happy.svg'),
-  user_approved: require('@tabler/icons/outline/user-plus.svg'),
-  update: require('@tabler/icons/outline/pencil.svg'),
-  'pleroma:event_reminder': require('@tabler/icons/outline/calendar-time.svg'),
-  'pleroma:participation_request': require('@tabler/icons/outline/calendar-event.svg'),
-  'pleroma:participation_accepted': require('@tabler/icons/outline/calendar-event.svg'),
-  'ditto:name_grant': require('@tabler/icons/outline/user-check.svg'),
-  'ditto:zap': require('@tabler/icons/outline/bolt.svg'),
+  follow: userPlusIcon,
+  follow_request: userPlusIcon,
+  mention: atIcon,
+  favourite: heartIcon,
+  group_favourite: heartIcon,
+  reblog: repeatIcon,
+  group_reblog: repeatIcon,
+  status: bellRingingIcon,
+  poll: chartBarIcon,
+  move: briefcaseIcon,
+  'pleroma:chat_mention': messagesIcon,
+  'pleroma:emoji_reaction': moodHappyIcon,
+  user_approved: userPlusIcon,
+  update: pencilIcon,
+  'pleroma:event_reminder': calendarTimeIcon,
+  'pleroma:participation_request': calendarEventIcon,
+  'pleroma:participation_accepted': calendarEventIcon,
+  'ditto:name_grant': userCheckIcon,
+  'ditto:zap': boltIcon,
 };
 
 const nameMessage = defineMessage({

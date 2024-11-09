@@ -1,3 +1,6 @@
+import boltIcon from '@tabler/icons/outline/bolt.svg';
+import infoSquareRoundedIcon from '@tabler/icons/outline/info-square-rounded.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -34,7 +37,7 @@ interface IZapPayRequestForm {
   onClose?(): void;
 }
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
@@ -149,7 +152,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
 
       {hasZapSplit ? <Stack space={2}>
 
-        <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={'Zap sats'} disabled={zapAmount < 1 ? true : false} />
+        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={'Zap sats'} disabled={zapAmount < 1 ? true : false} />
 
         <div className='flex items-center justify-center gap-2 sm:gap-4'>
           <span className='text-[10px] sm:text-xs'>
@@ -160,11 +163,11 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           </span>
 
           <Link to={'/'} className='text-xs underline'>
-            <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
+            <SvgIcon src={infoSquareRoundedIcon} className='w-4' alt='info-square-rounded' />
           </Link>
 
         </div>
-      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
+      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
 
     </Stack>
   );

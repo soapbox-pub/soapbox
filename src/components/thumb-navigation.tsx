@@ -1,3 +1,14 @@
+import bellFilledIcon from '@tabler/icons/filled/bell.svg';
+import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
+import homeFilledIcon from '@tabler/icons/filled/home.svg';
+import mailFilledIcon from '@tabler/icons/filled/mail.svg';
+import bellIcon from '@tabler/icons/outline/bell.svg';
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
+import homeIcon from '@tabler/icons/outline/home.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,7 +30,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
     if (features.chats) {
       return (
         <ThumbNavigationLink
-          src={require('@tabler/icons/outline/messages.svg')}
+          src={messagesIcon}
           text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
           to='/chats'
           exact
@@ -32,8 +43,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
     if (features.directTimeline || features.conversations) {
       return (
         <ThumbNavigationLink
-          src={require('@tabler/icons/outline/mail.svg')}
-          activeSrc={require('@tabler/icons/filled/mail.svg')}
+          src={mailIcon}
+          activeSrc={mailFilledIcon}
           text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
           to='/messages'
           paths={['/messages', '/conversations']}
@@ -47,8 +58,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   return (
     <div className='thumb-navigation'>
       <ThumbNavigationLink
-        src={require('@tabler/icons/outline/home.svg')}
-        activeSrc={require('@tabler/icons/filled/home.svg')}
+        src={homeIcon}
+        activeSrc={homeFilledIcon}
         text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}
         to='/'
         exact
@@ -56,8 +67,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
       {features.groups && (
         <ThumbNavigationLink
-          src={require('@tabler/icons/outline/circles.svg')}
-          activeSrc={require('@tabler/icons/filled/circles.svg')}
+          src={circlesIcon}
+          activeSrc={circlesFilledIcon}
           text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
           to='/groups'
           exact
@@ -65,7 +76,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       )}
 
       <ThumbNavigationLink
-        src={require('@tabler/icons/outline/search.svg')}
+        src={searchIcon}
         text={<FormattedMessage id='navigation.search' defaultMessage='Discover' />}
         to='/search'
         exact
@@ -73,8 +84,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
       {account && (
         <ThumbNavigationLink
-          src={require('@tabler/icons/outline/bell.svg')}
-          activeSrc={require('@tabler/icons/filled/bell.svg')}
+          src={bellIcon}
+          activeSrc={bellFilledIcon}
           text={<FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />}
           to='/notifications'
           exact
@@ -86,7 +97,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
       {(account && account.staff) && (
         <ThumbNavigationLink
-          src={require('@tabler/icons/outline/dashboard.svg')}
+          src={dashboardIcon}
           text={<FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />}
           to='/soapbox/admin'
           count={dashboardCount}

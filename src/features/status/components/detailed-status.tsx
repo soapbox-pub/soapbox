@@ -1,3 +1,6 @@
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -57,7 +60,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             avatarSize={42}
             icon={
               <Icon
-                src={require('@tabler/icons/outline/circles.svg')}
+                src={circlesIcon}
                 className='size-4 text-primary-600 dark:text-accent-blue'
               />
             }
@@ -109,9 +112,9 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/mail.svg')} />;
+    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={mailIcon} />;
   } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/lock.svg')} />;
+    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={lockIcon} />;
   }
 
   return (

@@ -1,3 +1,6 @@
+import playerStopFilledIcon from '@tabler/icons/filled/player-stop.svg';
+import checkIcon from '@tabler/icons/outline/check.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -106,7 +109,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
         <HStack space={3} alignItems='center'>
           <AuthorizeRejectButton
             theme='danger'
-            icon={require('@tabler/icons/outline/x.svg')}
+            icon={xIcon}
             action={handleReject}
             isLoading={state === 'rejecting'}
             disabled={state === 'authorizing'}
@@ -114,7 +117,7 @@ const AuthorizeRejectButtons: React.FC<IAuthorizeRejectButtons> = ({ onAuthorize
           />
           <AuthorizeRejectButton
             theme='primary'
-            icon={require('@tabler/icons/outline/check.svg')}
+            icon={checkIcon}
             action={handleAuthorize}
             isLoading={state === 'authorizing'}
             disabled={state === 'rejecting'}
@@ -162,7 +165,7 @@ const AuthorizeRejectButton: React.FC<IAuthorizeRejectButton> = ({ theme, icon, 
         }
       >
         <IconButton
-          src={isLoading ? require('@tabler/icons/filled/player-stop.svg') : icon}
+          src={isLoading ? playerStopFilledIcon : icon}
           onClick={action}
           theme='seamless'
           className='size-10 items-center justify-center bg-white focus:!ring-0 dark:!bg-gray-900'

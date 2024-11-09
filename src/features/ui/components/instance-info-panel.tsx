@@ -1,3 +1,5 @@
+import pinIcon from '@tabler/icons/outline/pin.svg';
+import pinnedOffIcon from '@tabler/icons/outline/pinned-off.svg';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -41,7 +43,7 @@ const InstanceInfoPanel: React.FC<IInstanceInfoPanel> = ({ host }) => {
     <Widget
       title={remoteInstance.host}
       onActionClick={handlePinHost}
-      actionIcon={pinned ? require('@tabler/icons/outline/pinned-off.svg') : require('@tabler/icons/outline/pin.svg')}
+      actionIcon={pinned ? pinnedOffIcon : pinIcon}
       actionTitle={intl.formatMessage(pinned ? messages.unpinHost : messages.pinHost, { host })}
     />
   );

@@ -1,3 +1,5 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -34,7 +36,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       append={
         <button onClick={onClear}>
           <Icon
-            src={value.length ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
+            src={value.length ? xIcon : searchIcon}
             className='size-4 text-gray-700 dark:text-gray-600'
             aria-hidden='true'
           />

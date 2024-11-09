@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import debounce from 'lodash/debounce';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -8,7 +9,7 @@ import IconButton from 'soapbox/components/ui/icon-button/icon-button';
 import AccountContainer from 'soapbox/containers/account-container';
 import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface ICoverPhotoSelectionModal {
   onClose?(): void;

@@ -1,3 +1,6 @@
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import editIcon from '@tabler/icons/outline/edit.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
 import React from 'react';
@@ -93,12 +96,12 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     {
       text: intl.formatMessage(messages.editFolder),
       action: handleEditFolder,
-      icon: require('@tabler/icons/outline/edit.svg'),
+      icon: editIcon,
     },
     {
       text: intl.formatMessage(messages.deleteFolder),
       action: handleDeleteFolder,
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
     },
   ] : [];
 
@@ -106,7 +109,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     <Column
       label={folder ? folder.name : intl.formatMessage(messages.heading)}
       action={
-        <DropdownMenu items={items} src={require('@tabler/icons/outline/dots-vertical.svg')} />
+        <DropdownMenu items={items} src={dotsVerticalIcon} />
       }
       transparent={!isMobile}
     >

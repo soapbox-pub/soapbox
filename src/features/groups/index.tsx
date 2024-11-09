@@ -1,3 +1,4 @@
+import circlesIcon from '@tabler/icons/outline/circles.svg';
 import React, { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -79,7 +80,7 @@ const Groups: React.FC = () => {
       {canCreateGroup && (
         <Button
           className='xl:hidden'
-          icon={require('@tabler/icons/outline/circles.svg')}
+          icon={circlesIcon}
           onClick={createGroup}
           theme='secondary'
           block

@@ -1,3 +1,4 @@
+import languageIcon from '@tabler/icons/outline/language.svg';
 import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -53,7 +54,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
         <Button
           theme='muted'
           text={<FormattedMessage id='status.show_original' defaultMessage='Show original' />}
-          icon={require('@tabler/icons/outline/language.svg')}
+          icon={languageIcon}
           onClick={handleTranslate}
         />
         <Text theme='muted'>
@@ -68,7 +69,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
       <Button
         theme='muted'
         text={<FormattedMessage id='status.translate' defaultMessage='Translate' />}
-        icon={require('@tabler/icons/outline/language.svg')}
+        icon={languageIcon}
         onClick={handleTranslate}
       />
     </div>

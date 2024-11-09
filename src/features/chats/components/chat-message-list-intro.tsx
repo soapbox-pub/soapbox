@@ -1,3 +1,4 @@
+import clockIcon from '@tabler/icons/outline/clock.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -107,7 +108,7 @@ const ChatMessageListIntro = () => {
         </HStack>
       ) : (
         <HStack justifyContent='center' alignItems='center' space={1} className='shrink-0'>
-          <Icon src={require('@tabler/icons/outline/clock.svg')} className='size-4 text-gray-600' />
+          <Icon src={clockIcon} className='size-4 text-gray-600' />
           {chat.message_expiration && (
             <Text size='sm' theme='muted'>
               {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}

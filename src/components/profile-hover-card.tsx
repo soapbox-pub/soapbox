@@ -1,4 +1,5 @@
 import { useFloating } from '@floating-ui/react';
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
@@ -123,7 +124,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
             {account.local ? (
               <HStack alignItems='center' space={0.5}>
                 <Icon
-                  src={require('@tabler/icons/outline/calendar.svg')}
+                  src={calendarIcon}
                   className='size-4 text-gray-800 dark:text-gray-200'
                 />
 

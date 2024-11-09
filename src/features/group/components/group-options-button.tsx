@@ -1,3 +1,8 @@
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import flagIcon from '@tabler/icons/outline/flag.svg';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
+import shareIcon from '@tabler/icons/outline/share.svg';
+import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -98,7 +103,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (canShare) {
       items.push({
         text: intl.formatMessage(messages.share),
-        icon: require('@tabler/icons/outline/share.svg'),
+        icon: shareIcon,
         action: handleShare,
       });
     }
@@ -106,7 +111,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (isInGroup) {
       items.push({
         text: isMuting ? intl.formatMessage(messages.unmute) : intl.formatMessage(messages.mute),
-        icon: require('@tabler/icons/outline/volume-3.svg'),
+        icon: volume3Icon,
         action: isMuting ? handleUnmute : handleMute,
       });
     }
@@ -114,7 +119,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
     if (isMember || isAdmin) {
       items.push({
         text: intl.formatMessage(messages.report),
-        icon: require('@tabler/icons/outline/flag.svg'),
+        icon: flagIcon,
         action: () => dispatch(initReport(ReportableEntities.GROUP, account as Account, { group })),
       });
     }
@@ -123,7 +128,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
       items.push(null);
       items.push({
         text: intl.formatMessage(messages.leave),
-        icon: require('@tabler/icons/outline/logout.svg'),
+        icon: logoutIcon,
         action: handleLeave,
       });
     }
@@ -138,7 +143,7 @@ const GroupOptionsButton = ({ group }: IGroupActionButton) => {
   return (
     <DropdownMenu items={menu} placement='bottom'>
       <IconButton
-        src={require('@tabler/icons/outline/dots.svg')}
+        src={dotsIcon}
         theme='secondary'
         iconClassName='h-5 w-5'
         className='self-stretch px-2.5'

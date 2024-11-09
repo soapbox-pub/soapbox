@@ -1,3 +1,5 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -13,7 +15,7 @@ import resizeImage from 'soapbox/utils/resize-image';
 
 import type { AxiosError } from 'axios';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
@@ -123,7 +125,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
               })}
               disabled={isSubmitting}
             >
-              <Icon src={require('@tabler/icons/outline/plus.svg')} className='size-5 text-white' />
+              <Icon src={plusIcon} className='size-5 text-white' />
             </button>
 
             <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

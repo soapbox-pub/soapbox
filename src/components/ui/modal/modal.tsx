@@ -1,3 +1,5 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -72,7 +74,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
   cancelAction,
   cancelText,
   children,
-  closeIcon = require('@tabler/icons/outline/x.svg'),
+  closeIcon = xIcon,
   closePosition = 'right',
   confirmationAction,
   confirmationDisabled,
@@ -115,7 +117,7 @@ const Modal = React.forwardRef<HTMLDivElement, IModal>(({
             >
               {onBack && (
                 <IconButton
-                  src={require('@tabler/icons/outline/arrow-left.svg')}
+                  src={arrowLeftIcon}
                   title={intl.formatMessage(messages.back)}
                   onClick={onBack}
                   className='text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'

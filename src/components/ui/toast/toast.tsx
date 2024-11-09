@@ -1,3 +1,7 @@
+import alertCircleIcon from '@tabler/icons/outline/alert-circle.svg';
+import circleCheckIcon from '@tabler/icons/outline/circle-check.svg';
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React from 'react';
 import toast, { Toast as RHToast } from 'react-hot-toast';
@@ -42,7 +46,7 @@ const Toast = (props: IToast) => {
       case 'success':
         return (
           <Icon
-            src={require('@tabler/icons/outline/circle-check.svg')}
+            src={circleCheckIcon}
             className='size-6 text-success-500 dark:text-success-400'
             aria-hidden
           />
@@ -50,7 +54,7 @@ const Toast = (props: IToast) => {
       case 'info':
         return (
           <Icon
-            src={require('@tabler/icons/outline/info-circle.svg')}
+            src={infoCircleIcon}
             className='size-6 text-primary-600 dark:text-accent-blue'
             aria-hidden
           />
@@ -58,7 +62,7 @@ const Toast = (props: IToast) => {
       case 'error':
         return (
           <Icon
-            src={require('@tabler/icons/outline/alert-circle.svg')}
+            src={alertCircleIcon}
             className='size-6 text-danger-600'
             aria-hidden
           />
@@ -143,7 +147,7 @@ const Toast = (props: IToast) => {
               data-testid='toast-dismiss'
             >
               <span className='sr-only'><FormattedMessage id='lightbox.close' defaultMessage='Close' /></span>
-              <Icon src={require('@tabler/icons/outline/x.svg')} className='size-5' />
+              <Icon src={xIcon} className='size-5' />
             </button>
           </div>
         </HStack>

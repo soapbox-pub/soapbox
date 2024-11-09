@@ -1,3 +1,4 @@
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -226,7 +227,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
 
           <List>
             <ListItem
-              label={<Icon src={require('@tabler/icons/outline/info-circle.svg')} className='text-gray-600' />}
+              label={<Icon src={infoCircleIcon} className='text-gray-600' />}
             >
               <Text size='sm'>{intl.formatMessage(messages.reportContext)}</Text>
             </ListItem>

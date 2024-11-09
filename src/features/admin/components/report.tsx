@@ -1,3 +1,6 @@
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import hourglassEmptyIcon from '@tabler/icons/outline/hourglass-empty.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import React, { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -45,11 +48,11 @@ const Report: React.FC<IReport> = ({ id }) => {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/outline/hourglass-empty.svg'),
+      icon: hourglassEmptyIcon,
     }, {
       text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       destructive: true,
     }];
   };
@@ -149,7 +152,7 @@ const Report: React.FC<IReport> = ({ id }) => {
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
-        <DropdownMenu items={menu} src={require('@tabler/icons/outline/dots-vertical.svg')} />
+        <DropdownMenu items={menu} src={dotsVerticalIcon} />
       </HStack>
     </HStack>
   );

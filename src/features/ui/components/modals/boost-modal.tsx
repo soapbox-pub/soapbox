@@ -1,3 +1,4 @@
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -39,7 +40,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
 
         <Text>
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
-          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon className='inline-block align-middle' src={require('@tabler/icons/outline/repeat.svg')} /></span> }} />
+          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon className='inline-block align-middle' src={repeatIcon} /></span> }} />
         </Text>
       </Stack>
     </Modal>

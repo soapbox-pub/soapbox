@@ -1,3 +1,6 @@
+import banIcon from '@tabler/icons/outline/ban.svg';
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import React, { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
@@ -34,7 +37,7 @@ const DeletedBlankslate = () => (
   <Stack space={4} className='py-10' alignItems='center'>
     <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
       <Icon
-        src={require('@tabler/icons/outline/trash.svg')}
+        src={trashIcon}
         className='size-6 text-danger-600 dark:text-danger-400'
       />
     </div>
@@ -52,7 +55,7 @@ const PrivacyBlankslate = () => (
   <Stack space={4} className='py-10' alignItems='center'>
     <div className='rounded-full bg-gray-200 p-3 dark:bg-gray-800'>
       <Icon
-        src={require('@tabler/icons/outline/eye-off.svg')}
+        src={eyeOffIcon}
         className='size-6 text-gray-600 dark:text-gray-600'
       />
     </div>
@@ -70,7 +73,7 @@ const BlockedBlankslate = ({ group }: { group: Group }) => (
   <Stack space={4} className='py-10' alignItems='center'>
     <div className='rounded-full bg-danger-200 p-3 dark:bg-danger-400/20'>
       <Icon
-        src={require('@tabler/icons/outline/ban.svg')}
+        src={banIcon}
         className='size-6 text-danger-600 dark:text-danger-400'
       />
     </div>

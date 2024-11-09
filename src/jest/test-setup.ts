@@ -16,7 +16,7 @@ vi.mock('soapbox/queries/client');
 
 // Mock IndexedDB
 // https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
-require('fake-indexeddb/auto');
+import 'fake-indexeddb/auto';
 
 // Clear toasts after each test.
 afterEach(() => {

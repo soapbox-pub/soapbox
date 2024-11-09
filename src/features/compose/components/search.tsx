@@ -1,3 +1,5 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect } from 'react';
@@ -111,7 +113,7 @@ const Search = (props: ISearch) => {
   const makeMenu = () => [
     {
       text: intl.formatMessage(messages.action, { query: value }),
-      icon: require('@tabler/icons/outline/search.svg'),
+      icon: searchIcon,
       action: handleSubmit,
     },
   ];
@@ -166,12 +168,12 @@ const Search = (props: ISearch) => {
           onClick={handleClear}
         >
           <SvgIcon
-            src={require('@tabler/icons/outline/search.svg')}
+            src={searchIcon}
             className={clsx('size-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
-            src={require('@tabler/icons/outline/x.svg')}
+            src={xIcon}
             className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

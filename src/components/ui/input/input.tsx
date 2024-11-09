@@ -1,3 +1,5 @@
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import eyeIcon from '@tabler/icons/outline/eye.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -123,7 +125,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 className='h-full px-2 text-gray-700 hover:text-gray-500 focus:ring-2 focus:ring-primary-500 dark:text-gray-600 dark:hover:text-gray-400'
               >
                 <SvgIcon
-                  src={revealed ? require('@tabler/icons/outline/eye-off.svg') : require('@tabler/icons/outline/eye.svg')}
+                  src={revealed ? eyeOffIcon : eyeIcon}
                   className='size-4'
                 />
               </button>

@@ -1,3 +1,5 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import React, { useState } from 'react';
@@ -101,7 +103,7 @@ const ChatSearch = (props: IChatSearch) => {
           append={
             <button onClick={clearValue}>
               <Icon
-                src={hasSearchValue ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
+                src={hasSearchValue ? xIcon : searchIcon}
                 className='size-4 text-gray-700 dark:text-gray-600'
                 aria-hidden='true'
               />

@@ -1,3 +1,5 @@
+import layoutGridIcon from '@tabler/icons/outline/layout-grid.svg';
+import layoutListIcon from '@tabler/icons/outline/layout-list.svg';
 import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
@@ -65,7 +67,7 @@ const Tag: React.FC<ITag> = (props) => {
         <HStack alignItems='center'>
           <button onClick={() => setLayout(Layout.LIST)}>
             <Icon
-              src={require('@tabler/icons/outline/layout-list.svg')}
+              src={layoutListIcon}
               className={
                 clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.LIST,
@@ -76,7 +78,7 @@ const Tag: React.FC<ITag> = (props) => {
 
           <button onClick={() => setLayout(Layout.GRID)}>
             <Icon
-              src={require('@tabler/icons/outline/layout-grid.svg')}
+              src={layoutGridIcon}
               className={
                 clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.GRID,

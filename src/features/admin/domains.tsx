@@ -1,3 +1,4 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import React, { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -122,7 +123,7 @@ const Domains: React.FC = () => {
       <Stack className='gap-4'>
         <Button
           className='sm:w-fit sm:self-end'
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           onClick={handleCreateDomain}
           theme='secondary'
           block

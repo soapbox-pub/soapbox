@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
+import verifiedIcon from 'soapbox/assets/icons/verified.svg';
 import { Icon } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
@@ -18,7 +19,7 @@ const VerificationBadge: React.FC<IVerificationBadge> = ({ className }) => {
   const soapboxConfig = useSoapboxConfig();
 
   // Prefer a custom icon if found
-  const icon = soapboxConfig.verifiedIcon || require('soapbox/assets/icons/verified.svg');
+  const icon = soapboxConfig.verifiedIcon || verifiedIcon;
 
   // Render component based on file extension
   const Element = icon.endsWith('.svg') ? Icon : 'img';

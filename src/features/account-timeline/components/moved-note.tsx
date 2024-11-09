@@ -1,3 +1,4 @@
+import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -16,7 +17,7 @@ const MovedNote: React.FC<IMovedNote> = ({ from, to }) => (
   <div className='p-4'>
     <HStack className='mb-2' alignItems='center' space={1.5}>
       <Icon
-        src={require('@tabler/icons/outline/briefcase.svg')}
+        src={briefcaseIcon}
         className='flex-none text-primary-600 dark:text-primary-400'
       />
 

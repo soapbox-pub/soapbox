@@ -1,3 +1,4 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -26,7 +27,7 @@ const ChatSearchHeader = () => {
             }}
           >
             <Icon
-              src={require('@tabler/icons/outline/arrow-left.svg')}
+              src={arrowLeftIcon}
               className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
             />
           </button>

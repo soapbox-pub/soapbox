@@ -1,3 +1,5 @@
+import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
+import photoIcon from '@tabler/icons/outline/photo.svg';
 import React, { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
@@ -54,8 +56,8 @@ const UploadButton: React.FC<IUploadButton> = ({
 
   const src = icon || (
     onlyImages(attachmentTypes)
-      ? require('@tabler/icons/outline/photo.svg')
-      : require('@tabler/icons/outline/paperclip.svg')
+      ? photoIcon
+      : paperclipIcon
   );
 
   return (

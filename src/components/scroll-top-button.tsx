@@ -1,3 +1,4 @@
+import arrowBarToUpIcon from '@tabler/icons/outline/arrow-bar-to-up.svg';
 import throttle from 'lodash/throttle';
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
@@ -92,7 +93,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
       >
         <Icon
           className='size-4'
-          src={require('@tabler/icons/outline/arrow-bar-to-up.svg')}
+          src={arrowBarToUpIcon}
         />
 
         <Text theme='inherit' size='sm'>

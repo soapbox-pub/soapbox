@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect } from 'react';
@@ -153,7 +154,7 @@ const SearchZapSplit = (props: ISearchZapSplit) => {
         >
 
           <SvgIcon
-            src={require('@tabler/icons/outline/x.svg')}
+            src={xIcon}
             className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

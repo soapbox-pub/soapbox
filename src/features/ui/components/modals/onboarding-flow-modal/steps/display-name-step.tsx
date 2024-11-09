@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -9,7 +10,7 @@ import toast from 'soapbox/toast';
 
 import type { AxiosError } from 'axios';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   usernamePlaceholder: { id: 'onboarding.display_name.placeholder', defaultMessage: 'Eg. John Smith' },

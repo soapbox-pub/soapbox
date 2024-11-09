@@ -5,6 +5,8 @@ import Overlay from 'react-overlays/lib/Overlay';
 
 import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
 
+import forkAwesomeIcons from '../forkawesome.json';
+
 import IconPickerMenu from './icon-picker-menu';
 
 const messages = defineMessages({
@@ -53,7 +55,6 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickIcon }
   };
 
   const title = intl.formatMessage(messages.emoji);
-  const forkAwesomeIcons = require('../forkawesome.json');
 
   return (
     <div onKeyDown={handleKeyDown}>

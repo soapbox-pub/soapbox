@@ -1,3 +1,5 @@
+import atIcon from '@tabler/icons/outline/at.svg';
+import checkIcon from '@tabler/icons/outline/check.svg';
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
@@ -152,7 +154,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     const heading = confirmationHeading || approvalHeading;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/check.svg'),
+      icon: checkIcon,
       heading: heading,
       message,
       confirm: intl.formatMessage(messages.close),
@@ -255,7 +257,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               autoCorrect='off'
               autoCapitalize='off'
               pattern='^[a-zA-Z\d_-]+'
-              icon={require('@tabler/icons/outline/at.svg')}
+              icon={atIcon}
               onChange={onUsernameChange}
               value={params.get('username', '')}
               required
