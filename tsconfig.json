@@ -10,6 +10,7 @@
     "jsx": "react-jsx",
     "allowJs": true,
     "isolatedModules": true,
+    "noUnusedLocals": true,
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
