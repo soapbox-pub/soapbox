@@ -1,7 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import * as actions from 'soapbox/actions/compose';
 import { COMPOSE_SET_STATUS } from 'soapbox/actions/compose-status';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';

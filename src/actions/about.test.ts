@@ -1,7 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 import { describe, expect, it } from 'vitest';
 
-
 import { staticClient } from 'soapbox/api';
 import { mockStore } from 'soapbox/jest/test-helpers';
 

@@ -1,7 +1,6 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { normalizeSoapboxConfig } from './soapbox-config';
 
 describe('normalizeSoapboxConfig()', () => {

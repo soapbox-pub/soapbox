@@ -6,7 +6,6 @@ import {
 } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';

@@ -1,7 +1,6 @@
 import { Record as ImmutableRecord, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import AVATAR_MISSING from 'soapbox/assets/images/avatar-missing.png';
 import HEADER_MISSING from 'soapbox/assets/images/header-missing.png';
 

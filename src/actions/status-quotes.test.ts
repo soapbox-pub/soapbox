@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';
 import { StatusListRecord } from 'soapbox/reducers/status-lists';

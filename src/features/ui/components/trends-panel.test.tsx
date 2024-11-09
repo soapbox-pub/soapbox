@@ -1,7 +1,6 @@
 import React from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-
 import { __stub } from 'soapbox/api';
 import { queryClient, render, screen, waitFor } from 'soapbox/jest/test-helpers';
 

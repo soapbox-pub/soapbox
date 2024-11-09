@@ -1,7 +1,6 @@
 import { List as ImmutableList } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import reducer from './filters';
 
 describe('filters reducer', () => {

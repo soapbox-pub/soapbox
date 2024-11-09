@@ -1,7 +1,6 @@
 import { fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import { buildStatus } from 'soapbox/jest/factory';
 
 import { shouldFilter } from './timelines';

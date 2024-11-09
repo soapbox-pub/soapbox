@@ -1,7 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-
 import reducer from './lists';
 
 describe('lists reducer', () => {
