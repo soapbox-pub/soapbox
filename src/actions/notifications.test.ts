@@ -1,4 +1,6 @@
 import { OrderedMap as ImmutableOrderedMap } from 'immutable';
+import { describe, expect, it } from 'vitest';
+
 
 import { __stub } from 'soapbox/api';
 import { mockStore, rootState } from 'soapbox/jest/test-helpers';

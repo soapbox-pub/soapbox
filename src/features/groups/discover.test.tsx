@@ -1,5 +1,7 @@
+
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
 import { buildAccount } from 'soapbox/jest/factory';
 import { render, screen, waitFor } from 'soapbox/jest/test-helpers';

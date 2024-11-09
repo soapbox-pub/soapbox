@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { instanceV1Schema } from './instance';
 
 describe('instanceV1Schema.parse()', () => {

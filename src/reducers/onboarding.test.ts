@@ -1,3 +1,5 @@
+import { describe, expect, it } from 'vitest';
+
 import { ONBOARDING_START, ONBOARDING_END } from 'soapbox/actions/onboarding';
 
 import reducer from './onboarding';

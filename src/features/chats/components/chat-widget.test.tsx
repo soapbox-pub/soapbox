@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 
 import { buildAccount } from 'soapbox/jest/factory';
 import { render, rootState } from 'soapbox/jest/test-helpers';
