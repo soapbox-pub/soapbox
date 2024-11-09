@@ -1,4 +1,3 @@
-
 import Counter from '../counter/counter';
 
 import SvgIcon from './svg-icon';

@@ -1,4 +1,3 @@
-
 interface IWidePage {
   children: React.ReactNode;
 }

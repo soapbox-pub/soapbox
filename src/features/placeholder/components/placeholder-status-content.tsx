@@ -1,4 +1,3 @@
-
 import { randomIntFromInterval, generateText } from '../utils';
 
 interface IPlaceholderStatusContent {

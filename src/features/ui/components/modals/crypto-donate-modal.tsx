@@ -1,4 +1,3 @@
-
 import { Modal } from 'soapbox/components/ui';
 import DetailedCryptoAddress from 'soapbox/features/crypto-donate/components/detailed-crypto-address';
 

@@ -1,4 +1,3 @@
-
 import { ChatProvider } from 'soapbox/contexts/chat-context';
 
 import ChatPage from './components/chat-page/chat-page';

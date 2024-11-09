@@ -1,4 +1,3 @@
-
 import { defineMessages } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 

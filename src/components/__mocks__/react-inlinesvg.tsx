@@ -1,4 +1,3 @@
-
 interface IInlineSVG {
   loader?: JSX.Element;
 }

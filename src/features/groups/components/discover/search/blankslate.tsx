@@ -1,4 +1,3 @@
-
 import { Stack, Text } from 'soapbox/components/ui';
 
 interface Props {

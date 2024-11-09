@@ -1,4 +1,3 @@
-
 import { isCustomEmoji } from 'soapbox/features/emoji';
 import unicodeMapping from 'soapbox/features/emoji/mapping';
 import { joinPublicPath } from 'soapbox/utils/static';

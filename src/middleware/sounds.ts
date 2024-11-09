@@ -1,4 +1,3 @@
-
 import { play, soundCache } from 'soapbox/utils/sounds';
 
 import type { AnyAction, Middleware } from 'redux';

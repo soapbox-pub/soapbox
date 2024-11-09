@@ -1,4 +1,3 @@
-
 import { Map as ImmutableMap } from 'immutable';
 import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';

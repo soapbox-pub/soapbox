@@ -1,4 +1,3 @@
-
 import IconPickerDropdown from './icon-picker-dropdown';
 
 interface IIconPicker {

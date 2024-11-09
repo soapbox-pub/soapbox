@@ -1,4 +1,3 @@
-
 import { HStack, Stack, Text } from 'soapbox/components/ui';
 
 import { generateText, randomIntFromInterval } from '../utils';

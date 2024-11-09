@@ -1,4 +1,3 @@
-
 import { Card, CardBody, Spinner } from 'soapbox/components/ui';
 
 const ColumnLoading = () => (

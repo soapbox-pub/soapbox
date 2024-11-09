@@ -1,4 +1,3 @@
-
 import { HStack, Stack } from 'soapbox/components/ui';
 
 import PlaceholderAvatar from './placeholder-avatar';

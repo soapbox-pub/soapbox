@@ -1,4 +1,3 @@
-
 import { useGroups } from 'soapbox/api/hooks';
 import { Widget } from 'soapbox/components/ui';
 import GroupListItem from 'soapbox/features/groups/components/discover/group-list-item';

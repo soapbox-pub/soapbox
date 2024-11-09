@@ -1,4 +1,3 @@
-
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import {
   WhoToFollowPanel,

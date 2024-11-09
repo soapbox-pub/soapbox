@@ -1,4 +1,3 @@
-
 import UploadProgress from 'soapbox/components/upload-progress';
 import { useCompose } from 'soapbox/hooks';
 

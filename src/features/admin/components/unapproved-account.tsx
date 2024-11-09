@@ -1,4 +1,3 @@
-
 import { approveUser, rejectUser } from 'soapbox/actions/admin';
 import { useAccount } from 'soapbox/api/hooks';
 import Account from 'soapbox/components/account';
