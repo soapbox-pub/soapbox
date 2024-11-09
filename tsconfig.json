@@ -16,14 +16,8 @@
     "paths": {
       "soapbox/*": ["src/*"],
     },
-    "typeRoots": [
-      "./src/types",
-      "./node_modules/@types",
-      "./node_modules"
-    ],
     "types": [
       "vite/client",
-      "vite-plugin-compile-time/client",
       "@webbtc/webln-types"
     ]
   }
