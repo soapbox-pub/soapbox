@@ -25,4 +25,4 @@ const soapboxAuthSchema = z.object({
 type AuthUser = z.infer<typeof authUserSchema>;
 type SoapboxAuth = z.infer<typeof soapboxAuthSchema>;
 
-export { soapboxAuthSchema, SoapboxAuth, authUserSchema, AuthUser };
+export { soapboxAuthSchema, type SoapboxAuth, authUserSchema, type AuthUser };

@@ -30,4 +30,4 @@ const StatProvider: React.FC<IStatProvider> = ({ children }) => {
 
 const useStatContext = (): IStatContext => useContext(StatContext);
 
-export { StatProvider, useStatContext, IStatContext };
+export { StatProvider, useStatContext, type IStatContext };

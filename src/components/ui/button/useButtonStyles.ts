@@ -49,4 +49,4 @@ const useButtonStyles = ({
   return buttonStyle;
 };
 
-export { useButtonStyles, ButtonSizes, ButtonThemes };
+export { useButtonStyles, type ButtonSizes, type ButtonThemes };

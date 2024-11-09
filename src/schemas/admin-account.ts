@@ -29,4 +29,4 @@ const adminAccountSchema = z.object({
 
 type AdminAccount = z.infer<typeof adminAccountSchema>;
 
-export { adminAccountSchema, AdminAccount };
+export { adminAccountSchema, type AdminAccount };

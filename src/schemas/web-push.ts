@@ -23,4 +23,4 @@ const webPushSubscriptionSchema = z.object({
 
 type WebPushSubscription = z.infer<typeof webPushSubscriptionSchema>;
 
-export { webPushSubscriptionSchema, WebPushSubscription };
+export { webPushSubscriptionSchema, type WebPushSubscription };

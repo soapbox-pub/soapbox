@@ -12,7 +12,7 @@ type FooterItem = ReturnType<typeof FooterItemRecord>;
 type CryptoAddress = ReturnType<typeof CryptoAddressRecord>;
 type SoapboxConfig = ReturnType<typeof SoapboxConfigRecord>;
 
-export {
+export type {
   Me,
   PromoPanelItem,
   FooterItem,

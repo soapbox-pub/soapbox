@@ -94,4 +94,4 @@ const useZapSplit = (status: StatusEntity | undefined, account: AccountEntity) =
 };
 
 export default useZapSplit;
-export { SplitValue };
+export type { SplitValue };

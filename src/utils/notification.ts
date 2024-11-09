@@ -35,6 +35,6 @@ const validType = (type: string): type is NotificationType => NOTIFICATION_TYPES
 export {
   NOTIFICATION_TYPES,
   EXCLUDE_TYPES,
-  NotificationType,
+  type NotificationType,
   validType,
 };

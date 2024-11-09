@@ -255,4 +255,4 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
 type InstanceV1 = z.infer<typeof instanceV1Schema>;
 type InstanceV2 = z.infer<typeof instanceV2Schema>;
 
-export { instanceV1Schema, InstanceV1, instanceV2Schema, InstanceV2, upgradeInstance };
+export { instanceV1Schema, type InstanceV1, instanceV2Schema, type InstanceV2, upgradeInstance };

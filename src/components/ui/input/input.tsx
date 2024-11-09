@@ -139,5 +139,5 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
 
 export {
   Input as default,
-  InputThemes,
+  type InputThemes,
 };
