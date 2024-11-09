@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { fetchMfa } from 'soapbox/actions/mfa';

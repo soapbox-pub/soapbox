@@ -1,7 +1,7 @@
 import caretDownIcon from '@tabler/icons/outline/caret-down.svg';
 import caretRightIcon from '@tabler/icons/outline/caret-right.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import Icon from 'soapbox/components/icon';
 import { useAppSelector } from 'soapbox/hooks';

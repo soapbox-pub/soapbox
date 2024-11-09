@@ -1,7 +1,7 @@
 import layoutGridIcon from '@tabler/icons/outline/layout-grid.svg';
 import layoutListIcon from '@tabler/icons/outline/layout-list.svg';
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
 import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks';
@@ -17,7 +17,7 @@ enum Layout {
   GRID = 'GRID'
 }
 
-const GridList: Components['List'] = React.forwardRef((props, ref) => {
+const GridList: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });

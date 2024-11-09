@@ -1,5 +1,5 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchPinnedAccounts } from 'soapbox/actions/accounts';

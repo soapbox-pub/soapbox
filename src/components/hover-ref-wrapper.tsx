@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 import { fetchAccount } from 'soapbox/actions/accounts';
 import {

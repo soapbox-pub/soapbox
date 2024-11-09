@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import useCaptcha from 'soapbox/api/hooks/captcha/useCaptcha';

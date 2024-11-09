@@ -1,6 +1,6 @@
 import message2Icon from '@tabler/icons/outline/message-2.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

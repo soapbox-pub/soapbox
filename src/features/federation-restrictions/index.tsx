@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list';

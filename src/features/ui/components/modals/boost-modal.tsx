@@ -1,5 +1,4 @@
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';

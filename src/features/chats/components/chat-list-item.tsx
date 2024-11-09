@@ -1,6 +1,6 @@
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

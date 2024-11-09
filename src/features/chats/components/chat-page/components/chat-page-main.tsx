@@ -2,7 +2,7 @@ import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
 import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory, useParams } from 'react-router-dom';
 

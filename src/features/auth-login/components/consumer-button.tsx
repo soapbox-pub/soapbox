@@ -5,7 +5,6 @@ import brandSlackIcon from '@tabler/icons/outline/brand-slack.svg';
 import brandTwitterIcon from '@tabler/icons/outline/brand-twitter.svg';
 import brandWindowsIcon from '@tabler/icons/outline/brand-windows.svg';
 import keyIcon from '@tabler/icons/outline/key.svg';
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { prepareRequest } from 'soapbox/actions/consumer-auth';

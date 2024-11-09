@@ -1,5 +1,5 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
-import React, { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { revokeName, setBadges as saveBadges } from 'soapbox/actions/admin';

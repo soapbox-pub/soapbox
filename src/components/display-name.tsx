@@ -1,4 +1,3 @@
-import React from 'react';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
 import { useSoapboxConfig } from 'soapbox/hooks';

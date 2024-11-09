@@ -1,5 +1,5 @@
 import throttle from 'lodash/throttle';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 type Point = { x: number; y: number };
 

@@ -2,7 +2,7 @@ import { offset, Placement, useFloating, flip, arrow, shift } from '@floating-ui
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
@@ -269,7 +269,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   return (
     <>
       {children ? (
-        React.cloneElement(children, {
+        cloneElement(children, {
           disabled,
           onClick: handleClick,
           onKeyPress: handleKeyPress,

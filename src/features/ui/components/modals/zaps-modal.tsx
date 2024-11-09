@@ -1,5 +1,5 @@
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchZaps, expandZaps } from 'soapbox/actions/interactions';

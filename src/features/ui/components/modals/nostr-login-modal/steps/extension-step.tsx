@@ -1,5 +1,4 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 

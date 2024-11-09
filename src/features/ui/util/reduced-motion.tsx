@@ -1,6 +1,5 @@
 // Like react-motion's Motion, but reduces all animations to cross-fades
 // for the benefit of users with motion sickness.
-import React from 'react';
 import { Motion, MotionProps } from 'react-motion';
 
 const stylesToKeep = ['opacity', 'backgroundOpacity'];

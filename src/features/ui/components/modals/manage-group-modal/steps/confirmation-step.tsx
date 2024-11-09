@@ -1,6 +1,5 @@
 import linkIcon from '@tabler/icons/outline/link.svg';
 import shareIcon from '@tabler/icons/outline/share.svg';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';

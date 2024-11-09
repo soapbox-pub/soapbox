@@ -2,7 +2,7 @@ import banIcon from '@tabler/icons/outline/ban.svg';
 import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
 import userMinusIcon from '@tabler/icons/outline/user-minus.svg';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { groupKick } from 'soapbox/actions/groups';

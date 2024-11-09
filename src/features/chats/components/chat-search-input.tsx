@@ -1,6 +1,5 @@
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Icon, Input } from 'soapbox/components/ui';

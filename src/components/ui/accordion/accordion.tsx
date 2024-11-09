@@ -2,7 +2,6 @@ import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg';
 import chevronUpIcon from '@tabler/icons/outline/chevron-up.svg';
 import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import DropdownMenu from 'soapbox/components/dropdown-menu';

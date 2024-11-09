@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';

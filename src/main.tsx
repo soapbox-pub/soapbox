@@ -1,5 +1,4 @@
 import { enableMapSet } from 'immer';
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import * as BuildConfig from 'soapbox/build-config';

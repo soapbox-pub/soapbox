@@ -9,7 +9,6 @@ import homeIcon from '@tabler/icons/outline/home.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';

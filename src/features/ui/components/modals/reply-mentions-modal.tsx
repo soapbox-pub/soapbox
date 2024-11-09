@@ -1,5 +1,5 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';

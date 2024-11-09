@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 

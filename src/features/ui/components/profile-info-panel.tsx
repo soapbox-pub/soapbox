@@ -3,7 +3,6 @@ import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import linkIcon from '@tabler/icons/outline/link.svg';
 import lockIcon from '@tabler/icons/outline/lock.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
-import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { usePatronUser } from 'soapbox/api/hooks';

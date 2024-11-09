@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';

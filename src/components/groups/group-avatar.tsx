@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 import { GroupRoles } from 'soapbox/schemas/group-member';
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';

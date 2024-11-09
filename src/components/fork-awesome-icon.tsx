@@ -6,7 +6,6 @@
  */
 
 import clsx from 'clsx';
-import React from 'react';
 
 export interface IForkAwesomeIcon extends React.HTMLAttributes<HTMLLIElement> {
   id: string;

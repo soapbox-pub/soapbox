@@ -2,7 +2,7 @@ import playerStopFilledIcon from '@tabler/icons/filled/player-stop.svg';
 import checkIcon from '@tabler/icons/outline/check.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, IconButton, Text } from 'soapbox/components/ui';

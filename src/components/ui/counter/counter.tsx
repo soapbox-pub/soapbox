@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 

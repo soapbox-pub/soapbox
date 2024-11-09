@@ -1,6 +1,5 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import qrcodeIcon from '@tabler/icons/outline/qrcode.svg';
-import React from 'react';
 
 import { openModal } from 'soapbox/actions/modals';
 import CopyableInput from 'soapbox/components/copyable-input';

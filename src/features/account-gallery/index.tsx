@@ -1,5 +1,5 @@
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 

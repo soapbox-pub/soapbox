@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import { useAccount } from 'soapbox/api/hooks';

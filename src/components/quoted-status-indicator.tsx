@@ -1,5 +1,5 @@
 import quoteIcon from '@tabler/icons/outline/quote.svg';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';

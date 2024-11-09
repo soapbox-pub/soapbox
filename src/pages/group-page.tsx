@@ -1,7 +1,7 @@
 import banIcon from '@tabler/icons/outline/ban.svg';
 import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 

@@ -1,6 +1,5 @@
 import pencilPlusIcon from '@tabler/icons/outline/pencil-plus.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 

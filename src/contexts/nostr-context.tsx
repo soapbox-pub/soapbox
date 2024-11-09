@@ -1,5 +1,5 @@
 import { NRelay1 } from '@nostrify/nostrify';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 import { useInstance } from 'soapbox/hooks/useInstance';
 

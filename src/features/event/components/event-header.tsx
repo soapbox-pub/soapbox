@@ -22,7 +22,6 @@ import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import usersIcon from '@tabler/icons/outline/users.svg';
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

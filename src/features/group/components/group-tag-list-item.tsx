@@ -2,7 +2,6 @@ import pinFilledIcon from '@tabler/icons/filled/pin.svg';
 import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
 import eyeIcon from '@tabler/icons/outline/eye.svg';
 import pinIcon from '@tabler/icons/outline/pin.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

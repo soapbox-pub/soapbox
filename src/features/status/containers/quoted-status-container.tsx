@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
 import QuotedStatus from 'soapbox/components/quoted-status';
 import Tombstone from 'soapbox/components/tombstone';

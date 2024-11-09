@@ -1,7 +1,7 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
 import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

@@ -4,7 +4,7 @@ import mailIcon from '@tabler/icons/outline/mail.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { spring } from 'react-motion';
 // @ts-ignore

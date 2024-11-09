@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { removeVS16s, toCodePoints } from 'soapbox/utils/emoji';
 import { joinPublicPath } from 'soapbox/utils/static';

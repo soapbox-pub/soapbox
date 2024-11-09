@@ -1,5 +1,4 @@
 import chartBarIcon from '@tabler/icons/outline/chart-bar.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { addPoll, removePoll } from 'soapbox/actions/compose';

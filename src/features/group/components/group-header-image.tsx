@@ -1,6 +1,6 @@
 import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Icon } from 'soapbox/components/ui';

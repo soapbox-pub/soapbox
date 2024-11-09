@@ -1,7 +1,7 @@
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import lockIcon from '@tabler/icons/outline/lock.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

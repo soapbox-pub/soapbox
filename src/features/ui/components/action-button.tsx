@@ -1,6 +1,5 @@
 import banIcon from '@tabler/icons/outline/ban.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {

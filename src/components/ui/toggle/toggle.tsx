@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
 interface IToggle extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'id' | 'name' | 'checked' | 'onChange' | 'required' | 'disabled'> {
   size?: 'sm' | 'md';

@@ -8,7 +8,7 @@ import {
   useInteractions,
   useTransitionStyles,
 } from '@floating-ui/react';
-import React, { useRef, useState } from 'react';
+import { cloneElement, useRef, useState } from 'react';
 
 interface ITooltip {
   /** Element to display the tooltip around. */
@@ -63,7 +63,7 @@ const Tooltip: React.FC<ITooltip> = (props) => {
 
   return (
     <>
-      {React.cloneElement(children, {
+      {cloneElement(children, {
         ref: refs.setReference,
         ...getReferenceProps(),
       })}

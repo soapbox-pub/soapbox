@@ -1,6 +1,6 @@
 import { useFloating } from '@floating-ui/react';
 import clsx from 'clsx';
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {

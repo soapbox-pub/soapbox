@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { injectIntl, defineMessages, IntlShape, FormatDateOptions } from 'react-intl';
 
 import Text, { IText } from './ui/text/text';
@@ -124,7 +124,7 @@ interface RelativeTimestampState {
 }
 
 /** Displays a timestamp compared to the current time, eg "1m" for one minute ago. */
-class RelativeTimestamp extends React.Component<RelativeTimestampProps, RelativeTimestampState> {
+class RelativeTimestamp extends Component<RelativeTimestampProps, RelativeTimestampState> {
 
   _timer: NodeJS.Timeout | undefined;
 

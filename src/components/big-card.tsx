@@ -1,5 +1,4 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 
 import { Card, CardBody, Stack, Text } from 'soapbox/components/ui';
 import IconButton from 'soapbox/components/ui/icon-button/icon-button';

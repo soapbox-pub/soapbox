@@ -1,5 +1,4 @@
 import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

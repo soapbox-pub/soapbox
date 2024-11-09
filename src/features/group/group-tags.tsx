@@ -1,5 +1,4 @@
 import hashIcon from '@tabler/icons/outline/hash.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { useGroup, useGroupTags } from 'soapbox/api/hooks';

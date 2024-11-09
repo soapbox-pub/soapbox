@@ -6,7 +6,7 @@ import {
   useTabsContext,
 } from '@reach/tabs';
 import clsx from 'clsx';
-import React from 'react';
+import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Counter from '../counter/counter';
@@ -14,7 +14,7 @@ import Counter from '../counter/counter';
 import './tabs.css';
 
 const HORIZONTAL_PADDING = 8;
-const AnimatedContext = React.createContext(null);
+const AnimatedContext = createContext(null);
 
 interface IAnimatedInterface {
   /** Callback when a tab is chosen. */
@@ -26,8 +26,8 @@ interface IAnimatedInterface {
 
 /** Tabs with a sliding active state. */
 const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
-  const [activeRect, setActiveRect] = React.useState(null);
-  const ref = React.useRef();
+  const [activeRect, setActiveRect] = useState(null);
+  const ref = useRef();
   const rect = useRect(ref);
 
   // @ts-ignore
@@ -81,14 +81,14 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
   const isSelected: boolean = selectedIndex === index;
 
   // measure the size of our element, only listen to rect if active
-  const ref = React.useRef();
+  const ref = useRef();
   const rect = useRect(ref, { observe: isSelected });
 
   // get the style changing function from context
-  const setActiveRect = React.useContext(AnimatedContext);
+  const setActiveRect = useContext(AnimatedContext);
 
   // callup to set styles whenever we're active
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     if (isSelected) {
       // @ts-ignore
       setActiveRect(rect);

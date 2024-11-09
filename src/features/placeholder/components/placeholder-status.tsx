@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { memo } from 'react';
 
 import { HStack } from 'soapbox/components/ui';
 
@@ -40,4 +40,4 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
   </div>
 );
 
-export default React.memo(PlaceholderStatus);
+export default memo(PlaceholderStatus);

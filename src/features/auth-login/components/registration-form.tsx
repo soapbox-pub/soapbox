@@ -3,7 +3,7 @@ import checkIcon from '@tabler/icons/outline/check.svg';
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

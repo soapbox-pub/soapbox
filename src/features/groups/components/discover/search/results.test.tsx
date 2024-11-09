@@ -1,6 +1,5 @@
 
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { VirtuosoGridMockContext, VirtuosoMockContext } from 'react-virtuoso';
 import { describe, expect, it, vi } from 'vitest';
 

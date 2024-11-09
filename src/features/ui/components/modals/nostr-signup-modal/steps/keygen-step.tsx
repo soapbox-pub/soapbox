@@ -1,6 +1,6 @@
 import downloadIcon from '@tabler/icons/outline/download.svg';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts';

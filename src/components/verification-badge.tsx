@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import verifiedIcon from 'soapbox/assets/icons/verified.svg';

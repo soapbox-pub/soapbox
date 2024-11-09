@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { HStack, Input } from 'soapbox/components/ui';

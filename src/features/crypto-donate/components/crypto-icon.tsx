@@ -1,4 +1,3 @@
-import React from 'react';
 
 import genericIcon from 'soapbox/assets/cryptocurrency/generic.svg';
 

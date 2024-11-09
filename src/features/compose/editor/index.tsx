@@ -15,7 +15,7 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin';
 import clsx from 'clsx';
 import { $createParagraphNode, $createTextNode, $getRoot, type LexicalEditor } from 'lexical';
-import React, { useMemo, useState } from 'react';
+import { forwardRef, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { useAppDispatch } from 'soapbox/hooks';
@@ -68,7 +68,7 @@ const theme: InitialConfigType['theme'] = {
   },
 };
 
-const ComposeEditor = React.forwardRef<LexicalEditor, IComposeEditor>(({
+const ComposeEditor = forwardRef<LexicalEditor, IComposeEditor>(({
   className,
   placeholderClassName,
   composeId,

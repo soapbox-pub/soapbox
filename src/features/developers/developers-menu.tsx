@@ -6,7 +6,6 @@ import moodSadIcon from '@tabler/icons/outline/mood-sad.svg';
 import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import scriptIcon from '@tabler/icons/outline/script.svg';
 import urgentIcon from '@tabler/icons/outline/urgent.svg';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

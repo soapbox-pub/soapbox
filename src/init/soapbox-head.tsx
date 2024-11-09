@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import { lazy, useEffect } from 'react';
 
 import {
   useSettings,
@@ -11,7 +11,7 @@ import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import { startSentry } from 'soapbox/sentry';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-const Helmet = React.lazy(() => import('soapbox/components/helmet'));
+const Helmet = lazy(() => import('soapbox/components/helmet'));
 
 interface ISoapboxHead {
   children: React.ReactNode;

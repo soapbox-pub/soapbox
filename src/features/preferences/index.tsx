@@ -1,4 +1,4 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeSetting } from 'soapbox/actions/settings';
@@ -101,19 +101,19 @@ const Preferences = () => {
     dispatch(changeSetting(key, checked, { showAlert: true }));
   };
 
-  const displayMediaOptions = React.useMemo(() => ({
+  const displayMediaOptions = useMemo(() => ({
     default: intl.formatMessage(messages.displayPostsDefault),
     hide_all: intl.formatMessage(messages.displayPostsHideAll),
     show_all: intl.formatMessage(messages.displayPostsShowAll),
   }), []);
 
-  const defaultPrivacyOptions = React.useMemo(() => ({
+  const defaultPrivacyOptions = useMemo(() => ({
     public: intl.formatMessage(messages.privacy_public),
     unlisted: intl.formatMessage(messages.privacy_unlisted),
     private: intl.formatMessage(messages.privacy_followers_only),
   }), []);
 
-  const defaultContentTypeOptions = React.useMemo(() => ({
+  const defaultContentTypeOptions = useMemo(() => ({
     'text/plain': intl.formatMessage(messages.content_type_plaintext),
     'text/markdown': intl.formatMessage(messages.content_type_markdown),
   }), []);

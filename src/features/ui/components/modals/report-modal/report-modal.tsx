@@ -1,5 +1,5 @@
 import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { blockAccount } from 'soapbox/actions/accounts';

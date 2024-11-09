@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks';

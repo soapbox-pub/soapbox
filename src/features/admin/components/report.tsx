@@ -1,7 +1,7 @@
 import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import hourglassEmptyIcon from '@tabler/icons/outline/hourglass-empty.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 

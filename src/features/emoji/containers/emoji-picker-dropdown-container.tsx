@@ -1,7 +1,7 @@
 import { useFloating, shift } from '@floating-ui/react';
 import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
 import clsx from 'clsx';
-import React, { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 

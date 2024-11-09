@@ -1,6 +1,5 @@
 
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { render, screen } from 'soapbox/jest/test-helpers';

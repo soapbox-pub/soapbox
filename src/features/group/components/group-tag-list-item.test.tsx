@@ -1,4 +1,3 @@
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 
 import { buildGroup, buildGroupTag, buildGroupRelationship } from 'soapbox/jest/factory';

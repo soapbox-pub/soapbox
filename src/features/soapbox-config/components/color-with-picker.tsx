@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 // @ts-ignore: TODO: upgrade react-overlays. v3.1 and above have TS definitions
 import Overlay from 'react-overlays/lib/Overlay';
 

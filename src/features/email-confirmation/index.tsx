@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
@@ -24,9 +24,9 @@ const EmailConfirmation = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [status, setStatus] = React.useState(Statuses.IDLE);
+  const [status, setStatus] = useState(Statuses.IDLE);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       dispatch(confirmChangedEmail(token))
         .then(() => {
@@ -39,14 +39,7 @@ const EmailConfirmation = () => {
 
           if (error.response.data.error) {
             const message = buildErrorMessage(error.response.data.error);
-
-            toast.error(
-              message,
-              // intl.formatMessage({
-              //   id: 'email_confirmation.fail',
-              //   defaultMessage,
-              // }),
-            );
+            toast.error(message);
           }
         });
     }

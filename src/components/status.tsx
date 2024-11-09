@@ -2,7 +2,7 @@ import circlesIcon from '@tabler/icons/outline/circles.svg';
 import pinnedIcon from '@tabler/icons/outline/pinned.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 

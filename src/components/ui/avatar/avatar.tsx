@@ -1,6 +1,6 @@
 import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import StillImage, { IStillImage } from 'soapbox/components/still-image';
 
@@ -21,7 +21,7 @@ const Avatar = (props: IAvatar) => {
 
   const handleLoadFailure = () => setIsAvatarMissing(true);
 
-  const style: React.CSSProperties = React.useMemo(() => ({
+  const style: React.CSSProperties = useMemo(() => ({
     width: size,
     height: size,
   }), [size]);

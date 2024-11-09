@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
@@ -20,9 +20,9 @@ import {
 } from 'soapbox/hooks';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect';
 
-const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
-const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
-const UI = React.lazy(() => import('soapbox/features/ui'));
+const GdprBanner = lazy(() => import('soapbox/components/gdpr-banner'));
+const EmbeddedStatus = lazy(() => import('soapbox/features/embedded-status'));
+const UI = lazy(() => import('soapbox/features/ui'));
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {

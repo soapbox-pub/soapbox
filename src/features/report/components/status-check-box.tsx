@@ -1,5 +1,5 @@
 import noop from 'lodash/noop';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 
 import { toggleStatusReport } from 'soapbox/actions/reports';
 import StatusContent from 'soapbox/components/status-content';

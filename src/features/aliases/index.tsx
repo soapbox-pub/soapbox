@@ -1,5 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';

@@ -4,7 +4,7 @@ import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
 import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash';
 import { HStack, Stack, Text, Icon } from 'soapbox/components/ui';

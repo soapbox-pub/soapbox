@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { muteAccount } from 'soapbox/actions/accounts';

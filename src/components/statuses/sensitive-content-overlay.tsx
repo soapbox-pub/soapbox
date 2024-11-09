@@ -4,7 +4,7 @@ import eyeIcon from '@tabler/icons/outline/eye.svg';
 import headsetIcon from '@tabler/icons/outline/headset.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -37,7 +37,7 @@ interface ISensitiveContentOverlay {
   visible?: boolean;
 }
 
-const SensitiveContentOverlay = React.forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
+const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOverlay>((props, ref) => {
   const { onToggleVisibility, status } = props;
 
   const { account } = useOwnAccount();

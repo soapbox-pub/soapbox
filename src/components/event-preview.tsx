@@ -1,7 +1,6 @@
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import EventActionButton from 'soapbox/features/event/components/event-action-button';

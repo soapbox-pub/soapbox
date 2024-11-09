@@ -1,6 +1,5 @@
 import downloadIcon from '@tabler/icons/outline/download.svg';
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';

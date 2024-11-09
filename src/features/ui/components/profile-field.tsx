@@ -1,6 +1,5 @@
 import checkIcon from '@tabler/icons/outline/check.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
 import Markup from 'soapbox/components/markup';

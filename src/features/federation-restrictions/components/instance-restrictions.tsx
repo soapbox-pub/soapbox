@@ -5,7 +5,6 @@ import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import shieldCheckIcon from '@tabler/icons/outline/shield-check.svg';
 import shieldLockIcon from '@tabler/icons/outline/shield-lock.svg';
 import shieldXIcon from '@tabler/icons/outline/shield-x.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';

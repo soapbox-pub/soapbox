@@ -1,5 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account';

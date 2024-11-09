@@ -1,6 +1,6 @@
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';

@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Stack, Text } from 'soapbox/components/ui';
 

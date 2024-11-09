@@ -1,6 +1,6 @@
 import spriteSheet from 'emoji-datasource/img/twitter/sheets/32.png';
 import { Picker as EmojiPicker } from 'emoji-mart';
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import { joinPublicPath } from 'soapbox/utils/static';
 

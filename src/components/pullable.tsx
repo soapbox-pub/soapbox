@@ -1,4 +1,3 @@
-import React from 'react';
 
 import PullToRefresh from './pull-to-refresh';
 

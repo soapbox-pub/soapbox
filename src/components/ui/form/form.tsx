@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback } from 'react';
 
 interface IForm {
   /** Form submission event handler. */
@@ -11,7 +11,7 @@ interface IForm {
 
 /** Form element with custom styles. */
 const Form: React.FC<IForm> = ({ onSubmit, children, ...filteredProps }) => {
-  const handleSubmit: React.FormEventHandler = React.useCallback((event) => {
+  const handleSubmit: React.FormEventHandler = useCallback((event) => {
     event.preventDefault();
 
     if (onSubmit) {

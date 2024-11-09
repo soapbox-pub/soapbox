@@ -1,5 +1,4 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
 import Button from '../button/button';

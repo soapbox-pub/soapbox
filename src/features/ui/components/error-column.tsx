@@ -1,5 +1,4 @@
 import refreshIcon from '@tabler/icons/outline/refresh.svg';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Column, Stack, Text, IconButton } from 'soapbox/components/ui';

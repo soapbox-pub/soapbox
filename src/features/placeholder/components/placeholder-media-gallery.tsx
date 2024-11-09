@@ -1,5 +1,5 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 

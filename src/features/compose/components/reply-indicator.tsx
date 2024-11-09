@@ -1,6 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
 import Markup from 'soapbox/components/markup';

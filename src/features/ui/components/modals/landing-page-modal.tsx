@@ -1,6 +1,5 @@
 import lifebuoyIcon from '@tabler/icons/outline/lifebuoy.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import SiteLogo from 'soapbox/components/site-logo';

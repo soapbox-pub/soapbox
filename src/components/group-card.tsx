@@ -1,4 +1,3 @@
-import React from 'react';
 
 import GroupHeaderImage from 'soapbox/features/group/components/group-header-image';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';

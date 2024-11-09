@@ -1,5 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

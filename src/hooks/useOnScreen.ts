@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 /** Detect whether a given element is on the screen. */
 // https://stackoverflow.com/a/64892655

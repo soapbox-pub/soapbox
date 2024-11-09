@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeSpoilerness, changeComposeSpoilerText } from 'soapbox/actions/compose';
@@ -18,7 +18,7 @@ interface ISpoilerInput extends Pick<IAutosuggestInput, 'onSuggestionsFetchReque
 }
 
 /** Text input for content warning in composer. */
-const SpoilerInput = React.forwardRef<AutosuggestInput, ISpoilerInput>(({
+const SpoilerInput = forwardRef<AutosuggestInput, ISpoilerInput>(({
   composeId,
   onSuggestionsFetchRequested,
   onSuggestionsClearRequested,

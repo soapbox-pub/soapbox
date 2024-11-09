@@ -1,5 +1,4 @@
 import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
-import React from 'react';
 
 import { Icon } from 'soapbox/components/ui';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload';

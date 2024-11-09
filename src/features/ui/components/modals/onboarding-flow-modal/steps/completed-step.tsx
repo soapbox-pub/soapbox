@@ -1,6 +1,5 @@
 import confettiIcon from '@tabler/icons/outline/confetti.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Button, Icon, Stack, Text } from 'soapbox/components/ui';

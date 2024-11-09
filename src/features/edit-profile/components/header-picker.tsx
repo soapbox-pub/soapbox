@@ -1,7 +1,7 @@
 import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
@@ -19,7 +19,7 @@ interface IMediaInput {
   disabled?: boolean;
 }
 
-const HeaderPicker = React.forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, onClear, accept, disabled }, ref) => {
+const HeaderPicker = forwardRef<HTMLInputElement, IMediaInput>(({ src, onChange, onClear, accept, disabled }, ref) => {
   const intl = useIntl();
 
   const picker = useRef<HTMLLabelElement>(null);

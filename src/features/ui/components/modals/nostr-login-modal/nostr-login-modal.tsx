@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import ExtensionStep from './steps/extension-step';
 import KeyAddStep from './steps/key-add-step';

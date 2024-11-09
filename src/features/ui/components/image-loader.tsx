@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { PureComponent } from 'react';
 
 import ZoomableImage from './zoomable-image';
 
@@ -14,7 +14,7 @@ interface IImageLoader {
   onClick?: React.MouseEventHandler;
 }
 
-class ImageLoader extends React.PureComponent<IImageLoader> {
+class ImageLoader extends PureComponent<IImageLoader> {
 
   static defaultProps = {
     alt: '',

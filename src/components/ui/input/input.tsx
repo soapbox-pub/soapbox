@@ -1,7 +1,7 @@
 import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
 import eyeIcon from '@tabler/icons/outline/eye.svg';
 import clsx from 'clsx';
-import React from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useLocale } from 'soapbox/hooks';
@@ -47,18 +47,18 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'maxL
 }
 
 /** Form input element. */
-const Input = React.forwardRef<HTMLInputElement, IInput>(
+const Input = forwardRef<HTMLInputElement, IInput>(
   (props, ref) => {
     const intl = useIntl();
     const locale = useLocale();
 
     const { type = 'text', icon, className, outerClassName, append, prepend, theme = 'normal', ...filteredProps } = props;
 
-    const [revealed, setRevealed] = React.useState(false);
+    const [revealed, setRevealed] = useState(false);
 
     const isPassword = type === 'password';
 
-    const togglePassword = React.useCallback(() => {
+    const togglePassword = useCallback(() => {
       setRevealed((prev) => !prev);
     }, []);
 

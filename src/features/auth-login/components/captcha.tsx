@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { fetchCaptcha } from 'soapbox/actions/auth';

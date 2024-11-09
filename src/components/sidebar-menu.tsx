@@ -16,9 +16,8 @@ import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
-/* eslint-disable jsx-a11y/interactive-supports-focus */
 import clsx from 'clsx';
-import React, { useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -110,9 +109,9 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const { instance } = useInstance();
   const settingsNotifications = useSettingsNotifications();
 
-  const closeButtonRef = React.useRef(null);
+  const closeButtonRef = useRef(null);
 
-  const [switcher, setSwitcher] = React.useState(false);
+  const [switcher, setSwitcher] = useState(false);
 
   const onClose = () => dispatch(closeSidebar());
 
@@ -147,7 +146,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
     </a>
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchOwnAccounts());
   }, []);
 

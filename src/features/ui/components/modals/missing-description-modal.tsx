@@ -1,4 +1,3 @@
-import React from 'react';
 import { injectIntl, FormattedMessage, IntlShape, defineMessages } from 'react-intl';
 
 import { Modal } from 'soapbox/components/ui';

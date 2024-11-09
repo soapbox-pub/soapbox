@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { useGroups } from 'soapbox/api/hooks';
 import { Widget } from 'soapbox/components/ui';

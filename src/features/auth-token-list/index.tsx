@@ -1,5 +1,5 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals';

@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 
 import { HStack } from 'soapbox/components/ui';
 
@@ -18,4 +18,4 @@ const PlaceholderAccount: React.FC = () => (
   </HStack>
 );
 
-export default React.memo(PlaceholderAccount);
+export default memo(PlaceholderAccount);

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 
 interface ISelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
   children: Iterable<React.ReactNode>;
@@ -7,7 +7,7 @@ interface ISelect extends React.SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 /** Multiple-select dropdown. */
-const Select = React.forwardRef<HTMLSelectElement, ISelect>((props, ref) => {
+const Select = forwardRef<HTMLSelectElement, ISelect>((props, ref) => {
   const { children, className, full = true, ...filteredProps } = props;
 
   return (

@@ -1,5 +1,4 @@
 import worldIcon from '@tabler/icons/outline/world.svg';
-import React from 'react';
 
 import { openDropdownMenu } from 'soapbox/actions/dropdown-menu';
 import DropdownMenu, { MenuItem } from 'soapbox/components/dropdown-menu';

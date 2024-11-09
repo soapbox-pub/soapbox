@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { useAppSelector } from 'soapbox/hooks';

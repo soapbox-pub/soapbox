@@ -1,7 +1,7 @@
 import listIcon from '@tabler/icons/outline/list.svg';
 import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';

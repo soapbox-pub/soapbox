@@ -1,5 +1,4 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 

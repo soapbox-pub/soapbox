@@ -1,5 +1,4 @@
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
-import React from 'react';
 import { FormattedDate } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';

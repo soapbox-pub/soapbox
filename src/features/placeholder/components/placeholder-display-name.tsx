@@ -1,4 +1,5 @@
-import React from 'react';
+
+import { memo } from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
@@ -21,4 +22,4 @@ const PlaceholderDisplayName: React.FC<IPlaceholderDisplayName> = ({ minLength, 
   );
 };
 
-export default React.memo(PlaceholderDisplayName);
+export default memo(PlaceholderDisplayName);

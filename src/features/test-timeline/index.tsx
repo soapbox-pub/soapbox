@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import status5 from 'soapbox/__fixtures__/pleroma-quote-of-quote-post.json';
@@ -34,7 +34,7 @@ const TestTimeline: React.FC = () => {
   const theme = useTheme();
   const isMobile = useIsMobile();
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(importFetchedStatuses(MOCK_STATUSES));
     dispatch(expandTimelineSuccess(timelineId, MOCK_STATUSES, undefined, undefined, false, false, false));
   }, []);

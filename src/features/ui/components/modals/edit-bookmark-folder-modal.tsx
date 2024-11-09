@@ -1,6 +1,6 @@
 import { useFloating, shift } from '@floating-ui/react';
 import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 

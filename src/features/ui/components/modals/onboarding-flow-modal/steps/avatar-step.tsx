@@ -1,7 +1,7 @@
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -29,10 +29,10 @@ interface IAvatarSelectionModal {
 const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext }) => {
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
-  const fileInput = React.useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = React.useState<string | null>();
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [isDisabled, setDisabled] = React.useState<boolean>(true);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<string | null>();
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [isDisabled, setDisabled] = useState<boolean>(true);
   const isDefault = account ? isDefaultAvatar(account.avatar) : false;
 
   const openFilePicker = () => {

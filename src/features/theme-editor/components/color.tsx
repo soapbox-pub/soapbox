@@ -1,4 +1,3 @@
-import React from 'react';
 
 import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import { fetchChats } from 'soapbox/actions/chats';

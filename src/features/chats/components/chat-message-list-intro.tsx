@@ -1,6 +1,5 @@
 import clockIcon from '@tabler/icons/outline/clock.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { defineMessages } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 

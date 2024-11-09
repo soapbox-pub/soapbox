@@ -1,4 +1,4 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security';
@@ -21,16 +21,16 @@ const DeleteAccount = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
 
-  const [password, setPassword] = React.useState('');
-  const [isLoading, setLoading] = React.useState(false);
+  const [password, setPassword] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
-  const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
 
     setPassword(event.target.value);
   }, []);
 
-  const handleSubmit = React.useCallback(() => {
+  const handleSubmit = useCallback(() => {
     setLoading(true);
     dispatch(deleteAccount(password)).then(() => {
       setPassword('');

@@ -1,5 +1,5 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 

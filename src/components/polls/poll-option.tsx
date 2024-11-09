@@ -1,7 +1,6 @@
 import checkIcon from '@tabler/icons/outline/check.svg';
 import circleCheckIcon from '@tabler/icons/outline/circle-check.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
 

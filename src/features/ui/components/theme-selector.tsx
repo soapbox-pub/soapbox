@@ -3,7 +3,7 @@ import deviceDesktopIcon from '@tabler/icons/outline/device-desktop.svg';
 import moonIcon from '@tabler/icons/outline/moon.svg';
 import shadowIcon from '@tabler/icons/outline/shadow.svg';
 import sunIcon from '@tabler/icons/outline/sun.svg';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Icon, Select } from 'soapbox/components/ui';

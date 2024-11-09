@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { HStack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification-badge';

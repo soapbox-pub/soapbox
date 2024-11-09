@@ -1,4 +1,3 @@
-import React from 'react';
 import { describe, expect, it } from 'vitest';
 
 import { storeClosed, storeLoggedIn, storeOpen } from 'soapbox/jest/mock-stores';

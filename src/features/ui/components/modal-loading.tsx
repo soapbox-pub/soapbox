@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { Modal, Spinner } from 'soapbox/components/ui';
 

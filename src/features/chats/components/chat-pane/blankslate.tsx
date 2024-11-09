@@ -1,4 +1,3 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Button, Stack, Text } from 'soapbox/components/ui';

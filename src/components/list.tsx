@@ -1,7 +1,7 @@
 import checkIcon from '@tabler/icons/outline/check.svg';
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
-import React from 'react';
+import { Children, cloneElement, isValidElement, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { SelectDropdown } from '../features/forms';
@@ -38,12 +38,12 @@ const ListItem: React.FC<IListItem> = ({ label, hint, children, to, onClick, onS
 
   const LabelComp = to || onClick || onSelect ? 'span' : 'label';
 
-  const renderChildren = React.useCallback(() => {
-    return React.Children.map(children, (child) => {
-      if (React.isValidElement(child)) {
+  const renderChildren = useCallback(() => {
+    return Children.map(children, (child) => {
+      if (isValidElement(child)) {
         const isSelect = child.type === SelectDropdown || child.type === Select;
 
-        return React.cloneElement(child, {
+        return cloneElement(child, {
           // @ts-ignore
           id: domId,
           className: clsx({

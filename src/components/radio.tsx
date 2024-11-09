@@ -1,4 +1,5 @@
-import React from 'react';
+
+import { Children, cloneElement } from 'react';
 
 import List, { ListItem } from './list';
 
@@ -8,8 +9,8 @@ interface IRadioGroup {
 }
 
 const RadioGroup = ({ onChange, children }: IRadioGroup) => {
-  const childrenWithProps = React.Children.map(children, child =>
-    React.cloneElement(child, { onChange }),
+  const childrenWithProps = Children.map(children, child =>
+    cloneElement(child, { onChange }),
   );
 
   return <List>{childrenWithProps}</List>;

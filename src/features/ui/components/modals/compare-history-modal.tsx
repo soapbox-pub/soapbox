@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import { fetchHistory } from 'soapbox/actions/history';

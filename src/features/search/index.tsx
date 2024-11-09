@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { Column } from 'soapbox/components/ui';

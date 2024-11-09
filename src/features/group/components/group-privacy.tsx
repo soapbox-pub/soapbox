@@ -1,6 +1,5 @@
 import lockIcon from '@tabler/icons/outline/lock.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Icon, Popover, Stack, Text } from 'soapbox/components/ui';

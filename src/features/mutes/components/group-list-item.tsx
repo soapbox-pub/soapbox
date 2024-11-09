@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { useUnmuteGroup } from 'soapbox/api/hooks';

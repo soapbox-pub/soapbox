@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useAnnouncements } from 'soapbox/api/hooks/announcements';
 import AnimatedNumber from 'soapbox/components/animated-number';

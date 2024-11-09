@@ -1,4 +1,3 @@
-import React from 'react';
 import { describe, expect, test } from 'vitest';
 
 import { render, screen } from 'soapbox/jest/test-helpers';

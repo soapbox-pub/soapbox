@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { useRelays } from 'soapbox/api/hooks/admin';

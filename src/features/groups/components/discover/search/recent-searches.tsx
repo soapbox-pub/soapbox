@@ -1,5 +1,5 @@
 import searchIcon from '@tabler/icons/outline/search.svg';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
