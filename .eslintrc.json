@@ -37,14 +37,6 @@
     "react": {
       "version": "detect"
     },
-    "import/extensions": [
-      ".js",
-      ".jsx",
-      ".cjs",
-      ".mjs",
-      ".ts",
-      ".tsx"
-    ],
     "import/ignore": [
       "node_modules",
       "\\.(css|scss|json)$"
@@ -268,17 +260,7 @@
     "jsx-a11y/role-supports-aria-props": "off",
     "jsx-a11y/scope": "warn",
     "jsx-a11y/tabindex-no-positive": "warn",
-    "import/extensions": [
-      "error",
-      "always",
-      {
-        "js": "never",
-        "mjs": "ignorePackages",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
+    "import/extensions": ["warn", "ignorePackages"],
     "import/newline-after-import": "error",
     "import/no-extraneous-dependencies": "error",
     "import/no-unresolved": "error",
