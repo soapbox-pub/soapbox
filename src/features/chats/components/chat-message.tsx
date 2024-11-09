@@ -1,3 +1,9 @@
+import checkIcon from '@tabler/icons/outline/check.svg';
+import copyIcon from '@tabler/icons/outline/copy.svg';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import flagIcon from '@tabler/icons/outline/flag.svg';
+import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
@@ -159,7 +165,7 @@ const ChatMessage = (props: IChatMessage) => {
       menu.push({
         text: intl.formatMessage(messages.copy),
         action: () => handleCopyText(chatMessage),
-        icon: require('@tabler/icons/outline/copy.svg'),
+        icon: copyIcon,
       });
     }
 
@@ -167,7 +173,7 @@ const ChatMessage = (props: IChatMessage) => {
       menu.push({
         text: intl.formatMessage(messages.delete),
         action: () => handleDeleteMessage.mutate(chatMessage.id),
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         destructive: true,
       });
     } else {
@@ -175,13 +181,13 @@ const ChatMessage = (props: IChatMessage) => {
         menu.push({
           text: intl.formatMessage(messages.report),
           action: () => dispatch(initReport(ReportableEntities.CHAT_MESSAGE, chat.account, { chatMessage })),
-          icon: require('@tabler/icons/outline/flag.svg'),
+          icon: flagIcon,
         });
       }
       menu.push({
         text: intl.formatMessage(messages.deleteForMe),
         action: () => handleDeleteMessage.mutate(chatMessage.id),
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         destructive: true,
       });
     }
@@ -222,7 +228,7 @@ const ChatMessage = (props: IChatMessage) => {
               })}
             >
               <Icon
-                src={require('@tabler/icons/outline/mood-smile.svg')}
+                src={moodSmileIcon}
                 className='size-4'
               />
             </button>
@@ -244,7 +250,7 @@ const ChatMessage = (props: IChatMessage) => {
               data-testid='chat-message-menu'
             >
               <Icon
-                src={require('@tabler/icons/outline/dots.svg')}
+                src={dotsIcon}
                 className='size-4'
               />
             </button>
@@ -362,7 +368,7 @@ const ChatMessage = (props: IChatMessage) => {
                   {isRead ? (
                     <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-primary-500 p-0.5 text-white dark:border-primary-400 dark:bg-primary-400 dark:text-primary-900'>
                       <Icon
-                        src={require('@tabler/icons/outline/check.svg')}
+                        src={checkIcon}
                         strokeWidth={3}
                         className='size-2.5'
                       />
@@ -370,7 +376,7 @@ const ChatMessage = (props: IChatMessage) => {
                   ) : (
                     <span className='flex flex-col items-center justify-center rounded-full border border-solid border-primary-500 bg-transparent p-0.5 text-primary-500 dark:border-primary-400 dark:text-primary-400'>
                       <Icon
-                        src={require('@tabler/icons/outline/check.svg')}
+                        src={checkIcon}
                         strokeWidth={3}
                         className='size-2.5'
                       />

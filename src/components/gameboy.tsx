@@ -1,6 +1,13 @@
+import { WasmBoy } from '@soapbox.pub/wasmboy';
+import arrowsMaximizeIcon from '@tabler/icons/outline/arrows-maximize.svg';
+import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
+import downloadIcon from '@tabler/icons/outline/download.svg';
+import playerPauseIcon from '@tabler/icons/outline/player-pause.svg';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
+import volume3Icon from '@tabler/icons/outline/volume-3.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 // @ts-ignore No types available
 // eslint-disable-next-line import/no-unresolved
-import { WasmBoy } from '@soapbox.pub/wasmboy';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -139,13 +146,13 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
             theme='transparent'
             className='text-white'
             onClick={togglePaused}
-            src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')}
+            src={paused ? playerPlayIcon : playerPauseIcon}
           />
           <IconButton
             theme='transparent'
             className='text-white'
             onClick={toggleMuted}
-            src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')}
+            src={muted ? volume3Icon : volumeIcon}
           />
         </HStack>
 
@@ -153,14 +160,14 @@ const Gameboy: React.FC<IGameboy> = ({ className, src, aspect = 'normal', onFocu
           <IconButton
             theme='transparent'
             className='text-white'
-            src={require('@tabler/icons/outline/download.svg')}
+            src={downloadIcon}
             onClick={handleDownload}
           />
           <IconButton
             theme='transparent'
             className='text-white'
             onClick={toggleFullscreen}
-            src={fullscreen ? require('@tabler/icons/outline/arrows-minimize.svg') : require('@tabler/icons/outline/arrows-maximize.svg')}
+            src={fullscreen ? arrowsMinimizeIcon : arrowsMaximizeIcon}
           />
         </HStack>
       </HStack>

@@ -11,6 +11,8 @@ import {
   fromJS,
 } from 'immutable';
 
+import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
+import headerMissing from 'soapbox/assets/images/header-missing.png';
 import emojify from 'soapbox/features/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
@@ -100,11 +102,10 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
 const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   const avatar = account.get('avatar');
   const avatarStatic = account.get('avatar_static');
-  const missing = require('soapbox/assets/images/avatar-missing.png');
 
   return account.withMutations(account => {
-    account.set('avatar', avatar || avatarStatic || missing);
-    account.set('avatar_static', avatarStatic || avatar || missing);
+    account.set('avatar', avatar || avatarStatic || avatarMissing);
+    account.set('avatar_static', avatarStatic || avatar || avatarMissing);
   });
 };
 
@@ -112,11 +113,10 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
 const normalizeHeader = (account: ImmutableMap<string, any>) => {
   const header = account.get('header');
   const headerStatic = account.get('header_static');
-  const missing = require('soapbox/assets/images/header-missing.png');
 
   return account.withMutations(account => {
-    account.set('header', header || headerStatic || missing);
-    account.set('header_static', headerStatic || header || missing);
+    account.set('header', header || headerStatic || headerMissing);
+    account.set('header_static', headerStatic || header || headerMissing);
   });
 };
 

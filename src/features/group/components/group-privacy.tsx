@@ -1,3 +1,5 @@
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -17,8 +19,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
           <Icon
             src={
               group.locked
-                ? require('@tabler/icons/outline/lock.svg')
-                : require('@tabler/icons/outline/world.svg')
+                ? lockIcon
+                : worldIcon
             }
             className='size-6 text-gray-600 dark:text-gray-600'
           />
@@ -49,8 +51,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
         className='size-4'
         src={
           group.locked
-            ? require('@tabler/icons/outline/lock.svg')
-            : require('@tabler/icons/outline/world.svg')
+            ? lockIcon
+            : worldIcon
         }
       />
 

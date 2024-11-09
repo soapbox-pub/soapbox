@@ -1,3 +1,4 @@
+import lifebuoyIcon from '@tabler/icons/outline/lifebuoy.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -38,7 +39,7 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
               target='_blank'
               className='flex items-center space-x-3 rounded-md p-3 hover:bg-gray-50 dark:hover:bg-gray-900/50'
             >
-              <Icon src={require('@tabler/icons/outline/lifebuoy.svg')} className='size-6 shrink-0 text-gray-600 dark:text-gray-700' />
+              <Icon src={lifebuoyIcon} className='size-6 shrink-0 text-gray-600 dark:text-gray-700' />
 
               <Text weight='medium'>
                 {intl.formatMessage(messages.helpCenter)}

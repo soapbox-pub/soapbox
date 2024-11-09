@@ -1,3 +1,6 @@
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -34,11 +37,11 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.id}`,
-      icon: require('@tabler/icons/outline/pencil.svg'),
+      icon: pencilIcon,
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: handleDeleteStatus,
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       destructive: true,
     }];
   };
@@ -55,7 +58,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
       <div className='flex-none'>
         <DropdownMenu
           items={menu}
-          src={require('@tabler/icons/outline/dots-vertical.svg')}
+          src={dotsVerticalIcon}
         />
       </div>
     </HStack>

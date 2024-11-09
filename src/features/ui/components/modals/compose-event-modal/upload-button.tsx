@@ -1,3 +1,4 @@
+import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
 import React, { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -28,7 +29,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
   return (
     <HStack className='size-full cursor-pointer text-primary-500 dark:text-accent-blue' space={3} alignItems='center' justifyContent='center' element='label'>
       <Icon
-        src={require('@tabler/icons/outline/photo-plus.svg')}
+        src={photoPlusIcon}
         className='size-7'
         onClick={handleClick}
       />

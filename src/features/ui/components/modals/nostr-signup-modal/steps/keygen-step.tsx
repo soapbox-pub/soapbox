@@ -1,3 +1,4 @@
+import downloadIcon from '@tabler/icons/outline/download.svg';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -93,7 +94,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
         </Stack>
 
         <HStack space={6} justifyContent='center' >
-          <Button theme='secondary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
+          <Button theme='secondary' size='lg' icon={downloadIcon} onClick={handleDownload}>
             <FormattedMessage id='nostr_signup.keygen.download_key_button' defaultMessage='Download key' />
           </Button>
 

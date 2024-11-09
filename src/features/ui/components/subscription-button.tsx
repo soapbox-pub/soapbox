@@ -1,3 +1,5 @@
+import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
+import bellIcon from '@tabler/icons/outline/bell.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -91,7 +93,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   if (isRequested || isFollowing) {
     return (
       <IconButton
-        src={isSubscribed ? require('@tabler/icons/outline/bell-ringing.svg') : require('@tabler/icons/outline/bell.svg')}
+        src={isSubscribed ? bellRingingIcon : bellIcon}
         onClick={handleToggle}
         title={title}
         theme='outlined'

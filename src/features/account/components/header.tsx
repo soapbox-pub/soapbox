@@ -1,3 +1,23 @@
+import atIcon from '@tabler/icons/outline/at.svg';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import boltIcon from '@tabler/icons/outline/bolt.svg';
+import circleXIcon from '@tabler/icons/outline/circle-x.svg';
+import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import flagIcon from '@tabler/icons/outline/flag.svg';
+import gavelIcon from '@tabler/icons/outline/gavel.svg';
+import listIcon from '@tabler/icons/outline/list.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
+import rssIcon from '@tabler/icons/outline/rss.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
+import settingsIcon from '@tabler/icons/outline/settings.svg';
+import uploadIcon from '@tabler/icons/outline/upload.svg';
+import userCheckIcon from '@tabler/icons/outline/user-check.svg';
+import userXIcon from '@tabler/icons/outline/user-x.svg';
+import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { List as ImmutableList } from 'immutable';
@@ -135,7 +155,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       dispatch(unblockAccount(account.id));
     } else {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/ban.svg'),
+        icon: banIcon,
         heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
         message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />, // eslint-disable-line formatjs/no-literal-string-in-jsx
         confirm: intl.formatMessage(messages.blockConfirm),
@@ -191,7 +211,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onBlockDomain = (domain: string) => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/ban.svg'),
+      icon: banIcon,
       heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -298,7 +318,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     if (features.rssFeeds && account.local) {
       menu.push({
         text: intl.formatMessage(messages.subscribeFeed),
-        icon: require('@tabler/icons/outline/rss.svg'),
+        icon: rssIcon,
         href: software === MASTODON ? `${account.url}.rss` : `${account.url}/feed.rss`,
         target: '_blank',
       });
@@ -308,7 +328,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.share, { name: account.username }),
         action: handleShare,
-        icon: require('@tabler/icons/outline/upload.svg'),
+        icon: uploadIcon,
       });
     }
 
@@ -321,7 +341,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.profileExternal, { domain }),
           action: () => onProfileExternal(url),
-          icon: require('@tabler/icons/outline/external-link.svg'),
+          icon: externalLinkIcon,
           href: url,
         });
       }
@@ -330,14 +350,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
     menu.push({
       text: intl.formatMessage(messages.copy),
       action: handleCopy,
-      icon: require('@tabler/icons/outline/clipboard-copy.svg'),
+      icon: clipboardCopyIcon,
     });
 
     if (account.nostr.pubkey) {
       menu.push({
         text: intl.formatMessage(messages.npub),
         action: handleCopyNpub,
-        icon: require('@tabler/icons/outline/clipboard-copy.svg'),
+        icon: clipboardCopyIcon,
       });
     }
 
@@ -347,7 +367,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(account.id === ownAccount.id ? messages.searchSelf : messages.search, { name: account.username }),
         action: onSearch,
-        icon: require('@tabler/icons/outline/search.svg'),
+        icon: searchIcon,
       });
     }
 
@@ -359,38 +379,38 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.edit_profile),
         to: '/settings/profile',
-        icon: require('@tabler/icons/outline/user.svg'),
+        icon: userIcon,
       });
       menu.push({
         text: intl.formatMessage(messages.preferences),
         to: '/settings',
-        icon: require('@tabler/icons/outline/settings.svg'),
+        icon: settingsIcon,
       });
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),
         to: '/mutes',
-        icon: require('@tabler/icons/outline/circle-x.svg'),
+        icon: circleXIcon,
       });
       if (features.blocks) {
         menu.push({
           text: intl.formatMessage(messages.blocks),
           to: '/blocks',
-          icon: require('@tabler/icons/outline/ban.svg'),
+          icon: banIcon,
         });
       }
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.username }),
         action: onMention,
-        icon: require('@tabler/icons/outline/at.svg'),
+        icon: atIcon,
       });
 
       if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.username }),
           action: onDirect,
-          icon: require('@tabler/icons/outline/mail.svg'),
+          icon: mailIcon,
         });
       }
 
@@ -399,13 +419,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(messages.hideReblogs, { name: account.username }),
             action: onReblogToggle,
-            icon: require('@tabler/icons/outline/repeat.svg'),
+            icon: repeatIcon,
           });
         } else {
           menu.push({
             text: intl.formatMessage(messages.showReblogs, { name: account.username }),
             action: onReblogToggle,
-            icon: require('@tabler/icons/outline/repeat.svg'),
+            icon: repeatIcon,
           });
         }
 
@@ -413,7 +433,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(messages.add_or_remove_from_list),
             action: onAddToList,
-            icon: require('@tabler/icons/outline/list.svg'),
+            icon: listIcon,
           });
         }
 
@@ -421,14 +441,14 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(account.relationship?.endorsed ? messages.unendorse : messages.endorse),
             action: onEndorseToggle,
-            icon: require('@tabler/icons/outline/user-check.svg'),
+            icon: userCheckIcon,
           });
         }
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
           text: intl.formatMessage(messages.add_or_remove_from_list),
           action: onAddToList,
-          icon: require('@tabler/icons/outline/list.svg'),
+          icon: listIcon,
         });
       }
 
@@ -438,7 +458,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.removeFromFollowers),
           action: onRemoveFromFollowers,
-          icon: require('@tabler/icons/outline/user-x.svg'),
+          icon: userXIcon,
         });
       }
 
@@ -446,13 +466,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.unmute, { name: account.username }),
           action: onMute,
-          icon: require('@tabler/icons/outline/circle-x.svg'),
+          icon: circleXIcon,
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.mute, { name: account.username }),
           action: onMute,
-          icon: require('@tabler/icons/outline/circle-x.svg'),
+          icon: circleXIcon,
         });
       }
 
@@ -461,13 +481,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
           menu.push({
             text: intl.formatMessage(messages.unblock, { name: account.username }),
             action: onBlock,
-            icon: require('@tabler/icons/outline/ban.svg'),
+            icon: banIcon,
           });
         } else {
           menu.push({
             text: intl.formatMessage(messages.block, { name: account.username }),
             action: onBlock,
-            icon: require('@tabler/icons/outline/ban.svg'),
+            icon: banIcon,
           });
         }
       }
@@ -475,7 +495,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.report, { name: account.username }),
         action: onReport,
-        icon: require('@tabler/icons/outline/flag.svg'),
+        icon: flagIcon,
       });
     }
 
@@ -488,13 +508,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
         menu.push({
           text: intl.formatMessage(messages.unblockDomain, { domain }),
           action: () => onUnblockDomain(domain),
-          icon: require('@tabler/icons/outline/ban.svg'),
+          icon: banIcon,
         });
       } else {
         menu.push({
           text: intl.formatMessage(messages.blockDomain, { domain }),
           action: () => onBlockDomain(domain),
-          icon: require('@tabler/icons/outline/ban.svg'),
+          icon: banIcon,
         });
       }
     }
@@ -505,7 +525,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       menu.push({
         text: intl.formatMessage(messages.adminAccount, { name: account.username }),
         action: onModerate,
-        icon: require('@tabler/icons/outline/gavel.svg'),
+        icon: gavelIcon,
       });
     }
 
@@ -592,7 +612,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
       return (
         <IconButton
-          src={require('@tabler/icons/outline/messages.svg')}
+          src={messagesIcon}
           onClick={() => createAndNavigateToChat.mutate(account.id)}
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
@@ -604,7 +624,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
     } else if (account.pleroma?.accepts_chat_messages) {
       return (
         <IconButton
-          src={require('@tabler/icons/outline/messages.svg')}
+          src={messagesIcon}
           onClick={() => createAndNavigateToChat.mutate(account.id)}
           title={intl.formatMessage(messages.chat, { name: account.username })}
           theme='outlined'
@@ -626,7 +646,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
     return (
       <IconButton
-        src={require('@tabler/icons/outline/upload.svg')}
+        src={uploadIcon}
         onClick={handleShare}
         title={intl.formatMessage(messages.share, { name: account.username })}
         theme='outlined'
@@ -639,7 +659,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const renderZapAccount = () => {
     return (
       <IconButton
-        src={require('@tabler/icons/outline/bolt.svg')}
+        src={boltIcon}
         onClick={handleZapAccount}
         title={intl.formatMessage(messages.zap, { target: account.display_name })}
         theme='outlined'
@@ -698,7 +718,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>
                   <IconButton
-                    src={require('@tabler/icons/outline/dots.svg')}
+                    src={dotsIcon}
                     theme='outlined'
                     className='px-2'
                     iconClassName='h-4 w-4'

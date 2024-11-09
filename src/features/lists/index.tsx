@@ -1,3 +1,6 @@
+import listIcon from '@tabler/icons/outline/list.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import React, { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -84,12 +87,12 @@ const Lists: React.FC = () => {
         >
           {lists.map((list: any) => (
             <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'>
-              <Icon src={require('@tabler/icons/outline/list.svg')} />
+              <Icon src={listIcon} />
               <span className='grow'>
                 {list.title}
               </span>
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={pencilIcon} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={trashIcon} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
             </Link>
           ))}
         </ScrollableList>

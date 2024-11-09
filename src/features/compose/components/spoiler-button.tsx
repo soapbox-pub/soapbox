@@ -1,3 +1,4 @@
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -26,7 +27,7 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ composeId }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/outline/alert-triangle.svg')}
+      icon={alertTriangleIcon}
       title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
       active={active}
       onClick={onClick}

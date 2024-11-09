@@ -1,3 +1,5 @@
+import downloadIcon from '@tabler/icons/outline/download.svg';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -155,7 +157,7 @@ const Dashboard: React.FC = () => {
 
             <Icon
               className='size-4'
-              src={require('@tabler/icons/outline/external-link.svg')}
+              src={externalLinkIcon}
             />
           </a>
         </ListItem>
@@ -174,7 +176,7 @@ const Dashboard: React.FC = () => {
           <List>
             <ListItem label='subscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleSubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -182,7 +184,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='unsubscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleUnsubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -190,7 +192,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='combined.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleCombinedClick}
                 iconClassName='h-5 w-5'
               />

@@ -1,3 +1,6 @@
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import React, { useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
@@ -102,7 +105,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <FormattedMessage id='event.location' defaultMessage='Location' />
         </Text>
         <HStack space={2} alignItems='center'>
-          <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
+          <Icon src={mapPinIcon} />
           <Text>{text}</Text>
         </HStack>
       </Stack>
@@ -125,7 +128,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
           <FormattedMessage id='event.date' defaultMessage='Date' />
         </Text>
         <HStack space={2} alignItems='center'>
-          <Icon src={require('@tabler/icons/outline/calendar.svg')} />
+          <Icon src={calendarIcon} />
           <Text>
             <FormattedDate
               value={startDate}
@@ -165,7 +168,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
         {status.event.links.map(link => (
           <HStack space={2} alignItems='center'>
-            <Icon src={require('@tabler/icons/outline/link.svg')} />
+            <Icon src={linkIcon} />
             <a href={link.remote_url || link.url} className='text-primary-600 hover:underline dark:text-accent-blue' target='_blank'>
               {(link.remote_url || link.url).replace(/^https?:\/\//, '')}
             </a>

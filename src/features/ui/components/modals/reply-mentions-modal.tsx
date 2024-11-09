@@ -1,3 +1,4 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import React, { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -33,7 +34,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose 
     <Modal
       title={<FormattedMessage id='navigation_bar.in_reply_to' defaultMessage='In reply to' />}
       onClose={onClickClose}
-      closeIcon={require('@tabler/icons/outline/arrow-left.svg')}
+      closeIcon={arrowLeftIcon}
       closePosition='left'
     >
       <div className='reply-mentions-modal__accounts'>

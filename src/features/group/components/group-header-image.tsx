@@ -1,3 +1,4 @@
+import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -30,7 +31,7 @@ const GroupHeaderImage: React.FC<IGroupHeaderImage> = ({ className, group }) => 
         className={clsx(className, 'flex items-center justify-center bg-gray-200 dark:bg-gray-800/30')}
       >
         <Icon
-          src={require('@tabler/icons/outline/photo-off.svg')}
+          src={photoOffIcon}
           className='size-6 text-gray-500 dark:text-gray-700'
         />
       </div>

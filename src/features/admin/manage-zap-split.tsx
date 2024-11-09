@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -9,7 +10,7 @@ import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit';
 import AddNewAccount from '../ui/components/new-account-zap-split';
 import { ZapSplitSlider } from '../zap/components/zap-split-account-item';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   heading: { id: 'column.admin.zap_split', defaultMessage: 'Manage Zap Split' },

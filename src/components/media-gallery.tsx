@@ -1,3 +1,5 @@
+import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import React, { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
@@ -156,7 +158,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <SvgIcon
         className={clsx('size-16 text-gray-800 dark:text-gray-200', { 'size-8': compact })}
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/outline/paperclip.svg')}
+        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || paperclipIcon}
       />
     );
 
@@ -233,7 +235,7 @@ const Item: React.FC<IItem> = ({
         target='_blank'
         title={attachment.description}
       >
-        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon className='size-24' src={require('@tabler/icons/outline/volume.svg')} /></span>
+        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon className='size-24' src={volumeIcon} /></span>
         <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold uppercase leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear', { 'hidden': compact })}>{ext}</span>
       </a>
     );

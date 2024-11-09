@@ -1,3 +1,4 @@
+import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
 import React from 'react';
 
 import { Icon } from 'soapbox/components/ui';
@@ -5,7 +6,7 @@ import { MIMETYPE_ICONS } from 'soapbox/components/upload';
 
 import type { Attachment } from 'soapbox/types/entities';
 
-const defaultIcon = require('@tabler/icons/outline/paperclip.svg');
+const defaultIcon = paperclipIcon;
 
 interface IChatUploadPreview {
   className?: string;

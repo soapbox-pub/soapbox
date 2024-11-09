@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -79,7 +80,7 @@ const Aliases = () => {
                 <Text tag='span'>{alias}</Text>
               </div>
               <div className='flex items-center' role='button' tabIndex={0} onClick={handleFilterDelete} data-value={alias} aria-label={intl.formatMessage(messages.delete)}>
-                <Icon className='mr-1.5' src={require('@tabler/icons/outline/x.svg')} />
+                <Icon className='mr-1.5' src={xIcon} />
                 <Text weight='bold' theme='muted'><FormattedMessage id='aliases.aliases_list_delete' defaultMessage='Unlink alias' /></Text>
               </div>
             </HStack>

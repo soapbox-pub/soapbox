@@ -1,3 +1,4 @@
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
 import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
 import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
@@ -27,7 +28,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center border-0 bg-transparent p-0 pt-2 text-gray-900 hover:underline active:underline dark:text-gray-300' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block size-5' src={require('@tabler/icons/outline/chevron-right.svg')} />
+    <Icon className='inline-block size-5' src={chevronRightIcon} />
   </button>
 );
 

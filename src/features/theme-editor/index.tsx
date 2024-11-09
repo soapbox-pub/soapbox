@@ -1,3 +1,6 @@
+import downloadIcon from '@tabler/icons/outline/download.svg';
+import refreshIcon from '@tabler/icons/outline/refresh.svg';
+import uploadIcon from '@tabler/icons/outline/upload.svg';
 import React, { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -207,15 +210,15 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
             items={[{
               text: intl.formatMessage(messages.restore),
               action: restoreDefaultTheme,
-              icon: require('@tabler/icons/outline/refresh.svg'),
+              icon: refreshIcon,
             }, {
               text: intl.formatMessage(messages.import),
               action: importTheme,
-              icon: require('@tabler/icons/outline/upload.svg'),
+              icon: uploadIcon,
             }, {
               text: intl.formatMessage(messages.export),
               action: exportTheme,
-              icon: require('@tabler/icons/outline/download.svg'),
+              icon: downloadIcon,
             }]}
           />
           <Button theme='secondary' onClick={resetTheme}>

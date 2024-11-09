@@ -1,3 +1,5 @@
+import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import React, { useEffect, useState } from 'react';
 
 import { useDimensions } from 'soapbox/hooks';
@@ -68,7 +70,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           disabled={!hasPrevPage || isDisabled}
         >
           <Icon
-            src={require('@tabler/icons/outline/chevron-left.svg')}
+            src={chevronLeftIcon}
             className='size-5 text-black dark:text-white'
           />
         </button>
@@ -100,7 +102,7 @@ const Carousel: React.FC<ICarousel> = (props): JSX.Element => {
           disabled={!hasNextPage || isDisabled}
         >
           <Icon
-            src={require('@tabler/icons/outline/chevron-right.svg')}
+            src={chevronRightIcon}
             className='size-5 text-black dark:text-white'
           />
         </button>

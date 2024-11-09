@@ -1,3 +1,4 @@
+import dotsIcon from '@tabler/icons/outline/dots.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -20,7 +21,7 @@ const LoadGap: React.FC<ILoadGap> = ({ disabled, maxId, onClick }) => {
 
   return (
     <button className='load-more load-gap' disabled={disabled} onClick={handleClick} aria-label={intl.formatMessage(messages.load_more)}>
-      <Icon src={require('@tabler/icons/outline/dots.svg')} />
+      <Icon src={dotsIcon} />
     </button>
   );
 };

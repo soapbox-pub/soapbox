@@ -1,3 +1,5 @@
+import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
@@ -59,7 +61,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index - 1)}
             className='flex size-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/outline/chevron-left.svg')} className='size-6 text-black dark:text-white' />
+            <Icon src={chevronLeftIcon} className='size-6 text-black dark:text-white' />
           </button>
         </div>
       )}
@@ -72,7 +74,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index + 1)}
             className='flex size-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/outline/chevron-right.svg')} className='size-6 text-black dark:text-white' />
+            <Icon src={chevronRightIcon} className='size-6 text-black dark:text-white' />
           </button>
         </div>
       )}

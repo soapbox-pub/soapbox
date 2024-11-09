@@ -1,3 +1,4 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -50,7 +51,7 @@ const ChatPageSettings = () => {
     <Stack className='h-full space-y-8 px-4 py-6 sm:p-6'>
       <HStack alignItems='center'>
         <IconButton
-          src={require('@tabler/icons/outline/arrow-left.svg')}
+          src={arrowLeftIcon}
           className='mr-2 size-7 sm:mr-0 sm:hidden rtl:rotate-180'
           onClick={() => history.push('/chats')}
         />

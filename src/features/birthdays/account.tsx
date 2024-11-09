@@ -1,3 +1,4 @@
+import balloonIcon from '@tabler/icons/outline/balloon.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -36,7 +37,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
           date: formattedBirthday,
         })}
       >
-        <Icon src={require('@tabler/icons/outline/balloon.svg')} />
+        <Icon src={balloonIcon} />
         {formattedBirthday}
       </div>
     </HStack>

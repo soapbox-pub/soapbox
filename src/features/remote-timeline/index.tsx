@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React, { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -55,7 +56,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
 
       {!pinned && (
         <HStack className='mb-4 px-2' space={2}>
-          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/x.svg')} onClick={handleCloseClick} />
+          <IconButton iconClassName='h-5 w-5' src={xIcon} onClick={handleCloseClick} />
           <Text>
             <FormattedMessage
               id='remote_timeline.filter_message'

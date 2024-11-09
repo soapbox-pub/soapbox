@@ -1,3 +1,4 @@
+import sendIcon from '@tabler/icons/outline/send.svg';
 import React, { useState } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
@@ -230,7 +231,7 @@ const ChatComposer = React.forwardRef<HTMLTextAreaElement | null, IChatComposer>
           ) : null}
 
           <IconButton
-            src={require('@tabler/icons/outline/send.svg')}
+            src={sendIcon}
             iconClassName='h-5 w-5'
             className='text-primary-500'
             disabled={isSubmitDisabled}

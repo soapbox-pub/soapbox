@@ -3,6 +3,8 @@ import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
+import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
+import headerMissing from 'soapbox/assets/images/header-missing.png';
 import emojify from 'soapbox/features/emoji';
 import { unescapeHTML } from 'soapbox/utils/html';
 
@@ -11,9 +13,6 @@ import { Relationship } from './relationship';
 import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
 
 import type { Resolve } from 'soapbox/utils/types';
-
-const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
-const headerMissing = require('soapbox/assets/images/header-missing.png');
 
 const birthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 

@@ -1,3 +1,4 @@
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -61,7 +62,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
 
   const onDeleteGroup = () =>
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),

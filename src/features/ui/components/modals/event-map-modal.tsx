@@ -1,4 +1,8 @@
+import gpsIcon from '@tabler/icons/outline/gps.svg';
 import L from 'leaflet';
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -11,9 +15,9 @@ import type { Status as StatusEntity } from 'soapbox/types/entities';
 import 'leaflet/dist/leaflet.css';
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
 });
 
 interface IEventMapModal {
@@ -64,7 +68,7 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
     >
       <Stack alignItems='center' space={6}>
         <div className='h-96 w-full' id='event-map' />
-        <Button onClick={onClickNavigate} icon={require('@tabler/icons/outline/gps.svg')}>
+        <Button onClick={onClickNavigate} icon={gpsIcon}>
           <FormattedMessage id='event_map.navigate' defaultMessage='Navigate' />
         </Button>
       </Stack>

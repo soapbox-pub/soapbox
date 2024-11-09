@@ -1,3 +1,5 @@
+import editIcon from '@tabler/icons/outline/edit.svg';
+import settingsIcon from '@tabler/icons/outline/settings.svg';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -42,13 +44,13 @@ const ChatPageSidebar = () => {
 
           <HStack space={1}>
             <IconButton
-              src={require('@tabler/icons/outline/settings.svg')}
+              src={settingsIcon}
               iconClassName='h-5 w-5 text-gray-600'
               onClick={handleSettingsClick}
             />
 
             <IconButton
-              src={require('@tabler/icons/outline/edit.svg')}
+              src={editIcon}
               iconClassName='h-5 w-5 text-gray-600'
               onClick={handleChatCreate}
             />

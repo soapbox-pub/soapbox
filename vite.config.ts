@@ -10,7 +10,6 @@ import checker from 'vite-plugin-checker';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
-import vitePluginRequire from 'vite-plugin-require';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 const { NODE_ENV } = process.env;
@@ -37,8 +36,6 @@ export default defineConfig(({ command }) => ({
   },
   plugins: [
     checker({ typescript: true }),
-    // @ts-ignore
-    vitePluginRequire.default(),
     compileTime(),
     createHtmlPlugin({
       template: 'index.html',

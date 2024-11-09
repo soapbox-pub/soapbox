@@ -1,3 +1,5 @@
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor, $getRoot } from 'lexical';
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
@@ -229,10 +231,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishIcon = require('@tabler/icons/outline/mail.svg');
+    publishIcon = mailIcon;
     publishText = intl.formatMessage(messages.message);
   } else if (privacy === 'private') {
-    publishIcon = require('@tabler/icons/outline/lock.svg');
+    publishIcon = lockIcon;
     publishText = intl.formatMessage(messages.publish);
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);

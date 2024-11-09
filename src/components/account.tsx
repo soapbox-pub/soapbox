@@ -1,3 +1,4 @@
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import React, { useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -275,7 +276,7 @@ const Account = ({
                   <>
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
-                    <Icon className='size-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/pencil.svg')} />
+                    <Icon className='size-5 text-gray-700 dark:text-gray-600' src={pencilIcon} />
                   </>
                 ) : null}
 

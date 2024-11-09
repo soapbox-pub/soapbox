@@ -1,4 +1,5 @@
 import { offset, Placement, useFloating, flip, arrow, shift } from '@floating-ui/react';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
@@ -43,7 +44,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
     onOpen,
     onShiftClick,
     placement: initialPlacement = 'top',
-    src = require('@tabler/icons/outline/dots.svg'),
+    src = dotsIcon,
     title = 'Menu',
     ...filteredProps
   } = props;

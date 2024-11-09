@@ -1,3 +1,4 @@
+import pencilPlusIcon from '@tabler/icons/outline/pencil-plus.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -42,7 +43,7 @@ const HomeFAB: React.FC = () => {
       aria-label={intl.formatMessage(messages.publish)}
     >
       <Icon
-        src={require('@tabler/icons/outline/pencil-plus.svg')}
+        src={pencilPlusIcon}
         className='size-6'
       />
     </button>
@@ -74,7 +75,7 @@ const GroupFAB: React.FC = () => {
       <HStack space={3} alignItems='center'>
         <Avatar className='-my-3 -ml-2 border-white' size={42} src={group.avatar} />
         <Icon
-          src={require('@tabler/icons/outline/pencil-plus.svg')}
+          src={pencilPlusIcon}
           className='size-6'
         />
       </HStack>

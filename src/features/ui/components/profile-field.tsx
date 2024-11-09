@@ -1,3 +1,4 @@
+import checkIcon from '@tabler/icons/outline/check.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
@@ -57,7 +58,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
         <HStack space={2} alignItems='center'>
           {field.verified_at && (
             <span className='flex-none' title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
-              <Icon src={require('@tabler/icons/outline/check.svg')} />
+              <Icon src={checkIcon} />
             </span>
           )}
 

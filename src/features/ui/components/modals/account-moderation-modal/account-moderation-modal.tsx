@@ -1,3 +1,4 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import React, { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -186,7 +187,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
 
         {features.adminFE && (
           <HStack justifyContent='center'>
-            <Button icon={require('@tabler/icons/outline/external-link.svg')} size='sm' theme='secondary' onClick={handleAdminFE}>
+            <Button icon={externalLinkIcon} size='sm' theme='secondary' onClick={handleAdminFE}>
               <FormattedMessage id='account_moderation_modal.admin_fe' defaultMessage='Open in AdminFE' />
             </Button>
           </HStack>

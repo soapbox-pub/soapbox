@@ -1,4 +1,5 @@
 import { useFloating, shift } from '@floating-ui/react';
+import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -58,7 +59,7 @@ const EmojiPicker: React.FC<IEmojiPicker> = ({ emoji, emojiUrl, ...props }) => {
       >
         {emoji
           ? <Emoji height={20} width={20} emoji={emoji} />
-          : <Icon className='size-5 text-gray-600 hover:text-gray-700 dark:hover:text-gray-500' src={require('@tabler/icons/outline/mood-happy.svg')} />}
+          : <Icon className='size-5 text-gray-600 hover:text-gray-700 dark:hover:text-gray-500' src={moodHappyIcon} />}
       </button>
 
       {createPortal(

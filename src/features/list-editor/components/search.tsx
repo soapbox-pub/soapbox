@@ -1,3 +1,4 @@
+import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import clsx from 'clsx';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -45,7 +46,7 @@ const Search = () => {
             placeholder={intl.formatMessage(messages.search)}
           />
           <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-            <Icon src={require('@tabler/icons/outline/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
+            <Icon src={backspaceIcon} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
           </div>
         </label>
 

@@ -1,3 +1,4 @@
+import quoteIcon from '@tabler/icons/outline/quote.svg';
 import React, { useCallback } from 'react';
 
 import { HStack, Icon, Text } from 'soapbox/components/ui';
@@ -18,7 +19,7 @@ const QuotedStatusIndicator: React.FC<IQuotedStatusIndicator> = ({ statusId }) =
 
   return (
     <HStack alignItems='center' space={1}>
-      <Icon className='size-5' src={require('@tabler/icons/outline/quote.svg')} aria-hidden />
+      <Icon className='size-5' src={quoteIcon} aria-hidden />
       <Text truncate>{status.url}</Text>
     </HStack>
   );

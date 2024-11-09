@@ -1,3 +1,5 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -76,12 +78,12 @@ const AccountSearch: React.FC<IAccountSearch> = ({ onSelected, ...rest }) => {
           onClick={handleClear}
         >
           <SvgIcon
-            src={require('@tabler/icons/outline/search.svg')}
+            src={searchIcon}
             className={clsx('size-4 text-gray-400', { hidden: !isEmpty() })}
           />
 
           <SvgIcon
-            src={require('@tabler/icons/outline/x.svg')}
+            src={xIcon}
             className={clsx('size-4 text-gray-400', { hidden: isEmpty() })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

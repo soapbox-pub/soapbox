@@ -1,3 +1,5 @@
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -59,7 +61,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
         },
       }));
     },
-    icon: require('@tabler/icons/outline/logout.svg'),
+    icon: logoutIcon,
   }], []);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -124,7 +126,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
             <div className='hidden text-gray-600 hover:text-gray-100 group-hover:block'>
               <DropdownMenu items={menu}>
                 <IconButton
-                  src={require('@tabler/icons/outline/dots.svg')}
+                  src={dotsIcon}
                   title='Settings'
                   className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
                   iconClassName='h-4 w-4'

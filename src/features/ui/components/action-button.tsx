@@ -1,3 +1,5 @@
+import banIcon from '@tabler/icons/outline/ban.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -154,7 +156,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       return (
         <Button
           onClick={handleRemoteFollow}
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           text={intl.formatMessage(messages.follow)}
           size='sm'
         />
@@ -224,7 +226,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
           size='sm'
           disabled={blockedBy}
           theme={isFollowing ? 'secondary' : 'primary'}
-          icon={blockedBy ? require('@tabler/icons/outline/ban.svg') : (!isFollowing && require('@tabler/icons/outline/plus.svg'))}
+          icon={blockedBy ? banIcon : (!isFollowing && plusIcon)}
           onClick={handleFollow}
         >
           {isFollowing ? (

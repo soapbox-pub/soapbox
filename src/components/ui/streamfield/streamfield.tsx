@@ -1,3 +1,4 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
@@ -83,7 +84,7 @@ const Streamfield: React.FC<IStreamfield> = ({
                 <IconButton
                   iconClassName='h-4 w-4'
                   className='bg-transparent text-gray-600 hover:text-gray-600'
-                  src={require('@tabler/icons/outline/x.svg')}
+                  src={xIcon}
                   onClick={() => onRemoveItem(i)}
                   title={intl.formatMessage(messages.remove)}
                 />

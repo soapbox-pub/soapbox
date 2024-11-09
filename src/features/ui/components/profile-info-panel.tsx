@@ -1,3 +1,8 @@
+import balloonIcon from '@tabler/icons/outline/balloon.svg';
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import React from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -101,7 +106,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/outline/balloon.svg')}
+          src={balloonIcon}
           className='size-4 text-gray-800 dark:text-gray-200'
         />
 
@@ -162,7 +167,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
             {account.locked && (
               <Icon
-                src={require('@tabler/icons/outline/lock.svg')}
+                src={lockIcon}
                 alt={intl.formatMessage(messages.account_locked)}
                 className='size-4 text-gray-600'
               />
@@ -180,7 +185,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.local ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/calendar.svg')}
+                src={calendarIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -197,7 +202,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.location ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/map-pin.svg')}
+                src={mapPinIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -210,7 +215,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.website ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/link.svg')}
+                src={linkIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 

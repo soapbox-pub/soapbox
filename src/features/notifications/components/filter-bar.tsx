@@ -1,3 +1,10 @@
+import atIcon from '@tabler/icons/outline/at.svg';
+import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
+import chartBarIcon from '@tabler/icons/outline/chart-bar.svg';
+import heartIcon from '@tabler/icons/outline/heart.svg';
+import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
+import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -46,43 +53,43 @@ const NotificationFilterBar = () => {
     });
   } else {
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/at.svg')} />,
+      text: <Icon src={atIcon} />,
       title: intl.formatMessage(messages.mentions),
       action: onClick('mention'),
       name: 'mention',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/heart.svg')} />,
+      text: <Icon src={heartIcon} />,
       title: intl.formatMessage(messages.favourites),
       action: onClick('favourite'),
       name: 'favourite',
     });
     if (features.emojiReacts) items.push({
-      text: <Icon src={require('@tabler/icons/outline/mood-smile.svg')} />,
+      text: <Icon src={moodSmileIcon} />,
       title: intl.formatMessage(messages.emoji_reacts),
       action: onClick('pleroma:emoji_reaction'),
       name: 'pleroma:emoji_reaction',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/repeat.svg')} />,
+      text: <Icon src={repeatIcon} />,
       title: intl.formatMessage(messages.boosts),
       action: onClick('reblog'),
       name: 'reblog',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/chart-bar.svg')} />,
+      text: <Icon src={chartBarIcon} />,
       title: intl.formatMessage(messages.polls),
       action: onClick('poll'),
       name: 'poll',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/bell-ringing.svg')} />,
+      text: <Icon src={bellRingingIcon} />,
       title: intl.formatMessage(messages.statuses),
       action: onClick('status'),
       name: 'status',
     });
     items.push({
-      text: <Icon src={require('@tabler/icons/outline/user-plus.svg')} />,
+      text: <Icon src={userPlusIcon} />,
       title: intl.formatMessage(messages.follows),
       action: onClick('follow'),
       name: 'follow',

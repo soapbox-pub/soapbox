@@ -1,3 +1,6 @@
+import banIcon from '@tabler/icons/outline/ban.svg';
+import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
+import userMinusIcon from '@tabler/icons/outline/user-minus.svg';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -137,13 +140,13 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       if (isMemberUser) {
         items.push({
           text: intl.formatMessage(messages.groupModPromoteMod, { role: GroupRoles.ADMIN }),
-          icon: require('@tabler/icons/outline/briefcase.svg'),
+          icon: briefcaseIcon,
           action: handleAdminAssignment,
         });
       } else if (isMemberAdmin) {
         items.push({
           text: intl.formatMessage(messages.groupModDemote, { role: GroupRoles.ADMIN, name: account.username }),
-          icon: require('@tabler/icons/outline/briefcase.svg'),
+          icon: briefcaseIcon,
           action: handleUserAssignment,
           destructive: true,
         });
@@ -158,14 +161,14 @@ const GroupMemberListItem = (props: IGroupMemberListItem) => {
       if (features.groupsKick) {
         items.push({
           text: intl.formatMessage(messages.groupModKick, { name: account.username }),
-          icon: require('@tabler/icons/outline/user-minus.svg'),
+          icon: userMinusIcon,
           action: handleKickFromGroup,
         });
       }
 
       items.push({
         text: intl.formatMessage(messages.groupModBlock, { name: account.username }),
-        icon: require('@tabler/icons/outline/ban.svg'),
+        icon: banIcon,
         action: handleBlockFromGroup,
         destructive: true,
       });

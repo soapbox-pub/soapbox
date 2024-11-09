@@ -1,3 +1,7 @@
+import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import React, { useState, useRef, useEffect } from 'react';
@@ -160,10 +164,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const [placement, setPlacement] = useState('bottom');
 
   const options = [
-    { icon: require('@tabler/icons/outline/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
-    { icon: require('@tabler/icons/outline/lock-open.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
-    { icon: require('@tabler/icons/outline/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
-    { icon: require('@tabler/icons/outline/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
+    { icon: worldIcon, value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
+    { icon: lockOpenIcon, value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
+    { icon: lockIcon, value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
+    { icon: mailIcon, value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
   ];
 
   const onChange = (value: string | null) => value && dispatch(changeComposeVisibility(composeId, value));

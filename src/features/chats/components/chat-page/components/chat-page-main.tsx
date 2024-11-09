@@ -1,3 +1,7 @@
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
 import React, { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -120,7 +124,7 @@ const ChatPageMain = () => {
         <HStack alignItems='center' space={2} className='overflow-hidden'>
           <HStack alignItems='center'>
             <IconButton
-              src={require('@tabler/icons/outline/arrow-left.svg')}
+              src={arrowLeftIcon}
               className='mr-2 size-7 sm:mr-0 sm:hidden rtl:rotate-180'
               onClick={() => history.push('/chats')}
             />
@@ -162,7 +166,7 @@ const ChatPageMain = () => {
         <Menu>
           <MenuButton
             as={IconButton}
-            src={require('@tabler/icons/outline/info-circle.svg')}
+            src={infoCircleIcon}
             iconClassName='h-5 w-5 text-gray-600'
             children={null}
           />
@@ -213,7 +217,7 @@ const ChatPageMain = () => {
                   className='!px-0 hover:!bg-transparent'
                 >
                   <div className='flex w-full items-center space-x-2 text-sm font-bold text-primary-500 dark:text-accent-blue'>
-                    <Icon src={require('@tabler/icons/outline/ban.svg')} className='size-5' />
+                    <Icon src={banIcon} className='size-5' />
                     <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
                   </div>
                 </MenuItem>
@@ -225,7 +229,7 @@ const ChatPageMain = () => {
                     className='!px-0 hover:!bg-transparent'
                   >
                     <div className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600 dark:text-danger-500'>
-                      <Icon src={require('@tabler/icons/outline/logout.svg')} className='size-5' />
+                      <Icon src={logoutIcon} className='size-5' />
                       <span>{intl.formatMessage(messages.leaveChat)}</span>
                     </div>
                   </MenuItem>

@@ -1,3 +1,4 @@
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import clsx from 'clsx';
 import React, { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -36,7 +37,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
   const onClickClose = () => {
     if (checkComposeContent(compose)) {
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         heading: statusId
           ? <FormattedMessage id='confirmations.cancel_editing.heading' defaultMessage='Cancel post editing' />
           : <FormattedMessage id='confirmations.cancel.heading' defaultMessage='Discard post' />,

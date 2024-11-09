@@ -1,3 +1,4 @@
+import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -25,7 +26,7 @@ const NewEventPanel = () => {
       </Stack>
 
       <Button
-        icon={require('@tabler/icons/outline/calendar-event.svg')}
+        icon={calendarEventIcon}
         onClick={createEvent}
         theme='secondary'
         block

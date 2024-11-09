@@ -1,3 +1,4 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
 import React from 'react';
 
@@ -30,7 +31,7 @@ const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, tick
         <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
         <div className='crypto-address__actions'>
           {explorerUrl && <a href={explorerUrl} target='_blank'>
-            <Icon src={require('@tabler/icons/outline/external-link.svg')} />
+            <Icon src={externalLinkIcon} />
           </a>}
         </div>
       </div>

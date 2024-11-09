@@ -1,3 +1,8 @@
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg';
+import deviceDesktopIcon from '@tabler/icons/outline/device-desktop.svg';
+import moonIcon from '@tabler/icons/outline/moon.svg';
+import shadowIcon from '@tabler/icons/outline/shadow.svg';
+import sunIcon from '@tabler/icons/outline/sun.svg';
 import React, { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -22,13 +27,13 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
   const themeIconSrc = useMemo(() => {
     switch (value) {
       case 'system':
-        return require('@tabler/icons/outline/device-desktop.svg');
+        return deviceDesktopIcon;
       case 'light':
-        return require('@tabler/icons/outline/sun.svg');
+        return sunIcon;
       case 'dark':
-        return require('@tabler/icons/outline/moon.svg');
+        return moonIcon;
       case 'black':
-        return require('@tabler/icons/outline/shadow.svg');
+        return shadowIcon;
       default:
         return null;
     }
@@ -57,7 +62,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
         </Select>
 
         <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3'>
-          <Icon src={require('@tabler/icons/outline/chevron-down.svg')} className='size-4 text-gray-600 dark:text-gray-700' />
+          <Icon src={chevronDownIcon} className='size-4 text-gray-600 dark:text-gray-700' />
         </div>
       </div>
     </label>
