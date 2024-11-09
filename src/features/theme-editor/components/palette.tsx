@@ -63,5 +63,5 @@ const Palette: React.FC<IPalette> = ({ palette, onChange, resetKey }) => {
 
 export {
   Palette as default,
-  ColorGroup,
+  type ColorGroup,
 };

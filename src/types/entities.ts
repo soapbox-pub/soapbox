@@ -53,7 +53,7 @@ interface Status extends ReturnType<typeof StatusRecord> {
 type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
 
-export {
+export type {
   Account,
   AdminAccount,
   AdminReport,

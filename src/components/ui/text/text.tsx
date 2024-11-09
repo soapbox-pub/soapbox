@@ -133,5 +133,5 @@ const Text = React.forwardRef<any, IText>(
 
 export {
   Text as default,
-  IText,
+  type IText,
 };

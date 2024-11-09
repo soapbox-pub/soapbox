@@ -9,6 +9,7 @@
     "target": "ESNext",
     "jsx": "react",
     "allowJs": true,
+    "isolatedModules": true,
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,

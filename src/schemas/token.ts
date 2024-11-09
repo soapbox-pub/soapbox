@@ -11,4 +11,4 @@ const tokenSchema = z.object({
 
 type Token = z.infer<typeof tokenSchema>;
 
-export { tokenSchema, Token };
+export { tokenSchema, type Token };
