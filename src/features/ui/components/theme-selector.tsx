@@ -35,7 +35,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
       case 'black':
         return shadowIcon;
       default:
-        return null;
+        return deviceDesktopIcon;
     }
   }, [value]);
 

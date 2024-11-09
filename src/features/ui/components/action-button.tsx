@@ -221,12 +221,21 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       );
     } else if (!account.relationship?.blocking && !account.relationship?.muting) {
       // Follow & Unfollow
+
+      let icon: string | undefined;
+
+      if (isFollowing) {
+        icon = plusIcon;
+      } else if (blockedBy) {
+        icon = banIcon;
+      }
+
       return (
         <Button
           size='sm'
           disabled={blockedBy}
           theme={isFollowing ? 'secondary' : 'primary'}
-          icon={blockedBy ? banIcon : (!isFollowing && plusIcon)}
+          icon={icon}
           onClick={handleFollow}
         >
           {isFollowing ? (

@@ -250,7 +250,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
             'text-primary-500 hover:text-primary-600 dark:text-primary-500 dark:hover:text-primary-400': open,
           })}
-          src={valueOption?.icon}
+          src={valueOption!.icon}
           title={intl.formatMessage(messages.change_privacy)}
           onClick={handleToggle}
           onMouseDown={handleMouseDown}
