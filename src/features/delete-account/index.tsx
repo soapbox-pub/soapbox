@@ -2,7 +2,14 @@ import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { deleteAccount } from 'soapbox/actions/security.ts';
-import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 

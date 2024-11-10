@@ -4,7 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import GroupActionButton from 'soapbox/features/group/components/group-action-button.tsx';
 import { Group as GroupEntity } from 'soapbox/types/entities.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';

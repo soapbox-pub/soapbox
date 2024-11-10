@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useIntl, defineMessages } from 'react-intl';
 
 import verifiedIcon from 'soapbox/assets/icons/verified.svg';
-import { Icon } from 'soapbox/components/ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

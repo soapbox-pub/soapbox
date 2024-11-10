@@ -5,7 +5,13 @@ import { useHistory } from 'react-router-dom';
 
 import { changeSetting } from 'soapbox/actions/settings.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Button, CardBody, CardTitle, Form, HStack, IconButton, Stack, Toggle } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
 import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
 import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';

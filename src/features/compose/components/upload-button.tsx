@@ -3,7 +3,7 @@ import photoIcon from '@tabler/icons/outline/photo.svg';
 import { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
-import { IconButton } from 'soapbox/components/ui/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { useInstance } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

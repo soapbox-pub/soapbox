@@ -1,4 +1,4 @@
-import { Modal } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
 import DetailedCryptoAddress from 'soapbox/features/crypto-donate/components/detailed-crypto-address.tsx';
 
 import type { ICryptoAddress } from '../../../crypto-donate/components/crypto-address.tsx';

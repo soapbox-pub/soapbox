@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 import { groupSearchHistory } from 'soapbox/settings.ts';
 import { clearRecentGroupSearches } from 'soapbox/utils/groups.ts';

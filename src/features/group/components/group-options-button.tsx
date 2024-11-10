@@ -10,7 +10,7 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
 import { useLeaveGroup, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
 import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import { IconButton } from 'soapbox/components/ui/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';

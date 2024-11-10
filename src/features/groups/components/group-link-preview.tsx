@@ -1,6 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Avatar, Button, CardTitle, Stack } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardTitle } from 'soapbox/components/ui/card.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { type Card as StatusCard } from 'soapbox/types/entities.ts';
 
 interface IGroupLinkPreview {

@@ -12,7 +12,8 @@ import {
 } from 'soapbox/actions/accounts.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { useFollow } from 'soapbox/api/hooks/index.ts';
-import { Button, HStack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch, useFeatures, useLoggedIn } from 'soapbox/hooks/index.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

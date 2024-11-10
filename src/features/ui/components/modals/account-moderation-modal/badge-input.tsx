@@ -1,6 +1,6 @@
 import { useIntl, defineMessages } from 'react-intl';
 
-import { TagInput } from 'soapbox/components/ui/index.ts';
+import TagInput from 'soapbox/components/ui/tag-input.tsx';
 import { badgeToTag, tagToBadge } from 'soapbox/utils/badges.ts';
 
 const messages = defineMessages({

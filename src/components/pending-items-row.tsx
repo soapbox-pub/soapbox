@@ -4,7 +4,9 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IPendingItemsRow {
   /** Path to navigate the user when clicked. */

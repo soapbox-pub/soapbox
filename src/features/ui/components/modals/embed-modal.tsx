@@ -4,7 +4,10 @@ import { FormattedMessage } from 'react-intl';
 import { closeModal } from 'soapbox/actions/modals.ts';
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
 import SafeEmbed from 'soapbox/components/safe-embed.tsx';
-import { Modal, Stack, Text, Divider } from 'soapbox/components/ui/index.ts';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import useEmbed from 'soapbox/queries/embed.ts';
 

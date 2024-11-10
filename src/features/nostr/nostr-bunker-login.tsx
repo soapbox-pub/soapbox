@@ -4,7 +4,10 @@ import { useHistory } from 'react-router-dom';
 
 import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth.ts';
 import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
-import { Button, Form, Input, Spinner } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 export const NostrBunkerLogin: React.FC = () => {

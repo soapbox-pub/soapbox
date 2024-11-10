@@ -1,7 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { Column, Layout, Tabs } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Layout from 'soapbox/components/ui/layout.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {

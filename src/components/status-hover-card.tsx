@@ -8,11 +8,11 @@ import {
   updateStatusHoverCard,
 } from 'soapbox/actions/status-hover-card.ts';
 import { fetchStatus } from 'soapbox/actions/statuses.ts';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
 import StatusContainer from 'soapbox/containers/status-container.tsx';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import { showStatusHoverCard } from './hover-status-wrapper.tsx';
-import { Card, CardBody } from './ui/index.ts';
 
 interface IStatusHoverCard {
   visible?: boolean;

@@ -1,7 +1,12 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, matchPath, useHistory } from 'react-router-dom';
 
-import { Button, Divider, HStack, Popover, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Popover from 'soapbox/components/ui/popover.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
 

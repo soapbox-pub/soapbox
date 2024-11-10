@@ -1,5 +1,5 @@
 import { useGroups } from 'soapbox/api/hooks/index.ts';
-import { Widget } from 'soapbox/components/ui/index.ts';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import GroupListItem from 'soapbox/features/groups/components/discover/group-list-item.tsx';
 import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search.tsx';
 

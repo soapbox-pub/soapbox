@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { zap } from 'soapbox/actions/interactions.ts';
 import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
-import { Modal } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
 import ZapSplit from 'soapbox/features/ui/components/modals/zap-split/zap-split.tsx';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 

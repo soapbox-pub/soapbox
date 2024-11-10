@@ -4,7 +4,10 @@ import { FormattedMessage } from 'react-intl';
 
 import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines.ts';
 import { useGroup, useGroupTag } from 'soapbox/api/hooks/index.ts';
-import { Column, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import Timeline from '../ui/components/timeline.tsx';

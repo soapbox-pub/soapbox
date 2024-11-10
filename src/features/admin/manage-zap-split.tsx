@@ -4,7 +4,11 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account.tsx';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Button, Column, HStack, Input, Stack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit.ts';
 import AddNewAccount from '../ui/components/new-account-zap-split.tsx';

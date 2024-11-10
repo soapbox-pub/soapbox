@@ -10,7 +10,9 @@ import { deleteList, fetchLists } from 'soapbox/actions/lists.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import Icon from 'soapbox/components/icon.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, IconButton, Spinner } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
 import NewListForm from './components/new-list-form.tsx';

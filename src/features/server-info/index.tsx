@@ -1,6 +1,9 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column, Divider, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useInstance } from 'soapbox/hooks/index.ts';
 
 import LinkFooter from '../ui/components/link-footer.tsx';

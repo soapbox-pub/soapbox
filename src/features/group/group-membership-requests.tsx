@@ -6,7 +6,9 @@ import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/a
 import Account from 'soapbox/components/account.tsx';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, HStack, Spinner } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';
 

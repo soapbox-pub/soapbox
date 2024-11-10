@@ -4,7 +4,8 @@ import { useAccountLookup, useFollowers } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.followers', defaultMessage: 'Followers' },

@@ -1,4 +1,4 @@
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 import CryptoAddress from './crypto-address.tsx';

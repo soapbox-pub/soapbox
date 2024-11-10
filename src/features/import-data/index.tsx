@@ -5,7 +5,7 @@ import {
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import-data.ts';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
 import CSVImporter from './components/csv-importer.tsx';
 

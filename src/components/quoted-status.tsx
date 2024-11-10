@@ -5,7 +5,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import StatusMedia from 'soapbox/components/status-media.tsx';
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useSettings } from 'soapbox/hooks/index.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';

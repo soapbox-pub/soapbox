@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
 import Search from 'soapbox/features/compose/components/search.tsx';
 import { useTheme } from 'soapbox/hooks/index.ts';

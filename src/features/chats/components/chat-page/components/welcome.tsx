@@ -2,7 +2,12 @@ import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Button, CardBody, CardTitle, Form, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
 

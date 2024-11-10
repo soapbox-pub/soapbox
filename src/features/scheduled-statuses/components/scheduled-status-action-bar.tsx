@@ -4,7 +4,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled-statuses.ts';
 import { getSettings } from 'soapbox/actions/settings.ts';
-import { Button, HStack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';

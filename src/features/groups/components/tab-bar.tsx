@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Tabs } from 'soapbox/components/ui/index.ts';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 
 import type { Item } from 'soapbox/components/ui/tabs.tsx';
 

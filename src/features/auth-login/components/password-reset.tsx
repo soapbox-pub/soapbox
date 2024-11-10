@@ -4,7 +4,11 @@ import { Redirect } from 'react-router-dom';
 
 import { resetPassword } from 'soapbox/actions/security.ts';
 import { BigCard } from 'soapbox/components/big-card.tsx';
-import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 

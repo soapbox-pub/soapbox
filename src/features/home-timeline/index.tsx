@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
 import { useAppSelector, useAppDispatch, useFeatures, useInstance, useTheme } from 'soapbox/hooks/index.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';

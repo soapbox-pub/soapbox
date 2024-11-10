@@ -15,7 +15,7 @@ import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
 import { useUserStream } from 'soapbox/api/hooks/index.ts';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation.tsx';
 import ThumbNavigation from 'soapbox/components/thumb-navigation.tsx';
-import { Layout } from 'soapbox/components/ui/index.ts';
+import Layout from 'soapbox/components/ui/layout.tsx';
 import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn, useApi } from 'soapbox/hooks/index.ts';
 import AdminPage from 'soapbox/pages/admin-page.tsx';
 import ChatsPage from 'soapbox/pages/chats-page.tsx';

@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
 import { useSuggestedGroups } from 'soapbox/api/hooks/index.ts';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
 import GroupGridItem from './components/discover/group-grid-item.tsx';
 import GroupListItem from './components/discover/group-list-item.tsx';

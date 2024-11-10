@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeSetting } from 'soapbox/actions/settings.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Form } from 'soapbox/components/ui/index.ts';
+import Form from 'soapbox/components/ui/form.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
 import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks/index.ts';

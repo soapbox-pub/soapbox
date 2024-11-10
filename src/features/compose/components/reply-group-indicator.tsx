@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Link from 'soapbox/components/link.tsx';
-import { Text } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 import { Group } from 'soapbox/schemas/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';

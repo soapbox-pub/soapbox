@@ -5,18 +5,16 @@ import { updateNotificationSettings } from 'soapbox/actions/accounts.ts';
 import { patchMe } from 'soapbox/actions/me.ts';
 import BirthdayInput from 'soapbox/components/birthday-input.tsx';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import {
-  Button,
-  Column,
-  Form,
-  FormActions,
-  FormGroup,
-  HStack,
-  Input,
-  Streamfield,
-  Textarea,
-  Toggle,
-} from 'soapbox/components/ui/index.ts';
+import { Button } from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Streamfield from 'soapbox/components/ui/streamfield.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useImageField } from 'soapbox/hooks/forms/index.ts';
 import { useAppDispatch, useOwnAccount, useFeatures, useInstance, useAppSelector } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';

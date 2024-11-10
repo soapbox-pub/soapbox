@@ -4,7 +4,8 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
 import AccountAuthorize from './components/account-authorize.tsx';

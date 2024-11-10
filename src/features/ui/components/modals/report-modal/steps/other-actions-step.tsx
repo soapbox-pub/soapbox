@@ -5,7 +5,12 @@ import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports.ts';
-import { Button, FormGroup, HStack, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import StatusCheckBox from 'soapbox/features/report/components/status-check-box.tsx';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
 import { getDomain } from 'soapbox/utils/accounts.ts';

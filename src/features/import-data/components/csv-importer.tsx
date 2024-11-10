@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { Button, FileInput, Form, FormActions, FormGroup, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FileInput from 'soapbox/components/ui/file-input.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { AppDispatch, RootState } from 'soapbox/store.ts';

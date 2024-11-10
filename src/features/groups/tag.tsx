@@ -5,7 +5,9 @@ import { forwardRef, useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
 import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks/index.ts';
-import { Column, HStack, Icon } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 
 import GroupGridItem from './components/discover/group-grid-item.tsx';
 import GroupListItem from './components/discover/group-list-item.tsx';

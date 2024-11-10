@@ -8,7 +8,9 @@ import shieldXIcon from '@tabler/icons/outline/shield-x.svg';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useInstance } from 'soapbox/hooks/index.ts';
 
 import type { RemoteInstance } from 'soapbox/selectors/index.ts';

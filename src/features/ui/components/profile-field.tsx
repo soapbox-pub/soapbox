@@ -4,7 +4,8 @@ import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
 
 import Markup from 'soapbox/components/markup.tsx';
-import { HStack, Icon } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

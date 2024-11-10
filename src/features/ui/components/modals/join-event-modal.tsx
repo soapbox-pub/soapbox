@@ -3,7 +3,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { joinEvent } from 'soapbox/actions/events.ts';
 import { closeModal } from 'soapbox/actions/modals.ts';
-import { FormGroup, Modal, Textarea } from 'soapbox/components/ui/index.ts';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

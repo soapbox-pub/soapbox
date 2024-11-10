@@ -1,7 +1,9 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { Card, CardBody, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 const closeIcon = xIcon;
 

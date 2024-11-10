@@ -5,21 +5,18 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { updateSoapboxConfig } from 'soapbox/actions/admin.ts';
 import { uploadMedia } from 'soapbox/actions/media.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import {
-  Accordion,
-  Button,
-  Column,
-  CardHeader,
-  CardTitle,
-  FileInput,
-  Form,
-  FormActions,
-  FormGroup,
-  Input,
-  Streamfield,
-  Textarea,
-  Toggle,
-} from 'soapbox/components/ui/index.ts';
+import Accordion from 'soapbox/components/ui/accordion.tsx';
+import { Button } from 'soapbox/components/ui/button.tsx';
+import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FileInput from 'soapbox/components/ui/file-input.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Streamfield from 'soapbox/components/ui/streamfield.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector.tsx';
 import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';

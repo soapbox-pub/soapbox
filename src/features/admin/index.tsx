@@ -1,7 +1,7 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Switch, Route } from 'react-router-dom';
 
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 
 import AdminTabs from './components/admin-tabs.tsx';

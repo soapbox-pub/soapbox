@@ -4,7 +4,11 @@ import { Redirect } from 'react-router-dom';
 
 import { resetPasswordConfirm } from 'soapbox/actions/security.ts';
 import { BigCard } from 'soapbox/components/big-card.tsx';
-import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const token = new URLSearchParams(window.location.search).get('reset_password_token');

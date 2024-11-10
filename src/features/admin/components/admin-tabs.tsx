@@ -1,7 +1,7 @@
 import { useIntl, defineMessages } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
-import { Tabs } from 'soapbox/components/ui/index.ts';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

@@ -2,7 +2,10 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { useAccount } from 'soapbox/api/hooks/index.ts';
-import { Card, CardBody, CardTitle, HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Card, CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 

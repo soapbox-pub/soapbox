@@ -12,7 +12,10 @@ import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
 import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay.tsx';
 import StatusInfo from 'soapbox/components/statuses/status-info.tsx';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { getActualStatus } from 'soapbox/utils/status.ts';
 

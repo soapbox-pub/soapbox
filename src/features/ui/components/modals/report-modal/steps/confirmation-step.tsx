@@ -2,7 +2,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { ReportableEntities } from 'soapbox/actions/reports.ts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox.ts';
-import { Stack, Text } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

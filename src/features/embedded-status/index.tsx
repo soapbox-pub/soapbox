@@ -5,7 +5,7 @@ import { fetchStatus } from 'soapbox/actions/statuses.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import SiteLogo from 'soapbox/components/site-logo.tsx';
 import Status from 'soapbox/components/status.tsx';
-import { Spinner } from 'soapbox/components/ui/index.ts';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 import { iframeId } from 'soapbox/iframe.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';

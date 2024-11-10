@@ -2,7 +2,7 @@ import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import { FormattedDate } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 

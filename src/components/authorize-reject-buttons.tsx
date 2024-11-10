@@ -5,7 +5,9 @@ import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, IconButton, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IAuthorizeRejectButtons {
   onAuthorize(): Promise<unknown> | unknown;

@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-import { Tooltip } from './ui/index.ts';
 
 import type { Mention as MentionEntity } from 'soapbox/schemas/index.ts';
 

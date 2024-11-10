@@ -2,7 +2,9 @@ import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg';
 import chevronUpIcon from '@tabler/icons/outline/chevron-up.svg';
 import { HTMLAttributes } from 'react';
 
-import { HStack, IconButton, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IChatPaneHeader {
   isOpen: boolean;

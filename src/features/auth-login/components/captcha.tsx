@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { fetchCaptcha } from 'soapbox/actions/auth.ts';
-import { Stack, Text, Input } from 'soapbox/components/ui/index.ts';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { AxiosResponse } from 'axios';

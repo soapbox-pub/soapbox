@@ -1,7 +1,7 @@
 import { defineMessages, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Toggle } from 'soapbox/components/ui/index.ts';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
 

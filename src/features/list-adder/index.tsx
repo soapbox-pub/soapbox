@@ -3,7 +3,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
 import { setupListAdder, resetListAdder } from 'soapbox/actions/lists.ts';
-import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui/index.ts';
+import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 

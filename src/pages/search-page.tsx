@@ -1,3 +1,4 @@
+import Layout from 'soapbox/components/ui/layout.tsx';
 import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,
@@ -7,8 +8,6 @@ import {
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
-
-import { Layout } from '../components/ui/index.ts';
 
 interface ISearchPage {
   children: React.ReactNode;

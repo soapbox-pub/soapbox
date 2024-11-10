@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
 import PlaceholderAvatar from './placeholder-avatar.tsx';
 import PlaceholderDisplayName from './placeholder-display-name.tsx';

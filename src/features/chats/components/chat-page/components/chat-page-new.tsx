@@ -2,7 +2,10 @@ import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui/index.ts';
+import { CardTitle } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 import ChatSearch from '../../chat-search/chat-search.tsx';
 

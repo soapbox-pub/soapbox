@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Input, Streamfield } from 'soapbox/components/ui/index.ts';
+import Input from 'soapbox/components/ui/input.tsx';
+import Streamfield from 'soapbox/components/ui/streamfield.tsx';
 
 import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 

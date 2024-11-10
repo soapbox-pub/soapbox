@@ -8,7 +8,9 @@ import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/ac
 import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import StatusList from 'soapbox/components/status-list.tsx';
-import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui/index.ts';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useAppSelector, useFeatures, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 

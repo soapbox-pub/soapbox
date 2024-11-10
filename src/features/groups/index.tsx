@@ -7,7 +7,10 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import { useGroups } from 'soapbox/api/hooks/index.ts';
 import GroupCard from 'soapbox/components/group-card.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Button, Input, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions.ts';
 

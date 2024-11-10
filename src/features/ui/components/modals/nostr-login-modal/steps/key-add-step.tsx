@@ -5,7 +5,13 @@ import { FormattedMessage } from 'react-intl';
 
 import { logInNostr } from 'soapbox/actions/nostr.ts';
 import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
-import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { keyring } from 'soapbox/features/nostr/keyring.ts';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';

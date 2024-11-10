@@ -4,7 +4,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { setSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
 import IconButton from 'soapbox/components/icon-button.tsx';
 import { Datetime } from 'soapbox/components/ui/datetime.tsx';
-import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

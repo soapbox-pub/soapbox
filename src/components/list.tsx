@@ -4,9 +4,12 @@ import clsx from 'clsx';
 import { Children, cloneElement, isValidElement, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { SelectDropdown } from '../features/forms/index.tsx';
 
-import { Icon, HStack, Select } from './ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Select from 'soapbox/components/ui/select.tsx';
+
+import { SelectDropdown } from '../features/forms/index.tsx';
 
 interface IList {
   children: React.ReactNode;

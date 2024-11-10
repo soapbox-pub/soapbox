@@ -1,7 +1,8 @@
 import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import { Avatar, HStack } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';
 

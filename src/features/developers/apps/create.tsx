@@ -3,7 +3,15 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { createApp } from 'soapbox/actions/apps.ts';
 import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
-import { Column, Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import { getBaseURL } from 'soapbox/utils/accounts.ts';
 

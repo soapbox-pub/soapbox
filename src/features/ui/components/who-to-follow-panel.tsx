@@ -2,7 +2,8 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Text, Widget } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import PlaceholderSidebarSuggestions from 'soapbox/features/placeholder/components/placeholder-sidebar-suggestions.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';

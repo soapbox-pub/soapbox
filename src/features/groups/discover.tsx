@@ -4,7 +4,11 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, IconButton, Input, Stack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 import PopularGroups from './components/discover/popular-groups.tsx';
 import PopularTags from './components/discover/popular-tags.tsx';

@@ -1,7 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import { Text, Stack, HStack, Emoji } from 'soapbox/components/ui/index.ts';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 export interface ILightningAddress {
   address: string;

@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { IconButton } from 'soapbox/components/ui/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 
 interface IComposeFormButton {
   icon: string;

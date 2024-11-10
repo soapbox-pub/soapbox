@@ -2,7 +2,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { usePopularTags } from 'soapbox/api/hooks/index.ts';
 import Link from 'soapbox/components/link.tsx';
-import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import TagListItem from './tag-list-item.tsx';
 

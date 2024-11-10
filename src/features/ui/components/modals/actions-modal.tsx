@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
 import Motion from '../../util/optional-motion.tsx';

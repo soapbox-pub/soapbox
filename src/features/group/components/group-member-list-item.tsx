@@ -10,7 +10,7 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
 import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu.tsx';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { deleteEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';

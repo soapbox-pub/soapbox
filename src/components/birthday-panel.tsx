@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchBirthdayReminders } from 'soapbox/actions/accounts.ts';
-import { Widget } from 'soapbox/components/ui/index.ts';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 

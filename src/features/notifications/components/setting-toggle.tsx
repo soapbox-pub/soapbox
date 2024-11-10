@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { Toggle } from 'soapbox/components/ui/index.ts';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { Settings } from 'soapbox/schemas/soapbox/settings.ts';
 
 interface ISettingToggle {

@@ -4,7 +4,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists.ts';
 import Icon from 'soapbox/components/icon.tsx';
-import { Button, Form, HStack, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

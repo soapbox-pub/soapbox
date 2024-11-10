@@ -4,7 +4,7 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import { Widget } from 'soapbox/components/ui/index.ts';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import InstanceRestrictions from 'soapbox/features/federation-restrictions/components/instance-restrictions.tsx';
 import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';

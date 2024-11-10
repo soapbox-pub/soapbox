@@ -5,7 +5,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { fetchFollowedHashtags, expandFollowedHashtags } from 'soapbox/actions/tags.ts';
 import Hashtag from 'soapbox/components/hashtag.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 

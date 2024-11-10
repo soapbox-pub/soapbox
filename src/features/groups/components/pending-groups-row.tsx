@@ -1,6 +1,6 @@
 import { usePendingGroups } from 'soapbox/api/hooks/index.ts';
 import { PendingItemsRow } from 'soapbox/components/pending-items-row.tsx';
-import { Divider } from 'soapbox/components/ui/index.ts';
+import Divider from 'soapbox/components/ui/divider.tsx';
 import { useFeatures } from 'soapbox/hooks/index.ts';
 
 export default () => {

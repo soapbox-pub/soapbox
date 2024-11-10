@@ -2,7 +2,11 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { fetchPatronInstance } from 'soapbox/actions/patron.ts';
-import { Widget, Button, ProgressBar, Text, Stack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import ProgressBar from 'soapbox/components/ui/progress-bar.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 /** Open link in a new tab. */

@@ -1,4 +1,4 @@
-import { ProgressBar } from 'soapbox/components/ui/index.ts';
+import ProgressBar from 'soapbox/components/ui/progress-bar.tsx';
 
 interface IChatPendingUpload {
   progress: number;

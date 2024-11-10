@@ -7,10 +7,10 @@ import { useHistory } from 'react-router-dom';
 
 import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
-
-import { IconButton, Portal } from '../ui/index.ts';
 
 import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
 

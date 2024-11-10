@@ -4,7 +4,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchSuggestions } from 'soapbox/actions/suggestions.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 

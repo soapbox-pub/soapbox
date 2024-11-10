@@ -5,7 +5,7 @@ import { addToAliases } from 'soapbox/actions/aliases.ts';
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import AccountComponent from 'soapbox/components/account.tsx';
 import IconButton from 'soapbox/components/icon-button.tsx';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

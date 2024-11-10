@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { Text } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
 import emojify from 'soapbox/features/emoji/index.ts';
 import { EmojiReaction } from 'soapbox/types/entities.ts';
 

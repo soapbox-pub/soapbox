@@ -4,7 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { expandGroupMediaTimeline } from 'soapbox/actions/timelines.ts';
-import { Spinner, Text, Widget } from 'soapbox/components/ui/index.ts';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 import { getGroupGallery } from 'soapbox/selectors/index.ts';
 

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth.ts';
-import { Spinner } from 'soapbox/components/ui/index.ts';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 
 /** Component that logs the user out when rendered */
 const Logout: React.FC = () => {

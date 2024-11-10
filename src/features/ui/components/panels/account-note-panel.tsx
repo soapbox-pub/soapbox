@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { submitAccountNote } from 'soapbox/actions/account-notes.ts';
-import { HStack, Text, Textarea, Widget } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';

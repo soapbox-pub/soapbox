@@ -2,8 +2,11 @@ import confettiIcon from '@tabler/icons/outline/confetti.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { FormattedMessage } from 'react-intl';
 
+import Button from 'soapbox/components/ui/button.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { Button, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 const closeIcon = xIcon;
 

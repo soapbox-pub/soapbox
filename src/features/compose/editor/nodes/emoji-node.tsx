@@ -1,6 +1,6 @@
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 
-import { Emoji as Component } from 'soapbox/components/ui/index.ts';
+import Component from 'soapbox/components/ui/emoji.tsx';
 import { isNativeEmoji, type Emoji } from 'soapbox/features/emoji/index.ts';
 
 import type {

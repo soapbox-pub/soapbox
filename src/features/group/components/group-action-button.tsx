@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup, usePendingGroups } from 'soapbox/api/hooks/index.ts';
-import { Button } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';

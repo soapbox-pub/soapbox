@@ -1,7 +1,9 @@
 import quoteIcon from '@tabler/icons/outline/quote.svg';
 import { useCallback } from 'react';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
