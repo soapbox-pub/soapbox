@@ -1,3 +1,5 @@
+@use "../variables";
+
 .compose-form {
   &__warning {
     @apply text-xs mb-2.5 px-2.5 py-2 shadow-md rounded bg-accent-300 text-white;
@@ -5,7 +7,7 @@
     strong {
       @apply font-medium;
 
-      @each $lang in $cjk-langs {
+      @each $lang in variables.$cjk-langs {
         &:lang(#{$lang}) {
           @apply font-bold;
         }
@@ -168,7 +170,7 @@
       strong {
         @apply block font-medium text-black dark:text-white;
 
-        @each $lang in $cjk-langs {
+        @each $lang in variables.$cjk-langs {
           &:lang(#{$lang}) {
             @apply font-bold;
           }
