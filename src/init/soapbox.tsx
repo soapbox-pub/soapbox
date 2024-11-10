@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 
 import { NostrProvider } from 'soapbox/contexts/nostr-context.tsx';
 import { StatProvider } from 'soapbox/contexts/stat-context.tsx';
-import { createGlobals } from 'soapbox/globals.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 
 import { checkOnboardingStatus } from '../actions/onboarding.ts';
@@ -13,9 +12,6 @@ import { store } from '../store.ts';
 import SoapboxHead from './soapbox-head.tsx';
 import SoapboxLoad from './soapbox-load.tsx';
 import SoapboxMount from './soapbox-mount.tsx';
-
-// Configure global functions for developers
-createGlobals(store);
 
 // Preload happens synchronously
 store.dispatch(preload() as any);
