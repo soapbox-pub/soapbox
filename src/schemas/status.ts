@@ -1,22 +1,22 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji';
-import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html.ts';
 
-import { accountSchema } from './account';
-import { attachmentSchema } from './attachment';
-import { cardSchema } from './card';
-import { customEmojiSchema } from './custom-emoji';
-import { emojiReactionSchema } from './emoji-reaction';
-import { eventSchema } from './event';
-import { groupSchema } from './group';
-import { mentionSchema } from './mention';
-import { pollSchema } from './poll';
-import { tagSchema } from './tag';
-import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
+import { accountSchema } from './account.ts';
+import { attachmentSchema } from './attachment.ts';
+import { cardSchema } from './card.ts';
+import { customEmojiSchema } from './custom-emoji.ts';
+import { emojiReactionSchema } from './emoji-reaction.ts';
+import { eventSchema } from './event.ts';
+import { groupSchema } from './group.ts';
+import { mentionSchema } from './mention.ts';
+import { pollSchema } from './poll.ts';
+import { tagSchema } from './tag.ts';
+import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
 
-import type { Resolve } from 'soapbox/utils/types';
+import type { Resolve } from 'soapbox/utils/types.ts';
 
 const statusPleromaSchema = z.object({
   event: eventSchema.nullish().catch(undefined),

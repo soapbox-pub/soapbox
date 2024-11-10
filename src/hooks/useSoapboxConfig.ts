@@ -1,8 +1,8 @@
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox.ts';
 
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from './useAppSelector.ts';
 
-import type { SoapboxConfig } from 'soapbox/types/soapbox';
+import type { SoapboxConfig } from 'soapbox/types/soapbox.ts';
 
 /** Get the Soapbox config from the store */
 export const useSoapboxConfig = (): SoapboxConfig => {

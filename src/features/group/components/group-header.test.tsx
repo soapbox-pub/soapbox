@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildGroup } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
-import { Group } from 'soapbox/types/entities';
+import { buildGroup } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { Group } from 'soapbox/types/entities.ts';
 
-import GroupHeader from './group-header';
+import GroupHeader from './group-header.tsx';
 
 let group: Group;
 

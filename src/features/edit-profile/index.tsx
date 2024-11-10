@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { updateNotificationSettings } from 'soapbox/actions/accounts';
-import { patchMe } from 'soapbox/actions/me';
-import BirthdayInput from 'soapbox/components/birthday-input';
-import List, { ListItem } from 'soapbox/components/list';
+import { updateNotificationSettings } from 'soapbox/actions/accounts.ts';
+import { patchMe } from 'soapbox/actions/me.ts';
+import BirthdayInput from 'soapbox/components/birthday-input.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
 import {
   Button,
   Column,
@@ -16,17 +16,17 @@ import {
   Streamfield,
   Textarea,
   Toggle,
-} from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount, useFeatures, useInstance, useAppSelector } from 'soapbox/hooks';
-import { useImageField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
-import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
+} from 'soapbox/components/ui/index.ts';
+import { useImageField } from 'soapbox/hooks/forms/index.ts';
+import { useAppDispatch, useOwnAccount, useFeatures, useInstance, useAppSelector } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 
-import AvatarPicker from './components/avatar-picker';
-import HeaderPicker from './components/header-picker';
+import AvatarPicker from './components/avatar-picker.tsx';
+import HeaderPicker from './components/header-picker.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import type { Account } from 'soapbox/schemas';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;

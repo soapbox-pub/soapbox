@@ -12,14 +12,14 @@ import { Action, applyMiddleware, createStore } from 'redux';
 import { thunk } from 'redux-thunk';
 import { afterAll, beforeAll } from 'vitest';
 
-import { ChatProvider } from 'soapbox/contexts/chat-context';
-import { StatProvider } from 'soapbox/contexts/stat-context';
-import { queryClient } from 'soapbox/queries/client';
+import { ChatProvider } from 'soapbox/contexts/chat-context.tsx';
+import { StatProvider } from 'soapbox/contexts/stat-context.tsx';
+import { queryClient } from 'soapbox/queries/client.ts';
 
-import { default as rootReducer } from '../reducers';
+import { default as rootReducer } from '../reducers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/

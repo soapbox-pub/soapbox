@@ -11,9 +11,9 @@ import messagesIcon from '@tabler/icons/outline/messages.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import { FormattedMessage } from 'react-intl';
 
-import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
+import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link.tsx';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const { account } = useOwnAccount();

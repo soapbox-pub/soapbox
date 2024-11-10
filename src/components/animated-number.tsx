@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FormattedNumber } from 'react-intl';
 import { TransitionMotion, spring } from 'react-motion';
 
-import { useSettings } from 'soapbox/hooks';
+import { useSettings } from 'soapbox/hooks/index.ts';
 
 const obfuscatedCount = (count: number) => {
   if (count < 0) {

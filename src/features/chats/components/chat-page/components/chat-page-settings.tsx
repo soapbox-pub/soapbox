@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, CardBody, CardTitle, Form, HStack, IconButton, Stack, Toggle } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { useUpdateCredentials } from 'soapbox/queries/accounts';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Button, CardBody, CardTitle, Form, HStack, IconButton, Stack, Toggle } from 'soapbox/components/ui/index.ts';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
+import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
 
 type FormData = {
   accepts_chat_messages?: boolean;

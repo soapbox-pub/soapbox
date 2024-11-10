@@ -1,7 +1,7 @@
 import cloudUploadIcon from '@tabler/icons/outline/cloud-upload.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Icon, ProgressBar, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Icon, ProgressBar, Stack, Text } from 'soapbox/components/ui/index.ts';
 
 interface IUploadProgress {
   /** Number between 0 and 100 to represent the percentage complete. */

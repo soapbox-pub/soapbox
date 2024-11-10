@@ -5,22 +5,22 @@ import clsx from 'clsx';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { groupKick } from 'soapbox/actions/groups';
-import { openModal } from 'soapbox/actions/modals';
-import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
-import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu';
-import { HStack } from 'soapbox/components/ui';
-import { deleteEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
-import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups';
+import { groupKick } from 'soapbox/actions/groups.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu.tsx';
+import { HStack } from 'soapbox/components/ui/index.ts';
+import { deleteEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
+import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups.ts';
 
-import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
-import type { Group, GroupMember } from 'soapbox/types/entities';
+import type { Menu as IMenu } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Group, GroupMember } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   adminLimitTitle: { id: 'group.member.admin.limit.title', defaultMessage: 'Admin limit reached' },

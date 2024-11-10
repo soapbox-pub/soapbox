@@ -1,11 +1,11 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks';
-import { Account, accountSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/index.ts';
+import { Account, accountSchema } from 'soapbox/schemas/index.ts';
 
-import { useRelationships } from './useRelationships';
+import { useRelationships } from './useRelationships.ts';
 
-import type { EntityFn } from 'soapbox/entity-store/hooks/types';
+import type { EntityFn } from 'soapbox/entity-store/hooks/types.ts';
 
 interface useAccountListOpts {
   enabled?: boolean;

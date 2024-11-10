@@ -2,14 +2,15 @@ import { nip19 } from 'nostr-tools';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { logInNostr } from 'soapbox/actions/nostr';
-import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useAppDispatch } from 'soapbox/hooks';
 
-import NostrExtensionIndicator from '../components/nostr-extension-indicator';
+import { logInNostr } from 'soapbox/actions/nostr.ts';
+import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
+import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui/index.ts';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+
+import NostrExtensionIndicator from '../components/nostr-extension-indicator.tsx';
 
 interface IKeyAddStep {
   onClose(): void;

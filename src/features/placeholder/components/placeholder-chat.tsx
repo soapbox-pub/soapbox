@@ -1,7 +1,7 @@
-import { HStack, Stack } from 'soapbox/components/ui';
+import { HStack, Stack } from 'soapbox/components/ui/index.ts';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
 
 /** Fake chat to display while data is loading. */
 const PlaceholderChat = () => {

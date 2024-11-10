@@ -7,8 +7,8 @@
 import { HashtagNode } from '@lexical/hashtag';
 import { AutoLinkNode } from '@lexical/link';
 
-import { EmojiNode } from './emoji-node';
-import { MentionNode } from './mention-node';
+import { EmojiNode } from './emoji-node.tsx';
+import { MentionNode } from './mention-node.tsx';
 
 import type { Klass, LexicalNode } from 'lexical';
 

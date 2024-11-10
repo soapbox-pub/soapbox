@@ -1,13 +1,13 @@
 import { VirtuosoMockContext } from 'react-virtuoso';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { ChatContext } from 'soapbox/contexts/chat-context';
-import { StatProvider } from 'soapbox/contexts/stat-context';
+import { __stub } from 'soapbox/api/index.ts';
+import { ChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { StatProvider } from 'soapbox/contexts/stat-context.tsx';
 import chats from 'soapbox/jest/fixtures/chats.json';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import ChatPane from './chat-pane';
+import ChatPane from './chat-pane.tsx';
 
 const renderComponentWithChatContext = (store = {}) => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>

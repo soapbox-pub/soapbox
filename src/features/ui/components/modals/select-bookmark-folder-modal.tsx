@@ -3,15 +3,15 @@ import folderIcon from '@tabler/icons/outline/folder.svg';
 import { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { bookmark } from 'soapbox/actions/interactions';
-import { useBookmarkFolders } from 'soapbox/api/hooks';
-import { RadioGroup, RadioItem } from 'soapbox/components/radio';
-import { Emoji, HStack, Icon, Modal, Spinner, Stack } from 'soapbox/components/ui';
-import NewFolderForm from 'soapbox/features/bookmark-folders/components/new-folder-form';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import { bookmark } from 'soapbox/actions/interactions.ts';
+import { useBookmarkFolders } from 'soapbox/api/hooks/index.ts';
+import { RadioGroup, RadioItem } from 'soapbox/components/radio.tsx';
+import { Emoji, HStack, Icon, Modal, Spinner, Stack } from 'soapbox/components/ui/index.ts';
+import NewFolderForm from 'soapbox/features/bookmark-folders/components/new-folder-form.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface ISelectBookmarkFolderModal {
   statusId: string;

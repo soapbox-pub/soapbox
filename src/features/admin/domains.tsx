@@ -2,17 +2,17 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useDomains } from 'soapbox/api/hooks/admin';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useDomains } from 'soapbox/api/hooks/admin/index.ts';
+import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import Indicator from '../developers/components/indicator';
+import Indicator from '../developers/components/indicator.tsx';
 
-import type { Domain as DomainEntity } from 'soapbox/schemas';
+import type { Domain as DomainEntity } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.domains', defaultMessage: 'Domains' },

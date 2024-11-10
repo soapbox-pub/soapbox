@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Divider from './divider';
+import Divider from './divider.tsx';
 
 describe('<Divider />', () => {
   it('renders without text', () => {

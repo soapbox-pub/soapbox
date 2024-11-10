@@ -1,11 +1,11 @@
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { dismissEntities } from '../actions';
+import { dismissEntities } from '../actions.ts';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntityFn, ExpandedEntitiesPath } from './types';
+import type { EntityFn, ExpandedEntitiesPath } from './types.ts';
 
 /**
  * Removes an entity from a specific list.

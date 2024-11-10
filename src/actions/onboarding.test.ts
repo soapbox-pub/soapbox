@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { mockStore, mockWindowProperty, rootState } from 'soapbox/jest/test-helpers';
+import { mockStore, mockWindowProperty, rootState } from 'soapbox/jest/test-helpers.tsx';
 
-import { checkOnboardingStatus, startOnboarding, endOnboarding } from './onboarding';
+import { checkOnboardingStatus, startOnboarding, endOnboarding } from './onboarding.ts';
 
 describe('checkOnboarding()', () => {
   let mockGetItem: any;

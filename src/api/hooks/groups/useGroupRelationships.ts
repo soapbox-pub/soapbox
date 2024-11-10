@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useBatchedEntities } from 'soapbox/entity-store/hooks/useBatchedEntities';
-import { useApi, useLoggedIn } from 'soapbox/hooks';
-import { type GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useBatchedEntities } from 'soapbox/entity-store/hooks/useBatchedEntities.ts';
+import { useApi, useLoggedIn } from 'soapbox/hooks/index.ts';
+import { type GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas/index.ts';
 
 function useGroupRelationships(listKey: string[], ids: string[]) {
   const api = useApi();

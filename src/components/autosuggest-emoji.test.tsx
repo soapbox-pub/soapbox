@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import AutosuggestEmoji from './autosuggest-emoji';
+import AutosuggestEmoji from './autosuggest-emoji.tsx';
 
 describe('<AutosuggestEmoji />', () => {
   it('renders native emoji', () => {

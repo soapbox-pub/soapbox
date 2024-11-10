@@ -7,12 +7,12 @@ import toast, { Toast as RHToast } from 'react-hot-toast';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { ToastText, ToastType } from 'soapbox/toast';
+import { ToastText, ToastType } from 'soapbox/toast.tsx';
 
-import HStack from '../hstack/hstack';
-import Icon from '../icon/icon';
-import Stack from '../stack/stack';
-import Text from '../text/text';
+import HStack from '../hstack/hstack.tsx';
+import Icon from '../icon/icon.tsx';
+import Stack from '../stack/stack.tsx';
+import Text from '../text/text.tsx';
 
 const renderText = (text: ToastText) => {
   if (typeof text === 'string') {

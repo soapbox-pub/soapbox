@@ -2,16 +2,16 @@ import trashIcon from '@tabler/icons/outline/trash.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useDeleteGroup, useGroup } from 'soapbox/api/hooks';
-import List, { ListItem } from 'soapbox/components/list';
-import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useBackend } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
-import { TRUTHSOCIAL } from 'soapbox/utils/features';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useDeleteGroup, useGroup } from 'soapbox/api/hooks/index.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { CardBody, CardHeader, CardTitle, Column, Spinner, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useBackend } from 'soapbox/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
+import { TRUTHSOCIAL } from 'soapbox/utils/features.ts';
 
-import ColumnForbidden from '../ui/components/column-forbidden';
+import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 
 type RouteParams = { groupId: string };
 

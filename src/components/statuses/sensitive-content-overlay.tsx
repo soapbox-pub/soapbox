@@ -7,15 +7,15 @@ import clsx from 'clsx';
 import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { deleteStatus } from 'soapbox/actions/statuses';
-import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { deleteStatus } from 'soapbox/actions/statuses.ts';
+import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
-import DropdownMenu from '../dropdown-menu';
-import { Button, HStack, Text } from '../ui';
+import DropdownMenu from '../dropdown-menu/index.ts';
+import { Button, HStack, Text } from '../ui/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },

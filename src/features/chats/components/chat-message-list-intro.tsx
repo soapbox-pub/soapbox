@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import Link from 'soapbox/components/link';
-import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useChatActions } from 'soapbox/queries/chats';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Link from 'soapbox/components/link.tsx';
+import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import { useChatActions } from 'soapbox/queries/chats.ts';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
 const messages = defineMessages({
   leaveChatHeading: { id: 'chat_message_list_intro.leave_chat.heading', defaultMessage: 'Leave Chat' },

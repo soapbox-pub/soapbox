@@ -1,5 +1,5 @@
-import { useSettings } from './useSettings';
-import { useSystemTheme } from './useSystemTheme';
+import { useSettings } from './useSettings.ts';
+import { useSystemTheme } from './useSystemTheme.ts';
 
 type Theme = 'light' | 'dark' | 'black';
 

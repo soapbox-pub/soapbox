@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
-import { useDebounce, useFeatures } from 'soapbox/hooks';
-import { IChat } from 'soapbox/queries/chats';
+import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui/index.ts';
+import { useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
+import { IChat } from 'soapbox/queries/chats.ts';
 
-import ChatList from '../../chat-list';
-import ChatSearchInput from '../../chat-search-input';
+import ChatList from '../../chat-list.tsx';
+import ChatSearchInput from '../../chat-search-input.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },

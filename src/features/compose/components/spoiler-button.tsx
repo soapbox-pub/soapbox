@@ -1,10 +1,10 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeComposeSpoilerness } from 'soapbox/actions/compose';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { changeComposeSpoilerness } from 'soapbox/actions/compose.ts';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
-import ComposeFormButton from './compose-form-button';
+import ComposeFormButton from './compose-form-button.tsx';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.spoiler.marked', defaultMessage: 'Text is hidden behind warning' },

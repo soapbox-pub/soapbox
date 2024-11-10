@@ -33,18 +33,18 @@ import {
 } from 'react';
 import ReactDOM from 'react-dom';
 
-import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose';
-import { chooseEmoji } from 'soapbox/actions/emojis';
-import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
-import { selectAccount } from 'soapbox/selectors';
-import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose.ts';
+import { chooseEmoji } from 'soapbox/actions/emojis.ts';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 
-import AutosuggestAccount from '../../components/autosuggest-account';
-import { $createEmojiNode } from '../nodes/emoji-node';
-import { $createMentionNode } from '../nodes/mention-node';
+import AutosuggestAccount from '../../components/autosuggest-account.tsx';
+import { $createEmojiNode } from '../nodes/emoji-node.tsx';
+import { $createMentionNode } from '../nodes/mention-node.tsx';
 
-import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 
 type QueryMatch = {
   leadOffset: number;

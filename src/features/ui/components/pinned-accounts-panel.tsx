@@ -2,13 +2,14 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchPinnedAccounts } from 'soapbox/actions/accounts';
-import { Widget } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
 
-import type { Account } from 'soapbox/schemas';
+import { fetchPinnedAccounts } from 'soapbox/actions/accounts.ts';
+import { Widget } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+
+import type { Account } from 'soapbox/schemas/index.ts';
 
 interface IPinnedAccountsPanel {
   account: Account;

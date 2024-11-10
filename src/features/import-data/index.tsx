@@ -4,10 +4,10 @@ import {
   importFollows,
   importBlocks,
   importMutes,
-} from 'soapbox/actions/import-data';
-import { Column } from 'soapbox/components/ui';
+} from 'soapbox/actions/import-data.ts';
+import { Column } from 'soapbox/components/ui/index.ts';
 
-import CSVImporter from './components/csv-importer';
+import CSVImporter from './components/csv-importer.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },

@@ -5,10 +5,10 @@ import { KeyboardEvent, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { IconButton } from 'soapbox/components/ui';
-import { useClickOutside } from 'soapbox/hooks';
+import { IconButton } from 'soapbox/components/ui/index.ts';
+import { useClickOutside } from 'soapbox/hooks/index.ts';
 
-import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown';
+import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown.tsx';
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },

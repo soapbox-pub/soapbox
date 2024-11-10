@@ -1,4 +1,4 @@
-import type { EntitiesPath, ExpandedEntitiesPath } from './types';
+import type { EntitiesPath, ExpandedEntitiesPath } from './types.ts';
 
 function parseEntitiesPath(expandedPath: ExpandedEntitiesPath) {
   const [entityType, ...listKeys] = expandedPath;

@@ -1,11 +1,11 @@
 import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
 import { FormattedMessage } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import Icon from 'soapbox/components/icon';
-import { HStack, Text } from 'soapbox/components/ui';
+import Account from 'soapbox/components/account.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import { HStack, Text } from 'soapbox/components/ui/index.ts';
 
-import type { Account as AccountEntity } from 'soapbox/schemas';
+import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
 
 interface IMovedNote {
   from: AccountEntity;

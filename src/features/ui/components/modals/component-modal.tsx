@@ -1,4 +1,4 @@
-import { Modal } from 'soapbox/components/ui';
+import { Modal } from 'soapbox/components/ui/index.ts';
 
 interface IComponentModal {
   onClose: (type?: string) => void;

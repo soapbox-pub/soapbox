@@ -1,8 +1,8 @@
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { Button, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks/index.ts';
 
 const SignUpPanel = () => {
   const { instance } = useInstance();

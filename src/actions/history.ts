@@ -1,9 +1,9 @@
-import api from 'soapbox/api';
+import api from 'soapbox/api/index.ts';
 
-import { importFetchedAccounts } from './importer';
+import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const HISTORY_FETCH_REQUEST = 'HISTORY_FETCH_REQUEST';
 const HISTORY_FETCH_SUCCESS = 'HISTORY_FETCH_SUCCESS';

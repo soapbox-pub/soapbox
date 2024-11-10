@@ -1,10 +1,10 @@
 import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changePassword } from 'soapbox/actions/security';
-import { Button, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { changePassword } from 'soapbox/actions/security.ts';
+import { Button, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   updatePasswordSuccess: { id: 'security.update_password.success', defaultMessage: 'Password successfully updated.' },

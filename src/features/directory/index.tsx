@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
-import LoadMore from 'soapbox/components/load-more';
-import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
+import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory.ts';
+import LoadMore from 'soapbox/components/load-more.tsx';
+import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
 
-import AccountCard from './components/account-card';
+import AccountCard from './components/account-card.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.directory', defaultMessage: 'Browse profiles' },

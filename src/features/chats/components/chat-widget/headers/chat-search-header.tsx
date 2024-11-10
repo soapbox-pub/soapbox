@@ -1,10 +1,10 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
+import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
 
-import ChatPaneHeader from '../chat-pane-header';
+import ChatPaneHeader from '../chat-pane-header.tsx';
 
 const messages = defineMessages({
   title: { id: 'chat_search.title', defaultMessage: 'Messages' },

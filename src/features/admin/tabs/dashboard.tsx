@@ -2,17 +2,17 @@ import downloadIcon from '@tabler/icons/outline/download.svg';
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
-import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1';
-import List, { ListItem } from 'soapbox/components/list';
-import { CardTitle, Icon, IconButton, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
-import sourceCode from 'soapbox/utils/code';
-import { download } from 'soapbox/utils/download';
-import { parseVersion } from 'soapbox/utils/features';
+import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list.ts';
+import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { CardTitle, Icon, IconButton, Stack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks/index.ts';
+import sourceCode from 'soapbox/utils/code.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { parseVersion } from 'soapbox/utils/features.ts';
 
-import { DashCounter, DashCounters } from '../components/dashcounter';
-import RegistrationModePicker from '../components/registration-mode-picker';
+import { DashCounter, DashCounters } from '../components/dashcounter.tsx';
+import RegistrationModePicker from '../components/registration-mode-picker.tsx';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();

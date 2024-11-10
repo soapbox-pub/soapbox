@@ -6,9 +6,9 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
-import { normalizeUsername } from 'soapbox/utils/input';
-import { toTailwind } from 'soapbox/utils/tailwind';
-import { generateAccent } from 'soapbox/utils/theme';
+import { normalizeUsername } from 'soapbox/utils/input.ts';
+import { toTailwind } from 'soapbox/utils/tailwind.ts';
+import { generateAccent } from 'soapbox/utils/theme.ts';
 
 import type {
   PromoPanelItem,

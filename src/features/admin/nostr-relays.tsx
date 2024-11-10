@@ -2,11 +2,11 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui';
-import RelayEditor, { RelayData } from 'soapbox/features/nostr-relays/components/relay-editor';
-import { useApi } from 'soapbox/hooks';
+import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui/index.ts';
+import RelayEditor, { RelayData } from 'soapbox/features/nostr-relays/components/relay-editor.tsx';
+import { useApi } from 'soapbox/hooks/index.ts';
 
-import { useAdminNostrRelays } from './hooks/useAdminNostrRelays';
+import { useAdminNostrRelays } from './hooks/useAdminNostrRelays.ts';
 
 const messages = defineMessages({
   title: { id: 'column.admin.nostr_relays', defaultMessage: 'Relays' },

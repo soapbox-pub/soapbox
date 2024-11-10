@@ -1,7 +1,7 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 
-import IconButton from '../icon-button/icon-button';
-import Text from '../text/text';
+import IconButton from '../icon-button/icon-button.tsx';
+import Text from '../text/text.tsx';
 
 interface ITag {
   /** Name of the tag. */

@@ -1,7 +1,7 @@
 import { NRelay1 } from '@nostrify/nostrify';
 import { createContext, useContext, useState, useEffect } from 'react';
 
-import { useInstance } from 'soapbox/hooks/useInstance';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 interface NostrContextType {
   relay?: NRelay1;

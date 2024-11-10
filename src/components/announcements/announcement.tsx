@@ -1,14 +1,14 @@
 import { FormattedDate } from 'react-intl';
 
-import { Stack, Text } from 'soapbox/components/ui';
-import { useFeatures } from 'soapbox/hooks';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import { Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useFeatures } from 'soapbox/hooks/index.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import AnnouncementContent from './announcement-content';
-import ReactionsBar from './reactions-bar';
+import AnnouncementContent from './announcement-content.tsx';
+import ReactionsBar from './reactions-bar.tsx';
 
 import type { Map as ImmutableMap } from 'immutable';
-import type { Announcement as AnnouncementEntity } from 'soapbox/schemas';
+import type { Announcement as AnnouncementEntity } from 'soapbox/schemas/index.ts';
 
 interface IAnnouncement {
   announcement: AnnouncementEntity;

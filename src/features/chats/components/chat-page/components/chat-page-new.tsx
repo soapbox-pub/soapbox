@@ -2,9 +2,9 @@ import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
+import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui/index.ts';
 
-import ChatSearch from '../../chat-search/chat-search';
+import ChatSearch from '../../chat-search/chat-search.tsx';
 
 const messages = defineMessages({
   title: { id: 'chat.new_message.title', defaultMessage: 'New Message' },

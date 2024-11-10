@@ -1,11 +1,12 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { isNativeEmoji } from 'soapbox/features/emoji';
-import { Account } from 'soapbox/schemas';
-import { tagHistory } from 'soapbox/settings';
-import { PLEROMA } from 'soapbox/utils/features';
-import { hasIntegerMediaIds } from 'soapbox/utils/status';
+import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
+import { Account } from 'soapbox/schemas/index.ts';
+import { tagHistory } from 'soapbox/settings.ts';
+import { PLEROMA } from 'soapbox/utils/features.ts';
+import { hasIntegerMediaIds } from 'soapbox/utils/status.ts';
 
+import { COMPOSE_SET_STATUS } from '../actions/compose-status.ts';
 import {
   COMPOSE_CHANGE,
   COMPOSE_REPLY,
@@ -53,16 +54,15 @@ import {
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   ComposeAction,
   COMPOSE_CHANGE_MEDIA_ORDER,
-} from '../actions/compose';
-import { COMPOSE_SET_STATUS } from '../actions/compose-status';
-import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events';
-import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me';
-import { SETTING_CHANGE, FE_NAME, SettingsAction } from '../actions/settings';
-import { TIMELINE_DELETE, TimelineAction } from '../actions/timelines';
-import { normalizeAttachment } from '../normalizers/attachment';
-import { unescapeHTML } from '../utils/html';
+} from '../actions/compose.ts';
+import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events.ts';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me.ts';
+import { SETTING_CHANGE, FE_NAME, SettingsAction } from '../actions/settings.ts';
+import { TIMELINE_DELETE, TimelineAction } from '../actions/timelines.ts';
+import { normalizeAttachment } from '../normalizers/attachment.ts';
+import { unescapeHTML } from '../utils/html.ts';
 
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 import type {
   APIEntity,
   Attachment as AttachmentEntity,

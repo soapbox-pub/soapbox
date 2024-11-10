@@ -9,12 +9,12 @@ import urgentIcon from '@tabler/icons/outline/urgent.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { changeSettingImmediate } from 'soapbox/actions/settings';
-import { Column, Text } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import sourceCode from 'soapbox/utils/code';
+import { changeSettingImmediate } from 'soapbox/actions/settings.ts';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import { Column, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
+import sourceCode from 'soapbox/utils/code.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },

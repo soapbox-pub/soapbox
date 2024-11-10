@@ -5,15 +5,15 @@ import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, HStack, Icon, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { Avatar, HStack, Icon, Stack, Text, Tooltip } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
-import Chat from '../chat';
+import Chat from '../chat.tsx';
 
-import ChatPaneHeader from './chat-pane-header';
-import ChatSettings from './chat-settings';
+import ChatPaneHeader from './chat-pane-header.tsx';
+import ChatSettings from './chat-settings.tsx';
 
 const messages = defineMessages({
   autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day, plural, one {# day} other {# days}}' },

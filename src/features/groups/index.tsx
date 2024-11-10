@@ -3,18 +3,18 @@ import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useGroups } from 'soapbox/api/hooks';
-import GroupCard from 'soapbox/components/group-card';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Input, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks';
-import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useGroups } from 'soapbox/api/hooks/index.ts';
+import GroupCard from 'soapbox/components/group-card.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Button, Input, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
+import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions.ts';
 
-import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card';
+import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card.tsx';
 
-import PendingGroupsRow from './components/pending-groups-row';
-import TabBar, { TabItems } from './components/tab-bar';
+import PendingGroupsRow from './components/pending-groups-row.tsx';
+import TabBar, { TabItems } from './components/tab-bar.tsx';
 
 const messages = defineMessages({
   placeholder: { id: 'groups.search.placeholder', defaultMessage: 'Search My Groups' },

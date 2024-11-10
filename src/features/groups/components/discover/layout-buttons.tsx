@@ -2,7 +2,7 @@ import layoutGridIcon from '@tabler/icons/outline/layout-grid.svg';
 import layoutListIcon from '@tabler/icons/outline/layout-list.svg';
 import clsx from 'clsx';
 
-import { HStack, Icon } from 'soapbox/components/ui';
+import { HStack, Icon } from 'soapbox/components/ui/index.ts';
 
 enum GroupLayout {
   LIST = 'LIST',

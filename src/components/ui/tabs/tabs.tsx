@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import { createContext, useContext, useLayoutEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Counter from '../counter/counter';
+import Counter from '../counter/counter.tsx';
 
 import './tabs.css';
 

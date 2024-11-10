@@ -14,35 +14,35 @@ import {
   fetchComposeSuggestions,
   selectComposeSuggestion,
   uploadCompose,
-} from 'soapbox/actions/compose';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import { Button, HStack, Stack } from 'soapbox/components/ui';
-import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+} from 'soapbox/actions/compose.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import { Button, HStack, Stack } from 'soapbox/components/ui/index.ts';
+import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks/index.ts';
 
-import QuotedStatusContainer from '../containers/quoted-status-container';
-import ReplyIndicatorContainer from '../containers/reply-indicator-container';
-import UploadButtonContainer from '../containers/upload-button-container';
-import WarningContainer from '../containers/warning-container';
-import { $createEmojiNode } from '../editor/nodes/emoji-node';
-import { countableText } from '../util/counter';
+import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
+import ReplyIndicatorContainer from '../containers/reply-indicator-container.ts';
+import UploadButtonContainer from '../containers/upload-button-container.ts';
+import WarningContainer from '../containers/warning-container.tsx';
+import { $createEmojiNode } from '../editor/nodes/emoji-node.tsx';
+import { countableText } from '../util/counter.ts';
 
-import MarkdownButton from './markdown-button';
-import PollButton from './poll-button';
-import PollForm from './polls/poll-form';
-import PrivacyDropdown from './privacy-dropdown';
-import ReplyGroupIndicator from './reply-group-indicator';
-import ReplyMentions from './reply-mentions';
-import ScheduleButton from './schedule-button';
-import ScheduleForm from './schedule-form';
-import SpoilerButton from './spoiler-button';
-import SpoilerInput from './spoiler-input';
-import TextCharacterCounter from './text-character-counter';
-import UploadForm from './upload-form';
-import VisualCharacterCounter from './visual-character-counter';
+import MarkdownButton from './markdown-button.tsx';
+import PollButton from './poll-button.tsx';
+import PollForm from './polls/poll-form.tsx';
+import PrivacyDropdown from './privacy-dropdown.tsx';
+import ReplyGroupIndicator from './reply-group-indicator.tsx';
+import ReplyMentions from './reply-mentions.tsx';
+import ScheduleButton from './schedule-button.tsx';
+import ScheduleForm from './schedule-form.tsx';
+import SpoilerButton from './spoiler-button.tsx';
+import SpoilerInput from './spoiler-input.tsx';
+import TextCharacterCounter from './text-character-counter.tsx';
+import UploadForm from './upload-form.tsx';
+import VisualCharacterCounter from './visual-character-counter.tsx';
 
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },

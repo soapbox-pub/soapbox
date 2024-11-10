@@ -1,9 +1,9 @@
 import { useIntl, defineMessages } from 'react-intl';
 
-import { HStack, Input } from 'soapbox/components/ui';
+import { HStack, Input } from 'soapbox/components/ui/index.ts';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import type { CryptoAddress } from 'soapbox/types/soapbox';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { CryptoAddress } from 'soapbox/types/soapbox.ts';
 
 const messages = defineMessages({
   ticker: { id: 'soapbox_config.crypto_address.meta_fields.ticker_placeholder', defaultMessage: 'Ticker' },

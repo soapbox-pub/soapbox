@@ -2,17 +2,17 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
-import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, HStack, Spinner } from 'soapbox/components/ui';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
+import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, HStack, Spinner } from 'soapbox/components/ui/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ColumnForbidden from '../ui/components/column-forbidden';
+import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/schemas';
+import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
 
 type RouteParams = { groupId: string };
 

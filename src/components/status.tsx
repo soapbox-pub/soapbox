@@ -6,28 +6,28 @@ import { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
-import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
-import TranslateButton from 'soapbox/components/translate-button';
-import AccountContainer from 'soapbox/containers/account-container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
+import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
+import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
+import TranslateButton from 'soapbox/components/translate-button.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
+import { useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
-import EventPreview from './event-preview';
-import StatusActionBar from './status-action-bar';
-import StatusContent from './status-content';
-import StatusMedia from './status-media';
-import StatusReplyMentions from './status-reply-mentions';
-import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
-import StatusInfo from './statuses/status-info';
-import Tombstone from './tombstone';
-import { Card, Icon, Stack, Text } from './ui';
+import EventPreview from './event-preview.tsx';
+import StatusActionBar from './status-action-bar.tsx';
+import StatusContent from './status-content.tsx';
+import StatusMedia from './status-media.tsx';
+import StatusReplyMentions from './status-reply-mentions.tsx';
+import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
+import StatusInfo from './statuses/status-info.tsx';
+import Tombstone from './tombstone.tsx';
+import { Card, Icon, Stack, Text } from './ui/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };

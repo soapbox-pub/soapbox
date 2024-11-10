@@ -3,16 +3,16 @@ import banIcon from '@tabler/icons/outline/ban.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { blockAccount, unblockAccount } from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats.ts';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
-import ChatPaneHeader from './chat-pane-header';
+import ChatPaneHeader from './chat-pane-header.tsx';
 
 const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },

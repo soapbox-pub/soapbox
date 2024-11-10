@@ -2,11 +2,11 @@ import debounce from 'lodash/debounce';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
-import Domain from 'soapbox/components/domain';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks.ts';
+import Domain from 'soapbox/components/domain.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.domain_blocks', defaultMessage: 'Hidden domains' },

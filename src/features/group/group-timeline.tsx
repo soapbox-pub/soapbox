@@ -4,15 +4,15 @@ import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
-import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines';
-import { useGroup, useGroupStream } from 'soapbox/api/hooks';
-import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
-import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
-import { makeGetStatusIds } from 'soapbox/selectors';
+import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose.ts';
+import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines.ts';
+import { useGroup, useGroupStream } from 'soapbox/api/hooks/index.ts';
+import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import ComposeForm from 'soapbox/features/compose/components/compose-form.tsx';
+import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 type RouteParams = { groupId: string };
 

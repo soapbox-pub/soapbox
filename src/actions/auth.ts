@@ -9,28 +9,28 @@
 
 import { defineMessages } from 'react-intl';
 
-import { createAccount } from 'soapbox/actions/accounts';
-import { createApp } from 'soapbox/actions/apps';
-import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
-import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
-import { startOnboarding } from 'soapbox/actions/onboarding';
-import { custom } from 'soapbox/custom';
-import { queryClient } from 'soapbox/queries/client';
-import { selectAccount } from 'soapbox/selectors';
-import { unsetSentryAccount } from 'soapbox/sentry';
-import KVStore from 'soapbox/storage/kv-store';
-import toast from 'soapbox/toast';
-import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
-import sourceCode from 'soapbox/utils/code';
-import { normalizeUsername } from 'soapbox/utils/input';
-import { getScopes } from 'soapbox/utils/scopes';
+import { createAccount } from 'soapbox/actions/accounts.ts';
+import { createApp } from 'soapbox/actions/apps.ts';
+import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me.ts';
+import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth.ts';
+import { startOnboarding } from 'soapbox/actions/onboarding.ts';
+import { custom } from 'soapbox/custom.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { unsetSentryAccount } from 'soapbox/sentry.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import toast from 'soapbox/toast.tsx';
+import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth.ts';
+import sourceCode from 'soapbox/utils/code.ts';
+import { normalizeUsername } from 'soapbox/utils/input.ts';
+import { getScopes } from 'soapbox/utils/scopes.ts';
 
-import api, { baseClient } from '../api';
+import api, { baseClient } from '../api/index.ts';
 
-import { importFetchedAccount } from './importer';
+import { importFetchedAccount } from './importer/index.ts';
 
 import type { AxiosError } from 'axios';
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 

@@ -2,7 +2,7 @@ import { List, Map } from 'immutable';
 import pick from 'lodash/pick';
 import { describe, expect, it } from 'vitest';
 
-import search, { addCustomToPool } from './search';
+import search, { addCustomToPool } from './search.ts';
 
 const trimEmojis = (emoji: any) => pick(emoji, ['id', 'unified', 'native', 'custom']);
 

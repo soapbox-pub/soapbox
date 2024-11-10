@@ -1,8 +1,8 @@
 import { List as ImmutableList, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { normalizeStatus } from 'soapbox/normalizers';
-import { emojiReactionSchema } from 'soapbox/schemas';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { emojiReactionSchema } from 'soapbox/schemas/index.ts';
 
 import {
   sortEmoji,
@@ -11,7 +11,7 @@ import {
   getReactForStatus,
   simulateEmojiReact,
   simulateUnEmojiReact,
-} from './emoji-reacts';
+} from './emoji-reacts.ts';
 
 const ALLOWED_EMOJI = ImmutableList([
   '👍',

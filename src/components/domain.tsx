@@ -1,10 +1,10 @@
 import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { unblockDomain } from 'soapbox/actions/domain-blocks';
-import { useAppDispatch } from 'soapbox/hooks';
+import { unblockDomain } from 'soapbox/actions/domain-blocks.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { HStack, IconButton, Text } from './ui';
+import { HStack, IconButton, Text } from './ui/index.ts';
 
 const messages = defineMessages({
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },

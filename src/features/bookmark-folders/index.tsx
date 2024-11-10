@@ -3,12 +3,12 @@ import folderIcon from '@tabler/icons/outline/folder.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { useBookmarkFolders } from 'soapbox/api/hooks';
-import List, { ListItem } from 'soapbox/components/list';
-import { Column, Emoji, HStack, Icon, Spinner, Stack } from 'soapbox/components/ui';
-import { useFeatures } from 'soapbox/hooks';
+import { useBookmarkFolders } from 'soapbox/api/hooks/index.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Column, Emoji, HStack, Icon, Spinner, Stack } from 'soapbox/components/ui/index.ts';
+import { useFeatures } from 'soapbox/hooks/index.ts';
 
-import NewFolderForm from './components/new-folder-form';
+import NewFolderForm from './components/new-folder-form.tsx';
 
 
 const messages = defineMessages({

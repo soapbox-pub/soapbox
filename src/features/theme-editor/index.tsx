@@ -4,19 +4,19 @@ import uploadIcon from '@tabler/icons/outline/upload.svg';
 import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { updateSoapboxConfig } from 'soapbox/actions/admin';
-import { getHost } from 'soapbox/actions/instance';
-import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, Column, Form, FormActions } from 'soapbox/components/ui';
-import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
-import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import toast from 'soapbox/toast';
-import { download } from 'soapbox/utils/download';
+import { updateSoapboxConfig } from 'soapbox/actions/admin.ts';
+import { getHost } from 'soapbox/actions/instance.ts';
+import { fetchSoapboxConfig } from 'soapbox/actions/soapbox.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Button, Column, Form, FormActions } from 'soapbox/components/ui/index.ts';
+import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker.tsx';
+import { useAppDispatch, useAppSelector, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { download } from 'soapbox/utils/download.ts';
 
-import Palette, { ColorGroup } from './components/palette';
+import Palette, { ColorGroup } from './components/palette.tsx';
 
 import type { ColorChangeHandler } from 'react-color';
 

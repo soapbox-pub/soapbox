@@ -19,8 +19,8 @@ import {
   EVENT_SUBMIT_FAIL,
   EVENT_COMPOSE_CANCEL,
   EVENT_FORM_SET,
-} from 'soapbox/actions/events';
-import { normalizeAttachment, normalizeLocation } from 'soapbox/normalizers';
+} from 'soapbox/actions/events.ts';
+import { normalizeAttachment, normalizeLocation } from 'soapbox/normalizers/index.ts';
 
 import type {
   Attachment as AttachmentEntity,

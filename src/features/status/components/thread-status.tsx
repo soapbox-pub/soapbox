@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import StatusContainer from 'soapbox/containers/status-container';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppSelector } from 'soapbox/hooks';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 interface IThreadStatus {
   id: string;

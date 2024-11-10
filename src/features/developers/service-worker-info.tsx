@@ -2,11 +2,11 @@ import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import List, { ListItem } from 'soapbox/components/list';
-import { HStack, Text, Column, FormActions, Button, Stack, Icon } from 'soapbox/components/ui';
-import { unregisterSW } from 'soapbox/utils/sw';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { HStack, Text, Column, FormActions, Button, Stack, Icon } from 'soapbox/components/ui/index.ts';
+import { unregisterSW } from 'soapbox/utils/sw.ts';
 
-import Indicator from './components/indicator';
+import Indicator from './components/indicator.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.developers.service_worker', defaultMessage: 'Service Worker' },

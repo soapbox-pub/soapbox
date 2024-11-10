@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { coerceObject } from './utils';
+import { coerceObject } from './utils.ts';
 
 /** https://docs.joinmastodon.org/entities/WebPushSubscription/ */
 const webPushSubscriptionSchema = z.object({

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
 
-import LoginPage from './login-page';
+import LoginPage from './login-page.tsx';
 
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {

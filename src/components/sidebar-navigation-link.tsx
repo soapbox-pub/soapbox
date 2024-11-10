@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import { Icon, Text } from './ui';
+import { Icon, Text } from './ui/index.ts';
 
 interface ISidebarNavigationLink {
   /** Notification count, if any. */

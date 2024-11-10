@@ -1,7 +1,7 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import reducer from '.';
+import reducer from './index.ts';
 
 describe('root reducer', () => {
   it('should return the initial state', () => {

@@ -260,7 +260,7 @@
     "jsx-a11y/role-supports-aria-props": "off",
     "jsx-a11y/scope": "warn",
     "jsx-a11y/tabindex-no-positive": "warn",
-    "import/extensions": ["warn", "ignorePackages"],
+    "import/extensions": ["error", "ignorePackages"],
     "import/newline-after-import": "error",
     "import/no-extraneous-dependencies": "error",
     "import/no-unresolved": "error",

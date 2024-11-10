@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchUsers } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchUsers } from 'soapbox/actions/admin.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import UnapprovedAccount from '../components/unapproved-account';
+import UnapprovedAccount from '../components/unapproved-account.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.awaiting_approval', defaultMessage: 'Awaiting Approval' },

@@ -9,10 +9,10 @@ import throttle from 'lodash/throttle';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { formatTime, getPointerPosition } from 'soapbox/features/video';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import { formatTime, getPointerPosition } from 'soapbox/features/video/index.tsx';
 
-import Visualizer from './visualizer';
+import Visualizer from './visualizer.ts';
 
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },

@@ -1,13 +1,13 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAccount } from 'soapbox/api/hooks';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import { Card, CardBody, CardTitle, HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
-import { Card, CardBody, CardTitle, HStack, Stack, Text } from '../../components/ui';
-import ActionButton from '../ui/components/action-button';
-import { HotKeys } from '../ui/components/hotkeys';
+import ActionButton from '../ui/components/action-button.tsx';
+import { HotKeys } from '../ui/components/hotkeys.tsx';
 
 const messages = defineMessages({
   heading: { id: 'feed_suggestions.heading', defaultMessage: 'Suggested Profiles' },

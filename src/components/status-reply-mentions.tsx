@@ -1,13 +1,13 @@
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
-import { useAppDispatch } from 'soapbox/hooks';
-import { shortenNostr } from 'soapbox/utils/nostr';
+import { openModal } from 'soapbox/actions/modals.ts';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper.tsx';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IStatusReplyMentions {
   status: Status;

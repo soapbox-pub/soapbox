@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildGroupMember } from 'soapbox/jest/factory';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { GroupRoles } from 'soapbox/schemas/group-member';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroupMember } from 'soapbox/jest/factory.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 
-import { useGroupMembers } from './useGroupMembers';
+import { useGroupMembers } from './useGroupMembers.ts';
 
 const groupMember = buildGroupMember();
 const groupId = '1';

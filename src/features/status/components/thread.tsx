@@ -6,25 +6,25 @@ import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { type VirtuosoHandle } from 'react-virtuoso';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
-import { favourite, reblog, unfavourite, unreblog } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { getSettings } from 'soapbox/actions/settings';
-import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import StatusActionBar from 'soapbox/components/status-action-bar';
-import Tombstone from 'soapbox/components/tombstone';
-import { Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
-import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks';
-import { RootState } from 'soapbox/store';
-import { type Account, type Status } from 'soapbox/types/entities';
-import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status';
+import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
+import { favourite, reblog, unfavourite, unreblog } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import { hideStatus, revealStatus } from 'soapbox/actions/statuses.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import StatusActionBar from 'soapbox/components/status-action-bar.tsx';
+import Tombstone from 'soapbox/components/tombstone.tsx';
+import { Stack } from 'soapbox/components/ui/index.ts';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
+import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
+import { useAppDispatch, useAppSelector, useSettings } from 'soapbox/hooks/index.ts';
+import { RootState } from 'soapbox/store.ts';
+import { type Account, type Status } from 'soapbox/types/entities.ts';
+import { defaultMediaVisibility, textForScreenReader } from 'soapbox/utils/status.ts';
 
-import DetailedStatus from './detailed-status';
-import ThreadStatus from './thread-status';
+import DetailedStatus from './detailed-status.tsx';
+import ThreadStatus from './thread-status.tsx';
 
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,

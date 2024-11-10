@@ -1,6 +1,6 @@
-import { HStack, Stack } from 'soapbox/components/ui';
+import { HStack, Stack } from 'soapbox/components/ui/index.ts';
 
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval, generateText } from '../utils.ts';
 
 export default ({ limit }: { limit: number }) => {
   const length = randomIntFromInterval(15, 3);

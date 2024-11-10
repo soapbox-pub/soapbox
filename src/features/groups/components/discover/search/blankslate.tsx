@@ -1,4 +1,4 @@
-import { Stack, Text } from 'soapbox/components/ui';
+import { Stack, Text } from 'soapbox/components/ui/index.ts';
 
 interface Props {
   title: React.ReactNode | string;

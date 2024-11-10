@@ -1,13 +1,13 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { CreateGroupParams, useGroupValidation } from 'soapbox/api/hooks';
-import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui';
-import AvatarPicker from 'soapbox/features/edit-profile/components/avatar-picker';
-import HeaderPicker from 'soapbox/features/edit-profile/components/header-picker';
-import GroupTagsField from 'soapbox/features/group/components/group-tags-field';
-import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks';
-import { usePreview } from 'soapbox/hooks/forms';
-import resizeImage from 'soapbox/utils/resize-image';
+import { CreateGroupParams, useGroupValidation } from 'soapbox/api/hooks/index.ts';
+import { Form, FormGroup, Input, Textarea } from 'soapbox/components/ui/index.ts';
+import AvatarPicker from 'soapbox/features/edit-profile/components/avatar-picker.tsx';
+import HeaderPicker from 'soapbox/features/edit-profile/components/header-picker.tsx';
+import GroupTagsField from 'soapbox/features/group/components/group-tags-field.tsx';
+import { usePreview } from 'soapbox/hooks/forms/index.ts';
+import { useAppSelector, useDebounce, useInstance } from 'soapbox/hooks/index.ts';
+import resizeImage from 'soapbox/utils/resize-image.ts';
 
 const messages = defineMessages({
   groupNamePlaceholder: { id: 'manage_group.fields.name_placeholder', defaultMessage: 'Group Name' },

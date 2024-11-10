@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { setupListEditor, resetListEditor } from 'soapbox/actions/lists';
-import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { setupListEditor, resetListEditor } from 'soapbox/actions/lists.ts';
+import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import Account from './components/account';
-import EditListForm from './components/edit-list-form';
-import Search from './components/search';
+import Account from './components/account.tsx';
+import EditListForm from './components/edit-list-form.tsx';
+import Search from './components/search.tsx';
 
 const messages = defineMessages({
   changeTitle: { id: 'lists.edit.submit', defaultMessage: 'Change title' },

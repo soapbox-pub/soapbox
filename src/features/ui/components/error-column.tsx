@@ -1,8 +1,8 @@
 import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column, Stack, Text, IconButton } from 'soapbox/components/ui';
-import { isNetworkError } from 'soapbox/utils/errors';
+import { Column, Stack, Text, IconButton } from 'soapbox/components/ui/index.ts';
+import { isNetworkError } from 'soapbox/utils/errors.ts';
 
 const messages = defineMessages({
   title: { id: 'bundle_column_error.title', defaultMessage: 'Network error' },

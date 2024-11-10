@@ -4,11 +4,11 @@ import {
   MFA_FETCH_SUCCESS,
   MFA_CONFIRM_SUCCESS,
   MFA_DISABLE_SUCCESS,
-} from '../actions/mfa';
+} from '../actions/mfa.ts';
 import {
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
-} from '../actions/security';
+} from '../actions/security.ts';
 
 import type { AnyAction } from 'redux';
 

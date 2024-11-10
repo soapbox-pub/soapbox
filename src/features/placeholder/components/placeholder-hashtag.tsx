@@ -1,4 +1,4 @@
-import { generateText, randomIntFromInterval } from '../utils';
+import { generateText, randomIntFromInterval } from '../utils.ts';
 
 /** Fake hashtag to display while data is loading. */
 const PlaceholderHashtag: React.FC = () => {

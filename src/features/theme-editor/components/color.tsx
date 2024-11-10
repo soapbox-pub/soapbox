@@ -1,4 +1,4 @@
-import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker';
+import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker.tsx';
 
 import type { ColorChangeHandler } from 'react-color';
 

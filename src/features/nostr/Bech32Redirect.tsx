@@ -1,7 +1,7 @@
 import { nip19 } from 'nostr-tools';
 import { Redirect } from 'react-router-dom';
 
-import MissingIndicator from 'soapbox/components/missing-indicator';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 
 interface INIP19Redirect {
   params: {

@@ -1,15 +1,15 @@
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useGroup, useGroupMedia } from 'soapbox/api/hooks';
-import LoadMore from 'soapbox/components/load-more';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useGroup, useGroupMedia } from 'soapbox/api/hooks/index.ts';
+import LoadMore from 'soapbox/components/load-more.tsx';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import MediaItem from '../account-gallery/components/media-item';
+import MediaItem from '../account-gallery/components/media-item.tsx';
 
-import type { Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities.ts';
 
 interface IGroupGallery {
   params: { groupId: string };

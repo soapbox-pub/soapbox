@@ -14,14 +14,14 @@ import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { spring } from 'react-motion';
 
-import { openModal } from 'soapbox/actions/modals';
+import { openModal } from 'soapbox/actions/modals.ts';
 import AudioPlaceHolder from 'soapbox/assets/images/audio-placeholder.png';
 import VideoPlaceHolder from 'soapbox/assets/images/video-placeholder.png';
-import Blurhash from 'soapbox/components/blurhash';
-import { HStack, Icon, IconButton } from 'soapbox/components/ui';
-import Motion from 'soapbox/features/ui/util/optional-motion';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import { HStack, Icon, IconButton } from 'soapbox/components/ui/index.ts';
+import Motion from 'soapbox/features/ui/util/optional-motion.tsx';
+import { useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import { Attachment } from 'soapbox/types/entities.ts';
 
 export const MIMETYPE_ICONS: Record<string, string> = {
   'application/x-freearc': fileZipIcon,

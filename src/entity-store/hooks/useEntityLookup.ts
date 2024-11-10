@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { importEntities } from '../actions';
-import { findEntity } from '../selectors';
-import { Entity } from '../types';
+import { importEntities } from '../actions.ts';
+import { findEntity } from '../selectors.ts';
+import { Entity } from '../types.ts';
 
-import { EntityFn } from './types';
-import { type UseEntityOpts } from './useEntity';
+import { EntityFn } from './types.ts';
+import { type UseEntityOpts } from './useEntity.ts';
 
 /** Entities will be filtered through this function until it returns true. */
 type LookupFn<TEntity extends Entity> = (entity: TEntity) => boolean

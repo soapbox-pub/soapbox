@@ -2,10 +2,10 @@ import { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { resetPasswordConfirm } from 'soapbox/actions/security';
-import { BigCard } from 'soapbox/components/big-card';
-import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { resetPasswordConfirm } from 'soapbox/actions/security.ts';
+import { BigCard } from 'soapbox/components/big-card.tsx';
+import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const token = new URLSearchParams(window.location.search).get('reset_password_token');
 

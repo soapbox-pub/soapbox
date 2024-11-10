@@ -2,13 +2,13 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, Column, HStack, Input, Stack } from 'soapbox/components/ui';
+import Account from 'soapbox/components/account.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Button, Column, HStack, Input, Stack } from 'soapbox/components/ui/index.ts';
 
-import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit';
-import AddNewAccount from '../ui/components/new-account-zap-split';
-import { ZapSplitSlider } from '../zap/components/zap-split-account-item';
+import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit.ts';
+import AddNewAccount from '../ui/components/new-account-zap-split.tsx';
+import { ZapSplitSlider } from '../zap/components/zap-split-account-item.tsx';
 
 const closeIcon = xIcon;
 

@@ -1,10 +1,10 @@
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
-import { updateConfig } from 'soapbox/actions/admin';
-import { RadioGroup, RadioItem } from 'soapbox/components/radio';
-import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import { InstanceV2 } from 'soapbox/schemas/instance';
-import toast from 'soapbox/toast';
+import { updateConfig } from 'soapbox/actions/admin.ts';
+import { RadioGroup, RadioItem } from 'soapbox/components/radio.tsx';
+import { useAppDispatch, useInstance } from 'soapbox/hooks/index.ts';
+import { InstanceV2 } from 'soapbox/schemas/instance.ts';
+import toast from 'soapbox/toast.tsx';
 
 type RegistrationMode = 'open' | 'approval' | 'closed';
 

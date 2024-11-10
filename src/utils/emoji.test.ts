@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   removeVS16s,
   toCodePoints,
-} from './emoji';
+} from './emoji.ts';
 
 const ASCII_HEART = '❤'; // '\u2764\uFE0F'
 const RED_HEART_RGI = '❤️'; // '\u2764'

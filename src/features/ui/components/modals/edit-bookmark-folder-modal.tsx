@@ -4,16 +4,16 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import { useBookmarkFolder, useUpdateBookmarkFolder } from 'soapbox/api/hooks';
-import { Emoji, HStack, Icon, Input, Modal } from 'soapbox/components/ui';
-import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { messages as emojiMessages } from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { useAppDispatch, useClickOutside } from 'soapbox/hooks';
-import { useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { useBookmarkFolder, useUpdateBookmarkFolder } from 'soapbox/api/hooks/index.ts';
+import { Emoji, HStack, Icon, Input, Modal } from 'soapbox/components/ui/index.ts';
+import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
+import { messages as emojiMessages } from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
+import { useTextField } from 'soapbox/hooks/forms/index.ts';
+import { useAppDispatch, useClickOutside } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Emoji as EmojiType } from 'soapbox/features/emoji';
+import type { Emoji as EmojiType } from 'soapbox/features/emoji/index.ts';
 
 const messages = defineMessages({
   label: { id: 'bookmark_folders.new.title_placeholder', defaultMessage: 'New folder title' },

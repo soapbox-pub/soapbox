@@ -10,12 +10,12 @@ import throttle from 'lodash/throttle';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Blurhash from 'soapbox/components/blurhash';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio.ts';
 
-import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
+import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen.ts';
 
 const DEFAULT_HEIGHT = 300;
 

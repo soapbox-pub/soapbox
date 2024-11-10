@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useInstance, useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
+import { Banner, Button, HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useInstance, useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 const CtaBanner = () => {
   const { instance } = useInstance();

@@ -3,10 +3,10 @@ import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 import {
   BACKUPS_FETCH_SUCCESS,
   BACKUPS_CREATE_SUCCESS,
-} from '../actions/backups';
+} from '../actions/backups.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 export const BackupRecord = ImmutableRecord({
   id: null as number | null,

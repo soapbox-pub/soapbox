@@ -2,19 +2,19 @@ import sendIcon from '@tabler/icons/outline/send.svg';
 import { forwardRef, useState } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
-import { unblockAccount } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import UploadButton from 'soapbox/features/compose/components/upload-button';
-import emojiSearch from 'soapbox/features/emoji/search';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
-import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+import { unblockAccount } from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { Button, Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover, HStack, IconButton, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import UploadButton from 'soapbox/features/compose/components/upload-button.tsx';
+import emojiSearch from 'soapbox/features/emoji/search.ts';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { Attachment } from 'soapbox/types/entities.ts';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 
-import ChatTextarea from './chat-textarea';
+import ChatTextarea from './chat-textarea.tsx';
 
-import type { Emoji, NativeEmoji } from 'soapbox/features/emoji';
+import type { Emoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },

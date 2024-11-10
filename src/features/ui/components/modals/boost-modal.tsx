@@ -1,11 +1,11 @@
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { Modal, Stack, Text } from 'soapbox/components/ui';
-import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator';
+import Icon from 'soapbox/components/icon.tsx';
+import { Modal, Stack, Text } from 'soapbox/components/ui/index.ts';
+import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },

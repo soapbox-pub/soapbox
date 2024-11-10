@@ -1,12 +1,12 @@
-import { importEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import { Group, accountSchema, groupSchema } from 'soapbox/schemas';
-import { filteredArray } from 'soapbox/schemas/utils';
+import { importEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { Group, accountSchema, groupSchema } from 'soapbox/schemas/index.ts';
+import { filteredArray } from 'soapbox/schemas/utils.ts';
 
-import { getSettings } from '../settings';
+import { getSettings } from '../settings.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';

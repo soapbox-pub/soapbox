@@ -1,7 +1,7 @@
 import { isBlurhashValid } from 'blurhash';
 import { z } from 'zod';
 
-import { mimeSchema } from './utils';
+import { mimeSchema } from './utils.ts';
 
 const blurhashSchema = z.string().superRefine((value, ctx) => {
   const r = isBlurhashValid(value);

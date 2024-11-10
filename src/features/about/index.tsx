@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { fetchAboutPage } from 'soapbox/actions/about';
-import { Navlinks } from 'soapbox/components/navlinks';
-import { Card } from 'soapbox/components/ui';
-import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks';
+import { fetchAboutPage } from 'soapbox/actions/about.ts';
+import { Navlinks } from 'soapbox/components/navlinks.tsx';
+import { Card } from 'soapbox/components/ui/index.ts';
+import { useSoapboxConfig, useSettings, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { languages } from '../preferences';
+import { languages } from '../preferences/index.tsx';
 
 /** Displays arbitrary user-uploaded HTML on a page at `/about/:slug` */
 const AboutPage: React.FC = () => {

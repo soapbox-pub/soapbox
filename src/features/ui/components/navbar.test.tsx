@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { storeOpen } from 'soapbox/jest/mock-stores';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { storeOpen } from 'soapbox/jest/mock-stores.tsx';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Navbar from './navbar';
+import Navbar from './navbar.tsx';
 
 describe('<Navbar />', () => {
   it('successfully renders', () => {

@@ -5,13 +5,13 @@ import { defineMessages, useIntl } from 'react-intl';
 import {
   subscribeAccount,
   unsubscribeAccount,
-} from 'soapbox/actions/accounts';
-import { useFollow } from 'soapbox/api/hooks';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+} from 'soapbox/actions/accounts.ts';
+import { useFollow } from 'soapbox/api/hooks/index.ts';
+import { IconButton } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },

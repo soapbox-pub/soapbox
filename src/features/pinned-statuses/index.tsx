@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { fetchPinnedStatuses } from 'soapbox/actions/pin-statuses';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import StatusList from 'soapbox/components/status-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { selectOwnAccount } from 'soapbox/selectors';
+import { fetchPinnedStatuses } from 'soapbox/actions/pin-statuses.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { selectOwnAccount } from 'soapbox/selectors/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.pins', defaultMessage: 'Pinned posts' },

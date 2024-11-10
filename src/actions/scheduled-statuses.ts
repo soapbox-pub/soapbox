@@ -1,9 +1,9 @@
-import { getFeatures } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const SCHEDULED_STATUSES_FETCH_REQUEST = 'SCHEDULED_STATUSES_FETCH_REQUEST';
 const SCHEDULED_STATUSES_FETCH_SUCCESS = 'SCHEDULED_STATUSES_FETCH_SUCCESS';

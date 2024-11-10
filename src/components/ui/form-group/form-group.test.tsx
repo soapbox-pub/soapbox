@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import FormGroup from './form-group';
+import FormGroup from './form-group.tsx';
 
 describe('<FormGroup />', () => {
   it('connects the label and input', () => {

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq';
-import { useOwnAccount } from 'soapbox/hooks';
-import { useSigner } from 'soapbox/hooks/nostr/useSigner';
+import { Button, Column, Form, FormActions, Stack } from 'soapbox/components/ui/index.ts';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq.ts';
+import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
 
-import RelayEditor, { RelayData } from './components/relay-editor';
+import RelayEditor, { RelayData } from './components/relay-editor.tsx';
 
 const messages = defineMessages({
   title: { id: 'nostr_relays.title', defaultMessage: 'Relays' },

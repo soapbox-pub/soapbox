@@ -3,7 +3,7 @@ import { Record as ImmutableRecord } from 'immutable';
 import {
   DROPDOWN_MENU_OPEN,
   DROPDOWN_MENU_CLOSE,
-} from '../actions/dropdown-menu';
+} from '../actions/dropdown-menu.ts';
 
 import type { AnyAction } from 'redux';
 

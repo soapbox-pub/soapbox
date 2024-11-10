@@ -1,11 +1,11 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { setSchedule, removeSchedule } from 'soapbox/actions/compose';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { setSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime/datetime.tsx';
+import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },

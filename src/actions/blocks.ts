@@ -1,11 +1,11 @@
-import { isLoggedIn } from 'soapbox/utils/auth';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
+import { fetchRelationships } from './accounts.ts';
+import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';

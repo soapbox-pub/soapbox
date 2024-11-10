@@ -5,8 +5,8 @@ import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
 import semverParse from 'semver/functions/parse';
 
-import { custom } from 'soapbox/custom';
-import { InstanceV1, InstanceV2 } from 'soapbox/schemas/instance';
+import { custom } from 'soapbox/custom.ts';
+import { InstanceV1, InstanceV2 } from 'soapbox/schemas/instance.ts';
 
 /** Import custom overrides, if exists */
 const overrides = custom('features');

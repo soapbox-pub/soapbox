@@ -7,10 +7,10 @@ import brandWindowsIcon from '@tabler/icons/outline/brand-windows.svg';
 import keyIcon from '@tabler/icons/outline/key.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { prepareRequest } from 'soapbox/actions/consumer-auth';
-import { IconButton, Tooltip } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import { capitalize } from 'soapbox/utils/strings';
+import { prepareRequest } from 'soapbox/actions/consumer-auth.ts';
+import { IconButton, Tooltip } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { capitalize } from 'soapbox/utils/strings.ts';
 
 const messages = defineMessages({
   tooltip: { id: 'oauth_consumer.tooltip', defaultMessage: 'Sign in with {provider}' },

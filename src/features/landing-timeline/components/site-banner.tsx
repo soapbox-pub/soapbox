@@ -1,11 +1,11 @@
 import DOMPurify from 'isomorphic-dompurify';
 
-import Markup from 'soapbox/components/markup';
-import { Stack } from 'soapbox/components/ui';
-import { useInstance } from 'soapbox/hooks';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import Markup from 'soapbox/components/markup.tsx';
+import { Stack } from 'soapbox/components/ui/index.ts';
+import { useInstance } from 'soapbox/hooks/index.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import { LogoText } from './logo-text';
+import { LogoText } from './logo-text.tsx';
 
 const SiteBanner: React.FC = () => {
   const { instance } = useInstance();

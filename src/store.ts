@@ -1,9 +1,9 @@
 import { configureStore, Tuple } from '@reduxjs/toolkit';
 import { thunk, type ThunkDispatch } from 'redux-thunk';
 
-import errorsMiddleware from './middleware/errors';
-import soundsMiddleware from './middleware/sounds';
-import appReducer from './reducers';
+import errorsMiddleware from './middleware/errors.ts';
+import soundsMiddleware from './middleware/sounds.ts';
+import appReducer from './reducers/index.ts';
 
 import type { AnyAction } from 'redux';
 

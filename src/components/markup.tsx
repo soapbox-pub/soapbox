@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import Text, { IText } from './ui/text/text';
+import Text, { IText } from './ui/text/text.tsx';
 import './markup.css';
 
 interface IMarkup extends IText {

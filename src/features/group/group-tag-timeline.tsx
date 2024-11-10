@@ -2,12 +2,12 @@ import message2Icon from '@tabler/icons/outline/message-2.svg';
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines';
-import { useGroup, useGroupTag } from 'soapbox/api/hooks';
-import { Column, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines.ts';
+import { useGroup, useGroupTag } from 'soapbox/api/hooks/index.ts';
+import { Column, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 type RouteParams = { tagId: string; groupId: string };
 

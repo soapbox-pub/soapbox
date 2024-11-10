@@ -1,18 +1,18 @@
 import clsx from 'clsx';
 
-import Account from 'soapbox/components/account';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import StatusContent from 'soapbox/components/status-content';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import { HStack, Stack } from 'soapbox/components/ui';
-import PollPreview from 'soapbox/features/ui/components/poll-preview';
-import { useAppSelector } from 'soapbox/hooks';
+import Account from 'soapbox/components/account.tsx';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
+import { HStack, Stack } from 'soapbox/components/ui/index.ts';
+import PollPreview from 'soapbox/features/ui/components/poll-preview.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
-import { buildStatus } from '../builder';
+import { buildStatus } from '../builder.tsx';
 
-import ScheduledStatusActionBar from './scheduled-status-action-bar';
+import ScheduledStatusActionBar from './scheduled-status-action-bar.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IScheduledStatus {
   statusId: string;

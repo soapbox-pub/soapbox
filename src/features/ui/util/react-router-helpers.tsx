@@ -2,13 +2,13 @@ import { Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType, useLocation } from 'react-router-dom';
 
-import { Layout } from 'soapbox/components/ui';
-import { useOwnAccount, useSettings } from 'soapbox/hooks';
+import { Layout } from 'soapbox/components/ui/index.ts';
+import { useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
 
-import ColumnForbidden from '../components/column-forbidden';
-import ColumnLoading from '../components/column-loading';
-import ColumnsArea from '../components/columns-area';
-import ErrorColumn from '../components/error-column';
+import ColumnForbidden from '../components/column-forbidden.tsx';
+import ColumnLoading from '../components/column-loading.tsx';
+import ColumnsArea from '../components/columns-area.tsx';
+import ErrorColumn from '../components/error-column.tsx';
 
 type PageProps = {
   params?: MatchType['params'];

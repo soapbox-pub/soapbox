@@ -22,14 +22,14 @@ import userIcon from '@tabler/icons/outline/user.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Stack } from 'soapbox/components/ui';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
+import { Stack } from 'soapbox/components/ui/index.ts';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
+import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks/index.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
-import DropdownMenu, { Menu } from './dropdown-menu';
-import SidebarNavigationLink from './sidebar-navigation-link';
+import DropdownMenu, { Menu } from './dropdown-menu/index.ts';
+import SidebarNavigationLink from './sidebar-navigation-link.tsx';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },

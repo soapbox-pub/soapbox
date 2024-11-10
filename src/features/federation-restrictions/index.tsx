@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Accordion } from 'soapbox/components/ui';
-import { useAppSelector, useInstance } from 'soapbox/hooks';
-import { makeGetHosts } from 'soapbox/selectors';
-import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, Accordion } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { makeGetHosts } from 'soapbox/selectors/index.ts';
+import { federationRestrictionsDisclosed } from 'soapbox/utils/state.ts';
 
-import RestrictedInstance from './components/restricted-instance';
+import RestrictedInstance from './components/restricted-instance.tsx';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 

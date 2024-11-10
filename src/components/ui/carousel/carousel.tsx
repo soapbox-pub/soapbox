@@ -2,10 +2,10 @@ import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import { useEffect, useState } from 'react';
 
-import { useDimensions } from 'soapbox/hooks';
+import { useDimensions } from 'soapbox/hooks/index.ts';
 
-import HStack from '../hstack/hstack';
-import Icon from '../icon/icon';
+import HStack from '../hstack/hstack.tsx';
+import Icon from '../icon/icon.tsx';
 
 interface ICarousel {
   children: any;

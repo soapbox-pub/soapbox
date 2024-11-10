@@ -1,10 +1,10 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useRules } from 'soapbox/api/hooks/admin';
-import { Form, FormGroup, Input, Modal } from 'soapbox/components/ui';
-import { useTextField } from 'soapbox/hooks/forms';
-import { type AdminRule } from 'soapbox/schemas';
-import toast from 'soapbox/toast';
+import { useRules } from 'soapbox/api/hooks/admin/index.ts';
+import { Form, FormGroup, Input, Modal } from 'soapbox/components/ui/index.ts';
+import { useTextField } from 'soapbox/hooks/forms/index.ts';
+import { type AdminRule } from 'soapbox/schemas/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   save: { id: 'admin.edit_rule.save', defaultMessage: 'Save' },

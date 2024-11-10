@@ -8,11 +8,11 @@ import {
   entitiesFetchSuccess,
   importEntities,
   incrementEntities,
-} from './actions';
-import reducer, { State } from './reducer';
-import { createListState } from './utils';
+} from './actions.ts';
+import reducer, { State } from './reducer.ts';
+import { createListState } from './utils.ts';
 
-import type { EntityCache } from './types';
+import type { EntityCache } from './types.ts';
 
 interface TestEntity {
   id: string;

@@ -1,11 +1,11 @@
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, Text, Divider } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
+import { Button, Stack, Modal, Text, Divider } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import NostrExtensionIndicator from '../../nostr-login-modal/components/nostr-extension-indicator';
+import NostrExtensionIndicator from '../../nostr-login-modal/components/nostr-extension-indicator.tsx';
 
 interface IKeyStep {
   setStep(step: 'extension' | 'key' | 'keygen'): void;

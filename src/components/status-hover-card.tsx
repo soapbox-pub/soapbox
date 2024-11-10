@@ -6,13 +6,13 @@ import { useHistory } from 'react-router-dom';
 import {
   closeStatusHoverCard,
   updateStatusHoverCard,
-} from 'soapbox/actions/status-hover-card';
-import { fetchStatus } from 'soapbox/actions/statuses';
-import StatusContainer from 'soapbox/containers/status-container';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+} from 'soapbox/actions/status-hover-card.ts';
+import { fetchStatus } from 'soapbox/actions/statuses.ts';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { showStatusHoverCard } from './hover-status-wrapper';
-import { Card, CardBody } from './ui';
+import { showStatusHoverCard } from './hover-status-wrapper.tsx';
+import { Card, CardBody } from './ui/index.ts';
 
 interface IStatusHoverCard {
   visible?: boolean;

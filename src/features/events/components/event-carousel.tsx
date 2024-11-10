@@ -4,12 +4,12 @@ import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import EventPreview from 'soapbox/components/event-preview';
-import { Card, Icon } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import EventPreview from 'soapbox/components/event-preview.tsx';
+import { Card, Icon } from 'soapbox/components/ui/index.ts';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview';
+import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview.tsx';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 

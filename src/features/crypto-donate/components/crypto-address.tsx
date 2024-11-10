@@ -1,15 +1,15 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import qrcodeIcon from '@tabler/icons/outline/qrcode.svg';
 
-import { openModal } from 'soapbox/actions/modals';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Text, Icon, Stack, HStack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import { Text, Icon, Stack, HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { getExplorerUrl } from '../utils/block-explorer';
-import { getTitle } from '../utils/coin-db';
+import { getExplorerUrl } from '../utils/block-explorer.ts';
+import { getTitle } from '../utils/coin-db.ts';
 
-import CryptoIcon from './crypto-icon';
+import CryptoIcon from './crypto-icon.tsx';
 
 export interface ICryptoAddress {
   address: string;

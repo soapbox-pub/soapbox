@@ -2,9 +2,9 @@
  * globals: do things through the console.
  * This feature is for developers.
  */
-import { changeSettingImmediate } from 'soapbox/actions/settings';
+import { changeSettingImmediate } from 'soapbox/actions/settings.ts';
 
-import type { Store } from 'soapbox/store';
+import type { Store } from 'soapbox/store.ts';
 
 /** Add Soapbox globals to the window. */
 export const createGlobals = (store: Store) => {

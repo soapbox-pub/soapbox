@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { accountSchema } from './account';
+import { accountSchema } from './account.ts';
 
 const adminIpSchema = z.object({
   ip: z.string().ip(),

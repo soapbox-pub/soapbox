@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji';
+import emojify from 'soapbox/features/emoji/index.ts';
 
-import { announcementReactionSchema } from './announcement-reaction';
-import { customEmojiSchema } from './custom-emoji';
-import { mentionSchema } from './mention';
-import { tagSchema } from './tag';
-import { dateSchema, filteredArray, makeCustomEmojiMap } from './utils';
+import { announcementReactionSchema } from './announcement-reaction.ts';
+import { customEmojiSchema } from './custom-emoji.ts';
+import { mentionSchema } from './mention.ts';
+import { tagSchema } from './tag.ts';
+import { dateSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
 
-import type { Resolve } from 'soapbox/utils/types';
+import type { Resolve } from 'soapbox/utils/types.ts';
 
 const transformAnnouncement = (announcement: Resolve<z.infer<typeof baseAnnouncementSchema>>) => {
   const emojiMap = makeCustomEmojiMap(announcement.emojis);

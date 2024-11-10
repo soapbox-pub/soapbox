@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-import { connectTimelineStream } from 'soapbox/actions/streaming';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
-import { getAccessToken } from 'soapbox/utils/auth';
+import { connectTimelineStream } from 'soapbox/actions/streaming.ts';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { getAccessToken } from 'soapbox/utils/auth.ts';
 
 function useTimelineStream(...args: Parameters<typeof connectTimelineStream>) {
   // TODO: get rid of streaming.ts and move the actual opts here.

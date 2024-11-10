@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { remoteInteraction } from 'soapbox/actions/interactions';
-import { Button, Form, Input, Modal, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
-import { selectAccount } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
+import { remoteInteraction } from 'soapbox/actions/interactions.ts';
+import { Button, Form, Input, Modal, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks/index.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   accountPlaceholder: { id: 'remote_interaction.account_placeholder', defaultMessage: 'Enter your username@domain you want to act from' },

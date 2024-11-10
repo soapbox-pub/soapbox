@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Modal from './modal';
+import Modal from './modal.tsx';
 
 describe('<Modal />', () => {
   it('renders', () => {

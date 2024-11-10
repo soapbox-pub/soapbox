@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import ScrollTopButton from './scroll-top-button';
+import ScrollTopButton from './scroll-top-button.tsx';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },

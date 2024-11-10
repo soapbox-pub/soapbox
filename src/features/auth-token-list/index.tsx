@@ -2,11 +2,11 @@ import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { Token } from 'soapbox/reducers/security';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security.ts';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, HStack, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { Token } from 'soapbox/reducers/security.ts';
 
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },

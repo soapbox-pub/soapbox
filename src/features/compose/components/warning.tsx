@@ -1,6 +1,6 @@
 import { spring } from 'react-motion';
 
-import Motion from '../../ui/util/optional-motion';
+import Motion from '../../ui/util/optional-motion.tsx';
 
 interface IWarning {
   message: React.ReactNode;

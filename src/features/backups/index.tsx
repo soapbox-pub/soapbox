@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
 
-import { fetchBackups, createBackup } from 'soapbox/actions/backups';
-import { Button, Card, Column, FormActions, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchBackups, createBackup } from 'soapbox/actions/backups.ts';
+import { Button, Card, Column, FormActions, HStack, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import type { Backup as BackupEntity } from 'soapbox/reducers/backups';
+import type { Backup as BackupEntity } from 'soapbox/reducers/backups.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },

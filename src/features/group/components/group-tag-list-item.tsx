@@ -5,16 +5,16 @@ import pinIcon from '@tabler/icons/outline/pin.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useUpdateGroupTag } from 'soapbox/api/hooks';
-import { HStack, Icon, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import { importEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import { useAppDispatch } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { useUpdateGroupTag } from 'soapbox/api/hooks/index.ts';
+import { HStack, Icon, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui/index.ts';
+import { importEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { Group, GroupTag } from 'soapbox/schemas';
+import type { Group, GroupTag } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   hideTag: { id: 'group.tags.hide', defaultMessage: 'Hide topic' },

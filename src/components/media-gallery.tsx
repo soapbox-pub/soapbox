@@ -3,17 +3,17 @@ import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash';
-import StillImage from 'soapbox/components/still-image';
-import { MIMETYPE_ICONS } from 'soapbox/components/upload';
-import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
-import { truncateFilename } from 'soapbox/utils/media';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import StillImage from 'soapbox/components/still-image.tsx';
+import { MIMETYPE_ICONS } from 'soapbox/components/upload.tsx';
+import { useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { Attachment } from 'soapbox/types/entities.ts';
+import { truncateFilename } from 'soapbox/utils/media.ts';
 
-import { isIOS } from '../is-mobile';
-import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
+import { isIOS } from '../is-mobile.ts';
+import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio.ts';
 
-import SvgIcon from './ui/icon/svg-icon';
+import SvgIcon from './ui/icon/svg-icon.tsx';
 
 import type { List as ImmutableList } from 'immutable';
 

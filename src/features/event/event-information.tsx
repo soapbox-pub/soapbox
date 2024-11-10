@@ -4,19 +4,19 @@ import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { fetchStatus } from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import StatusContent from 'soapbox/components/status-content';
-import StatusMedia from 'soapbox/components/status-media';
-import TranslateButton from 'soapbox/components/translate-button';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
-import { defaultMediaVisibility } from 'soapbox/utils/status';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { fetchStatus } from 'soapbox/actions/statuses.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusMedia from 'soapbox/components/status-media.tsx';
+import TranslateButton from 'soapbox/components/translate-button.tsx';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 type RouteParams = { statusId: string };
 

@@ -2,16 +2,16 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import { endOnboarding } from 'soapbox/actions/onboarding';
-import { Stack, Modal, HStack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { endOnboarding } from 'soapbox/actions/onboarding.ts';
+import { Stack, Modal, HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import AvatarSelectionModal from './steps/avatar-step';
-import BioStep from './steps/bio-step';
-import CompletedModal from './steps/completed-step';
-import CoverPhotoSelectionModal from './steps/cover-photo-selection-step';
-import DisplayNameStep from './steps/display-name-step';
-import SuggestedAccountsModal from './steps/suggested-accounts-step';
+import AvatarSelectionModal from './steps/avatar-step.tsx';
+import BioStep from './steps/bio-step.tsx';
+import CompletedModal from './steps/completed-step.tsx';
+import CoverPhotoSelectionModal from './steps/cover-photo-selection-step.tsx';
+import DisplayNameStep from './steps/display-name-step.tsx';
+import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
 
 interface IOnboardingFlowModal {
   onClose(): void;

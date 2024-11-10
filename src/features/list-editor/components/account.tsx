@@ -2,11 +2,11 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import { HStack } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

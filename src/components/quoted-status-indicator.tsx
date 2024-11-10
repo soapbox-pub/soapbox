@@ -1,9 +1,9 @@
 import quoteIcon from '@tabler/icons/outline/quote.svg';
 import { useCallback } from 'react';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IQuotedStatusIndicator {
   /** The quoted status id. */

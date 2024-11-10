@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { cardSchema } from './card';
+import { cardSchema } from './card.ts';
 
 describe('cardSchema', () => {
   it('adds base fields', () => {

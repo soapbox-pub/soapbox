@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import { injectIntl, defineMessages, IntlShape, FormatDateOptions } from 'react-intl';
 
-import Text, { IText } from './ui/text/text';
+import Text, { IText } from './ui/text/text.tsx';
 
 const messages = defineMessages({
   just_now: { id: 'relative_time.just_now', defaultMessage: 'now' },

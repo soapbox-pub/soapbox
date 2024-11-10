@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth';
-import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Button, Form, Input, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
+import { Button, Form, Input, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 export const NostrBunkerLogin: React.FC = () => {
   const history = useHistory();

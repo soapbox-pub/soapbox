@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { queryClient, renderHook, waitFor } from 'soapbox/jest/test-helpers';
+import { __stub } from 'soapbox/api/index.ts';
+import { queryClient, renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import useTrends from './trends';
+import useTrends from './trends.ts';
 
 describe('useTrends', () => {
   beforeEach(() => {

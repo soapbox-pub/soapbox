@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import { forwardRef, useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks';
-import { Column, HStack, Icon } from 'soapbox/components/ui';
+import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks/index.ts';
+import { Column, HStack, Icon } from 'soapbox/components/ui/index.ts';
 
-import GroupGridItem from './components/discover/group-grid-item';
-import GroupListItem from './components/discover/group-list-item';
+import GroupGridItem from './components/discover/group-grid-item.tsx';
+import GroupListItem from './components/discover/group-list-item.tsx';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 enum Layout {
   LIST = 'LIST',

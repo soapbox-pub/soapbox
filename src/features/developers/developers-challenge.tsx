@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { changeSettingImmediate } from 'soapbox/actions/settings';
-import { Column, Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { changeSettingImmediate } from 'soapbox/actions/settings.ts';
+import { Column, Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },

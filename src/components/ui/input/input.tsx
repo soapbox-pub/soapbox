@@ -4,12 +4,12 @@ import clsx from 'clsx';
 import React, { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useLocale } from 'soapbox/hooks';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import { useLocale } from 'soapbox/hooks/index.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import Icon from '../icon/icon';
-import SvgIcon from '../icon/svg-icon';
-import Tooltip from '../tooltip/tooltip';
+import Icon from '../icon/icon.tsx';
+import SvgIcon from '../icon/svg-icon.tsx';
+import Tooltip from '../tooltip/tooltip.tsx';
 
 const messages = defineMessages({
   showPassword: { id: 'input.password.show_password', defaultMessage: 'Show password' },

@@ -2,12 +2,12 @@ import debounce from 'lodash/debounce';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import AccountAuthorize from './components/account-authorize';
+import AccountAuthorize from './components/account-authorize.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.follow_requests', defaultMessage: 'Follow requests' },

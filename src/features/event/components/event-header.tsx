@@ -25,32 +25,32 @@ import { List as ImmutableList } from 'immutable';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { blockAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
-import { editEvent, fetchEventIcs } from 'soapbox/actions/events';
-import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports';
-import { deleteStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
-import StillImage from 'soapbox/components/still-image';
-import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
-import copy from 'soapbox/utils/copy';
-import { download } from 'soapbox/utils/download';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { blockAccount } from 'soapbox/actions/accounts.ts';
+import { launchChat } from 'soapbox/actions/chats.ts';
+import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose.ts';
+import { editEvent, fetchEventIcs } from 'soapbox/actions/events.ts';
+import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
+import { initMuteModal } from 'soapbox/actions/mutes.ts';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { deleteStatus } from 'soapbox/actions/statuses.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import StillImage from 'soapbox/components/still-image.tsx';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
+import copy from 'soapbox/utils/copy.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header';
-import EventActionButton from '../components/event-action-button';
-import EventDate from '../components/event-date';
+import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header.tsx';
+import EventActionButton from '../components/event-action-button.tsx';
+import EventDate from '../components/event-date.tsx';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Menu as MenuType } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },

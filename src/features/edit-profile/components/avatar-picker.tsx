@@ -3,8 +3,8 @@ import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Avatar, Icon, HStack } from 'soapbox/components/ui';
-import { useDraggedFiles } from 'soapbox/hooks';
+import { Avatar, Icon, HStack } from 'soapbox/components/ui/index.ts';
+import { useDraggedFiles } from 'soapbox/hooks/index.ts';
 
 interface IMediaInput {
   className?: string;

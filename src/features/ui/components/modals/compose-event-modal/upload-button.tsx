@@ -2,9 +2,9 @@ import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
 import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { HStack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import Icon from 'soapbox/components/icon.tsx';
+import { HStack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 interface IUploadButton {
   disabled?: boolean;

@@ -1,11 +1,11 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
-import Button from '../button/button';
-import HStack from '../hstack/hstack';
-import IconButton from '../icon-button/icon-button';
-import Stack from '../stack/stack';
-import Text from '../text/text';
+import Button from '../button/button.tsx';
+import HStack from '../hstack/hstack.tsx';
+import IconButton from '../icon-button/icon-button.tsx';
+import Stack from '../stack/stack.tsx';
+import Text from '../text/text.tsx';
 
 const messages = defineMessages({
   add: { id: 'streamfield.add', defaultMessage: 'Add' },

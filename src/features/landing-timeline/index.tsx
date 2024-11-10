@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandCommunityTimeline } from 'soapbox/actions/timelines';
-import { useCommunityStream } from 'soapbox/api/hooks';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useInstance, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { expandCommunityTimeline } from 'soapbox/actions/timelines.ts';
+import { useCommunityStream } from 'soapbox/api/hooks/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch, useInstance, useTheme } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 
-import AboutPage from '../about';
-import Timeline from '../ui/components/timeline';
+import AboutPage from '../about/index.tsx';
+import Timeline from '../ui/components/timeline.tsx';
 
-import { SiteBanner } from './components/site-banner';
+import { SiteBanner } from './components/site-banner.tsx';
 
 const LandingTimeline = () => {
   const dispatch = useAppDispatch();

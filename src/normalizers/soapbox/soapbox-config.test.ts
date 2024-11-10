@@ -1,7 +1,7 @@
 import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { normalizeSoapboxConfig } from './soapbox-config';
+import { normalizeSoapboxConfig } from './soapbox-config.ts';
 
 describe('normalizeSoapboxConfig()', () => {
   it('adds base fields', () => {

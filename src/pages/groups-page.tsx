@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom-v5-compat';
 
-import { Column, Layout } from 'soapbox/components/ui';
-import LinkFooter from 'soapbox/features/ui/components/link-footer';
-import { MyGroupsPanel, NewGroupPanel, SuggestedGroupsPanel } from 'soapbox/features/ui/util/async-components';
+
+import { Column, Layout } from 'soapbox/components/ui/index.ts';
+import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import { MyGroupsPanel, NewGroupPanel, SuggestedGroupsPanel } from 'soapbox/features/ui/util/async-components.ts';
 
 interface IGroupsPage {
   children: React.ReactNode;

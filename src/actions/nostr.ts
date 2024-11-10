@@ -1,13 +1,13 @@
 import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
 import { generateSecretKey } from 'nostr-tools';
 
-import { NBunker } from 'soapbox/features/nostr/NBunker';
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
-import { type AppDispatch } from 'soapbox/store';
+import { NBunker } from 'soapbox/features/nostr/NBunker.ts';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
+import { type AppDispatch } from 'soapbox/store.ts';
 
-import { authLoggedIn, verifyCredentials } from './auth';
-import { obtainOAuthToken } from './oauth';
+import { authLoggedIn, verifyCredentials } from './auth.ts';
+import { obtainOAuthToken } from './oauth.ts';
 
 const NOSTR_PUBKEY_SET = 'NOSTR_PUBKEY_SET';
 

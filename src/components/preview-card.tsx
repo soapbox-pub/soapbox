@@ -6,13 +6,13 @@ import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash';
-import { HStack, Stack, Text, Icon } from 'soapbox/components/ui';
-import { normalizeAttachment } from 'soapbox/normalizers';
-import { addAutoPlay } from 'soapbox/utils/media';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import { HStack, Stack, Text, Icon } from 'soapbox/components/ui/index.ts';
+import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { addAutoPlay } from 'soapbox/utils/media.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
+import type { Card as CardEntity, Attachment } from 'soapbox/types/entities.ts';
 
 /** Props for `PreviewCard`. */
 interface IPreviewCard {

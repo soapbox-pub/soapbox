@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useCreateEntity } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
-import { groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useCreateEntity } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { groupSchema } from 'soapbox/schemas/index.ts';
 
 interface UpdateGroupParams {
   display_name?: string;

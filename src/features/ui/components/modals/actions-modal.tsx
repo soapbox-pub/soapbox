@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 
-import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
-import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator';
+import Icon from 'soapbox/components/icon.tsx';
+import { HStack } from 'soapbox/components/ui/index.ts';
+import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
-import Motion from '../../util/optional-motion';
+import Motion from '../../util/optional-motion.tsx';
 
-import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IActionsModal {
   status: StatusEntity;

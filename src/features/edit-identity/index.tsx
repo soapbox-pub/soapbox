@@ -3,14 +3,14 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui';
-import { useApi, useAppDispatch, useInstance, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import { adminAccountSchema } from 'soapbox/schemas/admin-account';
-import toast from 'soapbox/toast';
+import { patchMe } from 'soapbox/actions/me.ts';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui/index.ts';
+import { useApi, useAppDispatch, useInstance, useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { adminAccountSchema } from 'soapbox/schemas/admin-account.ts';
+import toast from 'soapbox/toast.tsx';
 
 interface IEditIdentity {
 }

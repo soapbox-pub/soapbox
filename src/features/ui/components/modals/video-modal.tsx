@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import Video from 'soapbox/features/video';
+import Video from 'soapbox/features/video/index.tsx';
 
-import type { Status, Account, Attachment } from 'soapbox/types/entities';
+import type { Status, Account, Attachment } from 'soapbox/types/entities.ts';
 
 interface IVideoModal {
   media: Attachment;

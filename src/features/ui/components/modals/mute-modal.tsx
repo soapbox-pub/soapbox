@@ -1,12 +1,12 @@
 import { FormattedMessage } from 'react-intl';
 
-import { muteAccount } from 'soapbox/actions/accounts';
-import { closeModal } from 'soapbox/actions/modals';
-import { toggleHideNotifications, changeMuteDuration } from 'soapbox/actions/mutes';
-import { useAccount } from 'soapbox/api/hooks';
-import { Modal, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import DurationSelector from 'soapbox/features/compose/components/polls/duration-selector';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { muteAccount } from 'soapbox/actions/accounts.ts';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { toggleHideNotifications, changeMuteDuration } from 'soapbox/actions/mutes.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import { Modal, HStack, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import DurationSelector from 'soapbox/features/compose/components/polls/duration-selector.tsx';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
 
 const MuteModal = () => {
   const dispatch = useAppDispatch();

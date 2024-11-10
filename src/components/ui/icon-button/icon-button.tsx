@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-import SvgIcon from '../icon/svg-icon';
-import Text from '../text/text';
+import SvgIcon from '../icon/svg-icon.tsx';
+import Text from '../text/text.tsx';
 
 interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /** Class name for the <svg> icon. */

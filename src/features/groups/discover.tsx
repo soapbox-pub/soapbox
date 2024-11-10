@@ -4,13 +4,13 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, IconButton, Input, Stack } from 'soapbox/components/ui';
+import { HStack, Icon, IconButton, Input, Stack } from 'soapbox/components/ui/index.ts';
 
-import PopularGroups from './components/discover/popular-groups';
-import PopularTags from './components/discover/popular-tags';
-import Search from './components/discover/search/search';
-import SuggestedGroups from './components/discover/suggested-groups';
-import TabBar, { TabItems } from './components/tab-bar';
+import PopularGroups from './components/discover/popular-groups.tsx';
+import PopularTags from './components/discover/popular-tags.tsx';
+import Search from './components/discover/search/search.tsx';
+import SuggestedGroups from './components/discover/suggested-groups.tsx';
+import TabBar, { TabItems } from './components/tab-bar.tsx';
 
 const messages = defineMessages({
   placeholder: { id: 'groups.discover.search.placeholder', defaultMessage: 'Search' },

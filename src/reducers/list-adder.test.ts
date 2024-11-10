@@ -1,9 +1,9 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import * as actions from 'soapbox/actions/lists';
+import * as actions from 'soapbox/actions/lists.ts';
 
-import reducer from './list-adder';
+import reducer from './list-adder.ts';
 
 describe('list_adder reducer', () => {
   it('should return the initial state', () => {

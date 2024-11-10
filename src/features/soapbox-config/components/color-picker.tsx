@@ -2,7 +2,7 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import { useEffect, useRef } from 'react';
 import { SketchPicker, ColorChangeHandler } from 'react-color';
 
-import { isMobile } from 'soapbox/is-mobile';
+import { isMobile } from 'soapbox/is-mobile.ts';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 

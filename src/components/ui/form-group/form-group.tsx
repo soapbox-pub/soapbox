@@ -1,8 +1,8 @@
 import { Children, cloneElement, isValidElement, useMemo } from 'react';
 
-import Checkbox from '../checkbox/checkbox';
-import HStack from '../hstack/hstack';
-import Stack from '../stack/stack';
+import Checkbox from '../checkbox/checkbox.tsx';
+import HStack from '../hstack/hstack.tsx';
+import Stack from '../stack/stack.tsx';
 
 interface IFormGroup {
   /** Input label message. */

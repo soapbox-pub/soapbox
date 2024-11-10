@@ -4,18 +4,18 @@ import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode }
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
+import Icon from 'soapbox/components/icon.tsx';
+import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content.ts';
 
-import { getTextDirection } from '../utils/rtl';
+import { getTextDirection } from '../utils/rtl.ts';
 
-import HashtagLink from './hashtag-link';
-import Markup from './markup';
-import Mention from './mention';
-import Poll from './polls/poll';
+import HashtagLink from './hashtag-link.tsx';
+import Markup from './markup.tsx';
+import Mention from './mention.tsx';
+import Poll from './polls/poll.tsx';
 
-import type { Sizes } from 'soapbox/components/ui/text/text';
-import type { Status } from 'soapbox/types/entities';
+import type { Sizes } from 'soapbox/components/ui/text/text.tsx';
+import type { Status } from 'soapbox/types/entities.ts';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;

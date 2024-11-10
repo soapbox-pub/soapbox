@@ -5,7 +5,7 @@ import { create } from 'zustand';
 // eslint-disable-next-line import/extensions
 import { persist } from 'zustand/middleware';
 
-import { filteredArray, jsonSchema } from 'soapbox/schemas/utils';
+import { filteredArray, jsonSchema } from 'soapbox/schemas/utils.ts';
 
 /**
  * A bunker connection maps an OAuth token from Mastodon API to a user pubkey and bunker keypair.

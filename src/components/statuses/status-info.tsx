@@ -1,4 +1,4 @@
-import { HStack, Text } from '../ui';
+import { HStack, Text } from 'soapbox/components/ui/index.ts';
 
 interface IStatusInfo {
   avatarSize: number;

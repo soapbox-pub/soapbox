@@ -1,10 +1,10 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useUnmuteGroup } from 'soapbox/api/hooks';
-import GroupAvatar from 'soapbox/components/groups/group-avatar';
-import { Button, HStack, Text } from 'soapbox/components/ui';
-import { type Group } from 'soapbox/schemas';
-import toast from 'soapbox/toast';
+import { useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
+import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
+import { Button, HStack, Text } from 'soapbox/components/ui/index.ts';
+import { type Group } from 'soapbox/schemas/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 interface IGroupListItem {
   group: Group;

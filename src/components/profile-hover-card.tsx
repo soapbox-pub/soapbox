@@ -5,23 +5,24 @@ import { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
+
+import { fetchRelationships } from 'soapbox/actions/accounts.ts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
-} from 'soapbox/actions/profile-hover-card';
-import { useAccount, usePatronUser } from 'soapbox/api/hooks';
-import Badge from 'soapbox/components/badge';
-import ActionButton from 'soapbox/features/ui/components/action-button';
-import { UserPanel } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+} from 'soapbox/actions/profile-hover-card.ts';
+import { useAccount, usePatronUser } from 'soapbox/api/hooks/index.ts';
+import Badge from 'soapbox/components/badge.tsx';
+import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
+import { UserPanel } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { showProfileHoverCard } from './hover-ref-wrapper';
-import { dateFormatOptions } from './relative-timestamp';
-import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
+import { showProfileHoverCard } from './hover-ref-wrapper.tsx';
+import { dateFormatOptions } from './relative-timestamp.tsx';
+import { Card, CardBody, HStack, Icon, Stack, Text } from './ui/index.ts';
 
-import type { Account, PatronUser } from 'soapbox/schemas';
-import type { AppDispatch } from 'soapbox/store';
+import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 const getBadges = (
   account?: Pick<Account, 'admin' | 'moderator'>,

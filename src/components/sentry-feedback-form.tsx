@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Textarea, Form, Button, FormGroup, FormActions, Text } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
-import { captureSentryFeedback } from 'soapbox/sentry';
+import { Textarea, Form, Button, FormGroup, FormActions, Text } from 'soapbox/components/ui/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { captureSentryFeedback } from 'soapbox/sentry.ts';
 
 interface ISentryFeedbackForm {
   eventId: string;

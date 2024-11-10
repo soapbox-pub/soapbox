@@ -3,18 +3,18 @@ import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
-import { useAccountLookup } from 'soapbox/api/hooks';
-import LoadMore from 'soapbox/components/load-more';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { getAccountGallery } from 'soapbox/selectors';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { expandAccountMediaTimeline } from 'soapbox/actions/timelines.ts';
+import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
+import LoadMore from 'soapbox/components/load-more.tsx';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import { Column, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { getAccountGallery } from 'soapbox/selectors/index.ts';
 
-import MediaItem from './components/media-item';
+import MediaItem from './components/media-item.tsx';
 
-import type { Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities.ts';
 
 interface ILoadMoreMedia {
   maxId: string | null;

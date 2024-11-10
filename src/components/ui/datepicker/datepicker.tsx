@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import Select from '../select/select';
-import Stack from '../stack/stack';
-import Text from '../text/text';
+import Select from '../select/select.tsx';
+import Stack from '../stack/stack.tsx';
+import Text from '../text/text.tsx';
 
 const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
 const currentYear = new Date().getFullYear();

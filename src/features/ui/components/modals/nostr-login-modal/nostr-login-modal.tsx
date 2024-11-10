@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import ExtensionStep from './steps/extension-step';
-import KeyAddStep from './steps/key-add-step';
+import ExtensionStep from './steps/extension-step.tsx';
+import KeyAddStep from './steps/key-add-step.tsx';
 
 type Step = 'extension' | 'key-add';
 

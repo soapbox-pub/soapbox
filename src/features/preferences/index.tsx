@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Form } from 'soapbox/components/ui';
-import { SelectDropdown } from 'soapbox/features/forms';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Form } from 'soapbox/components/ui/index.ts';
+import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks/index.ts';
 
-import ThemeToggle from '../ui/components/theme-toggle';
+import ThemeToggle from '../ui/components/theme-toggle.tsx';
 
 const languages = {
   en: 'English',

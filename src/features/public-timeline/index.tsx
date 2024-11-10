@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
-import { usePublicStream } from 'soapbox/api/hooks';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Accordion, Column } from 'soapbox/components/ui';
-import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown/language-dropdown';
-import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines.ts';
+import { usePublicStream } from 'soapbox/api/hooks/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Accordion, Column } from 'soapbox/components/ui/index.ts';
+import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown/language-dropdown.tsx';
+import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 
-import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker';
-import Timeline from '../ui/components/timeline';
+import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker.tsx';
+import Timeline from '../ui/components/timeline.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Global timeline' },

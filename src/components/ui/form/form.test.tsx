@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
+import { fireEvent, render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Form from './form';
+import Form from './form.tsx';
 
 describe('<Form />', () => {
   it('renders children', () => {

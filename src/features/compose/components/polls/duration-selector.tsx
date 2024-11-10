@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Select } from 'soapbox/components/ui';
+import { Select } from 'soapbox/components/ui/index.ts';
 
 const messages = defineMessages({
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },

@@ -1,5 +1,5 @@
-import { removeVS16s, toCodePoints } from 'soapbox/utils/emoji';
-import { joinPublicPath } from 'soapbox/utils/static';
+import { removeVS16s, toCodePoints } from 'soapbox/utils/emoji.ts';
+import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
   /** Unicode emoji character. */

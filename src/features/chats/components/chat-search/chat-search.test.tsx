@@ -2,11 +2,11 @@ import userEvent from '@testing-library/user-event';
 import { VirtuosoMockContext } from 'react-virtuoso';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { ChatProvider } from 'soapbox/contexts/chat-context';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { __stub } from 'soapbox/api/index.ts';
+import { ChatProvider } from 'soapbox/contexts/chat-context.tsx';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import ChatSearch from './chat-search';
+import ChatSearch from './chat-search.tsx';
 
 const renderComponent = () => render(
   <VirtuosoMockContext.Provider value={{ viewportHeight: 300, itemHeight: 100 }}>

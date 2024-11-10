@@ -1,19 +1,19 @@
 import clsx from 'clsx';
 
-import Account from 'soapbox/components/account';
-import StatusContent from 'soapbox/components/status-content';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import { Card, HStack, Stack } from 'soapbox/components/ui';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
-import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder-media-gallery';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { useAppSelector } from 'soapbox/hooks';
+import Account from 'soapbox/components/account.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
+import { Card, HStack, Stack } from 'soapbox/components/ui/index.ts';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
+import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder-media-gallery.tsx';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
-import { buildStatus } from '../util/pending-status-builder';
+import { buildStatus } from '../util/pending-status-builder.ts';
 
-import PollPreview from './poll-preview';
+import PollPreview from './poll-preview.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const shouldHaveCard = (pendingStatus: StatusEntity) => {
   return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));

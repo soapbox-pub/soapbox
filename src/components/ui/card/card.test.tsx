@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import { Card, CardBody, CardHeader, CardTitle } from './card';
+import { Card, CardBody, CardHeader, CardTitle } from './card.tsx';
 
 describe('<Card />', () => {
   it('renders the CardTitle and CardBody', () => {

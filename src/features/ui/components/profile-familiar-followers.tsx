@@ -3,16 +3,16 @@ import { useEffect } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers';
-import { openModal } from 'soapbox/actions/modals';
-import AvatarStack from 'soapbox/components/avatar-stack';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { HStack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import AvatarStack from 'soapbox/components/avatar-stack.tsx';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import { HStack, Text } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const getAccount = makeGetAccount();
 

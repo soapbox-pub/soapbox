@@ -1,13 +1,13 @@
 import clsx from 'clsx';import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig, useFeatures, useAppDispatch } from 'soapbox/hooks';
-import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { HStack, Text, Emoji } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useSoapboxConfig, useFeatures, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IStatusInteractionBar {
   status: Status;

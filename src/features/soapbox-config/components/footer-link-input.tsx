@@ -1,9 +1,9 @@
 import { useIntl, defineMessages } from 'react-intl';
 
-import { HStack, Input } from 'soapbox/components/ui';
+import { HStack, Input } from 'soapbox/components/ui/index.ts';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import type { FooterItem } from 'soapbox/types/soapbox';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { FooterItem } from 'soapbox/types/soapbox.ts';
 
 const messages = defineMessages({
   label: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },

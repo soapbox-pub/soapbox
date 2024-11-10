@@ -4,7 +4,7 @@ import {
   PROFILE_HOVER_CARD_OPEN,
   PROFILE_HOVER_CARD_CLOSE,
   PROFILE_HOVER_CARD_UPDATE,
-} from 'soapbox/actions/profile-hover-card';
+} from 'soapbox/actions/profile-hover-card.ts';
 
 import type { AnyAction } from 'redux';
 

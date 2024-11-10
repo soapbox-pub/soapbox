@@ -1,18 +1,18 @@
 import { defineMessages } from 'react-intl';
 
-import toast, { type IToastOptions } from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import toast, { type IToastOptions } from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts, importFetchedStatus } from './importer';
-import { openModal } from './modals';
-import { expandGroupFeaturedTimeline } from './timelines';
+import { fetchRelationships } from './accounts.ts';
+import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts';
+import { openModal } from './modals.ts';
+import { expandGroupFeaturedTimeline } from './timelines.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';

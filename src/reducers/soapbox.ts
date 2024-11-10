@@ -1,15 +1,15 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
-import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import KVStore from 'soapbox/storage/kv-store';
-import { ConfigDB } from 'soapbox/utils/config-db';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import { ConfigDB } from 'soapbox/utils/config-db.ts';
 
-import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin';
+import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin.ts';
 import {
   SOAPBOX_CONFIG_REMEMBER_SUCCESS,
   SOAPBOX_CONFIG_REQUEST_SUCCESS,
   SOAPBOX_CONFIG_REQUEST_FAIL,
-} from '../actions/soapbox';
+} from '../actions/soapbox.ts';
 
 const initialState = ImmutableMap<string, any>();
 

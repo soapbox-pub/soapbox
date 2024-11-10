@@ -2,10 +2,10 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchBirthdayReminders } from 'soapbox/actions/accounts';
-import { Widget } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchBirthdayReminders } from 'soapbox/actions/accounts.ts';
+import { Widget } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
 const timeToMidnight = () => {
   const now = new Date();

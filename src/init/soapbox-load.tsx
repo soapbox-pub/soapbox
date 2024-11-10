@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 
-import { fetchMe } from 'soapbox/actions/me';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
-import LoadingScreen from 'soapbox/components/loading-screen';
-import { useNostr } from 'soapbox/contexts/nostr-context';
+
+import { fetchMe } from 'soapbox/actions/me.ts';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox.ts';
+import LoadingScreen from 'soapbox/components/loading-screen.tsx';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import {
   useAppSelector,
   useAppDispatch,
   useOwnAccount,
   useLocale,
   useInstance,
-} from 'soapbox/hooks';
-import { useBunker } from 'soapbox/hooks/nostr/useBunker';
-import { useSigner } from 'soapbox/hooks/nostr/useSigner';
-import MESSAGES from 'soapbox/messages';
+} from 'soapbox/hooks/index.ts';
+import { useBunker } from 'soapbox/hooks/nostr/useBunker.ts';
+import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
+import MESSAGES from 'soapbox/messages.ts';
 
 /** Load initial data from the backend */
 const loadInitial = () => {
