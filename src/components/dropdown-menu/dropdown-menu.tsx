@@ -5,16 +5,16 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { useAppDispatch } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
+import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
-import { IconButton, Portal } from '../ui';
+import { IconButton, Portal } from '../ui/index.ts';
 
-import DropdownMenuItem, { MenuItem } from './dropdown-menu-item';
+import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 export type Menu = Array<MenuItem | null>;
 

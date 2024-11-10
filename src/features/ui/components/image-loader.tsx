@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { PureComponent } from 'react';
 
-import ZoomableImage from './zoomable-image';
+import ZoomableImage from './zoomable-image.tsx';
 
 type EventRemover = () => void;
 

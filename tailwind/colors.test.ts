@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   withOpacityValue,
   parseColorMatrix,
-} from './colors';
+} from './colors.ts';
 
 describe('withOpacityValue()', () => {
   it('returns a Tailwind color function with alpha support', () => {

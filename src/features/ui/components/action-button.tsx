@@ -9,13 +9,13 @@ import {
   unmuteAccount,
   authorizeFollowRequest,
   rejectFollowRequest,
-} from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import { useFollow } from 'soapbox/api/hooks';
-import { Button, HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures, useLoggedIn } from 'soapbox/hooks';
+} from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useFollow } from 'soapbox/api/hooks/index.ts';
+import { Button, HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useFeatures, useLoggedIn } from 'soapbox/hooks/index.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },

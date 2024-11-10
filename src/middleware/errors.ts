@@ -1,4 +1,4 @@
-import toast from 'soapbox/toast';
+import toast from 'soapbox/toast.tsx';
 
 import type { AnyAction, Middleware } from 'redux';
 

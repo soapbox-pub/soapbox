@@ -5,19 +5,19 @@ import { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
-import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks';
-import { Column, Icon, Layout, Stack, Text, Tabs } from 'soapbox/components/ui';
-import GroupHeader from 'soapbox/features/group/components/group-header';
-import LinkFooter from 'soapbox/features/ui/components/link-footer';
+import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
+import { Column, Icon, Layout, Stack, Text, Tabs } from 'soapbox/components/ui/index.ts';
+import GroupHeader from 'soapbox/features/group/components/group-header.tsx';
+import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {
   CtaBanner,
   GroupMediaPanel,
   SignUpPanel,
   SuggestedGroupsPanel,
-} from 'soapbox/features/ui/util/async-components';
-import { useFeatures, useOwnAccount } from 'soapbox/hooks';
+} from 'soapbox/features/ui/util/async-components.ts';
+import { useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },

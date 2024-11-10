@@ -1,6 +1,6 @@
 import { Children, cloneElement } from 'react';
 
-import List, { ListItem } from './list';
+import List, { ListItem } from './list.tsx';
 
 interface IRadioGroup {
   onChange: React.ChangeEventHandler;

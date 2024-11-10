@@ -19,18 +19,18 @@ import {
   rejectEventParticipationRequest,
   authorizeEventParticipationRequest,
   cancelEventCompose,
-} from 'soapbox/actions/events';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
-import LocationSearch from 'soapbox/components/location-search';
-import { checkEventComposeContent } from 'soapbox/components/modal-root';
-import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime';
-import AccountContainer from 'soapbox/containers/account-container';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+} from 'soapbox/actions/events.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location.tsx';
+import LocationSearch from 'soapbox/components/location-search.tsx';
+import { checkEventComposeContent } from 'soapbox/components/modal-root.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime/datetime.tsx';
+import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import UploadButton from './upload-button';
+import UploadButton from './upload-button.tsx';
 
 const messages = defineMessages({
   eventNamePlaceholder: { id: 'compose_event.fields.name_placeholder', defaultMessage: 'Name' },

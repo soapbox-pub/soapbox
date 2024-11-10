@@ -1,6 +1,6 @@
-import { PLEROMA, parseVersion } from './features';
+import { PLEROMA, parseVersion } from './features.ts';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 /**
  * Get the OAuth scopes to use for login & signup.

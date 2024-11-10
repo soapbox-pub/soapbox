@@ -6,20 +6,20 @@ import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
-import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { MessageExpirationValues, useChat, useChatActions, useChats } from 'soapbox/queries/chats';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { blockAccount, unblockAccount } from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Avatar, HStack, Icon, IconButton, Menu, MenuButton, MenuItem, MenuList, Stack, Text, Tooltip } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { MessageExpirationValues, useChat, useChatActions, useChats } from 'soapbox/queries/chats.ts';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
-import Chat from '../../chat';
+import Chat from '../../chat.tsx';
 
-import BlankslateEmpty from './blankslate-empty';
-import BlankslateWithChats from './blankslate-with-chats';
+import BlankslateEmpty from './blankslate-empty.tsx';
+import BlankslateWithChats from './blankslate-with-chats.tsx';
 
 const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },

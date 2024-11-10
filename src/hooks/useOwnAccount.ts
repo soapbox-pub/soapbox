@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import { makeGetAccount } from 'soapbox/selectors';
+import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from './useAppSelector.ts';
 
 /** Get the logged-in account from the store, if any. */
 export const useOwnAccount = () => {

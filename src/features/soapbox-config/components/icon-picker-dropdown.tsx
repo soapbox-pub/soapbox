@@ -3,11 +3,11 @@ import { defineMessages, useIntl } from 'react-intl';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
+import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon.tsx';
 
 import forkAwesomeIcons from '../forkawesome.json';
 
-import IconPickerMenu from './icon-picker-menu';
+import IconPickerMenu from './icon-picker-menu.tsx';
 
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },

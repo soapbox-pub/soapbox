@@ -1,8 +1,8 @@
-import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
-import { useAccount } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
-import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons';
-import { useAppDispatch } from 'soapbox/hooks';
+import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 interface IAccountAuthorize {
   id: string;

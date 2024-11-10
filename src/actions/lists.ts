@@ -1,13 +1,13 @@
-import { selectAccount } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import { importFetchedAccounts } from './importer';
+import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const LIST_FETCH_REQUEST = 'LIST_FETCH_REQUEST';
 const LIST_FETCH_SUCCESS = 'LIST_FETCH_SUCCESS';

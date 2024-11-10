@@ -1,8 +1,8 @@
 import { Record as ImmutableRecord } from 'immutable';
 
-import { fetchInstance } from 'soapbox/actions/instance';
-import { NOSTR_PUBKEY_SET } from 'soapbox/actions/nostr';
-import { SW_UPDATING } from 'soapbox/actions/sw';
+import { fetchInstance } from 'soapbox/actions/instance.ts';
+import { NOSTR_PUBKEY_SET } from 'soapbox/actions/nostr.ts';
+import { SW_UPDATING } from 'soapbox/actions/sw.ts';
 
 import type { AnyAction } from 'redux';
 

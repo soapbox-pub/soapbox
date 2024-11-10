@@ -1,9 +1,9 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
-import { groupTagSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { groupTagSchema } from 'soapbox/schemas/index.ts';
 
-import type { GroupTag } from 'soapbox/schemas';
+import type { GroupTag } from 'soapbox/schemas/index.ts';
 
 function useGroupTags(groupId: string) {
   const api = useApi();

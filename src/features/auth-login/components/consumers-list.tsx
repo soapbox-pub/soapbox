@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Card, HStack, Text } from 'soapbox/components/ui';
-import { useInstance } from 'soapbox/hooks';
+import { Card, HStack, Text } from 'soapbox/components/ui/index.ts';
+import { useInstance } from 'soapbox/hooks/index.ts';
 
-import ConsumerButton from './consumer-button';
+import ConsumerButton from './consumer-button.tsx';
 
 interface IConsumersList {
 }

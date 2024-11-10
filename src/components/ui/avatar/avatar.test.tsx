@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Avatar from './avatar';
+import Avatar from './avatar.tsx';
 
 const src = '/static/alice.jpg';
 

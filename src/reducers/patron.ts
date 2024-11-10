@@ -8,7 +8,7 @@ import {
 import {
   PATRON_INSTANCE_FETCH_SUCCESS,
   PATRON_ACCOUNT_FETCH_SUCCESS,
-} from '../actions/patron';
+} from '../actions/patron.ts';
 
 import type { AnyAction } from 'redux';
 

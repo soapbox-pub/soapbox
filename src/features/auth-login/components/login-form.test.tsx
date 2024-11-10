@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { fireEvent, render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
 
-import LoginForm from './login-form';
+import LoginForm from './login-form.tsx';
 
 describe('<LoginForm />', () => {
   it('renders for Pleroma', () => {

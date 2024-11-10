@@ -2,9 +2,9 @@ import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 
-import StillImage, { IStillImage } from 'soapbox/components/still-image';
+import StillImage, { IStillImage } from 'soapbox/components/still-image.tsx';
 
-import Icon from '../icon/icon';
+import Icon from '../icon/icon.tsx';
 
 const AVATAR_SIZE = 42;
 

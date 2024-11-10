@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
-import { useDraggedFiles } from 'soapbox/hooks';
+import { HStack, Icon, IconButton, Text } from 'soapbox/components/ui/index.ts';
+import { useDraggedFiles } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   title: { id: 'group.upload_banner.title', defaultMessage: 'Upload background picture' },

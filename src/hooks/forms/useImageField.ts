@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import resizeImage from 'soapbox/utils/resize-image';
+import resizeImage from 'soapbox/utils/resize-image.ts';
 
-import { usePreview } from './usePreview';
+import { usePreview } from './usePreview.ts';
 
 interface UseImageFieldOpts {
   /** Resize the image to the max dimensions, if defined. */

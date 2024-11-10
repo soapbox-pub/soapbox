@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 interface IButton {
   /** Whether this button expands the width of its container. */

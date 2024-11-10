@@ -1,14 +1,14 @@
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
-import { insertSuggestionsIntoTimeline } from './timelines';
+import { fetchRelationships } from './accounts.ts';
+import { importFetchedAccounts } from './importer/index.ts';
+import { insertSuggestionsIntoTimeline } from './timelines.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';
 const SUGGESTIONS_FETCH_SUCCESS = 'SUGGESTIONS_FETCH_SUCCESS';

@@ -1,6 +1,6 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Stack, Text } from 'soapbox/components/ui';
+import { Stack, Text } from 'soapbox/components/ui/index.ts';
 
 const messages = defineMessages({
   title: { id: 'chat_search.blankslate.title', defaultMessage: 'Start a chat' },

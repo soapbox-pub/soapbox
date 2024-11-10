@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import { Text } from 'soapbox/components/ui';
-import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import { Text } from 'soapbox/components/ui/index.ts';
+import { useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 interface INavlinks {
   type: string;

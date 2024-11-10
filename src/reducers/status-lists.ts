@@ -11,8 +11,8 @@ import {
   STATUS_QUOTES_FETCH_FAIL,
   STATUS_QUOTES_FETCH_REQUEST,
   STATUS_QUOTES_FETCH_SUCCESS,
-} from 'soapbox/actions/status-quotes';
-import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
+} from 'soapbox/actions/status-quotes.ts';
+import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses.ts';
 
 import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
@@ -21,7 +21,7 @@ import {
   BOOKMARKED_STATUSES_EXPAND_REQUEST,
   BOOKMARKED_STATUSES_EXPAND_SUCCESS,
   BOOKMARKED_STATUSES_EXPAND_FAIL,
-} from '../actions/bookmarks';
+} from '../actions/bookmarks.ts';
 import {
   RECENT_EVENTS_FETCH_REQUEST,
   RECENT_EVENTS_FETCH_SUCCESS,
@@ -29,7 +29,7 @@ import {
   JOINED_EVENTS_FETCH_REQUEST,
   JOINED_EVENTS_FETCH_SUCCESS,
   JOINED_EVENTS_FETCH_FAIL,
-} from '../actions/events';
+} from '../actions/events.ts';
 import {
   FAVOURITED_STATUSES_FETCH_REQUEST,
   FAVOURITED_STATUSES_FETCH_SUCCESS,
@@ -43,7 +43,7 @@ import {
   ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST,
   ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS,
   ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL,
-} from '../actions/favourites';
+} from '../actions/favourites.ts';
 import {
   FAVOURITE_SUCCESS,
   UNFAVOURITE_SUCCESS,
@@ -51,10 +51,10 @@ import {
   UNBOOKMARK_SUCCESS,
   PIN_SUCCESS,
   UNPIN_SUCCESS,
-} from '../actions/interactions';
+} from '../actions/interactions.ts';
 import {
   PINNED_STATUSES_FETCH_SUCCESS,
-} from '../actions/pin-statuses';
+} from '../actions/pin-statuses.ts';
 import {
   SCHEDULED_STATUSES_FETCH_REQUEST,
   SCHEDULED_STATUSES_FETCH_SUCCESS,
@@ -64,10 +64,10 @@ import {
   SCHEDULED_STATUSES_EXPAND_FAIL,
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
-} from '../actions/scheduled-statuses';
+} from '../actions/scheduled-statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 export const StatusListRecord = ImmutableRecord({
   next: null as string | null,

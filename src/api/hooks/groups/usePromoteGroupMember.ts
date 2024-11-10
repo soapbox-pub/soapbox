@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntityActions } from 'soapbox/entity-store/hooks';
-import { groupMemberSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
+import { groupMemberSchema } from 'soapbox/schemas/index.ts';
 
-import type { Group, GroupMember } from 'soapbox/schemas';
+import type { Group, GroupMember } from 'soapbox/schemas/index.ts';
 
 function usePromoteGroupMember(group: Group, groupMember: GroupMember) {
   const { createEntity } = useEntityActions<GroupMember>(

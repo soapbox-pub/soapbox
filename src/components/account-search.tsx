@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
 
-import SvgIcon from './ui/icon/svg-icon';
+import SvgIcon from './ui/icon/svg-icon.tsx';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },

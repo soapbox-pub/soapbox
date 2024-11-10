@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { fireEvent, render, screen } from 'soapbox/jest/test-helpers';
+import { fireEvent, render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Button from './button';
+import Button from './button.tsx';
 
 describe('<Button />', () => {
   it('renders the given text', () => {

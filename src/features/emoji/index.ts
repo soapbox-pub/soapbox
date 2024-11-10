@@ -1,8 +1,8 @@
 import split from 'graphemesplit';
 
-import unicodeMapping from './mapping';
+import unicodeMapping from './mapping.ts';
 
-import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data';
+import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
 
 /*
  * TODO: Consolate emoji object types

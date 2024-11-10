@@ -2,16 +2,16 @@ import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { expandAccountMediaTimeline } from 'soapbox/actions/timelines';
-import { Spinner, Text, Widget } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { getAccountGallery } from 'soapbox/selectors';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { expandAccountMediaTimeline } from 'soapbox/actions/timelines.ts';
+import { Spinner, Text, Widget } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { getAccountGallery } from 'soapbox/selectors/index.ts';
 
-import MediaItem from '../../account-gallery/components/media-item';
+import MediaItem from '../../account-gallery/components/media-item.tsx';
 
-import type { Account } from 'soapbox/schemas';
-import type { Attachment } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas/index.ts';
+import type { Attachment } from 'soapbox/types/entities.ts';
 
 interface IProfileMediaPanel {
   account?: Account;

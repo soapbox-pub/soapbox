@@ -13,13 +13,13 @@ import {
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { unescapeHTML } from 'soapbox/utils/html';
-import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
+import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers.ts';
 
-import type { PatronAccount } from 'soapbox/reducers/patron';
-import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities';
+import type { PatronAccount } from 'soapbox/reducers/patron.ts';
+import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({

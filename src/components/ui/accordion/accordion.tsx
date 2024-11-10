@@ -4,13 +4,13 @@ import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
-import DropdownMenu from 'soapbox/components/dropdown-menu';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 
-import HStack from '../hstack/hstack';
-import Icon from '../icon/icon';
-import Text from '../text/text';
+import HStack from '../hstack/hstack.tsx';
+import Icon from '../icon/icon.tsx';
+import Text from '../text/text.tsx';
 
-import type { Menu } from 'soapbox/components/dropdown-menu';
+import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
 
 const messages = defineMessages({
   collapse: { id: 'accordion.collapse', defaultMessage: 'Collapse' },

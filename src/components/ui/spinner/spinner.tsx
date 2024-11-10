@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
-import Stack from '../stack/stack';
-import Text from '../text/text';
+import Stack from '../stack/stack.tsx';
+import Text from '../text/text.tsx';
 
 import './spinner.css';
 

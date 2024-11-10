@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { directComposeById } from 'soapbox/actions/compose';
-import { mountConversations, unmountConversations, expandConversations } from 'soapbox/actions/conversations';
-import { useDirectStream } from 'soapbox/api/hooks';
-import AccountSearch from 'soapbox/components/account-search';
-import { Column } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { directComposeById } from 'soapbox/actions/compose.ts';
+import { mountConversations, unmountConversations, expandConversations } from 'soapbox/actions/conversations.ts';
+import { useDirectStream } from 'soapbox/api/hooks/index.ts';
+import AccountSearch from 'soapbox/components/account-search.tsx';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import ConversationsList from './components/conversations-list';
+import ConversationsList from './components/conversations-list.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },

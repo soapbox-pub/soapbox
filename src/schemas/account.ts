@@ -5,14 +5,14 @@ import z from 'zod';
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji';
-import { unescapeHTML } from 'soapbox/utils/html';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
 
-import { customEmojiSchema } from './custom-emoji';
-import { Relationship } from './relationship';
-import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils';
+import { customEmojiSchema } from './custom-emoji.ts';
+import { Relationship } from './relationship.ts';
+import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
 
-import type { Resolve } from 'soapbox/utils/types';
+import type { Resolve } from 'soapbox/utils/types.ts';
 
 const birthdaySchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 

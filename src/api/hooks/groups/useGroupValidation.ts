@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useApi } from 'soapbox/hooks/useApi';
-import { useFeatures } from 'soapbox/hooks/useFeatures';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 type Validation = {
   error: string;

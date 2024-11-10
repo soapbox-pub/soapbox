@@ -1,11 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { StatusListRecord } from 'soapbox/reducers/status-lists';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { StatusListRecord } from 'soapbox/reducers/status-lists.ts';
 
-import { fetchStatusQuotes, expandStatusQuotes } from './status-quotes';
+import { fetchStatusQuotes, expandStatusQuotes } from './status-quotes.ts';
 
 const status = {
   account: {

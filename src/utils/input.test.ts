@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { normalizeUsername } from './input';
+import { normalizeUsername } from './input.ts';
 
 test('normalizeUsername', () => {
   expect(normalizeUsername('@alex')).toBe('alex');

@@ -2,10 +2,10 @@ import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
 import { QRCodeCanvas } from 'qrcode.react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Button, Stack, HStack } from 'soapbox/components/ui';
-import { ZapSplitData } from 'soapbox/schemas/zap-split';
+import Account from 'soapbox/components/account.tsx';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import { Button, Stack, HStack } from 'soapbox/components/ui/index.ts';
+import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },

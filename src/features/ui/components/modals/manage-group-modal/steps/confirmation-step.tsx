@@ -2,11 +2,11 @@ import linkIcon from '@tabler/icons/outline/link.svg';
 import shareIcon from '@tabler/icons/outline/share.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
-import toast from 'soapbox/toast';
-import copy from 'soapbox/utils/copy';
+import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui/index.ts';
+import toast from 'soapbox/toast.tsx';
+import copy from 'soapbox/utils/copy.ts';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 interface IConfirmationStep {
   group: Group | null;

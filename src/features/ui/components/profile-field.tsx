@@ -2,11 +2,12 @@ import checkIcon from '@tabler/icons/outline/check.svg';
 import clsx from 'clsx';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
-import Markup from 'soapbox/components/markup';
-import { HStack, Icon } from 'soapbox/components/ui';
-import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components';
 
-import type { Account } from 'soapbox/schemas';
+import Markup from 'soapbox/components/markup.tsx';
+import { HStack, Icon } from 'soapbox/components/ui/index.ts';
+import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components.ts';
+
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
 const isTicker = (value: string): boolean => Boolean(getTicker(value));

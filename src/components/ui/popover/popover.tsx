@@ -13,7 +13,7 @@ import {
 import clsx from 'clsx';
 import { cloneElement, useRef, useState } from 'react';
 
-import Portal from '../portal/portal';
+import Portal from '../portal/portal.tsx';
 
 interface IPopover {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;

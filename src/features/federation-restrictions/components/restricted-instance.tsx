@@ -3,11 +3,11 @@ import caretRightIcon from '@tabler/icons/outline/caret-right.svg';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import Icon from 'soapbox/components/icon';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
+import Icon from 'soapbox/components/icon.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
 
-import InstanceRestrictions from './instance-restrictions';
+import InstanceRestrictions from './instance-restrictions.tsx';
 
 const getRemoteInstance = makeGetRemoteInstance();
 

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchPatronInstance } from 'soapbox/actions/patron';
-import { Widget, Button, ProgressBar, Text, Stack } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchPatronInstance } from 'soapbox/actions/patron.ts';
+import { Widget, Button, ProgressBar, Text, Stack } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 /** Open link in a new tab. */
 // https://stackoverflow.com/a/28374344/8811886

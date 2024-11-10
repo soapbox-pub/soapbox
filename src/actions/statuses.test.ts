@@ -1,12 +1,12 @@
 import { fromJS, Map as ImmutableMap } from 'immutable';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { STATUSES_IMPORT } from 'soapbox/actions/importer';
-import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { STATUSES_IMPORT } from 'soapbox/actions/importer/index.ts';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { normalizeStatus } from 'soapbox/normalizers/status.ts';
 
-import { deleteStatus, fetchContext } from './statuses';
+import { deleteStatus, fetchContext } from './statuses.ts';
 
 describe('fetchContext()', () => {
   it('handles Mitra context', async () => {

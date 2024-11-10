@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1';
-import { useInstanceV2 } from 'soapbox/api/hooks/instance/useInstanceV2';
-import { instanceV2Schema, upgradeInstance } from 'soapbox/schemas/instance';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1.ts';
+import { useInstanceV2 } from 'soapbox/api/hooks/instance/useInstanceV2.ts';
+import { instanceV2Schema, upgradeInstance } from 'soapbox/schemas/instance.ts';
 
-import { useAppDispatch } from './useAppDispatch';
+import { useAppDispatch } from './useAppDispatch.ts';
 
 interface Opts {
   /** The base URL of the instance. */

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { buildAccount } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import DisplayName from './display-name';
+import DisplayName from './display-name.tsx';
 
 describe('<DisplayName />', () => {
   it('renders display name + account name', () => {

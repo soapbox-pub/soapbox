@@ -3,14 +3,14 @@ import clsx from 'clsx';
 import { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
-import { openModal, closeModal } from 'soapbox/actions/modals';
-import { useGroup } from 'soapbox/api/hooks';
-import { checkComposeContent } from 'soapbox/components/modal-root';
-import { HStack, Modal, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soapbox/hooks';
+import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose.ts';
+import { openModal, closeModal } from 'soapbox/actions/modals.ts';
+import { useGroup } from 'soapbox/api/hooks/index.ts';
+import { checkComposeContent } from 'soapbox/components/modal-root.tsx';
+import { HStack, Modal, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soapbox/hooks/index.ts';
 
-import ComposeForm from '../../../compose/components/compose-form';
+import ComposeForm from '../../../compose/components/compose-form.tsx';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },

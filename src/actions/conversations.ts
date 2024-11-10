@@ -1,15 +1,15 @@
-import { isLoggedIn } from 'soapbox/utils/auth';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
 import {
   importFetchedAccounts,
   importFetchedStatuses,
   importFetchedStatus,
-} from './importer';
+} from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const CONVERSATIONS_MOUNT   = 'CONVERSATIONS_MOUNT';
 const CONVERSATIONS_UNMOUNT = 'CONVERSATIONS_UNMOUNT';

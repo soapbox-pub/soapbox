@@ -1,13 +1,13 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
 
-import CopyableInput from 'soapbox/components/copyable-input';
-import Icon from 'soapbox/components/icon';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import Icon from 'soapbox/components/icon.tsx';
 
-import { getExplorerUrl } from '../utils/block-explorer';
-import { getTitle } from '../utils/coin-db';
+import { getExplorerUrl } from '../utils/block-explorer.ts';
+import { getTitle } from '../utils/coin-db.ts';
 
-import CryptoIcon from './crypto-icon';
+import CryptoIcon from './crypto-icon.tsx';
 
 interface IDetailedCryptoAddress {
   address: string;

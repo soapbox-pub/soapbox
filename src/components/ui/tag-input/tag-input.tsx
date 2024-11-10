@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import HStack from '../hstack/hstack';
+import HStack from '../hstack/hstack.tsx';
 
-import Tag from './tag';
+import Tag from './tag.tsx';
 
 interface ITagInput {
   tags: string[];

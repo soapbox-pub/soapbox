@@ -2,21 +2,21 @@ import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { blockAccount } from 'soapbox/actions/accounts';
-import { submitReport, submitReportSuccess, submitReportFail, ReportableEntities } from 'soapbox/actions/reports';
-import { expandAccountTimeline } from 'soapbox/actions/timelines';
-import { useAccount } from 'soapbox/api/hooks';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import GroupCard from 'soapbox/components/group-card';
-import List, { ListItem } from 'soapbox/components/list';
-import StatusContent from 'soapbox/components/status-content';
-import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
+import { blockAccount } from 'soapbox/actions/accounts.ts';
+import { submitReport, submitReportSuccess, submitReportFail, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { expandAccountTimeline } from 'soapbox/actions/timelines.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import GroupCard from 'soapbox/components/group-card.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
 
-import ConfirmationStep from './steps/confirmation-step';
-import OtherActionsStep from './steps/other-actions-step';
-import ReasonStep from './steps/reason-step';
+import ConfirmationStep from './steps/confirmation-step.tsx';
+import OtherActionsStep from './steps/other-actions-step.tsx';
+import ReasonStep from './steps/reason-step.tsx';
 
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },

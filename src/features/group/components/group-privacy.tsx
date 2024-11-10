@@ -2,8 +2,8 @@ import lockIcon from '@tabler/icons/outline/lock.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Icon, Popover, Stack, Text } from 'soapbox/components/ui';
-import { Group } from 'soapbox/types/entities';
+import { HStack, Icon, Popover, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Group } from 'soapbox/types/entities.ts';
 
 interface IGroupPolicy {
   group: Group;

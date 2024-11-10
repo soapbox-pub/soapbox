@@ -11,23 +11,24 @@ import escape from 'lodash/escape';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
-import { stripHTML } from 'soapbox/utils/html';
-import { onlyEmoji } from 'soapbox/utils/rich-content';
 
-import ChatMessageReaction from './chat-message-reaction';
-import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { stripHTML } from 'soapbox/utils/html.ts';
+import { onlyEmoji } from 'soapbox/utils/rich-content.ts';
 
-import type { Menu as IMenu } from 'soapbox/components/dropdown-menu';
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
+import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper.tsx';
+import ChatMessageReaction from './chat-message-reaction.tsx';
+
+import type { Menu as IMenu } from 'soapbox/components/dropdown-menu/index.ts';
+import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },

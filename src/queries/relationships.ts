@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { fetchRelationshipsFail, fetchRelationshipsSuccess } from 'soapbox/actions/accounts';
-import { useApi, useAppDispatch } from 'soapbox/hooks';
+import { fetchRelationshipsFail, fetchRelationshipsSuccess } from 'soapbox/actions/accounts.ts';
+import { useApi, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const useFetchRelationships = () => {
   const api = useApi();

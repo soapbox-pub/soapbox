@@ -1,9 +1,9 @@
 import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui';
+import { HStack } from 'soapbox/components/ui/index.ts';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
 
 /** Fake account to display while data is loading. */
 const PlaceholderAccount: React.FC = () => (

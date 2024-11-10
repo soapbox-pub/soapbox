@@ -1,9 +1,9 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useCreateBookmarkFolder } from 'soapbox/api/hooks';
-import { Button, Form, HStack, Input } from 'soapbox/components/ui';
-import { useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
+import { useCreateBookmarkFolder } from 'soapbox/api/hooks/index.ts';
+import { Button, Form, HStack, Input } from 'soapbox/components/ui/index.ts';
+import { useTextField } from 'soapbox/hooks/forms/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   label: { id: 'bookmark_folders.new.title_placeholder', defaultMessage: 'New folder title' },

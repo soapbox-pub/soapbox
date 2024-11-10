@@ -5,19 +5,19 @@ import lockIcon from '@tabler/icons/outline/lock.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { usePatronUser } from 'soapbox/api/hooks';
-import Badge from 'soapbox/components/badge';
-import Markup from 'soapbox/components/markup';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
-import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { capitalize } from 'soapbox/utils/strings';
+import { usePatronUser } from 'soapbox/api/hooks/index.ts';
+import Badge from 'soapbox/components/badge.tsx';
+import Markup from 'soapbox/components/markup.tsx';
+import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
+import { Icon, HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { capitalize } from 'soapbox/utils/strings.ts';
 
-import ProfileFamiliarFollowers from './profile-familiar-followers';
-import ProfileField from './profile-field';
-import ProfileStats from './profile-stats';
+import ProfileFamiliarFollowers from './profile-familiar-followers.tsx';
+import ProfileField from './profile-field.tsx';
+import ProfileStats from './profile-stats.tsx';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 /** Basically ensure the URL isn't `javascript:alert('hi')` or something like that */
 const isSafeUrl = (text: string): boolean => {

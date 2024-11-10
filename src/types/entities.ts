@@ -17,11 +17,11 @@ import {
   StatusEditRecord,
   StatusRecord,
   TagRecord,
-} from 'soapbox/normalizers';
-import { Account as SchemaAccount } from 'soapbox/schemas';
+} from 'soapbox/normalizers/index.ts';
+import { Account as SchemaAccount } from 'soapbox/schemas/index.ts';
 
 import type { Record as ImmutableRecord } from 'immutable';
-import type { LegacyMap } from 'soapbox/utils/legacy';
+import type { LegacyMap } from 'soapbox/utils/legacy.ts';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
@@ -88,4 +88,4 @@ export type {
   Poll,
   PollOption,
   Relationship,
-} from 'soapbox/schemas';
+} from 'soapbox/schemas/index.ts';

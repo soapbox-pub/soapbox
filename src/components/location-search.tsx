@@ -6,12 +6,12 @@ import throttle from 'lodash/throttle';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { locationSearch } from 'soapbox/actions/events';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import Icon from 'soapbox/components/icon';
-import { useAppDispatch } from 'soapbox/hooks';
+import { locationSearch } from 'soapbox/actions/events.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import AutosuggestLocation from './autosuggest-location';
+import AutosuggestLocation from './autosuggest-location.tsx';
 
 const noOp = () => {};
 

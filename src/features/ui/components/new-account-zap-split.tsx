@@ -2,11 +2,11 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import { ListItem } from 'soapbox/components/list';
-import { Button, HStack, Input, Slider } from 'soapbox/components/ui';
-import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split';
-import { type Account as AccountEntity } from 'soapbox/schemas';
+import Account from 'soapbox/components/account.tsx';
+import { ListItem } from 'soapbox/components/list.tsx';
+import { Button, HStack, Input, Slider } from 'soapbox/components/ui/index.ts';
+import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split.tsx';
+import { type Account as AccountEntity } from 'soapbox/schemas/index.ts';
 
 const closeIcon = xIcon;
 

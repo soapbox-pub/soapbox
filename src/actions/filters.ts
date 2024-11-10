@@ -1,12 +1,12 @@
 import { defineMessages } from 'react-intl';
 
-import toast from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import toast from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
 const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';

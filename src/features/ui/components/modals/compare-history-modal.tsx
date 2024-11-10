@@ -3,12 +3,12 @@ import { List as ImmutableList } from 'immutable';
 import { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
-import { fetchHistory } from 'soapbox/actions/history';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchHistory } from 'soapbox/actions/history.ts';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities';
+import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities.ts';
 
 interface ICompareHistoryModal {
   onClose: (string: string) => void;

@@ -1,6 +1,6 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Button, Stack, Text } from 'soapbox/components/ui';
+import { Button, Stack, Text } from 'soapbox/components/ui/index.ts';
 
 const messages = defineMessages({
   title: { id: 'chat_pane.blankslate.title', defaultMessage: 'No messages yet' },

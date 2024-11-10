@@ -1,4 +1,4 @@
-import data, { EmojiData } from './data';
+import data, { EmojiData } from './data.ts';
 
 const stripLeadingZeros = /^0+/;
 interface UnicodeMap {

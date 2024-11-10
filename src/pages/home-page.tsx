@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { uploadCompose } from 'soapbox/actions/compose';
-import LinkFooter from 'soapbox/features/ui/components/link-footer';
+import { uploadCompose } from 'soapbox/actions/compose.ts';
+import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -15,12 +15,12 @@ import {
   BirthdayPanel,
   CtaBanner,
   AnnouncementsPanel,
-} from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDraggedFiles, useAppDispatch } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+} from 'soapbox/features/ui/util/async-components.ts';
+import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDraggedFiles, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 
-import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui';
-import ComposeForm from '../features/compose/components/compose-form';
+import { Avatar, Card, CardBody, HStack, Layout } from '../components/ui/index.ts';
+import ComposeForm from '../features/compose/components/compose-form.tsx';
 
 interface IHomePage {
   children: React.ReactNode;

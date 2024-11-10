@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
+import { patchMe } from 'soapbox/actions/me.ts';
+import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
 import {
   CardHeader,
   CardTitle,
@@ -13,10 +13,10 @@ import {
   FormActions,
   FormGroup,
   Textarea,
-} from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+} from 'soapbox/components/ui/index.ts';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const isJSONValid = (text: any): boolean => {
   try {

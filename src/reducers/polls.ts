@@ -1,10 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
 
-import { POLLS_IMPORT } from 'soapbox/actions/importer';
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { POLLS_IMPORT } from 'soapbox/actions/importer/index.ts';
+import { normalizeStatus } from 'soapbox/normalizers/status.ts';
 
 import type { AnyAction } from 'redux';
-import type { Poll, APIEntity, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Poll, APIEntity, EmbeddedEntity } from 'soapbox/types/entities.ts';
 
 type State = ImmutableMap<string, Poll>;
 

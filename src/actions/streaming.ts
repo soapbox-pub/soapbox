@@ -1,33 +1,33 @@
-import { getLocale, getSettings } from 'soapbox/actions/settings';
-import { updateReactions } from 'soapbox/api/hooks/announcements/useAnnouncements';
-import { importEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import { selectEntity } from 'soapbox/entity-store/selectors';
-import messages from 'soapbox/messages';
-import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
-import { announcementSchema, type Announcement, type Relationship } from 'soapbox/schemas';
-import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats';
-import { removePageItem } from 'soapbox/utils/queries';
-import { play, soundCache } from 'soapbox/utils/sounds';
+import { getLocale, getSettings } from 'soapbox/actions/settings.ts';
+import { updateReactions } from 'soapbox/api/hooks/announcements/useAnnouncements.ts';
+import { importEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { selectEntity } from 'soapbox/entity-store/selectors.ts';
+import messages from 'soapbox/messages.ts';
+import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { announcementSchema, type Announcement, type Relationship } from 'soapbox/schemas/index.ts';
+import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats.ts';
+import { removePageItem } from 'soapbox/utils/queries.ts';
+import { play, soundCache } from 'soapbox/utils/sounds.ts';
 
-import { connectStream } from '../stream';
+import { connectStream } from '../stream.ts';
 
-import { updateConversations } from './conversations';
-import { fetchFilters } from './filters';
-import { MARKER_FETCH_SUCCESS } from './markers';
-import { updateNotificationsQueue } from './notifications';
-import { updateStatus } from './statuses';
+import { updateConversations } from './conversations.ts';
+import { fetchFilters } from './filters.ts';
+import { MARKER_FETCH_SUCCESS } from './markers.ts';
+import { updateNotificationsQueue } from './notifications.ts';
+import { updateStatus } from './statuses.ts';
 import {
   // deleteFromTimelines,
   connectTimeline,
   disconnectTimeline,
   processTimelineUpdate,
-} from './timelines';
+} from './timelines.ts';
 
-import type { IStatContext } from 'soapbox/contexts/stat-context';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Chat } from 'soapbox/types/entities';
+import type { IStatContext } from 'soapbox/contexts/stat-context.tsx';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Chat } from 'soapbox/types/entities.ts';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 

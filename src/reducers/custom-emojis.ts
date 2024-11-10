@@ -1,13 +1,13 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
-import { buildCustomEmojis } from 'soapbox/features/emoji';
-import emojiData from 'soapbox/features/emoji/data';
-import { addCustomToPool } from 'soapbox/features/emoji/search';
+import emojiData from 'soapbox/features/emoji/data.ts';
+import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
+import { addCustomToPool } from 'soapbox/features/emoji/search.ts';
 
-import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis';
+import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom-emojis.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const initialState = ImmutableList<ImmutableMap<string, string>>();
 

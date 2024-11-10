@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildGroup } from 'soapbox/jest/factory';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroup } from 'soapbox/jest/factory.ts';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
 
-import Search from './search';
+import Search from './search.tsx';
 
 const store = {
   instance: instanceV1Schema.parse({

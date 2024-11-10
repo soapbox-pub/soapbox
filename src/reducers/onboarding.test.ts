@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { ONBOARDING_START, ONBOARDING_END } from 'soapbox/actions/onboarding';
+import { ONBOARDING_START, ONBOARDING_END } from 'soapbox/actions/onboarding.ts';
 
-import reducer from './onboarding';
+import reducer from './onboarding.ts';
 
 describe('onboarding reducer', () => {
   it('should return the initial state', () => {

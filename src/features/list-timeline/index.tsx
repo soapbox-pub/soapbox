@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { fetchList } from 'soapbox/actions/lists';
-import { openModal } from 'soapbox/actions/modals';
-import { expandListTimeline } from 'soapbox/actions/timelines';
-import { useListStream } from 'soapbox/api/hooks';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Column, Button, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { fetchList } from 'soapbox/actions/lists.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { expandListTimeline } from 'soapbox/actions/timelines.ts';
+import { useListStream } from 'soapbox/api/hooks/index.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import { Column, Button, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 const ListTimeline: React.FC = () => {
   const dispatch = useAppDispatch();

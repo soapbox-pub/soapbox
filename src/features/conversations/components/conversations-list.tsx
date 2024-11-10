@@ -2,11 +2,11 @@ import debounce from 'lodash/debounce';
 import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandConversations } from 'soapbox/actions/conversations';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { expandConversations } from 'soapbox/actions/conversations.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import Conversation from './conversation';
+import Conversation from './conversation.tsx';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
 

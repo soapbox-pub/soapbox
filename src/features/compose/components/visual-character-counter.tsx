@@ -1,7 +1,7 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { length } from 'stringz';
 
-import ProgressCircle from 'soapbox/components/progress-circle';
+import ProgressCircle from 'soapbox/components/progress-circle.tsx';
 
 const messages = defineMessages({
   title: { id: 'compose.character_counter.title', defaultMessage: 'Used {chars} out of {maxChars} {maxChars, plural, one {character} other {characters}}' },

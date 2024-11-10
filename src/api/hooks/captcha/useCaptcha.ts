@@ -2,10 +2,10 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import { useApi, useAppDispatch, useInstance } from 'soapbox/hooks';
-import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha';
-import toast from 'soapbox/toast';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { useApi, useAppDispatch, useInstance } from 'soapbox/hooks/index.ts';
+import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha.ts';
+import toast from 'soapbox/toast.tsx';
 
 
 

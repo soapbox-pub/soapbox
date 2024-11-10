@@ -1,13 +1,13 @@
 import { InfiniteData } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
 
-import { normalizeChatMessage } from 'soapbox/normalizers';
-import { ChatKeys } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
-import { Chat, ChatMessage } from 'soapbox/types/entities';
+import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
+import { ChatKeys } from 'soapbox/queries/chats.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { Chat, ChatMessage } from 'soapbox/types/entities.ts';
 
-import { compareDate } from './comparators';
-import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries';
+import { compareDate } from './comparators.ts';
+import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries.ts';
 
 interface ChatPayload extends Omit<Chat, 'last_message'> {
   last_message: ChatMessage | null;

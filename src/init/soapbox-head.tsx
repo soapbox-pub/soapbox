@@ -6,12 +6,12 @@ import {
   useSoapboxConfig,
   useTheme,
   useLocale,
-} from 'soapbox/hooks';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import { startSentry } from 'soapbox/sentry';
-import { generateThemeCss } from 'soapbox/utils/theme';
+} from 'soapbox/hooks/index.ts';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
+import { startSentry } from 'soapbox/sentry.ts';
+import { generateThemeCss } from 'soapbox/utils/theme.ts';
 
-const Helmet = lazy(() => import('soapbox/components/helmet'));
+const Helmet = lazy(() => import('soapbox/components/helmet.tsx'));
 
 interface ISoapboxHead {
   children: React.ReactNode;

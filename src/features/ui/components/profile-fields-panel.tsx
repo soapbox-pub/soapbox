@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Widget, Stack } from 'soapbox/components/ui';
+import { Widget, Stack } from 'soapbox/components/ui/index.ts';
 
-import ProfileField from './profile-field';
+import ProfileField from './profile-field.tsx';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 interface IProfileFieldsPanel {
   account: Account;

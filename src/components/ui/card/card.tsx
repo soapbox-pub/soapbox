@@ -4,10 +4,10 @@ import { forwardRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
 
-import HStack from '../hstack/hstack';
-import Text from '../text/text';
+import HStack from '../hstack/hstack.tsx';
+import Text from '../text/text.tsx';
 
 const sizes = {
   md: 'p-4 sm:rounded-xl',

@@ -1,17 +1,17 @@
-import { selectAccount } from 'soapbox/selectors';
-import { setSentryAccount } from 'soapbox/sentry';
-import KVStore from 'soapbox/storage/kv-store';
-import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { setSentryAccount } from 'soapbox/sentry.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import { loadCredentials } from './auth';
-import { importFetchedAccount } from './importer';
+import { loadCredentials } from './auth.ts';
+import { importFetchedAccount } from './importer/index.ts';
 
 import type { RawAxiosRequestHeaders } from 'axios';
-import type { Account } from 'soapbox/schemas';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas/index.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST' as const;
 const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS' as const;

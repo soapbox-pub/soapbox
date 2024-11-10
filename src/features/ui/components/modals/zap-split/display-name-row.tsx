@@ -1,9 +1,9 @@
-import { HStack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useSoapboxConfig } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
+import { HStack, Text } from 'soapbox/components/ui/index.ts';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { getAcct } from 'soapbox/utils/accounts.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 interface IDisplayName {
   account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>;

@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
-import { groupSearchHistory } from 'soapbox/settings';
-import { clearRecentGroupSearches } from 'soapbox/utils/groups';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { groupSearchHistory } from 'soapbox/settings.ts';
+import { clearRecentGroupSearches } from 'soapbox/utils/groups.ts';
 
 interface Props {
   onSelect(value: string): void;

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import FormActions from './form-actions';
+import FormActions from './form-actions.tsx';
 
 describe('<FormActions />', () => {
   it('renders successfully', () => {

@@ -7,16 +7,16 @@ import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
-import { openModal } from 'soapbox/actions/modals';
-import { useBookmarkFolder, useDeleteBookmarkFolder } from 'soapbox/api/hooks';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import StatusList from 'soapbox/components/status-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import toast from 'soapbox/toast';
+import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useBookmarkFolder, useDeleteBookmarkFolder } from 'soapbox/api/hooks/index.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },

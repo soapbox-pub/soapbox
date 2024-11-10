@@ -1,6 +1,6 @@
-import { useLoggedIn } from 'soapbox/hooks';
+import { useLoggedIn } from 'soapbox/hooks/index.ts';
 
-import { useTimelineStream } from './useTimelineStream';
+import { useTimelineStream } from './useTimelineStream.ts';
 
 function useListStream(listId: string) {
   const { isLoggedIn } = useLoggedIn();

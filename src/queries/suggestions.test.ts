@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
+import { __stub } from 'soapbox/api/index.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import { useOnboardingSuggestions } from './suggestions';
+import { useOnboardingSuggestions } from './suggestions.ts';
 
 describe('useOnboardingSuggestions', () => {
   describe('with a successful query', () => {

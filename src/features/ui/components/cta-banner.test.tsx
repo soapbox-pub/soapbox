@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { storeClosed, storeLoggedIn, storeOpen } from 'soapbox/jest/mock-stores';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { storeClosed, storeLoggedIn, storeOpen } from 'soapbox/jest/mock-stores.tsx';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import CtaBanner from './cta-banner';
+import CtaBanner from './cta-banner.tsx';
 
 describe('<CtaBanner />', () => {
   it('renders the banner', () => {

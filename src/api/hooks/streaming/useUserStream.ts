@@ -1,11 +1,11 @@
-import { expandNotifications } from 'soapbox/actions/notifications';
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useLoggedIn } from 'soapbox/hooks';
+import { expandNotifications } from 'soapbox/actions/notifications.ts';
+import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import { useLoggedIn } from 'soapbox/hooks/index.ts';
 
-import { useTimelineStream } from './useTimelineStream';
+import { useTimelineStream } from './useTimelineStream.ts';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 function useUserStream() {
   const { isLoggedIn } = useLoggedIn();

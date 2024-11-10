@@ -1,7 +1,7 @@
 import { useState, useEffect, cloneElement } from 'react';
 
-import { Portal } from 'soapbox/components/ui';
-import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
+import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector.tsx';
+import { Portal } from 'soapbox/components/ui/index.ts';
 
 interface IChatMessageReactionWrapper {
   onOpen(isOpen: boolean): void;

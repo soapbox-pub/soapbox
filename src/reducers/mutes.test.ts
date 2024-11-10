@@ -4,9 +4,9 @@ import { describe, expect, it } from 'vitest';
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
-} from 'soapbox/actions/mutes';
+} from 'soapbox/actions/mutes.ts';
 
-import reducer from './mutes';
+import reducer from './mutes.ts';
 
 describe('mutes reducer', () => {
   it('should return the initial state', () => {

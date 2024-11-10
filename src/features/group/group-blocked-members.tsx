@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups';
-import { useAccount, useGroup } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups.ts';
+import { useAccount, useGroup } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Button, Column, HStack, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ColumnForbidden from '../ui/components/column-forbidden';
+import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 
 type RouteParams = { groupId: string };
 

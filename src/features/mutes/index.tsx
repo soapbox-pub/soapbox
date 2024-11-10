@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { useMutes, useGroupMutes } from 'soapbox/api/hooks';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Stack, Tabs } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useFeatures } from 'soapbox/hooks';
+import { useMutes, useGroupMutes } from 'soapbox/api/hooks/index.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, Stack, Tabs } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useFeatures } from 'soapbox/hooks/index.ts';
 
-import GroupListItem from './components/group-list-item';
+import GroupListItem from './components/group-list-item.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.mutes', defaultMessage: 'Mutes' },

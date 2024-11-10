@@ -3,11 +3,11 @@ import worldIcon from '@tabler/icons/outline/world.svg';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import GroupAvatar from 'soapbox/components/groups/group-avatar';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import GroupActionButton from 'soapbox/features/group/components/group-action-button';
-import { Group as GroupEntity } from 'soapbox/types/entities';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import GroupActionButton from 'soapbox/features/group/components/group-action-button.tsx';
+import { Group as GroupEntity } from 'soapbox/types/entities.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 interface IGroupListItem {
   group: GroupEntity;

@@ -5,20 +5,20 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Account from 'soapbox/components/account';
-import StatusContent from 'soapbox/components/status-content';
-import StatusMedia from 'soapbox/components/status-media';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
-import StatusInfo from 'soapbox/components/statuses/status-info';
-import TranslateButton from 'soapbox/components/translate-button';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { getActualStatus } from 'soapbox/utils/status';
+import Account from 'soapbox/components/account.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusMedia from 'soapbox/components/status-media.tsx';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay.tsx';
+import StatusInfo from 'soapbox/components/statuses/status-info.tsx';
+import TranslateButton from 'soapbox/components/translate-button.tsx';
+import { HStack, Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { getActualStatus } from 'soapbox/utils/status.ts';
 
-import StatusInteractionBar from './status-interaction-bar';
+import StatusInteractionBar from './status-interaction-bar.tsx';
 
-import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Group, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IDetailedStatus {
   status: StatusEntity;

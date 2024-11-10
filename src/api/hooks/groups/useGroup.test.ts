@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildGroup } from 'soapbox/jest/factory';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroup } from 'soapbox/jest/factory.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import { useGroup } from './useGroup';
+import { useGroup } from './useGroup.ts';
 
 const group = buildGroup({ id: '1', display_name: 'soapbox' });
 

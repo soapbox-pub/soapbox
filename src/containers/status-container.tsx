@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 
-import Status, { IStatus } from 'soapbox/components/status';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import Status, { IStatus } from 'soapbox/components/status.tsx';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IStatusContainer extends Omit<IStatus, 'status'> {
   id: string;

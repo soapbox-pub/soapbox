@@ -1,9 +1,9 @@
-import { useTransaction } from 'soapbox/entity-store/hooks';
-import { EntityCallbacks } from 'soapbox/entity-store/hooks/types';
-import { useApi, useGetState } from 'soapbox/hooks';
-import { accountIdsToAccts } from 'soapbox/selectors';
+import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
+import { EntityCallbacks } from 'soapbox/entity-store/hooks/types.ts';
+import { useApi, useGetState } from 'soapbox/hooks/index.ts';
+import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 function useSuggest() {
   const api = useApi();

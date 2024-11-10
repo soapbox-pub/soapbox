@@ -1,6 +1,6 @@
-import { Stack, Text } from 'soapbox/components/ui';
+import { Stack, Text } from 'soapbox/components/ui/index.ts';
 
-import { generateText, randomIntFromInterval } from '../utils';
+import { generateText, randomIntFromInterval } from '../utils.ts';
 
 const PlaceholderEventPreview = () => {
   const eventNameLength = randomIntFromInterval(5, 25);

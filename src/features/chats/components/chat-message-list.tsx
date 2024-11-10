@@ -2,15 +2,15 @@ import { useState, useEffect, useRef, useCallback, useMemo, forwardRef } from 'r
 import { useIntl, defineMessages } from 'react-intl';
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import { Avatar, Button, Divider, Spinner, Stack, Text } from 'soapbox/components/ui';
-import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats';
+import { Avatar, Button, Divider, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message.tsx';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats.ts';
 
-import ChatMessage from './chat-message';
-import ChatMessageListIntro from './chat-message-list-intro';
+import ChatMessageListIntro from './chat-message-list-intro.tsx';
+import ChatMessage from './chat-message.tsx';
 
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
+import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },

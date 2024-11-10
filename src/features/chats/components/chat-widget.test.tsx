@@ -1,10 +1,10 @@
 import { Route, Switch } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory';
-import { render, rootState } from 'soapbox/jest/test-helpers';
+import { buildAccount } from 'soapbox/jest/factory.ts';
+import { render, rootState } from 'soapbox/jest/test-helpers.tsx';
 
-import ChatWidget from './chat-widget/chat-widget';
+import ChatWidget from './chat-widget/chat-widget.tsx';
 
 const id = '1';
 const account = buildAccount({

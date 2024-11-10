@@ -18,14 +18,14 @@ import { $createParagraphNode, $createTextNode, $getRoot, type LexicalEditor } f
 import { forwardRef, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useAppDispatch } from 'soapbox/hooks';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import { useNodes } from './nodes';
-import AutosuggestPlugin from './plugins/autosuggest-plugin';
-import FocusPlugin from './plugins/focus-plugin';
-import RefPlugin from './plugins/ref-plugin';
-import StatePlugin from './plugins/state-plugin';
-import SubmitPlugin from './plugins/submit-plugin';
+import { useNodes } from './nodes/index.ts';
+import AutosuggestPlugin from './plugins/autosuggest-plugin.tsx';
+import FocusPlugin from './plugins/focus-plugin.tsx';
+import RefPlugin from './plugins/ref-plugin.tsx';
+import StatePlugin from './plugins/state-plugin.tsx';
+import SubmitPlugin from './plugins/submit-plugin.tsx';
 
 const LINK_MATCHERS = [
   createLinkMatcherWithRegExp(

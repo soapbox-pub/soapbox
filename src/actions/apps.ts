@@ -6,7 +6,7 @@
  * @see module:soapbox/actions/auth
  */
 
-import { baseClient } from '../api';
+import { baseClient } from '../api/index.ts';
 
 import type { AnyAction } from 'redux';
 

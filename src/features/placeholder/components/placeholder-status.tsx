@@ -1,11 +1,11 @@
 import clsx from 'clsx';
 import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui';
+import { HStack } from 'soapbox/components/ui/index.ts';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
-import PlaceholderStatusContent from './placeholder-status-content';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
+import PlaceholderStatusContent from './placeholder-status-content.tsx';
 
 interface IPlaceholderStatus {
   variant?: 'rounded' | 'slim' | 'default';

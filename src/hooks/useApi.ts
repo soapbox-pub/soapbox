@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
-import { MastodonClient } from 'soapbox/api/MastodonClient';
-import * as BuildConfig from 'soapbox/build-config';
+import { MastodonClient } from 'soapbox/api/MastodonClient.ts';
+import * as BuildConfig from 'soapbox/build-config.ts';
 
-import { useAppSelector } from './useAppSelector';
-import { useOwnAccount } from './useOwnAccount';
+import { useAppSelector } from './useAppSelector.ts';
+import { useOwnAccount } from './useOwnAccount.ts';
 
 export function useApi(): MastodonClient {
   const { account } = useOwnAccount();

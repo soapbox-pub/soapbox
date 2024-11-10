@@ -1,10 +1,10 @@
 import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { addSchedule, removeSchedule } from 'soapbox/actions/compose';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { addSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
-import ComposeFormButton from './compose-form-button';
+import ComposeFormButton from './compose-form-button.tsx';
 
 const messages = defineMessages({
   add_schedule: { id: 'schedule_button.add_schedule', defaultMessage: 'Schedule post for later' },

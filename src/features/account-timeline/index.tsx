@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchAccountByUsername } from 'soapbox/actions/accounts';
-import { fetchPatronAccount } from 'soapbox/actions/patron';
-import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/actions/timelines';
-import { useAccountLookup } from 'soapbox/api/hooks';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import StatusList from 'soapbox/components/status-list';
-import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { makeGetStatusIds } from 'soapbox/selectors';
+import { fetchAccountByUsername } from 'soapbox/actions/accounts.ts';
+import { fetchPatronAccount } from 'soapbox/actions/patron.ts';
+import { expandAccountFeaturedTimeline, expandAccountTimeline } from 'soapbox/actions/timelines.ts';
+import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Card, CardBody, Spinner, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 
 const getStatusIds = makeGetStatusIds();
 

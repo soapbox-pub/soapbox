@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import emojify from '.';
+import emojify from './index.ts';
 
 describe('emoji', () => {
   describe('.emojify', () => {

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-import { Text, Icon, Emoji } from 'soapbox/components/ui';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { Text, Icon, Emoji } from 'soapbox/components/ui/index.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { EmojiReaction } from 'soapbox/schemas';
+import type { EmojiReaction } from 'soapbox/schemas/index.ts';
 
 const COLORS = {
   accent: 'accent',

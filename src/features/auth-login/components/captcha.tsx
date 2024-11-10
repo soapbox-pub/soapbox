@@ -2,9 +2,9 @@ import { Map as ImmutableMap } from 'immutable';
 import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
-import { fetchCaptcha } from 'soapbox/actions/auth';
-import { Stack, Text, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { fetchCaptcha } from 'soapbox/actions/auth.ts';
+import { Stack, Text, Input } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { AxiosResponse } from 'axios';
 

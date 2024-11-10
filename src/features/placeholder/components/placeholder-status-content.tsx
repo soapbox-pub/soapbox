@@ -1,4 +1,4 @@
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval, generateText } from '../utils.ts';
 
 interface IPlaceholderStatusContent {
   maxLength: number;

@@ -11,23 +11,23 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import { fetchNext, fetchStatusWithContext } from 'soapbox/actions/statuses';
-import ExtendedVideoPlayer from 'soapbox/components/extended-video-player';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import StatusActionBar from 'soapbox/components/status-action-bar';
-import { Icon, IconButton, HStack, Stack } from 'soapbox/components/ui';
-import Audio from 'soapbox/features/audio';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import Thread from 'soapbox/features/status/components/thread';
-import Video from 'soapbox/features/video';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
-import { makeGetStatus } from 'soapbox/selectors';
+import { fetchNext, fetchStatusWithContext } from 'soapbox/actions/statuses.ts';
+import ExtendedVideoPlayer from 'soapbox/components/extended-video-player.tsx';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import StatusActionBar from 'soapbox/components/status-action-bar.tsx';
+import { Icon, IconButton, HStack, Stack } from 'soapbox/components/ui/index.ts';
+import Audio from 'soapbox/features/audio/index.tsx';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import Thread from 'soapbox/features/status/components/thread.tsx';
+import Video from 'soapbox/features/video/index.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import ImageLoader from '../image-loader';
+import ImageLoader from '../image-loader.tsx';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Attachment, Status } from 'soapbox/types/entities';
+import type { Attachment, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

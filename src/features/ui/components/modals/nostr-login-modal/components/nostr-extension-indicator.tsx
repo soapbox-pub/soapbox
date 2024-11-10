@@ -1,11 +1,12 @@
 import { FormattedMessage } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import { nostrExtensionLogIn } from 'soapbox/actions/nostr';
-import Stack from 'soapbox/components/ui/stack/stack';
-import Text from 'soapbox/components/ui/text/text';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { useAppDispatch } from 'soapbox/hooks';
+
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { nostrExtensionLogIn } from 'soapbox/actions/nostr.ts';
+import Stack from 'soapbox/components/ui/stack/stack.tsx';
+import Text from 'soapbox/components/ui/text/text.tsx';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 const NostrExtensionIndicator: React.FC = () => {
   const dispatch = useAppDispatch();

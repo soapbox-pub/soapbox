@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import reducer from './settings';
+import reducer from './settings.ts';
 
 describe('settings reducer', () => {
   it('should return the initial state', () => {

@@ -1,6 +1,6 @@
-import Counter from '../counter/counter';
+import Counter from '../counter/counter.tsx';
 
-import SvgIcon from './svg-icon';
+import SvgIcon from './svg-icon.tsx';
 
 interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
   /** Class name for the <svg> element. */

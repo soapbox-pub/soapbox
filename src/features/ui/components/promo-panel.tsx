@@ -1,6 +1,6 @@
-import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
-import { Widget, Stack, Text } from 'soapbox/components/ui';
-import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';
+import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon.tsx';
+import { Widget, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 const PromoPanel: React.FC = () => {
   const { instance } = useInstance();

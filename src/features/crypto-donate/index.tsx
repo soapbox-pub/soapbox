@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { Accordion, Column, Stack } from 'soapbox/components/ui';
-import { useInstance } from 'soapbox/hooks';
+import { Accordion, Column, Stack } from 'soapbox/components/ui/index.ts';
+import { useInstance } from 'soapbox/hooks/index.ts';
 
-import SiteWallet from './components/site-wallet';
+import SiteWallet from './components/site-wallet.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.crypto_donate', defaultMessage: 'Donate Cryptocurrency' },

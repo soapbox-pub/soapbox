@@ -2,22 +2,22 @@ import editIcon from '@tabler/icons/outline/edit.svg';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Stack } from 'soapbox/components/ui';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useDebounce, useFeatures } from 'soapbox/hooks';
-import { IChat, useChats } from 'soapbox/queries/chats';
+import { Stack } from 'soapbox/components/ui/index.ts';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import { useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
+import { IChat, useChats } from 'soapbox/queries/chats.ts';
 
-import ChatList from '../chat-list';
-import ChatSearch from '../chat-search/chat-search';
-import EmptyResultsBlankslate from '../chat-search/empty-results-blankslate';
-import ChatSearchInput from '../chat-search-input';
-import ChatPaneHeader from '../chat-widget/chat-pane-header';
-import ChatWindow from '../chat-widget/chat-window';
-import ChatSearchHeader from '../chat-widget/headers/chat-search-header';
-import { Pane } from '../ui';
+import ChatList from '../chat-list.tsx';
+import ChatSearch from '../chat-search/chat-search.tsx';
+import EmptyResultsBlankslate from '../chat-search/empty-results-blankslate.tsx';
+import ChatSearchInput from '../chat-search-input.tsx';
+import ChatPaneHeader from '../chat-widget/chat-pane-header.tsx';
+import ChatWindow from '../chat-widget/chat-window.tsx';
+import ChatSearchHeader from '../chat-widget/headers/chat-search-header.tsx';
+import { Pane } from '../ui/index.ts';
 
-import Blankslate from './blankslate';
+import Blankslate from './blankslate.tsx';
 
 const ChatPane = () => {
   const features = useFeatures();

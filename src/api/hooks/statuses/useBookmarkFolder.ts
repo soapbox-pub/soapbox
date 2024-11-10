@@ -1,9 +1,9 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { selectEntity } from 'soapbox/entity-store/selectors';
-import { useAppSelector } from 'soapbox/hooks';
-import { type BookmarkFolder } from 'soapbox/schemas/bookmark-folder';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { selectEntity } from 'soapbox/entity-store/selectors.ts';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { type BookmarkFolder } from 'soapbox/schemas/bookmark-folder.ts';
 
-import { useBookmarkFolders } from './useBookmarkFolders';
+import { useBookmarkFolders } from './useBookmarkFolders.ts';
 
 function useBookmarkFolder(folderId?: string) {
   const {

@@ -5,19 +5,19 @@ import { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { closeReports } from 'soapbox/actions/admin';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetReport } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
+import { closeReports } from 'soapbox/actions/admin.ts';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation.tsx';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { makeGetReport } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ReportStatus from './report-status';
+import ReportStatus from './report-status.tsx';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, AdminReport, Status } from 'soapbox/types/entities';
+import type { Account, AdminReport, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },

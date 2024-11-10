@@ -6,16 +6,16 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { deleteList, fetchLists } from 'soapbox/actions/lists';
-import { openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, IconButton, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { deleteList, fetchLists } from 'soapbox/actions/lists.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column, IconButton, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import NewListForm from './components/new-list-form';
+import NewListForm from './components/new-list-form.tsx';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },

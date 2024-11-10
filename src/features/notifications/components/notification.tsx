@@ -16,25 +16,25 @@ import { useCallback } from 'react';
 import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose } from 'soapbox/actions/compose';
-import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions';
-import { patchMe } from 'soapbox/actions/me';
-import { openModal } from 'soapbox/actions/modals';
-import { getSettings } from 'soapbox/actions/settings';
-import { hideStatus, revealStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
-import Status from 'soapbox/components/status';
-import { HStack, Text, Emoji, Button, Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import StatusContainer from 'soapbox/containers/status-container';
-import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks';
-import { makeGetNotification } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
-import { NotificationType, validType } from 'soapbox/utils/notification';
+import { mentionCompose } from 'soapbox/actions/compose.ts';
+import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions.ts';
+import { patchMe } from 'soapbox/actions/me.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import { hideStatus, revealStatus } from 'soapbox/actions/statuses.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import Status from 'soapbox/components/status.tsx';
+import { HStack, Text, Emoji, Button, Stack } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
+import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { makeGetNotification } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { NotificationType, validType } from 'soapbox/utils/notification.ts';
 
-import type { ScrollPosition } from 'soapbox/components/status';
-import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { ScrollPosition } from 'soapbox/components/status.tsx';
+import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities.ts';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];

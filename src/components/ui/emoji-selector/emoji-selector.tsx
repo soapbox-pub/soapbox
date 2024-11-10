@@ -3,13 +3,13 @@ import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
-import EmojiComponent from 'soapbox/components/ui/emoji/emoji';
-import HStack from 'soapbox/components/ui/hstack/hstack';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown';
-import { useClickOutside, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
+import EmojiComponent from 'soapbox/components/ui/emoji/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
+import { useClickOutside, useFeatures, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 interface IEmojiButton {
   /** Unicode emoji character. */

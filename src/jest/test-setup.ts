@@ -5,7 +5,7 @@ import '@testing-library/jest-dom/vitest';
 import 'fake-indexeddb/auto';
 import { afterEach, vi } from 'vitest';
 
-import { __clear as clearApiMocks } from '../api/__mocks__';
+import { __clear as clearApiMocks } from '../api/__mocks__/index.ts';
 
 // API mocking
 vi.mock('soapbox/api');

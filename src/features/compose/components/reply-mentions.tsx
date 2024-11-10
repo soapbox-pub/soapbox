@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useAppDispatch, useAppSelector, useCompose, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
-import { makeGetStatus } from 'soapbox/selectors';
-import { shortenNostr } from 'soapbox/utils/nostr';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useAppDispatch, useAppSelector, useCompose, useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IReplyMentions {
   composeId: string;

@@ -1,17 +1,17 @@
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
-import { shouldHaveCard } from 'soapbox/utils/status';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
+import { shouldHaveCard } from 'soapbox/utils/status.ts';
 
-import api, { getNextLink } from '../api';
+import api, { getNextLink } from '../api/index.ts';
 
-import { setComposeToStatus } from './compose-status';
-import { fetchGroupRelationships } from './groups';
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import { openModal } from './modals';
-import { deleteFromTimelines } from './timelines';
+import { setComposeToStatus } from './compose-status.ts';
+import { fetchGroupRelationships } from './groups.ts';
+import { importFetchedStatus, importFetchedStatuses } from './importer/index.ts';
+import { openModal } from './modals.ts';
+import { deleteFromTimelines } from './timelines.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
 
 const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';

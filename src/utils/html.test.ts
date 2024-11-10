@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import * as html from './html';
+import * as html from './html.ts';
 
 describe('html', () => {
   describe('unsecapeHTML', () => {

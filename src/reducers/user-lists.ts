@@ -17,11 +17,11 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
   PINNED_ACCOUNTS_FETCH_SUCCESS,
   BIRTHDAY_REMINDERS_FETCH_SUCCESS,
-} from 'soapbox/actions/accounts';
+} from 'soapbox/actions/accounts.ts';
 import {
   BLOCKS_FETCH_SUCCESS,
   BLOCKS_EXPAND_SUCCESS,
-} from 'soapbox/actions/blocks';
+} from 'soapbox/actions/blocks.ts';
 import {
   DIRECTORY_FETCH_REQUEST,
   DIRECTORY_FETCH_SUCCESS,
@@ -29,7 +29,7 @@ import {
   DIRECTORY_EXPAND_REQUEST,
   DIRECTORY_EXPAND_SUCCESS,
   DIRECTORY_EXPAND_FAIL,
-} from 'soapbox/actions/directory';
+} from 'soapbox/actions/directory.ts';
 import {
   EVENT_PARTICIPATIONS_EXPAND_SUCCESS,
   EVENT_PARTICIPATIONS_FETCH_SUCCESS,
@@ -37,10 +37,10 @@ import {
   EVENT_PARTICIPATION_REQUESTS_FETCH_SUCCESS,
   EVENT_PARTICIPATION_REQUEST_AUTHORIZE_SUCCESS,
   EVENT_PARTICIPATION_REQUEST_REJECT_SUCCESS,
-} from 'soapbox/actions/events';
+} from 'soapbox/actions/events.ts';
 import {
   FAMILIAR_FOLLOWERS_FETCH_SUCCESS,
-} from 'soapbox/actions/familiar-followers';
+} from 'soapbox/actions/familiar-followers.ts';
 import {
   GROUP_MEMBERSHIP_REQUESTS_FETCH_SUCCESS,
   GROUP_MEMBERSHIP_REQUESTS_EXPAND_SUCCESS,
@@ -57,7 +57,7 @@ import {
   GROUP_BLOCKS_EXPAND_SUCCESS,
   GROUP_BLOCKS_EXPAND_FAIL,
   GROUP_UNBLOCK_SUCCESS,
-} from 'soapbox/actions/groups';
+} from 'soapbox/actions/groups.ts';
 import {
   REBLOGS_FETCH_SUCCESS,
   REBLOGS_EXPAND_SUCCESS,
@@ -67,12 +67,12 @@ import {
   REACTIONS_FETCH_SUCCESS,
   ZAPS_FETCH_SUCCESS,
   ZAPS_EXPAND_SUCCESS,
-} from 'soapbox/actions/interactions';
+} from 'soapbox/actions/interactions.ts';
 import {
   NOTIFICATIONS_UPDATE,
-} from 'soapbox/actions/notifications';
+} from 'soapbox/actions/notifications.ts';
 
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 export const ListRecord = ImmutableRecord({
   next: null as string | null,

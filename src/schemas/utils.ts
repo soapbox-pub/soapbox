@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import type { CustomEmoji } from './custom-emoji';
+import type { CustomEmoji } from './custom-emoji.ts';
 
 /** Ensure HTML content is a string, and drop empty `<p>` tags. */
 const contentSchema = z.string().catch('').transform((value) => value === '<p></p>' ? '' : value);

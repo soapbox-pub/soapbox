@@ -2,9 +2,9 @@ import lifebuoyIcon from '@tabler/icons/outline/lifebuoy.svg';
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SiteLogo from 'soapbox/components/site-logo';
-import { Text, Button, Icon, Modal } from 'soapbox/components/ui';
-import { useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks';
+import SiteLogo from 'soapbox/components/site-logo.tsx';
+import { Text, Button, Icon, Modal } from 'soapbox/components/ui/index.ts';
+import { useRegistrationStatus, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   download: { id: 'landing_page_modal.download', defaultMessage: 'Download' },

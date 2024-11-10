@@ -4,7 +4,7 @@ import {
   DOMAIN_BLOCKS_FETCH_SUCCESS,
   DOMAIN_BLOCKS_EXPAND_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
-} from '../actions/domain-blocks';
+} from '../actions/domain-blocks.ts';
 
 import type { AnyAction } from 'redux';
 

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval, generateText } from '../utils.ts';
 
 interface IPlaceholderDisplayName {
   maxLength: number;

@@ -1,6 +1,6 @@
 import PTRComponent from 'react-simple-pull-to-refresh';
 
-import { Spinner } from 'soapbox/components/ui';
+import { Spinner } from 'soapbox/components/ui/index.ts';
 
 interface IPullToRefresh {
   onRefresh?: () => Promise<any>;

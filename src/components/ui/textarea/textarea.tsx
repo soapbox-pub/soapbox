@@ -2,11 +2,11 @@ import clsx from 'clsx';
 import { forwardRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useLocale } from 'soapbox/hooks';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import { useLocale } from 'soapbox/hooks/index.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import Stack from '../stack/stack';
-import Text from '../text/text';
+import Stack from '../stack/stack.tsx';
+import Text from '../text/text.tsx';
 
 interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'id' | 'maxLength' | 'onChange' | 'onClick' | 'onKeyDown' | 'onPaste' | 'required' | 'disabled' | 'rows' | 'readOnly'> {
   /** Put the cursor into the input on mount. */

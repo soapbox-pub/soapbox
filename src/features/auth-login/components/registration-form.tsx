@@ -7,13 +7,13 @@ import { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { accountLookup } from 'soapbox/actions/accounts';
-import { register, verifyCredentials } from 'soapbox/actions/auth';
-import { openModal } from 'soapbox/actions/modals';
-import BirthdayInput from 'soapbox/components/birthday-input';
-import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Select } from 'soapbox/components/ui';
-import CaptchaField from 'soapbox/features/auth-login/components/captcha';
-import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks';
+import { accountLookup } from 'soapbox/actions/accounts.ts';
+import { register, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import BirthdayInput from 'soapbox/components/birthday-input.tsx';
+import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Select } from 'soapbox/components/ui/index.ts';
+import CaptchaField from 'soapbox/features/auth-login/components/captcha.tsx';
+import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },

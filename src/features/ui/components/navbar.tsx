@@ -4,18 +4,18 @@ import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
 
-import { logIn, verifyCredentials } from 'soapbox/actions/auth';
-import { fetchInstance } from 'soapbox/actions/instance';
-import { openModal } from 'soapbox/actions/modals';
-import { openSidebar } from 'soapbox/actions/sidebar';
-import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Counter, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useFeatures, useInstance, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
+import { logIn, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { fetchInstance } from 'soapbox/actions/instance.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { openSidebar } from 'soapbox/actions/sidebar.ts';
+import SiteLogo from 'soapbox/components/site-logo.tsx';
+import { Avatar, Button, Counter, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui/index.ts';
+import Search from 'soapbox/features/compose/components/search.tsx';
+import { useAppDispatch, useFeatures, useInstance, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
-import ProfileDropdown from './profile-dropdown';
+import ProfileDropdown from './profile-dropdown.tsx';
 
 import type { AxiosError } from 'axios';
 

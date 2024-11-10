@@ -10,11 +10,11 @@ import sample from 'lodash/sample';
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
-} from '../actions/accounts';
+} from '../actions/accounts.ts';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
-} from '../actions/statuses';
+} from '../actions/statuses.ts';
 import {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
@@ -29,11 +29,11 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
   TIMELINE_INSERT,
-} from '../actions/timelines';
+} from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { ImportPosition } from 'soapbox/entity-store/types';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { ImportPosition } from 'soapbox/entity-store/types.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
 
 const TRUNCATE_LIMIT = 40;
 const TRUNCATE_SIZE = 20;

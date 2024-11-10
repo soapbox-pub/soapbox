@@ -1,10 +1,10 @@
 import markdownIcon from '@tabler/icons/outline/markdown.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeComposeContentType } from 'soapbox/actions/compose';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { changeComposeContentType } from 'soapbox/actions/compose.ts';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
-import ComposeFormButton from './compose-form-button';
+import ComposeFormButton from './compose-form-button.tsx';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.markdown.marked', defaultMessage: 'Post markdown enabled' },

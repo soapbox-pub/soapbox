@@ -2,12 +2,12 @@ import debounce from 'lodash/debounce';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import ScheduledStatus from './components/scheduled-status';
+import ScheduledStatus from './components/scheduled-status.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.scheduled_statuses', defaultMessage: 'Scheduled Posts' },

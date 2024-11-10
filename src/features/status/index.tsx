@@ -6,16 +6,16 @@ import { Redirect } from 'react-router-dom';
 import {
   fetchStatusWithContext,
   fetchNext,
-} from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Column, Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector, useLoggedIn } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+} from 'soapbox/actions/statuses.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Column, Stack } from 'soapbox/components/ui/index.ts';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import { useAppDispatch, useAppSelector, useLoggedIn } from 'soapbox/hooks/index.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import Thread from './components/thread';
-import ThreadLoginCta from './components/thread-login-cta';
+import ThreadLoginCta from './components/thread-login-cta.tsx';
+import Thread from './components/thread.tsx';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post Details' },

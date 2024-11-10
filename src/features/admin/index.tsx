@@ -1,13 +1,13 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Switch, Route } from 'react-router-dom';
 
-import { Column } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
+import { Column } from 'soapbox/components/ui/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/index.ts';
 
-import AdminTabs from './components/admin-tabs';
-import Waitlist from './tabs/awaiting-approval';
-import Dashboard from './tabs/dashboard';
-import Reports from './tabs/reports';
+import AdminTabs from './components/admin-tabs.tsx';
+import Waitlist from './tabs/awaiting-approval.tsx';
+import Dashboard from './tabs/dashboard.tsx';
+import Reports from './tabs/reports.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.dashboard', defaultMessage: 'Dashboard' },

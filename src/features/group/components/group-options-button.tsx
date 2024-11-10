@@ -6,16 +6,16 @@ import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports';
-import { useLeaveGroup, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks';
-import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { useLeaveGroup, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
+import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu/index.ts';
+import { IconButton } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Account, Group } from 'soapbox/types/entities';
+import type { Account, Group } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },

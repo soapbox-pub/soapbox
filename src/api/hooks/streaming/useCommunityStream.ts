@@ -1,4 +1,4 @@
-import { useTimelineStream } from './useTimelineStream';
+import { useTimelineStream } from './useTimelineStream.ts';
 
 interface UseCommunityStreamOpts {
   onlyMedia?: boolean;

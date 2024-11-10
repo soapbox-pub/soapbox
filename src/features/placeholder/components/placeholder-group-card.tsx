@@ -1,6 +1,6 @@
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
 
-import { generateText, randomIntFromInterval } from '../utils';
+import { generateText, randomIntFromInterval } from '../utils.ts';
 
 const PlaceholderGroupCard = () => {
   const groupNameLength = randomIntFromInterval(12, 20);

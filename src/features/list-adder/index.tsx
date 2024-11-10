@@ -2,18 +2,18 @@ import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
-import { setupListAdder, resetListAdder } from 'soapbox/actions/lists';
-import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { setupListAdder, resetListAdder } from 'soapbox/actions/lists.ts';
+import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui/index.ts';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import NewListForm from '../lists/components/new-list-form';
+import NewListForm from '../lists/components/new-list-form.tsx';
 
-import List from './components/list';
+import List from './components/list.tsx';
 
 import type { List as ImmutableList } from 'immutable';
-import type { RootState } from 'soapbox/store';
-import type { List as ListEntity } from 'soapbox/types/entities';
+import type { RootState } from 'soapbox/store.ts';
+import type { List as ListEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   subheading: { id: 'lists.subheading', defaultMessage: 'Your lists' },

@@ -5,23 +5,23 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { zap } from 'soapbox/actions/interactions';
-import { openModal, closeModal } from 'soapbox/actions/modals';
-import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit';
+import { zap } from 'soapbox/actions/interactions.ts';
+import { openModal, closeModal } from 'soapbox/actions/modals.ts';
+import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
 import chestIcon from 'soapbox/assets/icons/chest.png';
 import coinStack from 'soapbox/assets/icons/coin-stack.png';
 import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
-import DisplayNameInline from 'soapbox/components/display-name-inline';
-import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch } from 'soapbox/hooks';
+import DisplayNameInline from 'soapbox/components/display-name-inline.tsx';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import ZapButton from './zap-button/zap-button';
+import ZapButton from './zap-button/zap-button.tsx';
 
-import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
+import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';
 
 const ZAP_PRESETS = [
   { amount: 50, icon: coinIcon },

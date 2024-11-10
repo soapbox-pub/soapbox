@@ -2,11 +2,11 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { Button, Text, FormGroup, Stack, Textarea } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { patchMe } from 'soapbox/actions/me.ts';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import { Button, Text, FormGroup, Stack, Textarea } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 import type { AxiosError } from 'axios';
 

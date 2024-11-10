@@ -6,10 +6,10 @@ import { useHistory } from 'react-router-dom';
 import {
   setupMfa,
   confirmMfa,
-} from 'soapbox/actions/mfa';
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+} from 'soapbox/actions/mfa.ts';
+import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },

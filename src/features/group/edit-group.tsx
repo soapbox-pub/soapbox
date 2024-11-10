@@ -2,17 +2,17 @@ import lockIcon from '@tabler/icons/outline/lock.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks';
-import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
-import { useAppSelector, useInstance } from 'soapbox/hooks';
-import { useImageField, useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
-import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
+import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks/index.ts';
+import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui/index.ts';
+import { useImageField, useTextField } from 'soapbox/hooks/forms/index.ts';
+import { useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 
-import AvatarPicker from '../edit-profile/components/avatar-picker';
-import HeaderPicker from '../edit-profile/components/header-picker';
+import AvatarPicker from '../edit-profile/components/avatar-picker.tsx';
+import HeaderPicker from '../edit-profile/components/header-picker.tsx';
 
-import GroupTagsField from './components/group-tags-field';
+import GroupTagsField from './components/group-tags-field.tsx';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;

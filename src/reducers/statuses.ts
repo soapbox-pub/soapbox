@@ -2,23 +2,23 @@ import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
-import emojify from 'soapbox/features/emoji';
-import { normalizeStatus } from 'soapbox/normalizers';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts';
-import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
-import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts.ts';
+import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html.ts';
+import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers.ts';
 
 import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji-reacts';
+} from '../actions/emoji-reacts.ts';
 import {
   EVENT_JOIN_REQUEST,
   EVENT_JOIN_FAIL,
   EVENT_LEAVE_REQUEST,
   EVENT_LEAVE_FAIL,
-} from '../actions/events';
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
+} from '../actions/events.ts';
+import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer/index.ts';
 import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
@@ -32,7 +32,7 @@ import {
   DISLIKE_FAIL,
   ZAP_REQUEST,
   ZAP_FAIL,
-} from '../actions/interactions';
+} from '../actions/interactions.ts';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
@@ -45,11 +45,11 @@ import {
   STATUS_TRANSLATE_SUCCESS,
   STATUS_TRANSLATE_UNDO,
   STATUS_UNFILTER,
-} from '../actions/statuses';
-import { TIMELINE_DELETE } from '../actions/timelines';
+} from '../actions/statuses.ts';
+import { TIMELINE_DELETE } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const domParser = new DOMParser();
 

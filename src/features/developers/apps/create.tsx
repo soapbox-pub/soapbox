@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { createApp } from 'soapbox/actions/apps';
-import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Column, Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import { getBaseURL } from 'soapbox/utils/accounts';
+import { createApp } from 'soapbox/actions/apps.ts';
+import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
+import { Column, Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { getBaseURL } from 'soapbox/utils/accounts.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.app_create', defaultMessage: 'Create app' },

@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import { forwardRef, useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Button from '../button/button';
-import { ButtonThemes } from '../button/useButtonStyles';
-import HStack from '../hstack/hstack';
-import IconButton from '../icon-button/icon-button';
+import Button from '../button/button.tsx';
+import { ButtonThemes } from '../button/useButtonStyles.ts';
+import HStack from '../hstack/hstack.tsx';
+import IconButton from '../icon-button/icon-button.tsx';
 
 const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },

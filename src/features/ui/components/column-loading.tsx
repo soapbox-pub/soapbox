@@ -1,4 +1,4 @@
-import { Card, CardBody, Spinner } from 'soapbox/components/ui';
+import { Card, CardBody, Spinner } from 'soapbox/components/ui/index.ts';
 
 const ColumnLoading = () => (
   <Card variant='rounded'>

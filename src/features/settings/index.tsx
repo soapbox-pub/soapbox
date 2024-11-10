@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchMfa } from 'soapbox/actions/mfa';
-import CopyableInput from 'soapbox/components/copyable-input';
-import List, { ListItem } from 'soapbox/components/list';
-import { Card, CardBody, CardHeader, CardTitle, Column, Counter, FormGroup, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
+import { fetchMfa } from 'soapbox/actions/mfa.ts';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Card, CardBody, CardHeader, CardTitle, Column, Counter, FormGroup, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
-import Preferences from '../preferences';
+import Preferences from '../preferences/index.tsx';
 
-import MessagesSettings from './components/messages-settings';
+import MessagesSettings from './components/messages-settings.tsx';
 
 const messages = defineMessages({
   accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },

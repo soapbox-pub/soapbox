@@ -3,10 +3,10 @@ import throttle from 'lodash/throttle';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Helmet from 'soapbox/components/helmet';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import Helmet from 'soapbox/components/helmet.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
-import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from '../card/card';
+import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from '../card/card.tsx';
 
 type IColumnHeader = Pick<IColumn, 'label' | 'backHref' | 'className' | 'action'>;
 

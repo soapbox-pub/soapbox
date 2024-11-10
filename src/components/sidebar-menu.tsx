@@ -21,18 +21,18 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
-import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth';
-import { getSettings } from 'soapbox/actions/settings';
-import { closeSidebar } from 'soapbox/actions/sidebar';
-import { useAccount } from 'soapbox/api/hooks';
-import Account from 'soapbox/components/account';
-import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui';
-import ProfileStats from 'soapbox/features/ui/components/profile-stats';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
-import { makeGetOtherAccounts } from 'soapbox/selectors';
+import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth.ts';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import { closeSidebar } from 'soapbox/actions/sidebar.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import { Stack, Divider, HStack, Icon, IconButton, Text } from 'soapbox/components/ui/index.ts';
+import ProfileStats from 'soapbox/features/ui/components/profile-stats.tsx';
+import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
+import { makeGetOtherAccounts } from 'soapbox/selectors/index.ts';
 
-import type { Account as AccountEntity } from 'soapbox/schemas/account';
+import type { Account as AccountEntity } from 'soapbox/schemas/account.ts';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },

@@ -1,7 +1,7 @@
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
-import { HISTORY_FETCH_REQUEST, HISTORY_FETCH_SUCCESS, HISTORY_FETCH_FAIL } from 'soapbox/actions/history';
-import { normalizeStatusEdit } from 'soapbox/normalizers';
+import { HISTORY_FETCH_REQUEST, HISTORY_FETCH_SUCCESS, HISTORY_FETCH_FAIL } from 'soapbox/actions/history.ts';
+import { normalizeStatusEdit } from 'soapbox/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
 

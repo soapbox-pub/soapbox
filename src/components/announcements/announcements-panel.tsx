@@ -5,13 +5,13 @@ import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
 import { createSelector } from 'reselect';
 
-import { useAnnouncements } from 'soapbox/api/hooks/announcements';
-import { Card, HStack, Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
+import { Card, HStack, Widget } from 'soapbox/components/ui/index.ts';
+import { useAppSelector } from 'soapbox/hooks/index.ts';
 
-import Announcement from './announcement';
+import Announcement from './announcement.tsx';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 const customEmojiMap = createSelector([(state: RootState) => state.custom_emojis], items => (items as ImmutableList<ImmutableMap<string, string>>).reduce((map, emoji) => map.set(emoji.get('shortcode')!, emoji), ImmutableMap<string, ImmutableMap<string, string>>()));
 

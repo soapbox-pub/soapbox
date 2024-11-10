@@ -1,12 +1,12 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useRelays } from 'soapbox/api/hooks/admin';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, Form, HStack, Input, Stack, Text } from 'soapbox/components/ui';
-import { useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
+import { useRelays } from 'soapbox/api/hooks/admin/index.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Button, Column, Form, HStack, Input, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { useTextField } from 'soapbox/hooks/forms/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Relay as RelayEntity } from 'soapbox/schemas';
+import type { Relay as RelayEntity } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.relays', defaultMessage: 'Instance relays' },

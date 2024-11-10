@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import { isDefaultAvatar } from 'soapbox/utils/accounts';
-import resizeImage from 'soapbox/utils/resize-image';
+import { patchMe } from 'soapbox/actions/me.ts';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultAvatar } from 'soapbox/utils/accounts.ts';
+import resizeImage from 'soapbox/utils/resize-image.ts';
 
 import type { AxiosError } from 'axios';
 

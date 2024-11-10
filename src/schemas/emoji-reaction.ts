@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { emojiSchema } from './utils';
+import { emojiSchema } from './utils.ts';
 
 const baseEmojiReactionSchema = z.object({
   count: z.number().nullable().catch(null),

@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
-import { useAccountLookup } from 'soapbox/api/hooks';
-import { Column, Layout, Tabs } from 'soapbox/components/ui';
-import Header from 'soapbox/features/account/components/header';
-import LinkFooter from 'soapbox/features/ui/components/link-footer';
+import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
+import { Column, Layout, Tabs } from 'soapbox/components/ui/index.ts';
+import Header from 'soapbox/features/account/components/header.tsx';
+import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,
   ProfileInfoPanel,
@@ -14,9 +14,9 @@ import {
   CtaBanner,
   PinnedAccountsPanel,
   AccountNotePanel,
-} from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
+} from 'soapbox/features/ui/util/async-components.ts';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { getAcct } from 'soapbox/utils/accounts.ts';
 
 interface IProfilePage {
   params?: {

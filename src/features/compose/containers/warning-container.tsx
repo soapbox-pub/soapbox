@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAppSelector, useCompose, useFeatures, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks';
-import { selectOwnAccount } from 'soapbox/selectors';
+import { useAppSelector, useCompose, useFeatures, useOwnAccount, useSettingsNotifications } from 'soapbox/hooks/index.ts';
+import { selectOwnAccount } from 'soapbox/selectors/index.ts';
 
-import Warning from '../components/warning';
+import Warning from '../components/warning.tsx';
 
 const APPROX_HASHTAG_RE = /(?:^|[^/)\w])#(\w*[a-zA-Z·]\w*)/i;
 

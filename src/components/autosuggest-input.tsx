@@ -2,15 +2,15 @@ import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import { PureComponent } from 'react';
 
-import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
-import Icon from 'soapbox/components/icon';
-import { Input, Portal } from 'soapbox/components/ui';
-import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
-import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import { Input, Portal } from 'soapbox/components/ui/index.ts';
+import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account.tsx';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 
-import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
-import type { InputThemes } from 'soapbox/components/ui/input/input';
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
+import type { InputThemes } from 'soapbox/components/ui/input/input.tsx';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 export type AutoSuggestion = string | Emoji;
 

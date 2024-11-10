@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import reducer from './status-lists';
+import reducer from './status-lists.ts';
 
 describe('status_lists reducer', () => {
   it('should return the initial state', () => {

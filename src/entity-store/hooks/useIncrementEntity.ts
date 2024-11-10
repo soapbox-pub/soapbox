@@ -1,11 +1,11 @@
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { incrementEntities } from '../actions';
+import { incrementEntities } from '../actions.ts';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntityFn, ExpandedEntitiesPath } from './types';
+import type { EntityFn, ExpandedEntitiesPath } from './types.ts';
 
 /**
  * Increases (or decreases) the `totalCount` in the entity list by the specified amount.

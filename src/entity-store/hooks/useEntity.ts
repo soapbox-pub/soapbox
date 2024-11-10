@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import z from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { importEntities } from '../actions';
-import { selectEntity } from '../selectors';
+import { importEntities } from '../actions.ts';
+import { selectEntity } from '../selectors.ts';
 
-import type { EntitySchema, EntityPath, EntityFn } from './types';
-import type { Entity } from '../types';
+import type { EntitySchema, EntityPath, EntityFn } from './types.ts';
+import type { Entity } from '../types.ts';
 
 /** Additional options for the hook. */
 interface UseEntityOpts<TEntity extends Entity> {

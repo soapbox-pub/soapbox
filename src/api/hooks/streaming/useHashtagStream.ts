@@ -1,4 +1,4 @@
-import { useTimelineStream } from './useTimelineStream';
+import { useTimelineStream } from './useTimelineStream.ts';
 
 function useHashtagStream(tag: string) {
   return useTimelineStream(

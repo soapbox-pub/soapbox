@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { Children, cloneElement, isValidElement, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { SelectDropdown } from '../features/forms';
+import { SelectDropdown } from '../features/forms/index.tsx';
 
-import { Icon, HStack, Select } from './ui';
+import { Icon, HStack, Select } from './ui/index.ts';
 
 interface IList {
   children: React.ReactNode;

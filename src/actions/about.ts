@@ -1,7 +1,7 @@
-import api from '../api';
+import api from '../api/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 const FETCH_ABOUT_PAGE_REQUEST = 'FETCH_ABOUT_PAGE_REQUEST';
 const FETCH_ABOUT_PAGE_SUCCESS = 'FETCH_ABOUT_PAGE_SUCCESS';

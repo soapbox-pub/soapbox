@@ -1,5 +1,5 @@
-import { Button, HStack } from 'soapbox/components/ui';
-import { useSettings } from 'soapbox/hooks';
+import { Button, HStack } from 'soapbox/components/ui/index.ts';
+import { useSettings } from 'soapbox/hooks/index.ts';
 
 interface IPinnedHostsPicker {
   /** The active host among pinned hosts. */

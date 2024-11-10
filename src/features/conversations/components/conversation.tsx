@@ -1,9 +1,9 @@
 import { useHistory } from 'react-router-dom';
 
-import { markConversationRead } from 'soapbox/actions/conversations';
-import StatusContainer from 'soapbox/containers/status-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { selectAccount } from 'soapbox/selectors';
+import { markConversationRead } from 'soapbox/actions/conversations.ts';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
 
 interface IConversation {
   conversationId: string;

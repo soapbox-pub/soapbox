@@ -2,21 +2,21 @@ import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { revokeName, setBadges as saveBadges } from 'soapbox/actions/admin';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import { useAccount } from 'soapbox/api/hooks';
-import { useSuggest, useVerify } from 'soapbox/api/hooks/admin';
-import Account from 'soapbox/components/account';
-import List, { ListItem } from 'soapbox/components/list';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import OutlineBox from 'soapbox/components/outline-box';
-import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import { getBadges } from 'soapbox/utils/badges';
+import { revokeName, setBadges as saveBadges } from 'soapbox/actions/admin.ts';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation.tsx';
+import { useSuggest, useVerify } from 'soapbox/api/hooks/admin/index.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import Account from 'soapbox/components/account.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import OutlineBox from 'soapbox/components/outline-box.tsx';
+import { Button, Text, HStack, Modal, Stack, Toggle } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { getBadges } from 'soapbox/utils/badges.ts';
 
-import BadgeInput from './badge-input';
-import StaffRolePicker from './staff-role-picker';
+import BadgeInput from './badge-input.tsx';
+import StaffRolePicker from './staff-role-picker.tsx';
 
 const messages = defineMessages({
   userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },

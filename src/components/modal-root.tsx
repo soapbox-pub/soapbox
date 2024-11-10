@@ -4,14 +4,14 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { cancelReplyCompose } from 'soapbox/actions/compose';
-import { cancelEventCompose } from 'soapbox/actions/events';
-import { openModal, closeModal } from 'soapbox/actions/modals';
-import { useAppDispatch, usePrevious } from 'soapbox/hooks';
+import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
+import { cancelEventCompose } from 'soapbox/actions/events.ts';
+import { openModal, closeModal } from 'soapbox/actions/modals.ts';
+import { useAppDispatch, usePrevious } from 'soapbox/hooks/index.ts';
 
-import type { ModalType } from 'soapbox/features/ui/components/modal-root';
-import type { ReducerCompose } from 'soapbox/reducers/compose';
-import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event';
+import type { ModalType } from 'soapbox/features/ui/components/modal-root.tsx';
+import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event.ts';
+import type { ReducerCompose } from 'soapbox/reducers/compose.ts';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },

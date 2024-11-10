@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { instanceV1Schema } from './instance';
+import { instanceV1Schema } from './instance.ts';
 
 describe('instanceV1Schema.parse()', () => {
   it('normalizes an empty Map', () => {

@@ -2,14 +2,14 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
-import { fetchChats } from 'soapbox/actions/chats';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Spinner, Stack } from 'soapbox/components/ui';
-import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat';
-import { useAppDispatch } from 'soapbox/hooks';
-import { useChats } from 'soapbox/queries/chats';
+import { fetchChats } from 'soapbox/actions/chats.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Spinner, Stack } from 'soapbox/components/ui/index.ts';
+import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder-chat.tsx';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useChats } from 'soapbox/queries/chats.ts';
 
-import ChatListItem from './chat-list-item';
+import ChatListItem from './chat-list-item.tsx';
 
 interface IChatList {
   onClickChat: (chat: any) => void;

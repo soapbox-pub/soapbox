@@ -3,17 +3,18 @@ import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchAccount } from 'soapbox/actions/accounts';
-import { logInNostr } from 'soapbox/actions/nostr';
-import { closeSidebar } from 'soapbox/actions/sidebar';
-import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import { download } from 'soapbox/utils/download';
-import { slugify } from 'soapbox/utils/input';
+
+import { fetchAccount } from 'soapbox/actions/accounts.ts';
+import { logInNostr } from 'soapbox/actions/nostr.ts';
+import { closeSidebar } from 'soapbox/actions/sidebar.ts';
+import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
+import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui/index.ts';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useAppDispatch, useInstance } from 'soapbox/hooks/index.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { slugify } from 'soapbox/utils/input.ts';
 
 interface IKeygenStep {
   onClose(): void;

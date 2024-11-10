@@ -4,15 +4,15 @@ import { QRCodeCanvas } from 'qrcode.react';
 import React  from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Modal, Button, Stack, Avatar, HStack } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch } from 'soapbox/hooks';
-import { ZapSplitData } from 'soapbox/schemas/zap-split';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import { Modal, Button, Stack, Avatar, HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
 const closeIcon = xIcon;
 

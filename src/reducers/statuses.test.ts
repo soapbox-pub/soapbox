@@ -4,16 +4,16 @@ import {
 } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { STATUS_IMPORT } from 'soapbox/actions/importer';
+import { STATUS_IMPORT } from 'soapbox/actions/importer/index.ts';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
   STATUS_DELETE_REQUEST,
   STATUS_DELETE_FAIL,
-} from 'soapbox/actions/statuses';
-import { normalizeStatus } from 'soapbox/normalizers';
+} from 'soapbox/actions/statuses.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 
-import reducer, { ReducerStatus } from './statuses';
+import reducer, { ReducerStatus } from './statuses.ts';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {

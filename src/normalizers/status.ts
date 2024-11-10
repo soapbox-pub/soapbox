@@ -10,14 +10,14 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { normalizeMention } from 'soapbox/normalizers/mention';
-import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas';
-import { filteredArray } from 'soapbox/schemas/utils';
-import { maybeFromJS } from 'soapbox/utils/normalizers';
+import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
+import { normalizeMention } from 'soapbox/normalizers/mention.ts';
+import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas/index.ts';
+import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { maybeFromJS } from 'soapbox/utils/normalizers.ts';
 
-import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities';
+import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities.ts';
 
 export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self' | 'group';

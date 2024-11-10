@@ -3,14 +3,14 @@ import { forwardRef, useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useGroupSearch } from 'soapbox/api/hooks';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { useGroupSearch } from 'soapbox/api/hooks/index.ts';
+import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
 
-import GroupGridItem from '../group-grid-item';
-import GroupListItem from '../group-list-item';
-import LayoutButtons, { GroupLayout } from '../layout-buttons';
+import GroupGridItem from '../group-grid-item.tsx';
+import GroupListItem from '../group-list-item.tsx';
+import LayoutButtons, { GroupLayout } from '../layout-buttons.tsx';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group } from 'soapbox/types/entities.ts';
 
 interface Props {
   groupSearchResult: ReturnType<typeof useGroupSearch>;

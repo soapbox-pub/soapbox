@@ -1,9 +1,9 @@
 import { fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { buildStatus } from 'soapbox/jest/factory';
+import { buildStatus } from 'soapbox/jest/factory.ts';
 
-import { shouldFilter } from './timelines';
+import { shouldFilter } from './timelines.ts';
 
 describe('shouldFilter', () => {
   it('returns false under normal circumstances', () => {

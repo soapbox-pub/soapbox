@@ -12,12 +12,12 @@ import {
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { unescapeHTML } from 'soapbox/utils/html';
-import { makeEmojiMap } from 'soapbox/utils/normalizers';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
+import { makeEmojiMap } from 'soapbox/utils/normalizers.ts';
 
-import type { Emoji, GroupRelationship } from 'soapbox/types/entities';
+import type { Emoji, GroupRelationship } from 'soapbox/types/entities.ts';
 
 export const GroupRecord = ImmutableRecord({
   avatar: '',

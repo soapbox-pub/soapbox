@@ -2,13 +2,13 @@ import { useState, useEffect }  from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { zap } from 'soapbox/actions/interactions';
-import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit';
-import { Modal } from 'soapbox/components/ui';
-import ZapSplit from 'soapbox/features/ui/components/modals/zap-split/zap-split';
-import { ZapSplitData } from 'soapbox/schemas/zap-split';
+import { zap } from 'soapbox/actions/interactions.ts';
+import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
+import { Modal } from 'soapbox/components/ui/index.ts';
+import ZapSplit from 'soapbox/features/ui/components/modals/zap-split/zap-split.tsx';
+import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
-import type { AppDispatch } from 'soapbox/store';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 interface IZapSplitModal {
   zapSplitAccounts: ZapSplitData[];

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth';
-import { Button, Form, FormActions, FormGroup, Input, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth.ts';
+import { Button, Form, FormActions, FormGroup, Input, Spinner } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 import type { AxiosError } from 'axios';
 

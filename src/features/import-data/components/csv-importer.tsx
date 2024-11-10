@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { Button, FileInput, Form, FormActions, FormGroup, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { Button, FileInput, Form, FormActions, FormGroup, Text } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 interface ICSVImporter {
   messages: {

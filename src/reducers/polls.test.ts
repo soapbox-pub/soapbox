@@ -1,9 +1,9 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { POLLS_IMPORT } from 'soapbox/actions/importer';
+import { POLLS_IMPORT } from 'soapbox/actions/importer/index.ts';
 
-import reducer from './polls';
+import reducer from './polls.ts';
 
 describe('polls reducer', () => {
   it('should return the initial state', () => {

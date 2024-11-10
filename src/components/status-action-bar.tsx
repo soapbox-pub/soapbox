@@ -33,33 +33,33 @@ import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
-import { blockAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose';
-import { editEvent } from 'soapbox/actions/events';
-import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports';
-import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses';
-import { deleteFromTimelines } from 'soapbox/actions/timelines';
-import { useBlockGroupMember, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks';
-import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import StatusActionButton from 'soapbox/components/status-action-button';
-import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper';
-import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
-import copy from 'soapbox/utils/copy';
-import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts';
+import { blockAccount } from 'soapbox/actions/accounts.ts';
+import { launchChat } from 'soapbox/actions/chats.ts';
+import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose.ts';
+import { editEvent } from 'soapbox/actions/events.ts';
+import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
+import { initMuteModal } from 'soapbox/actions/mutes.ts';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses.ts';
+import { deleteFromTimelines } from 'soapbox/actions/timelines.ts';
+import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus.ts';
+import { useBlockGroupMember, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import StatusActionButton from 'soapbox/components/status-action-button.tsx';
+import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
+import { HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
+import copy from 'soapbox/utils/copy.ts';
+import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
 
-import GroupPopover from './groups/popover/group-popover';
+import GroupPopover from './groups/popover/group-popover.tsx';
 
-import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { Group, Status } from 'soapbox/types/entities';
+import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Group, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },

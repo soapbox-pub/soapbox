@@ -3,14 +3,14 @@ import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { deleteStatusModal } from 'soapbox/actions/moderation';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import StatusContent from 'soapbox/components/status-content';
-import StatusMedia from 'soapbox/components/status-media';
-import { HStack, Stack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { deleteStatusModal } from 'soapbox/actions/moderation.tsx';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusMedia from 'soapbox/components/status-media.tsx';
+import { HStack, Stack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
-import type { AdminReport, Status } from 'soapbox/types/entities';
+import type { AdminReport, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },

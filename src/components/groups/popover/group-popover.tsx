@@ -1,13 +1,13 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, matchPath, useHistory } from 'react-router-dom';
 
-import { Button, Divider, HStack, Popover, Stack, Text } from 'soapbox/components/ui';
-import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
-import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
+import { Button, Divider, HStack, Popover, Stack, Text } from 'soapbox/components/ui/index.ts';
+import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
+import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
 
-import GroupAvatar from '../group-avatar';
+import GroupAvatar from '../group-avatar.tsx';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 interface IGroupPopoverContainer {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;

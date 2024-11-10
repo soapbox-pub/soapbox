@@ -1,12 +1,12 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { buildInstance } from 'soapbox/jest/factory';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { ReducerCompose } from 'soapbox/reducers/compose';
+import { buildInstance } from 'soapbox/jest/factory.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { ReducerCompose } from 'soapbox/reducers/compose.ts';
 
-import { uploadCompose, submitCompose } from './compose';
-import { STATUS_CREATE_REQUEST } from './statuses';
+import { uploadCompose, submitCompose } from './compose.ts';
+import { STATUS_CREATE_REQUEST } from './statuses.ts';
 
 import type { IntlShape } from 'react-intl';
 

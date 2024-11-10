@@ -10,14 +10,14 @@ import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import { changeComposeVisibility } from 'soapbox/actions/compose';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
+import { changeComposeVisibility } from 'soapbox/actions/compose.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import { IconButton } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
-import Motion from '../../ui/util/optional-motion';
+import Motion from '../../ui/util/optional-motion.tsx';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },

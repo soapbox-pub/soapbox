@@ -1,12 +1,12 @@
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { addToAliases } from 'soapbox/actions/aliases';
-import { useAccount } from 'soapbox/api/hooks';
-import AccountComponent from 'soapbox/components/account';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
+import { addToAliases } from 'soapbox/actions/aliases.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import AccountComponent from 'soapbox/components/account.tsx';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import { HStack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },

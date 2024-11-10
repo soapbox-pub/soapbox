@@ -3,17 +3,17 @@ import clsx from 'clsx';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { uploadMedia } from 'soapbox/actions/media';
-import { Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { normalizeAttachment } from 'soapbox/normalizers';
-import { IChat, useChatActions } from 'soapbox/queries/chats';
-import toast from 'soapbox/toast';
+import { uploadMedia } from 'soapbox/actions/media.ts';
+import { Stack } from 'soapbox/components/ui/index.ts';
+import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { IChat, useChatActions } from 'soapbox/queries/chats.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ChatComposer from './chat-composer';
-import ChatMessageList from './chat-message-list';
+import ChatComposer from './chat-composer.tsx';
+import ChatMessageList from './chat-message-list.tsx';
 
-import type { Attachment } from 'soapbox/types/entities';
+import type { Attachment } from 'soapbox/types/entities.ts';
 
 const fileKeyGen = (): number => Math.floor((Math.random() * 0x10000));
 
