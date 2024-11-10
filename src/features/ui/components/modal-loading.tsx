@@ -1,4 +1,3 @@
-
 import { Modal, Spinner } from 'soapbox/components/ui';
 
 const ModalLoading = () => (

@@ -1,9 +1,9 @@
 import { enableMapSet } from 'immer';
 import { createRoot } from 'react-dom/client';
 
-import * as BuildConfig from 'soapbox/build-config';
-import Soapbox from 'soapbox/init/soapbox';
-import { printConsoleWarning } from 'soapbox/utils/console';
+import * as BuildConfig from 'soapbox/build-config.ts';
+import Soapbox from 'soapbox/init/soapbox.tsx';
+import { printConsoleWarning } from 'soapbox/utils/console.ts';
 
 import '@fontsource/inter/200.css';
 import '@fontsource/inter/300.css';
@@ -14,16 +14,16 @@ import '@fontsource/inter/700.css';
 import '@fontsource/inter/900.css';
 import '@fontsource/roboto-mono/400.css';
 import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
-import 'soapbox/features/nostr/keyring';
+import 'soapbox/features/nostr/keyring.ts';
 
-import './iframe';
+import './iframe.ts';
 import './styles/i18n/arabic.css';
 import './styles/i18n/javanese.css';
 import './styles/application.scss';
 import './styles/tailwind.css';
 
-import ready from './ready';
-import { registerSW, lockSW } from './utils/sw';
+import ready from './ready.ts';
+import { registerSW, lockSW } from './utils/sw.ts';
 
 enableMapSet();
 

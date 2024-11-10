@@ -1,4 +1,3 @@
-
 interface IChatsPage {
   children: React.ReactNode;
 }

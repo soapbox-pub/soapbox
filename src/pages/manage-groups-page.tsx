@@ -1,4 +1,3 @@
-
 import { Layout } from 'soapbox/components/ui';
 import LinkFooter from 'soapbox/features/ui/components/link-footer';
 import { MyGroupsPanel, NewGroupPanel } from 'soapbox/features/ui/util/async-components';

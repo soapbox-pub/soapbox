@@ -1,4 +1,3 @@
-
 import Link from './link';
 
 interface IHashtagLink {

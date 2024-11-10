@@ -1,4 +1,3 @@
-
 import Emoji from 'soapbox/components/ui/emoji/emoji';
 
 interface IEmojiGraphic {

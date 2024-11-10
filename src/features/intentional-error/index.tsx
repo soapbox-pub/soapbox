@@ -1,4 +1,3 @@
-
 /**
  * IntentionalError:
  * For testing logging/monitoring & previewing ErrorBoundary design.

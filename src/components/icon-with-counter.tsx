@@ -1,4 +1,3 @@
-
 import Icon, { IIcon } from 'soapbox/components/icon';
 import { Counter } from 'soapbox/components/ui';
 

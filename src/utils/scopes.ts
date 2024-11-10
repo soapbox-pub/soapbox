@@ -1,4 +1,3 @@
-
 import { PLEROMA, parseVersion } from './features';
 
 import type { RootState } from 'soapbox/store';

@@ -1,4 +1,3 @@
-
 interface ILogoText extends Pick<React.HTMLAttributes<HTMLHeadingElement>, 'dir'> {
   children: React.ReactNode;
 }

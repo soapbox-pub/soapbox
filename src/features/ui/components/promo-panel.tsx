@@ -1,4 +1,3 @@
-
 import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
 import { Widget, Stack, Text } from 'soapbox/components/ui';
 import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks';

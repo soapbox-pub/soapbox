@@ -1,4 +1,3 @@
-
 import GroupHeaderImage from 'soapbox/features/group/components/group-header-image';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy';

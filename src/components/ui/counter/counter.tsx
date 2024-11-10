@@ -1,4 +1,3 @@
-
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface ICounter {

@@ -1,4 +1,3 @@
-
 import Input from '../input/input';
 
 interface DatetimeProps {

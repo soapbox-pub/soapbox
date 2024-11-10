@@ -1,4 +1,3 @@
-
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import { getAcct } from '../utils/accounts';

@@ -1,4 +1,3 @@
-
 import { Layout } from '../components/ui';
 
 interface IEmptyPage {

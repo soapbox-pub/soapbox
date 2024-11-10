@@ -1,4 +1,3 @@
-
 import { getSettings } from 'soapbox/actions/settings';
 import { useAppSelector } from 'soapbox/hooks';
 

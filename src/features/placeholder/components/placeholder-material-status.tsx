@@ -1,4 +1,3 @@
-
 import PlaceholderStatus from './placeholder-status';
 
 /** Fake material status to display while data is loading. */
