@@ -1,13 +1,13 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { defaultSettings } from 'soapbox/actions/settings';
-import SiteLogo from 'soapbox/components/site-logo';
-import BackgroundShapes from 'soapbox/features/ui/components/background-shapes';
-import { useSystemTheme } from 'soapbox/hooks';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import { generateThemeCss } from 'soapbox/utils/theme';
+import { defaultSettings } from 'soapbox/actions/settings.ts';
+import SiteLogo from 'soapbox/components/site-logo.tsx';
+import BackgroundShapes from 'soapbox/features/ui/components/background-shapes.tsx';
+import { useSystemTheme } from 'soapbox/hooks/useSystemTheme.ts';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
+import { generateThemeCss } from 'soapbox/utils/theme.ts';
 
 interface ISitePreview {
   /** Raw Soapbox configuration. */

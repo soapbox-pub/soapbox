@@ -1,18 +1,24 @@
-import React, { useEffect } from 'react';
+import listIcon from '@tabler/icons/outline/list.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { deleteList, fetchLists } from 'soapbox/actions/lists';
-import { openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, IconButton, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { deleteList, fetchLists } from 'soapbox/actions/lists.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import NewListForm from './components/new-list-form';
+import NewListForm from './components/new-list-form.tsx';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -84,12 +90,12 @@ const Lists: React.FC = () => {
         >
           {lists.map((list: any) => (
             <Link key={list.id} to={`/list/${list.id}`} className='flex items-center gap-1.5 rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-gray-100 dark:hover:bg-gray-800'>
-              <Icon src={require('@tabler/icons/outline/list.svg')} />
+              <Icon src={listIcon} />
               <span className='grow'>
                 {list.title}
               </span>
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/pencil.svg')} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
-              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={require('@tabler/icons/outline/trash.svg')} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={pencilIcon} onClick={handleEditClick(list.id)} title={intl.formatMessage(messages.editList)} />
+              <IconButton iconClassName='h-5 w-5 text-gray-700 hover:text-gray-800 dark:text-gray-600 dark:hover:text-gray-500' src={trashIcon} onClick={handleDeleteClick(list.id)} title={intl.formatMessage(messages.deleteList)} />
             </Link>
           ))}
         </ScrollableList>

@@ -1,5 +1,5 @@
-import { useFeatures } from './useFeatures';
-import { useInstance } from './useInstance';
+import { useFeatures } from './useFeatures.ts';
+import { useInstance } from './useInstance.ts';
 
 export const useRegistrationStatus = () => {
   const { instance } = useInstance();

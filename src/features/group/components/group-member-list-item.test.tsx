@@ -1,12 +1,12 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildGroup, buildGroupMember, buildGroupRelationship } from 'soapbox/jest/factory';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { GroupRoles } from 'soapbox/schemas/group-member';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroup, buildGroupMember, buildGroupRelationship } from 'soapbox/jest/factory.ts';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 
-import GroupMemberListItem from './group-member-list-item';
+import GroupMemberListItem from './group-member-list-item.tsx';
 
 describe('<GroupMemberListItem />', () => {
   describe('account rendering', () => {

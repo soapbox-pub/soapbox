@@ -1,14 +1,18 @@
-import clsx from 'clsx';import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import clsx from 'clsx';import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig, useFeatures, useAppDispatch } from 'soapbox/hooks';
-import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IStatusInteractionBar {
   status: Status;

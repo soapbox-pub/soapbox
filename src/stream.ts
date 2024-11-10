@@ -1,8 +1,8 @@
 import WebSocketClient from '@gamestdio/websocket';
 
-import { getAccessToken } from 'soapbox/utils/auth';
+import { getAccessToken } from 'soapbox/utils/auth.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
 

@@ -1,7 +1,5 @@
-import React from 'react';
-
-import { useAccount } from 'soapbox/api/hooks';
-import Account, { IAccount } from 'soapbox/components/account';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import Account, { IAccount } from 'soapbox/components/account.tsx';
 
 interface IAccountContainer extends Omit<IAccount, 'account'> {
   id: string;

@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { GroupRoles } from './group-member';
+import { GroupRoles } from './group-member.ts';
 
 const groupRelationshipSchema = z.object({
   blocked_by: z.boolean().catch(false),

@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import message2Icon from '@tabler/icons/outline/message-2.svg';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines';
-import { useGroup, useGroupTag } from 'soapbox/api/hooks';
-import { Column, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { expandGroupTimelineFromTag } from 'soapbox/actions/timelines.ts';
+import { useGroup, useGroupTag } from 'soapbox/api/hooks/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 type RouteParams = { tagId: string; groupId: string };
 
@@ -50,7 +54,7 @@ const GroupTagTimeline: React.FC<IGroupTimeline> = (props) => {
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>
             <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
               <Icon
-                src={require('@tabler/icons/outline/message-2.svg')}
+                src={message2Icon}
                 className='size-6 text-gray-600'
               />
             </div>

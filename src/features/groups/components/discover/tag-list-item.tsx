@@ -1,10 +1,10 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Stack, Text } from 'soapbox/components/ui';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import type { GroupTag } from 'soapbox/schemas';
+import type { GroupTag } from 'soapbox/schemas/index.ts';
 
 interface ITagListItem {
   tag: GroupTag;

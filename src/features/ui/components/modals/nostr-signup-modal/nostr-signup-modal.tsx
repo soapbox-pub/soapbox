@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import ExtensionStep from '../nostr-login-modal/steps/extension-step';
+import ExtensionStep from '../nostr-login-modal/steps/extension-step.tsx';
 
-import KeyStep from './steps/key-step';
-import KeygenStep from './steps/keygen-step';
+import KeyStep from './steps/key-step.tsx';
+import KeygenStep from './steps/keygen-step.tsx';
 
 type Step = 'extension' | 'key' | 'keygen';
 

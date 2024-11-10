@@ -1,14 +1,16 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status-quotes';
-import StatusList from 'soapbox/components/status-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status-quotes.ts';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },
@@ -28,7 +30,7 @@ const Quotes: React.FC = () => {
   const isLoading = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'isLoading'], true));
   const hasMore = useAppSelector((state) => !!state.status_lists.getIn([`quotes:${statusId}`, 'next']));
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchStatusQuotes(statusId));
   }, [statusId]);
 

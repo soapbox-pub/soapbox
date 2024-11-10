@@ -5,9 +5,9 @@
 
 import { produce } from 'immer';
 
-import { VERIFY_CREDENTIALS_SUCCESS, AUTH_ACCOUNT_REMEMBER_SUCCESS } from 'soapbox/actions/auth';
-import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
-import { Account, accountSchema } from 'soapbox/schemas';
+import { VERIFY_CREDENTIALS_SUCCESS, AUTH_ACCOUNT_REMEMBER_SUCCESS } from 'soapbox/actions/auth.ts';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me.ts';
+import { Account, accountSchema } from 'soapbox/schemas/index.ts';
 
 import type { AnyAction } from 'redux';
 

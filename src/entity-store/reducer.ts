@@ -11,11 +11,11 @@ import {
   ENTITIES_INVALIDATE_LIST,
   ENTITIES_INCREMENT,
   ENTITIES_TRANSACTION,
-} from './actions';
-import { createCache, createList, updateStore, updateList } from './utils';
+} from './actions.ts';
+import { createCache, createList, updateStore, updateList } from './utils.ts';
 
-import type { DeleteEntitiesOpts } from './actions';
-import type { EntitiesTransaction, Entity, EntityCache, EntityListState, ImportPosition } from './types';
+import type { DeleteEntitiesOpts } from './actions.ts';
+import type { EntitiesTransaction, Entity, EntityCache, EntityListState, ImportPosition } from './types.ts';
 
 /** Entity reducer state. */
 interface State {

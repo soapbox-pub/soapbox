@@ -1,9 +1,11 @@
-import { buildInstance } from 'soapbox/jest/factory';
+import { describe, expect, it } from 'vitest';
+
+import { buildInstance } from 'soapbox/jest/factory.ts';
 
 import {
   parseVersion,
   getFeatures,
-} from './features';
+} from './features.ts';
 
 describe('parseVersion', () => {
   it('with Pleroma version string', () => {

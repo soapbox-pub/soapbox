@@ -1,10 +1,12 @@
+import { describe, expect, it } from 'vitest';
+
 import {
   STATUS_HOVER_CARD_OPEN,
   STATUS_HOVER_CARD_CLOSE,
   STATUS_HOVER_CARD_UPDATE,
-} from 'soapbox/actions/status-hover-card';
+} from 'soapbox/actions/status-hover-card.ts';
 
-import reducer, { ReducerRecord } from './status-hover-card';
+import reducer, { ReducerRecord } from './status-hover-card.ts';
 
 describe(STATUS_HOVER_CARD_OPEN, () => {
   it('sets the ref and statusId', () => {

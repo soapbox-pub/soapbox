@@ -1,13 +1,14 @@
 import { useInfiniteQuery, useMutation, keepPreviousData } from '@tanstack/react-query';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
-import { importFetchedAccounts } from 'soapbox/actions/importer';
-import { useApi, useAppDispatch } from 'soapbox/hooks';
-import { getPagination } from 'soapbox/utils/pagination';
+import { fetchRelationships } from 'soapbox/actions/accounts.ts';
+import { importFetchedAccounts } from 'soapbox/actions/importer/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { getPagination } from 'soapbox/utils/pagination.ts';
 
-import { PaginatedResult, removePageItem } from '../utils/queries';
+import { PaginatedResult, removePageItem } from '../utils/queries.ts';
 
-import type { IAccount } from './accounts';
+import type { IAccount } from './accounts.ts';
 
 type Suggestion = {
   source: 'staff';

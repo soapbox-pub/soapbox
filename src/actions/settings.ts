@@ -2,12 +2,12 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { defineMessage } from 'react-intl';
 import { createSelector } from 'reselect';
 
-import { patchMe } from 'soapbox/actions/me';
-import messages from 'soapbox/messages';
-import toast from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
+import { patchMe } from 'soapbox/actions/me.ts';
+import messages from 'soapbox/messages.ts';
+import toast from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const SETTING_CHANGE = 'SETTING_CHANGE' as const;
 const SETTING_SAVE   = 'SETTING_SAVE' as const;

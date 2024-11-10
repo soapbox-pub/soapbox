@@ -1,14 +1,39 @@
-import React from 'react';
+import bellFilledIcon from '@tabler/icons/filled/bell.svg';
+import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
+import homeFilledIcon from '@tabler/icons/filled/home.svg';
+import settingsFilledIcon from '@tabler/icons/filled/settings.svg';
+import userFilledIcon from '@tabler/icons/filled/user.svg';
+import atIcon from '@tabler/icons/outline/at.svg';
+import bellIcon from '@tabler/icons/outline/bell.svg';
+import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import codeIcon from '@tabler/icons/outline/code.svg';
+import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
+import dotsCircleHorizontalIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
+import homeIcon from '@tabler/icons/outline/home.svg';
+import listIcon from '@tabler/icons/outline/list.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
+import settingsIcon from '@tabler/icons/outline/settings.svg';
+import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
+import userIcon from '@tabler/icons/outline/user.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { Stack } from 'soapbox/components/ui';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
-import DropdownMenu, { Menu } from './dropdown-menu';
-import SidebarNavigationLink from './sidebar-navigation-link';
+import DropdownMenu, { Menu } from './dropdown-menu/index.ts';
+import SidebarNavigationLink from './sidebar-navigation-link.tsx';
 
 const messages = defineMessages({
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
@@ -43,7 +68,7 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/follow_requests',
           text: intl.formatMessage(messages.follow_requests),
-          icon: require('@tabler/icons/outline/user-plus.svg'),
+          icon: userPlusIcon,
           count: followRequestsCount,
         });
       }
@@ -52,7 +77,7 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/bookmarks',
           text: intl.formatMessage(messages.bookmarks),
-          icon: require('@tabler/icons/outline/bookmark.svg'),
+          icon: bookmarkIcon,
         });
       }
 
@@ -60,7 +85,7 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/lists',
           text: intl.formatMessage(messages.lists),
-          icon: require('@tabler/icons/outline/list.svg'),
+          icon: listIcon,
         });
       }
 
@@ -68,14 +93,14 @@ const SidebarNavigation = () => {
         menu.push({
           to: '/events',
           text: intl.formatMessage(messages.events),
-          icon: require('@tabler/icons/outline/calendar-event.svg'),
+          icon: calendarEventIcon,
         });
       }
 
       if (isDeveloper) {
         menu.push({
           to: '/developers',
-          icon: require('@tabler/icons/outline/code.svg'),
+          icon: codeIcon,
           text: intl.formatMessage(messages.developers),
         });
       }
@@ -92,7 +117,7 @@ const SidebarNavigation = () => {
       return (
         <SidebarNavigationLink
           to='/chats'
-          icon={require('@tabler/icons/outline/messages.svg')}
+          icon={messagesIcon}
           count={unreadChatsCount}
           countMax={9}
           text={<FormattedMessage id='navigation.chats' defaultMessage='Chats' />}
@@ -104,7 +129,7 @@ const SidebarNavigation = () => {
       return (
         <SidebarNavigationLink
           to='/messages'
-          icon={require('@tabler/icons/outline/mail.svg')}
+          icon={mailIcon}
           text={<FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />}
         />
       );
@@ -118,14 +143,14 @@ const SidebarNavigation = () => {
       <Stack space={2}>
         <SidebarNavigationLink
           to='/'
-          icon={require('@tabler/icons/outline/home.svg')}
-          activeIcon={require('@tabler/icons/filled/home.svg')}
+          icon={homeIcon}
+          activeIcon={homeFilledIcon}
           text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
         <SidebarNavigationLink
           to='/search'
-          icon={require('@tabler/icons/outline/search.svg')}
+          icon={searchIcon}
           text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
         />
 
@@ -133,8 +158,8 @@ const SidebarNavigation = () => {
           <>
             <SidebarNavigationLink
               to='/notifications'
-              icon={require('@tabler/icons/outline/bell.svg')}
-              activeIcon={require('@tabler/icons/filled/bell.svg')}
+              icon={bellIcon}
+              activeIcon={bellFilledIcon}
               count={notificationCount}
               text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />
@@ -144,23 +169,23 @@ const SidebarNavigation = () => {
             {features.groups && (
               <SidebarNavigationLink
                 to='/groups'
-                icon={require('@tabler/icons/outline/circles.svg')}
-                activeIcon={require('@tabler/icons/filled/circles.svg')}
+                icon={circlesIcon}
+                activeIcon={circlesFilledIcon}
                 text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
               />
             )}
 
             <SidebarNavigationLink
               to={`/@${account.acct}`}
-              icon={require('@tabler/icons/outline/user.svg')}
-              activeIcon={require('@tabler/icons/filled/user.svg')}
+              icon={userIcon}
+              activeIcon={userFilledIcon}
               text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
             />
 
             <SidebarNavigationLink
               to='/settings'
-              icon={require('@tabler/icons/outline/settings.svg')}
-              activeIcon={require('@tabler/icons/filled/settings.svg')}
+              icon={settingsIcon}
+              activeIcon={settingsFilledIcon}
               text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
               count={settingsNotifications.size}
             />
@@ -168,7 +193,7 @@ const SidebarNavigation = () => {
             {account.staff && (
               <SidebarNavigationLink
                 to='/soapbox/admin'
-                icon={require('@tabler/icons/outline/dashboard.svg')}
+                icon={dashboardIcon}
                 count={dashboardCount}
                 text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
               />
@@ -181,7 +206,7 @@ const SidebarNavigation = () => {
             {(account || !restrictUnauth.timelines.local) && (
               <SidebarNavigationLink
                 to='/timeline/local'
-                icon={features.federating ? require('@tabler/icons/outline/at.svg') : require('@tabler/icons/outline/world.svg')}
+                icon={features.federating ? atIcon : worldIcon}
                 text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
               />
             )}
@@ -189,7 +214,7 @@ const SidebarNavigation = () => {
             {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
               <SidebarNavigationLink
                 to='/timeline/global'
-                icon={require('@tabler/icons/outline/world.svg')}
+                icon={worldIcon}
                 text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
               />
             )}
@@ -199,7 +224,7 @@ const SidebarNavigation = () => {
         {menu.length > 0 && (
           <DropdownMenu items={menu} placement='top'>
             <SidebarNavigationLink
-              icon={require('@tabler/icons/outline/dots-circle-horizontal.svg')}
+              icon={dotsCircleHorizontalIcon}
               text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
             />
           </DropdownMenu>

@@ -1,8 +1,8 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Badge from './badge';
+import Badge from './badge.tsx';
 
 describe('<Badge />', () => {
   it('renders correctly', () => {

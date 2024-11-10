@@ -1,11 +1,13 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon';
+import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon.tsx';
 
-import IconPickerMenu from './icon-picker-menu';
+import forkAwesomeIcons from '../forkawesome.json';
+
+import IconPickerMenu from './icon-picker-menu.tsx';
 
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },
@@ -53,7 +55,6 @@ const IconPickerDropdown: React.FC<IIconPickerDropdown> = ({ value, onPickIcon }
   };
 
   const title = intl.formatMessage(messages.emoji);
-  const forkAwesomeIcons = require('../forkawesome.json');
 
   return (
     <div onKeyDown={handleKeyDown}>

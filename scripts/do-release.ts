@@ -1,6 +1,6 @@
 import { Gitlab } from '@gitbeaker/node';
 
-import { getChanges } from './lib/changelog';
+import { getChanges } from './lib/changelog.ts';
 
 const {
   CI_COMMIT_TAG,

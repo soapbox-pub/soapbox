@@ -1,13 +1,15 @@
 import clsx from 'clsx';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { logOut } from 'soapbox/actions/auth';
-import { Text } from 'soapbox/components/ui';
-import emojify from 'soapbox/features/emoji';
-import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks';
-import sourceCode from 'soapbox/utils/code';
+import { logOut } from 'soapbox/actions/auth.ts';
+import Text from 'soapbox/components/ui/text.tsx';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import sourceCode from 'soapbox/utils/code.ts';
 
 interface IFooterLink {
   to: string;

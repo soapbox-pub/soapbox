@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react';
+import { PureComponent, Suspense } from 'react';
 
-import Base from 'soapbox/components/modal-root';
+import Base from 'soapbox/components/modal-root.tsx';
 import {
   AccountModerationModal,
   ActionsModal,
@@ -47,9 +47,9 @@ import {
   ZapInvoiceModal,
   ZapsModal,
   CaptchaModal,
-} from 'soapbox/features/ui/util/async-components';
+} from 'soapbox/features/ui/util/async-components.ts';
 
-import ModalLoading from './modal-loading';
+import ModalLoading from './modal-loading.tsx';
 
 /* eslint sort-keys: "error" */
 const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
@@ -108,7 +108,7 @@ interface IModalRoot {
   onClose: (type?: ModalType) => void;
 }
 
-export default class ModalRoot extends React.PureComponent<IModalRoot> {
+export default class ModalRoot extends PureComponent<IModalRoot> {
 
   getSnapshotBeforeUpdate() {
     return { visible: !!this.props.type };

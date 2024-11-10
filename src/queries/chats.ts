@@ -1,21 +1,25 @@
 import { InfiniteData, keepPreviousData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import sumBy from 'lodash/sumBy';
 
-import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { useStatContext } from 'soapbox/contexts/stat-context';
-import { useApi, useAppDispatch, useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { normalizeChatMessage } from 'soapbox/normalizers';
-import toast from 'soapbox/toast';
-import { ChatMessage } from 'soapbox/types/entities';
-import { reOrderChatListItems, updateChatMessage } from 'soapbox/utils/chats';
-import { getPagination } from 'soapbox/utils/pagination';
-import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries';
+import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer/index.ts';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
+import toast from 'soapbox/toast.tsx';
+import { ChatMessage } from 'soapbox/types/entities.ts';
+import { reOrderChatListItems, updateChatMessage } from 'soapbox/utils/chats.ts';
+import { getPagination } from 'soapbox/utils/pagination.ts';
+import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries.ts';
 
-import { queryClient } from './client';
-import { useFetchRelationships } from './relationships';
+import { queryClient } from './client.ts';
+import { useFetchRelationships } from './relationships.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 

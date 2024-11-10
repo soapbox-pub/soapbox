@@ -5,11 +5,11 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeAttachment } from 'soapbox/normalizers/attachment';
-import { emojiReactionSchema } from 'soapbox/schemas';
-import { filteredArray } from 'soapbox/schemas/utils';
+import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
+import { emojiReactionSchema } from 'soapbox/schemas/index.ts';
+import { filteredArray } from 'soapbox/schemas/utils.ts';
 
-import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entities';
+import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entities.ts';
 
 export const ChatMessageRecord = ImmutableRecord({
   account_id: '',

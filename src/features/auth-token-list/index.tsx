@@ -1,11 +1,19 @@
-import React, { useEffect } from 'react';
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
+import { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { Token } from 'soapbox/reducers/security';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Token } from 'soapbox/reducers/security.ts';
 
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
@@ -27,7 +35,7 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
   const handleRevoke = () => {
     if (isCurrent)
       dispatch(openModal('CONFIRM', {
-        icon: require('@tabler/icons/outline/alert-triangle.svg'),
+        icon: alertTriangleIcon,
         heading: intl.formatMessage(messages.revokeSessionHeading),
         message: intl.formatMessage(messages.revokeSessionMessage),
         confirm: intl.formatMessage(messages.revokeSessionConfirm),

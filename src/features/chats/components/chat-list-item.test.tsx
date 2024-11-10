@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
-import { IChat } from 'soapbox/queries/chats';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { IChat } from 'soapbox/queries/chats.ts';
 
-import ChatListItem from './chat-list-item';
+import ChatListItem from './chat-list-item.tsx';
 
 const chat: any = {
   id: '1',

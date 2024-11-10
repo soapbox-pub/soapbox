@@ -1,15 +1,29 @@
+import atIcon from '@tabler/icons/outline/at.svg';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, CardHeader, CardTitle, Column, Emoji, Form, HStack, Icon, Input, Textarea, Tooltip } from 'soapbox/components/ui';
-import { useApi, useAppDispatch, useInstance, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import { adminAccountSchema } from 'soapbox/schemas/admin-account';
-import toast from 'soapbox/toast';
+import { patchMe } from 'soapbox/actions/me.ts';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { adminAccountSchema } from 'soapbox/schemas/admin-account.ts';
+import toast from 'soapbox/toast.tsx';
 
 interface IEditIdentity {
 }
@@ -169,7 +183,7 @@ const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (props) => {
       placeholder={intl.formatMessage(messages.username)}
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
-          <Icon className='size-4' src={require('@tabler/icons/outline/at.svg')} />
+          <Icon className='size-4' src={atIcon} />
           <span>{instance.domain}</span>
         </HStack>
       )}

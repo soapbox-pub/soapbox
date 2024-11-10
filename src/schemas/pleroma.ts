@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { coerceObject } from './utils';
+import { coerceObject } from './utils.ts';
 
 const mrfSimpleSchema = coerceObject({
   accept: z.string().array().catch([]),

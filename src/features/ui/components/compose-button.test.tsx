@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 
-import { MODAL_CLOSE, MODAL_OPEN } from 'soapbox/actions/modals';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { MODAL_CLOSE, MODAL_OPEN } from 'soapbox/actions/modals.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
 
-import ComposeButton from './compose-button';
+import ComposeButton from './compose-button.tsx';
 
 const store = mockStore(rootState);
 const renderComposeButton = () => {

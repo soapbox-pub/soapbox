@@ -1,4 +1,4 @@
-import { HTTPError } from './HTTPError';
+import { HTTPError } from './HTTPError.ts';
 
 interface Opts {
   searchParams?: URLSearchParams | Record<string, string | number | boolean>;

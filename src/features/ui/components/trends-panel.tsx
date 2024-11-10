@@ -1,13 +1,13 @@
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { setFilter } from 'soapbox/actions/search';
-import Hashtag from 'soapbox/components/hashtag';
-import { Text, Widget } from 'soapbox/components/ui';
-import PlaceholderSidebarTrends from 'soapbox/features/placeholder/components/placeholder-sidebar-trends';
-import { useAppDispatch } from 'soapbox/hooks';
-import useTrends from 'soapbox/queries/trends';
+import { setFilter } from 'soapbox/actions/search.ts';
+import Hashtag from 'soapbox/components/hashtag.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
+import PlaceholderSidebarTrends from 'soapbox/features/placeholder/components/placeholder-sidebar-trends.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import useTrends from 'soapbox/queries/trends.ts';
 
 interface ITrendsPanel {
   limit: number;

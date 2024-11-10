@@ -1,13 +1,13 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
-import React from 'react';
 
-import CopyableInput from 'soapbox/components/copyable-input';
-import Icon from 'soapbox/components/icon';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import Icon from 'soapbox/components/icon.tsx';
 
-import { getExplorerUrl } from '../utils/block-explorer';
-import { getTitle } from '../utils/coin-db';
+import { getExplorerUrl } from '../utils/block-explorer.ts';
+import { getTitle } from '../utils/coin-db.ts';
 
-import CryptoIcon from './crypto-icon';
+import CryptoIcon from './crypto-icon.tsx';
 
 interface IDetailedCryptoAddress {
   address: string;
@@ -30,7 +30,7 @@ const DetailedCryptoAddress: React.FC<IDetailedCryptoAddress> = ({ address, tick
         <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
         <div className='crypto-address__actions'>
           {explorerUrl && <a href={explorerUrl} target='_blank'>
-            <Icon src={require('@tabler/icons/outline/external-link.svg')} />
+            <Icon src={externalLinkIcon} />
           </a>}
         </div>
       </div>

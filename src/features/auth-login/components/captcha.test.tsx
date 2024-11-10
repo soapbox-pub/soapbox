@@ -1,9 +1,9 @@
 import { Map as ImmutableMap } from 'immutable';
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import CaptchaField, { NativeCaptchaField } from './captcha';
+import CaptchaField, { NativeCaptchaField } from './captcha.tsx';
 
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {

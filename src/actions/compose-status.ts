@@ -1,7 +1,7 @@
-import { AppDispatch, RootState } from 'soapbox/store';
-import { getFeatures, parseVersion } from 'soapbox/utils/features';
+import { AppDispatch, RootState } from 'soapbox/store.ts';
+import { getFeatures, parseVersion } from 'soapbox/utils/features.ts';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 export const COMPOSE_SET_STATUS = 'COMPOSE_SET_STATUS' as const;
 

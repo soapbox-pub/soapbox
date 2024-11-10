@@ -1,6 +1,6 @@
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
 
-import { useTimelineStream } from './useTimelineStream';
+import { useTimelineStream } from './useTimelineStream.ts';
 
 function useDirectStream() {
   const { isLoggedIn } = useLoggedIn();

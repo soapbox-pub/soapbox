@@ -1,10 +1,9 @@
 import noop from 'lodash/noop';
-import React from 'react';
 
-import PollOption from 'soapbox/components/polls/poll-option';
-import { Stack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { Poll as PollEntity } from 'soapbox/types/entities';
+import PollOption from 'soapbox/components/polls/poll-option.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Poll as PollEntity } from 'soapbox/types/entities.ts';
 
 interface IPollPreview {
   pollId: string;

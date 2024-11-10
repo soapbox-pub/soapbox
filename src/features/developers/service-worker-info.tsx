@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import List, { ListItem } from 'soapbox/components/list';
-import { HStack, Text, Column, FormActions, Button, Stack, Icon } from 'soapbox/components/ui';
-import { unregisterSW } from 'soapbox/utils/sw';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { unregisterSW } from 'soapbox/utils/sw.ts';
 
-import Indicator from './components/indicator';
+import Indicator from './components/indicator.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.developers.service_worker', defaultMessage: 'Service Worker' },
@@ -120,7 +127,7 @@ const ServiceWorkerInfo: React.FC<IServiceWorkerInfo> = () => {
                 <span className='truncate'>{url}</span>
                 <Icon
                   className='size-4'
-                  src={require('@tabler/icons/outline/external-link.svg')}
+                  src={externalLinkIcon}
                 />
               </a>
             </ListItem>

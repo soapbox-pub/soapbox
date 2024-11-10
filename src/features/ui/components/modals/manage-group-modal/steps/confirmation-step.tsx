@@ -1,11 +1,17 @@
-import React from 'react';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import shareIcon from '@tabler/icons/outline/share.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui';
-import toast from 'soapbox/toast';
-import copy from 'soapbox/utils/copy';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import toast from 'soapbox/toast.tsx';
+import copy from 'soapbox/utils/copy.ts';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 interface IConfirmationStep {
   group: Group | null;
@@ -101,12 +107,12 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
 
       <HStack space={2} justifyContent='center'>
         {('share' in navigator) && (
-          <Button onClick={handleShare} theme='transparent' icon={require('@tabler/icons/outline/share.svg')} className='text-primary-600'>
+          <Button onClick={handleShare} theme='transparent' icon={shareIcon} className='text-primary-600'>
             <FormattedMessage id='manage_group.confirmation.share' defaultMessage='Share this group' />
           </Button>
         )}
 
-        <Button onClick={handleCopyLink} theme='transparent' icon={require('@tabler/icons/outline/link.svg')} className='text-primary-600'>
+        <Button onClick={handleCopyLink} theme='transparent' icon={linkIcon} className='text-primary-600'>
           <FormattedMessage id='manage_group.confirmation.copy' defaultMessage='Copy link' />
         </Button>
       </HStack>

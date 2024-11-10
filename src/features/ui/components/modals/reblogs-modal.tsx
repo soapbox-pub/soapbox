@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchReblogs, expandReblogs } from 'soapbox/actions/interactions';
-import { fetchStatus } from 'soapbox/actions/statuses';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Modal, Spinner } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchReblogs, expandReblogs } from 'soapbox/actions/interactions.ts';
+import { fetchStatus } from 'soapbox/actions/statuses.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 interface IReblogsModal {
   onClose: (string: string) => void;

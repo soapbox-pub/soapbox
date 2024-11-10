@@ -1,8 +1,8 @@
-import React from 'react';
+import { describe, expect, test } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import { isIntegerId, secondsToDays, shortNumberFormat } from './numbers';
+import { isIntegerId, secondsToDays, shortNumberFormat } from './numbers.tsx';
 
 test('isIntegerId()', () => {
   expect(isIntegerId('0')).toBe(true);

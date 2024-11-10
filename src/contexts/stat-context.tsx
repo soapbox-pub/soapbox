@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 
 type IStatContext = {
   unreadChatsCount: number;
@@ -30,4 +30,4 @@ const StatProvider: React.FC<IStatProvider> = ({ children }) => {
 
 const useStatContext = (): IStatContext => useContext(StatContext);
 
-export { StatProvider, useStatContext, IStatContext };
+export { StatProvider, useStatContext, type IStatContext };

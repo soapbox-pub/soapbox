@@ -1,11 +1,11 @@
 import { produce } from 'immer';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
-import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
-import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance';
-import { ConfigDB } from 'soapbox/utils/config-db';
+import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin.ts';
+import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance.ts';
+import { ConfigDB } from 'soapbox/utils/config-db.ts';
 
-import { fetchInstanceV2 } from '../actions/instance';
+import { fetchInstanceV2 } from '../actions/instance.ts';
 
 import type { AnyAction } from 'redux';
 

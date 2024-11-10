@@ -1,24 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import boltIcon from '@tabler/icons/outline/bolt.svg';
+import infoSquareRoundedIcon from '@tabler/icons/outline/info-square-rounded.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { zap } from 'soapbox/actions/interactions';
-import { openModal, closeModal } from 'soapbox/actions/modals';
-import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit';
+import { zap } from 'soapbox/actions/interactions.ts';
+import { openModal, closeModal } from 'soapbox/actions/modals.ts';
+import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
 import chestIcon from 'soapbox/assets/icons/chest.png';
 import coinStack from 'soapbox/assets/icons/coin-stack.png';
 import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
-import DisplayNameInline from 'soapbox/components/display-name-inline';
-import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch } from 'soapbox/hooks';
+import DisplayNameInline from 'soapbox/components/display-name-inline.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import ZapButton from './zap-button/zap-button';
+import ZapButton from './zap-button/zap-button.tsx';
 
-import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities';
+import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';
 
 const ZAP_PRESETS = [
   { amount: 50, icon: coinIcon },
@@ -34,7 +41,7 @@ interface IZapPayRequestForm {
   onClose?(): void;
 }
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
@@ -149,7 +156,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
 
       {hasZapSplit ? <Stack space={2}>
 
-        <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={'Zap sats'} disabled={zapAmount < 1 ? true : false} />
+        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={'Zap sats'} disabled={zapAmount < 1 ? true : false} />
 
         <div className='flex items-center justify-center gap-2 sm:gap-4'>
           <span className='text-[10px] sm:text-xs'>
@@ -160,11 +167,11 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           </span>
 
           <Link to={'/'} className='text-xs underline'>
-            <SvgIcon src={require('@tabler/icons/outline/info-square-rounded.svg')} className='w-4' alt='info-square-rounded' />
+            <SvgIcon src={infoSquareRoundedIcon} className='w-4' alt='info-square-rounded' />
           </Link>
 
         </div>
-      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={require('@tabler/icons/outline/bolt.svg')} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
+      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={renderZapButtonText()} disabled={zapAmount < 1 ? true : false} />}
 
     </Stack>
   );

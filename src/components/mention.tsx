@@ -1,11 +1,10 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { shortenNostr } from 'soapbox/utils/nostr';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-import { Tooltip } from './ui';
 
-import type { Mention as MentionEntity } from 'soapbox/schemas';
+import type { Mention as MentionEntity } from 'soapbox/schemas/index.ts';
 
 interface IMention {
   mention: Pick<MentionEntity, 'acct' | 'username'>;

@@ -1,11 +1,13 @@
-import React from 'react';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { Modal, Stack, Text } from 'soapbox/components/ui';
-import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator';
+import Icon from 'soapbox/components/icon.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
@@ -39,7 +41,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
 
         <Text>
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
-          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon className='inline-block align-middle' src={require('@tabler/icons/outline/repeat.svg')} /></span> }} />
+          <FormattedMessage id='boost_modal.combo' defaultMessage='You can press {combo} to skip this next time' values={{ combo: <span>Shift + <Icon className='inline-block align-middle' src={repeatIcon} /></span> }} />
         </Text>
       </Stack>
     </Modal>

@@ -1,10 +1,13 @@
-import React from 'react';
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { CardTitle, HStack, IconButton, Stack } from 'soapbox/components/ui';
+import { CardTitle } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
-import ChatSearch from '../../chat-search/chat-search';
+import ChatSearch from '../../chat-search/chat-search.tsx';
 
 const messages = defineMessages({
   title: { id: 'chat.new_message.title', defaultMessage: 'New Message' },
@@ -23,7 +26,7 @@ const ChatPageNew: React.FC<IChatPageNew> = () => {
       <Stack className='grow px-4 pt-6 sm:px-6'>
         <HStack alignItems='center'>
           <IconButton
-            src={require('@tabler/icons/outline/arrow-left.svg')}
+            src={arrowLeftIcon}
             className='mr-2 size-7 sm:mr-0 sm:hidden rtl:rotate-180'
             onClick={() => history.push('/chats')}
           />

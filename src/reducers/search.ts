@@ -1,13 +1,13 @@
 import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { normalizeTag } from 'soapbox/normalizers';
+import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import {
   COMPOSE_MENTION,
   COMPOSE_REPLY,
   COMPOSE_DIRECT,
   COMPOSE_QUOTE,
-} from '../actions/compose';
+} from '../actions/compose.ts';
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
@@ -19,10 +19,10 @@ import {
   SEARCH_EXPAND_SUCCESS,
   SEARCH_ACCOUNT_SET,
   SEARCH_RESULTS_CLEAR,
-} from '../actions/search';
+} from '../actions/search.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities';
+import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
 
 const ResultsRecord = ImmutableRecord({
   accounts: ImmutableOrderedSet<string>(),

@@ -1,6 +1,6 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const MFA_FETCH_REQUEST = 'MFA_FETCH_REQUEST';
 const MFA_FETCH_SUCCESS = 'MFA_FETCH_SUCCESS';

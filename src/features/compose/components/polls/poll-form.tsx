@@ -1,14 +1,20 @@
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose';
-import AutosuggestInput from 'soapbox/components/autosuggest-input';
-import { Button, Divider, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks';
+import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose.ts';
+import AutosuggestInput from 'soapbox/components/autosuggest-input.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
-import DurationSelector from './duration-selector';
+import DurationSelector from './duration-selector.tsx';
 
-import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Answer #{number}' },

@@ -1,4 +1,6 @@
-import reducer from './sidebar';
+import { describe, expect, it } from 'vitest';
+
+import reducer from './sidebar.ts';
 
 describe('sidebar reducer', () => {
   it('should return the initial state', () => {

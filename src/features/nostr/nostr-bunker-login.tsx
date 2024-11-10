@@ -1,18 +1,21 @@
-import React from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth';
-import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Button, Form, Input, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 export const NostrBunkerLogin: React.FC = () => {
   const history = useHistory();
   const dispatch = useAppDispatch();
 
-  const [uri, setUri] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [uri, setUri] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const onSubmit = async () => {
     const url = new URL(uri);

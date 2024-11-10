@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 
 /** HTTP response codes to retry. */
 const RETRY_CODES = [502, 503, 504, 521, 522];

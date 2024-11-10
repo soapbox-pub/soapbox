@@ -1,8 +1,8 @@
-import React from 'react';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import { HStack, Stack, Text } from 'soapbox/components/ui';
-
-import { generateText, randomIntFromInterval } from '../utils';
+import { generateText, randomIntFromInterval } from '../utils.ts';
 
 const PlaceholderGroupDiscover = () => {
   const groupNameLength = randomIntFromInterval(12, 20);

@@ -1,4 +1,4 @@
-import type { EntitiesTransaction, Entity, EntityListState, ImportPosition } from './types';
+import type { EntitiesTransaction, Entity, EntityListState, ImportPosition } from './types.ts';
 
 const ENTITIES_IMPORT = 'ENTITIES_IMPORT' as const;
 const ENTITIES_DELETE = 'ENTITIES_DELETE' as const;

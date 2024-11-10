@@ -1,8 +1,8 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks/useApi';
-import { normalizeStatus } from 'soapbox/normalizers';
-import { toSchema } from 'soapbox/utils/normalizers';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { toSchema } from 'soapbox/utils/normalizers.ts';
 
 const statusSchema = toSchema(normalizeStatus);
 

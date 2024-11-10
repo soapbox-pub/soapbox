@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { updateNotifications } from 'soapbox/actions/notifications';
-import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers';
+import { updateNotifications } from 'soapbox/actions/notifications.ts';
+import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers.tsx';
 
-import Notification from './notification';
+import Notification from './notification.tsx';
 
 /** Prepare the notification for use by the component */
 const normalize = (notification: any) => {

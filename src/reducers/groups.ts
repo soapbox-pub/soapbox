@@ -1,11 +1,11 @@
 import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
 
-import { GROUP_FETCH_FAIL, GROUP_DELETE_SUCCESS, GROUP_FETCH_REQUEST } from 'soapbox/actions/groups';
-import { GROUPS_IMPORT } from 'soapbox/actions/importer';
-import { normalizeGroup } from 'soapbox/normalizers';
+import { GROUP_FETCH_FAIL, GROUP_DELETE_SUCCESS, GROUP_FETCH_REQUEST } from 'soapbox/actions/groups.ts';
+import { GROUPS_IMPORT } from 'soapbox/actions/importer/index.ts';
+import { normalizeGroup } from 'soapbox/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 type GroupRecord = ReturnType<typeof normalizeGroup>;
 type APIEntities = Array<APIEntity>;

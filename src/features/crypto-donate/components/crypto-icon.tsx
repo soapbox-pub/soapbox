@@ -1,5 +1,3 @@
-import React from 'react';
-
 import genericIcon from 'soapbox/assets/cryptocurrency/generic.svg';
 
 /** Get crypto icon URL by ticker symbol, or fall back to generic icon */

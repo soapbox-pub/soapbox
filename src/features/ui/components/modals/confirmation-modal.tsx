@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import List, { ListItem } from 'soapbox/components/list';
-import { Modal, Stack, Text, Toggle } from 'soapbox/components/ui';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 
-import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
+import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
 
 interface IConfirmationModal {
   heading: React.ReactNode;

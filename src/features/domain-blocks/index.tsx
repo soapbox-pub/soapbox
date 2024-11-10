@@ -1,12 +1,14 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks';
-import Domain from 'soapbox/components/domain';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchDomainBlocks, expandDomainBlocks } from 'soapbox/actions/domain-blocks.ts';
+import Domain from 'soapbox/components/domain.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.domain_blocks', defaultMessage: 'Hidden domains' },
@@ -24,7 +26,7 @@ const DomainBlocks: React.FC = () => {
   const domains = useAppSelector((state) => state.domain_lists.blocks.items);
   const hasMore = useAppSelector((state) => !!state.domain_lists.blocks.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchDomainBlocks());
   }, []);
 

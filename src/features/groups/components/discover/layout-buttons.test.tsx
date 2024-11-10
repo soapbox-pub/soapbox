@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen, within } from 'soapbox/jest/test-helpers';
+import { render, screen, within } from 'soapbox/jest/test-helpers.tsx';
 
-import LayoutButtons, { GroupLayout } from './layout-buttons';
+import LayoutButtons, { GroupLayout } from './layout-buttons.tsx';
 
 describe('<LayoutButtons', () => {
   describe('when LIST view', () => {

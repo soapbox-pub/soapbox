@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntity } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks';
-import { type Group, groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntity } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { type Group, groupSchema } from 'soapbox/schemas/index.ts';
 
-import { useGroupRelationship } from './useGroupRelationship';
+import { useGroupRelationship } from './useGroupRelationship.ts';
 
 function useGroup(groupId: string, refetch = true) {
   const api = useApi();

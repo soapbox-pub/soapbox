@@ -1,30 +1,37 @@
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import pinnedIcon from '@tabler/icons/outline/pinned.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose';
-import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses';
-import TranslateButton from 'soapbox/components/translate-button';
-import AccountContainer from 'soapbox/containers/account-container';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { HotKeys } from 'soapbox/features/ui/components/hotkeys';
-import { useAppDispatch, useSettings } from 'soapbox/hooks';
-import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status';
+import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
+import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
+import TranslateButton from 'soapbox/components/translate-button.tsx';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
-import EventPreview from './event-preview';
-import StatusActionBar from './status-action-bar';
-import StatusContent from './status-content';
-import StatusMedia from './status-media';
-import StatusReplyMentions from './status-reply-mentions';
-import SensitiveContentOverlay from './statuses/sensitive-content-overlay';
-import StatusInfo from './statuses/status-info';
-import Tombstone from './tombstone';
-import { Card, Icon, Stack, Text } from './ui';
+import EventPreview from './event-preview.tsx';
+import StatusActionBar from './status-action-bar.tsx';
+import StatusContent from './status-content.tsx';
+import StatusMedia from './status-media.tsx';
+import StatusReplyMentions from './status-reply-mentions.tsx';
+import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
+import StatusInfo from './statuses/status-info.tsx';
+import Tombstone from './tombstone.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };
@@ -212,7 +219,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/repeat.svg')} className='size-4 text-green-600' />}
+          icon={<Icon src={repeatIcon} className='size-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by_with_group'
@@ -252,7 +259,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/repeat.svg')} className='size-4 text-green-600' />}
+          icon={<Icon src={repeatIcon} className='size-4 text-green-600' />}
           text={
             <FormattedMessage
               id='status.reblogged_by'
@@ -279,7 +286,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/pinned.svg')} className='size-4 text-gray-600 dark:text-gray-400' />}
+          icon={<Icon src={pinnedIcon} className='size-4 text-gray-600 dark:text-gray-400' />}
           text={
             <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
           }
@@ -289,7 +296,7 @@ const Status: React.FC<IStatus> = (props) => {
       return (
         <StatusInfo
           avatarSize={avatarSize}
-          icon={<Icon src={require('@tabler/icons/outline/circles.svg')} className='size-4 text-primary-600 dark:text-accent-blue' />}
+          icon={<Icon src={circlesIcon} className='size-4 text-primary-600 dark:text-accent-blue' />}
           text={
             <FormattedMessage
               id='status.group'

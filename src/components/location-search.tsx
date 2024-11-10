@@ -1,15 +1,17 @@
+import backspaceIcon from '@tabler/icons/outline/backspace.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
 import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { locationSearch } from 'soapbox/actions/events';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import Icon from 'soapbox/components/icon';
-import { useAppDispatch } from 'soapbox/hooks';
+import { locationSearch } from 'soapbox/actions/events.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import AutosuggestLocation from './autosuggest-location';
+import AutosuggestLocation from './autosuggest-location.tsx';
 
 const noOp = () => {};
 
@@ -100,8 +102,8 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
         renderSuggestion={AutosuggestLocation}
       />
       <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/outline/search.svg')} className={clsx('svg-icon--search', { active: isEmpty() })} />
-        <Icon src={require('@tabler/icons/outline/backspace.svg')} className={clsx('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
+        <Icon src={searchIcon} className={clsx('svg-icon--search', { active: isEmpty() })} />
+        <Icon src={backspaceIcon} className={clsx('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
       </div>
     </div>
   );

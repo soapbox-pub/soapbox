@@ -1,7 +1,7 @@
-import React from 'react';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
+import Icon from 'soapbox/components/icon.tsx';
 
 const messages = defineMessages({
   load_more: { id: 'status.load_more', defaultMessage: 'Load more' },
@@ -20,7 +20,7 @@ const LoadGap: React.FC<ILoadGap> = ({ disabled, maxId, onClick }) => {
 
   return (
     <button className='load-more load-gap' disabled={disabled} onClick={handleClick} aria-label={intl.formatMessage(messages.load_more)}>
-      <Icon src={require('@tabler/icons/outline/dots.svg')} />
+      <Icon src={dotsIcon} />
     </button>
   );
 };

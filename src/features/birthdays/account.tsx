@@ -1,10 +1,10 @@
-import React from 'react';
+import balloonIcon from '@tabler/icons/outline/balloon.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useAccount } from 'soapbox/api/hooks';
-import AccountComponent from 'soapbox/components/account';
-import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import AccountComponent from 'soapbox/components/account.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
 const messages = defineMessages({
   birthday: { id: 'account.birthday', defaultMessage: 'Born {date}' },
@@ -36,7 +36,7 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
           date: formattedBirthday,
         })}
       >
-        <Icon src={require('@tabler/icons/outline/balloon.svg')} />
+        <Icon src={balloonIcon} />
         {formattedBirthday}
       </div>
     </HStack>

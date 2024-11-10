@@ -1,20 +1,29 @@
-import React, { useCallback, useState } from 'react';
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import hourglassEmptyIcon from '@tabler/icons/outline/hourglass-empty.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { closeReports } from 'soapbox/actions/admin';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { Accordion, Avatar, Button, Stack, HStack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetReport } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
+import { closeReports } from 'soapbox/actions/admin.ts';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation.tsx';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import Accordion from 'soapbox/components/ui/accordion.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetReport } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ReportStatus from './report-status';
+import ReportStatus from './report-status.tsx';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, AdminReport, Status } from 'soapbox/types/entities';
+import type { Account, AdminReport, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
@@ -45,11 +54,11 @@ const Report: React.FC<IReport> = ({ id }) => {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { name: targetAccount.username }),
       action: handleDeactivateUser,
-      icon: require('@tabler/icons/outline/hourglass-empty.svg'),
+      icon: hourglassEmptyIcon,
     }, {
       text: intl.formatMessage(messages.deleteUser, { name: targetAccount.username }),
       action: handleDeleteUser,
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       destructive: true,
     }];
   };
@@ -149,7 +158,7 @@ const Report: React.FC<IReport> = ({ id }) => {
           <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
         </Button>
 
-        <DropdownMenu items={menu} src={require('@tabler/icons/outline/dots-vertical.svg')} />
+        <DropdownMenu items={menu} src={dotsVerticalIcon} />
       </HStack>
     </HStack>
   );

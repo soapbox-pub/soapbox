@@ -1,13 +1,15 @@
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchPoll, vote } from 'soapbox/actions/polls';
-import { useAppDispatch } from 'soapbox/hooks';
+import { fetchPoll, vote } from 'soapbox/actions/polls.ts';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import RelativeTimestamp from '../relative-timestamp';
-import { Button, HStack, Stack, Text, Tooltip } from '../ui';
-
-import type { Poll as PollEntity } from 'soapbox/types/entities';
+import type { Poll as PollEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },

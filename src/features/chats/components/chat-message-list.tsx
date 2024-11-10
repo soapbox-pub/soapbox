@@ -1,16 +1,22 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo, forwardRef } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import { Avatar, Button, Divider, Spinner, Stack, Text } from 'soapbox/components/ui';
-import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
-import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats.ts';
 
-import ChatMessage from './chat-message';
-import ChatMessageListIntro from './chat-message-list-intro';
+import ChatMessageListIntro from './chat-message-list-intro.tsx';
+import ChatMessage from './chat-message.tsx';
 
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities';
+import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -41,12 +47,12 @@ const timeChange = (prev: ChatMessageEntity, curr: ChatMessageEntity): TimeForma
 
 const START_INDEX = 10000;
 
-const List: Components['List'] = React.forwardRef((props, ref) => {
+const List: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='mb-2' />;
 });
 
-const Scroller: Components['Scroller'] = React.forwardRef((props, ref) => {
+const Scroller: Components['Scroller'] = forwardRef((props, ref) => {
   const { style, context, ...rest } = props;
 
   return (

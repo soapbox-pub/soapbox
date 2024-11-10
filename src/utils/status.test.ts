@@ -1,10 +1,11 @@
+import { describe, expect, it } from 'vitest';
 
-import { buildStatus } from 'soapbox/jest/factory';
+import { buildStatus } from 'soapbox/jest/factory.ts';
 
 import {
   hasIntegerMediaIds,
   defaultMediaVisibility,
-} from './status';
+} from './status.ts';
 
 describe('hasIntegerMediaIds()', () => {
   it('returns true for a Pleroma deleted status', async () => {

@@ -1,6 +1,6 @@
-import { getFeatures, Features } from 'soapbox/utils/features';
+import { getFeatures, Features } from 'soapbox/utils/features.ts';
 
-import { useInstance } from './useInstance';
+import { useInstance } from './useInstance.ts';
 
 /** Get features for the current instance. */
 export const useFeatures = (): Features => {

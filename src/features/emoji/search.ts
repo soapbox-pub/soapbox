@@ -2,9 +2,9 @@
 import Index from '@akryum/flexsearch-es';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import data from './data';
+import data from './data.ts';
 
-import type { Emoji } from './index';
+import type { Emoji } from './index.ts';
 
 // @ts-ignore Wrong default export.
 const index: Index.Index = new Index({

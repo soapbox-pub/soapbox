@@ -1,13 +1,19 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Column, Stack, Text } from 'soapbox/components/ui';
-import Timeline from 'soapbox/features/ui/components/timeline';
-import { useAppSelector, useAppDispatch, useFeatures, useInstance, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Timeline from 'soapbox/features/ui/components/timeline.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },

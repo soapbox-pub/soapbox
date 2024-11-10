@@ -1,10 +1,10 @@
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useGetState } from 'soapbox/hooks/useGetState';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { deleteEntities, importEntities } from '../actions';
+import { deleteEntities, importEntities } from '../actions.ts';
 
-import type { EntityCallbacks, EntityFn } from './types';
+import type { EntityCallbacks, EntityFn } from './types.ts';
 
 /**
  * Optimistically deletes an entity from the store.

@@ -1,17 +1,29 @@
+import atIcon from '@tabler/icons/outline/at.svg';
+import checkIcon from '@tabler/icons/outline/check.svg';
 import axios from 'axios';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { accountLookup } from 'soapbox/actions/accounts';
-import { register, verifyCredentials } from 'soapbox/actions/auth';
-import { openModal } from 'soapbox/actions/modals';
-import BirthdayInput from 'soapbox/components/birthday-input';
-import { Checkbox, Form, FormGroup, FormActions, Button, Input, Textarea, Select } from 'soapbox/components/ui';
-import CaptchaField from 'soapbox/features/auth-login/components/captcha';
-import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks';
+import { accountLookup } from 'soapbox/actions/accounts.ts';
+import { register, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import BirthdayInput from 'soapbox/components/birthday-input.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Checkbox from 'soapbox/components/ui/checkbox.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Select from 'soapbox/components/ui/select.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import CaptchaField from 'soapbox/features/auth-login/components/captcha.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
@@ -152,7 +164,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
     const heading = confirmationHeading || approvalHeading;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/check.svg'),
+      icon: checkIcon,
       heading: heading,
       message,
       confirm: intl.formatMessage(messages.close),
@@ -255,7 +267,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
               autoCorrect='off'
               autoCapitalize='off'
               pattern='^[a-zA-Z\d_-]+'
-              icon={require('@tabler/icons/outline/at.svg')}
+              icon={atIcon}
               onChange={onUsernameChange}
               value={params.get('username', '')}
               required

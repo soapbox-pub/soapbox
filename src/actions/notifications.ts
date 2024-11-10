@@ -2,28 +2,28 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
-import api, { getLinks } from 'soapbox/api';
-import { getFilters, regexFromFilters } from 'soapbox/selectors';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { compareId } from 'soapbox/utils/comparators';
-import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
-import { unescapeHTML } from 'soapbox/utils/html';
-import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification';
-import { joinPublicPath } from 'soapbox/utils/static';
+import api, { getLinks } from 'soapbox/api/index.ts';
+import { getFilters, regexFromFilters } from 'soapbox/selectors/index.ts';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { compareId } from 'soapbox/utils/comparators.ts';
+import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
+import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification.ts';
+import { joinPublicPath } from 'soapbox/utils/static.ts';
 
-import { fetchRelationships } from './accounts';
-import { fetchGroupRelationships } from './groups';
+import { fetchRelationships } from './accounts.ts';
+import { fetchGroupRelationships } from './groups.ts';
 import {
   importFetchedAccount,
   importFetchedAccounts,
   importFetchedStatus,
   importFetchedStatuses,
-} from './importer';
-import { saveMarker } from './markers';
-import { getSettings, saveSettings } from './settings';
+} from './importer/index.ts';
+import { saveMarker } from './markers.ts';
+import { getSettings, saveSettings } from './settings.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
 
 const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';

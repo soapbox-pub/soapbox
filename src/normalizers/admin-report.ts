@@ -9,7 +9,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import type { Account, EmbeddedEntity, Status } from 'soapbox/types/entities';
+import type { Account, EmbeddedEntity, Status } from 'soapbox/types/entities.ts';
 
 export const AdminReportRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,

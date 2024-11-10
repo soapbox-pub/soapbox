@@ -1,9 +1,8 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { BigCard } from 'soapbox/components/big-card';
+import { BigCard } from 'soapbox/components/big-card.tsx';
 
-import ExternalLoginForm from './components/external-login-form';
+import ExternalLoginForm from './components/external-login-form.tsx';
 
 /** Page for logging into a remote instance */
 const ExternalLoginPage: React.FC = () => {

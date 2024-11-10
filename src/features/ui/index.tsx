@@ -1,43 +1,51 @@
 import clsx from 'clsx';
-import React, { Suspense, lazy, useEffect, useRef } from 'react';
+import { Suspense, lazy, useEffect, useRef } from 'react';
 import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
-import { fetchFollowRequests } from 'soapbox/actions/accounts';
-import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin';
-import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis';
-import { fetchFilters } from 'soapbox/actions/filters';
-import { fetchMarker } from 'soapbox/actions/markers';
-import { expandNotifications } from 'soapbox/actions/notifications';
-import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer';
-import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses';
-import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions';
-import { expandHomeTimeline } from 'soapbox/actions/timelines';
-import { useUserStream } from 'soapbox/api/hooks';
-import SidebarNavigation from 'soapbox/components/sidebar-navigation';
-import ThumbNavigation from 'soapbox/components/thumb-navigation';
-import { Layout } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount, useSoapboxConfig, useFeatures, useDraggedFiles, useInstance, useLoggedIn, useApi } from 'soapbox/hooks';
-import AdminPage from 'soapbox/pages/admin-page';
-import ChatsPage from 'soapbox/pages/chats-page';
-import DefaultPage from 'soapbox/pages/default-page';
-import EmptyPage from 'soapbox/pages/empty-page';
-import EventPage from 'soapbox/pages/event-page';
-import EventsPage from 'soapbox/pages/events-page';
-import GroupPage from 'soapbox/pages/group-page';
-import GroupsPage from 'soapbox/pages/groups-page';
-import GroupsPendingPage from 'soapbox/pages/groups-pending-page';
-import HomePage from 'soapbox/pages/home-page';
-import LandingPage from 'soapbox/pages/landing-page';
-import ManageGroupsPage from 'soapbox/pages/manage-groups-page';
-import ManageZapSplitPage from 'soapbox/pages/manage-zap-split-page';
-import ProfilePage from 'soapbox/pages/profile-page';
-import RemoteInstancePage from 'soapbox/pages/remote-instance-page';
-import SearchPage from 'soapbox/pages/search-page';
-import StatusPage from 'soapbox/pages/status-page';
+import { fetchFollowRequests } from 'soapbox/actions/accounts.ts';
+import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin.ts';
+import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis.ts';
+import { fetchFilters } from 'soapbox/actions/filters.ts';
+import { fetchMarker } from 'soapbox/actions/markers.ts';
+import { expandNotifications } from 'soapbox/actions/notifications.ts';
+import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer.ts';
+import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
+import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions.ts';
+import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import { useUserStream } from 'soapbox/api/hooks/index.ts';
+import SidebarNavigation from 'soapbox/components/sidebar-navigation.tsx';
+import ThumbNavigation from 'soapbox/components/thumb-navigation.tsx';
+import Layout from 'soapbox/components/ui/layout.tsx';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import AdminPage from 'soapbox/pages/admin-page.tsx';
+import ChatsPage from 'soapbox/pages/chats-page.tsx';
+import DefaultPage from 'soapbox/pages/default-page.tsx';
+import EmptyPage from 'soapbox/pages/empty-page.tsx';
+import EventPage from 'soapbox/pages/event-page.tsx';
+import EventsPage from 'soapbox/pages/events-page.tsx';
+import GroupPage from 'soapbox/pages/group-page.tsx';
+import GroupsPage from 'soapbox/pages/groups-page.tsx';
+import GroupsPendingPage from 'soapbox/pages/groups-pending-page.tsx';
+import HomePage from 'soapbox/pages/home-page.tsx';
+import LandingPage from 'soapbox/pages/landing-page.tsx';
+import ManageGroupsPage from 'soapbox/pages/manage-groups-page.tsx';
+import ProfilePage from 'soapbox/pages/profile-page.tsx';
+import RemoteInstancePage from 'soapbox/pages/remote-instance-page.tsx';
+import SearchPage from 'soapbox/pages/search-page.tsx';
+import StatusPage from 'soapbox/pages/status-page.tsx';
+import WidePage from 'soapbox/pages/wide-page.tsx';
 
-import BackgroundShapes from './components/background-shapes';
-import FloatingActionButton from './components/floating-action-button';
-import Navbar from './components/navbar';
+import BackgroundShapes from './components/background-shapes.tsx';
+import FloatingActionButton from './components/floating-action-button.tsx';
+import Navbar from './components/navbar.tsx';
 import {
   Status,
   CommunityTimeline,
@@ -143,13 +151,13 @@ import {
   Rules,
   AdminNostrRelays,
   NostrBunkerLogin,
-} from './util/async-components';
-import GlobalHotkeys from './util/global-hotkeys';
-import { WrappedRoute } from './util/react-router-helpers';
+} from './util/async-components.ts';
+import GlobalHotkeys from './util/global-hotkeys.tsx';
+import { WrappedRoute } from './util/react-router-helpers.tsx';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
-import 'soapbox/components/status';
+import 'soapbox/components/status.tsx';
 
 interface ISwitchingColumnsArea {
   children: React.ReactNode;
@@ -331,7 +339,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
-      <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={ManageZapSplitPage} component={ManageZapSplit} content={children} exact />
+      {features.nostr && <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={WidePage} component={ManageZapSplit} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />

@@ -1,10 +1,9 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { useAdminAccounts } from 'soapbox/api/hooks/admin/useAdminAccounts';
-import Account from 'soapbox/components/account';
-import { Widget } from 'soapbox/components/ui';
+import { useAdminAccounts } from 'soapbox/api/hooks/admin/useAdminAccounts.ts';
+import Account from 'soapbox/components/account.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },

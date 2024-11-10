@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 
-import { useSettings } from 'soapbox/hooks';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 export interface IStillImage {
   /** Image alt text. */

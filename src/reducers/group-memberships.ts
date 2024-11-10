@@ -12,10 +12,10 @@ import {
   GROUP_DEMOTE_SUCCESS,
   GROUP_KICK_SUCCESS,
   GROUP_BLOCK_SUCCESS,
-} from 'soapbox/actions/groups';
+} from 'soapbox/actions/groups.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ListRecord = ImmutableRecord({
   next: null as string | null,

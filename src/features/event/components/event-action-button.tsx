@@ -1,13 +1,15 @@
-import React from 'react';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import checkIcon from '@tabler/icons/outline/check.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { joinEvent, leaveEvent } from 'soapbox/actions/events';
-import { openModal } from 'soapbox/actions/modals';
-import { Button } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { joinEvent, leaveEvent } from 'soapbox/actions/events.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   leaveConfirm: { id: 'confirmations.leave_event.confirm', defaultMessage: 'Leave event' },
@@ -70,14 +72,14 @@ const EventActionButton: React.FC<IEventAction> = ({ status, theme = 'secondary'
   switch (event.join_state) {
     case 'accept':
       buttonLabel = <FormattedMessage id='event.join_state.accept' defaultMessage='Going' />;
-      buttonIcon = require('@tabler/icons/outline/check.svg');
+      buttonIcon = checkIcon;
       break;
     case 'pending':
       buttonLabel = <FormattedMessage id='event.join_state.pending' defaultMessage='Pending' />;
       break;
     case 'reject':
       buttonLabel = <FormattedMessage id='event.join_state.rejected' defaultMessage='Going' />;
-      buttonIcon = require('@tabler/icons/outline/ban.svg');
+      buttonIcon = banIcon;
       buttonDisabled = true;
       break;
     default:

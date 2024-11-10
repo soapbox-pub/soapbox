@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { directComposeById } from 'soapbox/actions/compose';
-import { expandDirectTimeline } from 'soapbox/actions/timelines';
-import { useDirectStream } from 'soapbox/api/hooks';
-import AccountSearch from 'soapbox/components/account-search';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { directComposeById } from 'soapbox/actions/compose.ts';
+import { expandDirectTimeline } from 'soapbox/actions/timelines.ts';
+import { useDirectStream } from 'soapbox/api/hooks/index.ts';
+import AccountSearch from 'soapbox/components/account-search.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.direct', defaultMessage: 'Direct messages' },

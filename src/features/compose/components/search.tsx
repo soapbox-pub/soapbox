@@ -1,6 +1,8 @@
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -11,13 +13,14 @@ import {
   setSearchAccount,
   showSearch,
   submitSearch,
-} from 'soapbox/actions/search';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
-import { Input } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { selectAccount } from 'soapbox/selectors';
-import { AppDispatch, RootState } from 'soapbox/store';
+} from 'soapbox/actions/search.ts';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -111,7 +114,7 @@ const Search = (props: ISearch) => {
   const makeMenu = () => [
     {
       text: intl.formatMessage(messages.action, { query: value }),
-      icon: require('@tabler/icons/outline/search.svg'),
+      icon: searchIcon,
       action: handleSubmit,
     },
   ];
@@ -166,12 +169,12 @@ const Search = (props: ISearch) => {
           onClick={handleClear}
         >
           <SvgIcon
-            src={require('@tabler/icons/outline/search.svg')}
+            src={searchIcon}
             className={clsx('size-4 text-gray-600', { hidden: hasValue })}
           />
 
           <SvgIcon
-            src={require('@tabler/icons/outline/x.svg')}
+            src={xIcon}
             className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

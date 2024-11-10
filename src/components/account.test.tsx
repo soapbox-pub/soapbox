@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { buildAccount } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Account from './account';
+import Account from './account.tsx';
 
 describe('<Account />', () => {
   it('renders account name and username', () => {

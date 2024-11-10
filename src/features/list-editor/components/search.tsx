@@ -1,11 +1,15 @@
+import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists';
-import Icon from 'soapbox/components/icon';
-import { Button, Form, HStack, Input } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },
@@ -45,7 +49,7 @@ const Search = () => {
             placeholder={intl.formatMessage(messages.search)}
           />
           <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-            <Icon src={require('@tabler/icons/outline/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
+            <Icon src={backspaceIcon} aria-label={intl.formatMessage(messages.search)} className={clsx('svg-icon--backspace', { active: hasValue })} />
           </div>
         </label>
 

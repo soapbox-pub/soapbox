@@ -5,20 +5,20 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeNotification } from 'soapbox/normalizers/notification';
-import { validType } from 'soapbox/utils/notification';
+import { normalizeNotification } from 'soapbox/normalizers/notification.ts';
+import { validType } from 'soapbox/utils/notification.ts';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
   FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
   FOLLOW_REQUEST_REJECT_SUCCESS,
-} from '../actions/accounts';
+} from '../actions/accounts.ts';
 import {
   MARKER_FETCH_SUCCESS,
   MARKER_SAVE_REQUEST,
   MARKER_SAVE_SUCCESS,
-} from '../actions/markers';
+} from '../actions/markers.ts';
 import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
@@ -31,11 +31,11 @@ import {
   NOTIFICATIONS_DEQUEUE,
   NOTIFICATIONS_MARK_READ_REQUEST,
   MAX_QUEUED_NOTIFICATIONS,
-} from '../actions/notifications';
-import { TIMELINE_DELETE } from '../actions/timelines';
+} from '../actions/notifications.ts';
+import { TIMELINE_DELETE } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const QueuedNotificationRecord = ImmutableRecord({
   notification: {} as APIEntity,

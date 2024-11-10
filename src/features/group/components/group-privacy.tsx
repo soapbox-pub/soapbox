@@ -1,8 +1,13 @@
-import React from 'react';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Icon, Popover, Stack, Text } from 'soapbox/components/ui';
-import { Group } from 'soapbox/types/entities';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Popover from 'soapbox/components/ui/popover.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { Group } from 'soapbox/types/entities.ts';
 
 interface IGroupPolicy {
   group: Group;
@@ -17,8 +22,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
           <Icon
             src={
               group.locked
-                ? require('@tabler/icons/outline/lock.svg')
-                : require('@tabler/icons/outline/world.svg')
+                ? lockIcon
+                : worldIcon
             }
             className='size-6 text-gray-600 dark:text-gray-600'
           />
@@ -49,8 +54,8 @@ const GroupPrivacy = ({ group }: IGroupPolicy) => (
         className='size-4'
         src={
           group.locked
-            ? require('@tabler/icons/outline/lock.svg')
-            : require('@tabler/icons/outline/world.svg')
+            ? lockIcon
+            : worldIcon
         }
       />
 

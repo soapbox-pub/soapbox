@@ -1,6 +1,6 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 export const BACKUPS_FETCH_REQUEST = 'BACKUPS_FETCH_REQUEST';
 export const BACKUPS_FETCH_SUCCESS = 'BACKUPS_FETCH_SUCCESS';

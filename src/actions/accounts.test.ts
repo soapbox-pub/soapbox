@@ -1,10 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildInstance, buildRelationship } from 'soapbox/jest/factory';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { normalizeAccount } from 'soapbox/normalizers';
-import { ListRecord, ReducerRecord } from 'soapbox/reducers/user-lists';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildInstance, buildRelationship } from 'soapbox/jest/factory.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { normalizeAccount } from 'soapbox/normalizers/index.ts';
+import { ListRecord, ReducerRecord } from 'soapbox/reducers/user-lists.ts';
 
 import {
   authorizeFollowRequest,
@@ -25,7 +26,7 @@ import {
   unblockAccount,
   unmuteAccount,
   unsubscribeAccount,
-} from './accounts';
+} from './accounts.ts';
 
 let store: ReturnType<typeof mockStore>;
 

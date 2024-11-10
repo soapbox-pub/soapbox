@@ -1,13 +1,13 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import throttle from 'lodash/throttle';
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
-import { accountSearch } from 'soapbox/actions/accounts';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import { useAppDispatch } from 'soapbox/hooks';
+import { accountSearch } from 'soapbox/actions/accounts.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import type { Menu } from 'soapbox/components/dropdown-menu';
-import type { InputThemes } from 'soapbox/components/ui/input/input';
+import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
+import type { InputThemes } from 'soapbox/components/ui/input.tsx';
 
 const noOp = () => { };
 

@@ -1,16 +1,24 @@
-import React, { useRef } from 'react';
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import editIcon from '@tabler/icons/outline/edit.svg';
+import infoCircleIcon from '@tabler/icons/outline/info-circle.svg';
+import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Avatar, HStack, Icon, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
-import Chat from '../chat';
+import Chat from '../chat.tsx';
 
-import ChatPaneHeader from './chat-pane-header';
-import ChatSettings from './chat-settings';
+import ChatPaneHeader from './chat-pane-header.tsx';
+import ChatSettings from './chat-settings.tsx';
 
 const messages = defineMessages({
   autoDeleteMessage: { id: 'chat_window.auto_delete_label', defaultMessage: 'Auto-delete after {day, plural, one {# day} other {# days}}' },
@@ -72,7 +80,7 @@ const ChatWindow = () => {
             {isOpen && (
               <button onClick={closeChat}>
                 <Icon
-                  src={require('@tabler/icons/outline/arrow-left.svg')}
+                  src={arrowLeftIcon}
                   className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
                 />
               </button>
@@ -107,7 +115,7 @@ const ChatWindow = () => {
           </HStack>
         }
         secondaryAction={secondaryAction()}
-        secondaryActionIcon={isOpen ? require('@tabler/icons/outline/info-circle.svg') : require('@tabler/icons/outline/edit.svg')}
+        secondaryActionIcon={isOpen ? infoCircleIcon : editIcon}
         isToggleable={!isOpen}
         isOpen={isOpen}
         onToggle={toggleChatPane}

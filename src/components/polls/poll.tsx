@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { vote } from 'soapbox/actions/polls';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { vote } from 'soapbox/actions/polls.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import { Stack, Text } from '../ui';
-
-import PollFooter from './poll-footer';
-import PollOption from './poll-option';
+import PollFooter from './poll-footer.tsx';
+import PollOption from './poll-option.tsx';
 
 interface IPoll {
   id: string;

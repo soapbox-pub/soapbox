@@ -1,8 +1,7 @@
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { TagInput } from 'soapbox/components/ui';
-import { badgeToTag, tagToBadge } from 'soapbox/utils/badges';
+import TagInput from 'soapbox/components/ui/tag-input.tsx';
+import { badgeToTag, tagToBadge } from 'soapbox/utils/badges.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'badge_input.placeholder', defaultMessage: 'Enter a badge…' },

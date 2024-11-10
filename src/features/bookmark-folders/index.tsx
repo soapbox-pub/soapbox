@@ -1,13 +1,19 @@
-import React from 'react';
+import bookmarksIcon from '@tabler/icons/outline/bookmarks.svg';
+import folderIcon from '@tabler/icons/outline/folder.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { useBookmarkFolders } from 'soapbox/api/hooks';
-import List, { ListItem } from 'soapbox/components/list';
-import { Column, Emoji, HStack, Icon, Spinner, Stack } from 'soapbox/components/ui';
-import { useFeatures } from 'soapbox/hooks';
+import { useBookmarkFolders } from 'soapbox/api/hooks/index.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
-import NewFolderForm from './components/new-folder-form';
+import NewFolderForm from './components/new-folder-form.tsx';
 
 
 const messages = defineMessages({
@@ -40,7 +46,7 @@ const BookmarkFolders: React.FC = () => {
             to='/bookmarks/all'
             label={
               <HStack alignItems='center' space={2}>
-                <Icon src={require('@tabler/icons/outline/bookmarks.svg')} size={20} />
+                <Icon src={bookmarksIcon} size={20} />
                 <span><FormattedMessage id='bookmark_folders.all_bookmarks' defaultMessage='All bookmarks' /></span>
               </HStack>
             }
@@ -57,7 +63,7 @@ const BookmarkFolders: React.FC = () => {
                       src={folder.emoji_url || undefined}
                       className='size-5 flex-none'
                     />
-                  ) : <Icon src={require('@tabler/icons/outline/folder.svg')} size={20} />}
+                  ) : <Icon src={folderIcon} size={20} />}
                   <span>{folder.name}</span>
                 </HStack>
               }

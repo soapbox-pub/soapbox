@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link as Comp, LinkProps } from 'react-router-dom';
 
 const Link = (props: LinkProps) => (

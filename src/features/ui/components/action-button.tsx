@@ -1,4 +1,5 @@
-import React from 'react';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
@@ -8,13 +9,16 @@ import {
   unmuteAccount,
   authorizeFollowRequest,
   rejectFollowRequest,
-} from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import { useFollow } from 'soapbox/api/hooks';
-import { Button, HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures, useLoggedIn } from 'soapbox/hooks';
+} from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useFollow } from 'soapbox/api/hooks/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
@@ -154,7 +158,7 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       return (
         <Button
           onClick={handleRemoteFollow}
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           text={intl.formatMessage(messages.follow)}
           size='sm'
         />
@@ -219,12 +223,21 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       );
     } else if (!account.relationship?.blocking && !account.relationship?.muting) {
       // Follow & Unfollow
+
+      let icon: string | undefined;
+
+      if (isFollowing) {
+        icon = plusIcon;
+      } else if (blockedBy) {
+        icon = banIcon;
+      }
+
       return (
         <Button
           size='sm'
           disabled={blockedBy}
           theme={isFollowing ? 'secondary' : 'primary'}
-          icon={blockedBy ? require('@tabler/icons/outline/ban.svg') : (!isFollowing && require('@tabler/icons/outline/plus.svg'))}
+          icon={icon}
           onClick={handleFollow}
         >
           {isFollowing ? (

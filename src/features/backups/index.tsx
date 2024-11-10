@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchBackups, createBackup } from 'soapbox/actions/backups';
-import { Button, Card, Column, FormActions, HStack, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchBackups, createBackup } from 'soapbox/actions/backups.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import type { Backup as BackupEntity } from 'soapbox/reducers/backups';
+import type { Backup as BackupEntity } from 'soapbox/reducers/backups.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },

@@ -1,10 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
 import { AnyAction } from 'redux';
 
-import { LOCATION_SEARCH_SUCCESS } from 'soapbox/actions/events';
-import { normalizeLocation } from 'soapbox/normalizers/location';
+import { LOCATION_SEARCH_SUCCESS } from 'soapbox/actions/events.ts';
+import { normalizeLocation } from 'soapbox/normalizers/location.ts';
 
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 type LocationRecord = ReturnType<typeof normalizeLocation>;
 type State = ImmutableMap<any, LocationRecord>;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { type Account, accountSchema } from './account';
+import { type Account, accountSchema } from './account.ts';
 
 const addMethodsToAccount = (account: Account) => {
   return {

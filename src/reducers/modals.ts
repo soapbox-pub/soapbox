@@ -1,6 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
-import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
+import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals.ts';
 
 import type { AnyAction } from 'redux';
 

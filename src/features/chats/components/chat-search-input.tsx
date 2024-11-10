@@ -1,7 +1,9 @@
-import React from 'react';
+import searchIcon from '@tabler/icons/outline/search.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon, Input } from 'soapbox/components/ui';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },
@@ -34,7 +36,7 @@ const ChatSearchInput: React.FC<IChatSearchInput> = ({ value, onChange, onClear 
       append={
         <button onClick={onClear}>
           <Icon
-            src={value.length ? require('@tabler/icons/outline/x.svg') : require('@tabler/icons/outline/search.svg')}
+            src={value.length ? xIcon : searchIcon}
             className='size-4 text-gray-700 dark:text-gray-600'
             aria-hidden='true'
           />

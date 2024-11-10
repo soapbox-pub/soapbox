@@ -1,7 +1,7 @@
 /* eslint sort-keys: "error" */
 import { z } from 'zod';
 
-import { hexColorSchema } from '../utils';
+import { hexColorSchema } from '../utils.ts';
 
 export const cryptoAddressSchema = z.object({
   address: z.string(),

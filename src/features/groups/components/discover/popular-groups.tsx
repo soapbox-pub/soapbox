@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { usePopularGroups } from 'soapbox/api/hooks';
-import Link from 'soapbox/components/link';
-import { Carousel, HStack, Stack, Text } from 'soapbox/components/ui';
-import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover';
+import { usePopularGroups } from 'soapbox/api/hooks/index.ts';
+import Link from 'soapbox/components/link.tsx';
+import Carousel from 'soapbox/components/ui/carousel.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import PlaceholderGroupDiscover from 'soapbox/features/placeholder/components/placeholder-group-discover.tsx';
 
-import GroupGridItem from './group-grid-item';
+import GroupGridItem from './group-grid-item.tsx';
 
 const PopularGroups = () => {
   const { groups, isFetching, isFetched, isError } = usePopularGroups();

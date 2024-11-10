@@ -1,19 +1,19 @@
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useRef, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import LoadGap from 'soapbox/components/load-gap';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import StatusContainer from 'soapbox/containers/status-container';
-import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import LoadGap from 'soapbox/components/load-gap.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions.tsx';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { IScrollableList } from 'soapbox/components/scrollable-list';
+import type { IScrollableList } from 'soapbox/components/scrollable-list.tsx';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */

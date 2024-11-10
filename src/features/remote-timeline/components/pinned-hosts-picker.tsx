@@ -1,7 +1,6 @@
-import React from 'react';
-
-import { Button, HStack } from 'soapbox/components/ui';
-import { useSettings } from 'soapbox/hooks';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 interface IPinnedHostsPicker {
   /** The active host among pinned hosts. */

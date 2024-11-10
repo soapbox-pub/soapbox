@@ -1,10 +1,10 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
+import { fetchRelationships } from './accounts.ts';
+import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const DIRECTORY_FETCH_REQUEST = 'DIRECTORY_FETCH_REQUEST';
 const DIRECTORY_FETCH_SUCCESS = 'DIRECTORY_FETCH_SUCCESS';
