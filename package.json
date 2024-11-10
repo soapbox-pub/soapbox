@@ -187,10 +187,5 @@
     "vite-plugin-checker": "^0.8.0",
     "vite-plugin-pwa": "^0.20.5",
     "vitest": "^2.1.1"
-  },
-  "resolutions": {
-    "glob-parent": "^6.0.1",
-    "jsonwebtoken": "^9.0.0",
-    "loader-utils": "^2.0.3"
   }
 }
