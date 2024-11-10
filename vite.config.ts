@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
-import react from '@vitejs/plugin-react';
+import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { Connect, defineConfig, Plugin, UserConfig } from 'vite';
 import checker from 'vite-plugin-checker';
