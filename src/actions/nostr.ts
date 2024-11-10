@@ -21,7 +21,7 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
 
     let authorizedPubkey: string | undefined;
 
-    const bunker = new NBunker({
+    using bunker = new NBunker({
       relay,
       userSigner: signer,
       bunkerSigner: authorization.signer,
@@ -64,9 +64,6 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
     });
 
     await dispatch(verifyCredentials(accessToken));
-
-    // TODO: get rid of `vite-plugin-require` and switch to `using` for the bunker. :(
-    bunker.close();
   };
 }
 
