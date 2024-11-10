@@ -21,7 +21,7 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
 
     let authorizedPubkey: string | undefined;
 
-    using bunker = new NBunker({
+    const bunker = new NBunker({
       relay,
       userSigner: signer,
       bunkerSigner: authorization.signer,
@@ -64,6 +64,7 @@ function logInNostr(signer: NostrSigner, relay: NRelay1) {
     });
 
     await dispatch(verifyCredentials(accessToken));
+    bunker.close();
   };
 }
 
