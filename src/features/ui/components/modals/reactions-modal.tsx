@@ -10,7 +10,7 @@ import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 import { ReactionRecord } from 'soapbox/reducers/user-lists.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs.tsx';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 const messages = defineMessages({
   all: { id: 'reactions.all', defaultMessage: 'All' },

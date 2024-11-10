@@ -7,7 +7,7 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import { Button } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles.tsx';
+import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({

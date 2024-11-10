@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals.ts';
 import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements.ts';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
 import { Form, FormGroup, HStack, Modal, Stack, Text, Textarea, Toggle } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';

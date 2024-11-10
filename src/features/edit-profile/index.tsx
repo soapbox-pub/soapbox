@@ -25,7 +25,7 @@ import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 import AvatarPicker from './components/avatar-picker.tsx';
 import HeaderPicker from './components/header-picker.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 import type { Account } from 'soapbox/schemas/index.ts';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;

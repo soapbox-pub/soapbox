@@ -24,7 +24,7 @@ import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location.tsx';
 import LocationSearch from 'soapbox/components/location-search.tsx';
 import { checkEventComposeContent } from 'soapbox/components/modal-root.tsx';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
 import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui/index.ts';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';

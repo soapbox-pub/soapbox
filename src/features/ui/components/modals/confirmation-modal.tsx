@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import { Modal, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
 
-import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles.tsx';
+import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
 
 interface IConfirmationModal {
   heading: React.ReactNode;

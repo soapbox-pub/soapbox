@@ -7,7 +7,7 @@ import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { InputThemes } from 'soapbox/components/ui/input/input.tsx';
+import type { InputThemes } from 'soapbox/components/ui/input.tsx';
 
 const noOp = () => { };
 

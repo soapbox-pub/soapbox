@@ -8,7 +8,7 @@ import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines.t
 import { usePublicStream } from 'soapbox/api/hooks/index.ts';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
 import { Accordion, Column } from 'soapbox/components/ui/index.ts';
-import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown/language-dropdown.tsx';
+import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown.tsx';
 import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks/index.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 

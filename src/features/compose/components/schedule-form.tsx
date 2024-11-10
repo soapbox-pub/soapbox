@@ -3,7 +3,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { setSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
 import IconButton from 'soapbox/components/icon-button.tsx';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
 import { HStack, Stack, Text } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 

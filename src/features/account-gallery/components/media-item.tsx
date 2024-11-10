@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash.tsx';
 import StillImage from 'soapbox/components/still-image.tsx';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import { useSettings } from 'soapbox/hooks/index.ts';
 import { isIOS } from 'soapbox/is-mobile.ts';
 

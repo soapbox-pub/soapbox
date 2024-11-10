@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
 import { HStack, Input, Select } from 'soapbox/components/ui/index.ts';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 import { useInstance } from 'soapbox/hooks/index.ts';
 
 interface IRelayEditor {

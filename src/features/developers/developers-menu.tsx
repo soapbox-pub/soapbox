@@ -10,8 +10,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings.ts';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
 import { Column, Text } from 'soapbox/components/ui/index.ts';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 import sourceCode from 'soapbox/utils/code.ts';

@@ -7,7 +7,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { Modal, Button, Stack, Avatar, HStack } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';

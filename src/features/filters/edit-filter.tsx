@@ -12,7 +12,7 @@ import toast from 'soapbox/toast.tsx';
 
 import { SelectDropdown } from '../forms/index.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 
 interface IFilterField {
   id?: string;

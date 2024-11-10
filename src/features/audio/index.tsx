@@ -9,7 +9,7 @@ import throttle from 'lodash/throttle';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import { formatTime, getPointerPosition } from 'soapbox/features/video/index.tsx';
 
 import Visualizer from './visualizer.ts';

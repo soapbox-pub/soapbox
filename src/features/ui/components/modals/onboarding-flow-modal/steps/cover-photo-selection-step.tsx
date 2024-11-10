@@ -6,7 +6,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';

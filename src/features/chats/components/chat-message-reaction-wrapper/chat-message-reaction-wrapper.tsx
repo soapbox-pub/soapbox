@@ -1,6 +1,6 @@
 import { useState, useEffect, cloneElement } from 'react';
 
-import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector.tsx';
+import EmojiSelector from 'soapbox/components/ui/emoji-selector.tsx';
 import { Portal } from 'soapbox/components/ui/index.ts';
 
 interface IChatMessageReactionWrapper {

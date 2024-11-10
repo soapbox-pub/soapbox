@@ -3,8 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals.ts';
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr.ts';
-import Stack from 'soapbox/components/ui/stack/stack.tsx';
-import Text from 'soapbox/components/ui/text/text.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 

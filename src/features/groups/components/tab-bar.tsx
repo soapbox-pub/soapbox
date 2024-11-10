@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import { Tabs } from 'soapbox/components/ui/index.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs.tsx';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 export enum TabItems {
   MY_GROUPS = 'MY_GROUPS',

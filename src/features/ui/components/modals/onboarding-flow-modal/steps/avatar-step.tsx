@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui/index.ts';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';

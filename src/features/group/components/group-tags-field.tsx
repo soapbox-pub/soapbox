@@ -3,7 +3,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { Input, Streamfield } from 'soapbox/components/ui/index.ts';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 
 const messages = defineMessages({
   hashtagPlaceholder: { id: 'manage_group.fields.hashtag_placeholder', defaultMessage: 'Add a topic' },

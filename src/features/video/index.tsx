@@ -11,7 +11,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { defineMessages, useIntl } from 'react-intl';
 
 import Blurhash from 'soapbox/components/blurhash.tsx';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from 'soapbox/utils/media-aspect-ratio.ts';
 
