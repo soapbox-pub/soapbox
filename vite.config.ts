@@ -62,6 +62,7 @@ export default defineConfig(() => {
           name: 'Soapbox',
           short_name: 'Soapbox',
           description: 'A social media frontend with a focus on custom branding and ease of use.',
+          theme_color: '#0482d8',
         },
         srcDir: 'src/service-worker',
         filename: 'sw.ts',
