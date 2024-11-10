@@ -4,7 +4,8 @@ import { z } from 'zod';
 
 import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks/index.ts';
-import { Modal, Stack } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { useDebounce } from 'soapbox/hooks/index.ts';
 import { type Group } from 'soapbox/schemas/index.ts';
 import toast from 'soapbox/toast.tsx';

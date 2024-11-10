@@ -3,10 +3,11 @@ import { useEffect, useRef, useMemo, useCallback, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
 
+import { Card } from 'soapbox/components/ui/card.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useSettings } from 'soapbox/hooks/index.ts';
 
 import LoadMore from './load-more.tsx';
-import { Card, Spinner } from './ui/index.ts';
 
 /** Custom Viruoso component context. */
 type Context = {

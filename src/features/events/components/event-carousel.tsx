@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import EventPreview from 'soapbox/components/event-preview.tsx';
-import { Card, Icon } from 'soapbox/components/ui/index.ts';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 

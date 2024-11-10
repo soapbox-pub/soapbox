@@ -6,7 +6,9 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { Icon, Input, Stack } from 'soapbox/components/ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
 import { useDebounce } from 'soapbox/hooks/index.ts';
 import { useChats, ChatKeys } from 'soapbox/queries/chats.ts';

@@ -9,10 +9,10 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { setFilter } from 'soapbox/actions/notifications.ts';
 import Icon from 'soapbox/components/icon.tsx';
-import { Tabs } from 'soapbox/components/ui/index.ts';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks/index.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs.tsx';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },

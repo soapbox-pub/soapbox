@@ -3,7 +3,7 @@ import pinnedOffIcon from '@tabler/icons/outline/pinned-off.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
 import { pinHost, unpinHost } from 'soapbox/actions/remote-timeline.ts';
-import { Widget } from 'soapbox/components/ui/index.ts';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
 import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
 

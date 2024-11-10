@@ -9,11 +9,12 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatus } from 'soapbox/actions/statuses.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useOwnAccount, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
-
-import DropdownMenu from '../dropdown-menu/index.ts';
-import { Button, HStack, Text } from '../ui/index.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 

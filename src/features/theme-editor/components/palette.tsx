@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { HStack, Stack, Slider } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Slider from 'soapbox/components/ui/slider.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { usePrevious } from 'soapbox/hooks/index.ts';
 import { compareId } from 'soapbox/utils/comparators.ts';
 import { hueShift } from 'soapbox/utils/theme.ts';

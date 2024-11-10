@@ -1,7 +1,9 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-import { Text, Icon, Emoji } from 'soapbox/components/ui/index.ts';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 import type { EmojiReaction } from 'soapbox/schemas/index.ts';

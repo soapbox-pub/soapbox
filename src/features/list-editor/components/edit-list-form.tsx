@@ -1,7 +1,10 @@
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeListEditorTitle, submitListEditor } from 'soapbox/actions/lists.ts';
-import { Button, Form, HStack, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

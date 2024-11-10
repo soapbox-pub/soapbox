@@ -2,7 +2,12 @@ import { useState, useEffect, useRef, useCallback, useMemo, forwardRef } from 'r
 import { useIntl, defineMessages } from 'react-intl';
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import { Avatar, Button, Divider, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message.tsx';
 import { useAppSelector, useOwnAccount } from 'soapbox/hooks/index.ts';
 import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats.ts';

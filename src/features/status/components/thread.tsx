@@ -14,7 +14,7 @@ import { hideStatus, revealStatus } from 'soapbox/actions/statuses.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import StatusActionBar from 'soapbox/components/status-action-bar.tsx';
 import Tombstone from 'soapbox/components/tombstone.tsx';
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';

@@ -3,7 +3,9 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
 import { useMutes, useGroupMutes } from 'soapbox/api/hooks/index.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Stack, Tabs } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useFeatures } from 'soapbox/hooks/index.ts';
 

@@ -1,7 +1,11 @@
 import { FormattedMessage } from 'react-intl';
 
 import useCaptcha from 'soapbox/api/hooks/captcha/useCaptcha.ts';
-import { Modal, Button, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import { PuzzleCaptcha } from './components/puzzle.tsx';
 

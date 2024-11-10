@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 interface IPlaceholderAvatar {
   size: number;

@@ -5,12 +5,15 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui/index.ts';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 import { ReactionRecord } from 'soapbox/reducers/user-lists.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs.tsx';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 const messages = defineMessages({
   all: { id: 'reactions.all', defaultMessage: 'All' },

@@ -3,8 +3,10 @@ import debounce from 'lodash/debounce';
 import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
-import { Button, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useOnboardingSuggestions } from 'soapbox/queries/suggestions.ts';
 

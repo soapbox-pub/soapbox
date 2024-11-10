@@ -6,7 +6,12 @@ import { Link } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { nostrExtensionLogIn } from 'soapbox/actions/nostr.ts';
 import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
-import { Button, Stack, Modal, Text, Divider, HStack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { useAppDispatch, useInstance, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 

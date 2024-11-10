@@ -5,7 +5,10 @@ import { useLocation } from 'react-router-dom';
 
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory.ts';
 import LoadMore from 'soapbox/components/load-more.tsx';
-import { Column, RadioButton, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import RadioButton from 'soapbox/components/ui/radio-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
 
 import AccountCard from './components/account-card.tsx';

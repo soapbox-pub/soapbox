@@ -4,6 +4,13 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
@@ -12,7 +19,6 @@ import { displayFqn } from 'soapbox/utils/state.ts';
 
 import Badge from './badge.tsx';
 import RelativeTimestamp from './relative-timestamp.tsx';
-import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui/index.ts';
 
 import type { StatusApprovalStatus } from 'soapbox/normalizers/status.ts';
 import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';

@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Modal } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
 import { useFeatures } from 'soapbox/hooks/index.ts';
 
 interface IHotkeysModal {

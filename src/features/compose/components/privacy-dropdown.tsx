@@ -13,7 +13,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import { changeComposeVisibility } from 'soapbox/actions/compose.ts';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import Icon from 'soapbox/components/icon.tsx';
-import { IconButton } from 'soapbox/components/ui/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 

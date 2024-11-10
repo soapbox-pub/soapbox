@@ -1,6 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Widget, Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 
 import ProfileField from './profile-field.tsx';
 

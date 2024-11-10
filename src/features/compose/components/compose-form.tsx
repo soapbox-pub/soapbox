@@ -16,7 +16,9 @@ import {
   uploadCompose,
 } from 'soapbox/actions/compose.ts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
-import { Button, HStack, Stack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks/index.ts';

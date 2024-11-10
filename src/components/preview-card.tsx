@@ -7,7 +7,10 @@ import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash.tsx';
-import { HStack, Stack, Text, Icon } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
 import { addAutoPlay } from 'soapbox/utils/media.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';

@@ -13,13 +13,17 @@ import {
 } from 'soapbox/actions/profile-hover-card.ts';
 import { useAccount, usePatronUser } from 'soapbox/api/hooks/index.ts';
 import Badge from 'soapbox/components/badge.tsx';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import { UserPanel } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import { showProfileHoverCard } from './hover-ref-wrapper.tsx';
 import { dateFormatOptions } from './relative-timestamp.tsx';
-import { Card, CardBody, HStack, Icon, Stack, Text } from './ui/index.ts';
 
 import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
 import type { AppDispatch } from 'soapbox/store.ts';

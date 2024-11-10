@@ -3,7 +3,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { useGroup, useGroupTags } from 'soapbox/api/hooks/index.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Icon, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account.tsx';
 

@@ -3,12 +3,15 @@ import userIcon from '@tabler/icons/outline/user.svg';
 import clsx from 'clsx';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import EventActionButton from 'soapbox/features/event/components/event-action-button.tsx';
 import EventDate from 'soapbox/features/event/components/event-date.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 import Icon from './icon.tsx';
-import { Button, HStack, Stack, Text } from './ui/index.ts';
 import VerificationBadge from './verification-badge.tsx';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';

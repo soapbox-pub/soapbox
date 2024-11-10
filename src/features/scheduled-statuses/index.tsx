@@ -4,7 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchScheduledStatuses, expandScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import ScheduledStatus from './components/scheduled-status.tsx';

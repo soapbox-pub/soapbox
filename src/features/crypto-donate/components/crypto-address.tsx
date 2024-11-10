@@ -3,7 +3,10 @@ import qrcodeIcon from '@tabler/icons/outline/qrcode.svg';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import { Text, Icon, Stack, HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import { getExplorerUrl } from '../utils/block-explorer.ts';

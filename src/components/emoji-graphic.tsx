@@ -1,4 +1,4 @@
-import Emoji from 'soapbox/components/ui/emoji/emoji.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
 
 interface IEmojiGraphic {
   emoji: string;

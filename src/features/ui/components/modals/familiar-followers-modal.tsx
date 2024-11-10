@@ -2,7 +2,8 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Modal, Spinner } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';

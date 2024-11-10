@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Textarea, Form, Button, FormGroup, FormActions, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 import { captureSentryFeedback } from 'soapbox/sentry.ts';
 

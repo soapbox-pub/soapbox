@@ -4,16 +4,13 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { patchMe } from 'soapbox/actions/me.ts';
 import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import {
-  CardHeader,
-  CardTitle,
-  Column,
-  Button,
-  Form,
-  FormActions,
-  FormGroup,
-  Textarea,
-} from 'soapbox/components/ui/index.ts';
+import { Button } from 'soapbox/components/ui/button.tsx';
+import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
 import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';

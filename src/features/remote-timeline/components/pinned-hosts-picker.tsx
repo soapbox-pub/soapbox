@@ -1,4 +1,5 @@
-import { Button, HStack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useSettings } from 'soapbox/hooks/index.ts';
 
 interface IPinnedHostsPicker {

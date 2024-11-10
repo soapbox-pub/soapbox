@@ -1,6 +1,6 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
 const messages = defineMessages({
   title: { id: 'column_forbidden.title', defaultMessage: 'Forbidden' },

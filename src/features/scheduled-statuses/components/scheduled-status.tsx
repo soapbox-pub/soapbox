@@ -4,7 +4,8 @@ import Account from 'soapbox/components/account.tsx';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
 import StatusContent from 'soapbox/components/status-content.tsx';
 import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
-import { HStack, Stack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import PollPreview from 'soapbox/features/ui/components/poll-preview.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 

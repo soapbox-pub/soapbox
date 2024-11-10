@@ -2,7 +2,8 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import { Icon, Text } from './ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface ISidebarNavigationLink {
   /** Notification count, if any. */

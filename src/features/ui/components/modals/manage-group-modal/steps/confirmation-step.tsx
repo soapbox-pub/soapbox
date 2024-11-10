@@ -2,7 +2,12 @@ import linkIcon from '@tabler/icons/outline/link.svg';
 import shareIcon from '@tabler/icons/outline/share.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Avatar, Divider, HStack, Stack, Text, Button } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import toast from 'soapbox/toast.tsx';
 import copy from 'soapbox/utils/copy.ts';
 

@@ -1,10 +1,12 @@
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import GroupHeaderImage from 'soapbox/features/group/components/group-header-image.tsx';
 import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
 import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
 import GroupRelationship from 'soapbox/features/group/components/group-relationship.tsx';
 
 import GroupAvatar from './groups/group-avatar.tsx';
-import { HStack, Stack, Text } from './ui/index.ts';
 
 import type { Group as GroupEntity } from 'soapbox/types/entities.ts';
 

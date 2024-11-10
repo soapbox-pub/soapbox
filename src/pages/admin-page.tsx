@@ -1,4 +1,4 @@
-import { Layout } from 'soapbox/components/ui/index.ts';
+import Layout from 'soapbox/components/ui/layout.tsx';
 import {
   LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components.ts';

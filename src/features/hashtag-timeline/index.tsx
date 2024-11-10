@@ -5,7 +5,8 @@ import { fetchHashtag, followHashtag, unfollowHashtag } from 'soapbox/actions/ta
 import { expandHashtagTimeline, clearTimeline } from 'soapbox/actions/timelines.ts';
 import { useHashtagStream } from 'soapbox/api/hooks/index.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Column, Toggle } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
 import { useAppDispatch, useAppSelector, useFeatures, useLoggedIn, useTheme } from 'soapbox/hooks/index.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';

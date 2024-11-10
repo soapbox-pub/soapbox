@@ -11,6 +11,10 @@ import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
@@ -25,7 +29,6 @@ import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
-import { Card, Icon, Stack, Text } from './ui/index.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 

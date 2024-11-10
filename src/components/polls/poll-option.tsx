@@ -4,7 +4,9 @@ import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import type {
   Poll as PollEntity,

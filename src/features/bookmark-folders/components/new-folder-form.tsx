@@ -1,7 +1,10 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { useCreateBookmarkFolder } from 'soapbox/api/hooks/index.ts';
-import { Button, Form, HStack, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 import { useTextField } from 'soapbox/hooks/forms/index.ts';
 import toast from 'soapbox/toast.tsx';
 

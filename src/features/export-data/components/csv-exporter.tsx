@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { MessageDescriptor, useIntl } from 'react-intl';
 
-import { Button, Form, FormActions, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import { AppDispatch, RootState } from 'soapbox/store.ts';
 

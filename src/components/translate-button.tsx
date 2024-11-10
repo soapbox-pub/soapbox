@@ -2,9 +2,10 @@ import languageIcon from '@tabler/icons/outline/language.svg';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
-
-import { Stack, Button, Text } from './ui/index.ts';
 
 import type { Status } from 'soapbox/types/entities.ts';
 

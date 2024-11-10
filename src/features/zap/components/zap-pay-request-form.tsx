@@ -14,9 +14,13 @@ import coinIcon from 'soapbox/assets/icons/coin.png';
 import moneyBag from 'soapbox/assets/icons/money-bag.png';
 import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline.tsx';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon.tsx';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
-import { Stack, Button, Input, Avatar, Text } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 
 import ZapButton from './zap-button/zap-button.tsx';

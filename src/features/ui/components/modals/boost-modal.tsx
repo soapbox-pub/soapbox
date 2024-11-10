@@ -2,7 +2,9 @@ import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { Modal, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';

@@ -1,8 +1,9 @@
 import { useIntl, defineMessages } from 'react-intl';
 
-import { HStack, Input } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield.tsx';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 import type { CryptoAddress } from 'soapbox/types/soapbox.ts';
 
 const messages = defineMessages({

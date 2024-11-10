@@ -14,7 +14,7 @@ import Markup from './markup.tsx';
 import Mention from './mention.tsx';
 import Poll from './polls/poll.tsx';
 
-import type { Sizes } from 'soapbox/components/ui/text/text.tsx';
+import type { Sizes } from 'soapbox/components/ui/text.tsx';
 import type { Status } from 'soapbox/types/entities.ts';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)

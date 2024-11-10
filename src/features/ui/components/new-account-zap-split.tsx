@@ -4,7 +4,10 @@ import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account.tsx';
 import { ListItem } from 'soapbox/components/list.tsx';
-import { Button, HStack, Input, Slider } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Slider from 'soapbox/components/ui/slider.tsx';
 import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split.tsx';
 import { type Account as AccountEntity } from 'soapbox/schemas/index.ts';
 

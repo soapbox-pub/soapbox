@@ -8,7 +8,7 @@ import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavourit
 import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import StatusList from 'soapbox/components/status-list.tsx';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

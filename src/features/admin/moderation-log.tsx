@@ -2,7 +2,9 @@ import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { useModerationLog } from 'soapbox/api/hooks/admin/index.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import type { ModerationLogEntry } from 'soapbox/schemas/index.ts';
 

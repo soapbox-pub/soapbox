@@ -1,4 +1,4 @@
-import { Layout } from 'soapbox/components/ui/index.ts';
+import Layout from 'soapbox/components/ui/layout.tsx';
 import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,

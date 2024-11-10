@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useCallback, useRef } from 'react';
 
 import { changeMediaOrder } from 'soapbox/actions/compose.ts';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
 import UploadProgress from './upload-progress.tsx';

@@ -4,7 +4,10 @@ import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { HStack, Icon, IconButton, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useDraggedFiles } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth.ts';
-import { Text } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
 import emojify from 'soapbox/features/emoji/index.ts';
 import { useSoapboxConfig, useOwnAccount, useFeatures, useAppDispatch } from 'soapbox/hooks/index.ts';
 import sourceCode from 'soapbox/utils/code.ts';

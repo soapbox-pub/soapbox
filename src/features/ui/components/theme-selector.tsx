@@ -6,7 +6,8 @@ import sunIcon from '@tabler/icons/outline/sun.svg';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon, Select } from 'soapbox/components/ui/index.ts';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Select from 'soapbox/components/ui/select.tsx';
 
 const messages = defineMessages({
   light: { id: 'theme_toggle.light', defaultMessage: 'Light' },

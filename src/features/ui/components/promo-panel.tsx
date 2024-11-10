@@ -1,5 +1,7 @@
 import ForkAwesomeIcon from 'soapbox/components/fork-awesome-icon.tsx';
-import { Widget, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useInstance, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
 
 const PromoPanel: React.FC = () => {

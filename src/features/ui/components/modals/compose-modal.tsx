@@ -7,7 +7,10 @@ import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soap
 import { openModal, closeModal } from 'soapbox/actions/modals.ts';
 import { useGroup } from 'soapbox/api/hooks/index.ts';
 import { checkComposeContent } from 'soapbox/components/modal-root.tsx';
-import { HStack, Modal, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soapbox/hooks/index.ts';
 
 import ComposeForm from '../../../compose/components/compose-form.tsx';

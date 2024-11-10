@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { usePendingGroups } from 'soapbox/api/hooks/index.ts';
 import GroupCard from 'soapbox/components/group-card.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column, Stack, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card.tsx';
 

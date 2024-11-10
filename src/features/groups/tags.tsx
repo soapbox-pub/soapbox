@@ -3,7 +3,8 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
 import { usePopularTags } from 'soapbox/api/hooks/index.ts';
-import { Column, Text } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import TagListItem from './components/discover/tag-list-item.tsx';
 

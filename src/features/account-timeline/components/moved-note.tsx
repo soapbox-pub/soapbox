@@ -3,7 +3,8 @@ import { FormattedMessage } from 'react-intl';
 
 import Account from 'soapbox/components/account.tsx';
 import Icon from 'soapbox/components/icon.tsx';
-import { HStack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
 

@@ -2,7 +2,7 @@ import editIcon from '@tabler/icons/outline/edit.svg';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
 import { useDebounce, useFeatures } from 'soapbox/hooks/index.ts';

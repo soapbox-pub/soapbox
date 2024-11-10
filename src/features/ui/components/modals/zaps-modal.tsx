@@ -4,7 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchZaps, expandZaps } from 'soapbox/actions/interactions.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Modal, Spinner, Text } from 'soapbox/components/ui/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';

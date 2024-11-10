@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { expandCommunityTimeline } from 'soapbox/actions/timelines.ts';
 import { useCommunityStream } from 'soapbox/api/hooks/index.ts';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppSelector, useAppDispatch, useInstance, useTheme } from 'soapbox/hooks/index.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 

@@ -4,12 +4,13 @@ import { PureComponent } from 'react';
 
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
 import Icon from 'soapbox/components/icon.tsx';
-import { Input, Portal } from 'soapbox/components/ui/index.ts';
+import Input from 'soapbox/components/ui/input.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
 import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account.tsx';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
-import type { InputThemes } from 'soapbox/components/ui/input/input.tsx';
+import type { InputThemes } from 'soapbox/components/ui/input.tsx';
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 export type AutoSuggestion = string | Emoji;

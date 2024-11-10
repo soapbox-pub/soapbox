@@ -1,7 +1,8 @@
 import { useIntl, defineMessages } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
-import { HStack, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 import type { Account } from 'soapbox/schemas/index.ts';

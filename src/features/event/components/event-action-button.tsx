@@ -4,10 +4,10 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { joinEvent, leaveEvent } from 'soapbox/actions/events.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
-import { Button } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
 import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
 
-import type { ButtonThemes } from 'soapbox/components/ui/button/useButtonStyles.tsx';
+import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({

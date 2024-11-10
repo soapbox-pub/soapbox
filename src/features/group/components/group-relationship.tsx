@@ -2,7 +2,9 @@ import gavelIcon from '@tabler/icons/outline/gavel.svg';
 import usersIcon from '@tabler/icons/outline/users.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import { Group } from 'soapbox/types/entities.ts';
 

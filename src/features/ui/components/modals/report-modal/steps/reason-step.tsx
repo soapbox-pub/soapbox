@@ -3,7 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeReportComment, changeReportRule, ReportableEntities } from 'soapbox/actions/reports.ts';
-import { FormGroup, Stack, Text, Textarea } from 'soapbox/components/ui/index.ts';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

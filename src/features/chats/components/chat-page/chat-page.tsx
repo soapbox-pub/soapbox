@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { useOwnAccount } from 'soapbox/hooks/index.ts';
 
 import ChatPageMain from './components/chat-page-main.tsx';

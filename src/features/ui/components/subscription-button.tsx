@@ -7,7 +7,7 @@ import {
   unsubscribeAccount,
 } from 'soapbox/actions/accounts.ts';
 import { useFollow } from 'soapbox/api/hooks/index.ts';
-import { IconButton } from 'soapbox/components/ui/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 

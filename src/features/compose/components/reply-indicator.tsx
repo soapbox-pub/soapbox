@@ -3,7 +3,7 @@ import clsx from 'clsx';
 
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
 import Markup from 'soapbox/components/markup.tsx';
-import { Stack } from 'soapbox/components/ui/index.ts';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 

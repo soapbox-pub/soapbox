@@ -3,7 +3,11 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import { fetchBackupCodes } from 'soapbox/actions/mfa.ts';
-import { Button, FormActions, Spinner, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 

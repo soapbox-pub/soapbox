@@ -2,7 +2,9 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
 import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
-import { Button, HStack, Text } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { type Group } from 'soapbox/schemas/index.ts';
 import toast from 'soapbox/toast.tsx';
 

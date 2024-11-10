@@ -10,7 +10,13 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
 import GroupCard from 'soapbox/components/group-card.tsx';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import StatusContent from 'soapbox/components/status-content.tsx';
-import { Avatar, HStack, Icon, Modal, ProgressBar, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import ProgressBar from 'soapbox/components/ui/progress-bar.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
 

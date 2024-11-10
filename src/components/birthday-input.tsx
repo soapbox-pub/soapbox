@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { useInstance, useFeatures } from 'soapbox/hooks/index.ts';
 
-import { Datetime } from './ui/datetime/datetime.tsx';
+import { Datetime } from './ui/datetime.tsx';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },

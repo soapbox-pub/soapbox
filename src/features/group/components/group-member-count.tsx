@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Text } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
 import { Group } from 'soapbox/types/entities.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 

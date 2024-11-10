@@ -3,7 +3,14 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { closeModal } from 'soapbox/actions/modals.ts';
 import { useDomains } from 'soapbox/api/hooks/admin/index.ts';
-import { Form, FormGroup, HStack, Input, Modal, Stack, Text, Toggle } from 'soapbox/components/ui/index.ts';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useAppDispatch } from 'soapbox/hooks/index.ts';
 import { Domain } from 'soapbox/schemas/index.ts';
 import toast from 'soapbox/toast.tsx';

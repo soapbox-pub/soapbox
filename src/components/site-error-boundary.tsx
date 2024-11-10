@@ -3,7 +3,10 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
 import { NODE_ENV } from 'soapbox/build-config.ts';
-import { HStack, Text, Stack, Textarea } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
 import { captureSentryException } from 'soapbox/sentry.ts';
 import KVStore from 'soapbox/storage/kv-store.ts';

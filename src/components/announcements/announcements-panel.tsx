@@ -6,7 +6,9 @@ import ReactSwipeableViews from 'react-swipeable-views';
 import { createSelector } from 'reselect';
 
 import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
-import { Card, HStack, Widget } from 'soapbox/components/ui/index.ts';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
 import { useAppSelector } from 'soapbox/hooks/index.ts';
 
 import Announcement from './announcement.tsx';

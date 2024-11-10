@@ -1,4 +1,5 @@
-import { HStack, Stack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 import PlaceholderAvatar from './placeholder-avatar.tsx';
 import PlaceholderDisplayName from './placeholder-display-name.tsx';

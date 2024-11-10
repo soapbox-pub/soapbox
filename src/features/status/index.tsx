@@ -9,7 +9,8 @@ import {
 } from 'soapbox/actions/statuses.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column, Stack } from 'soapbox/components/ui/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import { useAppDispatch, useAppSelector, useLoggedIn } from 'soapbox/hooks/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';

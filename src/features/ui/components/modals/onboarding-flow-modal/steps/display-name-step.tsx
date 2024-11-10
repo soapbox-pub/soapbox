@@ -3,8 +3,12 @@ import { useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button.tsx';
-import { Button, Stack, Text, FormGroup, Input } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
 import toast from 'soapbox/toast.tsx';
 

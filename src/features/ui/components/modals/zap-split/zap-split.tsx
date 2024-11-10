@@ -4,7 +4,9 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Account from 'soapbox/components/account.tsx';
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import { Button, Stack, HStack } from 'soapbox/components/ui/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
 const messages = defineMessages({

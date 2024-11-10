@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import AccountComponent from 'soapbox/components/account.tsx';
 import Icon from 'soapbox/components/icon.tsx';
-import { HStack } from 'soapbox/components/ui/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
 const messages = defineMessages({
   birthday: { id: 'account.birthday', defaultMessage: 'Born {date}' },

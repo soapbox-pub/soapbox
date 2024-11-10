@@ -1,7 +1,7 @@
 import { FormattedNumber } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Text } from 'soapbox/components/ui/index.ts';
+import Text from 'soapbox/components/ui/text.tsx';
 import { isNumber } from 'soapbox/utils/numbers.tsx';
 
 interface IDashCounter {

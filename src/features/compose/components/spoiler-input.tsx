@@ -4,7 +4,9 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { changeComposeSpoilerness, changeComposeSpoilerText } from 'soapbox/actions/compose.ts';
 import AutosuggestInput, { IAutosuggestInput } from 'soapbox/components/autosuggest-input.tsx';
-import { Divider, Stack, Text } from 'soapbox/components/ui/index.ts';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
 
 const messages = defineMessages({
