@@ -6,7 +6,7 @@ import FormActions from 'soapbox/components/ui/form-actions.tsx';
 import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 const messages = defineMessages({
   username: {

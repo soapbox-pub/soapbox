@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 
 import { type INewAccount } from 'soapbox/features/admin/manage-zap-split.tsx';
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { baseZapAccountSchema, ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 import toast from 'soapbox/toast.tsx';
 

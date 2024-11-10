@@ -3,7 +3,7 @@ import { $getRoot } from 'lexical';
 import { useEffect } from 'react';
 
 import { setEditorState } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 interface IStatePlugin {
   composeId: string;

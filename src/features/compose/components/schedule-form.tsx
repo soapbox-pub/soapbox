@@ -7,7 +7,8 @@ import { Datetime } from 'soapbox/components/ui/datetime.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },

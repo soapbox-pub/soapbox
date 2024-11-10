@@ -6,7 +6,7 @@ import LoadMore from 'soapbox/components/load-more.tsx';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import MediaItem from '../account-gallery/components/media-item.tsx';
 

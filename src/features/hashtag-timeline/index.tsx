@@ -8,8 +8,12 @@ import List, { ListItem } from 'soapbox/components/list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppDispatch, useAppSelector, useFeatures, useLoggedIn, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 interface IHashtagTimeline {
   params?: {

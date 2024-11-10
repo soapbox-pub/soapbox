@@ -5,7 +5,10 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import Emoji from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector, useSoapboxConfig, useFeatures, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 

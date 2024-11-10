@@ -14,7 +14,8 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
 import { messages as emojiMessages } from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
 import { useTextField } from 'soapbox/hooks/forms/index.ts';
-import { useAppDispatch, useClickOutside } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { Emoji as EmojiType } from 'soapbox/features/emoji/index.ts';

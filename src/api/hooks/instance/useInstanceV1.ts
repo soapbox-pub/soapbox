@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { InstanceV1, instanceV1Schema } from 'soapbox/schemas/instance.ts';
 
 interface Opts {

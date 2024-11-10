@@ -6,7 +6,7 @@ import { endOnboarding } from 'soapbox/actions/onboarding.ts';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import AvatarSelectionModal from './steps/avatar-step.tsx';
 import BioStep from './steps/bio-step.tsx';

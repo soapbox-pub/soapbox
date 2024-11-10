@@ -20,7 +20,8 @@ import {
   SignUpPanel,
   SuggestedGroupsPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 import type { Group } from 'soapbox/schemas/index.ts';
 

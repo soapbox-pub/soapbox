@@ -6,7 +6,7 @@ import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useClickOutside } from 'soapbox/hooks/index.ts';
+import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
 
 import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown.tsx';
 

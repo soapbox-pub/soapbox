@@ -8,16 +8,12 @@ import * as BuildConfig from 'soapbox/build-config.ts';
 import LoadingScreen from 'soapbox/components/loading-screen.tsx';
 import { ScrollContext } from 'soapbox/components/scroll-context.tsx';
 import SiteErrorBoundary from 'soapbox/components/site-error-boundary.tsx';
-import {
-  ModalContainer,
-} from 'soapbox/features/ui/util/async-components.ts';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useLoggedIn,
-  useOwnAccount,
-  useSoapboxConfig,
-} from 'soapbox/hooks/index.ts';
+import { ModalContainer } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { useCachedLocationHandler } from 'soapbox/utils/redirect.ts';
 
 const GdprBanner = lazy(() => import('soapbox/components/gdpr-banner.tsx'));

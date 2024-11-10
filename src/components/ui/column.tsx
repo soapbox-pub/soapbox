@@ -4,7 +4,7 @@ import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from './card.tsx';
 

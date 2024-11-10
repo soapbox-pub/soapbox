@@ -11,7 +11,10 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
 
 import ComposeForm from '../../../compose/components/compose-form.tsx';
 

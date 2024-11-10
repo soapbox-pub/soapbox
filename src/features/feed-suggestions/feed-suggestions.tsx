@@ -7,7 +7,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import ActionButton from '../ui/components/action-button.tsx';
 import { HotKeys } from '../ui/components/hotkeys.tsx';

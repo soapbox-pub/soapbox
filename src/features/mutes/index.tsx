@@ -7,7 +7,7 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Tabs from 'soapbox/components/ui/tabs.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 import GroupListItem from './components/group-list-item.tsx';
 

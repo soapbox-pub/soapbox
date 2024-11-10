@@ -33,7 +33,10 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ProfileStats from 'soapbox/features/ui/components/profile-stats.tsx';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 import { makeGetOtherAccounts } from 'soapbox/selectors/index.ts';
 

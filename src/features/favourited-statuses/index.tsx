@@ -9,7 +9,9 @@ import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import StatusList from 'soapbox/components/status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },

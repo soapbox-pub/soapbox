@@ -12,7 +12,9 @@ import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
-import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import toast from 'soapbox/toast.tsx';
 
 const isJSONValid = (text: any): boolean => {

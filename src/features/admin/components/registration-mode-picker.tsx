@@ -2,7 +2,8 @@ import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
 import { updateConfig } from 'soapbox/actions/admin.ts';
 import { RadioGroup, RadioItem } from 'soapbox/components/radio.tsx';
-import { useAppDispatch, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { InstanceV2 } from 'soapbox/schemas/instance.ts';
 import toast from 'soapbox/toast.tsx';
 

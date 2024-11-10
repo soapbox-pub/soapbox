@@ -9,7 +9,11 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Counter from 'soapbox/components/ui/counter.tsx';
 import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
 import Preferences from '../preferences/index.tsx';

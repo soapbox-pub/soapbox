@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import QuotedStatus from 'soapbox/components/quoted-status.tsx';
 import Tombstone from 'soapbox/components/tombstone.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IQuotedStatusContainer {

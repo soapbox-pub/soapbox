@@ -8,7 +8,9 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppDispatch, useCompose, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 import DurationSelector from './duration-selector.tsx';
 

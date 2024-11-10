@@ -17,7 +17,9 @@ import {
   PinnedAccountsPanel,
   AccountNotePanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { getAcct } from 'soapbox/utils/accounts.ts';
 
 interface IProfilePage {

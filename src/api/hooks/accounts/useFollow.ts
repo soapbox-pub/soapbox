@@ -1,7 +1,9 @@
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi, useAppDispatch, useLoggedIn } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
 import { relationshipSchema } from 'soapbox/schemas/index.ts';
 
 interface FollowOpts {

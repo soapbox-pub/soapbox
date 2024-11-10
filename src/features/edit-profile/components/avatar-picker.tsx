@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
-import { useDraggedFiles } from 'soapbox/hooks/index.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
 
 interface IMediaInput {
   className?: string;

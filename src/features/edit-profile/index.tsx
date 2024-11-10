@@ -16,7 +16,11 @@ import Streamfield from 'soapbox/components/ui/streamfield.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useImageField } from 'soapbox/hooks/forms/index.ts';
-import { useAppDispatch, useOwnAccount, useFeatures, useInstance, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import toast from 'soapbox/toast.tsx';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 

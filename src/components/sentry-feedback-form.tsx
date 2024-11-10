@@ -7,7 +7,7 @@ import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { captureSentryFeedback } from 'soapbox/sentry.ts';
 
 interface ISentryFeedbackForm {

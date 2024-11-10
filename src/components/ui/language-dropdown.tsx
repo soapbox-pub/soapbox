@@ -4,7 +4,7 @@ import { openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
 import DropdownMenu, { MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import { languages } from 'soapbox/features/preferences/index.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 function formatLanguages(languageMap: Record<string, string>) {
   const langCodes = Object.keys(languageMap).sort().map((sig) => {

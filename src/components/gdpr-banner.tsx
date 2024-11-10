@@ -7,7 +7,8 @@ import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 const acceptedGdpr = !!localStorage.getItem('soapbox:gdpr');
 

@@ -18,7 +18,8 @@ import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
-import { useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';

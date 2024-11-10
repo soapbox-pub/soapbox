@@ -8,7 +8,7 @@ import Form from 'soapbox/components/ui/form.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
 
 type FormData = {

@@ -10,7 +10,9 @@ import { defineMessages, useIntl } from 'react-intl';
 import { setFilter } from 'soapbox/actions/notifications.ts';
 import Icon from 'soapbox/components/icon.tsx';
 import Tabs from 'soapbox/components/ui/tabs.tsx';
-import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import type { Item } from 'soapbox/components/ui/tabs.tsx';
 

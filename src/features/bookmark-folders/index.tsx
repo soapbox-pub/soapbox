@@ -11,7 +11,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 import NewFolderForm from './components/new-folder-form.tsx';
 

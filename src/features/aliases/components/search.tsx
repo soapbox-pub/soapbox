@@ -5,7 +5,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases.ts';
 import Icon from 'soapbox/components/icon.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },

@@ -1,6 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { selectEntity } from 'soapbox/entity-store/selectors.ts';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { type BookmarkFolder } from 'soapbox/schemas/bookmark-folder.ts';
 
 import { useBookmarkFolders } from './useBookmarkFolders.ts';

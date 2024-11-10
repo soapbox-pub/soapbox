@@ -13,7 +13,8 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import NewFolderForm from 'soapbox/features/bookmark-folders/components/new-folder-form.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';

@@ -12,7 +12,9 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import { useAppDispatch, useAppSelector, useLoggedIn } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import ThreadLoginCta from './components/thread-login-cta.tsx';

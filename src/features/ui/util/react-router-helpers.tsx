@@ -3,7 +3,8 @@ import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType, useLocation } from 'react-router-dom';
 
 import Layout from 'soapbox/components/ui/layout.tsx';
-import { useOwnAccount, useSettings } from 'soapbox/hooks/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import ColumnForbidden from '../components/column-forbidden.tsx';
 import ColumnLoading from '../components/column-loading.tsx';

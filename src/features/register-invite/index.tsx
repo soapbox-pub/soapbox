@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import { BigCard } from 'soapbox/components/big-card.tsx';
 import RegistrationForm from 'soapbox/features/auth-login/components/registration-form.tsx';
-import { useInstance } from 'soapbox/hooks/index.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 interface RegisterInviteParams {
   token: string;

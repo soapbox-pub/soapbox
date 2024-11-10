@@ -3,7 +3,7 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import StatusContainer from 'soapbox/containers/status-container.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 interface IThreadStatus {
   id: string;

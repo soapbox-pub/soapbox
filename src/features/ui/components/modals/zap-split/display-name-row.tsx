@@ -1,7 +1,7 @@
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { getAcct } from 'soapbox/utils/accounts.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

@@ -4,7 +4,10 @@ import { Redirect } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { BigCard } from 'soapbox/components/big-card.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 
 import RegistrationForm from './registration-form.tsx';
 

@@ -3,7 +3,7 @@ import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 
 import { setRole } from 'soapbox/actions/admin.ts';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';

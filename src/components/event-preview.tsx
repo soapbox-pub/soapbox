@@ -9,7 +9,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import EventActionButton from 'soapbox/features/event/components/event-action-button.tsx';
 import EventDate from 'soapbox/features/event/components/event-date.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import Icon from './icon.tsx';
 import VerificationBadge from './verification-badge.tsx';

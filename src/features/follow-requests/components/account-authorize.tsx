@@ -2,7 +2,7 @@ import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/acc
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 interface IAccountAuthorize {
   id: string;

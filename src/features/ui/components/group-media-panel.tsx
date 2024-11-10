@@ -7,7 +7,8 @@ import { expandGroupMediaTimeline } from 'soapbox/actions/timelines.ts';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { getGroupGallery } from 'soapbox/selectors/index.ts';
 
 import MediaItem from '../../account-gallery/components/media-item.tsx';

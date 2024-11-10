@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useInstance, useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 import { Datetime } from './ui/datetime.tsx';
 

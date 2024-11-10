@@ -6,7 +6,8 @@ import { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 import Blurhash from 'soapbox/components/blurhash.tsx';
 import StillImage from 'soapbox/components/still-image.tsx';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload.tsx';
-import { useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { Attachment } from 'soapbox/types/entities.ts';
 import { truncateFilename } from 'soapbox/utils/media.ts';
 

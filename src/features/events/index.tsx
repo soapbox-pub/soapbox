@@ -7,7 +7,8 @@ import Button from 'soapbox/components/ui/button.tsx';
 import { CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import EventCarousel from './components/event-carousel.tsx';
 

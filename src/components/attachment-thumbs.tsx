@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Attachment } from 'soapbox/types/entities.ts';

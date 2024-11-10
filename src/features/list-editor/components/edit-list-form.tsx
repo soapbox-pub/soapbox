@@ -5,7 +5,8 @@ import Button from 'soapbox/components/ui/button.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   title: { id: 'lists.edit.submit', defaultMessage: 'Change title' },

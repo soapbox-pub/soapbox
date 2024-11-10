@@ -1,7 +1,7 @@
 import { expandNotifications } from 'soapbox/actions/notifications.ts';
 import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useLoggedIn } from 'soapbox/hooks/index.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
 
 import { useTimelineStream } from './useTimelineStream.ts';
 

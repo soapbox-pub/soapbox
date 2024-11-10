@@ -1,7 +1,7 @@
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import { getAcct } from '../utils/accounts.ts';
 

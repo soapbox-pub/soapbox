@@ -15,7 +15,8 @@ import {
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { Account } from 'soapbox/schemas/index.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { RootState } from 'soapbox/store.ts';

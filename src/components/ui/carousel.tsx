@@ -2,7 +2,7 @@ import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import { useEffect, useState } from 'react';
 
-import { useDimensions } from 'soapbox/hooks/index.ts';
+import { useDimensions } from 'soapbox/hooks/useDimensions.ts';
 
 import HStack from './hstack.tsx';
 import Icon from './icon.tsx';

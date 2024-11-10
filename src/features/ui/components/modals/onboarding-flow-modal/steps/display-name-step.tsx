@@ -9,7 +9,8 @@ import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { AxiosError } from 'axios';

@@ -1,5 +1,5 @@
 import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
-import { useSettings } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 import type { Map as ImmutableMap } from 'immutable';

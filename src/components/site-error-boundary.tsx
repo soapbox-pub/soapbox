@@ -7,7 +7,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { captureSentryException } from 'soapbox/sentry.ts';
 import KVStore from 'soapbox/storage/kv-store.ts';
 import sourceCode from 'soapbox/utils/code.ts';

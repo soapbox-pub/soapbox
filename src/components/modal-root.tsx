@@ -7,7 +7,8 @@ import { useHistory } from 'react-router-dom';
 import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
 import { cancelEventCompose } from 'soapbox/actions/events.ts';
 import { openModal, closeModal } from 'soapbox/actions/modals.ts';
-import { useAppDispatch, usePrevious } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
 
 import type { ModalType } from 'soapbox/features/ui/components/modal-root.tsx';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event.ts';

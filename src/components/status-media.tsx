@@ -7,7 +7,7 @@ import PreviewCard from 'soapbox/components/preview-card.tsx';
 import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview.tsx';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Status, Attachment } from 'soapbox/types/entities.ts';

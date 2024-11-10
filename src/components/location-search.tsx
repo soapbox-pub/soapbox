@@ -9,7 +9,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { locationSearch } from 'soapbox/actions/events.ts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 import Icon from 'soapbox/components/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import AutosuggestLocation from './autosuggest-location.tsx';
 

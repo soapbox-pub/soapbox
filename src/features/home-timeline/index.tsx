@@ -8,8 +8,12 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppSelector, useAppDispatch, useFeatures, useInstance, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },

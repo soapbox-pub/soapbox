@@ -9,7 +9,8 @@ import { useAccount } from 'soapbox/api/hooks/index.ts';
 import AccountComponent from 'soapbox/components/account.tsx';
 import IconButton from 'soapbox/components/icon-button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 const messages = defineMessages({
   remove: { id: 'reply_mentions.account.remove', defaultMessage: 'Remove from mentions' },

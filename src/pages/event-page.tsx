@@ -13,7 +13,8 @@ import {
   TrendsPanel,
   WhoToFollowPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 const getStatus = makeGetStatus();

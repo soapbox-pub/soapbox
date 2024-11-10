@@ -6,7 +6,7 @@ import { mountConversations, unmountConversations, expandConversations } from 's
 import { useDirectStream } from 'soapbox/api/hooks/index.ts';
 import AccountSearch from 'soapbox/components/account-search.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import ConversationsList from './components/conversations-list.tsx';
 

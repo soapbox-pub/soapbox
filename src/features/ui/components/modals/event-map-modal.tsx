@@ -9,7 +9,8 @@ import { FormattedMessage } from 'react-intl';
 import Button from 'soapbox/components/ui/button.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';

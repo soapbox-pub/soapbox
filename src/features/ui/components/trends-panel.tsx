@@ -6,7 +6,7 @@ import Hashtag from 'soapbox/components/hashtag.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
 import PlaceholderSidebarTrends from 'soapbox/features/placeholder/components/placeholder-sidebar-trends.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import useTrends from 'soapbox/queries/trends.ts';
 
 interface ITrendsPanel {

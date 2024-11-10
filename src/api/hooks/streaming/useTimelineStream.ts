@@ -1,7 +1,9 @@
 import { useEffect, useRef } from 'react';
 
 import { connectTimelineStream } from 'soapbox/actions/streaming.ts';
-import { useAppDispatch, useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { getAccessToken } from 'soapbox/utils/auth.ts';
 
 function useTimelineStream(...args: Parameters<typeof connectTimelineStream>) {

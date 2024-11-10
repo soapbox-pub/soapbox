@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import Text from 'soapbox/components/ui/text.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
-import { useInstance, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import SiteWallet from './site-wallet.tsx';
 

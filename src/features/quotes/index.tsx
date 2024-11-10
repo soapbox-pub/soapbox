@@ -7,8 +7,10 @@ import { useParams } from 'react-router-dom';
 import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status-quotes.ts';
 import StatusList from 'soapbox/components/status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },

@@ -8,7 +8,7 @@ import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 interface IAccountCard {

@@ -14,7 +14,10 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import ComposeForm from 'soapbox/features/compose/components/compose-form.tsx';
-import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 
 import Timeline from '../ui/components/timeline.tsx';

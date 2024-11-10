@@ -10,7 +10,10 @@ import { Link } from 'react-router-dom';
 import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth.ts';
 import Account from 'soapbox/components/account.tsx';
 import { MenuDivider } from 'soapbox/components/ui/menu.tsx';
-import { useAppDispatch, useAppSelector, useClickOutside, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { makeGetOtherAccounts } from 'soapbox/selectors/index.ts';
 
 import ThemeToggle from './theme-toggle.tsx';

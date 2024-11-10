@@ -20,8 +20,13 @@ import {
   CtaBanner,
   AnnouncementsPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector, useOwnAccount, useFeatures, useSoapboxConfig, useDraggedFiles, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 
 import ComposeForm from '../features/compose/components/compose-form.tsx';

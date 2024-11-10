@@ -5,7 +5,7 @@ import { unblockDomain } from 'soapbox/actions/domain-blocks.ts';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },

@@ -5,7 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import { fetchBirthdayReminders } from 'soapbox/actions/accounts.ts';
 import Widget from 'soapbox/components/ui/widget.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const timeToMidnight = () => {
   const now = new Date();

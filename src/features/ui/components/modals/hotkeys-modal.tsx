@@ -1,7 +1,7 @@
 import { FormattedMessage } from 'react-intl';
 
 import Modal from 'soapbox/components/ui/modal.tsx';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 interface IHotkeysModal {
   onClose: () => void;

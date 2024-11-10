@@ -13,7 +13,8 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
 import { useImageField, useTextField } from 'soapbox/hooks/forms/index.ts';
-import { useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import toast from 'soapbox/toast.tsx';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 

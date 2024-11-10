@@ -9,7 +9,8 @@ import { CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx'
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useBackend } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useBackend } from 'soapbox/hooks/useBackend.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';
 import { TRUTHSOCIAL } from 'soapbox/utils/features.ts';

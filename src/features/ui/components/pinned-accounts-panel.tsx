@@ -7,7 +7,8 @@ import { fetchPinnedAccounts } from 'soapbox/actions/accounts.ts';
 import Widget from 'soapbox/components/ui/widget.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';
 

@@ -23,7 +23,8 @@ import Audio from 'soapbox/features/audio/index.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import Thread from 'soapbox/features/status/components/thread.tsx';
 import Video from 'soapbox/features/video/index.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 

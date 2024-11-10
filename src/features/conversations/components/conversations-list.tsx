@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl';
 
 import { expandConversations } from 'soapbox/actions/conversations.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import Conversation from './conversation.tsx';
 

@@ -6,7 +6,7 @@ import { nostrExtensionLogIn } from 'soapbox/actions/nostr.ts';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const NostrExtensionIndicator: React.FC = () => {
   const dispatch = useAppDispatch();

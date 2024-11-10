@@ -6,7 +6,10 @@ import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth.ts
 import { fetchInstance } from 'soapbox/actions/instance.ts';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import { BigCard } from 'soapbox/components/big-card.tsx';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { getRedirectUrl } from 'soapbox/utils/redirect.ts';
 
 import ConsumersList from './consumers-list.tsx';

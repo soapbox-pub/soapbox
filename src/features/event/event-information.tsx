@@ -15,7 +15,10 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
-import { useAppDispatch, useAppSelector, useSettings, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 

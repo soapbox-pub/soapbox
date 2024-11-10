@@ -10,8 +10,13 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
 import Accordion from 'soapbox/components/ui/accordion.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown.tsx';
-import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker.tsx';
 import Timeline from '../ui/components/timeline.tsx';

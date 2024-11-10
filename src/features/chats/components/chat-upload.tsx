@@ -5,7 +5,7 @@ import { List as ImmutableList } from 'immutable';
 import { openModal } from 'soapbox/actions/modals.ts';
 import Blurhash from 'soapbox/components/blurhash.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import ChatUploadPreview from './chat-upload-preview.tsx';
 

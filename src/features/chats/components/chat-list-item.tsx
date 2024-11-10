@@ -14,7 +14,9 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { IChat, useChatActions } from 'soapbox/queries/chats.ts';
 
 import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';

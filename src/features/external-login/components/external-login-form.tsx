@@ -8,7 +8,7 @@ import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { AxiosError } from 'axios';

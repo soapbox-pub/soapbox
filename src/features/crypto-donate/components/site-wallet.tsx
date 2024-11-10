@@ -1,5 +1,5 @@
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import CryptoAddress from './crypto-address.tsx';
 

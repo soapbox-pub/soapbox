@@ -14,7 +14,7 @@ import Text from 'soapbox/components/ui/text.tsx';
 import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';

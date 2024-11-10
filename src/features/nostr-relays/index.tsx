@@ -8,8 +8,8 @@ import Form from 'soapbox/components/ui/form.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq.ts';
-import { useOwnAccount } from 'soapbox/hooks/index.ts';
 import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 import RelayEditor, { RelayData } from './components/relay-editor.tsx';
 

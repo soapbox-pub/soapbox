@@ -7,7 +7,7 @@ import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import PollPreview from 'soapbox/features/ui/components/poll-preview.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import { buildStatus } from '../builder.tsx';
 

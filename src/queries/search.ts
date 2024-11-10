@@ -1,6 +1,6 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { Account } from 'soapbox/types/entities.ts';
 import { getPagination } from 'soapbox/utils/pagination.ts';
 import { flattenPages, PaginatedResult } from 'soapbox/utils/queries.ts';
