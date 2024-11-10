@@ -9,7 +9,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder-media-gallery.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import { buildStatus } from '../util/pending-status-builder.ts';
 

@@ -11,7 +11,7 @@ import Icon from 'soapbox/components/icon.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/index.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 import type { RemoteInstance } from 'soapbox/selectors/index.ts';
 

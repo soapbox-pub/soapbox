@@ -4,7 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Account from 'soapbox/features/reply-mentions/account.tsx';
-import { useAppSelector, useCompose, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 

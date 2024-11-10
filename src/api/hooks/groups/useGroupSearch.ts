@@ -1,6 +1,7 @@
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi, useFeatures } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { groupSchema } from 'soapbox/schemas/index.ts';
 
 import { useGroupRelationships } from './useGroupRelationships.ts';

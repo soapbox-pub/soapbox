@@ -6,7 +6,8 @@ import { setupListAdder, resetListAdder } from 'soapbox/actions/lists.ts';
 import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import NewListForm from '../lists/components/new-list-form.tsx';
 

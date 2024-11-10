@@ -4,7 +4,9 @@ import { useIntl, defineMessages } from 'react-intl';
 
 import { pinHost, unpinHost } from 'soapbox/actions/remote-timeline.ts';
 import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
 
 const getRemoteInstance = makeGetRemoteInstance();

@@ -9,7 +9,8 @@ import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import toast from 'soapbox/toast.tsx';
 
 import ColumnForbidden from '../ui/components/column-forbidden.tsx';

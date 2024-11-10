@@ -6,7 +6,7 @@ import { cancelScheduledStatus } from 'soapbox/actions/scheduled-statuses.ts';
 import { getSettings } from 'soapbox/actions/settings.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 

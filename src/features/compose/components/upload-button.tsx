@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useInstance } from 'soapbox/hooks/index.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },

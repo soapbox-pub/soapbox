@@ -5,7 +5,7 @@ import {
   TrendsPanel,
   NewEventPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 interface IEventsPage {
   children: React.ReactNode;

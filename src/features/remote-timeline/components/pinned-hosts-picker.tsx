@@ -1,6 +1,6 @@
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useSettings } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 interface IPinnedHostsPicker {
   /** The active host among pinned hosts. */

@@ -13,7 +13,9 @@ import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useAppSelector, useFeatures, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const { account } = useOwnAccount();

@@ -7,7 +7,9 @@ import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
-import { useClickOutside, useFeatures, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
 

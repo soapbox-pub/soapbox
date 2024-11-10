@@ -5,7 +5,8 @@ import { FormattedMessage } from 'react-intl';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
+import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { IChat, useChats } from 'soapbox/queries/chats.ts';
 
 import ChatList from '../chat-list.tsx';

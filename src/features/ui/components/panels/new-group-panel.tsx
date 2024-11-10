@@ -4,7 +4,8 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions.ts';
 
 const NewGroupPanel = () => {

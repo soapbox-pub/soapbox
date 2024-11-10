@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { baseZapAccountSchema, type ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
 import type { Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';

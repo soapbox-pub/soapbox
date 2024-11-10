@@ -7,7 +7,9 @@ import { chooseEmoji } from 'soapbox/actions/emojis.ts';
 import { changeSetting } from 'soapbox/actions/settings.ts';
 import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
 import { EmojiPicker } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 import { RootState } from 'soapbox/store.ts';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';

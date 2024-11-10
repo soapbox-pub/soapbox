@@ -1,6 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useCreateEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { bookmarkFolderSchema } from 'soapbox/schemas/bookmark-folder.ts';
 
 interface UpdateBookmarkFolderParams {

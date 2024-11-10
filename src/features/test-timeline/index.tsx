@@ -11,8 +11,9 @@ import { importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
 import { expandTimelineSuccess } from 'soapbox/actions/timelines.ts';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppDispatch, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.test', defaultMessage: 'Test timeline' },

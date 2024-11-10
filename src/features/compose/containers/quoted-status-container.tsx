@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 
 import { cancelQuoteCompose } from 'soapbox/actions/compose.ts';
 import QuotedStatus from 'soapbox/components/quoted-status.tsx';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IQuotedStatusContainer {

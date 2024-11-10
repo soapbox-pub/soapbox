@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Blurhash from 'soapbox/components/blurhash.tsx';
 import StillImage from 'soapbox/components/still-image.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useSettings } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { isIOS } from 'soapbox/is-mobile.ts';
 
 import type { Attachment } from 'soapbox/types/entities.ts';

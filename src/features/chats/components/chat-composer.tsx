@@ -13,7 +13,9 @@ import Text from 'soapbox/components/ui/text.tsx';
 import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
 import UploadButton from 'soapbox/features/compose/components/upload-button.tsx';
 import emojiSearch from 'soapbox/features/emoji/search.ts';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { Attachment } from 'soapbox/types/entities.ts';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 

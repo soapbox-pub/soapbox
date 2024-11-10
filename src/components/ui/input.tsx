@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React, { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useLocale } from 'soapbox/hooks/index.ts';
+import { useLocale } from 'soapbox/hooks/useLocale.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
 import Icon from './icon.tsx';

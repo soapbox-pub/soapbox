@@ -4,7 +4,11 @@ import { openModal } from 'soapbox/actions/modals.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 
 const SignUpPanel = () => {
   const { instance } = useInstance();

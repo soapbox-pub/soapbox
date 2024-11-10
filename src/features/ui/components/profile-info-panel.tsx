@@ -13,7 +13,8 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { capitalize } from 'soapbox/utils/strings.ts';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers.tsx';

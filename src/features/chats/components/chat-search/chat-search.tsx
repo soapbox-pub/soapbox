@@ -10,7 +10,7 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useDebounce } from 'soapbox/hooks/index.ts';
+import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
 import { useChats, ChatKeys } from 'soapbox/queries/chats.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 import useAccountSearch from 'soapbox/queries/search.ts';

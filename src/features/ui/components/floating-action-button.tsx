@@ -9,7 +9,7 @@ import { useGroupLookup } from 'soapbox/api/hooks/index.ts';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },

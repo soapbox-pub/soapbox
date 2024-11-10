@@ -5,7 +5,7 @@ import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLo
 
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useSettings } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import LoadMore from './load-more.tsx';
 

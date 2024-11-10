@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 import ChatPageMain from './components/chat-page-main.tsx';
 import ChatPageNew from './components/chat-page-new.tsx';

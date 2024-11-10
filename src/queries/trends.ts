@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchTrendsSuccess } from 'soapbox/actions/trends.ts';
-import { useApi, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import type { Tag } from 'soapbox/types/entities.ts';

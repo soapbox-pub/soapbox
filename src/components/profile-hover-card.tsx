@@ -20,7 +20,8 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import { UserPanel } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import { showProfileHoverCard } from './hover-ref-wrapper.tsx';
 import { dateFormatOptions } from './relative-timestamp.tsx';

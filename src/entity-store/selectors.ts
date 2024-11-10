@@ -1,4 +1,4 @@
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import type { EntitiesPath } from './hooks/types.ts';
 import type { Entity, EntityListState } from './types.ts';

@@ -17,8 +17,11 @@ import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Portal from 'soapbox/components/ui/portal.tsx';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification.tsx';
-import { useAppDispatch, useAppSelector, useSettings, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import FilterBar from './components/filter-bar.tsx';
 import Notification from './components/notification.tsx';

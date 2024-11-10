@@ -7,7 +7,8 @@ import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IMentionsModal {

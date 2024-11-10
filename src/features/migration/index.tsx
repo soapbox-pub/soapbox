@@ -10,7 +10,8 @@ import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({

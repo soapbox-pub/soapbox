@@ -11,7 +11,8 @@ import Tombstone from 'soapbox/components/tombstone.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import ComposeForm from '../compose/components/compose-form.tsx';

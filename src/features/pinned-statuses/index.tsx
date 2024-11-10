@@ -6,7 +6,8 @@ import { fetchPinnedStatuses } from 'soapbox/actions/pin-statuses.ts';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import StatusList from 'soapbox/components/status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { selectOwnAccount } from 'soapbox/selectors/index.ts';
 
 const messages = defineMessages({

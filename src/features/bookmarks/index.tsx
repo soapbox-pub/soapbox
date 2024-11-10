@@ -14,8 +14,10 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
 import StatusList from 'soapbox/components/status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({

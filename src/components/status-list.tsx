@@ -9,7 +9,7 @@ import StatusContainer from 'soapbox/containers/status-container.tsx';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';

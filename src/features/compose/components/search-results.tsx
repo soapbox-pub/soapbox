@@ -18,7 +18,8 @@ import StatusContainer from 'soapbox/containers/status-container.tsx';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';

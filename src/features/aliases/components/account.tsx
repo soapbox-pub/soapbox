@@ -6,7 +6,9 @@ import { useAccount } from 'soapbox/api/hooks/index.ts';
 import AccountComponent from 'soapbox/components/account.tsx';
 import IconButton from 'soapbox/components/icon-button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },

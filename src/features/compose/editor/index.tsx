@@ -18,7 +18,7 @@ import { $createParagraphNode, $createTextNode, $getRoot, type LexicalEditor } f
 import { forwardRef, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import { useNodes } from './nodes/index.ts';
 import AutosuggestPlugin from './plugins/autosuggest-plugin.tsx';

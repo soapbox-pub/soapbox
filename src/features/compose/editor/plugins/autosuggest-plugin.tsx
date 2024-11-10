@@ -36,7 +36,8 @@ import ReactDOM from 'react-dom';
 import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose.ts';
 import { chooseEmoji } from 'soapbox/actions/emojis.ts';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
-import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 

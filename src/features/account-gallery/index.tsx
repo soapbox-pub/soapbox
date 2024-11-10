@@ -10,7 +10,8 @@ import LoadMore from 'soapbox/components/load-more.tsx';
 import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { getAccountGallery } from 'soapbox/selectors/index.ts';
 
 import MediaItem from './components/media-item.tsx';

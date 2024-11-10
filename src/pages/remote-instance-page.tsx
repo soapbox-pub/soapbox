@@ -5,7 +5,8 @@ import {
   InstanceInfoPanel,
   InstanceModerationPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state.ts';
 
 interface IRemoteInstancePage {

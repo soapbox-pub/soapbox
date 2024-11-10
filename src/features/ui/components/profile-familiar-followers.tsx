@@ -10,7 +10,9 @@ import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

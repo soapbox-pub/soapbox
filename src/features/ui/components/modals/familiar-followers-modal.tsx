@@ -5,7 +5,7 @@ import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
 const getAccount = makeGetAccount();

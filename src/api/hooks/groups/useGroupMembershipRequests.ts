@@ -1,6 +1,6 @@
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useDismissEntity, useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import { accountSchema } from 'soapbox/schemas/index.ts';
 

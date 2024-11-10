@@ -13,7 +13,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { getAcct } from 'soapbox/utils/accounts.ts';
 import { displayFqn } from 'soapbox/utils/state.ts';
 

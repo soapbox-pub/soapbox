@@ -10,7 +10,8 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Tabs from 'soapbox/components/ui/tabs.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { ReactionRecord } from 'soapbox/reducers/user-lists.ts';
 
 import type { Item } from 'soapbox/components/ui/tabs.tsx';

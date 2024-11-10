@@ -3,7 +3,8 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import { fetchReports } from 'soapbox/actions/admin.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import Report from '../components/report.tsx';
 

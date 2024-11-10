@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { useEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { type Relationship, relationshipSchema } from 'soapbox/schemas/index.ts';
 
 interface UseRelationshipOpts {

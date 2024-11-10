@@ -3,7 +3,8 @@ import { useCallback, useRef } from 'react';
 
 import { changeMediaOrder } from 'soapbox/actions/compose.ts';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch, useCompose } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 import UploadProgress from './upload-progress.tsx';
 import Upload from './upload.tsx';

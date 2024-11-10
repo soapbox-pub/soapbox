@@ -8,7 +8,8 @@ import { CardTitle } from 'soapbox/components/ui/card.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useDebounce, useFeatures } from 'soapbox/hooks/index.ts';
+import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { IChat } from 'soapbox/queries/chats.ts';
 
 import ChatList from '../../chat-list.tsx';

@@ -40,7 +40,8 @@ import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import UploadButton from './upload-button.tsx';
 

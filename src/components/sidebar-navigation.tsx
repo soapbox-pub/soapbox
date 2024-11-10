@@ -25,7 +25,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
 import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
-import { useAppSelector, useFeatures, useOwnAccount, useSettings, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
 import DropdownMenu, { Menu } from './dropdown-menu/index.ts';

@@ -6,7 +6,7 @@ import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup, usePendingGrou
 import Button from 'soapbox/components/ui/button.tsx';
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';
 

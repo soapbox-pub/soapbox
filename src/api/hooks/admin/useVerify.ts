@@ -1,6 +1,7 @@
 import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
 import { EntityCallbacks } from 'soapbox/entity-store/hooks/types.ts';
-import { useApi, useGetState } from 'soapbox/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useGetState } from 'soapbox/hooks/useGetState.ts';
 import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';

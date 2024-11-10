@@ -19,7 +19,9 @@ import Text from 'soapbox/components/ui/text.tsx';
 import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { MessageExpirationValues, useChat, useChatActions, useChats } from 'soapbox/queries/chats.ts';
 import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 

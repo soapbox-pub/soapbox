@@ -20,7 +20,10 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Select from 'soapbox/components/ui/select.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
 import CaptchaField from 'soapbox/features/auth-login/components/captcha.tsx';
-import { useAppDispatch, useSettings, useFeatures, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },

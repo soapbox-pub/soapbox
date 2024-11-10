@@ -13,7 +13,9 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { useAppDispatch, useInstance, useSoapboxConfig } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 interface IExtensionStep {
   isLogin?: boolean;

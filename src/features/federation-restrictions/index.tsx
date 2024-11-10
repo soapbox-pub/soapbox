@@ -4,7 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import Accordion from 'soapbox/components/ui/accordion.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppSelector, useInstance } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { makeGetHosts } from 'soapbox/selectors/index.ts';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state.ts';
 

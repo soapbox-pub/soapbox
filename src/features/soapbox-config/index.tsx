@@ -18,7 +18,9 @@ import Streamfield from 'soapbox/components/ui/streamfield.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import ThemeSelector from 'soapbox/features/ui/components/theme-selector.tsx';
-import { useAppSelector, useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
 import toast from 'soapbox/toast.tsx';
 

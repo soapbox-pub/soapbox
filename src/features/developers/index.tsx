@@ -1,5 +1,5 @@
 import { getSettings } from 'soapbox/actions/settings.ts';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import DevelopersChallenge from './developers-challenge.tsx';
 import DevelopersMenu from './developers-menu.tsx';

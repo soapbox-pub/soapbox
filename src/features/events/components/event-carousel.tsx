@@ -7,7 +7,7 @@ import ReactSwipeableViews from 'react-swipeable-views';
 import EventPreview from 'soapbox/components/event-preview.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview.tsx';

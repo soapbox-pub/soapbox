@@ -12,7 +12,8 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { getBaseURL } from 'soapbox/utils/accounts.ts';
 
 const messages = defineMessages({

@@ -18,8 +18,12 @@ import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import Search from 'soapbox/features/compose/components/search.tsx';
-import { useAppDispatch, useFeatures, useInstance, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
 import ProfileDropdown from './profile-dropdown.tsx';

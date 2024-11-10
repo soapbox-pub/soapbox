@@ -6,7 +6,9 @@ import List, { ListItem } from 'soapbox/components/list.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
-import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import ThemeToggle from '../ui/components/theme-toggle.tsx';
 

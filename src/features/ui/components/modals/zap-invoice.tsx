@@ -13,7 +13,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities.ts';

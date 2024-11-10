@@ -1,6 +1,6 @@
 import { Motion, MotionProps } from 'react-motion';
 
-import { useSettings } from 'soapbox/hooks/index.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import ReducedMotion from './reduced-motion.tsx';
 

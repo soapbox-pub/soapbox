@@ -12,7 +12,8 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useChatActions } from 'soapbox/queries/chats.ts';
 import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 

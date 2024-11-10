@@ -5,7 +5,8 @@ import { updateMrf } from 'soapbox/actions/mrf.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
 import toast from 'soapbox/toast.tsx';
 

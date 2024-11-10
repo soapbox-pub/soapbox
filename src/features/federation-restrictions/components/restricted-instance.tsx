@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
 
 import InstanceRestrictions from './instance-restrictions.tsx';

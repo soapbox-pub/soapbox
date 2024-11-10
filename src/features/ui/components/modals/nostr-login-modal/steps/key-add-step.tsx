@@ -14,7 +14,7 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { keyring } from 'soapbox/features/nostr/keyring.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import NostrExtensionIndicator from '../components/nostr-extension-indicator.tsx';
 

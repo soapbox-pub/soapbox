@@ -6,7 +6,8 @@ import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accou
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import AccountAuthorize from './components/account-authorize.tsx';
 

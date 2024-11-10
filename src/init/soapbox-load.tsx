@@ -6,15 +6,13 @@ import { fetchMe } from 'soapbox/actions/me.ts';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox.ts';
 import LoadingScreen from 'soapbox/components/loading-screen.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import {
-  useAppSelector,
-  useAppDispatch,
-  useOwnAccount,
-  useLocale,
-  useInstance,
-} from 'soapbox/hooks/index.ts';
 import { useBunker } from 'soapbox/hooks/nostr/useBunker.ts';
 import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useLocale } from 'soapbox/hooks/useLocale.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import MESSAGES from 'soapbox/messages.ts';
 
 /** Load initial data from the backend */

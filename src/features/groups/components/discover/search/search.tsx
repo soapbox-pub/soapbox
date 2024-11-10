@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import { useGroupSearch } from 'soapbox/api/hooks/index.ts';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search.tsx';
-import { useDebounce, useOwnAccount } from 'soapbox/hooks/index.ts';
+import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { saveGroupSearch } from 'soapbox/utils/groups.ts';
 
 import Blankslate from './blankslate.tsx';

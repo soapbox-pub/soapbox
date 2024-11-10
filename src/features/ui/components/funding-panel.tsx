@@ -7,7 +7,8 @@ import ProgressBar from 'soapbox/components/ui/progress-bar.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 /** Open link in a new tab. */
 // https://stackoverflow.com/a/28374344/8811886

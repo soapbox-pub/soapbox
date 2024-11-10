@@ -21,7 +21,13 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
 import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
 
 import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container.ts';

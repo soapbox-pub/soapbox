@@ -2,7 +2,7 @@ import { FormattedDate } from 'react-intl';
 
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useFeatures } from 'soapbox/hooks/index.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
 import AnnouncementContent from './announcement-content.tsx';

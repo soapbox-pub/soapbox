@@ -4,7 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { setupListEditor, resetListEditor } from 'soapbox/actions/lists.ts';
 import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import Account from './components/account.tsx';
 import EditListForm from './components/edit-list-form.tsx';

@@ -8,7 +8,8 @@ import {
 } from 'soapbox/actions/accounts.ts';
 import { useFollow } from 'soapbox/api/hooks/index.ts';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities.ts';

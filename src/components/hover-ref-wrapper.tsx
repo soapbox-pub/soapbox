@@ -7,7 +7,7 @@ import {
   openProfileHoverCard,
   closeProfileHoverCard,
 } from 'soapbox/actions/profile-hover-card.ts';
-import { useAppDispatch } from 'soapbox/hooks/index.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { isMobile } from 'soapbox/is-mobile.ts';
 
 const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
