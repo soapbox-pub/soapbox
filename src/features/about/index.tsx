@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { fetchAboutPage } from 'soapbox/actions/about.ts';
 import { Navlinks } from 'soapbox/components/navlinks.tsx';
@@ -44,18 +44,22 @@ const AboutPage: React.FC = () => {
       {' '} {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
       <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
-          <a href='#' onClick={() => setLocale(defaultLocale)}>
-            {/* @ts-ignore */}
-            {languages[defaultLocale] || defaultLocale}
-          </a>
+          <Link to={'/'} className='inline-flex'>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(defaultLocale)}>
+              {/* @ts-ignore */}
+              {languages[defaultLocale] || defaultLocale}
+            </button>
+          </Link>
         </li>
         {
           pageLocales?.map(locale => (
             <li className="inline after:content-['_·_'] last:after:content-none" key={locale}>
-              <a href='#' onClick={() => setLocale(locale)}>
-                {/* @ts-ignore */}
-                {languages[locale] || locale}
-              </a>
+              <Link to={'/'} className='inline-flex'>
+                <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(locale)}>
+                  {/* @ts-ignore */}
+                  {languages[locale] || locale}
+                </button>
+              </Link>
             </li>
           ))
         }

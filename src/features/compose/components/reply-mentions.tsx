@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
@@ -33,7 +34,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
 
   const parentTo = status && statusToMentionsAccountIdsArray(status, account!);
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     dispatch(openModal('REPLY_MENTIONS', {
@@ -47,19 +48,21 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
 
   if (to.size === 0) {
     return (
-      <a href='#' className='reply-mentions' onClick={handleClick}>
-        <FormattedMessage
-          id='reply_mentions.reply_empty'
-          defaultMessage='Replying to post'
-        />
-      </a>
+      <Link to={'/'} className='inline-flex'>
+        <button className='mb-1 cursor-pointer space-x-2 !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+          <FormattedMessage
+            id='reply_mentions.reply_empty'
+            defaultMessage='Replying to post'
+          />
+        </button>
+      </Link>
     );
   }
 
   const accounts = to.slice(0, 2).map((acct: string) => {
     const username = acct.split('@')[0];
     return (
-      <span className='reply-mentions__account'> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
+      <span className='inline-block text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue'>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(username)}
       </span>
     );
@@ -72,15 +75,17 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   }
 
   return (
-    <a href='#' className='reply-mentions' onClick={handleClick}>
-      <FormattedMessage
-        id='reply_mentions.reply'
-        defaultMessage='Replying to {accounts}'
-        values={{
-          accounts: <FormattedList type='conjunction' value={accounts} />,
-        }}
-      />
-    </a>
+    <Link to={'/'} className='inline-flex'>
+      <button className='mb-1 cursor-pointer space-x-2 !border-none !p-0 text-sm !text-gray-700 focus:!ring-transparent focus:ring-offset-0  dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+        <FormattedMessage
+          id='reply_mentions.reply'
+          defaultMessage='Replying to {accounts}'
+          values={{
+            accounts: <FormattedList type='conjunction' value={accounts} />,
+          }}
+        />
+      </button>
+    </Link>
   );
 };
 

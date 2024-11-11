@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { fetchBackups, createBackup } from 'soapbox/actions/backups.ts';
 import Button from 'soapbox/components/ui/button.tsx';
@@ -86,11 +87,13 @@ const Backups = () => {
     <Card variant='rounded' size='lg'>
       {intl.formatMessage(messages.emptyMessage, {
         action: (
-          <a href='#' onClick={handleCreateBackup}>
-            <Text tag='span' theme='primary' size='sm' className='hover:underline'>
-              {intl.formatMessage(messages.emptyMessageAction)}
-            </Text>
-          </a>
+          <Link to={'/'} className='inline-flex'>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleCreateBackup}>
+              <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+                {intl.formatMessage(messages.emptyMessageAction)}
+              </Text>
+            </button>
+          </Link>
         ),
       })}
     </Card>

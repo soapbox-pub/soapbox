@@ -35,7 +35,6 @@ import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
 import { deleteStatus } from 'soapbox/actions/statuses.ts';
-import Icon from 'soapbox/components/icon.tsx';
 import StillImage from 'soapbox/components/still-image.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -451,7 +450,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
         <Stack space={1}>
           <HStack alignItems='center' space={2}>
-            <Icon src={flag3Icon} />
+            <SvgIcon src={flag3Icon} />
             <span>
               <FormattedMessage
                 id='event.organized_by'
@@ -471,26 +470,28 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           </HStack>
 
           <HStack alignItems='center' space={2}>
-            <Icon src={usersIcon} />
-            <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
-              <span>
-                <FormattedMessage
-                  id='event.participants'
-                  defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
-                  values={{
-                    rawCount: event.participants_count || 0,
-                    count: shortNumberFormat(event.participants_count || 0),
-                  }}
-                />
-              </span>
-            </a>
+            <SvgIcon src={usersIcon} />
+            <Link to={'/'} className='inline-flex'>
+              <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleParticipantsClick}>
+                <span>
+                  <FormattedMessage
+                    id='event.participants'
+                    defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
+                    values={{
+                      rawCount: event.participants_count || 0,
+                      count: shortNumberFormat(event.participants_count || 0),
+                    }}
+                  />
+                </span>
+              </button>
+            </Link>
           </HStack>
 
           <EventDate status={status} />
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={mapPinIcon} />
+              <SvgIcon src={mapPinIcon} />
               <span>
                 {event.location.get('name')}
               </span>

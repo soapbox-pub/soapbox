@@ -3,6 +3,7 @@ import linkIcon from '@tabler/icons/outline/link.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { fetchStatus } from 'soapbox/actions/statuses.ts';
@@ -56,7 +57,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
     setShowMedia(!showMedia);
   };
 
-  const handleShowMap: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+  const handleShowMap: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.preventDefault();
 
     dispatch(openModal('EVENT_MAP', {
@@ -98,9 +99,11 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       text.push(
         <Fragment key='event-map'>
           <br />
-          <a href='#' className='text-primary-600 hover:underline dark:text-accent-blue' onClick={handleShowMap}>
-            <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
-          </a>
+          <Link to={'/'} className='inline-flex'>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleShowMap}>
+              <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
+            </button>
+          </Link>
         </Fragment>,
       );
     }
