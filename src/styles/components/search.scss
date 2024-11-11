@@ -1,3 +1,5 @@
+@use "../fonts";
+
 .search {
   position: relative;
 }
@@ -14,7 +16,7 @@
 
   .svg-icon {
     @apply right-4 rtl:left-4 rtl:right-auto text-gray-400;
-    @include font-size(16);
+    @include fonts.font-size(16);
     cursor: default;
     display: inline-block;
     position: absolute;
