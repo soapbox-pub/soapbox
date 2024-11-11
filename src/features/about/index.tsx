@@ -45,7 +45,7 @@ const AboutPage: React.FC = () => {
       <ul className='inline list-none p-0'>
         <li className="inline after:content-['_·_']">
           <Link to={'/'} className='inline-flex'>
-            <button className='button-theme-muted space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(defaultLocale)}>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(defaultLocale)}>
               {/* @ts-ignore */}
               {languages[defaultLocale] || defaultLocale}
             </button>
@@ -55,7 +55,7 @@ const AboutPage: React.FC = () => {
           pageLocales?.map(locale => (
             <li className="inline after:content-['_·_'] last:after:content-none" key={locale}>
               <Link to={'/'} className='inline-flex'>
-                <button className='button-theme-muted space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(locale)}>
+                <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={() => setLocale(locale)}>
                   {/* @ts-ignore */}
                   {languages[locale] || locale}
                 </button>

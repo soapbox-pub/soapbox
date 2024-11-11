@@ -148,7 +148,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
 
   const renderAccount = (account: AccountEntity) => (
     <Link to={'/'} className='inline-flex'>
-      <button className='button-theme-muted !block space-x-2 !border-none !p-0 !py-2 !text-primary-600 hover:!underline  focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleSwitchAccount(account)} key={account.id}>
+      <button className='!block space-x-2 !border-none !p-0 !py-2 !text-primary-600 hover:!underline  focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleSwitchAccount(account)} key={account.id}>
         <div className='pointer-events-none max-w-[288px]'>
           <Account account={account} showProfileHoverCard={false} withRelationship={false} withLinkToProfile={false} />
         </div>

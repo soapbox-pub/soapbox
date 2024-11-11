@@ -88,7 +88,7 @@ const Backups = () => {
       {intl.formatMessage(messages.emptyMessage, {
         action: (
           <Link to={'/'} className='inline-flex'>
-            <button className='button-theme-muted space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleCreateBackup}>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleCreateBackup}>
               <Text tag='span' theme='primary' size='sm' className='hover:underline'>
                 {intl.formatMessage(messages.emptyMessageAction)}
               </Text>

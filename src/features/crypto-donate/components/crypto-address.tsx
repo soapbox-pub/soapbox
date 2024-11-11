@@ -47,7 +47,7 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
 
         <HStack alignItems='center' className='ml-auto'>
           <Link to={'/'} className='inline-flex'>
-            <button className='button-theme-muted !ml-1 space-x-2 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-0 rtl:ml-0 rtl:mr-1 rtl:space-x-reverse' onClick={handleModalClick}>
+            <button className='!ml-1 space-x-2 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-0 rtl:ml-0 rtl:mr-1 rtl:space-x-reverse' onClick={handleModalClick}>
               <SvgIcon src={qrcodeIcon} size={20} />
             </button>
           </Link>

@@ -29,7 +29,7 @@ const RestrictedInstance: React.FC<IRestrictedInstance> = ({ host }) => {
   return (
     <div>
       <Link to={'/'} className='inline-flex'>
-        <button className='button-theme-muted flex items-center gap-1 space-x-2 !border-none  !px-0 !py-2.5 !text-primary-600 no-underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={toggleExpanded}>
+        <button className='flex items-center gap-1 space-x-2 !border-none  !px-0 !py-2.5 !text-primary-600 no-underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={toggleExpanded}>
           <SvgIcon src={expanded ? caretDownIcon : caretRightIcon} />
           <div className={clsx({ 'line-through': remoteInstance.federation.reject })}>
             {remoteInstance.host}

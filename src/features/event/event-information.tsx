@@ -100,7 +100,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
         <Fragment key='event-map'>
           <br />
           <Link to={'/'} className='inline-flex'>
-            <button className='button-theme-muted space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleShowMap}>
+            <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleShowMap}>
               <FormattedMessage id='event.show_on_map' defaultMessage='Show on map' />
             </button>
           </Link>

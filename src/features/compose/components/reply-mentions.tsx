@@ -49,7 +49,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
   if (to.size === 0) {
     return (
       <Link to={'/'} className='inline-flex'>
-        <button className='button-theme-muted mb-1 cursor-pointer space-x-2 !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+        <button className='mb-1 cursor-pointer space-x-2 !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
           <FormattedMessage
             id='reply_mentions.reply_empty'
             defaultMessage='Replying to post'
@@ -76,7 +76,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
 
   return (
     <Link to={'/'} className='inline-flex'>
-      <button className='button-theme-muted mb-1 cursor-pointer space-x-2 !border-none !p-0 text-sm !text-gray-700 focus:!ring-transparent focus:ring-offset-0  dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
+      <button className='mb-1 cursor-pointer space-x-2 !border-none !p-0 text-sm !text-gray-700 focus:!ring-transparent focus:ring-offset-0  dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
         <FormattedMessage
           id='reply_mentions.reply'
           defaultMessage='Replying to {accounts}'
