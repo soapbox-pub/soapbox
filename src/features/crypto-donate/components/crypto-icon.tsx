@@ -1,16 +1,11 @@
 import genericIcon from 'soapbox/assets/cryptocurrency/generic.svg';
 
-const icons = import.meta.glob('../../../assets/cryptocurrency/*.svg', { eager: true });
+const icons: Record<string, { default: string }> = import.meta.glob('../../../assets/cryptocurrency/*.svg', { eager: true });
 
 /** Get crypto icon URL by ticker symbol, or fall back to generic icon */
 function getIcon(ticker: string): string {
   const iconPath = `../../../assets/cryptocurrency/${ticker}.svg`;
-
-  if (icons[iconPath]) {
-    return new URL(iconPath, import.meta.url).href;
-  } else {
-    return genericIcon;
-  }
+  return icons[iconPath]?.default || genericIcon;
 }
 
 interface ICryptoIcon {
