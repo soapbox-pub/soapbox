@@ -105,6 +105,11 @@
     padding-left: 4px;
   }
 
+  .emoji-lg img.emojione {
+    width: 36px !important;
+    height: 36px !important;
+  }  
+
   .compose-form-warning {
     strong {
       @apply font-medium;
