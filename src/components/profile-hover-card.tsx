@@ -1,26 +1,33 @@
 import { useFloating } from '@floating-ui/react';
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
+
+import { fetchRelationships } from 'soapbox/actions/accounts.ts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
-} from 'soapbox/actions/profile-hover-card';
-import { useAccount, usePatronUser } from 'soapbox/api/hooks';
-import Badge from 'soapbox/components/badge';
-import ActionButton from 'soapbox/features/ui/components/action-button';
-import { UserPanel } from 'soapbox/features/ui/util/async-components';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+} from 'soapbox/actions/profile-hover-card.ts';
+import { useAccount, usePatronUser } from 'soapbox/api/hooks/index.ts';
+import Badge from 'soapbox/components/badge.tsx';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
+import { UserPanel } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import { showProfileHoverCard } from './hover-ref-wrapper';
-import { dateFormatOptions } from './relative-timestamp';
-import { Card, CardBody, HStack, Icon, Stack, Text } from './ui';
+import { showProfileHoverCard } from './hover-ref-wrapper.tsx';
+import { dateFormatOptions } from './relative-timestamp.tsx';
 
-import type { Account, PatronUser } from 'soapbox/schemas';
-import type { AppDispatch } from 'soapbox/store';
+import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 const getBadges = (
   account?: Pick<Account, 'admin' | 'moderator'>,
@@ -123,7 +130,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
             {account.local ? (
               <HStack alignItems='center' space={0.5}>
                 <Icon
-                  src={require('@tabler/icons/outline/calendar.svg')}
+                  src={calendarIcon}
                   className='size-4 text-gray-800 dark:text-gray-200'
                 />
 

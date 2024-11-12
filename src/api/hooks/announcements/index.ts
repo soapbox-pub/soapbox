@@ -1,1 +1,1 @@
-export { useAnnouncements } from './useAnnouncements';
+export { useAnnouncements } from './useAnnouncements.ts';

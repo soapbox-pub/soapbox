@@ -1,11 +1,14 @@
-import React from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { setSchedule, removeSchedule } from 'soapbox/actions/compose';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { setSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },
@@ -52,7 +55,7 @@ const ScheduleForm: React.FC<IScheduleForm> = ({ composeId }) => {
         <IconButton
           iconClassName='h-4 w-4'
           className='bg-transparent text-gray-400 hover:text-gray-600'
-          src={require('@tabler/icons/outline/x.svg')}
+          src={xIcon}
           onClick={handleRemove}
           title={intl.formatMessage(messages.remove)}
         />

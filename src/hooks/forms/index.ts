@@ -1,3 +1,3 @@
-export { useImageField } from './useImageField';
-export { useTextField } from './useTextField';
-export { usePreview } from './usePreview';
+export { useImageField } from './useImageField.ts';
+export { useTextField } from './useTextField.ts';
+export { usePreview } from './usePreview.ts';

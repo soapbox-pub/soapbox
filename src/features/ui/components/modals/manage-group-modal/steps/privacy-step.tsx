@@ -1,9 +1,11 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { type CreateGroupParams } from 'soapbox/api/hooks';
-import List, { ListItem } from 'soapbox/components/list';
-import { Form, FormGroup, Stack, Text } from 'soapbox/components/ui';
+import { type CreateGroupParams } from 'soapbox/api/hooks/index.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IPrivacyStep {
   params: CreateGroupParams;

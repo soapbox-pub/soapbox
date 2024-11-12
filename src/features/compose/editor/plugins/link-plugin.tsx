@@ -5,7 +5,6 @@
  */
 
 import { LinkPlugin as LexicalLinkPlugin } from '@lexical/react/LexicalLinkPlugin';
-import * as React from 'react';
 
 // Source: https://stackoverflow.com/a/8234912/2013580
 const urlRegExp = new RegExp(

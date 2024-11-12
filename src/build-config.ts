@@ -1,4 +1,4 @@
-import type { SoapboxEnv } from './build-config-compiletime';
+import type { SoapboxEnv } from './build-config-compiletime.ts';
 
 export const {
   NODE_ENV,

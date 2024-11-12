@@ -1,17 +1,26 @@
+import message2Icon from '@tabler/icons/outline/message-2.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose';
-import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines';
-import { useGroup, useGroupStream } from 'soapbox/api/hooks';
-import { Avatar, HStack, Icon, Stack, Text, Toggle } from 'soapbox/components/ui';
-import ComposeForm from 'soapbox/features/compose/components/compose-form';
-import { useAppDispatch, useAppSelector, useDraggedFiles, useOwnAccount } from 'soapbox/hooks';
-import { makeGetStatusIds } from 'soapbox/selectors';
+import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose.ts';
+import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines.ts';
+import { useGroup, useGroupStream } from 'soapbox/api/hooks/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import ComposeForm from 'soapbox/features/compose/components/compose-form.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 type RouteParams = { groupId: string };
 
@@ -110,7 +119,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
           <Stack space={4} className='py-6' justifyContent='center' alignItems='center'>
             <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
               <Icon
-                src={require('@tabler/icons/outline/message-2.svg')}
+                src={message2Icon}
                 className='size-6 text-gray-600'
               />
             </div>

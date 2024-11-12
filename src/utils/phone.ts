@@ -14,6 +14,6 @@ const isCountryCode = (value: any): value is CountryCode => COUNTRY_CODES.includ
 
 export {
   COUNTRY_CODES,
-  CountryCode,
+  type CountryCode,
   isCountryCode,
 };

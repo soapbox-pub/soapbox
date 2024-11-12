@@ -1,16 +1,21 @@
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
+import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
-import { normalizeAttachment } from 'soapbox/normalizers';
-import { addAutoPlay } from 'soapbox/utils/media';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { addAutoPlay } from 'soapbox/utils/media.ts';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import SvgIcon from './ui/icon/svg-icon';
-
-import type { Card as CardEntity, Attachment } from 'soapbox/types/entities';
+import type { Card as CardEntity, Attachment } from 'soapbox/types/entities.ts';
 
 /** Props for `PreviewCard`. */
 interface IPreviewCard {
@@ -137,7 +142,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       )}
       <HStack space={1} alignItems='center'>
         <Text tag='span' theme='muted'>
-          <SvgIcon src={require('@tabler/icons/outline/link.svg')} />
+          <SvgIcon src={linkIcon} />
         </Text>
         <Text tag='span' theme='muted' size='sm' direction={direction}>
           {card.provider_name}
@@ -170,10 +175,10 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     if (embedded) {
       embed = renderVideo();
     } else {
-      let iconVariant = require('@tabler/icons/outline/player-play.svg');
+      let iconVariant = playerPlayIcon;
 
       if (card.type === 'photo') {
-        iconVariant = require('@tabler/icons/outline/zoom-in.svg');
+        iconVariant = zoomInIcon;
       }
 
       embed = (
@@ -200,7 +205,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                     className='text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'
                   >
                     <SvgIcon
-                      src={require('@tabler/icons/outline/external-link.svg')}
+                      src={externalLinkIcon}
                       className='absolute left-1/2 top-1/2 size-[30px] -translate-x-1/2 -translate-y-1/2 text-inherit'
                     />
                   </a>

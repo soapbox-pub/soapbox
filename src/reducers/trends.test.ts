@@ -1,4 +1,6 @@
-import reducer from './trends';
+import { describe, expect, it } from 'vitest';
+
+import reducer from './trends.ts';
 
 describe('trends reducer', () => {
   it('should return the initial state', () => {

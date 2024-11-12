@@ -1,4 +1,6 @@
-import reducer from './dropdown-menu';
+import { describe, expect, it } from 'vitest';
+
+import reducer from './dropdown-menu.ts';
 
 describe('dropdown_menu reducer', () => {
   it('should return the initial state', () => {

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { accountSchema } from './account';
-import { chatMessageSchema } from './chat-message';
-import { statusSchema } from './status';
-import { emojiSchema } from './utils';
+import { accountSchema } from './account.ts';
+import { chatMessageSchema } from './chat-message.ts';
+import { statusSchema } from './status.ts';
+import { emojiSchema } from './utils.ts';
 
 const baseNotificationSchema = z.object({
   account: accountSchema,

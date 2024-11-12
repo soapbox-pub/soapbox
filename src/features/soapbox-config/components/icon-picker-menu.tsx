@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Text } from 'soapbox/components/ui';
+import Text from 'soapbox/components/ui/text.tsx';
 
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },

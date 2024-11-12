@@ -1,10 +1,10 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import { openModal } from './modals';
+import { openModal } from './modals.ts';
 
-import type { Account } from 'soapbox/schemas';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { ChatMessage, Group, Status } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas/index.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { ChatMessage, Group, Status } from 'soapbox/types/entities.ts';
 
 const REPORT_INIT   = 'REPORT_INIT';
 const REPORT_CANCEL = 'REPORT_CANCEL';

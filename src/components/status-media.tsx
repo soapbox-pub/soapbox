@@ -1,15 +1,16 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 
-import { openModal } from 'soapbox/actions/modals';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import PreviewCard from 'soapbox/components/preview-card';
-import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
-import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch } from 'soapbox/hooks';
+
+import { openModal } from 'soapbox/actions/modals.ts';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import PreviewCard from 'soapbox/components/preview-card.tsx';
+import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview.tsx';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
+import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Status, Attachment } from 'soapbox/types/entities';
+import type { Status, Attachment } from 'soapbox/types/entities.ts';
 
 interface IStatusMedia {
   /** Status entity to render media for. */

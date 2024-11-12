@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import { announcementReactionSchema, announcementSchema, type Announcement, type AnnouncementReaction } from 'soapbox/schemas';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import { announcementReactionSchema, announcementSchema, type Announcement, type AnnouncementReaction } from 'soapbox/schemas/index.ts';
 
 const updateReaction = (reaction: AnnouncementReaction, count: number, me?: boolean, overwrite?: boolean) => announcementReactionSchema.parse({
   ...reaction,

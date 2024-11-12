@@ -1,15 +1,15 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
-import { normalizeTag } from 'soapbox/normalizers';
+import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import {
   TRENDS_FETCH_REQUEST,
   TRENDS_FETCH_SUCCESS,
   TRENDS_FETCH_FAIL,
-} from '../actions/trends';
+} from '../actions/trends.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities';
+import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableList<Tag>(),

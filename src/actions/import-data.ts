@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
-import toast from 'soapbox/toast';
+import toast from 'soapbox/toast.tsx';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
 export const IMPORT_FOLLOWS_SUCCESS = 'IMPORT_FOLLOWS_SUCCESS';

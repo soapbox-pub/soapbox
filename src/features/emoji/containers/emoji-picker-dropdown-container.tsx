@@ -1,13 +1,14 @@
 import { useFloating, shift } from '@floating-ui/react';
+import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
 import clsx from 'clsx';
-import React, { KeyboardEvent, useState } from 'react';
+import { KeyboardEvent, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { IconButton } from 'soapbox/components/ui';
-import { useClickOutside } from 'soapbox/hooks';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
 
-import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown';
+import EmojiPickerDropdown, { IEmojiPickerDropdown } from '../components/emoji-picker-dropdown.tsx';
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -40,7 +41,7 @@ const EmojiPickerDropdownContainer = (
           'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': true,
         })}
         ref={refs.setReference}
-        src={require('@tabler/icons/outline/mood-happy.svg')}
+        src={moodHappyIcon}
         title={title}
         aria-label={title}
         aria-expanded={visible}

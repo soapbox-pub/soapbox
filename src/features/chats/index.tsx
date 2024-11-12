@@ -1,8 +1,6 @@
-import React from 'react';
+import { ChatProvider } from 'soapbox/contexts/chat-context.tsx';
 
-import { ChatProvider } from 'soapbox/contexts/chat-context';
-
-import ChatPage from './components/chat-page/chat-page';
+import ChatPage from './components/chat-page/chat-page.tsx';
 
 interface IChatIndex {
   params?: {

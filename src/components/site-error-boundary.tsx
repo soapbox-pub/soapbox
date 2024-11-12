@@ -1,17 +1,20 @@
-import React, { type ErrorInfo, useRef, useState } from 'react';
+import { type ErrorInfo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
-import { NODE_ENV } from 'soapbox/build-config';
-import { HStack, Text, Stack, Textarea } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
-import { captureSentryException } from 'soapbox/sentry';
-import KVStore from 'soapbox/storage/kv-store';
-import sourceCode from 'soapbox/utils/code';
-import { unregisterSW } from 'soapbox/utils/sw';
+import { NODE_ENV } from 'soapbox/build-config.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { captureSentryException } from 'soapbox/sentry.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import sourceCode from 'soapbox/utils/code.ts';
+import { unregisterSW } from 'soapbox/utils/sw.ts';
 
-import SentryFeedbackForm from './sentry-feedback-form';
-import SiteLogo from './site-logo';
+import SentryFeedbackForm from './sentry-feedback-form.tsx';
+import SiteLogo from './site-logo.tsx';
 
 interface ISiteErrorBoundary {
   children: React.ReactNode;

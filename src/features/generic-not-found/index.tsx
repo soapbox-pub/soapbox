@@ -1,6 +1,4 @@
-import React from 'react';
-
-import MissingIndicator from '../../components/missing-indicator';
+import MissingIndicator from '../../components/missing-indicator.tsx';
 
 const GenericNotFound = () => (
   <MissingIndicator />

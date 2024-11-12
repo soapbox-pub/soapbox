@@ -1,10 +1,9 @@
 import { AxiosError } from 'axios';
-import React from 'react';
 import toast from 'react-hot-toast';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
-import { Toast } from './components/ui';
-import { httpErrorMessages } from './utils/errors';
+import Toast from 'soapbox/components/ui/toast.tsx';
+import { httpErrorMessages } from 'soapbox/utils/errors.ts';
 
 export type ToastText = string | MessageDescriptor
 export type ToastType = 'success' | 'error' | 'info'

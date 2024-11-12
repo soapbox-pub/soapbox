@@ -1,17 +1,25 @@
-import React from 'react';
+import pinFilledIcon from '@tabler/icons/filled/pin.svg';
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import eyeIcon from '@tabler/icons/outline/eye.svg';
+import pinIcon from '@tabler/icons/outline/pin.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useUpdateGroupTag } from 'soapbox/api/hooks';
-import { HStack, Icon, IconButton, Stack, Text, Tooltip } from 'soapbox/components/ui';
-import { importEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import { useAppDispatch } from 'soapbox/hooks';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import toast from 'soapbox/toast';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { useUpdateGroupTag } from 'soapbox/api/hooks/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { importEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import toast from 'soapbox/toast.tsx';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { Group, GroupTag } from 'soapbox/schemas';
+import type { Group, GroupTag } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   hideTag: { id: 'group.tags.hide', defaultMessage: 'Hide topic' },
@@ -87,7 +95,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
     if (!isOwner && tag.pinned) {
       return (
         <Icon
-          src={require('@tabler/icons/filled/pin.svg')}
+          src={pinFilledIcon}
           className='size-5 text-gray-600'
           data-testid='pin-icon'
         />
@@ -112,8 +120,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
             theme='transparent'
             src={
               tag.pinned ?
-                require('@tabler/icons/filled/pin.svg') :
-                require('@tabler/icons/outline/pin.svg')
+                pinFilledIcon :
+                pinIcon
             }
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             data-testid='pin-icon'
@@ -128,7 +136,7 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
           <IconButton
             onClick={togglePin}
             theme='transparent'
-            src={require('@tabler/icons/filled/pin.svg')}
+            src={pinFilledIcon}
             iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
           />
         </Tooltip>
@@ -185,8 +193,8 @@ const GroupTagListItem = (props: IGroupMemberListItem) => {
               theme='transparent'
               src={
                 tag.visible ?
-                  require('@tabler/icons/outline/eye.svg') :
-                  require('@tabler/icons/outline/eye-off.svg')
+                  eyeIcon :
+                  eyeOffIcon
               }
               iconClassName='h-5 w-5 text-primary-500 dark:text-accent-blue'
             />

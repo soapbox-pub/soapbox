@@ -1,4 +1,6 @@
-import { addAutoPlay } from './media';
+import { describe, expect, it } from 'vitest';
+
+import { addAutoPlay } from './media.ts';
 
 describe('addAutoPlay()', () => {
   describe('when the provider is Rumble', () => {

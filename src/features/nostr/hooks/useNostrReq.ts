@@ -2,8 +2,8 @@ import { NSet, NostrEvent, NostrFilter } from '@nostrify/nostrify';
 import isEqual from 'lodash/isEqual';
 import { useEffect, useRef, useState } from 'react';
 
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { useForceUpdate } from 'soapbox/hooks/useForceUpdate';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { useForceUpdate } from 'soapbox/hooks/useForceUpdate.ts';
 
 /**
  * Streams events from the relay for the given filters.

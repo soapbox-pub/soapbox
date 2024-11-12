@@ -1,15 +1,15 @@
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useLoading } from 'soapbox/hooks/useLoading';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useLoading } from 'soapbox/hooks/useLoading.ts';
 
-import { importEntities } from '../actions';
+import { importEntities } from '../actions.ts';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntityCallbacks, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
-import type { Entity } from '../types';
+import type { EntityCallbacks, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types.ts';
+import type { Entity } from '../types.ts';
 
 interface UseCreateEntityOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>;

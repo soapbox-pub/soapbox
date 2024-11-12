@@ -1,15 +1,17 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts';
-import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites';
-import { useAccountLookup } from 'soapbox/api/hooks';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import StatusList from 'soapbox/components/status-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector, useOwnAccount } from 'soapbox/hooks';
+import { fetchAccount, fetchAccountByUsername } from 'soapbox/actions/accounts.ts';
+import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from 'soapbox/actions/favourites.ts';
+import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },

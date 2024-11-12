@@ -1,22 +1,26 @@
+import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import { List as ImmutableList } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import GroupAvatar from 'soapbox/components/groups/group-avatar';
-import StillImage from 'soapbox/components/still-image';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import { normalizeAttachment } from 'soapbox/normalizers';
-import { isDefaultHeader } from 'soapbox/utils/accounts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
+import StillImage from 'soapbox/components/still-image.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { isDefaultHeader } from 'soapbox/utils/accounts.ts';
 
-import GroupActionButton from './group-action-button';
-import GroupMemberCount from './group-member-count';
-import GroupOptionsButton from './group-options-button';
-import GroupPrivacy from './group-privacy';
-import GroupRelationship from './group-relationship';
+import GroupActionButton from './group-action-button.tsx';
+import GroupMemberCount from './group-member-count.tsx';
+import GroupOptionsButton from './group-options-button.tsx';
+import GroupPrivacy from './group-privacy.tsx';
+import GroupRelationship from './group-relationship.tsx';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   header: { id: 'group.header.alt', defaultMessage: 'Group header' },
@@ -112,7 +116,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
         className='flex h-32 w-full items-center justify-center bg-gray-200 dark:bg-gray-800/30 md:rounded-t-xl lg:h-52'
       >
         {isHeaderMissing ? (
-          <Icon src={require('@tabler/icons/outline/photo-off.svg')} className='size-6 text-gray-500 dark:text-gray-700' />
+          <Icon src={photoOffIcon} className='size-6 text-gray-500 dark:text-gray-700' />
         ) : header}
       </div>
     );

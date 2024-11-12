@@ -1,5 +1,5 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntityActions } from 'soapbox/entity-store/hooks';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
 
 function useDeleteBookmarkFolder() {
   const { deleteEntity, isSubmitting } = useEntityActions(

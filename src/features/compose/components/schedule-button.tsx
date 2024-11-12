@@ -1,10 +1,11 @@
-import React from 'react';
+import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { addSchedule, removeSchedule } from 'soapbox/actions/compose';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { addSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
-import ComposeFormButton from './compose-form-button';
+import ComposeFormButton from './compose-form-button.tsx';
 
 const messages = defineMessages({
   add_schedule: { id: 'schedule_button.add_schedule', defaultMessage: 'Schedule post for later' },
@@ -39,7 +40,7 @@ const ScheduleButton: React.FC<IScheduleButton> = ({ composeId, disabled }) => {
 
   return (
     <ComposeFormButton
-      icon={require('@tabler/icons/outline/calendar-stats.svg')}
+      icon={calendarStatsIcon}
       title={intl.formatMessage(active ? messages.remove_schedule : messages.add_schedule)}
       active={active}
       disabled={disabled}

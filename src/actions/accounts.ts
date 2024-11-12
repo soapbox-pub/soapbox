@@ -1,22 +1,22 @@
-import { importEntities } from 'soapbox/entity-store/actions';
-import { Entities } from 'soapbox/entity-store/entities';
-import { selectAccount } from 'soapbox/selectors';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { importEntities } from 'soapbox/entity-store/actions.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
 import {
   importFetchedAccount,
   importFetchedAccounts,
   importErrorWhileFetchingAccountByUsername,
-} from './importer';
+} from './importer/index.ts';
 
 import type { AxiosError, CancelToken } from 'axios';
 import type { Map as ImmutableMap } from 'immutable';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
-import type { History } from 'soapbox/types/history';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
+import type { History } from 'soapbox/types/history.ts';
 
 const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';

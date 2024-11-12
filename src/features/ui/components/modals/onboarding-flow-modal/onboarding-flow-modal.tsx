@@ -1,17 +1,19 @@
 import clsx from 'clsx';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import { endOnboarding } from 'soapbox/actions/onboarding';
-import { Stack, Modal, HStack } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { endOnboarding } from 'soapbox/actions/onboarding.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import AvatarSelectionModal from './steps/avatar-step';
-import BioStep from './steps/bio-step';
-import CompletedModal from './steps/completed-step';
-import CoverPhotoSelectionModal from './steps/cover-photo-selection-step';
-import DisplayNameStep from './steps/display-name-step';
-import SuggestedAccountsModal from './steps/suggested-accounts-step';
+import AvatarSelectionModal from './steps/avatar-step.tsx';
+import BioStep from './steps/bio-step.tsx';
+import CompletedModal from './steps/completed-step.tsx';
+import CoverPhotoSelectionModal from './steps/cover-photo-selection-step.tsx';
+import DisplayNameStep from './steps/display-name-step.tsx';
+import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
 
 interface IOnboardingFlowModal {
   onClose(): void;
@@ -20,7 +22,7 @@ interface IOnboardingFlowModal {
 const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(0);
 
   const handleSwipe = (nextStep: number) => {
     setCurrentStep(nextStep);
@@ -64,7 +66,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.addEventListener('keyup', handleKeyUp);
 
     return () => {

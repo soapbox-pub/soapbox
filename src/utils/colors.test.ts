@@ -1,4 +1,6 @@
-import tintify from './colors';
+import { describe, expect, it } from 'vitest';
+
+import tintify from './colors.ts';
 
 const AZURE = '#0482d8';
 

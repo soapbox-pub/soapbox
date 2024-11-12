@@ -1,16 +1,16 @@
 import { defineMessages } from 'react-intl';
 
-import toast from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import toast from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import { importFetchedAccounts } from './importer';
-import { patchMeSuccess } from './me';
+import { importFetchedAccounts } from './importer/index.ts';
+import { patchMeSuccess } from './me.ts';
 
-import type { Account } from 'soapbox/schemas';
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { Account } from 'soapbox/schemas/index.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const ALIASES_FETCH_REQUEST = 'ALIASES_FETCH_REQUEST';
 const ALIASES_FETCH_SUCCESS = 'ALIASES_FETCH_SUCCESS';

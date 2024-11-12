@@ -1,8 +1,9 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useCreateEntity } from 'soapbox/entity-store/hooks';
-import { useApi, useOwnAccount } from 'soapbox/hooks';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useCreateEntity } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 function useCancelMembershipRequest(group: Group) {
   const api = useApi();

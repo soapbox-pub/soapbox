@@ -2,17 +2,17 @@ import {
   AUTH_LOGGED_OUT,
   AUTH_ACCOUNT_REMEMBER_SUCCESS,
   VERIFY_CREDENTIALS_SUCCESS,
-} from '../actions/auth';
+} from '../actions/auth.ts';
 import {
   ME_FETCH_SUCCESS,
   ME_FETCH_FAIL,
   ME_FETCH_SKIP,
   ME_PATCH_SUCCESS,
-} from '../actions/me';
+} from '../actions/me.ts';
 
 import type { AxiosError } from 'axios';
 import type { AnyAction } from 'redux';
-import type { Me } from 'soapbox/types/soapbox';
+import type { Me } from 'soapbox/types/soapbox.ts';
 
 const initialState: Me = null;
 

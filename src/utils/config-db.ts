@@ -6,7 +6,7 @@ import {
 } from 'immutable';
 import trimStart from 'lodash/trimStart';
 
-import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma';
+import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma.ts';
 
 export type Config = ImmutableMap<string, any>;
 export type Policy = Record<string, any>;

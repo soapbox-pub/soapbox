@@ -1,17 +1,18 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError';
-import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks';
-import { Modal, Stack } from 'soapbox/components/ui';
-import { useDebounce } from 'soapbox/hooks';
-import { type Group } from 'soapbox/schemas';
-import toast from 'soapbox/toast';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks/index.ts';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
+import { type Group } from 'soapbox/schemas/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import ConfirmationStep from './steps/confirmation-step';
-import DetailsStep from './steps/details-step';
-import PrivacyStep from './steps/privacy-step';
+import ConfirmationStep from './steps/confirmation-step.tsx';
+import DetailsStep from './steps/details-step.tsx';
+import PrivacyStep from './steps/privacy-step.tsx';
 
 const messages = defineMessages({
   next: { id: 'manage_group.next', defaultMessage: 'Next' },

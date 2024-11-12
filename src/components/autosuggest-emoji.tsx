@@ -1,10 +1,8 @@
-import React from 'react';
+import { isCustomEmoji } from 'soapbox/features/emoji/index.ts';
+import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
+import { joinPublicPath } from 'soapbox/utils/static.ts';
 
-import { isCustomEmoji } from 'soapbox/features/emoji';
-import unicodeMapping from 'soapbox/features/emoji/mapping';
-import { joinPublicPath } from 'soapbox/utils/static';
-
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 interface IAutosuggestEmoji {
   emoji: Emoji;

@@ -5,7 +5,7 @@
  */
 import { Record as ImmutableRecord } from 'immutable';
 
-import { normalizeAccount } from 'soapbox/normalizers/account';
+import { normalizeAccount } from 'soapbox/normalizers/account.ts';
 
 // https://docs.joinmastodon.org/entities/mention/
 export const MentionRecord = ImmutableRecord({

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildRelationship } from 'soapbox/jest/factory';
-import { createTestStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
-import { Store } from 'soapbox/store';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildRelationship } from 'soapbox/jest/factory.ts';
+import { createTestStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { Store } from 'soapbox/store.ts';
 
-import { useFetchRelationships } from './relationships';
+import { useFetchRelationships } from './relationships.ts';
 
 describe('useFetchRelationships()', () => {
   let store: Store;

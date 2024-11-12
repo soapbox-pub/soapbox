@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntityActions } from 'soapbox/entity-store/hooks';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
 
-import type { GroupTag } from 'soapbox/schemas';
+import type { GroupTag } from 'soapbox/schemas/index.ts';
 
 function useUpdateGroupTag(groupId: string, tagId: string) {
   const { updateEntity, ...rest } = useEntityActions<GroupTag>(

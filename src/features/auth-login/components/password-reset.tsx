@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { resetPassword } from 'soapbox/actions/security';
-import { BigCard } from 'soapbox/components/big-card';
-import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { resetPassword } from 'soapbox/actions/security.ts';
+import { BigCard } from 'soapbox/components/big-card.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   nicknameOrEmail: { id: 'password_reset.fields.username_placeholder', defaultMessage: 'Email or username' },

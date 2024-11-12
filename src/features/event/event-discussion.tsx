@@ -1,25 +1,26 @@
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { eventDiscussionCompose } from 'soapbox/actions/compose';
-import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import Tombstone from 'soapbox/components/tombstone';
-import { Stack } from 'soapbox/components/ui';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import PendingStatus from 'soapbox/features/ui/components/pending-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import { eventDiscussionCompose } from 'soapbox/actions/compose.ts';
+import { fetchStatusWithContext, fetchNext } from 'soapbox/actions/statuses.ts';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Tombstone from 'soapbox/components/tombstone.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import ComposeForm from '../compose/components/compose-form';
-import { getDescendantsIds } from '../status/components/thread';
-import ThreadStatus from '../status/components/thread-status';
+import ComposeForm from '../compose/components/compose-form.tsx';
+import ThreadStatus from '../status/components/thread-status.tsx';
+import { getDescendantsIds } from '../status/components/thread.tsx';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
+import type { Attachment as AttachmentEntity } from 'soapbox/types/entities.ts';
 
 type RouteParams = { statusId: string };
 

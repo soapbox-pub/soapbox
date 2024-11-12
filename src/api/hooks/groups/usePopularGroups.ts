@@ -1,11 +1,11 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { Group, groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { Group, groupSchema } from 'soapbox/schemas/index.ts';
 
-import { useApi } from '../../../hooks/useApi';
-import { useFeatures } from '../../../hooks/useFeatures';
+import { useApi } from '../../../hooks/useApi.ts';
+import { useFeatures } from '../../../hooks/useFeatures.ts';
 
-import { useGroupRelationships } from './useGroupRelationships';
+import { useGroupRelationships } from './useGroupRelationships.ts';
 
 function usePopularGroups() {
   const api = useApi();

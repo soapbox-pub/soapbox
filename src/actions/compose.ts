@@ -3,31 +3,31 @@ import { List as ImmutableList } from 'immutable';
 import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import api from 'soapbox/api';
-import { isNativeEmoji } from 'soapbox/features/emoji';
-import emojiSearch from 'soapbox/features/emoji/search';
-import { normalizeTag } from 'soapbox/normalizers';
-import { selectAccount, selectOwnAccount } from 'soapbox/selectors';
-import { tagHistory } from 'soapbox/settings';
-import toast from 'soapbox/toast';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import api from 'soapbox/api/index.ts';
+import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
+import emojiSearch from 'soapbox/features/emoji/search.ts';
+import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { selectAccount, selectOwnAccount } from 'soapbox/selectors/index.ts';
+import { tagHistory } from 'soapbox/settings.ts';
+import toast from 'soapbox/toast.tsx';
+import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import { ComposeSetStatusAction } from './compose-status';
-import { chooseEmoji } from './emojis';
-import { importFetchedAccounts } from './importer';
-import { uploadFile, updateMedia } from './media';
-import { openModal, closeModal } from './modals';
-import { getSettings } from './settings';
-import { createStatus } from './statuses';
+import { ComposeSetStatusAction } from './compose-status.ts';
+import { chooseEmoji } from './emojis.ts';
+import { importFetchedAccounts } from './importer/index.ts';
+import { uploadFile, updateMedia } from './media.ts';
+import { openModal, closeModal } from './modals.ts';
+import { getSettings } from './settings.ts';
+import { createStatus } from './statuses.ts';
 
 import type { EditorState } from 'lexical';
-import type { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import type { Emoji } from 'soapbox/features/emoji';
-import type { Account, Group } from 'soapbox/schemas';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status, Tag } from 'soapbox/types/entities';
-import type { History } from 'soapbox/types/history';
+import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { Account, Group } from 'soapbox/schemas/index.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status, Tag } from 'soapbox/types/entities.ts';
+import type { History } from 'soapbox/types/history.ts';
 
 const { CancelToken, isCancel } = axios;
 

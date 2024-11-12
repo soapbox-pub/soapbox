@@ -1,14 +1,15 @@
 import { List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import * as actions from 'soapbox/actions/compose';
-import { COMPOSE_SET_STATUS } from 'soapbox/actions/compose-status';
-import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
-import { SETTING_CHANGE } from 'soapbox/actions/settings';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { TagRecord } from 'soapbox/normalizers';
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { COMPOSE_SET_STATUS } from 'soapbox/actions/compose-status.ts';
+import * as actions from 'soapbox/actions/compose.ts';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me.ts';
+import { SETTING_CHANGE } from 'soapbox/actions/settings.ts';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines.ts';
+import { TagRecord } from 'soapbox/normalizers/index.ts';
+import { normalizeStatus } from 'soapbox/normalizers/status.ts';
 
-import reducer, { initialState, ReducerCompose } from './compose';
+import reducer, { initialState, ReducerCompose } from './compose.ts';
 
 describe('compose reducer', () => {
   it('returns the initial state by default', () => {

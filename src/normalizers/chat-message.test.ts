@@ -1,7 +1,8 @@
 import { Record as ImmutableRecord } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { normalizeAttachment } from './attachment';
-import { normalizeChatMessage } from './chat-message';
+import { normalizeAttachment } from './attachment.ts';
+import { normalizeChatMessage } from './chat-message.ts';
 
 describe('normalizeChatMessage()', () => {
   it('upgrades attachment to media_attachments', () => {

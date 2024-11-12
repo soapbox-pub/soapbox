@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
 
 interface IBackgroundShapes {
   /** Whether the shapes should be absolute positioned or fixed. */

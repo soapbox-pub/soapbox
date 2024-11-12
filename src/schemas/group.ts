@@ -1,16 +1,15 @@
 import escapeTextContentForBrowser from 'escape-html';
 import z from 'zod';
 
-import emojify from 'soapbox/features/emoji';
-import { unescapeHTML } from 'soapbox/utils/html';
+import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
+import headerMissing from 'soapbox/assets/images/header-missing.png';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
 
-import { customEmojiSchema } from './custom-emoji';
-import { groupRelationshipSchema } from './group-relationship';
-import { groupTagSchema } from './group-tag';
-import { filteredArray, makeCustomEmojiMap } from './utils';
-
-const avatarMissing = require('soapbox/assets/images/avatar-missing.png');
-const headerMissing = require('soapbox/assets/images/header-missing.png');
+import { customEmojiSchema } from './custom-emoji.ts';
+import { groupRelationshipSchema } from './group-relationship.ts';
+import { groupTagSchema } from './group-tag.ts';
+import { filteredArray, makeCustomEmojiMap } from './utils.ts';
 
 const groupSchema = z.object({
   avatar: z.string().catch(avatarMissing),

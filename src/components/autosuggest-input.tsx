@@ -1,16 +1,17 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 
-import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji';
-import Icon from 'soapbox/components/icon';
-import { Input, Portal } from 'soapbox/components/ui';
-import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account';
-import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions';
+import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
+import AutosuggestAccount from 'soapbox/features/compose/components/autosuggest-account.tsx';
+import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
 
-import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu';
-import type { InputThemes } from 'soapbox/components/ui/input/input';
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
+import type { InputThemes } from 'soapbox/components/ui/input.tsx';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 export type AutoSuggestion = string | Emoji;
 
@@ -232,7 +233,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
     }
 
     return menu.map((item, i) => (
-      <a
+      <a // eslint-disable-line jsx-a11y/anchor-is-valid
         className={clsx('flex cursor-pointer items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
         href='/'
         role='button'

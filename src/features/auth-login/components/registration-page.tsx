@@ -1,13 +1,15 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { BigCard } from 'soapbox/components/big-card';
-import { Text } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures, useInstance, useRegistrationStatus } from 'soapbox/hooks';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { BigCard } from 'soapbox/components/big-card.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 
-import RegistrationForm from './registration-form';
+import RegistrationForm from './registration-form.tsx';
 
 const RegistrationPage: React.FC = () => {
   const { instance } = useInstance();

@@ -1,9 +1,9 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import { importFetchedPoll } from './importer';
+import { importFetchedPoll } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const POLL_VOTE_REQUEST = 'POLL_VOTE_REQUEST';
 const POLL_VOTE_SUCCESS = 'POLL_VOTE_SUCCESS';

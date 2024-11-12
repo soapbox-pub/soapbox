@@ -1,8 +1,8 @@
-import { openModal } from './modals';
+import { openModal } from './modals.ts';
 
-import type { Account } from 'soapbox/schemas';
-import type { AppDispatch } from 'soapbox/store';
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/schemas/index.ts';
+import type { AppDispatch } from 'soapbox/store.ts';
+import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
 const MUTES_INIT_MODAL = 'MUTES_INIT_MODAL';
 const MUTES_TOGGLE_HIDE_NOTIFICATIONS = 'MUTES_TOGGLE_HIDE_NOTIFICATIONS';

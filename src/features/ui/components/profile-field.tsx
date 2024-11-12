@@ -1,12 +1,14 @@
+import checkIcon from '@tabler/icons/outline/check.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
-import Markup from 'soapbox/components/markup';
-import { HStack, Icon } from 'soapbox/components/ui';
-import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components';
 
-import type { Account } from 'soapbox/schemas';
+import Markup from 'soapbox/components/markup.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components.ts';
+
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
 const isTicker = (value: string): boolean => Boolean(getTicker(value));
@@ -57,7 +59,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
         <HStack space={2} alignItems='center'>
           {field.verified_at && (
             <span className='flex-none' title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(field.verified_at, dateFormatOptions) })}>
-              <Icon src={require('@tabler/icons/outline/check.svg')} />
+              <Icon src={checkIcon} />
             </span>
           )}
 

@@ -1,14 +1,13 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
   exportFollows,
   exportBlocks,
   exportMutes,
-} from 'soapbox/actions/export-data';
-import { Column } from 'soapbox/components/ui';
+} from 'soapbox/actions/export-data.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
-import CSVExporter from './components/csv-exporter';
+import CSVExporter from './components/csv-exporter.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.export_data', defaultMessage: 'Export data' },

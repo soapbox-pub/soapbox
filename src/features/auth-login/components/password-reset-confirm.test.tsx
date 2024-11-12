@@ -1,10 +1,10 @@
-import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { fireEvent, render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { __stub } from 'soapbox/api/index.ts';
+import { fireEvent, render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import PasswordResetConfirm from './password-reset-confirm';
+import PasswordResetConfirm from './password-reset-confirm.tsx';
 
 const TestableComponent = () => (
   <Switch>

@@ -1,7 +1,5 @@
-import React from 'react';
-
-import Icon, { IIcon } from 'soapbox/components/icon';
-import { Counter } from 'soapbox/components/ui';
+import Icon, { IIcon } from 'soapbox/components/icon.tsx';
+import Counter from 'soapbox/components/ui/counter.tsx';
 
 interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
   count: number;

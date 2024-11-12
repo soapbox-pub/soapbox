@@ -1,22 +1,22 @@
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useSuggestedGroups } from 'soapbox/api/hooks';
-import { Column } from 'soapbox/components/ui';
+import { useSuggestedGroups } from 'soapbox/api/hooks/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
-import GroupGridItem from './components/discover/group-grid-item';
-import GroupListItem from './components/discover/group-list-item';
-import LayoutButtons, { GroupLayout } from './components/discover/layout-buttons';
+import GroupGridItem from './components/discover/group-grid-item.tsx';
+import GroupListItem from './components/discover/group-list-item.tsx';
+import LayoutButtons, { GroupLayout } from './components/discover/layout-buttons.tsx';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   label: { id: 'groups.suggested.label', defaultMessage: 'Suggested Groups' },
 });
 
-const GridList: Components['List'] = React.forwardRef((props, ref) => {
+const GridList: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });

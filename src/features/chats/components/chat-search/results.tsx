@@ -1,12 +1,15 @@
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
-import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import useAccountSearch from 'soapbox/queries/search';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import useAccountSearch from 'soapbox/queries/search.ts';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/types/entities.ts';
 
 interface IResults {
   accountSearchResult: ReturnType<typeof useAccountSearch>;

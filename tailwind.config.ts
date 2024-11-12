@@ -4,7 +4,7 @@ import typographyPlugin from '@tailwindcss/typography';
 import { type Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
-import { parseColorMatrix } from './tailwind/colors';
+import { parseColorMatrix } from './tailwind/colors.ts';
 
 const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black &'));
 

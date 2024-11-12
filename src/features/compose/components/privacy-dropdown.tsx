@@ -1,19 +1,24 @@
+import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import { changeComposeVisibility } from 'soapbox/actions/compose';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
+import { changeComposeVisibility } from 'soapbox/actions/compose.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
-import Motion from '../../ui/util/optional-motion';
+import Motion from '../../ui/util/optional-motion.tsx';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
@@ -161,10 +166,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const [placement, setPlacement] = useState('bottom');
 
   const options = [
-    { icon: require('@tabler/icons/outline/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
-    { icon: require('@tabler/icons/outline/lock-open.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
-    { icon: require('@tabler/icons/outline/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
-    { icon: require('@tabler/icons/outline/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
+    { icon: worldIcon, value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
+    { icon: lockOpenIcon, value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
+    { icon: lockIcon, value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
+    { icon: mailIcon, value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
   ];
 
   const onChange = (value: string | null) => value && dispatch(changeComposeVisibility(composeId, value));
@@ -247,7 +252,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
             'text-primary-500 hover:text-primary-600 dark:text-primary-500 dark:hover:text-primary-400': open,
           })}
-          src={valueOption?.icon}
+          src={valueOption!.icon}
           title={intl.formatMessage(messages.change_privacy)}
           onClick={handleToggle}
           onMouseDown={handleMouseDown}

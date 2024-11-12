@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { accountSchema } from './account';
+import { accountSchema } from './account.ts';
 
 const adminIpSchema = z.object({
   ip: z.string().ip(),
@@ -29,4 +29,4 @@ const adminAccountSchema = z.object({
 
 type AdminAccount = z.infer<typeof adminAccountSchema>;
 
-export { adminAccountSchema, AdminAccount };
+export { adminAccountSchema, type AdminAccount };

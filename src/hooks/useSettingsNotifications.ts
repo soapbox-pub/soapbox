@@ -1,6 +1,6 @@
-import { useFeatures } from './useFeatures';
-import { useOwnAccount } from './useOwnAccount';
-import { useSettings } from './useSettings';
+import { useFeatures } from './useFeatures.ts';
+import { useOwnAccount } from './useOwnAccount.ts';
+import { useSettings } from './useSettings.ts';
 
 type SettingsNotification = 'needsNip05';
 

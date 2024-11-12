@@ -1,8 +1,9 @@
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Counter, Icon } from '../ui';
+import Counter from 'soapbox/components/ui/counter.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 
 export interface MenuItem {
   action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>;

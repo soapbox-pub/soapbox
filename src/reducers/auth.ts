@@ -2,13 +2,13 @@ import { AxiosError } from 'axios';
 import { produce } from 'immer';
 import { z } from 'zod';
 
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
-import { Account, accountSchema } from 'soapbox/schemas';
-import { Application, applicationSchema } from 'soapbox/schemas/application';
-import { AuthUser, SoapboxAuth, soapboxAuthSchema } from 'soapbox/schemas/soapbox/soapbox-auth';
-import { Token, tokenSchema } from 'soapbox/schemas/token';
-import { jsonSchema } from 'soapbox/schemas/utils';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
+import { Application, applicationSchema } from 'soapbox/schemas/application.ts';
+import { Account, accountSchema } from 'soapbox/schemas/index.ts';
+import { AuthUser, SoapboxAuth, soapboxAuthSchema } from 'soapbox/schemas/soapbox/soapbox-auth.ts';
+import { Token, tokenSchema } from 'soapbox/schemas/token.ts';
+import { jsonSchema } from 'soapbox/schemas/utils.ts';
 
 import {
   AUTH_APP_CREATED,
@@ -18,8 +18,8 @@ import {
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
   AUTH_APP_AUTHORIZED,
-} from '../actions/auth';
-import { ME_FETCH_SKIP } from '../actions/me';
+} from '../actions/auth.ts';
+import { ME_FETCH_SKIP } from '../actions/me.ts';
 
 import type { UnknownAction } from 'redux';
 

@@ -9,7 +9,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import { mergeDefined } from 'soapbox/utils/normalizers';
+import { mergeDefined } from 'soapbox/utils/normalizers.ts';
 
 // https://docs.joinmastodon.org/entities/attachment/
 export const AttachmentRecord = ImmutableRecord({

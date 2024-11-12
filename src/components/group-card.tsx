@@ -1,14 +1,14 @@
-import React from 'react';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import GroupHeaderImage from 'soapbox/features/group/components/group-header-image.tsx';
+import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
+import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
+import GroupRelationship from 'soapbox/features/group/components/group-relationship.tsx';
 
-import GroupHeaderImage from 'soapbox/features/group/components/group-header-image';
-import GroupMemberCount from 'soapbox/features/group/components/group-member-count';
-import GroupPrivacy from 'soapbox/features/group/components/group-privacy';
-import GroupRelationship from 'soapbox/features/group/components/group-relationship';
+import GroupAvatar from './groups/group-avatar.tsx';
 
-import GroupAvatar from './groups/group-avatar';
-import { HStack, Stack, Text } from './ui';
-
-import type { Group as GroupEntity } from 'soapbox/types/entities';
+import type { Group as GroupEntity } from 'soapbox/types/entities.ts';
 
 interface IGroupCard {
   group: GroupEntity;

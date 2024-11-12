@@ -1,7 +1,5 @@
-import React from 'react';
-
-import UploadProgress from 'soapbox/components/upload-progress';
-import { useCompose } from 'soapbox/hooks';
+import UploadProgress from 'soapbox/components/upload-progress.tsx';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 interface IComposeUploadProgress {
   composeId: string;

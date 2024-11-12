@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchAccount } from 'soapbox/actions/accounts';
-import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
-import { useAccount } from 'soapbox/api/hooks';
-import AccountComponent from 'soapbox/components/account';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
+import { fetchAccount } from 'soapbox/actions/accounts.ts';
+import { addToMentions, removeFromMentions } from 'soapbox/actions/compose.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import AccountComponent from 'soapbox/components/account.tsx';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
 
 const messages = defineMessages({
   remove: { id: 'reply_mentions.account.remove', defaultMessage: 'Remove from mentions' },
@@ -42,9 +45,9 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
   let button;
 
   if (added) {
-    button = <IconButton src={require('@tabler/icons/outline/x.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={xIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/outline/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={plusIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (

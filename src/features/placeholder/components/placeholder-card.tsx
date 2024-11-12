@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React from 'react';
+import { memo } from 'react';
 
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval, generateText } from '../utils.ts';
 
 /** Fake link preview to display while data is loading. */
 const PlaceholderCard: React.FC = () => (
@@ -19,4 +19,4 @@ const PlaceholderCard: React.FC = () => (
   </div>
 );
 
-export default React.memo(PlaceholderCard);
+export default memo(PlaceholderCard);

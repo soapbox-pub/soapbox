@@ -1,9 +1,11 @@
-import { buildAccount } from 'soapbox/jest/factory';
-import { normalizeChatMessage } from 'soapbox/normalizers';
-import { ChatKeys, IChat } from 'soapbox/queries/chats';
-import { queryClient } from 'soapbox/queries/client';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { updateChatMessage } from './chats';
+import { buildAccount } from 'soapbox/jest/factory.ts';
+import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
+import { ChatKeys, IChat } from 'soapbox/queries/chats.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+
+import { updateChatMessage } from './chats.ts';
 
 const chat: IChat = {
   accepted: true,

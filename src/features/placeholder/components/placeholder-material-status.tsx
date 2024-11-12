@@ -1,6 +1,4 @@
-import React from 'react';
-
-import PlaceholderStatus from './placeholder-status';
+import PlaceholderStatus from './placeholder-status.tsx';
 
 /** Fake material status to display while data is loading. */
 const PlaceholderMaterialStatus: React.FC = () => {

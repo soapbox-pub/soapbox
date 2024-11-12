@@ -2,8 +2,10 @@ import { act } from '@testing-library/react';
 import { toast } from 'react-hot-toast';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import '@testing-library/jest-dom/vitest';
+import 'fake-indexeddb/auto';
+import { afterEach, vi } from 'vitest';
 
-import { __clear as clearApiMocks } from '../api/__mocks__';
+import { __clear as clearApiMocks } from '../api/__mocks__/index.ts';
 
 // API mocking
 vi.mock('soapbox/api');
@@ -13,10 +15,6 @@ afterEach(() => {
 
 // Query mocking
 vi.mock('soapbox/queries/client');
-
-// Mock IndexedDB
-// https://dev.to/andyhaskell/testing-your-indexeddb-code-with-jest-2o17
-require('fake-indexeddb/auto');
 
 // Clear toasts after each test.
 afterEach(() => {

@@ -1,4 +1,4 @@
-import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions/sidebar';
+import { SIDEBAR_OPEN, SIDEBAR_CLOSE } from '../actions/sidebar.ts';
 
 import type { AnyAction } from 'redux';
 

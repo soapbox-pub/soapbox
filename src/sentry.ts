@@ -1,8 +1,8 @@
-import { NODE_ENV } from 'soapbox/build-config';
-import sourceCode from 'soapbox/utils/code';
+import { NODE_ENV } from 'soapbox/build-config.ts';
+import sourceCode from 'soapbox/utils/code.ts';
 
-import type { Account } from './schemas';
 import type { CaptureContext, SendFeedbackParams } from '@sentry/types';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 /** Start Sentry. */
 async function startSentry(dsn: string): Promise<void> {

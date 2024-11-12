@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import ChatPaneHeader from './chat-widget/chat-pane-header';
+import ChatPaneHeader from './chat-widget/chat-pane-header.tsx';
 
 describe('<ChatPaneHeader />', () => {
   it('handles the onToggle prop', async () => {

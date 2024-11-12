@@ -1,13 +1,18 @@
+import downloadIcon from '@tabler/icons/outline/download.svg';
+import playerPauseIcon from '@tabler/icons/outline/player-pause.svg';
+import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
+import volume3Icon from '@tabler/icons/outline/volume-3.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
 import throttle from 'lodash/throttle';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { formatTime, getPointerPosition } from 'soapbox/features/video';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { formatTime, getPointerPosition } from 'soapbox/features/video/index.tsx';
 
-import Visualizer from './visualizer';
+import Visualizer from './visualizer.ts';
 
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },
@@ -534,7 +539,7 @@ const Audio: React.FC<IAudio> = (props) => {
               className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 active:text-white active:opacity-100 ')}
               onClick={togglePlay}
             >
-              <SvgIcon className='w-5' src={paused ? require('@tabler/icons/outline/player-play.svg') : require('@tabler/icons/outline/player-pause.svg')} />
+              <SvgIcon className='w-5' src={paused ? playerPlayIcon : playerPauseIcon} />
             </button>
 
             <button
@@ -546,7 +551,7 @@ const Audio: React.FC<IAudio> = (props) => {
               className={clsx('inline-block flex-none border-0 bg-transparent px-[6px] py-[5px] text-[16px] text-white/75 opacity-75 outline-none hover:text-white hover:opacity-100 active:text-white active:opacity-100')}
               onClick={toggleMute}
             >
-              <SvgIcon className='w-5' src={muted ? require('@tabler/icons/outline/volume-3.svg') : require('@tabler/icons/outline/volume.svg')} />
+              <SvgIcon className='w-5' src={muted ? volume3Icon : volumeIcon} />
             </button>
 
             <div
@@ -594,7 +599,7 @@ const Audio: React.FC<IAudio> = (props) => {
               download
               target='_blank'
             >
-              <SvgIcon className='w-5' src={require('@tabler/icons/outline/download.svg')} />
+              <SvgIcon className='w-5' src={downloadIcon} />
             </a>
           </div>
         </div>

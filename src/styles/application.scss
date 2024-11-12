@@ -1,13 +1,13 @@
-@import 'variables';
-@import 'fonts';
-@import 'basics';
-@import 'loading';
-@import 'ui';
-@import 'emoji-picker';
-@import 'rtl';
-@import 'accessibility';
-@import 'navigation';
-@import 'autosuggest';
+@use 'variables';
+@use 'fonts';
+@use 'basics';
+@use 'loading';
+@use 'ui';
+@use 'emoji-picker';
+@use 'rtl';
+@use 'accessibility';
+@use 'navigation';
+@use 'autosuggest';
 
 // COMPONENTS
 @import 'components/buttons';

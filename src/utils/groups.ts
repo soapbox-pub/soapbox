@@ -1,4 +1,4 @@
-import { groupSearchHistory } from 'soapbox/settings';
+import { groupSearchHistory } from 'soapbox/settings.ts';
 
 export const MAX_ADMIN_COUNT = 5;
 

@@ -1,6 +1,6 @@
-import { useAppDispatch } from './useAppDispatch';
+import { useAppDispatch } from './useAppDispatch.ts';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 /**
  * Provides a `getState()` function to hooks.

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
-import { hexToHsl } from 'soapbox/utils/theme';
+import { hexToHsl } from 'soapbox/utils/theme.ts';
 
 interface IBadge {
   title: React.ReactNode;

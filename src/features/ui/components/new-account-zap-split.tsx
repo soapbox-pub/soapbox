@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import { ListItem } from 'soapbox/components/list';
-import { Button, HStack, Input, Slider } from 'soapbox/components/ui';
-import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split';
-import { type Account as AccountEntity } from 'soapbox/schemas';
+import Account from 'soapbox/components/account.tsx';
+import { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Slider from 'soapbox/components/ui/slider.tsx';
+import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split.tsx';
+import { type Account as AccountEntity } from 'soapbox/schemas/index.ts';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface INewAccount {
   acc: string;

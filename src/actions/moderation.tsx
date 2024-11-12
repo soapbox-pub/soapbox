@@ -1,16 +1,20 @@
-import React from 'react';
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import userMinusIcon from '@tabler/icons/outline/user-minus.svg';
+import userOffIcon from '@tabler/icons/outline/user-off.svg';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import { fetchAccountByUsername } from 'soapbox/actions/accounts';
-import { deactivateUsers, deleteUser, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
-import { openModal } from 'soapbox/actions/modals';
-import OutlineBox from 'soapbox/components/outline-box';
-import { Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { selectAccount } from 'soapbox/selectors';
-import toast from 'soapbox/toast';
+import { fetchAccountByUsername } from 'soapbox/actions/accounts.ts';
+import { deactivateUsers, deleteUser, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import OutlineBox from 'soapbox/components/outline-box.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const messages = defineMessages({
   deactivateUserHeading: { id: 'confirmations.admin.deactivate_user.heading', defaultMessage: 'Deactivate @{acct}' },
@@ -58,7 +62,7 @@ const deactivateUserModal = (intl: IntlShape, accountId: string, afterConfirm = 
     );
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/user-off.svg'),
+      icon: userOffIcon,
       heading: intl.formatMessage(messages.deactivateUserHeading, { acct }),
       message,
       confirm: intl.formatMessage(messages.deactivateUserConfirm, { name }),
@@ -96,7 +100,7 @@ const deleteUserModal = (intl: IntlShape, accountId: string, afterConfirm = () =
     const checkbox = local ? intl.formatMessage(messages.deleteLocalUserCheckbox) : false;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/user-minus.svg'),
+      icon: userMinusIcon,
       heading: intl.formatMessage(messages.deleteUserHeading, { acct }),
       message,
       confirm,
@@ -118,7 +122,7 @@ const toggleStatusSensitivityModal = (intl: IntlShape, statusId: string, sensiti
     const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/alert-triangle.svg'),
+      icon: alertTriangleIcon,
       heading: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveHeading : messages.markStatusNotSensitiveHeading),
       message: intl.formatMessage(sensitive === false ? messages.markStatusSensitivePrompt : messages.markStatusNotSensitivePrompt, { acct }),
       confirm: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveConfirm : messages.markStatusNotSensitiveConfirm),
@@ -138,7 +142,7 @@ const deleteStatusModal = (intl: IntlShape, statusId: string, afterConfirm = () 
     const acct = state.statuses.get(statusId)!.account.acct;
 
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       heading: intl.formatMessage(messages.deleteStatusHeading),
       message: intl.formatMessage(messages.deleteStatusPrompt, { acct: <strong className='break-words'>{acct}</strong> }),
       confirm: intl.formatMessage(messages.deleteStatusConfirm),

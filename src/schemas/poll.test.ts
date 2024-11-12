@@ -1,4 +1,6 @@
-import { pollSchema } from './poll';
+import { describe, expect, it } from 'vitest';
+
+import { pollSchema } from './poll.ts';
 
 describe('normalizePoll()', () => {
   it('adds base fields', () => {

@@ -1,13 +1,17 @@
-import React from 'react';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import { AdminAnnouncement } from 'soapbox/schemas';
-import toast from 'soapbox/toast';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { AdminAnnouncement } from 'soapbox/schemas/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.announcements', defaultMessage: 'Announcements' },
@@ -103,7 +107,7 @@ const Announcements: React.FC = () => {
       <Stack className='gap-4'>
         <Button
           className='sm:w-fit sm:self-end'
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           onClick={handleCreateAnnouncement}
           theme='secondary'
           block

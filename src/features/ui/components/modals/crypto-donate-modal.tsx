@@ -1,9 +1,7 @@
-import React from 'react';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import DetailedCryptoAddress from 'soapbox/features/crypto-donate/components/detailed-crypto-address.tsx';
 
-import { Modal } from 'soapbox/components/ui';
-import DetailedCryptoAddress from 'soapbox/features/crypto-donate/components/detailed-crypto-address';
-
-import type { ICryptoAddress } from '../../../crypto-donate/components/crypto-address';
+import type { ICryptoAddress } from '../../../crypto-donate/components/crypto-address.tsx';
 
 const CryptoDonateModal: React.FC<ICryptoAddress & { onClose: () => void }> = ({ onClose, ...props }) => {
 

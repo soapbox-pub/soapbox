@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { Children, useState } from 'react';
 
-import { Select } from '../../components/ui';
+import Select from 'soapbox/components/ui/select.tsx';
 
 interface IInputContainer {
   label?: React.ReactNode;
@@ -37,7 +37,7 @@ interface ILabelInputContainer {
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
   const [id] = useState(crypto.randomUUID());
-  const childrenWithProps = React.Children.map(children, child => (
+  const childrenWithProps = Children.map(children, child => (
     // @ts-ignore: not sure how to get the right type here
     React.cloneElement(child, { id: id, key: id })
   ));

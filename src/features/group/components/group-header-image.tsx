@@ -1,10 +1,11 @@
+import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Icon } from 'soapbox/components/ui';
+import Icon from 'soapbox/components/ui/icon.tsx';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   header: { id: 'group.header.alt', defaultMessage: 'Group header' },
@@ -30,7 +31,7 @@ const GroupHeaderImage: React.FC<IGroupHeaderImage> = ({ className, group }) => 
         className={clsx(className, 'flex items-center justify-center bg-gray-200 dark:bg-gray-800/30')}
       >
         <Icon
-          src={require('@tabler/icons/outline/photo-off.svg')}
+          src={photoOffIcon}
           className='size-6 text-gray-500 dark:text-gray-700'
         />
       </div>

@@ -1,6 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { toTailwind, fromLegacyColors, expandPalette } from './tailwind';
+import { toTailwind, fromLegacyColors, expandPalette } from './tailwind.ts';
 
 describe('toTailwind()', () => {
   it('handles empty Soapbox config', () => {

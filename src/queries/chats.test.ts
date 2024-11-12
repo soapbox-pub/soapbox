@@ -1,16 +1,17 @@
 import { Map as ImmutableMap } from 'immutable';
 import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { buildAccount, buildRelationship } from 'soapbox/jest/factory';
-import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
-import { normalizeChatMessage } from 'soapbox/normalizers';
-import { Store } from 'soapbox/store';
-import { ChatMessage } from 'soapbox/types/entities';
-import { flattenPages } from 'soapbox/utils/queries';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildAccount, buildRelationship } from 'soapbox/jest/factory.ts';
+import { createTestStore, mockStore, queryClient, renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
+import { Store } from 'soapbox/store.ts';
+import { ChatMessage } from 'soapbox/types/entities.ts';
+import { flattenPages } from 'soapbox/utils/queries.ts';
 
-import { ChatKeys, IChat, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from './chats';
+import { ChatKeys, IChat, isLastMessage, useChat, useChatActions, useChatMessages, useChats } from './chats.ts';
 
 const chat: IChat = {
   accepted: true,

@@ -1,11 +1,11 @@
 import { Set as ImmutableSet } from 'immutable';
 
-import ConfigDB from 'soapbox/utils/config-db';
+import ConfigDB from 'soapbox/utils/config-db.ts';
 
-import { fetchConfig, updateConfig } from './admin';
+import { fetchConfig, updateConfig } from './admin.ts';
 
-import type { MRFSimple } from 'soapbox/schemas/pleroma';
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { MRFSimple } from 'soapbox/schemas/pleroma.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const simplePolicyMerge = (simplePolicy: MRFSimple, host: string, restrictions: Record<string, any>) => {
   const entries = Object.entries(simplePolicy).map(([key, hosts]) => {

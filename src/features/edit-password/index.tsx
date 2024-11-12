@@ -1,10 +1,15 @@
-import React from 'react';
+import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changePassword } from 'soapbox/actions/security';
-import { Button, Column, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { changePassword } from 'soapbox/actions/security.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   updatePasswordSuccess: { id: 'security.update_password.success', defaultMessage: 'Password successfully updated.' },
@@ -23,20 +28,20 @@ const EditPassword = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [state, setState] = React.useState(initialState);
-  const [isLoading, setLoading] = React.useState(false);
+  const [state, setState] = useState(initialState);
+  const [isLoading, setLoading] = useState(false);
 
   const { currentPassword, newPassword, newPasswordConfirmation } = state;
 
   const resetState = () => setState(initialState);
 
-  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = React.useCallback((event) => {
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     event.persist();
 
     setState((prevState) => ({ ...prevState, [event.target.name]: event.target.value }));
   }, []);
 
-  const handleSubmit = React.useCallback(() => {
+  const handleSubmit = useCallback(() => {
     setLoading(true);
     dispatch(changePassword(currentPassword, newPassword, newPasswordConfirmation)).then(() => {
       resetState();

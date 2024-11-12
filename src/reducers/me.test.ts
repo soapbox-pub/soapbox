@@ -1,4 +1,6 @@
-import reducer from './me';
+import { describe, expect, it } from 'vitest';
+
+import reducer from './me.ts';
 
 describe('me reducer', () => {
   it('should return the initial state', () => {

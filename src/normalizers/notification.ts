@@ -9,7 +9,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
+import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/notification/
 export const NotificationRecord = ImmutableRecord({

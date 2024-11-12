@@ -1,9 +1,11 @@
-import { __stub } from 'soapbox/api';
-import { buildGroup } from 'soapbox/jest/factory';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { useGroups } from './useGroups';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroup } from 'soapbox/jest/factory.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
+
+import { useGroups } from './useGroups.ts';
 
 const group = buildGroup({ id: '1', display_name: 'soapbox' });
 const store = {

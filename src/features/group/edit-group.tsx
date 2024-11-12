@@ -1,17 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks';
-import { Button, Column, Form, FormActions, FormGroup, Icon, Input, Spinner, Textarea } from 'soapbox/components/ui';
-import { useAppSelector, useInstance } from 'soapbox/hooks';
-import { useImageField, useTextField } from 'soapbox/hooks/forms';
-import toast from 'soapbox/toast';
-import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts';
+import { useGroup, useGroupTags, useUpdateGroup } from 'soapbox/api/hooks/index.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { useImageField, useTextField } from 'soapbox/hooks/forms/index.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
 
-import AvatarPicker from '../edit-profile/components/avatar-picker';
-import HeaderPicker from '../edit-profile/components/header-picker';
+import AvatarPicker from '../edit-profile/components/avatar-picker.tsx';
+import HeaderPicker from '../edit-profile/components/header-picker.tsx';
 
-import GroupTagsField from './components/group-tags-field';
+import GroupTagsField from './components/group-tags-field.tsx';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;
@@ -115,7 +125,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
             placeholder={intl.formatMessage(messages.groupNamePlaceholder)}
             maxLength={maxName}
             {...displayName}
-            append={<Icon className='size-5 text-gray-600' src={require('@tabler/icons/outline/lock.svg')} />}
+            append={<Icon className='size-5 text-gray-600' src={lockIcon} />}
             disabled
           />
         </FormGroup>

@@ -1,14 +1,23 @@
+import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
 import { OrderedSet } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports';
-import { Button, FormGroup, HStack, Stack, Text, Toggle } from 'soapbox/components/ui';
-import StatusCheckBox from 'soapbox/features/report/components/status-check-box';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { getDomain } from 'soapbox/utils/accounts';
+import { changeReportBlock, changeReportForward } from 'soapbox/actions/reports.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import StatusCheckBox from 'soapbox/features/report/components/status-check-box.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { getDomain } from 'soapbox/utils/accounts.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   addAdditionalStatuses: { id: 'report.other_actions.add_additional', defaultMessage: 'Would you like to add additional statuses to this report?' },
@@ -60,7 +69,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
 
                 <div>
                   <Button
-                    icon={require('@tabler/icons/outline/arrows-minimize.svg')}
+                    icon={arrowsMinimizeIcon}
                     theme='tertiary'
                     size='sm'
                     onClick={() => setShowAdditionalStatuses(false)}
@@ -71,7 +80,7 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
               </Stack>
             ) : (
               <Button
-                icon={require('@tabler/icons/outline/plus.svg')}
+                icon={plusIcon}
                 theme='tertiary'
                 size='sm'
                 onClick={() => setShowAdditionalStatuses(true)}

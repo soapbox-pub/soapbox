@@ -1,16 +1,20 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Emoji, Modal, Spinner, Tabs } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { ReactionRecord } from 'soapbox/reducers/user-lists';
+import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { ReactionRecord } from 'soapbox/reducers/user-lists.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 const messages = defineMessages({
   all: { id: 'reactions.all', defaultMessage: 'All' },

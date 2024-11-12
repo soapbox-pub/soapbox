@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { Resolve } from 'soapbox/utils/types';
+import type { Resolve } from 'soapbox/utils/types.ts';
 
 // https://docs.joinmastodon.org/entities/announcement/
 const announcementReactionSchema = z.object({

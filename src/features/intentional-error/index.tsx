@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * IntentionalError:
  * For testing logging/monitoring & previewing ErrorBoundary design.

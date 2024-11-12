@@ -1,6 +1,7 @@
 import { Record as ImmutableRecord } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { normalizeMention } from './mention';
+import { normalizeMention } from './mention.ts';
 
 describe('normalizeMention()', () => {
   it('adds base fields', () => {

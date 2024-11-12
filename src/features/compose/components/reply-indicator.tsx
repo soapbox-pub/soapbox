@@ -1,13 +1,13 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
 
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import Markup from 'soapbox/components/markup';
-import { Stack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { getTextDirection } from 'soapbox/utils/rtl';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import Markup from 'soapbox/components/markup.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IReplyIndicator {
   className?: string;
@@ -29,7 +29,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
   if (!hideActions && onCancel) {
     actions = {
       onActionClick: handleClick,
-      actionIcon: require('@tabler/icons/outline/x.svg'),
+      actionIcon: xIcon,
       actionAlignment: 'top',
       actionTitle: 'Dismiss',
     };

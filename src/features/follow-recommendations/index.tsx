@@ -1,12 +1,15 @@
 import debounce from 'lodash/debounce';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchSuggestions } from 'soapbox/actions/suggestions';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Stack, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchSuggestions } from 'soapbox/actions/suggestions.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   heading: { id: 'follow_recommendations.heading', defaultMessage: 'Suggested Profiles' },

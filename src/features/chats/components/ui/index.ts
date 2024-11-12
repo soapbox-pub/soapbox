@@ -1,1 +1,1 @@
-export { Pane } from './pane';
+export { Pane } from './pane.tsx';

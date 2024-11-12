@@ -1,4 +1,6 @@
-import { buildAccount } from 'soapbox/jest/factory';
+import { expect, test } from 'vitest';
+
+import { buildAccount } from 'soapbox/jest/factory.ts';
 
 import {
   tagToBadge,
@@ -6,7 +8,7 @@ import {
   filterBadges,
   getTagDiff,
   getBadges,
-} from './badges';
+} from './badges.ts';
 
 test('tagToBadge', () => {
   expect(tagToBadge('yolo')).toEqual('badge:yolo');

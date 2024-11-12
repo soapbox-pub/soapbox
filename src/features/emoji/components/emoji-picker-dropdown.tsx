@@ -1,17 +1,18 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
+import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
-import { chooseEmoji } from 'soapbox/actions/emojis';
-import { changeSetting } from 'soapbox/actions/settings';
-import { useAppDispatch, useAppSelector, useTheme } from 'soapbox/hooks';
-import { RootState } from 'soapbox/store';
+import { chooseEmoji } from 'soapbox/actions/emojis.ts';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
+import { EmojiPicker } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
+import { RootState } from 'soapbox/store.ts';
 
-import { buildCustomEmojis } from '../../emoji';
-import { EmojiPicker } from '../../ui/util/async-components';
-
-import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji';
+import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { attachmentSchema } from './attachment';
-import { locationSchema } from './location';
+import { attachmentSchema } from './attachment.ts';
+import { locationSchema } from './location.ts';
 
 const eventSchema = z.object({
   name: z.string().catch(''),

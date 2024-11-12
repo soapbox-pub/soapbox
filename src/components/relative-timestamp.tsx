@@ -1,7 +1,7 @@
-import React from 'react';
+import { Component } from 'react';
 import { injectIntl, defineMessages, IntlShape, FormatDateOptions } from 'react-intl';
 
-import Text, { IText } from './ui/text/text';
+import Text, { IText } from './ui/text.tsx';
 
 const messages = defineMessages({
   just_now: { id: 'relative_time.just_now', defaultMessage: 'now' },
@@ -124,7 +124,7 @@ interface RelativeTimestampState {
 }
 
 /** Displays a timestamp compared to the current time, eg "1m" for one minute ago. */
-class RelativeTimestamp extends React.Component<RelativeTimestampProps, RelativeTimestampState> {
+class RelativeTimestamp extends Component<RelativeTimestampProps, RelativeTimestampState> {
 
   _timer: NodeJS.Timeout | undefined;
 

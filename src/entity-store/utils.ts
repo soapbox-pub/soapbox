@@ -1,4 +1,4 @@
-import type { Entity, EntityStore, EntityList, EntityCache, EntityListState, ImportPosition } from './types';
+import type { Entity, EntityStore, EntityList, EntityCache, EntityListState, ImportPosition } from './types.ts';
 
 /** Insert the entities into the store. */
 const updateStore = (store: EntityStore, entities: Entity[]): EntityStore => {

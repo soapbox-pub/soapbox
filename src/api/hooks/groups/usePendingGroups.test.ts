@@ -1,10 +1,12 @@
-import { __stub } from 'soapbox/api';
-import { Entities } from 'soapbox/entity-store/entities';
-import { buildAccount, buildGroup } from 'soapbox/jest/factory';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { usePendingGroups } from './usePendingGroups';
+import { __stub } from 'soapbox/api/index.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { buildAccount, buildGroup } from 'soapbox/jest/factory.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
+
+import { usePendingGroups } from './usePendingGroups.ts';
 
 const id = '1';
 const group = buildGroup({ id, display_name: 'soapbox' });

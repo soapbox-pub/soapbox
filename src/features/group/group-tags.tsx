@@ -1,15 +1,17 @@
-import React from 'react';
+import hashIcon from '@tabler/icons/outline/hash.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { useGroup, useGroupTags } from 'soapbox/api/hooks';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Icon, Stack, Text } from 'soapbox/components/ui';
+import { useGroup, useGroupTags } from 'soapbox/api/hooks/index.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import PlaceholderAccount from '../placeholder/components/placeholder-account';
+import PlaceholderAccount from '../placeholder/components/placeholder-account.tsx';
 
-import GroupTagListItem from './components/group-tag-list-item';
+import GroupTagListItem from './components/group-tag-list-item.tsx';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group } from 'soapbox/types/entities.ts';
 
 interface IGroupTopics {
   params: { groupId: string };
@@ -41,7 +43,7 @@ const GroupTopics: React.FC<IGroupTopics> = (props) => {
         <Stack space={4} className='pt-6' justifyContent='center' alignItems='center'>
           <div className='rounded-full bg-gray-200 p-4 dark:bg-gray-800'>
             <Icon
-              src={require('@tabler/icons/outline/hash.svg')}
+              src={hashIcon}
               className='size-6 text-gray-600'
             />
           </div>
