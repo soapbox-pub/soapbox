@@ -96,7 +96,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
     return (
       <div
         ref={setRef}
-        className='relative w-2/5 flex-none overflow-hidden'
+        className='relative w-full flex-none overflow-hidden'
         dangerouslySetInnerHTML={content}
         style={{ height }}
       />
@@ -113,7 +113,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
 
   const interactive = card.type !== 'link';
   horizontal = typeof horizontal === 'boolean' ? horizontal : interactive || embedded;
-  const className = clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', { horizontal, compact, interactive, 'flex flex-col md:flex-row': card.type === 'link' });
+  const className = clsx('flex overflow-hidden rounded-lg border border-solid border-gray-200 text-sm text-gray-800 no-underline dark:border-gray-800 dark:text-gray-200', { '!block': horizontal, 'border-gray-200 dark:border-gray-800': compact, interactive, 'flex flex-col md:flex-row': card.type === 'link' });
   const ratio = getRatio(card);
   const height = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
@@ -182,7 +182,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       }
 
       embed = (
-        <div className='relative w-2/5 flex-none overflow-hidden'>
+        <div className='relative w-full flex-none overflow-hidden' style={{ flex: '0 0 40%' }}>
           {canvas}
           {thumbnail}
 
@@ -192,7 +192,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                 <button onClick={handleEmbedClick} className='appearance-none text-gray-700 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100'>
                   <SvgIcon
                     src={iconVariant}
-                    className='absolute left-1/2 top-1/2 size-[30px] -translate-x-1/2 -translate-y-1/2 text-inherit'
+                    className=' size-6  text-inherit'
                   />
                 </button>
 
@@ -206,7 +206,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
                   >
                     <SvgIcon
                       src={externalLinkIcon}
-                      className='absolute left-1/2 top-1/2 size-[30px] -translate-x-1/2 -translate-y-1/2 text-inherit'
+                      className='size-6 text-inherit'
                     />
                   </a>
                 )}
