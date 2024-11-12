@@ -17,7 +17,7 @@
   }
 
   .thread {
-    @apply bg-white;
+    @apply bg-white black:bg-black dark:bg-primary-900;
   
     .status--content-wrapper {
       @apply pl-[54px] rtl:pl-0 rtl:pr-[54px];
