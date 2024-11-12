@@ -124,14 +124,6 @@
   }
 }
 
-.reply-mentions-modal__accounts {
-  display: block;
-  flex-direction: row;
-  flex: 1;
-  overflow-y: auto;
-  min-height: 300px;
-}
-
 .remote-interaction-modal {
   &__content {
     display: flex;
