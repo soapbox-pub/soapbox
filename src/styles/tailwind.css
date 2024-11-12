@@ -122,13 +122,6 @@
     }
   }
 
-  .autosuggest-emoji > img{
-    display: block;
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-  }
-
   .hide-scrollbar {
     scrollbar-width: none; /* Firefox */
   }
