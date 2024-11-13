@@ -186,8 +186,6 @@
   "alert.unexpected.links.support": "Podrška",
   "alert.unexpected.message": "Dogodila se greška.",
   "alert.unexpected.return_home": "Povratak na početnu stranicu",
-  "alert.unexpected.submit_feedback": "Pošalji povratne informacije",
-  "alert.unexpected.thanks": "Hvala na povratnoj informaciji!",
   "aliases.account.add": "Stvori alias",
   "aliases.account_label": "Stari račun:",
   "aliases.aliases_list_delete": "Prekini vezu aliasa",

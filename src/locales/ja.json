@@ -160,8 +160,6 @@
   "alert.unexpected.links.support": "サポート",
   "alert.unexpected.message": "不明なエラーが発生しました。",
   "alert.unexpected.return_home": "Return Home",
-  "alert.unexpected.submit_feedback": "フィードバックを送信する",
-  "alert.unexpected.thanks": "フィードバック頂きありがとうございます!",
   "aliases.account.add": "エイリアスを作成する",
   "aliases.account_label": "旧アカウント:",
   "aliases.aliases_list_delete": "エイリアスを解除する",
