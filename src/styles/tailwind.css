@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .status {
-    @apply min-h-[54px] cursor-default animate-fade opacity-100;
+@layer base {
+  body {
+    @apply antialiased;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
   }
 
   body.rtl {
@@ -14,6 +16,24 @@
       padding-left: 10px;
       padding-right: 68px;
     }
+  }
+
+  ::selection {
+    @apply bg-primary-600 text-white;
+  }
+
+  div[data-viewport-type='window'] {
+    position: static !important;
+  }
+
+  div[tabindex='-1']:focus {
+    outline: 0;
+  }
+}
+
+@layer utilities {
+  .status {
+    @apply min-h-[54px] cursor-default animate-fade opacity-100;
   }
 
   .thread {
@@ -109,6 +129,10 @@
     width: 36px !important;
     height: 36px !important;
   }  
+
+  .emojione {
+    @apply w-4 h-4 -mt-[0.2ex] mb-[0.2ex] inline-block align-middle object-contain;
+  }
 
   .compose-form-warning {
     strong {
