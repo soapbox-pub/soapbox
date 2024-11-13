@@ -83,16 +83,6 @@ export const baseClient = (
 };
 
 /**
-  * Dumb client for grabbing static files.
-  * It uses FE_SUBDIRECTORY and parses JSON if possible.
-  * No authorization is needed.
-  */
-export const staticClient = axios.create({
-  baseURL: BuildConfig.FE_SUBDIRECTORY,
-  transformResponse: [maybeParseJSON],
-});
-
-/**
   * Stateful API client.
   * Uses credentials from the Redux store if available.
   * @param {function} getState - Must return the Redux state
