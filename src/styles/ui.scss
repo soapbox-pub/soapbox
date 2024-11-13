@@ -86,7 +86,7 @@
 .ui {
   display: block;
   width: 100%;
-  padding: 0 0 calc(var(--thumb-navigation-height) + 86px);
+  padding: 0 0 calc(60px + env(safe-area-inset-bottom) + 86px);
 
   .page {
     display: flex;
