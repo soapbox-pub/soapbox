@@ -9,7 +9,6 @@ import { compareId } from 'soapbox/utils/comparators.ts';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
 import { unescapeHTML } from 'soapbox/utils/html.ts';
 import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification.ts';
-import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { fetchGroupRelationships } from './groups.ts';
@@ -120,7 +119,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
             icon: notification.account.avatar,
             tag: notification.id,
             data: {
-              url: joinPublicPath('/notifications'),
+              url: '/notifications',
             },
           }).catch(console.error);
         }).catch(console.error);

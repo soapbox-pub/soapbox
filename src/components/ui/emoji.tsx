@@ -1,5 +1,4 @@
 import { removeVS16s, toCodePoints } from 'soapbox/utils/emoji.ts';
-import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
   /** Unicode emoji character. */
@@ -23,7 +22,7 @@ const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
     <img
       draggable='false'
       alt={alt || emoji}
-      src={src || joinPublicPath(`packs/emoji/${filename}.svg`)}
+      src={src || `/packs/emoji/${filename}.svg`}
       {...rest}
     />
   );

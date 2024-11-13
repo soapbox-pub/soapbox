@@ -1,6 +1,5 @@
 import { isCustomEmoji } from 'soapbox/features/emoji/index.ts';
 import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
-import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
@@ -21,7 +20,7 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
+    url = `/packs/emoji/${mapping.unified}.svg`;
     alt = emoji.native;
   }
 
