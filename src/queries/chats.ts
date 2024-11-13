@@ -13,7 +13,6 @@ import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
 import toast from 'soapbox/toast.tsx';
 import { ChatMessage } from 'soapbox/types/entities.ts';
 import { reOrderChatListItems, updateChatMessage } from 'soapbox/utils/chats.ts';
-import { getPagination } from 'soapbox/utils/pagination.ts';
 import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries.ts';
 
 import { queryClient } from './client.ts';
@@ -91,7 +90,7 @@ const useChatMessages = (chat: IChat) => {
     const response = await api.get(uri);
     const data = await response.json();
 
-    const { next } = getPagination(response);
+    const { next } = response.pagination();
     const hasMore = !!next;
     const result = data.map(normalizeChatMessage);
 
@@ -144,7 +143,7 @@ const useChats = (search?: string) => {
     });
     const data: IChat[] = await response.json();
 
-    const { next } = getPagination(response);
+    const { next } = response.pagination();
     const hasMore = !!next;
 
     setUnreadChatsCount(Number(response.headers.get('x-unread-messages-count')) || sumBy(data, (chat) => chat.unread));
