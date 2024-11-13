@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
 
 import { openModal } from 'soapbox/actions/modals.ts';
-import * as BuildConfig from 'soapbox/build-config.ts';
 import LoadingScreen from 'soapbox/components/loading-screen.tsx';
 import { ScrollContext } from 'soapbox/components/scroll-context.tsx';
 import SiteErrorBoundary from 'soapbox/components/site-error-boundary.tsx';
@@ -48,7 +47,7 @@ const SoapboxMount = () => {
 
   return (
     <SiteErrorBoundary>
-      <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
+      <BrowserRouter>
         <CompatRouter>
           <ScrollContext>
             <Switch>
