@@ -215,8 +215,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
 
   return (
     visible ? (
-      <RenderAfter update={update}>
-        <Suspense>
+      <Suspense>
+        <RenderAfter update={update}>
           <EmojiPicker
             custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
             title={title}
@@ -232,8 +232,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
             skinTonePosition='search'
             previewPosition='none'
           />
-        </Suspense>
-      </RenderAfter>
+        </RenderAfter>
+      </Suspense>
     ) : null
   );
 };
