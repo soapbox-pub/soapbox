@@ -1,5 +1,6 @@
 import banIcon from '@tabler/icons/outline/ban.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
@@ -223,13 +224,11 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
       );
     } else if (!account.relationship?.blocking && !account.relationship?.muting) {
       // Follow & Unfollow
-
-      let icon: string | undefined;
-
-      if (isFollowing) {
-        icon = plusIcon;
-      } else if (blockedBy) {
+      let icon = plusIcon;
+      if (blockedBy) {
         icon = banIcon;
+      } else if (isFollowing) {
+        icon = xIcon;
       }
 
       return (
