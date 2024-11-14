@@ -226,10 +226,10 @@ const ActionButton: React.FC<IActionButton> = ({ account, actionType, small }) =
 
       let icon: string | undefined;
 
-      if (isFollowing) {
-        icon = plusIcon;
-      } else if (blockedBy) {
+      if (blockedBy) {
         icon = banIcon;
+      } else if (!isFollowing) {
+        icon = plusIcon;
       }
 
       return (

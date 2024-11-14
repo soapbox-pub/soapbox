@@ -6,7 +6,7 @@ import KVStore from 'soapbox/storage/kv-store.ts';
 import { removeVS16s } from 'soapbox/utils/emoji.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { staticClient } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { APIEntity } from 'soapbox/types/entities.ts';
@@ -86,7 +86,7 @@ const loadSoapboxConfig = () =>
 
 const fetchSoapboxJson = (host: string | null) =>
   (dispatch: AppDispatch) =>
-    staticClient.get('/instance/soapbox.json').then(({ data }) => {
+    fetch('/instance/soapbox.json').then((response) => response.json()).then((data) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data, host));
       return data;

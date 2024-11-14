@@ -1,6 +1,5 @@
 import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { joinPublicPath } from 'soapbox/utils/static.ts';
 
 import type { Map as ImmutableMap } from 'immutable';
 
@@ -25,7 +24,7 @@ const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
         className='emojione m-0 block'
         alt={emoji}
         title={title}
-        src={joinPublicPath(`packs/emoji/${filename}.svg`)}
+        src={`/packs/emoji/${filename}.svg`}
       />
     );
   } else if (emojiMap.get(emoji as any)) {

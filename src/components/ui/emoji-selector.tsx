@@ -3,13 +3,18 @@ import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
+import EmojiPickerDropdown, { getFrequentlyUsedEmojis } from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
+import emojiData from 'soapbox/features/emoji/data.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
@@ -64,9 +69,11 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   offsetOptions,
   all = true,
 }): JSX.Element => {
-  const soapboxConfig = useSoapboxConfig();
+  const { allowedEmoji } = useSoapboxConfig();
   const { customEmojiReacts } = useFeatures();
+  const shortcodes = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
+  const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
 
   const { x, y, strategy, refs, update } = useFloating<HTMLElement>({
@@ -75,7 +82,18 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   });
 
   const handleExpand: React.MouseEventHandler = () => {
-    setExpanded(true);
+    if (userTouching.matches) {
+      dispatch(openModal('EMOJI_PICKER', {
+        onPickEmoji: (emoji: Emoji) => {
+          handlePickEmoji(emoji);
+          dispatch(closeModal('EMOJI_PICKER'));
+        },
+      }));
+
+      onClose?.();
+    } else {
+      setExpanded(true);
+    }
   };
 
   const handlePickEmoji = (emoji: Emoji) => {
@@ -95,10 +113,18 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
   }, [visible]);
 
   useClickOutside(refs, () => {
-    if (onClose) {
-      onClose();
-    }
+    onClose?.();
   });
+
+  const recentEmojis = shortcodes.reduce<string[]>((results, shortcode) => {
+    const emoji = emojiData.emojis[shortcode]?.skins[0]?.native;
+    if (emoji) {
+      results.push(emoji);
+    }
+    return results;
+  }, []);
+
+  const emojis = new Set([...recentEmojis, ...allowedEmoji]);
 
   return (
     <div
@@ -125,7 +151,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
         <HStack
           className={clsx('z-[999] flex w-max max-w-[100vw] flex-wrap space-x-3 rounded-full bg-white px-3 py-2.5 shadow-lg focus:outline-none dark:bg-gray-900 dark:ring-2 dark:ring-primary-700')}
         >
-          {Array.from(soapboxConfig.allowedEmoji).map((emoji, i) => (
+          {[...emojis].slice(0, 6).map((emoji, i) => (
             <EmojiButton
               key={i}
               emoji={emoji}

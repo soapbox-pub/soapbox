@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 export const AboutPage = lazy(() => import('soapbox/features/about/index.tsx'));
 export const EmojiPicker = lazy(() => import('soapbox/features/emoji/components/emoji-picker.tsx'));
+export const EmojiPickerModal = lazy(() => import('soapbox/features/ui/components/modals/emoji-picker-modal.tsx'));
 export const Notifications = lazy(() => import('soapbox/features/notifications/index.tsx'));
 export const LandingTimeline = lazy(() => import('soapbox/features/landing-timeline/index.tsx'));
 export const HomeTimeline = lazy(() => import('soapbox/features/home-timeline/index.tsx'));

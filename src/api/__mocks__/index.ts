@@ -15,8 +15,6 @@ const setupMock = (axios: AxiosInstance) => {
   mocks.map(func => func(mock));
 };
 
-export const staticClient = api.staticClient;
-
 export const getLinks = (response: AxiosResponse): LinkHeader => {
   return new LinkHeader(response.headers?.link);
 };

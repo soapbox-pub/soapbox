@@ -6,7 +6,7 @@ import plugin from 'tailwindcss/plugin';
 
 import { parseColorMatrix } from './tailwind/colors.ts';
 
-const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black &'));
+const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black.black &'));
 
 const config: Config = {
   content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './index.html'],
