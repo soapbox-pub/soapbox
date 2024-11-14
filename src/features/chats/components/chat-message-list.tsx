@@ -49,7 +49,7 @@ const START_INDEX = 10000;
 
 const List: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
-  return <div ref={ref} {...rest} className='mb-2' />;
+  return <div ref={ref} {...rest} />;
 });
 
 const Scroller: Components['Scroller'] = forwardRef((props, ref) => {
