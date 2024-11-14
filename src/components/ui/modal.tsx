@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 const themes = {
-  normal: 'bg-white p-6 shadow-xl',
+  normal: 'bg-white black:bg-black dark:bg-primary-900 p-6 shadow-xl text-gray-900 dark:text-gray-100',
   transparent: 'bg-transparent p-0 shadow-none',
 };
 
@@ -105,7 +105,7 @@ const Modal = forwardRef<HTMLDivElement, IModal>(({
     <div
       ref={ref}
       data-testid='modal'
-      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl text-start align-middle text-gray-900 transition-all black:bg-black dark:bg-primary-900 dark:text-gray-100', widths[width], themes[theme])}
+      className={clsx(className, 'pointer-events-auto mx-auto block w-full rounded-2xl text-start align-middle transition-all', widths[width], themes[theme])}
     >
       <div className='w-full justify-between sm:flex sm:items-start'>
         <div className='w-full'>

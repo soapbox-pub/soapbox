@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
+import React, { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -45,9 +45,9 @@ export interface IEmojiPickerDropdown {
   onPickEmoji?: (emoji: Emoji) => void;
   condensed?: boolean;
   withCustom?: boolean;
-  visible: boolean;
-  setVisible: (value: boolean) => void;
-  update: (() => any) | null;
+  visible?: boolean;
+  setVisible?: (value: boolean) => void;
+  update?: (() => any) | null;
 }
 
 const perLine = 8;
@@ -105,8 +105,13 @@ const getCustomEmojis = createSelector([
   }
 }));
 
+interface IRenderAfter {
+  children: React.ReactNode;
+  update: () => void;
+}
+
 // Fixes render bug where popover has a delayed position update
-const RenderAfter = ({ children, update }: any) => {
+const RenderAfter: React.FC<IRenderAfter> = ({ children, update }) => {
   const [nextTick, setNextTick] = useState(false);
 
   useEffect(() => {
@@ -125,7 +130,7 @@ const RenderAfter = ({ children, update }: any) => {
 };
 
 const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
-  onPickEmoji, visible, setVisible, update, withCustom = true,
+  onPickEmoji, visible = true, setVisible, update, withCustom = true,
 }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -136,7 +141,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
 
   const handlePick = (emoji: any) => {
-    setVisible(false);
+    setVisible?.(false);
 
     let pickedEmoji: Emoji;
 
@@ -213,28 +218,30 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     document.body.style.overflow = '';
   }, []);
 
+  if (!visible) {
+    return null;
+  }
+
   return (
-    visible ? (
-      <Suspense>
-        <RenderAfter update={update}>
-          <EmojiPicker
-            custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
-            title={title}
-            onEmojiSelect={handlePick}
-            recent={frequentlyUsedEmojis}
-            perLine={8}
-            skin={handleSkinTone}
-            emojiSize={22}
-            emojiButtonSize={34}
-            set='twitter'
-            theme={theme}
-            i18n={getI18n()}
-            skinTonePosition='search'
-            previewPosition='none'
-          />
-        </RenderAfter>
-      </Suspense>
-    ) : null
+    <Suspense>
+      <RenderAfter update={update ?? (() => {})}>
+        <EmojiPicker
+          custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
+          title={title}
+          onEmojiSelect={handlePick}
+          recent={frequentlyUsedEmojis}
+          perLine={8}
+          skin={handleSkinTone}
+          emojiSize={22}
+          emojiButtonSize={34}
+          set='twitter'
+          theme={theme}
+          i18n={getI18n()}
+          skinTonePosition='search'
+          previewPosition='none'
+        />
+      </RenderAfter>
+    </Suspense>
   );
 };
 

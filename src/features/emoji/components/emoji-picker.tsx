@@ -19,7 +19,7 @@ const Picker: React.FC<any> = (props) => {
     new EmojiPicker(input);
   }, []);
 
-  return <div ref={ref} />;
+  return <div className='flex justify-center' ref={ref} />;
 };
 
 export default Picker;
