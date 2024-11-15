@@ -1,14 +1,25 @@
+import helpSquare from '@tabler/icons/outline/help-square-rounded.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { Button, Stack, Text, FormGroup, HStack, Textarea, Popover } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { UsernameInput } from 'soapbox/features/edit-identity/index';
-import { HeaderSteps } from 'soapbox/features/ui/components/modals/onboarding-flow-modal/header-steps';
-import { useApi, useInstance } from 'soapbox/hooks';
-import { queryClient } from 'soapbox/queries/client';
-import toast from 'soapbox/toast';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Popover from 'soapbox/components/ui/popover.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { UsernameInput } from 'soapbox/features/edit-identity/index.tsx';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import toast from 'soapbox/toast.tsx';
+
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   title: { id: 'onboarding.display_identity.title', defaultMessage: 'Choose an Identity' },
@@ -43,7 +54,7 @@ function useRequestName() {
 
 const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }) => {
   const intl = useIntl();
-  const instance = useInstance();
+  const { instance } = useInstance();
   const { mutate } = useRequestName();
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
 
@@ -75,7 +86,18 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
   return (
     <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
-      <HeaderSteps onClose={onClose} title={intl.formatMessage(messages.title)} subtitle={intl.formatMessage(messages.subtitle)} />
+      {/* <HeaderSteps onClose={onClose} title={intl.formatMessage(messages.title)} subtitle={intl.formatMessage(messages.subtitle)} /> */}
+      <div className='relative w-full'>
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-2 -top-6 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
+        <Stack space={2} justifyContent='center' alignItems='center' className='-mx-4 mb-4 border-b border-solid pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
+          <Text size='2xl' align='center' weight='bold'>
+            <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
+          </Text>
+          <Text theme='muted' align='center'>
+            <FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />
+          </Text>
+        </Stack>
+      </div>
 
       <Stack space={5} justifyContent='center' alignItems='center' className='w-full'>
         <div className='w-full sm:w-3/4'>
@@ -93,7 +115,7 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
                   }
                 >
                   <div>
-                    <SvgIcon size={20} src={require('@tabler/icons/outline/help-square-rounded.svg')} className='hover:cursor-pointer' />
+                    <SvgIcon size={20} src={helpSquare} className='hover:cursor-pointer' />
                   </div>
                 </Popover>
 
