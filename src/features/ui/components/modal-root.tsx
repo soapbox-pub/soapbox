@@ -118,9 +118,9 @@ export default class ModalRoot extends PureComponent<IModalRoot> {
 
   componentDidUpdate(prevProps: IModalRoot, prevState: any, { visible }: any) {
     if (visible) {
-      document.body.classList.add('with-modals');
+      document.body.classList.add('overflow-hidden');
     } else {
-      document.body.classList.remove('with-modals');
+      document.body.classList.remove('overflow-hidden');
     }
   }
 

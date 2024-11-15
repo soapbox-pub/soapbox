@@ -38,7 +38,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose 
       closeIcon={arrowLeftIcon}
       closePosition='left'
     >
-      <div className='reply-mentions-modal__accounts'>
+      <div className='block min-h-[300px] flex-1 flex-row overflow-y-auto'>
         {mentions.map(accountId => <Account composeId={composeId} key={accountId} accountId={accountId} author={author === accountId} />)}
       </div>
     </Modal>

@@ -135,16 +135,16 @@ class ImageLoader extends PureComponent<IImageLoader> {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = clsx('image-loader', {
-      'image-loader--loading': loading,
-      'image-loader--amorphous': !this.hasSize(),
-    });
+    const className = 'relative size-full flex items-center justify-center flex-col';
 
     return (
       <div className={className}>
         {loading ? (
           <canvas
-            className='image-loader__preview-canvas'
+            className={clsx('max-h-[80%] max-w-full object-contain', { 'hidden': !this.hasSize() })}
+            style={{
+              background: 'url(\'../assets/images/void.png\') repeat',
+            }}
             ref={this.setCanvasRef}
             width={width}
             height={height}

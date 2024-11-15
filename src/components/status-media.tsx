@@ -41,15 +41,15 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   let media: JSX.Element | null = null;
 
   const renderLoadingMediaGallery = (): JSX.Element => {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
+    return <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={{ height: '285px' }} />;
   };
 
   const renderLoadingVideoPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
+    return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
   const renderLoadingAudioPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
+    return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
   const openMedia = (media: ImmutableList<Attachment>, index: number) => {

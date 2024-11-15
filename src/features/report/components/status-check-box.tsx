@@ -1,13 +1,13 @@
+import clsx from 'clsx';
 import noop from 'lodash/noop';
 import { Suspense } from 'react';
 
 import { toggleStatusReport } from 'soapbox/actions/reports.ts';
 import StatusContent from 'soapbox/components/status-content.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-
-import { MediaGallery, Video, Audio } from '../../ui/util/async-components.ts';
 
 interface IStatusCheckBox {
   id: string;
@@ -20,6 +20,8 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
   const checked = useAppSelector((state) => state.reports.new.status_ids.includes(id));
 
   const onToggle: React.ChangeEventHandler<HTMLInputElement> = (e) => dispatch(toggleStatusReport(id, e.target.checked));
+
+  const mediaType = status?.media_attachments.get(0)?.type;
 
   if (!status || status.reblog) {
     return null;
@@ -71,13 +73,17 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
   }
 
   return (
-    <div className='status-check-box'>
-      <div className='status-check-box__status'>
+    <div className='flex items-center justify-between'>
+      <div className='py-2'>
         <StatusContent status={status} />
-        <Suspense>{media}</Suspense>
+        <Suspense>
+          <div className={clsx('max-w-[250px]', { 'mt-2': mediaType === 'audio' || mediaType === 'video' })}>
+            {media}
+          </div>
+        </Suspense>
       </div>
 
-      <div className='status-check-box-toggle'>
+      <div className='flex flex-[0_0_auto] items-center justify-center p-2.5'>
         <Toggle checked={checked} onChange={onToggle} disabled={disabled} />
       </div>
     </div>

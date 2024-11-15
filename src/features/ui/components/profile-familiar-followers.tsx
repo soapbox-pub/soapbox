@@ -48,7 +48,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   const accounts: Array<React.ReactNode> = familiarFollowers.map(account => !!account && (
     <HoverRefWrapper accountId={account.id} key={account.id} inline>
-      <Link className='mention inline-block' to={`/@${account.acct}`}>
+      <Link className='inline-block text-primary-600 hover:underline dark:text-accent-blue' to={`/@${account.acct}`}>
         <HStack space={1} alignItems='center' grow>
           <Text
             size='sm'

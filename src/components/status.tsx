@@ -340,7 +340,7 @@ const Status: React.FC<IStatus> = (props) => {
 
     return (
       <HotKeys handlers={minHandlers}>
-        <div className={clsx('status__wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
+        <div className={clsx('status--wrapper text-center', { focusable })} tabIndex={focusable ? 0 : undefined} ref={node}>
           {/* eslint-disable formatjs/no-literal-string-in-jsx */}
           <Text theme='muted'>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />: {status.filtered.join(', ')}.
@@ -368,7 +368,7 @@ const Status: React.FC<IStatus> = (props) => {
   if (actualStatus.quote) {
     if (actualStatus.pleroma.get('quote_visible', true) === false) {
       quote = (
-        <div className='quoted-status-tombstone'>
+        <div>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
@@ -408,6 +408,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   return (
     <HotKeys handlers={handlers} data-testid='status'>
+      {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus */}
       <div
         className={clsx('status cursor-pointer', { focusable })}
         tabIndex={focusable && !muted ? 0 : undefined}
@@ -419,11 +420,8 @@ const Status: React.FC<IStatus> = (props) => {
       >
         <Card
           variant={variant}
-          className={clsx('status__wrapper space-y-4', `status-${actualStatus.visibility}`, {
-            'py-6 sm:p-5': variant === 'rounded',
-            'status-reply': !!status.in_reply_to_id,
-            muted,
-            read: unread === false,
+          className={clsx('status--wrapper space-y-4', {
+            'py-6 sm:p-5': variant === 'rounded', muted, read: unread === false,
           })}
           data-id={status.id}
         >
@@ -443,7 +441,7 @@ const Status: React.FC<IStatus> = (props) => {
             avatarSize={avatarSize}
           />
 
-          <div className='status__content-wrapper'>
+          <div className='status--content-wrapper'>
             <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
 
             <Stack

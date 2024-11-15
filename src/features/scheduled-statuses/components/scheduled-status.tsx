@@ -31,8 +31,8 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
   const account = status.account;
 
   return (
-    <div className={clsx('status__wrapper', `status__wrapper-${status.visibility}`, { 'status__wrapper-reply': !!status.in_reply_to_id })} tabIndex={0}>
-      <div className={clsx('status', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })} data-id={status.id}>
+    <div className={clsx('status--wrapper')} tabIndex={0}>
+      <div className={clsx('status', { 'status-reply': !!status.in_reply_to_id })} data-id={status.id}>
         <div className='mb-4'>
           <HStack justifyContent='between' alignItems='start'>
             <Account

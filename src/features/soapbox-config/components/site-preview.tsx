@@ -24,6 +24,7 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
 
   const dark = ['dark', 'black'].includes(userTheme as string) || (userTheme === 'system' && systemTheme === 'dark');
 
+  // eslint-disable-next-line tailwindcss/no-custom-classname
   const bodyClass = clsx(
     'site-preview',
     'align-center relative flex justify-center text-base',

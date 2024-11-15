@@ -188,7 +188,7 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
   if (notFound) return <MissingIndicator />;
 
   return (
-    <Column className='filter-settings-panel' label={intl.formatMessage(messages.subheading_add_new)}>
+    <Column label={intl.formatMessage(messages.subheading_add_new)}>
       <Form onSubmit={handleAddNew}>
         <FormGroup labelText={intl.formatMessage(messages.title)}>
           <Input

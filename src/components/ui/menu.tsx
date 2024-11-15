@@ -27,7 +27,7 @@ const MenuList: React.FC<IMenuList> = (props) => {
       <MenuItems
         onKeyDown={(event) => event.nativeEvent.stopImmediatePropagation()}
         className={
-          clsx(className, 'shadow-menu rounded-lg bg-white py-1 black:bg-black dark:bg-primary-900')
+          clsx(className, 'rounded-lg bg-white py-1 black:bg-black dark:bg-primary-900')
         }
         {...filteredProps}
       />

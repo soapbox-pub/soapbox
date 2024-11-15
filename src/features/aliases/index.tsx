@@ -54,18 +54,20 @@ const Aliases = () => {
   const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;
 
   return (
-    <Column className='aliases-settings-panel' label={intl.formatMessage(messages.heading)}>
+    <Column className='flex-1' label={intl.formatMessage(messages.heading)}>
       <CardHeader>
         <CardTitle title={intl.formatMessage(messages.subheading_add_new)} />
       </CardHeader>
       <Search />
       {
         loaded && searchAccountIds.size === 0 ? (
-          <div className='aliases__accounts empty-column-indicator'>
+          <div
+            className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'
+          >
             <FormattedMessage id='empty_column.aliases.suggestions' defaultMessage='There are no account suggestions available for the provided term.' />
           </div>
         ) : (
-          <div className='aliases__accounts mb-4'>
+          <div className='mb-4 overflow-y-auto'>
             {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} aliases={aliases} />)}
           </div>
         )
@@ -73,7 +75,7 @@ const Aliases = () => {
       <CardHeader>
         <CardTitle title={intl.formatMessage(messages.subheading_aliases)} />
       </CardHeader>
-      <div className='aliases-settings-panel'>
+      <div className='flex-1'>
         <ScrollableList
           scrollKey='aliases'
           emptyMessage={emptyMessage}

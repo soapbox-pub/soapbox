@@ -172,9 +172,8 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
         })
       }
     >
-      <div
+      <button
         className='fixed inset-0 bg-gray-500/90 black:bg-gray-900/90 dark:bg-gray-700/90'
-        role='button'
         onClick={handleClose}
       />
 

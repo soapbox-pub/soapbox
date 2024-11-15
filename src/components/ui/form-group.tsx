@@ -54,13 +54,17 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
           )}
 
           {hasError && (
-            <div>
+            <div className='relative'>
+              <div className='pointer-events-none absolute bottom-full left-2.5 -ml-px size-0 border-[6px] border-solid border-transparent' style={{ borderBottomColor: 'rgba(254, 202, 202, var(--tw-bg-opacity))', '--tw-bg-opacity': '1' } as React.CSSProperties} />
+
               <p
                 data-testid='form-group-error'
-                className='form-error relative mt-0.5 inline-block rounded-md bg-danger-200 px-2 py-1 text-xs text-danger-900'
+                className='relative mt-0.5 inline-block rounded-md bg-danger-200 px-2 py-1 text-xs text-danger-900'
               >
                 {errors.join(', ')}
               </p>
+
+              <div className='pointer-events-none absolute bottom-full left-2.5 size-0 border-[6px] border-transparent' />
             </div>
           )}
 
@@ -98,12 +102,18 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
         {inputChildren.filter((_, i) => i !== 0)}
 
         {hasError && (
-          <p
-            data-testid='form-group-error'
-            className='form-error relative mt-0.5 inline-block rounded-md bg-danger-200 px-2 py-1 text-xs text-danger-900'
-          >
-            {errors.join(', ')}
-          </p>
+          <div className='relative'>
+            <div className='pointer-events-none absolute bottom-full left-2.5 -ml-px size-0 border-[6px] border-solid border-transparent' style={{ borderBottomColor: 'rgba(254, 202, 202, var(--tw-bg-opacity))', '--tw-bg-opacity': '1' } as React.CSSProperties} />
+
+            <p
+              data-testid='form-group-error'
+              className='relative mt-0.5 inline-block rounded-md bg-danger-200 px-2 py-1 text-xs text-danger-900'
+            >
+              {errors.join(', ')}
+            </p>
+
+            <div className='pointer-events-none absolute bottom-full left-2.5 size-0 border-[6px] border-transparent' />
+          </div>
         )}
       </div>
     </div>
