@@ -215,3 +215,9 @@
   }
 
 }
+
+@layer components {
+  .loading-indicator span {
+    @apply animate-loader-label;
+  }
+}
