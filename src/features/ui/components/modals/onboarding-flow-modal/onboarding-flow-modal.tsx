@@ -12,6 +12,7 @@ import AvatarSelectionModal from './steps/avatar-step.tsx';
 import BioStep from './steps/bio-step.tsx';
 import CompletedModal from './steps/completed-step.tsx';
 import CoverPhotoSelectionModal from './steps/cover-photo-selection-step.tsx';
+import DisplayUserNameStep from './steps/display-identity-step.tsx';
 import DisplayNameStep from './steps/display-name-step.tsx';
 import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
 
@@ -48,12 +49,13 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   const steps = [
     <AvatarSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <DisplayNameStep onClose={handleComplete} onNext={handleNextStep} />,
+    <DisplayUserNameStep onClose={handleComplete} onNext={handleNextStep} />,
     <BioStep onClose={handleComplete} onNext={handleNextStep} />,
     <CoverPhotoSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <SuggestedAccountsModal onClose={handleComplete} onNext={handleNextStep} />,
   ];
 
-  steps.push(<CompletedModal onComplete={handleComplete} />);
+  steps.push(<CompletedModal onComplete={handleComplete} onClose={handleComplete} />);
 
   const handleKeyUp = ({ key }: KeyboardEvent): void => {
     switch (key) {
@@ -76,8 +78,8 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
 
 
   return (
-    <Stack space={4} className='w-full'>
-      <Modal width='2xl' onClose={handleComplete} theme='transparent'>
+    <Stack space={4} justifyContent='center' alignItems='center' className='relative w-full'>
+      <Modal width='2xl' onClose={handleComplete} theme='transparent' >
         <Stack space={4}>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
@@ -94,7 +96,9 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
               </div>
             ))}
           </ReactSwipeableViews>
-          <HStack space={3} alignItems='center' justifyContent='center' className='relative'>
+        </Stack>
+        <div className='relative flex w-full justify-center'>
+          <HStack space={3} alignItems='center' justifyContent='center' className='absolute h-10'>
             {steps.map((_, i) => (
               <button
                 key={i}
@@ -108,7 +112,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
               />
             ))}
           </HStack>
-        </Stack>
+        </div>
       </Modal>
     </Stack>
   );

@@ -20,7 +20,7 @@ interface ILanguageDropdown {
 }
 
 /**
- * Let the user select a language to filter the public timeline.
+ * A dropdown menu component for selecting the display language of the public timeline.
  */
 const LanguageDropdown: React.FC<ILanguageDropdown> = ({ language, setLanguage }) => {
   const dispatch = useAppDispatch();

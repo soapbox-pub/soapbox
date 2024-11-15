@@ -3,6 +3,7 @@ import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
+import { chooseEmoji } from 'soapbox/actions/emojis.ts';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -96,6 +97,25 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     }
   };
 
+  const handleReact = (emoji: string) => {
+    // Reverse lookup...
+    // This is hell.
+    const data = Object.values(emojiData.emojis).find((e) => e.skins.some((s) => s.native === emoji));
+    const skin = data?.skins.find((s) => s.native === emoji);
+
+    if (data && skin) {
+      dispatch(chooseEmoji({
+        id: data.id,
+        colons: `:${data.id}:`,
+        custom: false,
+        native: skin.native,
+        unified: skin.unified,
+      }));
+    }
+
+    onReact(emoji);
+  };
+
   const handlePickEmoji = (emoji: Emoji) => {
     onReact(emoji.custom ? emoji.id : emoji.native, emoji.custom ? emoji.imageUrl : undefined);
   };
@@ -155,7 +175,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
             <EmojiButton
               key={i}
               emoji={emoji}
-              onClick={onReact}
+              onClick={handleReact}
               tabIndex={visible ? 0 : -1}
             />
           ))}

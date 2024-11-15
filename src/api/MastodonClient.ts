@@ -90,6 +90,12 @@ export class MastodonClient {
       throw new HTTPError(response, request);
     }
 
+    // Fix for non-compliant browsers.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Response/body
+    if (response.status === 204 || request.method === 'HEAD') {
+      return new MastodonResponse(null, response);
+    }
+
     return new MastodonResponse(response.body, response);
   }
 
