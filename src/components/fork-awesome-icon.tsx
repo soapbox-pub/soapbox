@@ -5,8 +5,7 @@
  * @see soapbox/components/icon
  */
 
-
-import React from 'react';
+import clsx from 'clsx';
 
 export interface IForkAwesomeIcon extends React.HTMLAttributes<HTMLLIElement> {
   id: string;
@@ -25,7 +24,7 @@ const ForkAwesomeIcon: React.FC<IForkAwesomeIcon> = ({ id, className, fixedWidth
     <i
       role='img'
       // alt={alt}
-      // className={clsx('fa', `fa-${id}`, className, { 'fa-fw': fixedWidth })}
+      className={clsx('fa', `fa-${id}`, className, { 'fa-fw': fixedWidth })} // eslint-disable-line tailwindcss/no-custom-classname
       {...rest}
     />
   );
