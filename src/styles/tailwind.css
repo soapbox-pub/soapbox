@@ -95,7 +95,7 @@
 
   .error-column > span {
       @apply max-w-[400px];
-    }
+  }
     
   .error-column {
     .svg-icon {
