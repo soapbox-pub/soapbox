@@ -202,8 +202,6 @@
   "alert.unexpected.links.support": "Support",
   "alert.unexpected.message": "Hubo un error inesperado.",
   "alert.unexpected.return_home": "Return Home",
-  "alert.unexpected.submit_feedback": "Enviar comentarios",
-  "alert.unexpected.thanks": "¡Gracias por sus comentarios!",
   "aliases.account.add": "Crear alias",
   "aliases.account_label": "Old account:",
   "aliases.aliases_list_delete": "Desvincular alias",
