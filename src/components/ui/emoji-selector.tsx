@@ -41,7 +41,9 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 
   return (
     <button className={clsx(className)} onClick={handleClick} tabIndex={tabIndex}>
-      <EmojiComponent className='size-6 duration-100 hover:scale-110' emoji={emoji} />
+      <div className='flex items-center justify-center duration-100 hover:scale-110'>
+        <EmojiComponent size={24} emoji={emoji} />
+      </div>
     </button>
   );
 };

@@ -67,9 +67,7 @@ const convertCustom = (shortname: string, filename: string) => {
 };
 
 const convertUnicode = (c: string) => {
-  const { unified, shortcode } = unicodeMapping[c];
-
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
+  return c;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {

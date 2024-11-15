@@ -27,7 +27,7 @@ const config: Config = {
         base: '0.9375rem',
       },
       fontFamily: {
-        'sans': [
+        sans: [
           'Soapbox i18n',
           'Inter',
           'ui-sans-serif',
@@ -45,10 +45,19 @@ const config: Config = {
           'Segoe UI Symbol',
           'Noto Color Emoji',
         ],
-        'mono': [
+        mono: [
           'Roboto Mono',
           'ui-monospace',
           'mono',
+        ],
+        emoji: [
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+          'Segoe UI',
+          'Apple Color Emoji',
+          'Twemoji Mozilla',
+          'Noto Color Emoji',
+          'Android Emoji',
         ],
       },
       spacing: {

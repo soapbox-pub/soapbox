@@ -214,11 +214,13 @@ const Account = ({
             <LinkEl className='rounded-full' {...linkProps}>
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
-                <Emoji
-                  className='absolute -right-1.5 bottom-0 size-5'
-                  emoji={emoji}
-                  src={emojiUrl}
-                />
+                <div className='absolute -right-1.5 bottom-0'>
+                  {emojiUrl ? (
+                    <img className='size-5' src={emojiUrl} alt={emoji} />
+                  ) : (
+                    <Emoji size={20} emoji={emoji} />
+                  )}
+                </div>
               )}
             </LinkEl>
           </ProfilePopper>
