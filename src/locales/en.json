@@ -1248,7 +1248,7 @@
   "onboarding.display_identity.title": "Choose an Identity",
   "onboarding.display_name.label": "Display name",
   "onboarding.display_name.placeholder": "Eg. John Smith",
-  "onboarding.display_name.subtitle": "Show who you are! Create a unique username and leave your mark.",
+  "onboarding.display_name.subtitle": "You can always edit this later.",
   "onboarding.display_name.title": "Choose a display name",
   "onboarding.done": "Done",
   "onboarding.error": "An unexpected error occurred. Please try again or skip this step.",
