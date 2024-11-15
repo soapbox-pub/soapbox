@@ -1,18 +1,28 @@
+import downloadIcon from '@tabler/icons/outline/download.svg';
 import { generateSecretKey, getPublicKey, nip19 } from 'nostr-tools';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchAccount } from 'soapbox/actions/accounts';
-import { logInNostr } from 'soapbox/actions/nostr';
-import { closeSidebar } from 'soapbox/actions/sidebar';
-import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, FormGroup, Text, Tooltip, HStack, Input } from 'soapbox/components/ui';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import { download } from 'soapbox/utils/download';
-import { slugify } from 'soapbox/utils/input';
+
+import { fetchAccount } from 'soapbox/actions/accounts.ts';
+import { logInNostr } from 'soapbox/actions/nostr.ts';
+import { closeSidebar } from 'soapbox/actions/sidebar.ts';
+import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { slugify } from 'soapbox/utils/input.ts';
 
 interface IKeygenStep {
   onClose(): void;
@@ -93,7 +103,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
         </Stack>
 
         <HStack space={6} justifyContent='center' >
-          <Button theme='secondary' size='lg' icon={require('@tabler/icons/outline/download.svg')} onClick={handleDownload}>
+          <Button theme='secondary' size='lg' icon={downloadIcon} onClick={handleDownload}>
             <FormattedMessage id='nostr_signup.keygen.download_key_button' defaultMessage='Download key' />
           </Button>
 

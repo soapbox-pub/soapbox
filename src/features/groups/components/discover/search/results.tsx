@@ -1,22 +1,24 @@
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useGroupSearch } from 'soapbox/api/hooks';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { useGroupSearch } from 'soapbox/api/hooks/index.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import GroupGridItem from '../group-grid-item';
-import GroupListItem from '../group-list-item';
-import LayoutButtons, { GroupLayout } from '../layout-buttons';
+import GroupGridItem from '../group-grid-item.tsx';
+import GroupListItem from '../group-list-item.tsx';
+import LayoutButtons, { GroupLayout } from '../layout-buttons.tsx';
 
-import type { Group } from 'soapbox/types/entities';
+import type { Group } from 'soapbox/types/entities.ts';
 
 interface Props {
   groupSearchResult: ReturnType<typeof useGroupSearch>;
 }
 
-const GridList: Components['List'] = React.forwardRef((props, ref) => {
+const GridList: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });

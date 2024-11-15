@@ -1,7 +1,9 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi, useFeatures, useOwnAccount } from 'soapbox/hooks';
-import { Group, groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { Group, groupSchema } from 'soapbox/schemas/index.ts';
 
 function usePendingGroups() {
   const api = useApi();

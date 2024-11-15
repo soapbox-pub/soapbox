@@ -1,19 +1,27 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import StillImage from 'soapbox/components/still-image';
-import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import { isDefaultHeader } from 'soapbox/utils/accounts';
-import resizeImage from 'soapbox/utils/resize-image';
+import { patchMe } from 'soapbox/actions/me.ts';
+import StillImage from 'soapbox/components/still-image.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultHeader } from 'soapbox/utils/accounts.ts';
+import resizeImage from 'soapbox/utils/resize-image.ts';
 
 import type { AxiosError } from 'axios';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
@@ -30,10 +38,10 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
 
-  const fileInput = React.useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = React.useState<string | null>();
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [isDisabled, setDisabled] = React.useState<boolean>(true);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<string | null>();
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [isDisabled, setDisabled] = useState<boolean>(true);
   const isDefault = account ? isDefaultHeader(account.avatar) : false;
 
   const openFilePicker = () => {
@@ -123,7 +131,7 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
               })}
               disabled={isSubmitting}
             >
-              <Icon src={require('@tabler/icons/outline/plus.svg')} className='size-5 text-white' />
+              <Icon src={plusIcon} className='size-5 text-white' />
             </button>
 
             <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />

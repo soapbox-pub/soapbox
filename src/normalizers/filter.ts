@@ -5,10 +5,10 @@
  */
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { FilterKeyword, FilterStatus } from 'soapbox/types/entities';
+import { FilterKeyword, FilterStatus } from 'soapbox/types/entities.ts';
 
-import { normalizeFilterKeyword } from './filter-keyword';
-import { normalizeFilterStatus } from './filter-status';
+import { normalizeFilterKeyword } from './filter-keyword.ts';
+import { normalizeFilterStatus } from './filter-status.ts';
 
 export type ContextType = 'home' | 'public' | 'notifications' | 'thread' | 'account';
 export type FilterActionType = 'warn' | 'hide';

@@ -1,14 +1,19 @@
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
-import { fetchHistory } from 'soapbox/actions/history';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import { HStack, Modal, Spinner, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchHistory } from 'soapbox/actions/history.ts';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities';
+import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities.ts';
 
 interface ICompareHistoryModal {
   onClose: (string: string) => void;
@@ -52,10 +57,10 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                 </>
               )}
 
-              <div className='status__content' dangerouslySetInnerHTML={content} />
+              <div className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500' dangerouslySetInnerHTML={content} />
 
               {poll && (
-                <div className='poll'>
+                <div>
                   <Stack>
                     {version.poll.options.map((option: any) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>

@@ -1,10 +1,12 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions.ts';
 
 const NewGroupPanel = () => {
   const dispatch = useAppDispatch();

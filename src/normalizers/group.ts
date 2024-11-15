@@ -10,12 +10,14 @@ import {
   fromJS,
 } from 'immutable';
 
-import emojify from 'soapbox/features/emoji';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { unescapeHTML } from 'soapbox/utils/html';
-import { makeEmojiMap } from 'soapbox/utils/normalizers';
+import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
+import headerMissing from 'soapbox/assets/images/header-missing.png';
+import emojify from 'soapbox/features/emoji/index.ts';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
+import { unescapeHTML } from 'soapbox/utils/html.ts';
+import { makeEmojiMap } from 'soapbox/utils/normalizers.ts';
 
-import type { Emoji, GroupRelationship } from 'soapbox/types/entities';
+import type { Emoji, GroupRelationship } from 'soapbox/types/entities.ts';
 
 export const GroupRecord = ImmutableRecord({
   avatar: '',
@@ -53,11 +55,10 @@ export const GroupRecord = ImmutableRecord({
 const normalizeAvatar = (group: ImmutableMap<string, any>) => {
   const avatar = group.get('avatar');
   const avatarStatic = group.get('avatar_static');
-  const missing = require('soapbox/assets/images/avatar-missing.png');
 
   return group.withMutations(group => {
-    group.set('avatar', avatar || avatarStatic || missing);
-    group.set('avatar_static', avatarStatic || avatar || missing);
+    group.set('avatar', avatar || avatarStatic || avatarMissing);
+    group.set('avatar_static', avatarStatic || avatar || avatarMissing);
   });
 };
 
@@ -65,11 +66,10 @@ const normalizeAvatar = (group: ImmutableMap<string, any>) => {
 const normalizeHeader = (group: ImmutableMap<string, any>) => {
   const header = group.get('header');
   const headerStatic = group.get('header_static');
-  const missing = require('soapbox/assets/images/header-missing.png');
 
   return group.withMutations(group => {
-    group.set('header', header || headerStatic || missing);
-    group.set('header_static', headerStatic || header || missing);
+    group.set('header', header || headerStatic || headerMissing);
+    group.set('header_static', headerStatic || header || headerMissing);
   });
 };
 

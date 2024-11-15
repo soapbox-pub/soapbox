@@ -1,15 +1,21 @@
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
 import {
   setupMfa,
   confirmMfa,
-} from 'soapbox/actions/mfa';
-import { Button, Form, FormActions, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+} from 'soapbox/actions/mfa.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },

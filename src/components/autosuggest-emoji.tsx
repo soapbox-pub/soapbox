@@ -1,10 +1,7 @@
-import React from 'react';
+import { isCustomEmoji } from 'soapbox/features/emoji/index.ts';
+import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
 
-import { isCustomEmoji } from 'soapbox/features/emoji';
-import unicodeMapping from 'soapbox/features/emoji/mapping';
-import { joinPublicPath } from 'soapbox/utils/static';
-
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 interface IAutosuggestEmoji {
   emoji: Emoji;
@@ -23,18 +20,17 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
+    url = `/packs/emoji/${mapping.unified}.svg`;
     alt = emoji.native;
   }
 
   return (
-    <div className='autosuggest-emoji' data-testid='emoji'>
+    <div className='flex flex-row items-center justify-start text-[14px] leading-[18px]' data-testid='emoji'>
       <img
-        className='emojione'
+        className='emojione mr-2 block size-4'
         src={url}
         alt={alt}
       />
-
       {emoji.colons}
     </div>
   );

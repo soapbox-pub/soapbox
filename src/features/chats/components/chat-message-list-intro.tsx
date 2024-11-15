@@ -1,15 +1,21 @@
+import clockIcon from '@tabler/icons/outline/clock.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import Link from 'soapbox/components/link';
-import { Avatar, Button, HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { useChatActions } from 'soapbox/queries/chats';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Link from 'soapbox/components/link.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useChatActions } from 'soapbox/queries/chats.ts';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
 const messages = defineMessages({
   leaveChatHeading: { id: 'chat_message_list_intro.leave_chat.heading', defaultMessage: 'Leave Chat' },
@@ -107,7 +113,7 @@ const ChatMessageListIntro = () => {
         </HStack>
       ) : (
         <HStack justifyContent='center' alignItems='center' space={1} className='shrink-0'>
-          <Icon src={require('@tabler/icons/outline/clock.svg')} className='size-4 text-gray-600' />
+          <Icon src={clockIcon} className='size-4 text-gray-600' />
           {chat.message_expiration && (
             <Text size='sm' theme='muted'>
               {intl.formatMessage(messages.messageLifespan, { day: secondsToDays(chat.message_expiration) })}

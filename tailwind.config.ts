@@ -4,9 +4,9 @@ import typographyPlugin from '@tailwindcss/typography';
 import { type Config } from 'tailwindcss';
 import plugin from 'tailwindcss/plugin';
 
-import { parseColorMatrix } from './tailwind/colors';
+import { parseColorMatrix } from './tailwind/colors.ts';
 
-const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black &'));
+const blackVariantPlugin = plugin(({ addVariant }) => addVariant('black', '.black.black &'));
 
 const config: Config = {
   content: ['./src/**/*.{html,js,ts,tsx}', './custom/instance/**/*.html', './index.html'],
@@ -69,6 +69,7 @@ const config: Config = {
         'greentext': true,
       }),
       animation: {
+        fade: 'fade 150ms linear',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
         'sonar-scale-2': 'sonar-scale-2 3s 1s linear infinite',
@@ -77,6 +78,10 @@ const config: Config = {
         'leave': 'leave 150ms ease-in forwards',
       },
       keyframes: {
+        fade: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
         'sonar-scale-4': {
           from: { opacity: '0.4', transform: 'scale(1)' },
           to: { opacity: '0', transform: 'scale(4)' },

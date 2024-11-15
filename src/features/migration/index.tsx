@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { moveAccount } from 'soapbox/actions/security';
-import { Button, Column, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
-import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { moveAccount } from 'soapbox/actions/security.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.migration', defaultMessage: 'Account migration' },

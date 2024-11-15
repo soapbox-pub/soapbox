@@ -1,10 +1,11 @@
-import React from 'react';
+import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { unblockDomain } from 'soapbox/actions/domain-blocks';
-import { useAppDispatch } from 'soapbox/hooks';
-
-import { HStack, IconButton, Text } from './ui';
+import { unblockDomain } from 'soapbox/actions/domain-blocks.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
@@ -21,7 +22,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
 
   // const onBlockDomain = () => {
   //   dispatch(openModal('CONFIRM', {
-  //     icon: require('@tabler/icons/outline/ban.svg'),
+  //     icon: banIcon,
   //     heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
   //     message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable.' values={{ domain: <strong>{domain}</strong> }} />,
   //     confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -38,7 +39,7 @@ const Domain: React.FC<IDomain> = ({ domain }) => {
       <Text tag='span'>
         {domain}
       </Text>
-      <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
+      <IconButton iconClassName='h-5 w-5' src={lockOpenIcon} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={handleDomainUnblock} />
     </HStack>
   );
 };

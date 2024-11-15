@@ -1,7 +1,7 @@
-import { saveSettings } from './settings';
+import { saveSettings } from './settings.ts';
 
-import type { Emoji } from 'soapbox/features/emoji';
-import type { AppDispatch } from 'soapbox/store';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { AppDispatch } from 'soapbox/store.ts';
 
 const EMOJI_CHOOSE = 'EMOJI_CHOOSE';
 

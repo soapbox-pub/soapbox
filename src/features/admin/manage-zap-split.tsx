@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, Column, HStack, Input, Stack } from 'soapbox/components/ui';
+import Account from 'soapbox/components/account.tsx';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
-import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit';
-import AddNewAccount from '../ui/components/new-account-zap-split';
-import { ZapSplitSlider } from '../zap/components/zap-split-account-item';
+import { useManageZapSplit } from '../../api/hooks/admin/useManageZapSplit.ts';
+import AddNewAccount from '../ui/components/new-account-zap-split.tsx';
+import { ZapSplitSlider } from '../zap/components/zap-split-account-item.tsx';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   heading: { id: 'column.admin.zap_split', defaultMessage: 'Manage Zap Split' },

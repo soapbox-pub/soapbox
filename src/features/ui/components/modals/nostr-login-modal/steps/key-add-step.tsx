@@ -1,15 +1,22 @@
 import { nip19 } from 'nostr-tools';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { logInNostr } from 'soapbox/actions/nostr';
-import EmojiGraphic from 'soapbox/components/emoji-graphic';
-import { Button, Stack, Modal, Input, FormGroup, Form, Divider } from 'soapbox/components/ui';
-import { useNostr } from 'soapbox/contexts/nostr-context';
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useAppDispatch } from 'soapbox/hooks';
 
-import NostrExtensionIndicator from '../components/nostr-extension-indicator';
+import { logInNostr } from 'soapbox/actions/nostr.ts';
+import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+
+import NostrExtensionIndicator from '../components/nostr-extension-indicator.tsx';
 
 interface IKeyAddStep {
   onClose(): void;

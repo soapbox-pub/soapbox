@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntity } from 'soapbox/entity-store/hooks';
-import { useApi } from 'soapbox/hooks';
-import { type GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntity } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { type GroupRelationship, groupRelationshipSchema } from 'soapbox/schemas/index.ts';
 
 function useGroupRelationship(groupId: string | undefined) {
   const api = useApi();

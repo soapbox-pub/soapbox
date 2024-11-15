@@ -1,13 +1,15 @@
+import pencilPlusIcon from '@tabler/icons/outline/pencil-plus.svg';
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
-import { groupComposeModal } from 'soapbox/actions/compose';
-import { openModal } from 'soapbox/actions/modals';
-import { useGroupLookup } from 'soapbox/api/hooks';
-import { Avatar, HStack, Icon } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { groupComposeModal } from 'soapbox/actions/compose.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useGroupLookup } from 'soapbox/api/hooks/index.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
@@ -42,7 +44,7 @@ const HomeFAB: React.FC = () => {
       aria-label={intl.formatMessage(messages.publish)}
     >
       <Icon
-        src={require('@tabler/icons/outline/pencil-plus.svg')}
+        src={pencilPlusIcon}
         className='size-6'
       />
     </button>
@@ -74,7 +76,7 @@ const GroupFAB: React.FC = () => {
       <HStack space={3} alignItems='center'>
         <Avatar className='-my-3 -ml-2 border-white' size={42} src={group.avatar} />
         <Icon
-          src={require('@tabler/icons/outline/pencil-plus.svg')}
+          src={pencilPlusIcon}
           className='size-6'
         />
       </HStack>

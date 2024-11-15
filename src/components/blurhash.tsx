@@ -1,5 +1,5 @@
 import { decode } from 'blurhash';
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect, memo } from 'react';
 
 interface IBlurhash {
   /** Hash to render */
@@ -56,4 +56,4 @@ const Blurhash: React.FC<IBlurhash> = ({
   );
 };
 
-export default React.memo(Blurhash);
+export default memo(Blurhash);

@@ -7,11 +7,11 @@ import {
   CHAT_MESSAGE_SEND_REQUEST,
   CHAT_MESSAGE_SEND_SUCCESS,
   CHAT_MESSAGE_DELETE_SUCCESS,
-} from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+} from 'soapbox/actions/chats.ts';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 type APIEntities = Array<APIEntity>;
 

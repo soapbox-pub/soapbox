@@ -1,19 +1,19 @@
 import clsx from 'clsx';
-import React from 'react';
 
-import Account from 'soapbox/components/account';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import StatusContent from 'soapbox/components/status-content';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import { HStack, Stack } from 'soapbox/components/ui';
-import PollPreview from 'soapbox/features/ui/components/poll-preview';
-import { useAppSelector } from 'soapbox/hooks';
+import Account from 'soapbox/components/account.tsx';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import PollPreview from 'soapbox/features/ui/components/poll-preview.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import { buildStatus } from '../builder';
+import { buildStatus } from '../builder.tsx';
 
-import ScheduledStatusActionBar from './scheduled-status-action-bar';
+import ScheduledStatusActionBar from './scheduled-status-action-bar.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IScheduledStatus {
   statusId: string;
@@ -31,8 +31,8 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
   const account = status.account;
 
   return (
-    <div className={clsx('status__wrapper', `status__wrapper-${status.visibility}`, { 'status__wrapper-reply': !!status.in_reply_to_id })} tabIndex={0}>
-      <div className={clsx('status', `status-${status.visibility}`, { 'status-reply': !!status.in_reply_to_id })} data-id={status.id}>
+    <div className={clsx('status--wrapper')} tabIndex={0}>
+      <div className={clsx('status', { 'status-reply': !!status.in_reply_to_id })} data-id={status.id}>
         <div className='mb-4'>
           <HStack justifyContent='between' alignItems='start'>
             <Account

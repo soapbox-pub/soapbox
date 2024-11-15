@@ -1,10 +1,17 @@
-import React from 'react';
+import brandFacebookIcon from '@tabler/icons/outline/brand-facebook.svg';
+import brandGithubIcon from '@tabler/icons/outline/brand-github.svg';
+import brandGoogleIcon from '@tabler/icons/outline/brand-google.svg';
+import brandSlackIcon from '@tabler/icons/outline/brand-slack.svg';
+import brandTwitterIcon from '@tabler/icons/outline/brand-twitter.svg';
+import brandWindowsIcon from '@tabler/icons/outline/brand-windows.svg';
+import keyIcon from '@tabler/icons/outline/key.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { prepareRequest } from 'soapbox/actions/consumer-auth';
-import { IconButton, Tooltip } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import { capitalize } from 'soapbox/utils/strings';
+import { prepareRequest } from 'soapbox/actions/consumer-auth.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { capitalize } from 'soapbox/utils/strings.ts';
 
 const messages = defineMessages({
   tooltip: { id: 'oauth_consumer.tooltip', defaultMessage: 'Sign in with {provider}' },
@@ -12,12 +19,12 @@ const messages = defineMessages({
 
 /** Map between OAuth providers and brand icons. */
 const BRAND_ICONS: Record<string, string> = {
-  twitter: require('@tabler/icons/outline/brand-twitter.svg'),
-  facebook: require('@tabler/icons/outline/brand-facebook.svg'),
-  google: require('@tabler/icons/outline/brand-google.svg'),
-  microsoft: require('@tabler/icons/outline/brand-windows.svg'),
-  slack: require('@tabler/icons/outline/brand-slack.svg'),
-  github: require('@tabler/icons/outline/brand-github.svg'),
+  twitter: brandTwitterIcon,
+  facebook: brandFacebookIcon,
+  google: brandGoogleIcon,
+  microsoft: brandWindowsIcon,
+  slack: brandSlackIcon,
+  github: brandGithubIcon,
 };
 
 interface IConsumerButton {
@@ -29,7 +36,7 @@ const ConsumerButton: React.FC<IConsumerButton> = ({ provider }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const icon = BRAND_ICONS[provider] || require('@tabler/icons/outline/key.svg');
+  const icon = BRAND_ICONS[provider] || keyIcon;
 
   const handleClick = () => {
     dispatch(prepareRequest(provider));

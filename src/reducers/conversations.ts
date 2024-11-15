@@ -8,11 +8,11 @@ import {
   CONVERSATIONS_FETCH_FAIL,
   CONVERSATIONS_UPDATE,
   CONVERSATIONS_READ,
-} from '../actions/conversations';
-import { compareDate } from '../utils/comparators';
+} from '../actions/conversations.ts';
+import { compareDate } from '../utils/comparators.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ConversationRecord = ImmutableRecord({
   id: '',

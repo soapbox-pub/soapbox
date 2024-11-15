@@ -1,4 +1,6 @@
-import reducer from './domain-lists';
+import { describe, expect, it } from 'vitest';
+
+import reducer from './domain-lists.ts';
 
 describe('domain_lists reducer', () => {
   it('should return the initial state', () => {

@@ -1,17 +1,25 @@
-import React, { useMemo } from 'react';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import RelativeTimestamp from 'soapbox/components/relative-timestamp';
-import { Avatar, HStack, IconButton, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { IChat, useChatActions } from 'soapbox/queries/chats';
+import { openModal } from 'soapbox/actions/modals.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { IChat, useChatActions } from 'soapbox/queries/chats.ts';
 
-import type { Menu } from 'soapbox/components/dropdown-menu';
+import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
 
 const messages = defineMessages({
   blockedYou: { id: 'chat_list_item.blocked_you', defaultMessage: 'This user has blocked you' },
@@ -59,7 +67,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
         },
       }));
     },
-    icon: require('@tabler/icons/outline/logout.svg'),
+    icon: logoutIcon,
   }], []);
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (event) => {
@@ -124,7 +132,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
             <div className='hidden text-gray-600 hover:text-gray-100 group-hover:block'>
               <DropdownMenu items={menu}>
                 <IconButton
-                  src={require('@tabler/icons/outline/dots.svg')}
+                  src={dotsIcon}
                   title='Settings'
                   className='text-gray-600 hover:text-gray-700 dark:text-gray-600 dark:hover:text-gray-500'
                   iconClassName='h-4 w-4'

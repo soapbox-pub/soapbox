@@ -1,13 +1,12 @@
-import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import {
   openStatusHoverCard,
   closeStatusHoverCard,
-} from 'soapbox/actions/status-hover-card';
-import { isMobile } from 'soapbox/is-mobile';
+} from 'soapbox/actions/status-hover-card.ts';
+import { isMobile } from 'soapbox/is-mobile.ts';
 
 const showStatusHoverCard = debounce((dispatch, ref, statusId) => {
   dispatch(openStatusHoverCard(ref, statusId));
@@ -45,7 +44,7 @@ export const HoverStatusWrapper: React.FC<IHoverStatusWrapper> = ({ statusId, ch
   return (
     <Elem
       ref={ref}
-      className={clsx('hover-status-wrapper', className)}
+      className={className}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}

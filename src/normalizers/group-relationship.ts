@@ -8,7 +8,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import { GroupRoles } from 'soapbox/schemas/group-member';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 
 export const GroupRelationshipRecord = ImmutableRecord({
   id: '',

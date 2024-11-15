@@ -1,9 +1,7 @@
-import React from 'react';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
-import { Stack } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
-
-import CryptoAddress from './crypto-address';
+import CryptoAddress from './crypto-address.tsx';
 
 interface ISiteWallet {
   limit?: number;

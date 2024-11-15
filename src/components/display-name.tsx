@@ -1,14 +1,14 @@
-import React from 'react';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { useSoapboxConfig } from 'soapbox/hooks';
+import { getAcct } from '../utils/accounts.ts';
 
-import { getAcct } from '../utils/accounts';
 
-import { HStack, Text } from './ui';
-import VerificationBadge from './verification-badge';
+import VerificationBadge from './verification-badge.tsx';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 interface IDisplayName {
   account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>;
@@ -33,10 +33,10 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
     </HStack>
   );
 
-  const suffix = (<span className='display-name__account'>@{getAcct(account, displayFqn)}</span>); // eslint-disable-line formatjs/no-literal-string-in-jsx
+  const suffix = (<span className='relative text-[14px] font-semibold'>@{getAcct(account, displayFqn)}</span>); // eslint-disable-line formatjs/no-literal-string-in-jsx
 
   return (
-    <span className='display-name' data-testid='display-name'>
+    <span className='relative block max-w-full truncate' data-testid='display-name'>
       <HoverRefWrapper accountId={account.id} inline>
         {displayName}
       </HoverRefWrapper>

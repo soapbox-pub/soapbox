@@ -1,7 +1,9 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, HStack, Input } from './ui';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 
 interface ICopyableInput {
   /** Text to be copied. */

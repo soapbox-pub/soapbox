@@ -1,17 +1,23 @@
-import React from 'react';
+import downloadIcon from '@tabler/icons/outline/download.svg';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list';
-import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1';
-import List, { ListItem } from 'soapbox/components/list';
-import { CardTitle, Icon, IconButton, Stack } from 'soapbox/components/ui';
-import { useAppDispatch, useOwnAccount, useFeatures } from 'soapbox/hooks';
-import sourceCode from 'soapbox/utils/code';
-import { download } from 'soapbox/utils/download';
-import { parseVersion } from 'soapbox/utils/features';
+import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email-list.ts';
+import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { CardTitle } from 'soapbox/components/ui/card.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import sourceCode from 'soapbox/utils/code.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { parseVersion } from 'soapbox/utils/features.ts';
 
-import { DashCounter, DashCounters } from '../components/dashcounter';
-import RegistrationModePicker from '../components/registration-mode-picker';
+import { DashCounter, DashCounters } from '../components/dashcounter.tsx';
+import RegistrationModePicker from '../components/registration-mode-picker.tsx';
 
 const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -155,7 +161,7 @@ const Dashboard: React.FC = () => {
 
             <Icon
               className='size-4'
-              src={require('@tabler/icons/outline/external-link.svg')}
+              src={externalLinkIcon}
             />
           </a>
         </ListItem>
@@ -174,7 +180,7 @@ const Dashboard: React.FC = () => {
           <List>
             <ListItem label='subscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleSubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -182,7 +188,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='unsubscribers.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleUnsubscribersClick}
                 iconClassName='h-5 w-5'
               />
@@ -190,7 +196,7 @@ const Dashboard: React.FC = () => {
 
             <ListItem label='combined.csv'>
               <IconButton
-                src={require('@tabler/icons/outline/download.svg')}
+                src={downloadIcon}
                 onClick={handleCombinedClick}
                 iconClassName='h-5 w-5'
               />

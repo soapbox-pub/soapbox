@@ -6,11 +6,11 @@ import {
   HASHTAG_FOLLOW_FAIL,
   HASHTAG_UNFOLLOW_REQUEST,
   HASHTAG_UNFOLLOW_FAIL,
-} from 'soapbox/actions/tags';
-import { normalizeTag } from 'soapbox/normalizers';
+} from 'soapbox/actions/tags.ts';
+import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { Tag } from 'soapbox/types/entities';
+import type { Tag } from 'soapbox/types/entities.ts';
 
 const initialState = ImmutableMap<string, Tag>();
 

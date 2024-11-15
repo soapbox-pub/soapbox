@@ -1,14 +1,16 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import debounce from 'lodash/debounce';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Stack, Text } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useOnboardingSuggestions } from 'soapbox/queries/suggestions';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useOnboardingSuggestions } from 'soapbox/queries/suggestions.ts';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface ICoverPhotoSelectionModal {
   onClose?(): void;

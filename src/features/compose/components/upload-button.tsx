@@ -1,8 +1,10 @@
-import React, { useRef } from 'react';
+import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
+import photoIcon from '@tabler/icons/outline/photo.svg';
+import { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
-import { IconButton } from 'soapbox/components/ui';
-import { useInstance } from 'soapbox/hooks';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },
@@ -54,8 +56,8 @@ const UploadButton: React.FC<IUploadButton> = ({
 
   const src = icon || (
     onlyImages(attachmentTypes)
-      ? require('@tabler/icons/outline/photo.svg')
-      : require('@tabler/icons/outline/paperclip.svg')
+      ? photoIcon
+      : paperclipIcon
   );
 
   return (

@@ -1,19 +1,26 @@
+import gpsIcon from '@tabler/icons/outline/gps.svg';
 import L from 'leaflet';
-import React, { useCallback, useEffect, useRef } from 'react';
+import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
+import iconUrl from 'leaflet/dist/images/marker-icon.png';
+import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
+import { useCallback, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, Modal, Stack } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import Button from 'soapbox/components/ui/button.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 import 'leaflet/dist/leaflet.css';
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
 });
 
 interface IEventMapModal {
@@ -64,7 +71,7 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
     >
       <Stack alignItems='center' space={6}>
         <div className='h-96 w-full' id='event-map' />
-        <Button onClick={onClickNavigate} icon={require('@tabler/icons/outline/gps.svg')}>
+        <Button onClick={onClickNavigate} icon={gpsIcon}>
           <FormattedMessage id='event_map.navigate' defaultMessage='Navigate' />
         </Button>
       </Stack>

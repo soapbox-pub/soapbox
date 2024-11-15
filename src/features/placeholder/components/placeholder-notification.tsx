@@ -1,10 +1,10 @@
-import React from 'react';
+import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
-import PlaceholderStatusContent from './placeholder-status-content';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
+import PlaceholderStatusContent from './placeholder-status-content.tsx';
 
 /** Fake notification to display while data is loading. */
 const PlaceholderNotification = () => (
@@ -33,4 +33,4 @@ const PlaceholderNotification = () => (
   </div>
 );
 
-export default React.memo(PlaceholderNotification);
+export default memo(PlaceholderNotification);

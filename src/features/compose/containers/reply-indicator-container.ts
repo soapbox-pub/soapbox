@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { cancelReplyCompose } from 'soapbox/actions/compose';
-import { makeGetStatus } from 'soapbox/selectors';
+import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import ReplyIndicator from '../components/reply-indicator';
+import ReplyIndicator from '../components/reply-indicator.tsx';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { Status } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { Status } from 'soapbox/types/entities.ts';
 
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();

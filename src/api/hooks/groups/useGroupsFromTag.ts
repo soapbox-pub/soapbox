@@ -1,11 +1,12 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi, useFeatures } from 'soapbox/hooks';
-import { groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { groupSchema } from 'soapbox/schemas/index.ts';
 
-import { useGroupRelationships } from './useGroupRelationships';
+import { useGroupRelationships } from './useGroupRelationships.ts';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 function useGroupsFromTag(tagId: string) {
   const api = useApi();

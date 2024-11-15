@@ -1,11 +1,12 @@
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { Text, Widget } from 'soapbox/components/ui';
-import { useInstance, useSoapboxConfig } from 'soapbox/hooks';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
-import SiteWallet from './site-wallet';
+import SiteWallet from './site-wallet.tsx';
 
 const messages = defineMessages({
   actionTitle: { id: 'crypto_donate_panel.actions.view', defaultMessage: 'Click to see {count, plural, one {# wallet} other {# wallets}}' },

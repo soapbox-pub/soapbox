@@ -1,8 +1,8 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import Blankslate from './blankslate';
+import Blankslate from './blankslate.tsx';
 
 
 describe('<Blankslate />', () => {

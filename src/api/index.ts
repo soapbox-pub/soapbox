@@ -8,10 +8,10 @@ import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
-import * as BuildConfig from 'soapbox/build-config';
-import { selectAccount } from 'soapbox/selectors';
-import { RootState } from 'soapbox/store';
-import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth';
+import * as BuildConfig from 'soapbox/build-config.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { RootState } from 'soapbox/store.ts';
+import { getAccessToken, getAppToken, isURL, parseBaseURL } from 'soapbox/utils/auth.ts';
 
 import type MockAdapter from 'axios-mock-adapter';
 
@@ -81,16 +81,6 @@ export const baseClient = (
     transformResponse: [maybeParseJSON],
   });
 };
-
-/**
-  * Dumb client for grabbing static files.
-  * It uses FE_SUBDIRECTORY and parses JSON if possible.
-  * No authorization is needed.
-  */
-export const staticClient = axios.create({
-  baseURL: BuildConfig.FE_SUBDIRECTORY,
-  transformResponse: [maybeParseJSON],
-});
 
 /**
   * Stateful API client.

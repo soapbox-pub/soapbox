@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/types/entities.ts';
 
 /** Convert a plain tag into a badge. */
 const tagToBadge = (tag: string) => `badge:${tag}`;

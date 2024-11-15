@@ -64,6 +64,11 @@ const addAutoPlay = (html: string): string => {
     const iframe = document.querySelector('iframe');
 
     if (iframe) {
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+    }
+
+    if (iframe) {
       const url = new URL(iframe.src);
       const provider = new URL(iframe.src).host;
 

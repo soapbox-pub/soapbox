@@ -4,13 +4,14 @@ import {
   fromJS,
   is,
 } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { STATUS_IMPORT } from 'soapbox/actions/importer';
-import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { applyActions } from 'soapbox/jest/test-helpers';
+import { STATUS_IMPORT } from 'soapbox/actions/importer/index.ts';
+import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses.ts';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines.ts';
+import { applyActions } from 'soapbox/jest/test-helpers.tsx';
 
-import reducer, { ReducerRecord } from './contexts';
+import reducer, { ReducerRecord } from './contexts.ts';
 
 describe('contexts reducer', () => {
   it('should return the initial state', () => {

@@ -2,20 +2,20 @@ import LinkHeader from 'http-link-header';
 import { useEffect } from 'react';
 import z from 'zod';
 
-import { useApi } from 'soapbox/hooks/useApi';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector';
-import { useGetState } from 'soapbox/hooks/useGetState';
-import { filteredArray } from 'soapbox/schemas/utils';
-import { realNumberSchema } from 'soapbox/utils/numbers';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { realNumberSchema } from 'soapbox/utils/numbers.tsx';
 
-import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions';
-import { selectEntities, selectListState, useListState } from '../selectors';
+import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions.ts';
+import { selectEntities, selectListState, useListState } from '../selectors.ts';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
-import type { Entity } from '../types';
+import type { EntityFn, EntitySchema, ExpandedEntitiesPath } from './types.ts';
+import type { Entity } from '../types.ts';
 
 /** Additional options for the hook. */
 interface UseEntitiesOpts<TEntity extends Entity> {

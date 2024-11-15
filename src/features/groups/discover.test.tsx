@@ -1,11 +1,11 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import { describe, expect, it, vi } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
-import { instanceV1Schema } from 'soapbox/schemas/instance';
+import { buildAccount } from 'soapbox/jest/factory.ts';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
 
-import Discover from './discover';
+import Discover from './discover.tsx';
 
 vi.mock('../../../hooks/useDimensions', () => ({
   useDimensions: () => [{ scrollWidth: 190 }, null, { width: 300 }],

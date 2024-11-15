@@ -1,18 +1,24 @@
+import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { QRCodeCanvas } from 'qrcode.react';
 import React  from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Modal, Button, Stack, Avatar, HStack } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch } from 'soapbox/hooks';
-import { ZapSplitData } from 'soapbox/schemas/zap-split';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import { SplitValue } from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
@@ -64,7 +70,7 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
         </div>
         <HStack space={2}>
           <a href={'lightning:' + invoice}>
-            <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
+            <Button type='submit' theme='primary' icon={folderOpenIcon} text={intl.formatMessage(messages.zap_open_wallet)} />
           </a>
           {hasZapSplit && <Button type='button' theme='muted' onClick={handleNext} text={intl.formatMessage(messages.zap_next)} />}
         </HStack>

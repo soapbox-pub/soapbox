@@ -1,8 +1,7 @@
 import get from 'lodash/get';
-import React from 'react';
 
-import { Toggle } from 'soapbox/components/ui';
-import { Settings } from 'soapbox/schemas/soapbox/settings';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { Settings } from 'soapbox/schemas/soapbox/settings.ts';
 
 interface ISettingToggle {
   /** Unique identifier for the Toggle. */

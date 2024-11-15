@@ -12,10 +12,10 @@ import {
   REPORT_BLOCK_CHANGE,
   REPORT_RULE_CHANGE,
   ReportableEntities,
-} from '../actions/reports';
+} from '../actions/reports.ts';
 
 import type { AnyAction } from 'redux';
-import type { ChatMessage, Group } from 'soapbox/types/entities';
+import type { ChatMessage, Group } from 'soapbox/types/entities.ts';
 
 const NewReportRecord = ImmutableRecord({
   isSubmitting: false,

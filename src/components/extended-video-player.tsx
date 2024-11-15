@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-import { isIOS } from 'soapbox/is-mobile';
+import { isIOS } from 'soapbox/is-mobile.ts';
 
 interface IExtendedVideoPlayer {
   src: string;
@@ -42,10 +42,11 @@ const ExtendedVideoPlayer: React.FC<IExtendedVideoPlayer> = ({ src, alt, time, c
   }
 
   return (
-    <div className='extended-video-player'>
+    <div className='flex size-full items-center justify-center'>
       <video
         ref={video}
         src={src}
+        className='max-h-[80%] max-w-full'
         autoPlay
         role='button'
         tabIndex={0}

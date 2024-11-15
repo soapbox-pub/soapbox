@@ -1,10 +1,14 @@
-import React from 'react';
+import confettiIcon from '@tabler/icons/outline/confetti.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { Button, Icon, Stack, Text } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface ICompletedModal {
   onClose?(): void;
@@ -19,7 +23,7 @@ const CompletedModal: React.FC<ICompletedModal> = ({ onClose, onComplete }) => {
       <div className='relative w-full'>
         <IconButton src={closeIcon} className='absolute -right-2 -top-6 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 sm:-right-4 rtl:rotate-180' onClick={onClose} />
         <Stack space={2} justifyContent='center' alignItems='center' className=''>
-          <Icon strokeWidth={1} src={require('@tabler/icons/outline/confetti.svg')} className='mx-auto size-16 text-primary-600 dark:text-primary-400' />
+          <Icon strokeWidth={1} src={confettiIcon} className='mx-auto size-16 text-primary-600 dark:text-primary-400' />
           <Text align='center' weight='bold' className='text-xl sm:text-2xl'>
             <FormattedMessage id='onboarding.finished.title' defaultMessage='Onboarding complete' />
           </Text>

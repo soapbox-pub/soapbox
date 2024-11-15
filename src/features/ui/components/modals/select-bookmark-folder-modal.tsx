@@ -1,15 +1,23 @@
-import React, { useCallback, useState } from 'react';
+import bookmarksIcon from '@tabler/icons/outline/bookmarks.svg';
+import folderIcon from '@tabler/icons/outline/folder.svg';
+import { useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { bookmark } from 'soapbox/actions/interactions';
-import { useBookmarkFolders } from 'soapbox/api/hooks';
-import { RadioGroup, RadioItem } from 'soapbox/components/radio';
-import { Emoji, HStack, Icon, Modal, Spinner, Stack } from 'soapbox/components/ui';
-import NewFolderForm from 'soapbox/features/bookmark-folders/components/new-folder-form';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import { bookmark } from 'soapbox/actions/interactions.ts';
+import { useBookmarkFolders } from 'soapbox/api/hooks/index.ts';
+import { RadioGroup, RadioItem } from 'soapbox/components/radio.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import NewFolderForm from 'soapbox/features/bookmark-folders/components/new-folder-form.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface ISelectBookmarkFolderModal {
   statusId: string;
@@ -42,7 +50,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
     <RadioItem
       label={
         <HStack alignItems='center' space={2}>
-          <Icon src={require('@tabler/icons/outline/bookmarks.svg')} size={20} />
+          <Icon src={bookmarksIcon} size={20} />
           <span><FormattedMessage id='bookmark_folders.all_bookmarks' defaultMessage='All bookmarks' /></span>
         </HStack>
       }
@@ -63,7 +71,7 @@ const SelectBookmarkFolderModal: React.FC<ISelectBookmarkFolderModal> = ({ statu
                 src={folder.emoji_url || undefined}
                 className='size-5 flex-none'
               />
-            ) : <Icon src={require('@tabler/icons/outline/folder.svg')} size={20} />}
+            ) : <Icon src={folderIcon} size={20} />}
             <span>{folder.name}</span>
           </HStack>
         }

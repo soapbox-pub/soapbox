@@ -1,10 +1,11 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
-import { HStack, Textarea } from 'soapbox/components/ui';
-import { Attachment } from 'soapbox/types/entities';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { Attachment } from 'soapbox/types/entities.ts';
 
-import ChatPendingUpload from './chat-pending-upload';
-import ChatUpload from './chat-upload';
+import ChatPendingUpload from './chat-pending-upload.tsx';
+import ChatUpload from './chat-upload.tsx';
 
 interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
   attachments?: Attachment[];
@@ -14,7 +15,7 @@ interface IChatTextarea extends React.ComponentProps<typeof Textarea> {
 }
 
 /** Custom textarea for chats. */
-const ChatTextarea: React.FC<IChatTextarea> = React.forwardRef(({
+const ChatTextarea: React.FC<IChatTextarea> = forwardRef(({
   attachments,
   onDeleteAttachment,
   uploadCount = 0,

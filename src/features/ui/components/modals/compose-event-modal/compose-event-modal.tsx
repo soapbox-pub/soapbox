@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import {
@@ -16,18 +19,31 @@ import {
   rejectEventParticipationRequest,
   authorizeEventParticipationRequest,
   cancelEventCompose,
-} from 'soapbox/actions/events';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location';
-import LocationSearch from 'soapbox/components/location-search';
-import { checkEventComposeContent } from 'soapbox/components/modal-root';
-import { Button, Form, FormGroup, HStack, Icon, IconButton, Input, Modal, Spinner, Stack, Tabs, Text, Toggle } from 'soapbox/components/ui';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime';
-import AccountContainer from 'soapbox/containers/account-container';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+} from 'soapbox/actions/events.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location.tsx';
+import LocationSearch from 'soapbox/components/location-search.tsx';
+import { checkEventComposeContent } from 'soapbox/components/modal-root.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import UploadButton from './upload-button';
+import UploadButton from './upload-button.tsx';
 
 const messages = defineMessages({
   eventNamePlaceholder: { id: 'compose_event.fields.name_placeholder', defaultMessage: 'Name' },
@@ -137,7 +153,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
     dispatch((dispatch, getState) => {
       if (checkEventComposeContent(getState().compose_event)) {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/outline/trash.svg'),
+          icon: trashIcon,
           heading: id
             ? <FormattedMessage id='confirmations.cancel_event_editing.heading' defaultMessage='Cancel event editing' />
             : <FormattedMessage id='confirmations.delete_event.heading' defaultMessage='Delete event' />,
@@ -177,12 +193,12 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
 
   const renderLocation = () => location && (
     <HStack className='h-[38px] text-gray-700 dark:text-gray-500' alignItems='center' space={2}>
-      <Icon src={ADDRESS_ICONS[location.type] || require('@tabler/icons/outline/map-pin.svg')} />
+      <Icon src={ADDRESS_ICONS[location.type] || mapPinIcon} />
       <Stack className='grow'>
         <Text>{location.description}</Text>
         <Text theme='muted' size='xs'>{[location.street, location.locality, location.country].filter(val => val?.trim()).join(' · ')}</Text>
       </Stack>
-      <IconButton title={intl.formatMessage(messages.resetLocation)} src={require('@tabler/icons/outline/x.svg')} onClick={() => onChangeLocation(null)} />
+      <IconButton title={intl.formatMessage(messages.resetLocation)} src={xIcon} onClick={() => onChangeLocation(null)} />
     </HStack>
   );
 
@@ -213,7 +229,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
           {banner ? (
             <>
               <img className='size-full object-cover' src={banner.url} alt='' />
-              <IconButton className='absolute right-2 top-2' src={require('@tabler/icons/outline/x.svg')} onClick={handleClearBanner} />
+              <IconButton className='absolute right-2 top-2' src={xIcon} onClick={handleClearBanner} />
             </>
           ) : (
             <UploadButton disabled={isUploading} onSelectFile={handleFiles} />

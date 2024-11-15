@@ -1,17 +1,19 @@
 import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
 import { createSelector } from 'reselect';
 
-import { useAnnouncements } from 'soapbox/api/hooks/announcements';
-import { Card, HStack, Widget } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import Announcement from './announcement';
+import Announcement from './announcement.tsx';
 
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 const customEmojiMap = createSelector([(state: RootState) => state.custom_emojis], items => (items as ImmutableList<ImmutableMap<string, string>>).reduce((map, emoji) => map.set(emoji.get('shortcode')!, emoji), ImmutableMap<string, ImmutableMap<string, string>>()));
 

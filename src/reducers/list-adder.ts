@@ -8,7 +8,7 @@ import {
   LIST_ADDER_LISTS_FETCH_FAIL,
   LIST_EDITOR_ADD_SUCCESS,
   LIST_EDITOR_REMOVE_SUCCESS,
-} from '../actions/lists';
+} from '../actions/lists.ts';
 
 import type { AnyAction } from 'redux';
 

@@ -15,7 +15,7 @@
   }
 }
 
-[column-type='filled'] .status__wrapper,
+[column-type='filled'] .status--wrapper,
 [column-type='filled'] .status-placeholder {
   @apply bg-transparent dark:bg-transparent rounded-none shadow-none;
 }

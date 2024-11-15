@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { attachmentSchema } from './attachment';
-import { cardSchema } from './card';
-import { customEmojiSchema } from './custom-emoji';
-import { contentSchema, emojiSchema, filteredArray } from './utils';
+import { attachmentSchema } from './attachment.ts';
+import { cardSchema } from './card.ts';
+import { customEmojiSchema } from './custom-emoji.ts';
+import { contentSchema, emojiSchema, filteredArray } from './utils.ts';
 
 const chatMessageSchema = z.object({
   account_id: z.string(),

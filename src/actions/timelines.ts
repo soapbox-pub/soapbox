@@ -1,16 +1,16 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import { getSettings } from 'soapbox/actions/settings';
-import { normalizeStatus } from 'soapbox/normalizers';
-import { shouldFilter } from 'soapbox/utils/timelines';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { shouldFilter } from 'soapbox/utils/timelines.ts';
 
-import api, { getNextLink, getPrevLink } from '../api';
+import api, { getNextLink, getPrevLink } from '../api/index.ts';
 
-import { fetchGroupRelationships } from './groups';
-import { importFetchedStatus, importFetchedStatuses } from './importer';
+import { fetchGroupRelationships } from './groups.ts';
+import { importFetchedStatus, importFetchedStatuses } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
 
 const TIMELINE_UPDATE = 'TIMELINE_UPDATE' as const;
 const TIMELINE_DELETE = 'TIMELINE_DELETE' as const;

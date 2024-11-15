@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { Children, useState } from 'react';
 
-import { Select } from '../../components/ui';
+import Select from 'soapbox/components/ui/select.tsx';
 
 interface IInputContainer {
   label?: React.ReactNode;
@@ -24,7 +24,7 @@ export const InputContainer: React.FC<IInputContainer> = (props) => {
   return (
     <div className={containerClass}>
       {props.children}
-      {props.hint && <span className='hint'>{props.hint}</span>}
+      {props.hint && <span>{props.hint}</span>}
     </div>
   );
 };
@@ -37,7 +37,7 @@ interface ILabelInputContainer {
 
 export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hint, children }) => {
   const [id] = useState(crypto.randomUUID());
-  const childrenWithProps = React.Children.map(children, child => (
+  const childrenWithProps = Children.map(children, child => (
     // @ts-ignore: not sure how to get the right type here
     React.cloneElement(child, { id: id, key: id })
   ));
@@ -45,10 +45,10 @@ export const LabelInputContainer: React.FC<ILabelInputContainer> = ({ label, hin
   return (
     <div className='label_input'>
       <label htmlFor={id}>{label}</label>
-      <div className='label_input__wrapper'>
+      <div>
         {childrenWithProps}
       </div>
-      {hint && <span className='hint'>{hint}</span>}
+      {hint && <span>{hint}</span>}
     </div>
   );
 };

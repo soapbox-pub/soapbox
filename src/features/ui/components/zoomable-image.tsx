@@ -1,4 +1,4 @@
-import React from 'react';
+import { PureComponent } from 'react';
 
 const MIN_SCALE = 1;
 const MAX_SCALE = 4;
@@ -21,7 +21,7 @@ interface IZoomableImage {
   onClick?: React.MouseEventHandler;
 }
 
-class ZoomableImage extends React.PureComponent<IZoomableImage> {
+class ZoomableImage extends PureComponent<IZoomableImage> {
 
   static defaultProps = {
     alt: '',
@@ -124,7 +124,7 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
 
     return (
       <div
-        className='zoomable-image'
+        className='relative flex size-full items-center justify-center'
         ref={this.setContainerRef}
         style={{ overflow }}
       >
@@ -132,6 +132,7 @@ class ZoomableImage extends React.PureComponent<IZoomableImage> {
           role='presentation'
           ref={this.setImageRef}
           alt={alt}
+          className='size-auto max-h-[80%] max-w-full object-contain shadow-2xl'
           title={alt}
           src={src}
           style={{

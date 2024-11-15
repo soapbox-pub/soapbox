@@ -7,11 +7,11 @@ import {
   FOLLOWED_HASHTAGS_EXPAND_REQUEST,
   FOLLOWED_HASHTAGS_EXPAND_SUCCESS,
   FOLLOWED_HASHTAGS_EXPAND_FAIL,
-} from 'soapbox/actions/tags';
-import { normalizeTag } from 'soapbox/normalizers';
+} from 'soapbox/actions/tags.ts';
+import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities';
+import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableList<Tag>(),

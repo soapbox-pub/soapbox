@@ -1,20 +1,32 @@
+import helpIcon from '@tabler/icons/outline/help.svg';
 import clsx from 'clsx';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
 
-import { logIn, verifyCredentials } from 'soapbox/actions/auth';
-import { fetchInstance } from 'soapbox/actions/instance';
-import { openModal } from 'soapbox/actions/modals';
-import { openSidebar } from 'soapbox/actions/sidebar';
-import SiteLogo from 'soapbox/components/site-logo';
-import { Avatar, Button, Counter, Form, HStack, IconButton, Input, Tooltip } from 'soapbox/components/ui';
-import Search from 'soapbox/features/compose/components/search';
-import { useAppDispatch, useFeatures, useInstance, useOwnAccount, useRegistrationStatus } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications';
+import { logIn, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { fetchInstance } from 'soapbox/actions/instance.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { openSidebar } from 'soapbox/actions/sidebar.ts';
+import SiteLogo from 'soapbox/components/site-logo.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import Counter from 'soapbox/components/ui/counter.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
+import Search from 'soapbox/features/compose/components/search.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
+import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 
-import ProfileDropdown from './profile-dropdown';
+import ProfileDropdown from './profile-dropdown.tsx';
 
 import type { AxiosError } from 'axios';
 
@@ -101,7 +113,7 @@ const Navbar = () => {
           <HStack
             space={4}
             alignItems='center'
-            className={clsx('enter flex-1 lg:items-stretch', {
+            className={clsx('flex-1 lg:items-stretch', {
               'justify-center lg:justify-start': account,
               'justify-start': !account,
             })}
@@ -163,7 +175,7 @@ const Navbar = () => {
                       <Link to='/reset-password'>
                         <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                           <IconButton
-                            src={require('@tabler/icons/outline/help.svg')}
+                            src={helpIcon}
                             className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
                             iconClassName='h-5 w-5'
                           />

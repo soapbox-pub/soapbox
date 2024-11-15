@@ -1,6 +1,6 @@
-import { getLocale } from 'soapbox/actions/settings';
+import { getLocale } from 'soapbox/actions/settings.ts';
 
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from './useAppSelector.ts';
 
 /** Locales which should be presented in right-to-left. */
 const RTL_LOCALES = ['ar', 'ckb', 'fa', 'he'];

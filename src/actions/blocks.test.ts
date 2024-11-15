@@ -1,8 +1,10 @@
-import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
-import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user-lists';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { expandBlocks, fetchBlocks } from './blocks';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { ListRecord, ReducerRecord as UserListsRecord } from 'soapbox/reducers/user-lists.ts';
+
+import { expandBlocks, fetchBlocks } from './blocks.ts';
 
 const account = {
   acct: 'twoods',

@@ -1,6 +1,6 @@
-import { parseVersion } from 'soapbox/utils/features';
+import { parseVersion } from 'soapbox/utils/features.ts';
 
-import { useInstance } from './useInstance';
+import { useInstance } from './useInstance.ts';
 
 /**
  * Get the Backend version.

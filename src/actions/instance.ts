@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { instanceV1Schema, instanceV2Schema } from 'soapbox/schemas/instance';
-import { RootState } from 'soapbox/store';
-import { getAuthUserUrl, getMeUrl } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import { instanceV1Schema, instanceV2Schema } from 'soapbox/schemas/instance.ts';
+import { RootState } from 'soapbox/store.ts';
+import { getAuthUserUrl, getMeUrl } from 'soapbox/utils/auth.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
 /** Figure out the appropriate instance to fetch depending on the state */
 export const getHost = (state: RootState) => {

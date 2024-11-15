@@ -10,9 +10,9 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeHistory } from './history';
+import { normalizeHistory } from './history.ts';
 
-import type { History } from 'soapbox/types/entities';
+import type { History } from 'soapbox/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/tag/
 export const TagRecord = ImmutableRecord({

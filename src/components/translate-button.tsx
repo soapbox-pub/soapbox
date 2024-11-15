@@ -1,12 +1,16 @@
-import React from 'react';
+import languageIcon from '@tabler/icons/outline/language.svg';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses';
-import { useAppDispatch, useAppSelector, useFeatures, useInstance } from 'soapbox/hooks';
+import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
-import { Stack, Button, Text } from './ui';
-
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface ITranslateButton {
   status: Status;
@@ -53,7 +57,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
         <Button
           theme='muted'
           text={<FormattedMessage id='status.show_original' defaultMessage='Show original' />}
-          icon={require('@tabler/icons/outline/language.svg')}
+          icon={languageIcon}
           onClick={handleTranslate}
         />
         <Text theme='muted'>
@@ -68,7 +72,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
       <Button
         theme='muted'
         text={<FormattedMessage id='status.translate' defaultMessage='Translate' />}
-        icon={require('@tabler/icons/outline/language.svg')}
+        icon={languageIcon}
         onClick={handleTranslate}
       />
     </div>

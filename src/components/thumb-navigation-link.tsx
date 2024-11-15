@@ -1,9 +1,9 @@
 import clsx from 'clsx';
-import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import IconWithCounter from 'soapbox/components/icon-with-counter';
-import { Icon, Text } from 'soapbox/components/ui';
+import IconWithCounter from 'soapbox/components/icon-with-counter.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IThumbNavigationLink {
   count?: number;
@@ -32,7 +32,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
   const icon = (active && activeSrc) || src;
 
   return (
-    <NavLink to={to} exact={exact} className='thumb-navigation__link'>
+    <NavLink to={to} exact={exact} className='flex flex-1 flex-col items-center space-y-1 px-2 py-2.5 text-lg text-gray-600'>
       {count !== undefined ? (
         <IconWithCounter
           src={icon}

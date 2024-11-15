@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Emoji from 'soapbox/components/ui/emoji/emoji';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
 
 interface IEmojiGraphic {
   emoji: string;

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { Slider } from 'soapbox/components/ui';
+import Slider from 'soapbox/components/ui/slider.tsx';
 
 const formattedWeight = (weight: number) =>{
   return Number((weight * 100).toFixed());

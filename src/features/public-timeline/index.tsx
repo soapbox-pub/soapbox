@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines';
-import { usePublicStream } from 'soapbox/api/hooks';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Accordion, Column } from 'soapbox/components/ui';
-import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown/language-dropdown';
-import { useAppSelector, useAppDispatch, useInstance, useSettings, useTheme, useFeatures } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import { clearTimeline, expandPublicTimeline } from 'soapbox/actions/timelines.ts';
+import { usePublicStream } from 'soapbox/api/hooks/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import Accordion from 'soapbox/components/ui/accordion.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { LanguageDropdown } from 'soapbox/components/ui/language-dropdown.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
-import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker';
-import Timeline from '../ui/components/timeline';
+import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker.tsx';
+import Timeline from '../ui/components/timeline.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Global timeline' },
@@ -79,7 +86,7 @@ const PublicTimeline = () => {
           <Accordion
             headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
             action={dismissExplanationBox}
-            actionIcon={require('@tabler/icons/outline/x.svg')}
+            actionIcon={xIcon}
             actionLabel={intl.formatMessage(messages.dismiss)}
             expanded={explanationBoxExpanded}
             onToggle={toggleExplanationBox}

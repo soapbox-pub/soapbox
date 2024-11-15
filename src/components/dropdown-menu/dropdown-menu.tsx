@@ -1,19 +1,20 @@
 import { offset, Placement, useFloating, flip, arrow, shift } from '@floating-ui/react';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import { useAppDispatch } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
+import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
-import { IconButton, Portal } from '../ui';
+import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
 
-import DropdownMenuItem, { MenuItem } from './dropdown-menu-item';
-
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 export type Menu = Array<MenuItem | null>;
 
@@ -43,7 +44,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
     onOpen,
     onShiftClick,
     placement: initialPlacement = 'top',
-    src = require('@tabler/icons/outline/dots.svg'),
+    src = dotsIcon,
     title = 'Menu',
     ...filteredProps
   } = props;
@@ -268,7 +269,7 @@ const DropdownMenu = (props: IDropdownMenu) => {
   return (
     <>
       {children ? (
-        React.cloneElement(children, {
+        cloneElement(children, {
           disabled,
           onClick: handleClick,
           onKeyPress: handleKeyPress,

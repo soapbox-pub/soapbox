@@ -1,10 +1,10 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { buildGroup, buildGroupTag, buildGroupRelationship } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
-import { GroupRoles } from 'soapbox/schemas/group-member';
+import { buildGroup, buildGroupTag, buildGroupRelationship } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 
-import GroupTagListItem from './group-tag-list-item';
+import GroupTagListItem from './group-tag-list-item.tsx';
 
 describe('<GroupTagListItem />', () => {
   describe('tag name', () => {

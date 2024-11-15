@@ -1,34 +1,63 @@
+import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
+import atIcon from '@tabler/icons/outline/at.svg';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import bookmarkOffIcon from '@tabler/icons/outline/bookmark-off.svg';
+import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import calendarPlusIcon from '@tabler/icons/outline/calendar-plus.svg';
+import circleXIcon from '@tabler/icons/outline/circle-x.svg';
+import dotsIcon from '@tabler/icons/outline/dots.svg';
+import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
+import flag3Icon from '@tabler/icons/outline/flag-3.svg';
+import flagIcon from '@tabler/icons/outline/flag.svg';
+import gavelIcon from '@tabler/icons/outline/gavel.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
+import messagesIcon from '@tabler/icons/outline/messages.svg';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import pinIcon from '@tabler/icons/outline/pin.svg';
+import pinnedOffIcon from '@tabler/icons/outline/pinned-off.svg';
+import quoteIcon from '@tabler/icons/outline/quote.svg';
+import repeatIcon from '@tabler/icons/outline/repeat.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
+import usersIcon from '@tabler/icons/outline/users.svg';
 import { List as ImmutableList } from 'immutable';
-import React from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { blockAccount } from 'soapbox/actions/accounts';
-import { launchChat } from 'soapbox/actions/chats';
-import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose';
-import { editEvent, fetchEventIcs } from 'soapbox/actions/events';
-import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions';
-import { openModal } from 'soapbox/actions/modals';
-import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { initMuteModal } from 'soapbox/actions/mutes';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports';
-import { deleteStatus } from 'soapbox/actions/statuses';
-import Icon from 'soapbox/components/icon';
-import StillImage from 'soapbox/components/still-image';
-import { Button, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList, Stack, Text } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppDispatch, useFeatures, useOwnAccount, useSettings } from 'soapbox/hooks';
-import copy from 'soapbox/utils/copy';
-import { download } from 'soapbox/utils/download';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { blockAccount } from 'soapbox/actions/accounts.ts';
+import { launchChat } from 'soapbox/actions/chats.ts';
+import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose.ts';
+import { editEvent, fetchEventIcs } from 'soapbox/actions/events.ts';
+import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
+import { initMuteModal } from 'soapbox/actions/mutes.ts';
+import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { deleteStatus } from 'soapbox/actions/statuses.ts';
+import StillImage from 'soapbox/components/still-image.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui/menu.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import copy from 'soapbox/utils/copy.ts';
+import { download } from 'soapbox/utils/download.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header';
-import EventActionButton from '../components/event-action-button';
-import EventDate from '../components/event-date';
+import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header.tsx';
+import EventActionButton from '../components/event-action-button.tsx';
+import EventDate from '../components/event-date.tsx';
 
-import type { Menu as MenuType } from 'soapbox/components/dropdown-menu';
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Menu as MenuType } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -136,7 +165,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleDeleteClick = () => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
       heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
@@ -162,7 +191,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleBlockClick = () => {
     dispatch(openModal('CONFIRM', {
-      icon: require('@tabler/icons/outline/ban.svg'),
+      icon: banIcon,
       heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
@@ -202,19 +231,19 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       {
         text: intl.formatMessage(messages.exportIcs),
         action: handleExportClick,
-        icon: require('@tabler/icons/outline/calendar-plus.svg'),
+        icon: calendarPlusIcon,
       },
       {
         text: intl.formatMessage(messages.copy),
         action: handleCopy,
-        icon: require('@tabler/icons/outline/link.svg'),
+        icon: linkIcon,
       },
     ];
 
     if (features.federating && !account.local) {
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
-        icon: require('@tabler/icons/outline/external-link.svg'),
+        icon: externalLinkIcon,
         href: status.uri,
         target: '_blank',
       });
@@ -226,7 +255,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: handleBookmarkClick,
-        icon: status.bookmarked ? require('@tabler/icons/outline/bookmark-off.svg') : require('@tabler/icons/outline/bookmark.svg'),
+        icon: status.bookmarked ? bookmarkOffIcon : bookmarkIcon,
       });
     }
 
@@ -234,14 +263,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(status.reblogged ? messages.unreblog : messages.reblog),
         action: handleReblogClick,
-        icon: require('@tabler/icons/outline/repeat.svg'),
+        icon: repeatIcon,
       });
 
       if (features.quotePosts) {
         menu.push({
           text: intl.formatMessage(messages.quotePost),
           action: handleQuoteClick,
-          icon: require('@tabler/icons/outline/quote.svg'),
+          icon: quoteIcon,
         });
       }
     }
@@ -253,34 +282,34 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
         menu.push({
           text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: handlePinClick,
-          icon: status.pinned ? require('@tabler/icons/outline/pinned-off.svg') : require('@tabler/icons/outline/pin.svg'),
+          icon: status.pinned ? pinnedOffIcon : pinIcon,
         });
       }
 
       menu.push({
         text: intl.formatMessage(messages.delete),
         action: handleDeleteClick,
-        icon: require('@tabler/icons/outline/trash.svg'),
+        icon: trashIcon,
         destructive: true,
       });
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: username }),
         action: handleMentionClick,
-        icon: require('@tabler/icons/outline/at.svg'),
+        icon: atIcon,
       });
 
       if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
-          icon: require('@tabler/icons/outline/messages.svg'),
+          icon: messagesIcon,
         });
       } else if (features.privacyScopes) {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: username }),
           action: handleDirectClick,
-          icon: require('@tabler/icons/outline/mail.svg'),
+          icon: mailIcon,
         });
       }
 
@@ -288,17 +317,17 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(messages.mute, { name: username }),
         action: handleMuteClick,
-        icon: require('@tabler/icons/outline/circle-x.svg'),
+        icon: circleXIcon,
       });
       menu.push({
         text: intl.formatMessage(messages.block, { name: username }),
         action: handleBlockClick,
-        icon: require('@tabler/icons/outline/ban.svg'),
+        icon: banIcon,
       });
       menu.push({
         text: intl.formatMessage(messages.report, { name: username }),
         action: handleReport,
-        icon: require('@tabler/icons/outline/flag.svg'),
+        icon: flagIcon,
       });
     }
 
@@ -308,28 +337,28 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
       menu.push({
         text: intl.formatMessage(messages.adminAccount, { name: account.username }),
         action: handleModerate,
-        icon: require('@tabler/icons/outline/gavel.svg'),
+        icon: gavelIcon,
       });
 
       if (isAdmin) {
         menu.push({
           text: intl.formatMessage(messages.adminStatus),
           action: handleModerateStatus,
-          icon: require('@tabler/icons/outline/pencil.svg'),
+          icon: pencilIcon,
         });
       }
 
       menu.push({
         text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
         action: handleToggleStatusSensitivity,
-        icon: require('@tabler/icons/outline/alert-triangle.svg'),
+        icon: alertTriangleIcon,
       });
 
       if (account.id !== ownAccount?.id) {
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: handleDeleteStatus,
-          icon: require('@tabler/icons/outline/trash.svg'),
+          icon: trashIcon,
           destructive: true,
         });
       }
@@ -378,7 +407,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           <Menu>
             <MenuButton
               as={IconButton}
-              src={require('@tabler/icons/outline/dots.svg')}
+              src={dotsIcon}
               theme='outlined'
               className='h-[30px] px-2'
               iconClassName='h-4 w-4'
@@ -421,7 +450,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
         <Stack space={1}>
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/flag-3.svg')} />
+            <SvgIcon src={flag3Icon} />
             <span>
               <FormattedMessage
                 id='event.organized_by'
@@ -441,26 +470,28 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
           </HStack>
 
           <HStack alignItems='center' space={2}>
-            <Icon src={require('@tabler/icons/outline/users.svg')} />
-            <a href='#' className='hover:underline' onClick={handleParticipantsClick}>
-              <span>
-                <FormattedMessage
-                  id='event.participants'
-                  defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
-                  values={{
-                    rawCount: event.participants_count || 0,
-                    count: shortNumberFormat(event.participants_count || 0),
-                  }}
-                />
-              </span>
-            </a>
+            <SvgIcon src={usersIcon} />
+            <Link to={'/'} className='inline-flex'>
+              <button className='space-x-2 !border-none !p-0 !text-primary-600 hover:!underline focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={handleParticipantsClick}>
+                <span>
+                  <FormattedMessage
+                    id='event.participants'
+                    defaultMessage='{count} {rawCount, plural, one {person} other {people}} going'
+                    values={{
+                      rawCount: event.participants_count || 0,
+                      count: shortNumberFormat(event.participants_count || 0),
+                    }}
+                  />
+                </span>
+              </button>
+            </Link>
           </HStack>
 
           <EventDate status={status} />
 
           {event.location && (
             <HStack alignItems='center' space={2}>
-              <Icon src={require('@tabler/icons/outline/map-pin.svg')} />
+              <SvgIcon src={mapPinIcon} />
               <span>
                 {event.location.get('name')}
               </span>

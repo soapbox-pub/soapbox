@@ -1,13 +1,15 @@
+import eyeOffIcon from '@tabler/icons/outline/eye-off.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash';
-import StillImage from 'soapbox/components/still-image';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useSettings } from 'soapbox/hooks';
-import { isIOS } from 'soapbox/is-mobile';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import StillImage from 'soapbox/components/still-image.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { isIOS } from 'soapbox/is-mobile.ts';
 
-import type { Attachment } from 'soapbox/types/entities';
+import type { Attachment } from 'soapbox/types/entities.ts';
 
 interface IMediaItem {
   attachment: Attachment;
@@ -103,7 +105,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
     const fileExtension = remoteURL.slice(fileExtensionLastIndex + 1).toUpperCase();
     thumbnail = (
       <div className='relative z-[1] block size-full cursor-zoom-in leading-none text-gray-400 no-underline'>
-        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon  className='size-24' src={require('@tabler/icons/outline/volume.svg')} /></span>
+        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon  className='size-24' src={volumeIcon} /></span>
         <span className='pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear'>{fileExtension}</span>
       </div>
     );
@@ -112,7 +114,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   if (!visible) {
     icon = (
       <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'>
-        <SvgIcon className='size-24' src={require('@tabler/icons/outline/eye-off.svg')} />
+        <SvgIcon className='size-24' src={eyeOffIcon} />
       </span>
     );
   }

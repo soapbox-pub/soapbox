@@ -1,4 +1,5 @@
-import { HTTPError } from './HTTPError';
+import { HTTPError } from './HTTPError.ts';
+import { MastodonResponse } from './MastodonResponse.ts';
 
 interface Opts {
   searchParams?: URLSearchParams | Record<string, string | number | boolean>;
@@ -19,35 +20,35 @@ export class MastodonClient {
     this.accessToken = accessToken;
   }
 
-  async get(path: string, opts: Opts = {}): Promise<Response> {
+  async get(path: string, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('GET', path, undefined, opts);
   }
 
-  async post(path: string, data?: unknown, opts: Opts = {}): Promise<Response> {
+  async post(path: string, data?: unknown, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('POST', path, data, opts);
   }
 
-  async put(path: string, data?: unknown, opts: Opts = {}): Promise<Response> {
+  async put(path: string, data?: unknown, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('PUT', path, data, opts);
   }
 
-  async delete(path: string, opts: Opts = {}): Promise<Response> {
+  async delete(path: string, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('DELETE', path, undefined, opts);
   }
 
-  async patch(path: string, data: unknown, opts: Opts = {}): Promise<Response> {
+  async patch(path: string, data: unknown, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('PATCH', path, data, opts);
   }
 
-  async head(path: string, opts: Opts = {}): Promise<Response> {
+  async head(path: string, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('HEAD', path, undefined, opts);
   }
 
-  async options(path: string, opts: Opts = {}): Promise<Response> {
+  async options(path: string, opts: Opts = {}): Promise<MastodonResponse> {
     return this.request('OPTIONS', path, undefined, opts);
   }
 
-  async request(method: string, path: string, data: unknown, opts: Opts = {}): Promise<Response> {
+  async request(method: string, path: string, data: unknown, opts: Opts = {}): Promise<MastodonResponse> {
     const url = new URL(path, this.baseUrl);
 
     if (opts.searchParams) {
@@ -89,7 +90,7 @@ export class MastodonClient {
       throw new HTTPError(response, request);
     }
 
-    return response;
+    return new MastodonResponse(response.body, response);
   }
 
 }

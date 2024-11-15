@@ -1,14 +1,15 @@
-import React, { Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType, useLocation } from 'react-router-dom';
 
-import { Layout } from 'soapbox/components/ui';
-import { useOwnAccount, useSettings } from 'soapbox/hooks';
+import Layout from 'soapbox/components/ui/layout.tsx';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
-import ColumnForbidden from '../components/column-forbidden';
-import ColumnLoading from '../components/column-loading';
-import ColumnsArea from '../components/columns-area';
-import ErrorColumn from '../components/error-column';
+import ColumnForbidden from '../components/column-forbidden.tsx';
+import ColumnLoading from '../components/column-loading.tsx';
+import ColumnsArea from '../components/columns-area.tsx';
+import ErrorColumn from '../components/error-column.tsx';
 
 type PageProps = {
   params?: MatchType['params'];

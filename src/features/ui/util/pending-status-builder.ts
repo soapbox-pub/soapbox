@@ -1,11 +1,11 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import { normalizeStatus } from 'soapbox/normalizers/status';
-import { calculateStatus } from 'soapbox/reducers/statuses';
-import { makeGetAccount } from 'soapbox/selectors';
+import { normalizeStatus } from 'soapbox/normalizers/status.ts';
+import { calculateStatus } from 'soapbox/reducers/statuses.ts';
+import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
-import type { PendingStatus } from 'soapbox/reducers/pending-statuses';
-import type { RootState } from 'soapbox/store';
+import type { PendingStatus } from 'soapbox/reducers/pending-statuses.ts';
+import type { RootState } from 'soapbox/store.ts';
 
 const getAccount = makeGetAccount();
 

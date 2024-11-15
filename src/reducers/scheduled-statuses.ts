@@ -1,16 +1,16 @@
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
+import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer/index.ts';
 import {
   SCHEDULED_STATUSES_FETCH_SUCCESS,
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
-} from 'soapbox/actions/scheduled-statuses';
-import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
+} from 'soapbox/actions/scheduled-statuses.ts';
+import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { StatusVisibility } from 'soapbox/normalizers/status';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { StatusVisibility } from 'soapbox/normalizers/status.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ScheduledStatusRecord = ImmutableRecord({
   id: '',

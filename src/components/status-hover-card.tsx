@@ -1,18 +1,19 @@
 import { useFloating } from '@floating-ui/react';
 import clsx from 'clsx';
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import {
   closeStatusHoverCard,
   updateStatusHoverCard,
-} from 'soapbox/actions/status-hover-card';
-import { fetchStatus } from 'soapbox/actions/statuses';
-import StatusContainer from 'soapbox/containers/status-container';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+} from 'soapbox/actions/status-hover-card.ts';
+import { fetchStatus } from 'soapbox/actions/statuses.ts';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import { showStatusHoverCard } from './hover-status-wrapper';
-import { Card, CardBody } from './ui';
+import { showStatusHoverCard } from './hover-status-wrapper.tsx';
 
 interface IStatusHoverCard {
   visible?: boolean;

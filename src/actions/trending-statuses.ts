@@ -1,11 +1,11 @@
-import { APIEntity } from 'soapbox/types/entities';
-import { getFeatures } from 'soapbox/utils/features';
+import { APIEntity } from 'soapbox/types/entities.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import { importFetchedStatuses } from './importer';
+import { importFetchedStatuses } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const TRENDING_STATUSES_FETCH_REQUEST = 'TRENDING_STATUSES_FETCH_REQUEST';
 const TRENDING_STATUSES_FETCH_SUCCESS = 'TRENDING_STATUSES_FETCH_SUCCESS';

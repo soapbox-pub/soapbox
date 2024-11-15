@@ -4,10 +4,10 @@ import {
   TRENDING_STATUSES_FETCH_REQUEST,
   TRENDING_STATUSES_FETCH_SUCCESS,
   TRENDING_STATUSES_EXPAND_SUCCESS,
-} from 'soapbox/actions/trending-statuses';
+} from 'soapbox/actions/trending-statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableOrderedSet<string>(),

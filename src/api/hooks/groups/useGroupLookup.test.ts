@@ -1,8 +1,10 @@
-import { __stub } from 'soapbox/api';
-import { buildGroup } from 'soapbox/jest/factory';
-import { renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { useGroupLookup } from './useGroupLookup';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildGroup } from 'soapbox/jest/factory.ts';
+import { renderHook, rootState, waitFor } from 'soapbox/jest/test-helpers.tsx';
+
+import { useGroupLookup } from './useGroupLookup.ts';
 
 const group = buildGroup({ id: '1', slug: 'soapbox' });
 const state = {

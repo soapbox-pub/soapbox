@@ -1,11 +1,12 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { usePopularTags } from 'soapbox/api/hooks';
-import Link from 'soapbox/components/link';
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import { usePopularTags } from 'soapbox/api/hooks/index.ts';
+import Link from 'soapbox/components/link.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import TagListItem from './tag-list-item';
+import TagListItem from './tag-list-item.tsx';
 
 const PopularTags = () => {
   const { tags, isFetched, isError } = usePopularTags();

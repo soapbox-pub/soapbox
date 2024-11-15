@@ -1,6 +1,7 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -10,14 +11,15 @@ import {
   setSearchAccount,
   showSearch,
   submitSearch,
-} from 'soapbox/actions/search';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input';
-import { Input } from 'soapbox/components/ui';
-import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
-import { Account } from 'soapbox/schemas';
-import { selectAccount } from 'soapbox/selectors';
-import { RootState } from 'soapbox/store';
+} from 'soapbox/actions/search.ts';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Account } from 'soapbox/schemas/index.ts';
+import { selectAccount } from 'soapbox/selectors/index.ts';
+import { RootState } from 'soapbox/store.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -153,7 +155,7 @@ const SearchZapSplit = (props: ISearchZapSplit) => {
         >
 
           <SvgIcon
-            src={require('@tabler/icons/outline/x.svg')}
+            src={xIcon}
             className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
           />

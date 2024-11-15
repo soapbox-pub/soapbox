@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { HStack, Text } from '../ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IStatusInfo {
   avatarSize: number;

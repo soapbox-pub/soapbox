@@ -1,11 +1,9 @@
-import React from 'react';
-
-import { Layout } from 'soapbox/components/ui';
+import Layout from 'soapbox/components/ui/layout.tsx';
 import {
   LatestAccountsPanel,
-} from 'soapbox/features/ui/util/async-components';
+} from 'soapbox/features/ui/util/async-components.ts';
 
-import LinkFooter from '../features/ui/components/link-footer';
+import LinkFooter from '../features/ui/components/link-footer.tsx';
 
 interface IAdminPage {
   children: React.ReactNode;

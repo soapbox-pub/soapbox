@@ -1,10 +1,12 @@
 import { Map as ImmutableMap } from 'immutable';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
-import { fetchCaptcha } from 'soapbox/actions/auth';
-import { Stack, Text, Input } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
+import { fetchCaptcha } from 'soapbox/actions/auth.ts';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { AxiosResponse } from 'axios';
 
@@ -111,7 +113,9 @@ const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, 
   return (
     <Stack space={2}>
       <div className='flex w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-white dark:border-gray-600'>
-        <img alt={intl.formatMessage(messages.captcha)} src={captcha.get('url')} onClick={onClick} />
+        <button className='!block space-x-2 !border-none !p-0 !py-2 !text-primary-600 hover:!underline  focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={onClick}>
+          <img alt={intl.formatMessage(messages.captcha)} src={captcha.get('url')} />
+        </button>
       </div>
 
       <Input

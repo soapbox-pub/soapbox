@@ -1,28 +1,23 @@
-import React, { Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { CompatRouter } from 'react-router-dom-v5-compat';
 
-import { openModal } from 'soapbox/actions/modals';
-import * as BuildConfig from 'soapbox/build-config';
-import LoadingScreen from 'soapbox/components/loading-screen';
-import { ScrollContext } from 'soapbox/components/scroll-context';
-import SiteErrorBoundary from 'soapbox/components/site-error-boundary';
-import {
-  ModalContainer,
-} from 'soapbox/features/ui/util/async-components';
-import {
-  useAppDispatch,
-  useAppSelector,
-  useLoggedIn,
-  useOwnAccount,
-  useSoapboxConfig,
-} from 'soapbox/hooks';
-import { useCachedLocationHandler } from 'soapbox/utils/redirect';
+import { openModal } from 'soapbox/actions/modals.ts';
+import LoadingScreen from 'soapbox/components/loading-screen.tsx';
+import { ScrollContext } from 'soapbox/components/scroll-context.tsx';
+import SiteErrorBoundary from 'soapbox/components/site-error-boundary.tsx';
+import { ModalContainer } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { useCachedLocationHandler } from 'soapbox/utils/redirect.ts';
 
-const GdprBanner = React.lazy(() => import('soapbox/components/gdpr-banner'));
-const EmbeddedStatus = React.lazy(() => import('soapbox/features/embedded-status'));
-const UI = React.lazy(() => import('soapbox/features/ui'));
+const GdprBanner = lazy(() => import('soapbox/components/gdpr-banner.tsx'));
+const EmbeddedStatus = lazy(() => import('soapbox/features/embedded-status/index.tsx'));
+const UI = lazy(() => import('soapbox/features/ui/index.tsx'));
 
 /** Highest level node with the Redux store. */
 const SoapboxMount = () => {
@@ -52,7 +47,7 @@ const SoapboxMount = () => {
 
   return (
     <SiteErrorBoundary>
-      <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
+      <BrowserRouter>
         <CompatRouter>
           <ScrollContext>
             <Switch>

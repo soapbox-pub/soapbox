@@ -1,9 +1,10 @@
-import { useTransaction } from 'soapbox/entity-store/hooks';
-import { EntityCallbacks } from 'soapbox/entity-store/hooks/types';
-import { useApi, useGetState } from 'soapbox/hooks';
-import { accountIdsToAccts } from 'soapbox/selectors';
+import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
+import { EntityCallbacks } from 'soapbox/entity-store/hooks/types.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 function useVerify() {
   const api = useApi();

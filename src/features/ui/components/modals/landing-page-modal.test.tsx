@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { storeOpen } from 'soapbox/jest/mock-stores';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { storeOpen } from 'soapbox/jest/mock-stores.tsx';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import LandingPageModal from './landing-page-modal';
+import LandingPageModal from './landing-page-modal.tsx';
 
 describe('<LandingPageModal />', () => {
   it('successfully renders', () => {

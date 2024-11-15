@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandCommunityTimeline } from 'soapbox/actions/timelines';
-import { useCommunityStream } from 'soapbox/api/hooks';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useSettings, useTheme, useInstance } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { expandCommunityTimeline } from 'soapbox/actions/timelines.ts';
+import { useCommunityStream } from 'soapbox/api/hooks/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
 const CommunityTimeline = () => {
   const dispatch = useAppDispatch();

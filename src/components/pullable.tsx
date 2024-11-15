@@ -1,6 +1,4 @@
-import React from 'react';
-
-import PullToRefresh from './pull-to-refresh';
+import PullToRefresh from './pull-to-refresh.tsx';
 
 interface IPullable {
   children: React.ReactNode;

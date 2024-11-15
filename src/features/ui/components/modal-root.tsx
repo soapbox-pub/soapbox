@@ -1,6 +1,6 @@
-import React, { Suspense } from 'react';
+import { PureComponent, Suspense } from 'react';
 
-import Base from 'soapbox/components/modal-root';
+import Base from 'soapbox/components/modal-root.tsx';
 import {
   AccountModerationModal,
   ActionsModal,
@@ -18,6 +18,7 @@ import {
   EditDomainModal,
   EditFederationModal,
   EmbedModal,
+  EmojiPickerModal,
   EventMapModal,
   EventParticipantsModal,
   FamiliarFollowersModal,
@@ -48,9 +49,9 @@ import {
   ZapInvoiceModal,
   ZapsModal,
   CaptchaModal,
-} from 'soapbox/features/ui/util/async-components';
+} from 'soapbox/features/ui/util/async-components.ts';
 
-import ModalLoading from './modal-loading';
+import ModalLoading from './modal-loading.tsx';
 
 /* eslint sort-keys: "error" */
 const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
@@ -73,6 +74,7 @@ const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
   'EDIT_FEDERATION': EditFederationModal,
   'EDIT_RULE': EditRuleModal,
   'EMBED': EmbedModal,
+  'EMOJI_PICKER': EmojiPickerModal,
   'EVENT_MAP': EventMapModal,
   'EVENT_PARTICIPANTS': EventParticipantsModal,
   'FAMILIAR_FOLLOWERS': FamiliarFollowersModal,
@@ -110,7 +112,7 @@ interface IModalRoot {
   onClose: (type?: ModalType) => void;
 }
 
-export default class ModalRoot extends React.PureComponent<IModalRoot> {
+export default class ModalRoot extends PureComponent<IModalRoot> {
 
   getSnapshotBeforeUpdate() {
     return { visible: !!this.props.type };
@@ -118,9 +120,9 @@ export default class ModalRoot extends React.PureComponent<IModalRoot> {
 
   componentDidUpdate(prevProps: IModalRoot, prevState: any, { visible }: any) {
     if (visible) {
-      document.body.classList.add('with-modals');
+      document.body.classList.add('overflow-hidden');
     } else {
-      document.body.classList.remove('with-modals');
+      document.body.classList.remove('overflow-hidden');
     }
   }
 

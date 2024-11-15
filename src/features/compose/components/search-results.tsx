@@ -1,24 +1,29 @@
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search';
-import { expandTrendingStatuses, fetchTrendingStatuses } from 'soapbox/actions/trending-statuses';
-import { useAccount } from 'soapbox/api/hooks';
-import Hashtag from 'soapbox/components/hashtag';
-import IconButton from 'soapbox/components/icon-button';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { HStack, Spinner, Tabs, Text } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import StatusContainer from 'soapbox/containers/status-container';
-import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account';
-import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search.ts';
+import { expandTrendingStatuses, fetchTrendingStatuses } from 'soapbox/actions/trending-statuses.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import Hashtag from 'soapbox/components/hashtag.tsx';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import StatusContainer from 'soapbox/containers/status-container.tsx';
+import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
+import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag.tsx';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { SearchFilter } from 'soapbox/reducers/search';
+import type { SearchFilter } from 'soapbox/reducers/search.ts';
 
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
@@ -132,7 +137,7 @@ const SearchResults = () => {
       searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.accounts'
             defaultMessage='There are no people results for "{term}"'
@@ -174,7 +179,7 @@ const SearchResults = () => {
       resultsIds = trendingStatuses;
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.statuses'
             defaultMessage='There are no posts results for "{term}"'
@@ -198,7 +203,7 @@ const SearchResults = () => {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
-        <div className='empty-column-indicator'>
+        <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
           <FormattedMessage
             id='empty_column.search.hashtags'
             defaultMessage='There are no hashtags results for "{term}"'
@@ -213,7 +218,7 @@ const SearchResults = () => {
     <>
       {filterByAccount ? (
         <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
-          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/x.svg')} onClick={handleUnsetAccount} />
+          <IconButton iconClassName='h-5 w-5' src={xIcon} onClick={handleUnsetAccount} />
           <Text truncate>
             <FormattedMessage
               id='search_results.filter_message'

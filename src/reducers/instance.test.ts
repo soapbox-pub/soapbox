@@ -1,6 +1,8 @@
-import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin';
+import { describe, expect, it } from 'vitest';
 
-import reducer from './instance';
+import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin.ts';
+
+import reducer from './instance.ts';
 
 describe('instance reducer', () => {
   it('should return the initial state', () => {

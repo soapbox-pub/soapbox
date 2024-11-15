@@ -1,12 +1,11 @@
 import clsx from 'clsx';
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui';
-import Search from 'soapbox/features/compose/components/search';
-import SearchResults from 'soapbox/features/compose/components/search-results';
-import { useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
+import Search from 'soapbox/features/compose/components/search.tsx';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.search', defaultMessage: 'Discover' },

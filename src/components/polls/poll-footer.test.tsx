@@ -1,13 +1,13 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { __stub } from 'soapbox/api';
-import { mockStore, render, screen, rootState } from 'soapbox/jest/test-helpers';
-import { type Poll } from 'soapbox/schemas';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore, render, screen, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { type Poll } from 'soapbox/schemas/index.ts';
 
-import PollFooter from './poll-footer';
+import PollFooter from './poll-footer.tsx';
 
 let poll: Poll = {
   id: '1',

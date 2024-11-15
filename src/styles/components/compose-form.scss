@@ -4,12 +4,6 @@
 
     strong {
       @apply font-medium;
-
-      @each $lang in $cjk-langs {
-        &:lang(#{$lang}) {
-          @apply font-bold;
-        }
-      }
     }
 
     a {
@@ -167,12 +161,6 @@
 
       strong {
         @apply block font-medium text-black dark:text-white;
-
-        @each $lang in $cjk-langs {
-          &:lang(#{$lang}) {
-            @apply font-bold;
-          }
-        }
       }
     }
   }

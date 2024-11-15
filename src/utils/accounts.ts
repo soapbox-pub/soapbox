@@ -1,4 +1,7 @@
-import type { Account } from 'soapbox/schemas';
+import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
+import headerMissing from 'soapbox/assets/images/header-missing.png';
+
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const getDomainFromURL = (account: Pick<Account, 'url'>): string => {
   try {
@@ -30,7 +33,7 @@ export const getAcct = (account: Pick<Account, 'fqn' | 'acct'>, displayFqn: bool
 const DEFAULT_HEADERS: string[] = [
   '/headers/original/missing.png', // Mastodon
   '/images/banner.png', // Pleroma
-  require('soapbox/assets/images/header-missing.png'), // header not provided by backend
+  headerMissing, // header not provided by backend
 ];
 
 /** Check if the avatar is a default avatar */
@@ -42,7 +45,7 @@ export const isDefaultHeader = (url: string) => {
 const DEFAULT_AVATARS = [
   '/avatars/original/missing.png', // Mastodon
   '/images/avi.png', // Pleroma
-  require('soapbox/assets/images/avatar-missing.png'), // avatar not provided by backend
+  avatarMissing, // avatar not provided by backend
 ];
 
 /** Check if the avatar is a default avatar */

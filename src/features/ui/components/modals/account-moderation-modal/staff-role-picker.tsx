@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, MessageDescriptor, useIntl } from 'react-intl';
 
-import { setRole } from 'soapbox/actions/admin';
-import { SelectDropdown } from 'soapbox/features/forms';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { setRole } from 'soapbox/actions/admin.ts';
+import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/schemas';
+import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
 
 /** Staff role. */
 type AccountRole = 'user' | 'moderator' | 'admin';

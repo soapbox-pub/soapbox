@@ -1,6 +1,5 @@
-import React from 'react';
-
-import { Modal, Spinner } from 'soapbox/components/ui';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 
 const ModalLoading = () => (
   <Modal>

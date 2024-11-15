@@ -1,19 +1,27 @@
-import React from 'react';
+import balloonIcon from '@tabler/icons/outline/balloon.svg';
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
+import linkIcon from '@tabler/icons/outline/link.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { usePatronUser } from 'soapbox/api/hooks';
-import Badge from 'soapbox/components/badge';
-import Markup from 'soapbox/components/markup';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
-import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
-import { capitalize } from 'soapbox/utils/strings';
+import { usePatronUser } from 'soapbox/api/hooks/index.ts';
+import Badge from 'soapbox/components/badge.tsx';
+import Markup from 'soapbox/components/markup.tsx';
+import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { capitalize } from 'soapbox/utils/strings.ts';
 
-import ProfileFamiliarFollowers from './profile-familiar-followers';
-import ProfileField from './profile-field';
-import ProfileStats from './profile-stats';
+import ProfileFamiliarFollowers from './profile-familiar-followers.tsx';
+import ProfileField from './profile-field.tsx';
+import ProfileStats from './profile-stats.tsx';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 /** Basically ensure the URL isn't `javascript:alert('hi')` or something like that */
 const isSafeUrl = (text: string): boolean => {
@@ -101,7 +109,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
     return (
       <HStack alignItems='center' space={0.5}>
         <Icon
-          src={require('@tabler/icons/outline/balloon.svg')}
+          src={balloonIcon}
           className='size-4 text-gray-800 dark:text-gray-200'
         />
 
@@ -162,7 +170,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
             {account.locked && (
               <Icon
-                src={require('@tabler/icons/outline/lock.svg')}
+                src={lockIcon}
                 alt={intl.formatMessage(messages.account_locked)}
                 className='size-4 text-gray-600'
               />
@@ -180,7 +188,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.local ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/calendar.svg')}
+                src={calendarIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -197,7 +205,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.location ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/map-pin.svg')}
+                src={mapPinIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 
@@ -210,7 +218,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
           {account.website ? (
             <HStack alignItems='center' space={0.5}>
               <Icon
-                src={require('@tabler/icons/outline/link.svg')}
+                src={linkIcon}
                 className='size-4 text-gray-800 dark:text-gray-200'
               />
 

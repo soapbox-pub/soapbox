@@ -20,4 +20,4 @@ const applicationSchema = z.object({
 
 type Application = z.infer<typeof applicationSchema>;
 
-export { applicationSchema, Application };
+export { applicationSchema, type Application };

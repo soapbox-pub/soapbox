@@ -1,12 +1,12 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { confirmChangedEmail } from 'soapbox/actions/security';
-import { Spinner } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import { buildErrorMessage } from 'soapbox/utils/errors';
+import { confirmChangedEmail } from 'soapbox/actions/security.ts';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
+import { buildErrorMessage } from 'soapbox/utils/errors.ts';
 
 const Statuses = {
   IDLE: 'IDLE',
@@ -24,9 +24,9 @@ const EmailConfirmation = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const [status, setStatus] = React.useState(Statuses.IDLE);
+  const [status, setStatus] = useState(Statuses.IDLE);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token) {
       dispatch(confirmChangedEmail(token))
         .then(() => {
@@ -39,14 +39,7 @@ const EmailConfirmation = () => {
 
           if (error.response.data.error) {
             const message = buildErrorMessage(error.response.data.error);
-
-            toast.error(
-              message,
-              // intl.formatMessage({
-              //   id: 'email_confirmation.fail',
-              //   defaultMessage,
-              // }),
-            );
+            toast.error(message);
           }
         });
     }

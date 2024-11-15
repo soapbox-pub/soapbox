@@ -1,12 +1,14 @@
-import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/jest/test-helpers';
+import { describe, expect, it } from 'vitest';
 
-import { VERIFY_CREDENTIALS_REQUEST } from './auth';
-import { ACCOUNTS_IMPORT } from './importer';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore } from 'soapbox/jest/test-helpers.tsx';
+
+import { VERIFY_CREDENTIALS_REQUEST } from './auth.ts';
+import { ACCOUNTS_IMPORT } from './importer/index.ts';
 import {
   MASTODON_PRELOAD_IMPORT,
   preloadMastodon,
-} from './preload';
+} from './preload.ts';
 
 describe('preloadMastodon()', () => {
   it('creates the expected actions', async () => {

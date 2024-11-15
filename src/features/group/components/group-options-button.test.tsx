@@ -1,11 +1,11 @@
-import React from 'react';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import { Group } from 'soapbox/types/entities';
+import { buildGroup, buildGroupRelationship } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import { Group } from 'soapbox/types/entities.ts';
 
-import GroupOptionsButton from './group-options-button';
+import GroupOptionsButton from './group-options-button.tsx';
 
 let group: Group;
 

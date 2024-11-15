@@ -1,10 +1,9 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useAdminAccounts } from 'soapbox/api/hooks/admin/useAdminAccounts';
-import Account from 'soapbox/components/account';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column } from 'soapbox/components/ui';
+import { useAdminAccounts } from 'soapbox/api/hooks/admin/useAdminAccounts.ts';
+import Account from 'soapbox/components/account.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.users', defaultMessage: 'Users' },

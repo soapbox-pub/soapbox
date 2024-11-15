@@ -1,12 +1,12 @@
-import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { HStack, Input } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
 
-import IconPicker from './icon-picker';
+import IconPicker from './icon-picker.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import type { PromoPanelItem } from 'soapbox/types/soapbox';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
+import type { PromoPanelItem } from 'soapbox/types/soapbox.ts';
 
 const messages = defineMessages({
   icon: { id: 'soapbox_config.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },

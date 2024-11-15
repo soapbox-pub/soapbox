@@ -1,11 +1,17 @@
-import React from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { Button, Text, FormGroup, Stack, Textarea } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { patchMe } from 'soapbox/actions/me.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import toast from 'soapbox/toast.tsx';
 
 import type { AxiosError } from 'axios';
 
@@ -14,7 +20,7 @@ const messages = defineMessages({
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface IBioStep {
   onClose(): void;
@@ -26,9 +32,9 @@ const BioStep: React.FC<IBioStep> = ({ onClose, onNext }) => {
   const dispatch = useAppDispatch();
 
   const { account } = useOwnAccount();
-  const [value, setValue] = React.useState<string>(account?.source?.note ?? '');
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [errors, setErrors] = React.useState<string[]>([]);
+  const [value, setValue] = useState<string>(account?.source?.note ?? '');
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = () => {
     setSubmitting(true);

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React from 'react';
+import { useMemo } from 'react';
 
-import { Stack } from 'soapbox/components/ui';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
 interface IPlaceholderAvatar {
   size: number;
@@ -11,7 +11,7 @@ interface IPlaceholderAvatar {
 
 /** Fake avatar to display while data is loading. */
 const PlaceholderAvatar: React.FC<IPlaceholderAvatar> = ({ size, withText = false, className }) => {
-  const style = React.useMemo(() => {
+  const style = useMemo(() => {
     if (!size) {
       return {};
     }

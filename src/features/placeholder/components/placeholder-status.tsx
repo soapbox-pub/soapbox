@@ -1,11 +1,11 @@
 import clsx from 'clsx';
-import React from 'react';
+import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
-import PlaceholderStatusContent from './placeholder-status-content';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
+import PlaceholderStatusContent from './placeholder-status-content.tsx';
 
 interface IPlaceholderStatus {
   variant?: 'rounded' | 'slim' | 'default';
@@ -33,11 +33,11 @@ const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ variant }) => (
         </HStack>
       </div>
 
-      <div className='status__content-wrapper mt-4'>
+      <div className='status--content-wrapper mt-4'>
         <PlaceholderStatusContent minLength={5} maxLength={120} />
       </div>
     </div>
   </div>
 );
 
-export default React.memo(PlaceholderStatus);
+export default memo(PlaceholderStatus);

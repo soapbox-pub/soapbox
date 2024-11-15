@@ -1,11 +1,11 @@
 import { Map as ImmutableMap } from 'immutable';
 
-import { Entities } from 'soapbox/entity-store/entities';
-import { normalizeStatus } from 'soapbox/normalizers/status';
-import { calculateStatus } from 'soapbox/reducers/statuses';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { normalizeStatus } from 'soapbox/normalizers/status.ts';
+import { calculateStatus } from 'soapbox/reducers/statuses.ts';
 
-import type { ScheduledStatus } from 'soapbox/reducers/scheduled-statuses';
-import type { RootState } from 'soapbox/store';
+import type { ScheduledStatus } from 'soapbox/reducers/scheduled-statuses.ts';
+import type { RootState } from 'soapbox/store.ts';
 
 export const buildStatus = (state: RootState, scheduledStatus: ScheduledStatus) => {
   const me = state.me as string;

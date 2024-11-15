@@ -1,3 +1,4 @@
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import {
   accountSchema,
   cardSchema,
@@ -15,9 +16,8 @@ import {
   type GroupTag,
   type Relationship,
   type Status,
-} from 'soapbox/schemas';
-import { GroupRoles } from 'soapbox/schemas/group-member';
-import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance';
+} from 'soapbox/schemas/index.ts';
+import { InstanceV2, instanceV2Schema } from 'soapbox/schemas/instance.ts';
 
 import type { PartialDeep } from 'type-fest';
 

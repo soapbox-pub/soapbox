@@ -7,20 +7,20 @@ import {
 } from 'immutable';
 import { createSelector } from 'reselect';
 
-import { getSettings } from 'soapbox/actions/settings';
-import { Entities } from 'soapbox/entity-store/entities';
-import { type MRFSimple } from 'soapbox/schemas/pleroma';
-import { getDomain } from 'soapbox/utils/accounts';
-import ConfigDB from 'soapbox/utils/config-db';
-import { getFeatures } from 'soapbox/utils/features';
-import { shouldFilter } from 'soapbox/utils/timelines';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { type MRFSimple } from 'soapbox/schemas/pleroma.ts';
+import { getDomain } from 'soapbox/utils/accounts.ts';
+import ConfigDB from 'soapbox/utils/config-db.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
+import { shouldFilter } from 'soapbox/utils/timelines.ts';
 
-import type { EntityStore } from 'soapbox/entity-store/types';
-import type { ContextType } from 'soapbox/normalizers/filter';
-import type { ReducerChat } from 'soapbox/reducers/chats';
-import type { Account as AccountSchema } from 'soapbox/schemas';
-import type { RootState } from 'soapbox/store';
-import type { Account, Filter as FilterEntity, Notification, Status } from 'soapbox/types/entities';
+import type { EntityStore } from 'soapbox/entity-store/types.ts';
+import type { ContextType } from 'soapbox/normalizers/filter.ts';
+import type { ReducerChat } from 'soapbox/reducers/chats.ts';
+import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';
+import type { RootState } from 'soapbox/store.ts';
+import type { Account, Filter as FilterEntity, Notification, Status } from 'soapbox/types/entities.ts';
 
 const normalizeId = (id: any): string => typeof id === 'string' ? id : '';
 
