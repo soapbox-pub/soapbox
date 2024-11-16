@@ -30,4 +30,4 @@ const screenshotsSchema = z.array(z.object({
 
 type Screenshots = z.infer<typeof screenshotsSchema>;
 
-export { screenshotsSchema, Screenshots };
+export { screenshotsSchema, type Screenshots };

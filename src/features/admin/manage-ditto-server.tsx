@@ -2,16 +2,27 @@ import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { putDittoInstance } from 'soapbox/actions/admin';
-import { uploadMedia } from 'soapbox/actions/media';
-import StillImage from 'soapbox/components/still-image';
-import { Button, Column, Input, FormGroup, Form, FormActions, Streamfield, FileInput, Stack, Spinner } from 'soapbox/components/ui';
-import  { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
-import { useAppDispatch, useInstance } from 'soapbox/hooks';
-import { normalizeAttachment } from 'soapbox/normalizers';
-import { thumbnailSchema } from 'soapbox/schemas/instance';
-import { Screenshots } from 'soapbox/schemas/manifest';
-import toast from 'soapbox/toast';
+import { putDittoInstance } from 'soapbox/actions/admin.ts';
+import { uploadMedia } from 'soapbox/actions/media.ts';
+import StillImage from 'soapbox/components/still-image.tsx';
+import { Button } from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FileInput from 'soapbox/components/ui/file-input.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import  Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack  from 'soapbox/components/ui/stack.tsx';
+import Streamfield from 'soapbox/components/ui/streamfield.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { thumbnailSchema } from 'soapbox/schemas/instance.ts';
+import { Screenshots } from 'soapbox/schemas/manifest.ts';
+import toast from 'soapbox/toast.tsx';
+
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.ditto_server.manage', defaultMessage: 'Manage Ditto Server' },
