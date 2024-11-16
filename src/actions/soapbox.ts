@@ -3,7 +3,6 @@ import { createSelector } from 'reselect';
 import { getHost } from 'soapbox/actions/instance.ts';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
 import KVStore from 'soapbox/storage/kv-store.ts';
-import { removeVS16s } from 'soapbox/utils/emoji.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
 import api from '../api/index.ts';
@@ -28,12 +27,6 @@ const getSoapboxConfig = createSelector([
     // If displayFqn isn't set, infer it from federation
     if (soapbox.get('displayFqn') === undefined) {
       soapboxConfig.set('displayFqn', features.federating);
-    }
-
-    // If RGI reacts aren't supported, strip VS16s
-    // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-    if (features.emojiReactsNonRGI) {
-      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
     }
   });
 });

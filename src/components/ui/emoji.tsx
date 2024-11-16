@@ -1,30 +1,19 @@
-import { removeVS16s, toCodePoints } from 'soapbox/utils/emoji.ts';
-
-interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface IEmoji {
   /** Unicode emoji character. */
-  emoji?: string;
+  emoji: string;
+  /** Size to render the emoji. */
+  size?: number;
 }
 
 /** A single emoji image. */
 const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
-  const { emoji, alt, src, ...rest } = props;
-
-  let filename;
-
-  if (emoji) {
-    const codepoints = toCodePoints(removeVS16s(emoji));
-    filename = codepoints.join('-');
-  }
-
-  if (!filename && !src) return null;
+  const { emoji, size = 16 } = props;
+  const px = `${size}px`;
 
   return (
-    <img
-      draggable='false'
-      alt={alt || emoji}
-      src={src || `/packs/emoji/${filename}.svg`}
-      {...rest}
-    />
+    <div className='inline-flex items-center justify-center font-emoji leading-[0]' style={{ width: px, height: px, fontSize: px }}>
+      {emoji}
+    </div>
   );
 };
 

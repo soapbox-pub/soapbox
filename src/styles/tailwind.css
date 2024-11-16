@@ -131,15 +131,6 @@
     padding-left: 4px;
   }
 
-  .emoji-lg img.emojione {
-    width: 36px !important;
-    height: 36px !important;
-  }  
-
-  .emojione {
-    @apply w-4 h-4 -mt-[0.2ex] mb-[0.2ex] inline-block align-middle object-contain;
-  }
-
   .compose-form-warning {
     strong {
       @apply font-medium;

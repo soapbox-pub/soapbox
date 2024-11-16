@@ -182,15 +182,12 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       return (
         <InteractionCounter count={count} onClick={features.exposableReactions ? handleClick : undefined}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.take(3).map((e, i) => {
-              return (
-                <Emoji
-                  key={i}
-                  className='size-4.5 flex-none'
-                  emoji={e.name}
-                  src={e.url}
-                />
-              );
+            {emojiReacts.take(3).map((emoji, i) => {
+              if (emoji.url) {
+                return <img key={i} src={emoji.url} alt={emoji.name} className='size-4.5 flex-none' />;
+              } else {
+                return <div key={i} className='flex-none'><Emoji size={18} emoji={emoji.name} /></div>;
+              }
             })}
           </HStack>
         </InteractionCounter>

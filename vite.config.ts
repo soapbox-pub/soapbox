@@ -69,9 +69,6 @@ export default defineConfig(() => {
       }),
       viteStaticCopy({
         targets: [{
-          src: './node_modules/@twemoji/svg/*',
-          dest: 'packs/emoji/',
-        }, {
           src: './src/instance',
           dest: '.',
         }, {
