@@ -46,8 +46,12 @@ const StatusActionButton = forwardRef<HTMLButtonElement, IStatusActionButton>((p
   const renderIcon = () => {
     if (emoji) {
       return (
-        <span className='flex size-6 items-center justify-center'>
-          <Emoji className='size-full p-0.5' emoji={emoji.name} src={emoji.url} />
+        <span className='flex size-6 items-center justify-center p-0.5'>
+          {emoji.url ? (
+            <img src={emoji.url} alt={emoji.name} className='w-full' />
+          ) : (
+            <Emoji size={18} emoji={emoji.name} />
+          )}
         </span>
       );
     } else {

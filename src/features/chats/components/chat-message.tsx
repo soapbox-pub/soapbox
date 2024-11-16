@@ -6,11 +6,11 @@ import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
+import graphemesplit from 'graphemesplit';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
@@ -27,7 +27,6 @@ import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 import { stripHTML } from 'soapbox/utils/html.ts';
-import { onlyEmoji } from 'soapbox/utils/rich-content.ts';
 
 import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper.tsx';
 import ChatMessageReaction from './chat-message-reaction.tsx';
@@ -100,10 +99,9 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
   const isOnlyEmoji = useMemo(() => {
-    const hiddenEl = document.createElement('div');
-    hiddenEl.innerHTML = content;
-    return onlyEmoji(hiddenEl, BIG_EMOJI_LIMIT, false);
-  }, []);
+    const textContent = new DOMParser().parseFromString(content, 'text/html').body.firstChild?.textContent;
+    return Boolean(textContent && /^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
+  }, [content]);
 
   const emojiReactionRows = useMemo(() => {
     if (!chatMessage.emoji_reactions) {
@@ -302,7 +300,7 @@ const ChatMessage = (props: IChatMessage) => {
                       '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                       'bg-primary-500 text-white': isMyMessage,
                       'bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100': !isMyMessage,
-                      '!bg-transparent !p-0 emoji-lg': isOnlyEmoji,
+                      '!bg-transparent !p-0 text-4xl': isOnlyEmoji,
                     })
                   }
                   ref={setBubbleRef}

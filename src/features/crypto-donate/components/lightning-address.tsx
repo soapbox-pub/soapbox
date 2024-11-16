@@ -15,11 +15,8 @@ const LightningAddress: React.FC<ILightningAddress> = (props): JSX.Element => {
 
   return (
     <Stack>
-      <HStack alignItems='center' className='mb-1'>
-        <Emoji
-          className='mr-2.5 flex w-6 items-start justify-center rtl:ml-2.5 rtl:mr-0'
-          emoji='⚡'
-        />
+      <HStack space={2.5} alignItems='center' className='mb-1'>
+        <Emoji size={24} emoji='⚡' />
 
         <Text weight='bold'>
           <FormattedMessage id='crypto.lightning' defaultMessage='Lightning' />
