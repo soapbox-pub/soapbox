@@ -171,6 +171,7 @@ export const EditDomainModal = lazy(() => import('soapbox/features/ui/components
 export const NostrRelays = lazy(() => import('soapbox/features/nostr-relays'));
 export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Redirect'));
 export const ManageZapSplit = lazy(() => import('soapbox/features/admin/manage-zap-split'));
+export const ManageDittoServer = lazy(() => import('soapbox/features/admin/manage-ditto-server'));
 export const Relays = lazy(() => import('soapbox/features/admin/relays'));
 export const Rules = lazy(() => import('soapbox/features/admin/rules'));
 export const EditRuleModal = lazy(() => import('soapbox/features/ui/components/modals/edit-rule-modal'));

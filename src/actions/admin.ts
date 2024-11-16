@@ -1,10 +1,13 @@
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
+import { DittoInstanceCredentials } from 'soapbox/features/admin/manage-ditto-server';
 import { accountIdsToAccts } from 'soapbox/selectors';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
 
 import api, { getLinks } from '../api';
+
+import { fetchInstance } from './instance';
 
 import type { AxiosResponse } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store';
@@ -106,6 +109,13 @@ const updateSoapboxConfig = (data: Record<string, any>) =>
 
     return dispatch(updateConfig(params));
   };
+
+function putDittoInstance(data: DittoInstanceCredentials) {
+  return async (dispatch: AppDispatch, getState: () => RootState) => {
+    await api(getState).put('/api/v1/admin/ditto/instance', data);
+    await dispatch(fetchInstance());
+  };
+}
 
 function fetchReports(params: Record<string, any> = {}) {
   return async (dispatch: AppDispatch, getState: () => RootState): Promise<void> => {
@@ -443,4 +453,5 @@ export {
   promoteToModerator,
   demoteToUser,
   setRole,
+  putDittoInstance,
 };
