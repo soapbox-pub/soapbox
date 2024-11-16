@@ -111,8 +111,9 @@
     a {
       @apply text-primary-600 dark:text-primary-400 no-underline hover:underline;
     }
-
   }
+
+  .ellipsis::after { content: '…'; }
 
   .mention {
     @apply text-primary-600 dark:text-accent-blue hover:underline;
@@ -214,10 +215,52 @@
     );
   }
 
+  .setting-text {
+    @apply block w-full mb-2.5 border-0 border-b-2 border-solid box-border text-gray-400 bg-transparent;
+    font-family: inherit;
+    padding: 7px 0;
+  
+    @media screen and (width <= 600px) {
+      font-size: 16px;
+    }
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 0;
+  }
 }
 
 @layer components {
   .loading-indicator span {
     @apply animate-loader-label;
+  }
+
+  .ui {
+    display: block;
+    width: 100%;
+    padding: 0 0 calc(60px + env(safe-area-inset-bottom) + 86px);
+  
+    .page {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+  }
+
+  .react-swipeable-view-container {
+    & {
+      height: 100%;
+    }
+  }
+  
+  .react-swipeable-view-container > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .react-datepicker-popper {
+    z-index: 9999 !important;
   }
 }
