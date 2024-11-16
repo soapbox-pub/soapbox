@@ -1,11 +1,11 @@
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
+import graphemesplit from 'graphemesplit';
 import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content.ts';
 
 import { getTextDirection } from '../utils/rtl.ts';
 
@@ -49,9 +49,13 @@ const StatusContent: React.FC<IStatusContent> = ({
   textSize = 'md',
 }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [onlyEmoji, setOnlyEmoji] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
+
+  const isOnlyEmoji = useMemo(() => {
+    const textContent = new DOMParser().parseFromString(status.contentHtml, 'text/html').body.firstChild?.textContent;
+    return Boolean(textContent && /^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
+  }, [status.contentHtml]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -63,18 +67,8 @@ const StatusContent: React.FC<IStatusContent> = ({
     }
   };
 
-  const maybeSetOnlyEmoji = (): void => {
-    if (!node.current) return;
-    const only = isOnlyEmoji(node.current, BIG_EMOJI_LIMIT, true);
-
-    if (only !== onlyEmoji) {
-      setOnlyEmoji(only);
-    }
-  };
-
   useLayoutEffect(() => {
     maybeSetCollapsed();
-    maybeSetOnlyEmoji();
   });
 
   const parsedHtml = useMemo((): string => {
@@ -149,7 +143,7 @@ const StatusContent: React.FC<IStatusContent> = ({
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
-    'leading-normal big-emoji': onlyEmoji,
+    'leading-normal !text-4xl': isOnlyEmoji,
   });
 
   if (onClick) {
@@ -184,7 +178,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         tabIndex={0}
         key='content'
         className={clsx(baseClassName, {
-          'leading-normal big-emoji': onlyEmoji,
+          'leading-normal !text-4xl': isOnlyEmoji,
         })}
         direction={direction}
         lang={status.language || undefined}
