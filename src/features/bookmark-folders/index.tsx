@@ -51,24 +51,28 @@ const BookmarkFolders: React.FC = () => {
               </HStack>
             }
           />
-          {bookmarkFolders?.map((folder) => (
-            <ListItem
-              key={folder.id}
-              to={`/bookmarks/${folder.id}`}
-              label={
-                <HStack alignItems='center' space={2}>
-                  {folder.emoji ? (
-                    <Emoji
-                      emoji={folder.emoji}
-                      src={folder.emoji_url || undefined}
-                      className='size-5 flex-none'
-                    />
-                  ) : <Icon src={folderIcon} size={20} />}
-                  <span>{folder.name}</span>
-                </HStack>
-              }
-            />
-          ))}
+          {bookmarkFolders?.map((folder) => {
+            let icon = <Icon src={folderIcon} size={20} />;
+
+            if (folder.emoji_url) {
+              icon = <img src={folder.emoji_url} alt={folder.emoji} className='size-5' />;
+            } else if (folder.emoji) {
+              icon = <Emoji size={20} emoji={folder.emoji} />;
+            }
+
+            return (
+              <ListItem
+                key={folder.id}
+                to={`/bookmarks/${folder.id}`}
+                label={
+                  <HStack alignItems='center' space={2}>
+                    <div className='flex-none'>{icon}</div>
+                    <span>{folder.name}</span>
+                  </HStack>
+                }
+              />
+            );
+          })}
         </List>
       </Stack>
     </Column>

@@ -63,7 +63,7 @@ const EmojiPicker: React.FC<IEmojiPicker> = ({ emoji, emojiUrl, ...props }) => {
         tabIndex={0}
       >
         {emoji
-          ? <Emoji height={20} width={20} emoji={emoji} />
+          ? <Emoji size={20} emoji={emoji} />
           : <Icon className='size-5 text-gray-600 hover:text-gray-700 dark:hover:text-gray-500' src={moodHappyIcon} />}
       </button>
 

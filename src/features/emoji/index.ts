@@ -63,7 +63,7 @@ const validEmojiChar = (c: string) => {
 };
 
 const convertCustom = (shortname: string, filename: string) => {
-  return `<img draggable="false" class="emojione" alt="${shortname}" title="${shortname}" src="${filename}" />`;
+  return `<img draggable="false" class="inline-block w-4 h-4" alt="${shortname}" title="${shortname}" src="${filename}" />`;
 };
 
 const convertUnicode = (c: string) => {

@@ -315,13 +315,11 @@ const Notification: React.FC<INotification> = (props) => {
 
   const renderIcon = (): React.ReactNode => {
     if (type === 'pleroma:emoji_reaction' && notification.emoji) {
-      return (
-        <Emoji
-          emoji={notification.emoji}
-          src={notification.emoji_url || undefined}
-          className='size-4 flex-none'
-        />
-      );
+      if (notification.emoji_url) {
+        return <img src={notification.emoji_url} alt={notification.emoji} className='size-4 flex-none' />;
+      } else {
+        return <Emoji emoji={notification.emoji} />;
+      }
     } else if (validType(type)) {
       return (
         <Icon
