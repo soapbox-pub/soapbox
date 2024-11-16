@@ -24,7 +24,7 @@ const SearchPage = () => {
     >
       <div className='space-y-4'>
         <div className='px-4 sm:py-0'>
-          <Search autoFocus autoSubmit />
+          <Search autoSubmit />
         </div>
         <SearchResults />
       </div>
