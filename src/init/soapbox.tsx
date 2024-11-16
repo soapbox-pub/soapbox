@@ -1,22 +1,17 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import React from 'react';
 import { Provider } from 'react-redux';
 
-import { NostrProvider } from 'soapbox/contexts/nostr-context';
-import { StatProvider } from 'soapbox/contexts/stat-context';
-import { createGlobals } from 'soapbox/globals';
-import { queryClient } from 'soapbox/queries/client';
+import { NostrProvider } from 'soapbox/contexts/nostr-context.tsx';
+import { StatProvider } from 'soapbox/contexts/stat-context.tsx';
+import { queryClient } from 'soapbox/queries/client.ts';
 
-import { checkOnboardingStatus } from '../actions/onboarding';
-import { preload } from '../actions/preload';
-import { store } from '../store';
+import { checkOnboardingStatus } from '../actions/onboarding.ts';
+import { preload } from '../actions/preload.ts';
+import { store } from '../store.ts';
 
-import SoapboxHead from './soapbox-head';
-import SoapboxLoad from './soapbox-load';
-import SoapboxMount from './soapbox-mount';
-
-// Configure global functions for developers
-createGlobals(store);
+import SoapboxHead from './soapbox-head.tsx';
+import SoapboxLoad from './soapbox-load.tsx';
+import SoapboxMount from './soapbox-mount.tsx';
 
 // Preload happens synchronously
 store.dispatch(preload() as any);

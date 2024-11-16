@@ -1,12 +1,13 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
 import {
   TIMELINE_EXPAND_REQUEST,
   TIMELINE_EXPAND_FAIL,
   TIMELINE_EXPAND_SUCCESS,
-} from 'soapbox/actions/timelines';
+} from 'soapbox/actions/timelines.ts';
 
-import reducer from './timelines';
+import reducer from './timelines.ts';
 
 describe('timelines reducer', () => {
   it('should return the initial state', () => {

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -9,22 +9,26 @@ import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
-} from 'soapbox/actions/notifications';
-import { getSettings } from 'soapbox/actions/settings';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import ScrollTopButton from 'soapbox/components/scroll-top-button';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Portal } from 'soapbox/components/ui';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification';
-import { useAppDispatch, useAppSelector, useSettings, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+} from 'soapbox/actions/notifications.ts';
+import { getSettings } from 'soapbox/actions/settings.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import ScrollTopButton from 'soapbox/components/scroll-top-button.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
-import FilterBar from './components/filter-bar';
-import Notification from './components/notification';
+import FilterBar from './components/filter-bar.tsx';
+import Notification from './components/notification.tsx';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store';
-import type { Notification as NotificationEntity } from 'soapbox/types/entities';
+import type { RootState } from 'soapbox/store.ts';
+import type { Notification as NotificationEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },

@@ -1,9 +1,11 @@
-import React from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
 
-import { Card, CardBody, Stack, Text } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
+import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 interface IBigCard {
   title: React.ReactNode;

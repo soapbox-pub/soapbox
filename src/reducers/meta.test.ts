@@ -1,8 +1,9 @@
 import { Record as ImmutableRecord } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { SW_UPDATING, setSwUpdating } from 'soapbox/actions/sw';
+import { SW_UPDATING, setSwUpdating } from 'soapbox/actions/sw.ts';
 
-import reducer from './meta';
+import reducer from './meta.ts';
 
 describe('meta reducer', () => {
   it('should return the initial state', () => {

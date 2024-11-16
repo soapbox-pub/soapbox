@@ -1,20 +1,27 @@
-import React, { useRef, useState } from 'react';
+import pencilIcon from '@tabler/icons/outline/pencil.svg';
+import { useRef, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import ActionButton from 'soapbox/features/ui/components/action-button';
-import { useAppSelector } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { getAcct } from 'soapbox/utils/accounts.ts';
+import { displayFqn } from 'soapbox/utils/state.ts';
 
-import Badge from './badge';
-import RelativeTimestamp from './relative-timestamp';
-import { Avatar, Emoji, HStack, Icon, IconButton, Stack, Text } from './ui';
+import Badge from './badge.tsx';
+import RelativeTimestamp from './relative-timestamp.tsx';
 
-import type { StatusApprovalStatus } from 'soapbox/normalizers/status';
-import type { Account as AccountSchema } from 'soapbox/schemas';
+import type { StatusApprovalStatus } from 'soapbox/normalizers/status.ts';
+import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';
 
 interface IInstanceFavicon {
   account: AccountSchema;
@@ -207,11 +214,13 @@ const Account = ({
             <LinkEl className='rounded-full' {...linkProps}>
               <Avatar src={account.avatar} size={avatarSize} />
               {emoji && (
-                <Emoji
-                  className='absolute -right-1.5 bottom-0 size-5'
-                  emoji={emoji}
-                  src={emojiUrl}
-                />
+                <div className='absolute -right-1.5 bottom-0'>
+                  {emojiUrl ? (
+                    <img className='size-5' src={emojiUrl} alt={emoji} />
+                  ) : (
+                    <Emoji size={20} emoji={emoji} />
+                  )}
+                </div>
               )}
             </LinkEl>
           </ProfilePopper>
@@ -275,7 +284,7 @@ const Account = ({
                   <>
                     <Text tag='span' theme='muted' size='sm'>&middot;</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
 
-                    <Icon className='size-5 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/pencil.svg')} />
+                    <Icon className='size-5 text-gray-700 dark:text-gray-600' src={pencilIcon} />
                   </>
                 ) : null}
 

@@ -1,7 +1,7 @@
-import api from '../api';
+import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const MARKER_FETCH_REQUEST = 'MARKER_FETCH_REQUEST';
 const MARKER_FETCH_SUCCESS = 'MARKER_FETCH_SUCCESS';

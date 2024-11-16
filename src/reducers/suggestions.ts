@@ -1,7 +1,7 @@
 import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
 
-import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
-import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain-blocks';
+import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts.ts';
+import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain-blocks.ts';
 import {
   SUGGESTIONS_FETCH_REQUEST,
   SUGGESTIONS_FETCH_SUCCESS,
@@ -10,10 +10,10 @@ import {
   SUGGESTIONS_V2_FETCH_REQUEST,
   SUGGESTIONS_V2_FETCH_SUCCESS,
   SUGGESTIONS_V2_FETCH_FAIL,
-} from 'soapbox/actions/suggestions';
+} from 'soapbox/actions/suggestions.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const SuggestionRecord = ImmutableRecord({
   source: '',

@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals';
-import { useDomains } from 'soapbox/api/hooks/admin';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Button, Column, HStack, Stack, Text } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useDomains } from 'soapbox/api/hooks/admin/index.ts';
+import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
 
-import Indicator from '../developers/components/indicator';
+import Indicator from '../developers/components/indicator.tsx';
 
-import type { Domain as DomainEntity } from 'soapbox/schemas';
+import type { Domain as DomainEntity } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.domains', defaultMessage: 'Domains' },
@@ -122,7 +127,7 @@ const Domains: React.FC = () => {
       <Stack className='gap-4'>
         <Button
           className='sm:w-fit sm:self-end'
-          icon={require('@tabler/icons/outline/plus.svg')}
+          icon={plusIcon}
           onClick={handleCreateDomain}
           theme='secondary'
           block

@@ -1,11 +1,13 @@
+import folderOpenIcon from '@tabler/icons/outline/folder-open.svg';
 import { QRCodeCanvas } from 'qrcode.react';
-import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Account from 'soapbox/components/account';
-import CopyableInput from 'soapbox/components/copyable-input';
-import { Button, Stack, HStack } from 'soapbox/components/ui';
-import { ZapSplitData } from 'soapbox/schemas/zap-split';
+import Account from 'soapbox/components/account.tsx';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
@@ -45,7 +47,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
               <Account account={account} showProfileHoverCard={false} />
             </div>
           </Stack>
-          <div className='bg-grey-500 dark:border-grey-800 -mx-4 w-full border-b border-solid sm:-mx-10' />
+          <div className='-mx-4 w-full border-b border-solid bg-gray-500 dark:border-gray-800 sm:-mx-10' />
 
           <Stack justifyContent='center' alignItems='center' className='min-w-72 text-center' space={4}>
             {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
@@ -65,7 +67,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
         </Stack>
 
         <div className='flex justify-center'>
-          <div className='box-shadow:none rounded-none border-0 border-b-2 p-0.5 text-center !ring-0 dark:bg-transparent'>
+          <div className='rounded-none border-0 border-b-2 p-0.5 text-center shadow-none !ring-0 dark:bg-transparent'>
             {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <span className='!text-5xl font-bold'>{zapAmount}</span> sats
           </div>
@@ -79,7 +81,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
         </a>
 
       </Stack>
-      {invoice &&  <div className='border-grey-500 mt-4 flex w-full border-t pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>
+      {invoice &&  <div className='mt-4 flex w-full border-t border-gray-500 pt-4 sm:ml-4 sm:w-4/5 sm:border-l sm:border-t-0 sm:pl-4'>
         <Stack space={6} className='relative m-auto' alignItems='center'>
           <h3 className='text-xl font-bold'>
             {renderTitleQr()}
@@ -90,7 +92,7 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
           </div>
           <HStack space={2}>
             <a href={'lightning:' + invoice}>
-              <Button type='submit' theme='primary' icon={require('@tabler/icons/outline/folder-open.svg')} text={intl.formatMessage(messages.zap_open_wallet)} />
+              <Button type='submit' theme='primary' icon={folderOpenIcon} text={intl.formatMessage(messages.zap_open_wallet)} />
             </a>
             {isLastStep ? (
               <Button

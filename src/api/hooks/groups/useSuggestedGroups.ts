@@ -1,9 +1,10 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { useApi, useFeatures } from 'soapbox/hooks';
-import { type Group, groupSchema } from 'soapbox/schemas';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { type Group, groupSchema } from 'soapbox/schemas/index.ts';
 
-import { useGroupRelationships } from './useGroupRelationships';
+import { useGroupRelationships } from './useGroupRelationships.ts';
 
 function useSuggestedGroups() {
   const api = useApi();

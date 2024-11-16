@@ -1,8 +1,6 @@
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
-import React from 'react';
 
-import { Emoji as Component } from 'soapbox/components/ui';
-import { isNativeEmoji, type Emoji } from 'soapbox/features/emoji';
+import { isNativeEmoji, type Emoji } from 'soapbox/features/emoji/index.ts';
 
 import type {
   EditorConfig,
@@ -18,7 +16,7 @@ type SerializedEmojiNode = Spread<{
   version: 1;
 }, SerializedLexicalNode>;
 
-class EmojiNode extends DecoratorNode<JSX.Element> {
+class EmojiNode extends DecoratorNode<React.ReactNode> {
 
   __emoji: Emoji;
 
@@ -78,12 +76,12 @@ class EmojiNode extends DecoratorNode<JSX.Element> {
     }
   }
 
-  decorate(): JSX.Element {
+  decorate(): React.ReactNode {
     const emoji = this.__emoji;
     if (isNativeEmoji(emoji)) {
-      return <Component emoji={emoji.native} alt={emoji.colons} className='emojione size-4' />;
+      return emoji.native;
     } else {
-      return <Component src={emoji.imageUrl} alt={emoji.colons} className='emojione size-4' />;
+      return <img src={emoji.imageUrl} alt={emoji.colons} className='emojione size-4' />;
     }
   }
 

@@ -4,16 +4,16 @@
  * @see module:soapbox/actions/auth
  */
 
-import toast from 'soapbox/toast';
-import { getLoggedInAccount } from 'soapbox/utils/auth';
-import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
-import { normalizeUsername } from 'soapbox/utils/input';
+import toast from 'soapbox/toast.tsx';
+import { getLoggedInAccount } from 'soapbox/utils/auth.ts';
+import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features.ts';
+import { normalizeUsername } from 'soapbox/utils/input.ts';
 
-import api from '../api';
+import api from '../api/index.ts';
 
-import { AUTH_LOGGED_OUT, messages } from './auth';
+import { AUTH_LOGGED_OUT, messages } from './auth.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
 const FETCH_TOKENS_SUCCESS = 'FETCH_TOKENS_SUCCESS';

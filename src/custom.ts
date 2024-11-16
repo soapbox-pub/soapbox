@@ -1,7 +1,7 @@
 /**
  * Functions for dealing with custom build configuration.
  */
-import * as BuildConfig from 'soapbox/build-config';
+import * as BuildConfig from 'soapbox/build-config.ts';
 
 /** Require a custom JSON file if it exists */
 export const custom = (filename: string, fallback: any = {}): any => {

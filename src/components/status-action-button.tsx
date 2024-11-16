@@ -1,10 +1,12 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 
-import { Text, Icon, Emoji } from 'soapbox/components/ui';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { EmojiReaction } from 'soapbox/schemas';
+import type { EmojiReaction } from 'soapbox/schemas/index.ts';
 
 const COLORS = {
   accent: 'accent',
@@ -38,14 +40,18 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   theme?: 'default' | 'inverse';
 }
 
-const StatusActionButton = React.forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
+const StatusActionButton = forwardRef<HTMLButtonElement, IStatusActionButton>((props, ref): JSX.Element => {
   const { icon, className, iconClassName, active, color, filled = false, count = 0, emoji, text, theme = 'default', ...filteredProps } = props;
 
   const renderIcon = () => {
     if (emoji) {
       return (
-        <span className='flex size-6 items-center justify-center'>
-          <Emoji className='size-full p-0.5' emoji={emoji.name} src={emoji.url} />
+        <span className='flex size-6 items-center justify-center p-0.5'>
+          {emoji.url ? (
+            <img src={emoji.url} alt={emoji.name} className='w-full' />
+          ) : (
+            <Emoji size={18} emoji={emoji.name} />
+          )}
         </span>
       );
     } else {

@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { storeOpen } from 'soapbox/jest/mock-stores';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { storeOpen } from 'soapbox/jest/mock-stores.tsx';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import UnauthorizedModal from './unauthorized-modal';
+import UnauthorizedModal from './unauthorized-modal.tsx';
 
 describe('<UnauthorizedModal />', () => {
   it('successfully renders', () => {

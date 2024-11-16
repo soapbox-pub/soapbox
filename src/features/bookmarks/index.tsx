@@ -1,19 +1,24 @@
+import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
+import editIcon from '@tabler/icons/outline/edit.svg';
+import trashIcon from '@tabler/icons/outline/trash.svg';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks';
-import { openModal } from 'soapbox/actions/modals';
-import { useBookmarkFolder, useDeleteBookmarkFolder } from 'soapbox/api/hooks';
-import DropdownMenu from 'soapbox/components/dropdown-menu';
-import PullToRefresh from 'soapbox/components/pull-to-refresh';
-import StatusList from 'soapbox/components/status-list';
-import { Column } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
-import toast from 'soapbox/toast';
+import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { useBookmarkFolder, useDeleteBookmarkFolder } from 'soapbox/api/hooks/index.ts';
+import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import StatusList from 'soapbox/components/status-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
@@ -54,7 +59,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   const isLoading = useAppSelector((state) => state.status_lists.get(bookmarksKey)?.isLoading === true);
   const hasMore = useAppSelector((state) => !!state.status_lists.get(bookmarksKey)?.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchBookmarkedStatuses(folderId));
   }, [folderId]);
 
@@ -93,12 +98,12 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     {
       text: intl.formatMessage(messages.editFolder),
       action: handleEditFolder,
-      icon: require('@tabler/icons/outline/edit.svg'),
+      icon: editIcon,
     },
     {
       text: intl.formatMessage(messages.deleteFolder),
       action: handleDeleteFolder,
-      icon: require('@tabler/icons/outline/trash.svg'),
+      icon: trashIcon,
     },
   ] : [];
 
@@ -106,7 +111,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
     <Column
       label={folder ? folder.name : intl.formatMessage(messages.heading)}
       action={
-        <DropdownMenu items={items} src={require('@tabler/icons/outline/dots-vertical.svg')} />
+        <DropdownMenu items={items} src={dotsVerticalIcon} />
       }
       transparent={!isMobile}
     >

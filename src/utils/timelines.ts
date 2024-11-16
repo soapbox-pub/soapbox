@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, type Collection } from 'immutable';
 
-import type { Status } from 'soapbox/schemas';
+import type { Status } from 'soapbox/schemas/index.ts';
 
 export const shouldFilter = (
   status: Pick<Status, 'in_reply_to_id' | 'visibility'> & { reblog: unknown },

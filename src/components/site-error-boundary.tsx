@@ -1,17 +1,18 @@
-import React, { type ErrorInfo, useRef, useState } from 'react';
+import { type ErrorInfo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
-import { NODE_ENV } from 'soapbox/build-config';
-import { HStack, Text, Stack, Textarea } from 'soapbox/components/ui';
-import { useSoapboxConfig } from 'soapbox/hooks';
-import { captureSentryException } from 'soapbox/sentry';
-import KVStore from 'soapbox/storage/kv-store';
-import sourceCode from 'soapbox/utils/code';
-import { unregisterSW } from 'soapbox/utils/sw';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { captureSentryException } from 'soapbox/sentry.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import sourceCode from 'soapbox/utils/code.ts';
+import { unregisterSW } from 'soapbox/utils/sw.ts';
 
-import SentryFeedbackForm from './sentry-feedback-form';
-import SiteLogo from './site-logo';
+import SiteLogo from './site-logo.tsx';
 
 interface ISiteErrorBoundary {
   children: React.ReactNode;
@@ -19,16 +20,13 @@ interface ISiteErrorBoundary {
 
 /** Application-level error boundary. Fills the whole screen. */
 const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
-  const { links, sentryDsn } = useSoapboxConfig();
+  const { links } = useSoapboxConfig();
   const textarea = useRef<HTMLTextAreaElement>(null);
 
   const [error, setError] = useState<unknown>();
   const [componentStack, setComponentStack] = useState<string | null | undefined>();
   const [browser, setBrowser] = useState<Bowser.Parser.Parser>();
-  const [sentryEventId, setSentryEventId] = useState<string>();
 
-  const sentryEnabled = Boolean(sentryDsn);
-  const isProduction = NODE_ENV === 'production';
   const errorText = String(error) + componentStack;
 
   const clearCookies: React.MouseEventHandler = (e) => {
@@ -61,7 +59,6 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
         ErrorBoundary: 'yes',
       },
     })
-      .then((eventId) => setSentryEventId(eventId))
       .catch(console.error);
 
     import('bowser')
@@ -124,30 +121,22 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
           </div>
 
           <div className='mx-auto max-w-lg space-y-4 py-16'>
-            {(isProduction) ? (
-              (sentryEnabled && sentryEventId) && (
-                <SentryFeedbackForm eventId={sentryEventId} />
-              )
-            ) : (
-              <>
-                {errorText && (
-                  <Textarea
-                    ref={textarea}
-                    value={errorText}
-                    onClick={handleCopy}
-                    isCodeEditor
-                    rows={12}
-                    readOnly
-                  />
-                )}
+            {errorText && (
+              <Textarea
+                ref={textarea}
+                value={errorText}
+                onClick={handleCopy}
+                isCodeEditor
+                rows={12}
+                readOnly
+              />
+            )}
 
-                {browser && (
-                  <Stack>
-                    <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>
-                    <Text theme='muted'>{browser.getBrowserName()} {browser.getBrowserVersion()}</Text>
-                  </Stack>
-                )}
-              </>
+            {browser && (
+              <Stack>
+                <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>
+                <Text theme='muted'>{browser.getBrowserName()} {browser.getBrowserVersion()}</Text>
+              </Stack>
             )}
           </div>
         </div>

@@ -1,9 +1,9 @@
-import React from 'react';
+import { memo } from 'react';
 
-import { HStack } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
-import PlaceholderAvatar from './placeholder-avatar';
-import PlaceholderDisplayName from './placeholder-display-name';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
+import PlaceholderDisplayName from './placeholder-display-name.tsx';
 
 /** Fake account to display while data is loading. */
 const PlaceholderAccount: React.FC = () => (
@@ -18,4 +18,4 @@ const PlaceholderAccount: React.FC = () => (
   </HStack>
 );
 
-export default React.memo(PlaceholderAccount);
+export default memo(PlaceholderAccount);

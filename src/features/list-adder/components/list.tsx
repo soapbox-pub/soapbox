@@ -1,10 +1,13 @@
-import React from 'react';
+import listIcon from '@tabler/icons/outline/list.svg';
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists';
-import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon-button';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import Icon from 'soapbox/components/icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },
@@ -30,14 +33,14 @@ const List: React.FC<IList> = ({ listId }) => {
   let button;
 
   if (added) {
-    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton iconClassName='h-5 w-5' src={xIcon} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton iconClassName='h-5 w-5' src={plusIcon} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (
     <div className='flex items-center gap-1.5 px-2 py-4 text-black dark:text-white'>
-      <Icon src={require('@tabler/icons/outline/list.svg')} />
+      <Icon src={listIcon} />
       <span className='grow'>
         {list.title}
       </span>

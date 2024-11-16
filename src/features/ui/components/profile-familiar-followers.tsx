@@ -1,18 +1,21 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers';
-import { openModal } from 'soapbox/actions/modals';
-import AvatarStack from 'soapbox/components/avatar-stack';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import { HStack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import AvatarStack from 'soapbox/components/avatar-stack.tsx';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
-import type { Account } from 'soapbox/schemas';
+import type { Account } from 'soapbox/schemas/index.ts';
 
 const getAccount = makeGetAccount();
 
@@ -45,7 +48,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
 
   const accounts: Array<React.ReactNode> = familiarFollowers.map(account => !!account && (
     <HoverRefWrapper accountId={account.id} key={account.id} inline>
-      <Link className='mention inline-block' to={`/@${account.acct}`}>
+      <Link className='inline-block text-primary-600 hover:underline dark:text-accent-blue' to={`/@${account.acct}`}>
         <HStack space={1} alignItems='center' grow>
           <Text
             size='sm'

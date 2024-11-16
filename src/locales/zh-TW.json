@@ -161,8 +161,6 @@
   "alert.unexpected.links.support": "支援",
   "alert.unexpected.message": "發生了非預期的錯誤。",
   "alert.unexpected.return_home": "回到首頁",
-  "alert.unexpected.submit_feedback": "提交回應",
-  "alert.unexpected.thanks": "感謝您的回饋意見！",
   "aliases.account.add": "創建別名",
   "aliases.account_label": "原帳戶：",
   "aliases.aliases_list_delete": "刪除別名",

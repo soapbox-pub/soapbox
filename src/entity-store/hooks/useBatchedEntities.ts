@@ -1,19 +1,19 @@
 import { useEffect } from 'react';
 import { z } from 'zod';
 
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector';
-import { useGetState } from 'soapbox/hooks/useGetState';
-import { filteredArray } from 'soapbox/schemas/utils';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { filteredArray } from 'soapbox/schemas/utils.ts';
 
-import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions';
-import { selectCache, selectListState, useListState } from '../selectors';
+import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions.ts';
+import { selectCache, selectListState, useListState } from '../selectors.ts';
 
-import { parseEntitiesPath } from './utils';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types';
-import type { Entity } from '../types';
-import type { RootState } from 'soapbox/store';
+import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types.ts';
+import type { Entity } from '../types.ts';
+import type { RootState } from 'soapbox/store.ts';
 
 interface UseBatchedEntitiesOpts<TEntity extends Entity> {
   schema?: EntitySchema<TEntity>;

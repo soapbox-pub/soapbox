@@ -1,23 +1,30 @@
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { Button, Stack, Text, Avatar, Icon, Spinner } from 'soapbox/components/ui';
-import IconButton from 'soapbox/components/ui/icon-button/icon-button';
-import { useAppDispatch, useOwnAccount } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
-import { isDefaultAvatar } from 'soapbox/utils/accounts';
-import resizeImage from 'soapbox/utils/resize-image';
+import { patchMe } from 'soapbox/actions/me.ts';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import toast from 'soapbox/toast.tsx';
+import { isDefaultAvatar } from 'soapbox/utils/accounts.ts';
+import resizeImage from 'soapbox/utils/resize-image.ts';
 
 import type { AxiosError } from 'axios';
 
-const closeIcon = require('@tabler/icons/outline/x.svg');
+const closeIcon = xIcon;
 
 const messages = defineMessages({
   error: { id: 'onboarding.error', defaultMessage: 'An unexpected error occurred. Please try again or skip this step.' },
 });
-
 
 interface IAvatarSelectionModal {
   onClose?(): void;
@@ -27,10 +34,10 @@ interface IAvatarSelectionModal {
 const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext }) => {
   const dispatch = useAppDispatch();
   const { account } = useOwnAccount();
-  const fileInput = React.useRef<HTMLInputElement>(null);
-  const [selectedFile, setSelectedFile] = React.useState<string | null>();
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
-  const [isDisabled, setDisabled] = React.useState<boolean>(true);
+  const fileInput = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<string | null>();
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
+  const [isDisabled, setDisabled] = useState<boolean>(true);
   const isDefault = account ? isDefaultAvatar(account.avatar) : false;
 
   const openFilePicker = () => {
@@ -71,10 +78,10 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
     }).catch(console.error);
   };
   return (
-    <Stack space={10} justifyContent='center' alignItems='center' className='w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
+    <Stack space={2} justifyContent='center' alignItems='center' className='relative w-full rounded-3xl bg-white px-4 py-8 text-gray-900 shadow-lg black:bg-black dark:bg-primary-900 dark:text-gray-100 dark:shadow-none sm:p-10'>
 
       <div className='relative w-full'>
-        <IconButton src={closeIcon} onClick={onClose} className='absolute right-[2%] top-[-6%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
+        <IconButton src={closeIcon} onClick={onClose} className='absolute -right-2 -top-6 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180' />
         <Stack space={2} justifyContent='center' alignItems='center' className='-mx-4 mb-4 border-b border-solid pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
           <Text size='2xl' align='center' weight='bold'>
             <FormattedMessage id='onboarding.avatar.title' defaultMessage={'Choose a profile picture'} />
@@ -105,13 +112,13 @@ const AvatarSelectionModal: React.FC<IAvatarSelectionModal> = ({ onClose, onNext
           })}
           disabled={isSubmitting}
         >
-          <Icon src={require('@tabler/icons/outline/plus.svg')} className='size-5 text-white' />
+          <Icon src={plusIcon} className='size-5 text-white' />
         </button>
 
         <input type='file' className='hidden' ref={fileInput} onChange={handleFileChange} />
       </div>
 
-      <Stack justifyContent='center' space={2} className='w-2/3'>
+      <Stack justifyContent='center' space={2} className='w-full sm:w-2/3'>
         <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
           {isSubmitting ? (
             <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />

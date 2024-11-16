@@ -1,7 +1,6 @@
-import React from 'react';
 import { injectIntl, FormattedMessage, IntlShape, defineMessages } from 'react-intl';
 
-import { Modal } from 'soapbox/components/ui';
+import Modal from 'soapbox/components/ui/modal.tsx';
 
 const messages = defineMessages({
   modalTitle: { id: 'missing_description_modal.text', defaultMessage: 'You have not entered a description for all attachments. Continue anyway?' },

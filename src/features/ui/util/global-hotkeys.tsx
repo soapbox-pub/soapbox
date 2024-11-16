@@ -1,12 +1,14 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { resetCompose } from 'soapbox/actions/compose';
-import { openModal } from 'soapbox/actions/modals';
-import { FOCUS_EDITOR_COMMAND } from 'soapbox/features/compose/editor/plugins/focus-plugin';
-import { useAppSelector, useAppDispatch, useOwnAccount } from 'soapbox/hooks';
+import { resetCompose } from 'soapbox/actions/compose.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import { FOCUS_EDITOR_COMMAND } from 'soapbox/features/compose/editor/plugins/focus-plugin.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
-import { HotKeys } from '../components/hotkeys';
+import { HotKeys } from '../components/hotkeys.tsx';
 
 import type { LexicalEditor } from 'lexical';
 

@@ -1,21 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
+import circlesIcon from '@tabler/icons/outline/circles.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Account from 'soapbox/components/account';
-import StatusContent from 'soapbox/components/status-content';
-import StatusMedia from 'soapbox/components/status-media';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions';
-import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay';
-import StatusInfo from 'soapbox/components/statuses/status-info';
-import TranslateButton from 'soapbox/components/translate-button';
-import { HStack, Icon, Stack, Text } from 'soapbox/components/ui';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container';
-import { getActualStatus } from 'soapbox/utils/status';
+import Account from 'soapbox/components/account.tsx';
+import StatusContent from 'soapbox/components/status-content.tsx';
+import StatusMedia from 'soapbox/components/status-media.tsx';
+import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
+import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay.tsx';
+import StatusInfo from 'soapbox/components/statuses/status-info.tsx';
+import TranslateButton from 'soapbox/components/translate-button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { getActualStatus } from 'soapbox/utils/status.ts';
 
-import StatusInteractionBar from './status-interaction-bar';
+import StatusInteractionBar from './status-interaction-bar.tsx';
 
-import type { Group, Status as StatusEntity } from 'soapbox/types/entities';
+import type { Group, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IDetailedStatus {
   status: StatusEntity;
@@ -57,7 +63,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             avatarSize={42}
             icon={
               <Icon
-                src={require('@tabler/icons/outline/circles.svg')}
+                src={circlesIcon}
                 className='size-4 text-primary-600 dark:text-accent-blue'
               />
             }
@@ -99,7 +105,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   if (actualStatus.quote) {
     if (actualStatus.pleroma.get('quote_visible', true) === false) {
       quote = (
-        <div className='quoted-actualStatus-tombstone'>
+        <div>
           <p><FormattedMessage id='status.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
@@ -109,14 +115,14 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   }
 
   if (actualStatus.visibility === 'direct') {
-    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/mail.svg')} />;
+    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={mailIcon} />;
   } else if (actualStatus.visibility === 'private') {
-    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={require('@tabler/icons/outline/lock.svg')} />;
+    statusTypeIcon = <Icon className='size-4 text-gray-700 dark:text-gray-600' src={lockIcon} />;
   }
 
   return (
-    <div className='border-box'>
-      <div ref={node} className='detailed-actualStatus' tabIndex={-1}>
+    <div className='box-border'>
+      <div ref={node} tabIndex={-1}>
         {renderStatusInfo()}
 
         <div className='mb-4'>

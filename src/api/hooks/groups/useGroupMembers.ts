@@ -1,9 +1,9 @@
-import { Entities } from 'soapbox/entity-store/entities';
-import { useEntities } from 'soapbox/entity-store/hooks';
-import { GroupMember, groupMemberSchema } from 'soapbox/schemas';
-import { GroupRoles } from 'soapbox/schemas/group-member';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
+import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import { GroupMember, groupMemberSchema } from 'soapbox/schemas/index.ts';
 
-import { useApi } from '../../../hooks/useApi';
+import { useApi } from '../../../hooks/useApi.ts';
 
 function useGroupMembers(groupId: string, role: GroupRoles) {
   const api = useApi();

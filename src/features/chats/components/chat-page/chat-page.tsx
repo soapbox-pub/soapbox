@@ -1,15 +1,15 @@
 import clsx from 'clsx';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { matchPath, Route, Switch, useHistory } from 'react-router-dom';
 
-import { Stack } from 'soapbox/components/ui';
-import { useOwnAccount } from 'soapbox/hooks';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
-import ChatPageMain from './components/chat-page-main';
-import ChatPageNew from './components/chat-page-new';
-import ChatPageSettings from './components/chat-page-settings';
-import ChatPageSidebar from './components/chat-page-sidebar';
-import Welcome from './components/welcome';
+import ChatPageMain from './components/chat-page-main.tsx';
+import ChatPageNew from './components/chat-page-new.tsx';
+import ChatPageSettings from './components/chat-page-settings.tsx';
+import ChatPageSidebar from './components/chat-page-sidebar.tsx';
+import Welcome from './components/welcome.tsx';
 
 interface IChatPage {
   chatId?: string;
@@ -68,7 +68,7 @@ const ChatPage: React.FC<IChatPage> = ({ chatId }) => {
           data-testid='chat-page'
         >
           <Stack
-            className={clsx('dark:inset col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 black:bg-black dark:bg-gray-900 dark:bg-none sm:col-span-3', {
+            className={clsx('col-span-9 overflow-hidden bg-gradient-to-r from-white to-gray-100 black:bg-black dark:inset-0 dark:bg-gray-900 dark:bg-none sm:col-span-3', {
               'hidden sm:block': isSidebarHidden,
             })}
           >

@@ -1,6 +1,10 @@
-import React, { HTMLAttributes } from 'react';
+import chevronDownIcon from '@tabler/icons/outline/chevron-down.svg';
+import chevronUpIcon from '@tabler/icons/outline/chevron-up.svg';
+import { HTMLAttributes } from 'react';
 
-import { HStack, IconButton, Text } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
 interface IChatPaneHeader {
   isOpen: boolean;
@@ -65,7 +69,7 @@ const ChatPaneHeader = (props: IChatPaneHeader) => {
 
         <IconButton
           onClick={onToggle}
-          src={isOpen ? require('@tabler/icons/outline/chevron-down.svg') : require('@tabler/icons/outline/chevron-up.svg')}
+          src={isOpen ? chevronDownIcon : chevronUpIcon}
           iconClassName='h-5 w-5 text-gray-600'
         />
       </HStack>

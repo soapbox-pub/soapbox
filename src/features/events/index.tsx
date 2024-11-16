@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchJoinedEvents, fetchRecentEvents } from 'soapbox/actions/events';
-import { openModal } from 'soapbox/actions/modals';
-import { Button, CardBody, CardHeader, CardTitle, Column, HStack } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchJoinedEvents, fetchRecentEvents } from 'soapbox/actions/events.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import EventCarousel from './components/event-carousel';
+import EventCarousel from './components/event-carousel.tsx';
 
 const messages = defineMessages({
   title: { id: 'column.events', defaultMessage: 'Events' },

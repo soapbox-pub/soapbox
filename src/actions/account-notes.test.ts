@@ -1,7 +1,9 @@
-import { __stub } from 'soapbox/api';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { submitAccountNote } from './account-notes';
+import { __stub } from 'soapbox/api/index.ts';
+import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
+
+import { submitAccountNote } from './account-notes.ts';
 
 describe('submitAccountNote()', () => {
   let store: ReturnType<typeof mockStore>;

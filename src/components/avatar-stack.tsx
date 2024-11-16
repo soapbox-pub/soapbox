@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React from 'react';
 
-import { Avatar, HStack } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetAccount } from 'soapbox/selectors';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetAccount } from 'soapbox/selectors/index.ts';
 
-import type { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/types/entities.ts';
 
 const getAccount = makeGetAccount();
 

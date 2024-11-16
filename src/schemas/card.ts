@@ -3,7 +3,7 @@ import punycode from 'punycode';
 import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
-import { groupSchema } from './group';
+import { groupSchema } from './group.ts';
 
 const IDNA_PREFIX = 'xn--';
 

@@ -1,6 +1,6 @@
 import { List as ImmutableList } from 'immutable';
 
-import { EmojiReaction, emojiReactionSchema } from 'soapbox/schemas';
+import { EmojiReaction, emojiReactionSchema } from 'soapbox/schemas/index.ts';
 
 // https://emojipedia.org/facebook
 // I've customized them.

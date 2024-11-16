@@ -1,11 +1,11 @@
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { VirtuosoGridMockContext, VirtuosoMockContext } from 'react-virtuoso';
+import { describe, expect, it, vi } from 'vitest';
 
-import { buildAccount, buildGroup } from 'soapbox/jest/factory';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers';
+import { buildAccount, buildGroup } from 'soapbox/jest/factory.ts';
+import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
 
-import Results from './results';
+import Results from './results.tsx';
 
 const userId = '1';
 const store = {

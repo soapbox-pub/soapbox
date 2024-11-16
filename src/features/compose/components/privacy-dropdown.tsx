@@ -1,19 +1,24 @@
+import lockOpenIcon from '@tabler/icons/outline/lock-open.svg';
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
+import worldIcon from '@tabler/icons/outline/world.svg';
 import clsx from 'clsx';
 import { supportsPassiveEvents } from 'detect-passive-events';
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import { changeComposeVisibility } from 'soapbox/actions/compose';
-import { closeModal, openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useCompose } from 'soapbox/hooks';
-import { userTouching } from 'soapbox/is-mobile';
+import { changeComposeVisibility } from 'soapbox/actions/compose.ts';
+import { closeModal, openModal } from 'soapbox/actions/modals.ts';
+import Icon from 'soapbox/components/icon.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { userTouching } from 'soapbox/is-mobile.ts';
 
-import Motion from '../../ui/util/optional-motion';
+import Motion from '../../ui/util/optional-motion.tsx';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },
@@ -37,9 +42,10 @@ interface IPrivacyDropdownMenu {
   onClose: () => void;
   onChange: (value: string | null) => void;
   unavailable?: boolean;
+  active: boolean;
 }
 
-const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange }) => {
+const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, placement, value, onClose, onChange, active }) => {
   const node = useRef<HTMLDivElement>(null);
   const focusedItem = useRef<HTMLDivElement>(null);
 
@@ -120,15 +126,15 @@ const PrivacyDropdownMenu: React.FC<IPrivacyDropdownMenu> = ({ style, items, pla
         // It should not be transformed when mounting because the resulting
         // size will be used to determine the coordinate of the menu by
         // react-overlays
-        <div className={clsx('privacy-dropdown__dropdown', placement)} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined }} role='listbox' ref={node}>
+        <div id={'privacy-dropdown'} className={clsx('absolute z-[1000] ml-10 overflow-hidden rounded-md bg-white text-sm shadow-lg black:border black:border-gray-800 black:bg-black dark:bg-gray-900', { 'block shadow-md': active })} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : undefined, transformOrigin: placement === 'top' ? '50% 100%' : '50% 0' }} role='listbox' ref={node}>
           {items.map(item => (
-            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('privacy-dropdown__option', { active: item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
-              <div className='privacy-dropdown__option__icon'>
+            <div role='option' tabIndex={0} key={item.value} data-index={item.value} onKeyDown={handleKeyDown} onClick={handleClick} className={clsx('group flex cursor-pointer p-2.5 text-sm text-gray-700 hover:bg-gray-100 black:hover:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800', { 'bg-gray-100 dark:bg-gray-800 black:bg-gray-900 hover:bg-gray-200 dark:hover:bg-gray-700': item.value === value })} aria-selected={item.value === value} ref={item.value === value ? focusedItem : null}>
+              <div className='mr-2.5 flex items-center justify-center rtl:ml-2.5 rtl:mr-0'>
                 <Icon src={item.icon} />
               </div>
 
-              <div className='privacy-dropdown__option__content'>
-                <strong>{item.text}</strong>
+              <div className={clsx('flex-auto text-primary-600 group-hover:text-black dark:text-primary-400 group-hover:dark:text-white', { 'group-active:text-black group-active:dark:text-white': item.value === value })}>
+                <strong className='block font-medium text-black dark:text-white'>{item.text}</strong>
                 {item.meta}
               </div>
             </div>
@@ -160,10 +166,10 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const [placement, setPlacement] = useState('bottom');
 
   const options = [
-    { icon: require('@tabler/icons/outline/world.svg'), value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
-    { icon: require('@tabler/icons/outline/lock-open.svg'), value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
-    { icon: require('@tabler/icons/outline/lock.svg'), value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
-    { icon: require('@tabler/icons/outline/mail.svg'), value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
+    { icon: worldIcon, value: 'public', text: intl.formatMessage(messages.public_short), meta: intl.formatMessage(messages.public_long) },
+    { icon: lockOpenIcon, value: 'unlisted', text: intl.formatMessage(messages.unlisted_short), meta: intl.formatMessage(messages.unlisted_long) },
+    { icon: lockIcon, value: 'private', text: intl.formatMessage(messages.private_short), meta: intl.formatMessage(messages.private_long) },
+    { icon: mailIcon, value: 'direct', text: intl.formatMessage(messages.direct_short), meta: intl.formatMessage(messages.direct_long) },
   ];
 
   const onChange = (value: string | null) => value && dispatch(changeComposeVisibility(composeId, value));
@@ -239,14 +245,14 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
   const valueOption = options.find(item => item.value === value);
 
   return (
-    <div className={clsx('privacy-dropdown', placement, { active: open })} onKeyDown={handleKeyDown} ref={node}>
-      <div className={clsx('privacy-dropdown__value', { active: valueOption && options.indexOf(valueOption) === 0 })}>
+    <div onKeyDown={handleKeyDown} ref={node}>
+      <div className={clsx({ 'rouded-t-md': placement === 'top' && open })}>
         <IconButton
           className={clsx({
             'text-gray-600 hover:text-gray-700 dark:hover:text-gray-500': !open,
             'text-primary-500 hover:text-primary-600 dark:text-primary-500 dark:hover:text-primary-400': open,
           })}
-          src={valueOption?.icon}
+          src={valueOption!.icon}
           title={intl.formatMessage(messages.change_privacy)}
           onClick={handleToggle}
           onMouseDown={handleMouseDown}
@@ -261,6 +267,7 @@ const PrivacyDropdown: React.FC<IPrivacyDropdown> = ({
           onClose={handleClose}
           onChange={onChange}
           placement={placement}
+          active={open}
         />
       </Overlay>
     </div>

@@ -1,8 +1,8 @@
 import split from 'graphemesplit';
 
-import unicodeMapping from './mapping';
+import unicodeMapping from './mapping.ts';
 
-import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data';
+import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
 
 /*
  * TODO: Consolate emoji object types
@@ -63,13 +63,11 @@ const validEmojiChar = (c: string) => {
 };
 
 const convertCustom = (shortname: string, filename: string) => {
-  return `<img draggable="false" class="emojione" alt="${shortname}" title="${shortname}" src="${filename}" />`;
+  return `<img draggable="false" class="inline-block w-4 h-4" alt="${shortname}" title="${shortname}" src="${filename}" />`;
 };
 
 const convertUnicode = (c: string) => {
-  const { unified, shortcode } = unicodeMapping[c];
-
-  return `<img draggable="false" class="emojione" alt="${c}" title=":${shortcode}:" src="/packs/emoji/${unified}.svg" />`;
+  return c;
 };
 
 const convertEmoji = (str: string, customEmojis: any) => {

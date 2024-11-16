@@ -1,39 +1,41 @@
+import paperclipIcon from '@tabler/icons/outline/paperclip.svg';
+import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash';
-import StillImage from 'soapbox/components/still-image';
-import { MIMETYPE_ICONS } from 'soapbox/components/upload';
-import { useSettings, useSoapboxConfig } from 'soapbox/hooks';
-import { Attachment } from 'soapbox/types/entities';
-import { truncateFilename } from 'soapbox/utils/media';
+import Blurhash from 'soapbox/components/blurhash.tsx';
+import StillImage from 'soapbox/components/still-image.tsx';
+import { MIMETYPE_ICONS } from 'soapbox/components/upload.tsx';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { Attachment } from 'soapbox/types/entities.ts';
+import { truncateFilename } from 'soapbox/utils/media.ts';
 
-import { isIOS } from '../is-mobile';
-import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio';
+import { isIOS } from '../is-mobile.ts';
+import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio.ts';
 
-import SvgIcon from './ui/icon/svg-icon';
+import SvgIcon from './ui/svg-icon.tsx';
 
-import type { Property } from 'csstype';
 import type { List as ImmutableList } from 'immutable';
 
-// const Gameboy = React.lazy(() => import('./gameboy'));
+// const Gameboy = lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 interface Dimensions {
-  w: Property.Width | number;
-  h: Property.Height | number;
-  t?: Property.Top;
-  r?: Property.Right;
-  b?: Property.Bottom;
-  l?: Property.Left;
-  float?: Property.Float;
-  pos?: Property.Position;
+  w: CSSProperties['width'];
+  h: CSSProperties['height'];
+  t?: CSSProperties['top'];
+  r?: CSSProperties['right'];
+  b?: CSSProperties['bottom'];
+  l?: CSSProperties['left'];
+  float?: CSSProperties['float'];
+  pos?: CSSProperties['position'];
 }
 
 interface SizeData {
-  style: React.CSSProperties;
+  style: CSSProperties;
   itemsDimensions: Dimensions[];
   size: number;
   width: number;
@@ -157,7 +159,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <SvgIcon
         className={clsx('size-16 text-gray-800 dark:text-gray-200', { 'size-8': compact })}
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || require('@tabler/icons/outline/paperclip.svg')}
+        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || paperclipIcon}
       />
     );
 
@@ -234,7 +236,7 @@ const Item: React.FC<IItem> = ({
         target='_blank'
         title={attachment.description}
       >
-        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon className='size-24' src={require('@tabler/icons/outline/volume.svg')} /></span>
+        <span className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2'><SvgIcon className='size-24' src={volumeIcon} /></span>
         <span className={clsx('pointer-events-none absolute bottom-1.5 left-1.5 z-[1] block bg-black/50 px-1.5 py-0.5 text-[11px] font-semibold uppercase leading-[18px] text-white opacity-90 transition-opacity duration-100 ease-linear', { 'hidden': compact })}>{ext}</span>
       </a>
     );

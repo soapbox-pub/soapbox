@@ -1,6 +1,4 @@
-import React from 'react';
-
-import IconPickerDropdown from './icon-picker-dropdown';
+import IconPickerDropdown from './icon-picker-dropdown.tsx';
 
 interface IIconPicker {
   value: string;

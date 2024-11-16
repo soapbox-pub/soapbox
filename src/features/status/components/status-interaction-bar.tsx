@@ -1,14 +1,18 @@
-import clsx from 'clsx';import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import clsx from 'clsx';import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import { HStack, Text, Emoji } from 'soapbox/components/ui';
-import { useAppSelector, useSoapboxConfig, useFeatures, useAppDispatch } from 'soapbox/hooks';
-import { reduceEmoji } from 'soapbox/utils/emoji-reacts';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { openModal } from 'soapbox/actions/modals.ts';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IStatusInteractionBar {
   status: Status;
@@ -178,15 +182,12 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       return (
         <InteractionCounter count={count} onClick={features.exposableReactions ? handleClick : undefined}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.take(3).map((e, i) => {
-              return (
-                <Emoji
-                  key={i}
-                  className='size-4.5 flex-none'
-                  emoji={e.name}
-                  src={e.url}
-                />
-              );
+            {emojiReacts.take(3).map((emoji, i) => {
+              if (emoji.url) {
+                return <img key={i} src={emoji.url} alt={emoji.name} className='size-4.5 flex-none' />;
+              } else {
+                return <div key={i} className='flex-none'><Emoji size={18} emoji={emoji.name} /></div>;
+              }
             })}
           </HStack>
         </InteractionCounter>

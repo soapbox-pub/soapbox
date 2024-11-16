@@ -1,9 +1,8 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks';
-import { Account } from 'soapbox/types/entities';
-import { getPagination } from 'soapbox/utils/pagination';
-import { flattenPages, PaginatedResult } from 'soapbox/utils/queries';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { Account } from 'soapbox/types/entities.ts';
+import { flattenPages, PaginatedResult } from 'soapbox/utils/queries.ts';
 
 export default function useAccountSearch(q: string) {
   const api = useApi();
@@ -21,7 +20,7 @@ export default function useAccountSearch(q: string) {
     });
     const data = await response.json();
 
-    const { next } = getPagination(response);
+    const { next } = response.pagination();
     const hasMore = !!next;
 
     return {

@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { Modal } from 'soapbox/components/ui';
+import Modal from 'soapbox/components/ui/modal.tsx';
 
 interface IComponentModal {
   onClose: (type?: string) => void;

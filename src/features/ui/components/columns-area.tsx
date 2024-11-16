@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { Layout } from '../../../components/ui';
+import Layout from 'soapbox/components/ui/layout.tsx';
 
 interface IColumnsArea {
   layout: any;

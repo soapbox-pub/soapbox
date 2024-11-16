@@ -1,15 +1,17 @@
-import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useAccount } from 'soapbox/api/hooks';
-import StillImage from 'soapbox/components/still-image';
-import { Avatar, HStack, Stack, Text } from 'soapbox/components/ui';
-import VerificationBadge from 'soapbox/components/verification-badge';
-import { useAppSelector } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import { displayFqn } from 'soapbox/utils/state';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
+import StillImage from 'soapbox/components/still-image.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import VerificationBadge from 'soapbox/components/verification-badge.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { getAcct } from 'soapbox/utils/accounts.ts';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import { displayFqn } from 'soapbox/utils/state.ts';
 
 interface IUserPanel {
   accountId: string;

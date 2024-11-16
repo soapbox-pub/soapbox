@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
+import xIcon from '@tabler/icons/outline/x.svg';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { expandRemoteTimeline } from 'soapbox/actions/timelines';
-import { useRemoteStream } from 'soapbox/api/hooks';
-import IconButton from 'soapbox/components/icon-button';
-import { Column, HStack, Text } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch, useSettings, useTheme } from 'soapbox/hooks';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile';
+import { expandRemoteTimeline } from 'soapbox/actions/timelines.ts';
+import { useRemoteStream } from 'soapbox/api/hooks/index.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
-import Timeline from '../ui/components/timeline';
+import Timeline from '../ui/components/timeline.tsx';
 
-import PinnedHostsPicker from './components/pinned-hosts-picker';
+import PinnedHostsPicker from './components/pinned-hosts-picker.tsx';
 
 interface IRemoteTimeline {
   params?: {
@@ -55,7 +61,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
 
       {!pinned && (
         <HStack className='mb-4 px-2' space={2}>
-          <IconButton iconClassName='h-5 w-5' src={require('@tabler/icons/outline/x.svg')} onClick={handleCloseClick} />
+          <IconButton iconClassName='h-5 w-5' src={xIcon} onClick={handleCloseClick} />
           <Text>
             <FormattedMessage
               id='remote_timeline.filter_message'

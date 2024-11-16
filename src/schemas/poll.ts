@@ -2,10 +2,10 @@ import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji';
+import emojify from 'soapbox/features/emoji/index.ts';
 
-import { customEmojiSchema } from './custom-emoji';
-import { filteredArray, makeCustomEmojiMap } from './utils';
+import { customEmojiSchema } from './custom-emoji.ts';
+import { filteredArray, makeCustomEmojiMap } from './utils.ts';
 
 const pollOptionSchema = z.object({
   title: z.string().catch(''),

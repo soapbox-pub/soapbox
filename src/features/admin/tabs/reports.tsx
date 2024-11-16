@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchReports } from 'soapbox/actions/admin';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchReports } from 'soapbox/actions/admin.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import Report from '../components/report';
+import Report from '../components/report.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },

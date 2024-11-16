@@ -1,13 +1,15 @@
 import debounce from 'lodash/debounce';
-import React from 'react';
+import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts';
-import ScrollableList from 'soapbox/components/scrollable-list';
-import { Column, Spinner } from 'soapbox/components/ui';
-import { useAppDispatch, useAppSelector } from 'soapbox/hooks';
+import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts.ts';
+import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
-import AccountAuthorize from './components/account-authorize';
+import AccountAuthorize from './components/account-authorize.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.follow_requests', defaultMessage: 'Follow requests' },
@@ -24,7 +26,7 @@ const FollowRequests: React.FC = () => {
   const accountIds = useAppSelector((state) => state.user_lists.follow_requests.items);
   const hasMore = useAppSelector((state) => !!state.user_lists.follow_requests.next);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchFollowRequests());
   }, []);
 

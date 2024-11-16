@@ -1,6 +1,8 @@
+import lockIcon from '@tabler/icons/outline/lock.svg';
+import mailIcon from '@tabler/icons/outline/mail.svg';
 import clsx from 'clsx';
 import { CLEAR_EDITOR_COMMAND, TextNode, type LexicalEditor, $getRoot } from 'lexical';
-import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 import { length } from 'stringz';
@@ -12,35 +14,43 @@ import {
   fetchComposeSuggestions,
   selectComposeSuggestion,
   uploadCompose,
-} from 'soapbox/actions/compose';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import { Button, HStack, Stack } from 'soapbox/components/ui';
-import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch, useAppSelector, useCompose, useDraggedFiles, useFeatures, useInstance, usePrevious } from 'soapbox/hooks';
+} from 'soapbox/actions/compose.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
+import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
 
-import QuotedStatusContainer from '../containers/quoted-status-container';
-import ReplyIndicatorContainer from '../containers/reply-indicator-container';
-import UploadButtonContainer from '../containers/upload-button-container';
-import WarningContainer from '../containers/warning-container';
-import { $createEmojiNode } from '../editor/nodes/emoji-node';
-import { countableText } from '../util/counter';
+import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
+import ReplyIndicatorContainer from '../containers/reply-indicator-container.ts';
+import UploadButtonContainer from '../containers/upload-button-container.ts';
+import WarningContainer from '../containers/warning-container.tsx';
+import { $createEmojiNode } from '../editor/nodes/emoji-node.tsx';
+import { countableText } from '../util/counter.ts';
 
-import MarkdownButton from './markdown-button';
-import PollButton from './poll-button';
-import PollForm from './polls/poll-form';
-import PrivacyDropdown from './privacy-dropdown';
-import ReplyGroupIndicator from './reply-group-indicator';
-import ReplyMentions from './reply-mentions';
-import ScheduleButton from './schedule-button';
-import ScheduleForm from './schedule-form';
-import SpoilerButton from './spoiler-button';
-import SpoilerInput from './spoiler-input';
-import TextCharacterCounter from './text-character-counter';
-import UploadForm from './upload-form';
-import VisualCharacterCounter from './visual-character-counter';
+import MarkdownButton from './markdown-button.tsx';
+import PollButton from './poll-button.tsx';
+import PollForm from './polls/poll-form.tsx';
+import PrivacyDropdown from './privacy-dropdown.tsx';
+import ReplyGroupIndicator from './reply-group-indicator.tsx';
+import ReplyMentions from './reply-mentions.tsx';
+import ScheduleButton from './schedule-button.tsx';
+import ScheduleForm from './schedule-form.tsx';
+import SpoilerButton from './spoiler-button.tsx';
+import SpoilerInput from './spoiler-input.tsx';
+import TextCharacterCounter from './text-character-counter.tsx';
+import UploadForm from './upload-form.tsx';
+import VisualCharacterCounter from './visual-character-counter.tsx';
 
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
@@ -117,7 +127,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
       // List of elements that shouldn't collapse the composer when clicked
       // FIXME: Make this less brittle
       getClickableArea(),
-      document.querySelector('.privacy-dropdown__dropdown'),
+      document.getElementById('privacy-dropdown'),
       document.querySelector('em-emoji-picker'),
       document.getElementById('modal-overlay'),
     ].some(element => element?.contains(e.target as any));
@@ -207,7 +217,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   ), [features, id]);
 
   const composeModifiers = !condensed && (
-    <Stack space={4} className='compose-form__modifiers'>
+    <Stack space={4} className='text-sm text-gray-900'>
       <UploadForm composeId={id} onSubmit={handleSubmit} />
       <PollForm composeId={id} />
 
@@ -229,10 +239,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   if (isEditing) {
     publishText = intl.formatMessage(messages.saveChanges);
   } else if (privacy === 'direct') {
-    publishIcon = require('@tabler/icons/outline/mail.svg');
+    publishIcon = mailIcon;
     publishText = intl.formatMessage(messages.message);
   } else if (privacy === 'private') {
-    publishIcon = require('@tabler/icons/outline/lock.svg');
+    publishIcon = lockIcon;
     publishText = intl.formatMessage(messages.publish);
   } else {
     publishText = privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);

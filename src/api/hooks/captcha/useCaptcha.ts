@@ -1,11 +1,13 @@
-import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import { useApi, useAppDispatch, useInstance } from 'soapbox/hooks';
-import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha';
-import toast from 'soapbox/toast';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha.ts';
+import toast from 'soapbox/toast.tsx';
 
 
 
@@ -41,7 +43,7 @@ const useCaptcha = () => {
       setYPosition(topI);
       setXPosition(leftI);
     } catch (error) {
-      toast.error('Error loading captcha:');
+      toast.error('Error loading captcha');
     }
   };
 
@@ -70,11 +72,10 @@ const useCaptcha = () => {
           dispatch(closeModal('CAPTCHA'));
           toast.success(messages.sucessMessage);
         });
-      } catch (e) {
+      } catch (error) {
         setTryAgain(true);
-        const error = e as AxiosError;
-        const status = error.request?.status;
 
+        const status = error instanceof HTTPError ? error.response.status : undefined;
         let message;
 
         switch (status) {
@@ -86,8 +87,10 @@ const useCaptcha = () => {
             break;
           default:
             message = intl.formatMessage(messages.errorMessage);
+            console.error(error);
             break;
         }
+
         toast.error(message);
       }
       setIsSubmitting(false);

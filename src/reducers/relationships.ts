@@ -1,9 +1,9 @@
 import { Map as ImmutableMap } from 'immutable';
 import get from 'lodash/get';
 
-import { type Relationship, relationshipSchema } from 'soapbox/schemas';
+import { type Relationship, relationshipSchema } from 'soapbox/schemas/index.ts';
 
-import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes';
+import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes.ts';
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_UNBLOCK_SUCCESS,
@@ -15,18 +15,18 @@ import {
   ACCOUNT_UNPIN_SUCCESS,
   ACCOUNT_REMOVE_FROM_FOLLOWERS_SUCCESS,
   RELATIONSHIPS_FETCH_SUCCESS,
-} from '../actions/accounts';
+} from '../actions/accounts.ts';
 import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
-} from '../actions/domain-blocks';
+} from '../actions/domain-blocks.ts';
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
-} from '../actions/importer';
+} from '../actions/importer/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 type State = ImmutableMap<string, Relationship>;
 type APIEntities = Array<APIEntity>;

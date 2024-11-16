@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import React from 'react';
+import { PureComponent } from 'react';
 
-import ZoomableImage from './zoomable-image';
+import ZoomableImage from './zoomable-image.tsx';
 
 type EventRemover = () => void;
 
@@ -14,7 +14,7 @@ interface IImageLoader {
   onClick?: React.MouseEventHandler;
 }
 
-class ImageLoader extends React.PureComponent<IImageLoader> {
+class ImageLoader extends PureComponent<IImageLoader> {
 
   static defaultProps = {
     alt: '',
@@ -135,16 +135,16 @@ class ImageLoader extends React.PureComponent<IImageLoader> {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = clsx('image-loader', {
-      'image-loader--loading': loading,
-      'image-loader--amorphous': !this.hasSize(),
-    });
+    const className = 'relative size-full flex items-center justify-center flex-col';
 
     return (
       <div className={className}>
         {loading ? (
           <canvas
-            className='image-loader__preview-canvas'
+            className={clsx('max-h-[80%] max-w-full object-contain', { 'hidden': !this.hasSize() })}
+            style={{
+              background: 'url(\'../assets/images/void.png\') repeat',
+            }}
             ref={this.setCanvasRef}
             width={width}
             height={height}

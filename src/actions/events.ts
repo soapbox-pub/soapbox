@@ -1,20 +1,20 @@
 import { defineMessages, IntlShape } from 'react-intl';
 
-import api, { getLinks } from 'soapbox/api';
-import toast from 'soapbox/toast';
+import api, { getLinks } from 'soapbox/api/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer';
-import { uploadFile } from './media';
-import { closeModal, openModal } from './modals';
+import { importFetchedAccounts, importFetchedStatus, importFetchedStatuses } from './importer/index.ts';
+import { uploadFile } from './media.ts';
+import { closeModal, openModal } from './modals.ts';
 import {
   STATUS_FETCH_SOURCE_FAIL,
   STATUS_FETCH_SOURCE_REQUEST,
   STATUS_FETCH_SOURCE_SUCCESS,
-} from './statuses';
+} from './statuses.ts';
 
-import type { ReducerStatus } from 'soapbox/reducers/statuses';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities';
+import type { ReducerStatus } from 'soapbox/reducers/statuses.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST' as const;
 const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS' as const;

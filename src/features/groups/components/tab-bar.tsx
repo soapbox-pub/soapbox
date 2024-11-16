@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Tabs } from 'soapbox/components/ui';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
 
-import type { Item } from 'soapbox/components/ui/tabs/tabs';
+import type { Item } from 'soapbox/components/ui/tabs.tsx';
 
 export enum TabItems {
   MY_GROUPS = 'MY_GROUPS',

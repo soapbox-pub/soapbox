@@ -102,10 +102,6 @@ body.underline-links [data-markup] a {
   @apply underline;
 }
 
-[data-markup].big-emoji img.emojione {
-  @apply inline w-9 h-9 p-1;
-}
-
 [data-markup] .status-link {
   @apply hover:underline text-primary-600 dark:text-accent-blue hover:text-primary-800 dark:hover:text-accent-blue;
 }

@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { useInstance, useFeatures } from 'soapbox/hooks';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
-import { Datetime } from './ui/datetime/datetime';
+import { Datetime } from './ui/datetime.tsx';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },

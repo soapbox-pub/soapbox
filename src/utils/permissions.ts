@@ -1,4 +1,4 @@
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 export const PERMISSION_CREATE_GROUPS  = 0x0000000000100000;
 export const PERMISSION_INVITE_USERS   = 0x0000000000010000;

@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 
-import QuotedStatus from 'soapbox/components/quoted-status';
-import Tombstone from 'soapbox/components/tombstone';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import QuotedStatus from 'soapbox/components/quoted-status.tsx';
+import Tombstone from 'soapbox/components/tombstone.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IQuotedStatusContainer {
   /** Status ID to the quoted status. */

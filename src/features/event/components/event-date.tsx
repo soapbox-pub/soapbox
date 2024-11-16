@@ -1,10 +1,10 @@
-import React from 'react';
+import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import { FormattedDate } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { HStack } from 'soapbox/components/ui';
+import Icon from 'soapbox/components/icon.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities';
+import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IEventDate {
   status: StatusEntity;
@@ -50,7 +50,7 @@ const EventDate: React.FC<IEventDate> = ({ status }) => {
 
   return (
     <HStack alignItems='center' space={2}>
-      <Icon src={require('@tabler/icons/outline/calendar.svg')} />
+      <Icon src={calendarIcon} />
       <span>{date}</span>
     </HStack>
   );

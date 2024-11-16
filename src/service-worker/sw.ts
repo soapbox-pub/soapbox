@@ -3,6 +3,10 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import unescape from 'lodash/unescape';
 
+import expandIcon from '../assets/images/web-push/web-push-icon_expand.png';
+import favouriteIcon from '../assets/images/web-push/web-push-icon_favourite.png';
+import reblogIcon from '../assets/images/web-push/web-push-icon_reblog.png';
+
 import type {
   Account as AccountEntity,
   Notification as NotificationEntity,
@@ -195,21 +199,21 @@ const handlePush = (event: PushEvent) => {
 /** Native action to open a status on the device. */
 const actionExpand = (preferred_locale: string) => ({
   action: 'expand',
-  icon: `/${require('../../assets/images/web-push/web-push-icon_expand.png')}`,
+  icon: expandIcon,
   title: formatMessage('status.show_more', preferred_locale),
 });
 
 /** Native action to repost status. */
 const actionReblog = (preferred_locale: string) => ({
   action: 'reblog',
-  icon: `/${require('../../assets/images/web-push/web-push-icon_reblog.png')}`,
+  icon: reblogIcon,
   title: formatMessage('status.reblog', preferred_locale),
 });
 
 /** Native action to like status. */
 const actionFavourite = (preferred_locale: string) => ({
   action: 'favourite',
-  icon: `/${require('../../assets/images/web-push/web-push-icon_favourite.png')}`,
+  icon: favouriteIcon,
   title: formatMessage('status.favourite', preferred_locale),
 });
 

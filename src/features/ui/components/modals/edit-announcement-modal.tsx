@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements';
-import { Form, FormGroup, HStack, Modal, Stack, Text, Textarea, Toggle } from 'soapbox/components/ui';
-import { Datetime } from 'soapbox/components/ui/datetime/datetime';
-import { useAppDispatch } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements.ts';
+import { Datetime } from 'soapbox/components/ui/datetime.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { AdminAnnouncement } from 'soapbox/schemas';
+import type { AdminAnnouncement } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   save: { id: 'admin.edit_announcement.save', defaultMessage: 'Save' },

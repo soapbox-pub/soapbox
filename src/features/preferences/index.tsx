@@ -1,14 +1,16 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Form } from 'soapbox/components/ui';
-import { SelectDropdown } from 'soapbox/features/forms';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppDispatch, useFeatures, useSettings } from 'soapbox/hooks';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
-import ThemeToggle from '../ui/components/theme-toggle';
+import ThemeToggle from '../ui/components/theme-toggle.tsx';
 
 const languages = {
   en: 'English',
@@ -101,19 +103,19 @@ const Preferences = () => {
     dispatch(changeSetting(key, checked, { showAlert: true }));
   };
 
-  const displayMediaOptions = React.useMemo(() => ({
+  const displayMediaOptions = useMemo(() => ({
     default: intl.formatMessage(messages.displayPostsDefault),
     hide_all: intl.formatMessage(messages.displayPostsHideAll),
     show_all: intl.formatMessage(messages.displayPostsShowAll),
   }), []);
 
-  const defaultPrivacyOptions = React.useMemo(() => ({
+  const defaultPrivacyOptions = useMemo(() => ({
     public: intl.formatMessage(messages.privacy_public),
     unlisted: intl.formatMessage(messages.privacy_unlisted),
     private: intl.formatMessage(messages.privacy_followers_only),
   }), []);
 
-  const defaultContentTypeOptions = React.useMemo(() => ({
+  const defaultContentTypeOptions = useMemo(() => ({
     'text/plain': intl.formatMessage(messages.content_type_plaintext),
     'text/markdown': intl.formatMessage(messages.content_type_markdown),
   }), []);

@@ -1,16 +1,25 @@
-import React from 'react';
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import banIcon from '@tabler/icons/outline/ban.svg';
+import logoutIcon from '@tabler/icons/outline/logout.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { blockAccount, unblockAccount } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modals';
-import List, { ListItem } from 'soapbox/components/list';
-import { Avatar, HStack, Icon, Select, Stack, Text } from 'soapbox/components/ui';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context';
-import { useAppDispatch, useAppSelector, useFeatures } from 'soapbox/hooks';
-import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats';
-import { secondsToDays } from 'soapbox/utils/numbers';
+import { blockAccount, unblockAccount } from 'soapbox/actions/accounts.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Avatar from 'soapbox/components/ui/avatar.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Select from 'soapbox/components/ui/select.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats.ts';
+import { secondsToDays } from 'soapbox/utils/numbers.tsx';
 
-import ChatPaneHeader from './chat-pane-header';
+import ChatPaneHeader from './chat-pane-header.tsx';
 
 const messages = defineMessages({
   blockMessage: { id: 'chat_settings.block.message', defaultMessage: 'Blocking will prevent this profile from direct messaging you and viewing your content. You can unblock later.' },
@@ -95,7 +104,7 @@ const ChatSettings = () => {
           <HStack alignItems='center' space={2}>
             <button onClick={closeSettings}>
               <Icon
-                src={require('@tabler/icons/outline/arrow-left.svg')}
+                src={arrowLeftIcon}
                 className='size-6 text-gray-600 dark:text-gray-400 rtl:rotate-180'
               />
             </button>
@@ -136,13 +145,13 @@ const ChatSettings = () => {
 
         <Stack space={5}>
           <button onClick={isBlocking ? handleUnblockUser : handleBlockUser} className='flex w-full items-center space-x-2 text-sm font-bold text-primary-600 dark:text-accent-blue'>
-            <Icon src={require('@tabler/icons/outline/ban.svg')} className='size-5' />
+            <Icon src={banIcon} className='size-5' />
             <span>{intl.formatMessage(isBlocking ? messages.unblockUser : messages.blockUser, { acct: chat.account.acct })}</span>
           </button>
 
           {features.chatsDelete && (
             <button onClick={handleLeaveChat} className='flex w-full items-center space-x-2 text-sm font-bold text-danger-600'>
-              <Icon src={require('@tabler/icons/outline/logout.svg')} className='size-5' />
+              <Icon src={logoutIcon} className='size-5' />
               <span>{intl.formatMessage(messages.leaveChat)}</span>
             </button>
           )}

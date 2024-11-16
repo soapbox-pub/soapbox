@@ -1,21 +1,19 @@
-import React from 'react';
+import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import { isCustomEmoji } from 'soapbox/features/emoji/index.ts';
+import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
 
-import { isCustomEmoji } from 'soapbox/features/emoji';
-import unicodeMapping from 'soapbox/features/emoji/mapping';
-import { joinPublicPath } from 'soapbox/utils/static';
-
-import type { Emoji } from 'soapbox/features/emoji';
+import type { Emoji } from 'soapbox/features/emoji/index.ts';
 
 interface IAutosuggestEmoji {
   emoji: Emoji;
 }
 
 const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
-  let url, alt;
+  let elem: React.ReactNode;
 
   if (isCustomEmoji(emoji)) {
-    url = emoji.imageUrl;
-    alt = emoji.colons;
+    elem = <img className='emojione mr-2 block size-4' src={emoji.imageUrl} alt={emoji.colons} />;
   } else {
     const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
 
@@ -23,20 +21,14 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
       return null;
     }
 
-    url = joinPublicPath(`packs/emoji/${mapping.unified}.svg`);
-    alt = emoji.native;
+    elem = <EmojiComponent emoji={emoji.native} size={16} />;
   }
 
   return (
-    <div className='autosuggest-emoji' data-testid='emoji'>
-      <img
-        className='emojione'
-        src={url}
-        alt={alt}
-      />
-
-      {emoji.colons}
-    </div>
+    <HStack space={2} alignItems='center' justifyContent='start' className='text-[14px] leading-[18px]' data-testid='emoji'>
+      {elem}
+      <span>{emoji.colons}</span>
+    </HStack>
   );
 };
 

@@ -1,11 +1,11 @@
-import api, { getLinks } from '../api';
+import api, { getLinks } from '../api/index.ts';
 
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts, importFetchedStatuses } from './importer';
+import { fetchRelationships } from './accounts.ts';
+import { importFetchedAccounts, importFetchedStatuses } from './importer/index.ts';
 
-import type { SearchFilter } from 'soapbox/reducers/search';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { SearchFilter } from 'soapbox/reducers/search.ts';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const SEARCH_CHANGE        = 'SEARCH_CHANGE';
 const SEARCH_CLEAR         = 'SEARCH_CLEAR';

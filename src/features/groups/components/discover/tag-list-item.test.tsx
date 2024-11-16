@@ -1,9 +1,9 @@
-import React from 'react';
+import { describe, expect, it } from 'vitest';
 
-import { buildGroupTag } from 'soapbox/jest/factory';
-import { render, screen } from 'soapbox/jest/test-helpers';
+import { buildGroupTag } from 'soapbox/jest/factory.ts';
+import { render, screen } from 'soapbox/jest/test-helpers.tsx';
 
-import TagListItem from './tag-list-item';
+import TagListItem from './tag-list-item.tsx';
 
 describe('<TagListItem', () => {
   it('should render correctly', () => {

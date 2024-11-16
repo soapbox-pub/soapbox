@@ -1,7 +1,6 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui';
+import { Column } from 'soapbox/components/ui/column.tsx';
 
 const messages = defineMessages({
   title: { id: 'column_forbidden.title', defaultMessage: 'Forbidden' },
@@ -13,7 +12,7 @@ const ColumnForbidden = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)}>
-      <div className='error-column'>
+      <div className='error-column flex min-h-[160px] flex-1 flex-col items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
         {intl.formatMessage(messages.body)}
       </div>
     </Column>

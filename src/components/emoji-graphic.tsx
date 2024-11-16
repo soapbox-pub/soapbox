@@ -1,6 +1,4 @@
-import React from 'react';
-
-import Emoji from 'soapbox/components/ui/emoji/emoji';
+import Emoji from 'soapbox/components/ui/emoji.tsx';
 
 interface IEmojiGraphic {
   emoji: string;
@@ -11,7 +9,7 @@ const EmojiGraphic: React.FC<IEmojiGraphic> = ({ emoji }) => {
   return (
     <div className='flex items-center justify-center'>
       <div className='rounded-full bg-gray-100 p-8 dark:bg-gray-800'>
-        <Emoji className='size-24' emoji={emoji} />
+        <Emoji size={96} emoji={emoji} />
       </div>
     </div>
   );

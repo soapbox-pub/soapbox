@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchPatronInstance } from 'soapbox/actions/patron';
-import { Widget, Button, ProgressBar, Text, Stack } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { fetchPatronInstance } from 'soapbox/actions/patron.ts';
+import Button from 'soapbox/components/ui/button.tsx';
+import ProgressBar from 'soapbox/components/ui/progress-bar.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Widget from 'soapbox/components/ui/widget.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 /** Open link in a new tab. */
 // https://stackoverflow.com/a/28374344/8811886

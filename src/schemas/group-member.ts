@@ -1,6 +1,6 @@
 import z from 'zod';
 
-import { accountSchema } from './account';
+import { accountSchema } from './account.ts';
 
 enum GroupRoles {
   OWNER = 'owner',

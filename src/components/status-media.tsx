@@ -1,15 +1,16 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 
-import { openModal } from 'soapbox/actions/modals';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs';
-import PreviewCard from 'soapbox/components/preview-card';
-import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card';
-import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
-import { useAppDispatch } from 'soapbox/hooks';
+
+import { openModal } from 'soapbox/actions/modals.ts';
+import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
+import PreviewCard from 'soapbox/components/preview-card.tsx';
+import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview.tsx';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
+import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Status, Attachment } from 'soapbox/types/entities';
+import type { Status, Attachment } from 'soapbox/types/entities.ts';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
@@ -40,15 +41,15 @@ const StatusMedia: React.FC<IStatusMedia> = ({
   let media: JSX.Element | null = null;
 
   const renderLoadingMediaGallery = (): JSX.Element => {
-    return <div className='media_gallery' style={{ height: '285px' }} />;
+    return <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={{ height: '285px' }} />;
   };
 
   const renderLoadingVideoPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
+    return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
   const renderLoadingAudioPlayer = (): JSX.Element => {
-    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
+    return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
   const openMedia = (media: ImmutableList<Attachment>, index: number) => {

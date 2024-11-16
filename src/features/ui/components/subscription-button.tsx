@@ -1,16 +1,18 @@
-import React from 'react';
+import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
+import bellIcon from '@tabler/icons/outline/bell.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
 import {
   subscribeAccount,
   unsubscribeAccount,
-} from 'soapbox/actions/accounts';
-import { useFollow } from 'soapbox/api/hooks';
-import { IconButton } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+} from 'soapbox/actions/accounts.ts';
+import { useFollow } from 'soapbox/api/hooks/index.ts';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import toast from 'soapbox/toast.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities';
+import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
@@ -91,7 +93,7 @@ const SubscriptionButton = ({ account }: ISubscriptionButton) => {
   if (isRequested || isFollowing) {
     return (
       <IconButton
-        src={isSubscribed ? require('@tabler/icons/outline/bell-ringing.svg') : require('@tabler/icons/outline/bell.svg')}
+        src={isSubscribed ? bellRingingIcon : bellIcon}
         onClick={handleToggle}
         title={title}
         theme='outlined'

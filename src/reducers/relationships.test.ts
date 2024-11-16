@@ -1,9 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
 import lain from 'soapbox/__fixtures__/lain.json';
-import { ACCOUNT_IMPORT } from 'soapbox/actions/importer';
+import { ACCOUNT_IMPORT } from 'soapbox/actions/importer/index.ts';
 
-import reducer from './relationships';
+import reducer from './relationships.ts';
 
 describe('relationships reducer', () => {
   it('should return the initial state', () => {

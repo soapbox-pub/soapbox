@@ -7,11 +7,11 @@ import {
   LIST_CREATE_SUCCESS,
   LIST_UPDATE_SUCCESS,
   LIST_DELETE_SUCCESS,
-} from 'soapbox/actions/lists';
-import { normalizeList } from 'soapbox/normalizers';
+} from 'soapbox/actions/lists.ts';
+import { normalizeList } from 'soapbox/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 type ListRecord = ReturnType<typeof normalizeList>;
 type APIEntities = Array<APIEntity>;

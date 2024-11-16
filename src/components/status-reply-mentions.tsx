@@ -1,14 +1,13 @@
-import React from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper';
-import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper';
-import { useAppDispatch } from 'soapbox/hooks';
-import { shortenNostr } from 'soapbox/utils/nostr';
+import { openModal } from 'soapbox/actions/modals.ts';
+import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-import type { Status } from 'soapbox/types/entities';
+import type { Status } from 'soapbox/types/entities.ts';
 
 interface IStatusReplyMentions {
   status: Status;
@@ -39,7 +38,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   // Rare, but it can happen.
   if (to.size === 0) {
     return (
-      <div className='reply-mentions'>
+      <div className='mb-1 text-sm text-gray-700 dark:text-gray-600'>
         <FormattedMessage
           id='reply_mentions.reply_empty'
           defaultMessage='Replying to post'
@@ -54,7 +53,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
       <Link
         key={account.id}
         to={`/@${account.acct}`}
-        className='reply-mentions__account max-w-[200px] truncate align-bottom'
+        className='inline-block max-w-[200px] truncate align-bottom text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue' style={{ direction: 'ltr' }}
         onClick={(e) => e.stopPropagation()}
       > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(account.username)}
@@ -81,7 +80,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
   }
 
   return (
-    <div className='reply-mentions'>
+    <div className='mb-1 text-sm text-gray-700 dark:text-gray-600'>
       <FormattedMessage
         id='reply_mentions.reply.hoverable'
         defaultMessage='<hover>Replying to</hover> {accounts}'

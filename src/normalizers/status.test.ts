@@ -1,8 +1,9 @@
 import { Record as ImmutableRecord, fromJS } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { normalizeStatus } from './status';
+import { normalizeStatus } from './status.ts';
 
-import type { Poll, Card } from 'soapbox/types/entities';
+import type { Poll, Card } from 'soapbox/types/entities.ts';
 
 describe('normalizeStatus()', () => {
   it('adds base fields', () => {

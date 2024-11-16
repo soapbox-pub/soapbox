@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 interface IPuzzleCaptcha {
   bg: string;
@@ -54,7 +54,7 @@ export const PuzzleCaptcha: React.FC<IPuzzleCaptcha> = ({ bg, puzzle, position, 
   return (
     <div id='drop-area' ref={ref} className='relative'>
       <img
-        className='drop-shadow-black absolute z-[101] w-[61px] drop-shadow-2xl hover:cursor-grab'
+        className='absolute z-[101] w-[61px] drop-shadow-2xl hover:cursor-grab'
         src={puzzle}
         alt=''
         onPointerDown={(e) => e.currentTarget.setPointerCapture(e.pointerId)}

@@ -1,6 +1,7 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import reducer from './user-lists';
+import reducer from './user-lists.ts';
 
 describe('user_lists reducer', () => {
   it('should return the initial state', () => {

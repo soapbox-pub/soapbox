@@ -1,15 +1,17 @@
+import backspaceIcon from '@tabler/icons/outline/backspace.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
 import clsx from 'clsx';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import throttle from 'lodash/throttle';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { locationSearch } from 'soapbox/actions/events';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input';
-import Icon from 'soapbox/components/icon';
-import { useAppDispatch } from 'soapbox/hooks';
+import { locationSearch } from 'soapbox/actions/events.ts';
+import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import AutosuggestLocation from './autosuggest-location';
+import AutosuggestLocation from './autosuggest-location.tsx';
 
 const noOp = () => {};
 
@@ -85,7 +87,7 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
   }, [value]);
 
   return (
-    <div className='search'>
+    <div className='relative'>
       <AutosuggestInput
         className='rounded-full'
         placeholder={intl.formatMessage(messages.placeholder)}
@@ -99,9 +101,9 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
         onKeyDown={handleKeyDown}
         renderSuggestion={AutosuggestLocation}
       />
-      <div role='button' tabIndex={0} className='search__icon' onClick={handleClear}>
-        <Icon src={require('@tabler/icons/outline/search.svg')} className={clsx('svg-icon--search', { active: isEmpty() })} />
-        <Icon src={require('@tabler/icons/outline/backspace.svg')} className={clsx('svg-icon--backspace', { active: !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
+      <div role='button' tabIndex={0} className='focus:!outline-0' onClick={handleClear}>
+        <SvgIcon src={searchIcon} className={clsx('pointer-events-none absolute right-4 top-1/2 z-[2] inline-block size-[18px] -translate-y-1/2 cursor-default text-gray-400 opacity-0 rtl:left-4 rtl:right-auto', { 'opacity-100': isEmpty() })} />
+        <SvgIcon src={backspaceIcon} className={clsx('pointer-events-none absolute right-4 top-1/2 z-[2] inline-block size-[22px] -translate-y-1/2 cursor-pointer text-gray-400 opacity-0 rtl:left-4 rtl:right-auto', { 'pointer-events-auto opacity-100': !isEmpty() })} aria-label={intl.formatMessage(messages.placeholder)} />
       </div>
     </div>
   );

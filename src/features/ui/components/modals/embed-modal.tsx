@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { closeModal } from 'soapbox/actions/modals';
-import CopyableInput from 'soapbox/components/copyable-input';
-import SafeEmbed from 'soapbox/components/safe-embed';
-import { Modal, Stack, Text, Divider } from 'soapbox/components/ui';
-import { useAppDispatch } from 'soapbox/hooks';
-import useEmbed from 'soapbox/queries/embed';
+import { closeModal } from 'soapbox/actions/modals.ts';
+import CopyableInput from 'soapbox/components/copyable-input.tsx';
+import SafeEmbed from 'soapbox/components/safe-embed.tsx';
+import Divider from 'soapbox/components/ui/divider.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import useEmbed from 'soapbox/queries/embed.ts';
 
 interface IEmbedModal {
   url: string;

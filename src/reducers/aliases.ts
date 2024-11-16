@@ -5,10 +5,10 @@ import {
   ALIASES_SUGGESTIONS_CLEAR,
   ALIASES_SUGGESTIONS_CHANGE,
   ALIASES_FETCH_SUCCESS,
-} from '../actions/aliases';
+} from '../actions/aliases.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   aliases: ImmutableRecord({

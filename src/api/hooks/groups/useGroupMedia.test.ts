@@ -1,8 +1,10 @@
-import { __stub } from 'soapbox/api';
-import { buildStatus } from 'soapbox/jest/factory';
-import { renderHook, waitFor } from 'soapbox/jest/test-helpers';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { useGroupMedia } from './useGroupMedia';
+import { __stub } from 'soapbox/api/index.ts';
+import { buildStatus } from 'soapbox/jest/factory.ts';
+import { renderHook, waitFor } from 'soapbox/jest/test-helpers.tsx';
+
+import { useGroupMedia } from './useGroupMedia.ts';
 
 const status = buildStatus();
 const groupId = '1';

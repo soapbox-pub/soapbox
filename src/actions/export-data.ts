@@ -1,11 +1,11 @@
 import { defineMessages } from 'react-intl';
 
-import api, { getLinks } from 'soapbox/api';
-import { normalizeAccount } from 'soapbox/normalizers';
-import toast from 'soapbox/toast';
+import api, { getLinks } from 'soapbox/api/index.ts';
+import { normalizeAccount } from 'soapbox/normalizers/index.ts';
+import toast from 'soapbox/toast.tsx';
 
 import type { AxiosResponse } from 'axios';
-import type { RootState } from 'soapbox/store';
+import type { RootState } from 'soapbox/store.ts';
 
 export const EXPORT_FOLLOWS_REQUEST = 'EXPORT_FOLLOWS_REQUEST';
 export const EXPORT_FOLLOWS_SUCCESS = 'EXPORT_FOLLOWS_SUCCESS';

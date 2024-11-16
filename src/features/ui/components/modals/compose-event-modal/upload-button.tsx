@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
+import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { HStack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import Icon from 'soapbox/components/icon.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 interface IUploadButton {
   disabled?: boolean;
@@ -28,7 +30,7 @@ const UploadButton: React.FC<IUploadButton> = ({ disabled, onSelectFile }) => {
   return (
     <HStack className='size-full cursor-pointer text-primary-500 dark:text-accent-blue' space={3} alignItems='center' justifyContent='center' element='label'>
       <Icon
-        src={require('@tabler/icons/outline/photo-plus.svg')}
+        src={photoPlusIcon}
         className='size-7'
         onClick={handleClick}
       />

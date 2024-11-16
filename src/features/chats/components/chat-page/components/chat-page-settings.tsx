@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
+import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import { Button, CardBody, CardTitle, Form, HStack, IconButton, Stack, Toggle } from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { useUpdateCredentials } from 'soapbox/queries/accounts';
+import { changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
 
 type FormData = {
   accepts_chat_messages?: boolean;
@@ -50,7 +59,7 @@ const ChatPageSettings = () => {
     <Stack className='h-full space-y-8 px-4 py-6 sm:p-6'>
       <HStack alignItems='center'>
         <IconButton
-          src={require('@tabler/icons/outline/arrow-left.svg')}
+          src={arrowLeftIcon}
           className='mr-2 size-7 sm:mr-0 sm:hidden rtl:rotate-180'
           onClick={() => history.push('/chats')}
         />

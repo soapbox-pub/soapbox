@@ -1,8 +1,11 @@
-import React from 'react';
+import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column, Stack, Text, IconButton } from 'soapbox/components/ui';
-import { isNetworkError } from 'soapbox/utils/errors';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { isNetworkError } from 'soapbox/utils/errors.ts';
 
 const messages = defineMessages({
   title: { id: 'bundle_column_error.title', defaultMessage: 'Network error' },
@@ -32,7 +35,7 @@ const ErrorColumn: React.FC<IErrorColumn> = ({ error, onRetry = () => location.r
         <IconButton
           iconClassName='h-10 w-10'
           title={intl.formatMessage(messages.retry)}
-          src={require('@tabler/icons/outline/refresh.svg')}
+          src={refreshIcon}
           onClick={handleRetry}
         />
 

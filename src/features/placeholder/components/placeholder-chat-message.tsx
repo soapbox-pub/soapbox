@@ -1,11 +1,12 @@
 import clsx from 'clsx';
-import React from 'react';
 
-import { HStack, Stack, Text } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 
-import { randomIntFromInterval } from '../utils';
+import { randomIntFromInterval } from '../utils.ts';
 
-import PlaceholderAvatar from './placeholder-avatar';
+import PlaceholderAvatar from './placeholder-avatar.tsx';
 
 /** Fake chat to display while data is loading. */
 const PlaceholderChatMessage = ({ isMyMessage = false }: { isMyMessage?: boolean }) => {

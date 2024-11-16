@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me';
-import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings';
-import List, { ListItem } from 'soapbox/components/list';
-import {
-  CardHeader,
-  CardTitle,
-  Column,
-  Button,
-  Form,
-  FormActions,
-  FormGroup,
-  Textarea,
-} from 'soapbox/components/ui';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle';
-import { useAppSelector, useAppDispatch, useSettings } from 'soapbox/hooks';
-import toast from 'soapbox/toast';
+import { patchMe } from 'soapbox/actions/me.ts';
+import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import { Button } from 'soapbox/components/ui/button.tsx';
+import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import Textarea from 'soapbox/components/ui/textarea.tsx';
+import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import toast from 'soapbox/toast.tsx';
 
 const isJSONValid = (text: any): boolean => {
   try {

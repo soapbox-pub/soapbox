@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import React from 'react';
+import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 interface IButton {
   /** Whether this button expands the width of its container. */
@@ -30,7 +30,7 @@ interface IButton {
 }
 
 /** Customizable button element. */
-const ZapButton = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
+const ZapButton = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
   const {
     disabled = false,
     icon,

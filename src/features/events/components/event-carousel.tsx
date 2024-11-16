@@ -1,13 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import chevronLeftIcon from '@tabler/icons/outline/chevron-left.svg';
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import EventPreview from 'soapbox/components/event-preview';
-import { Card, Icon } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import EventPreview from 'soapbox/components/event-preview.tsx';
+import { Card } from 'soapbox/components/ui/card.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
-import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview';
+import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview.tsx';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
@@ -59,7 +62,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index - 1)}
             className='flex size-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/outline/chevron-left.svg')} className='size-6 text-black dark:text-white' />
+            <Icon src={chevronLeftIcon} className='size-6 text-black dark:text-white' />
           </button>
         </div>
       )}
@@ -72,7 +75,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
             onClick={() => handleChangeIndex(index + 1)}
             className='flex size-8 items-center justify-center rounded-full bg-white/50 backdrop-blur dark:bg-gray-900/50'
           >
-            <Icon src={require('@tabler/icons/outline/chevron-right.svg')} className='size-6 text-black dark:text-white' />
+            <Icon src={chevronRightIcon} className='size-6 text-black dark:text-white' />
           </button>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useAppSelector } from './useAppSelector';
+import { useAppSelector } from './useAppSelector.ts';
 
 function useLoggedIn() {
   const me = useAppSelector(state => state.me);

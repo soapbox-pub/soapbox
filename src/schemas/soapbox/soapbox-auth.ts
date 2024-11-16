@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { applicationSchema } from 'soapbox/schemas/application';
-import { tokenSchema } from 'soapbox/schemas/token';
+import { applicationSchema } from 'soapbox/schemas/application.ts';
+import { tokenSchema } from 'soapbox/schemas/token.ts';
 
 const authUserSchema = z.object({
   access_token: z.string(),
@@ -25,4 +25,4 @@ const soapboxAuthSchema = z.object({
 type AuthUser = z.infer<typeof authUserSchema>;
 type SoapboxAuth = z.infer<typeof soapboxAuthSchema>;
 
-export { soapboxAuthSchema, SoapboxAuth, authUserSchema, AuthUser };
+export { soapboxAuthSchema, type SoapboxAuth, authUserSchema, type AuthUser };

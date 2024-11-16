@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import type { Location } from 'soapbox/types/history';
+import type { Location } from 'soapbox/types/history.ts';
 
 const LOCAL_STORAGE_REDIRECT_KEY = 'soapbox:redirect-uri';
 

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
-import { keyring } from 'soapbox/features/nostr/keyring';
-import { useAppSelector } from 'soapbox/hooks';
-import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore';
+import { keyring } from 'soapbox/features/nostr/keyring.ts';
+import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 export function useSigner() {
   const { connections } = useBunkerStore();

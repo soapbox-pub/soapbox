@@ -1,4 +1,6 @@
-import { decodeBase64 } from './base64';
+import { describe, expect, it } from 'vitest';
+
+import { decodeBase64 } from './base64.ts';
 
 describe('decodeBase64', () => {
   it('returns a uint8 array', () => {

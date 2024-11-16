@@ -1,20 +1,21 @@
+import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
+import graphemesplit from 'graphemesplit';
 import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
-import React, { useState, useRef, useLayoutEffect, useMemo } from 'react';
+import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon';
-import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich-content';
+import Icon from 'soapbox/components/icon.tsx';
 
-import { getTextDirection } from '../utils/rtl';
+import { getTextDirection } from '../utils/rtl.ts';
 
-import HashtagLink from './hashtag-link';
-import Markup from './markup';
-import Mention from './mention';
-import Poll from './polls/poll';
+import HashtagLink from './hashtag-link.tsx';
+import Markup from './markup.tsx';
+import Mention from './mention.tsx';
+import Poll from './polls/poll.tsx';
 
-import type { Sizes } from 'soapbox/components/ui/text/text';
-import type { Status } from 'soapbox/types/entities';
+import type { Sizes } from 'soapbox/components/ui/text.tsx';
+import type { Status } from 'soapbox/types/entities.ts';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -27,7 +28,7 @@ interface IReadMoreButton {
 const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
   <button className='flex items-center border-0 bg-transparent p-0 pt-2 text-gray-900 hover:underline active:underline dark:text-gray-300' onClick={onClick}>
     <FormattedMessage id='status.read_more' defaultMessage='Read more' />
-    <Icon className='inline-block size-5' src={require('@tabler/icons/outline/chevron-right.svg')} />
+    <Icon className='inline-block size-5' src={chevronRightIcon} />
   </button>
 );
 
@@ -48,9 +49,13 @@ const StatusContent: React.FC<IStatusContent> = ({
   textSize = 'md',
 }) => {
   const [collapsed, setCollapsed] = useState(false);
-  const [onlyEmoji, setOnlyEmoji] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
+
+  const isOnlyEmoji = useMemo(() => {
+    const textContent = new DOMParser().parseFromString(status.contentHtml, 'text/html').body.firstChild?.textContent;
+    return Boolean(textContent && /^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
+  }, [status.contentHtml]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -62,18 +67,8 @@ const StatusContent: React.FC<IStatusContent> = ({
     }
   };
 
-  const maybeSetOnlyEmoji = (): void => {
-    if (!node.current) return;
-    const only = isOnlyEmoji(node.current, BIG_EMOJI_LIMIT, true);
-
-    if (only !== onlyEmoji) {
-      setOnlyEmoji(only);
-    }
-  };
-
   useLayoutEffect(() => {
     maybeSetCollapsed();
-    maybeSetOnlyEmoji();
   });
 
   const parsedHtml = useMemo((): string => {
@@ -148,7 +143,7 @@ const StatusContent: React.FC<IStatusContent> = ({
     'cursor-pointer': onClick,
     'whitespace-normal': withSpoiler,
     'max-h-[300px]': collapsed,
-    'leading-normal big-emoji': onlyEmoji,
+    'leading-normal !text-4xl': isOnlyEmoji,
   });
 
   if (onClick) {
@@ -183,7 +178,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         tabIndex={0}
         key='content'
         className={clsx(baseClassName, {
-          'leading-normal big-emoji': onlyEmoji,
+          'leading-normal !text-4xl': isOnlyEmoji,
         })}
         direction={direction}
         lang={status.language || undefined}
@@ -201,4 +196,4 @@ const StatusContent: React.FC<IStatusContent> = ({
   }
 };
 
-export default React.memo(StatusContent);
+export default memo(StatusContent);

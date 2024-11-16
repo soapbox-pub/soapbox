@@ -1,11 +1,11 @@
-import { useApi } from 'soapbox/hooks/useApi';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 
-import { useCreateEntity } from './useCreateEntity';
-import { useDeleteEntity } from './useDeleteEntity';
-import { parseEntitiesPath } from './utils';
+import { useCreateEntity } from './useCreateEntity.ts';
+import { useDeleteEntity } from './useDeleteEntity.ts';
+import { parseEntitiesPath } from './utils.ts';
 
-import type { EntitySchema, ExpandedEntitiesPath } from './types';
-import type { Entity } from '../types';
+import type { EntitySchema, ExpandedEntitiesPath } from './types.ts';
+import type { Entity } from '../types.ts';
 
 interface UseEntityActionsOpts<TEntity extends Entity = Entity> {
   schema?: EntitySchema<TEntity>;

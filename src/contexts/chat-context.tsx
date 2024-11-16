@@ -1,9 +1,11 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { toggleMainWindow } from 'soapbox/actions/chats';
-import { useAppDispatch, useOwnAccount, useSettings } from 'soapbox/hooks';
-import { IChat, useChat } from 'soapbox/queries/chats';
+import { toggleMainWindow } from 'soapbox/actions/chats.ts';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { IChat, useChat } from 'soapbox/queries/chats.ts';
 
 const ChatContext = createContext<any>({
   isOpen: false,

@@ -1,15 +1,14 @@
 import { createSelector } from 'reselect';
 
-import { getHost } from 'soapbox/actions/instance';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers';
-import KVStore from 'soapbox/storage/kv-store';
-import { removeVS16s } from 'soapbox/utils/emoji';
-import { getFeatures } from 'soapbox/utils/features';
+import { getHost } from 'soapbox/actions/instance.ts';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
+import KVStore from 'soapbox/storage/kv-store.ts';
+import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { staticClient } from '../api';
+import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
@@ -28,12 +27,6 @@ const getSoapboxConfig = createSelector([
     // If displayFqn isn't set, infer it from federation
     if (soapbox.get('displayFqn') === undefined) {
       soapboxConfig.set('displayFqn', features.federating);
-    }
-
-    // If RGI reacts aren't supported, strip VS16s
-    // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-    if (features.emojiReactsNonRGI) {
-      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
     }
   });
 });
@@ -86,7 +79,7 @@ const loadSoapboxConfig = () =>
 
 const fetchSoapboxJson = (host: string | null) =>
   (dispatch: AppDispatch) =>
-    staticClient.get('/instance/soapbox.json').then(({ data }) => {
+    fetch('/instance/soapbox.json').then((response) => response.json()).then((data) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data, host));
       return data;

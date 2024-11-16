@@ -1,21 +1,25 @@
+import layoutGridIcon from '@tabler/icons/outline/layout-grid.svg';
+import layoutListIcon from '@tabler/icons/outline/layout-list.svg';
 import clsx from 'clsx';
-import React, { useCallback, useState } from 'react';
+import { forwardRef, useCallback, useState } from 'react';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks';
-import { Column, HStack, Icon } from 'soapbox/components/ui';
+import { useGroupTag, useGroupsFromTag } from 'soapbox/api/hooks/index.ts';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 
-import GroupGridItem from './components/discover/group-grid-item';
-import GroupListItem from './components/discover/group-list-item';
+import GroupGridItem from './components/discover/group-grid-item.tsx';
+import GroupListItem from './components/discover/group-list-item.tsx';
 
-import type { Group } from 'soapbox/schemas';
+import type { Group } from 'soapbox/schemas/index.ts';
 
 enum Layout {
   LIST = 'LIST',
   GRID = 'GRID'
 }
 
-const GridList: Components['List'] = React.forwardRef((props, ref) => {
+const GridList: Components['List'] = forwardRef((props, ref) => {
   const { context, ...rest } = props;
   return <div ref={ref} {...rest} className='flex flex-wrap' />;
 });
@@ -65,7 +69,7 @@ const Tag: React.FC<ITag> = (props) => {
         <HStack alignItems='center'>
           <button onClick={() => setLayout(Layout.LIST)}>
             <Icon
-              src={require('@tabler/icons/outline/layout-list.svg')}
+              src={layoutListIcon}
               className={
                 clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.LIST,
@@ -76,7 +80,7 @@ const Tag: React.FC<ITag> = (props) => {
 
           <button onClick={() => setLayout(Layout.GRID)}>
             <Icon
-              src={require('@tabler/icons/outline/layout-grid.svg')}
+              src={layoutGridIcon}
               className={
                 clsx('size-5 text-gray-600', {
                   'text-primary-600': layout === Layout.GRID,

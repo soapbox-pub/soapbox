@@ -1,18 +1,29 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { createFilter, fetchFilter, updateFilter } from 'soapbox/actions/filters';
-import List, { ListItem } from 'soapbox/components/list';
-import MissingIndicator from 'soapbox/components/missing-indicator';
-import { Button, Column, Form, FormActions, FormGroup, HStack, Input, Stack, Streamfield, Text, Toggle } from 'soapbox/components/ui';
-import { useAppDispatch, useFeatures } from 'soapbox/hooks';
-import { normalizeFilter } from 'soapbox/normalizers';
-import toast from 'soapbox/toast';
+import { createFilter, fetchFilter, updateFilter } from 'soapbox/actions/filters.ts';
+import List, { ListItem } from 'soapbox/components/list.tsx';
+import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
+import { Column } from 'soapbox/components/ui/column.tsx';
+import FormActions from 'soapbox/components/ui/form-actions.tsx';
+import FormGroup from 'soapbox/components/ui/form-group.tsx';
+import Form from 'soapbox/components/ui/form.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Input from 'soapbox/components/ui/input.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
+import Streamfield from 'soapbox/components/ui/streamfield.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { normalizeFilter } from 'soapbox/normalizers/index.ts';
+import toast from 'soapbox/toast.tsx';
 
-import { SelectDropdown } from '../forms';
+import { SelectDropdown } from '../forms/index.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield/streamfield';
+import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
 
 interface IFilterField {
   id?: string;
@@ -177,7 +188,7 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
   if (notFound) return <MissingIndicator />;
 
   return (
-    <Column className='filter-settings-panel' label={intl.formatMessage(messages.subheading_add_new)}>
+    <Column label={intl.formatMessage(messages.subheading_add_new)}>
       <Form onSubmit={handleAddNew}>
         <FormGroup labelText={intl.formatMessage(messages.title)}>
           <Input

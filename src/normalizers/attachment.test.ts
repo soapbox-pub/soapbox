@@ -1,6 +1,7 @@
 import { Record as ImmutableRecord } from 'immutable';
+import { describe, expect, it } from 'vitest';
 
-import { normalizeAttachment } from './attachment';
+import { normalizeAttachment } from './attachment.ts';
 
 describe('normalizeAttachment()', () => {
   it('adds base fields', () => {

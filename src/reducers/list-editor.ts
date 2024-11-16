@@ -18,7 +18,7 @@ import {
   LIST_EDITOR_SUGGESTIONS_CHANGE,
   LIST_EDITOR_ADD_SUCCESS,
   LIST_EDITOR_REMOVE_SUCCESS,
-} from '../actions/lists';
+} from '../actions/lists.ts';
 
 import type { AnyAction } from 'redux';
 

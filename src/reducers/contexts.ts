@@ -4,21 +4,21 @@ import {
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
 
-import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
+import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer/index.ts';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
-} from '../actions/accounts';
+} from '../actions/accounts.ts';
 import {
   CONTEXT_FETCH_SUCCESS,
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
-} from '../actions/statuses';
-import { TIMELINE_DELETE } from '../actions/timelines';
+} from '../actions/statuses.ts';
+import { TIMELINE_DELETE } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { Status } from 'soapbox/schemas';
+import type { Status } from 'soapbox/schemas/index.ts';
 
 export const ReducerRecord = ImmutableRecord({
   inReplyTos: ImmutableMap<string, string>(),

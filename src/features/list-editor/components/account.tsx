@@ -1,11 +1,13 @@
-import React from 'react';
+import plusIcon from '@tabler/icons/outline/plus.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists';
-import IconButton from 'soapbox/components/icon-button';
-import { HStack } from 'soapbox/components/ui';
-import AccountContainer from 'soapbox/containers/account-container';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
+import { removeFromListEditor, addToListEditor } from 'soapbox/actions/lists.ts';
+import IconButton from 'soapbox/components/icon-button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },
@@ -28,9 +30,9 @@ const Account: React.FC<IAccount> = ({ accountId }) => {
   let button;
 
   if (isAdded) {
-    button = <IconButton src={require('@tabler/icons/outline/x.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+    button = <IconButton src={xIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
   } else {
-    button = <IconButton src={require('@tabler/icons/outline/plus.svg')} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+    button = <IconButton src={plusIcon} iconClassName='h-5 w-5' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
   }
 
   return (

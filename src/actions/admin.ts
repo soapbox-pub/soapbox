@@ -1,17 +1,16 @@
+import { fetchRelationships } from 'soapbox/actions/accounts.ts';
+import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
+import { DittoInstanceCredentials } from 'soapbox/features/admin/manage-ditto-server.tsx';
+import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
+import { filterBadges, getTagDiff } from 'soapbox/utils/badges.ts';
 
-import { fetchRelationships } from 'soapbox/actions/accounts';
-import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer';
-import { DittoInstanceCredentials } from 'soapbox/features/admin/manage-ditto-server';
-import { accountIdsToAccts } from 'soapbox/selectors';
-import { filterBadges, getTagDiff } from 'soapbox/utils/badges';
+import api, { getLinks } from '../api/index.ts';
 
-import api, { getLinks } from '../api';
-
-import { fetchInstance } from './instance';
+import { fetchInstance } from './instance.ts';
 
 import type { AxiosResponse } from 'axios';
-import type { AppDispatch, RootState } from 'soapbox/store';
-import type { APIEntity } from 'soapbox/types/entities';
+import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';

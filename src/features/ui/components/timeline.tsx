@@ -1,14 +1,15 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import debounce from 'lodash/debounce';
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { defineMessages } from 'react-intl';
 
-import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines';
-import ScrollTopButton from 'soapbox/components/scroll-top-button';
-import StatusList, { IStatusList } from 'soapbox/components/status-list';
-import { Portal } from 'soapbox/components/ui';
-import { useAppSelector, useAppDispatch } from 'soapbox/hooks';
-import { makeGetStatusIds } from 'soapbox/selectors';
+import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines.ts';
+import ScrollTopButton from 'soapbox/components/scroll-top-button.tsx';
+import StatusList, { IStatusList } from 'soapbox/components/status-list.tsx';
+import Portal from 'soapbox/components/ui/portal.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },

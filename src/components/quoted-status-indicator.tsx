@@ -1,8 +1,11 @@
-import React, { useCallback } from 'react';
+import quoteIcon from '@tabler/icons/outline/quote.svg';
+import { useCallback } from 'react';
 
-import { HStack, Icon, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
-import { makeGetStatus } from 'soapbox/selectors';
+import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 interface IQuotedStatusIndicator {
   /** The quoted status id. */
@@ -18,7 +21,7 @@ const QuotedStatusIndicator: React.FC<IQuotedStatusIndicator> = ({ statusId }) =
 
   return (
     <HStack alignItems='center' space={1}>
-      <Icon className='size-5' src={require('@tabler/icons/outline/quote.svg')} aria-hidden />
+      <Icon className='size-5' src={quoteIcon} aria-hidden />
       <Text truncate>{status.url}</Text>
     </HStack>
   );

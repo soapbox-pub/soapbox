@@ -1,6 +1,6 @@
-import { AppDispatch } from 'soapbox/store';
+import { AppDispatch } from 'soapbox/store.ts';
 
-import type { ModalType } from 'soapbox/features/ui/components/modal-root';
+import type { ModalType } from 'soapbox/features/ui/components/modal-root.tsx';
 
 export const MODAL_OPEN  = 'MODAL_OPEN';
 export const MODAL_CLOSE = 'MODAL_CLOSE';

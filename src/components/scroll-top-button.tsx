@@ -1,9 +1,11 @@
+import arrowBarToUpIcon from '@tabler/icons/outline/arrow-bar-to-up.svg';
 import throttle from 'lodash/throttle';
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
-import { Icon, Text } from 'soapbox/components/ui';
-import { useSettings } from 'soapbox/hooks';
+import Icon from 'soapbox/components/ui/icon.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
+import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 interface IScrollTopButton {
   /** Callback when clicked, and also when scrolled to the top. */
@@ -92,7 +94,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
       >
         <Icon
           className='size-4'
-          src={require('@tabler/icons/outline/arrow-bar-to-up.svg')}
+          src={arrowBarToUpIcon}
         />
 
         <Text theme='inherit' size='sm'>

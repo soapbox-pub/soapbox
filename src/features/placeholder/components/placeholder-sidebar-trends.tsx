@@ -1,8 +1,6 @@
-import React from 'react';
+import Stack from 'soapbox/components/ui/stack.tsx';
 
-import { Stack } from 'soapbox/components/ui';
-
-import { randomIntFromInterval, generateText } from '../utils';
+import { randomIntFromInterval, generateText } from '../utils.ts';
 
 export default ({ limit }: { limit: number }) => {
   const trend = randomIntFromInterval(6, 3);

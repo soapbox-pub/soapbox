@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 /** Controls the state of files being dragged over a node. */
 function useDraggedFiles<R extends HTMLElement>(node: React.RefObject<R>, onDrop?: (files: FileList) => void) {
