@@ -151,7 +151,7 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
                   className='size-4 text-primary-600 dark:fill-white dark:text-primary-800'
                 />
               ) : (
-                <div className='svg-icon' />
+                <div className='flex size-4 items-center justify-center transition duration-200' />
               )}
 
               <div className='text-primary-600 dark:text-white'>

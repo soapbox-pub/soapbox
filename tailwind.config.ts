@@ -78,6 +78,8 @@ const config: Config = {
         'greentext': true,
       }),
       animation: {
+        'loader-figure': 'loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1)',
+        'loader-label': 'loader-label 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1)',
         fade: 'fade 150ms linear',
         'sonar-scale-4': 'sonar-scale-4 3s linear infinite',
         'sonar-scale-3': 'sonar-scale-3 3s 0.5s linear infinite',
@@ -87,6 +89,38 @@ const config: Config = {
         'leave': 'leave 150ms ease-in forwards',
       },
       keyframes: {
+        'loader-figure': {
+          '0%': {
+            backgroundColor: 'rgb(229, 231, 235)',
+            width: '0px',
+            height: '0px',
+          },
+          
+          '29%': {
+            backgroundColor: 'rgb(229, 231, 235)',
+          },
+        
+          '30%': {
+            width: '3rem',
+            height: '3rem',
+            backgroundColor: 'transparent',
+            opacity: '1',
+            borderWidth: '6px',
+          },
+        
+          '100%': {
+            width: '3rem',
+            height: '3rem',
+            borderWidth: '0',
+            opacity: '0',
+            backgroundColor: 'transparent',
+          },
+        },
+        'loader-label': {
+          '0%': { opacity: '0.25' },
+          '30%': { opacity: '1' },
+          '100%': { opacity: '0.25' },
+        },
         fade: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },

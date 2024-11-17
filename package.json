@@ -27,9 +27,8 @@
     "preview": "vite preview",
     "i18n": "formatjs extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --out-file build/messages.json && formatjs compile build/messages.json --out-file src/locales/en.json",
     "test": "vitest",
-    "lint": "npm run lint:js && npm run lint:sass",
+    "lint": "npm run lint:js",
     "lint:js": "eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx . --cache",
-    "lint:sass": "stylelint src/styles/**/*.scss",
     "prepare": "husky install"
   },
   "license": "AGPL-3.0-or-later",
