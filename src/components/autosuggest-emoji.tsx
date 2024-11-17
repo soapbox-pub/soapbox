@@ -13,7 +13,7 @@ const AutosuggestEmoji: React.FC<IAutosuggestEmoji> = ({ emoji }) => {
   let elem: React.ReactNode;
 
   if (isCustomEmoji(emoji)) {
-    elem = <img className='emojione mr-2 block size-4' src={emoji.imageUrl} alt={emoji.colons} />;
+    elem = <img className='mr-2 block size-4' src={emoji.imageUrl} alt={emoji.colons} />;
   } else {
     const mapping = unicodeMapping[emoji.native] || unicodeMapping[emoji.native.replace(/\uFE0F$/, '')];
 

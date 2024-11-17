@@ -81,7 +81,7 @@ class EmojiNode extends DecoratorNode<React.ReactNode> {
     if (isNativeEmoji(emoji)) {
       return emoji.native;
     } else {
-      return <img src={emoji.imageUrl} alt={emoji.colons} className='emojione size-4' />;
+      return <img src={emoji.imageUrl} alt={emoji.colons} className='inline size-4' />;
     }
   }
 

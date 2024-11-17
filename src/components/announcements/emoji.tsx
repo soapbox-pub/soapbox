@@ -20,7 +20,7 @@ const Emoji: React.FC<IEmoji> = ({ emoji, hovered }) => {
     return (
       <img
         draggable='false'
-        className='emojione m-0 block'
+        className='m-0 block'
         alt={shortCode}
         title={shortCode}
         src={filename as string}
