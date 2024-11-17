@@ -35,6 +35,7 @@ import ReactDOM from 'react-dom';
 
 import { clearComposeSuggestions, fetchComposeSuggestions } from 'soapbox/actions/compose.ts';
 import { chooseEmoji } from 'soapbox/actions/emojis.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import AutosuggestEmoji from 'soapbox/components/autosuggest-emoji.tsx';
 import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
@@ -278,6 +279,7 @@ const AutosuggestPlugin = ({
   setSuggestionsHidden,
 }: AutosuggestPluginProps): JSX.Element | null => {
   const { suggestions } = useCompose(composeId);
+  const { customEmojis } = useCustomEmojis();
   const dispatch = useAppDispatch();
 
   const [editor] = useLexicalComposerContext();
@@ -410,7 +412,7 @@ const AutosuggestPlugin = ({
           return;
         }
 
-        dispatch(fetchComposeSuggestions(composeId, match.matchingString.trim()));
+        dispatch(fetchComposeSuggestions(composeId, match.matchingString.trim(), customEmojis));
 
         if (!isSelectionOnEntityBoundary(editor, match.leadOffset)) {
           const isRangePositioned = tryToPositionRange(match.leadOffset, range);

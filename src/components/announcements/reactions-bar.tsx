@@ -7,17 +7,15 @@ import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import Reaction from './reaction.tsx';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type { Emoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
 import type { AnnouncementReaction } from 'soapbox/schemas/index.ts';
 
 interface IReactionsBar {
   announcementId: string;
   reactions: AnnouncementReaction[];
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
 }
 
-const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, emojiMap }) => {
+const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions }) => {
   const { reduceMotion } = useSettings();
   const { addReaction } = useAnnouncements();
 
@@ -47,7 +45,6 @@ const ReactionsBar: React.FC<IReactionsBar> = ({ announcementId, reactions, emoj
               reaction={data}
               style={{ transform: `scale(${style.scale})`, position: style.scale < 0.5 ? 'absolute' : 'static' }}
               announcementId={announcementId}
-              emojiMap={emojiMap}
             />
           ))}
 

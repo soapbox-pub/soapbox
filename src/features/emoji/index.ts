@@ -3,6 +3,7 @@ import split from 'graphemesplit';
 import unicodeMapping from './mapping.ts';
 
 import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
+import type { CustomEmoji as MastodonCustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
 
 /*
  * TODO: Consolate emoji object types
@@ -206,13 +207,13 @@ const emojify = (str: string, customEmojis = {}) => {
 
 export default emojify;
 
-export const buildCustomEmojis = (customEmojis: any) => {
+export function buildCustomEmojis(customEmojis: MastodonCustomEmoji[]): EmojiMart<EmojiMartCustom>[] {
   const emojis: EmojiMart<EmojiMartCustom>[] = [];
 
-  customEmojis.forEach((emoji: any) => {
-    const shortcode = emoji.get('shortcode');
-    const url       = emoji.get('static_url');
-    const name      = shortcode.replace(':', '');
+  customEmojis.forEach((emoji) => {
+    const shortcode = emoji.shortcode;
+    const url = emoji.url;
+    const name = shortcode.replace(':', '');
 
     emojis.push({
       id: name,
@@ -223,4 +224,4 @@ export const buildCustomEmojis = (customEmojis: any) => {
   });
 
   return emojis;
-};
+}

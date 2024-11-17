@@ -14,7 +14,6 @@ import compose_event from './compose-event.ts';
 import compose from './compose.ts';
 import contexts from './contexts.ts';
 import conversations from './conversations.ts';
-import custom_emojis from './custom-emojis.ts';
 import domain_lists from './domain-lists.ts';
 import dropdown_menu from './dropdown-menu.ts';
 import filters from './filters.ts';
@@ -69,7 +68,6 @@ export default combineReducers({
   compose_event,
   contexts,
   conversations,
-  custom_emojis,
   domain_lists,
   dropdown_menu,
   entities,

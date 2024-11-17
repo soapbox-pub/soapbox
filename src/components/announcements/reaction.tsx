@@ -7,17 +7,15 @@ import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
 
 import Emoji from './emoji.tsx';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type { AnnouncementReaction } from 'soapbox/schemas/index.ts';
 
 interface IReaction {
   announcementId: string;
   reaction: AnnouncementReaction;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
   style: React.CSSProperties;
 }
 
-const Reaction: React.FC<IReaction> = ({ announcementId, reaction, emojiMap, style }) => {
+const Reaction: React.FC<IReaction> = ({ announcementId, reaction, style }) => {
   const [hovered, setHovered] = useState(false);
 
   const { addReaction, removeReaction } = useAnnouncements();
@@ -55,7 +53,7 @@ const Reaction: React.FC<IReaction> = ({ announcementId, reaction, emojiMap, sty
       style={style}
     >
       <span className='block size-4'>
-        <Emoji hovered={hovered} emoji={reaction.name} emojiMap={emojiMap} />
+        <Emoji hovered={hovered} emoji={reaction.name} />
       </span>
       <span className='block min-w-[9px] text-center text-xs font-medium text-primary-600 dark:text-white'>
         <AnimatedNumber value={reaction.count} />

@@ -1,4 +1,3 @@
-import { List, Map } from 'immutable';
 import pick from 'lodash/pick';
 import { describe, expect, it } from 'vitest';
 
@@ -35,13 +34,19 @@ describe('emoji_index', () => {
         id: 'mastodon',
         name: 'mastodon',
         keywords: ['mastodon'],
-        skins: { src: 'http://example.com' },
+        skins: [{ src: 'http://example.com' }],
       },
     ];
 
-    const custom_emojis = List([
-      Map({ static_url: 'http://example.com', shortcode: 'mastodon' }),
-    ]);
+    const customEmojis = [
+      {
+        category: '',
+        url: 'http://example.com/mastodon.png',
+        static_url: 'http://example.com/mastodon.png',
+        shortcode: 'mastodon',
+        visible_in_picker: true,
+      },
+    ];
 
     const lightExpected = [
       {
@@ -51,7 +56,7 @@ describe('emoji_index', () => {
     ];
 
     addCustomToPool(custom);
-    expect(search('masto', {}, custom_emojis).map(trimEmojis)).toEqual(lightExpected);
+    expect(search('masto', {}, customEmojis).map(trimEmojis)).toEqual(lightExpected);
   });
 
   it('updates custom emoji if another is passed', () => {
@@ -60,7 +65,7 @@ describe('emoji_index', () => {
         id: 'mastodon',
         name: 'mastodon',
         keywords: ['mastodon'],
-        skins: { src: 'http://example.com' },
+        skins: [{ src: 'http://example.com' }],
       },
     ];
 
@@ -71,18 +76,24 @@ describe('emoji_index', () => {
         id: 'pleroma',
         name: 'pleroma',
         keywords: ['pleroma'],
-        skins: { src: 'http://example.com' },
+        skins: [{ src: 'http://example.com' }],
       },
     ];
 
     addCustomToPool(custom2);
 
-    const custom_emojis = List([
-      Map({ static_url: 'http://example.com', shortcode: 'pleroma' }),
-    ]);
+    const customEmojis = [
+      {
+        category: '',
+        url: 'http://example.com/pleroma.png',
+        static_url: 'http://example.com/pleroma.png',
+        shortcode: 'pleroma',
+        visible_in_picker: true,
+      },
+    ];
 
     const expected: any = [];
-    expect(search('masto', {}, custom_emojis).map(trimEmojis)).toEqual(expected);
+    expect(search('masto', {}, customEmojis).map(trimEmojis)).toEqual(expected);
   });
 
   it('does an emoji whose unified name is irregular', () => {
