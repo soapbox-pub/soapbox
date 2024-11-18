@@ -1,0 +1,4 @@
+.ptr,
+.ptr__children {
+  @apply !overflow-visible;
+}
