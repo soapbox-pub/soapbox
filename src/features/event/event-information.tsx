@@ -195,7 +195,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
   return (
     <Stack className='mt-4 sm:p-2' space={2}>
-      {!!status.contentHtml.trim() && (
+      {!!status.content.trim() && (
         <Stack space={1}>
           <Text size='xl' weight='bold'>
             <FormattedMessage id='event.description' defaultMessage='Description' />
