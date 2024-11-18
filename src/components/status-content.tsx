@@ -92,17 +92,25 @@ const StatusContent: React.FC<IStatusContent> = ({
       }
 
       if (domNode instanceof DOMText) {
-        const parts = domNode.data.split(' ').map((part) => {
-          const match = part.match(/^:(\w+):$/);
-          if (!match) return part;
+        const parts: Array<string | JSX.Element> = [];
 
-          const [, shortcode] = match;
-          const customEmoji = customEmojis.find((e) => e.shortcode === shortcode);
+        const textNodes = domNode.data.split(/:\w+:/);
+        const shortcodes = [...domNode.data.matchAll(/:(\w+):/g)];
 
-          if (!customEmoji) return part;
+        for (let i = 0; i < textNodes.length; i++) {
+          parts.push(textNodes[i]);
 
-          return <img key={part} src={customEmoji.url} alt={part} className='inline-block h-[1em]' />;
-        });
+          if (shortcodes[i]) {
+            const [text, shortcode] = shortcodes[i];
+            const customEmoji = customEmojis.find((e) => e.shortcode === shortcode);
+
+            if (customEmoji) {
+              parts.push(<img key={i} src={customEmoji.url} alt={shortcode} className='inline-block h-[1em]' />);
+            } else {
+              parts.push(text);
+            }
+          }
+        }
 
         return <>{parts}</>;
       }
