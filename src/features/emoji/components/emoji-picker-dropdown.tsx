@@ -1,7 +1,5 @@
-import { Map as ImmutableMap } from 'immutable';
 import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { createSelector } from 'reselect';
 
 import { chooseEmoji } from 'soapbox/actions/emojis.ts';
 import { changeSetting } from 'soapbox/actions/settings.ts';
@@ -9,9 +7,8 @@ import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
 import { EmojiPicker } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFrequentlyUsedEmojis } from 'soapbox/hooks/useFrequentlyUsedEmojis.ts';
 import { useTheme } from 'soapbox/hooks/useTheme.ts';
-import { RootState } from 'soapbox/store.ts';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
 import type { CustomEmoji as MastodonCustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
@@ -51,46 +48,6 @@ export interface IEmojiPickerDropdown {
   setVisible?: (value: boolean) => void;
   update?: (() => any) | null;
 }
-
-const perLine = 8;
-const lines   = 2;
-
-const DEFAULTS = [
-  '+1',
-  'grinning',
-  'kissing_heart',
-  'heart_eyes',
-  'laughing',
-  'stuck_out_tongue_winking_eye',
-  'sweat_smile',
-  'joy',
-  'yum',
-  'disappointed',
-  'thinking_face',
-  'weary',
-  'sob',
-  'sunglasses',
-  'heart',
-  'ok_hand',
-];
-
-export const getFrequentlyUsedEmojis = createSelector([
-  (state: RootState) => state.settings.get('frequentlyUsedEmojis', ImmutableMap()),
-], (emojiCounters: ImmutableMap<string, number>) => {
-  let emojis = emojiCounters
-    .keySeq()
-    .sort((a, b) => emojiCounters.get(a)! - emojiCounters.get(b)!)
-    .reverse()
-    .slice(0, perLine * lines)
-    .toArray();
-
-  if (emojis.length < DEFAULTS.length) {
-    const uniqueDefaults = DEFAULTS.filter(emoji => !emojis.includes(emoji));
-    emojis = emojis.concat(uniqueDefaults.slice(0, DEFAULTS.length - emojis.length));
-  }
-
-  return emojis;
-});
 
 /** Filter custom emojis to only ones visible in the picker, and sort them alphabetically. */
 function filterCustomEmojis(customEmojis: MastodonCustomEmoji[]) {
@@ -141,7 +98,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   const theme = useTheme();
 
   const { customEmojis } = useCustomEmojis();
-  const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
+  const frequentlyUsedEmojis = useFrequentlyUsedEmojis();
 
   const handlePick = (emoji: any) => {
     setVisible?.(false);
@@ -232,7 +189,7 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
           custom={withCustom ? [{ emojis: buildCustomEmojis(filterCustomEmojis(customEmojis)) }] : undefined}
           title={title}
           onEmojiSelect={handlePick}
-          recent={frequentlyUsedEmojis}
+          recent={frequentlyUsedEmojis.slice(0, 16)}
           perLine={8}
           skin={handleSkinTone}
           emojiSize={22}

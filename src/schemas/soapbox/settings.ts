@@ -75,6 +75,10 @@ const settingsSchema = z.object({
   }),
   /** Settings notifications that have been dismissed. See `useSettingsNotifications` hook. */
   dismissedSettingsNotifications: z.array(z.string()).catch([]),
+  frequentlyUsedEmojis: z.record(
+    z.string(),
+    z.number().int().nonnegative(),
+  ).catch({}),
 });
 
 type Settings = z.infer<typeof settingsSchema>;
