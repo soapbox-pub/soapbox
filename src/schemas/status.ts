@@ -1,4 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
+import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
 import emojify from 'soapbox/features/emoji/index.ts';
@@ -106,13 +107,13 @@ type Translation = {
 const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: T) => {
   const emojiMap = makeCustomEmojiMap(status.emojis);
 
-  const contentHtml = stripCompatibilityFeatures(emojify(status.content, emojiMap));
+  const content = DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } });
   const spoilerHtml = emojify(escapeTextContentForBrowser(status.spoiler_text), emojiMap);
 
   return {
     ...status,
     approval_status: 'approval' as const,
-    contentHtml,
+    content,
     expectsCard: false,
     event: pleroma?.event,
     filtered: [],

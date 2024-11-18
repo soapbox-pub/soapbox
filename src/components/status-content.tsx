@@ -1,10 +1,11 @@
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
 import graphemesplit from 'graphemesplit';
-import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode } from 'html-react-parser';
+import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode, Text as DOMText } from 'html-react-parser';
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import Icon from 'soapbox/components/icon.tsx';
 
 import { getTextDirection } from '../utils/rtl.ts';
@@ -51,11 +52,12 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
+  const { customEmojis } = useCustomEmojis();
 
   const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(status.contentHtml, 'text/html').body.firstChild?.textContent;
-    return Boolean(textContent && /^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
-  }, [status.contentHtml]);
+    const textContent = new DOMParser().parseFromString(status.content, 'text/html').body.firstChild?.textContent ?? '';
+    return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
+  }, [status.content]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -72,8 +74,8 @@ const StatusContent: React.FC<IStatusContent> = ({
   });
 
   const parsedHtml = useMemo((): string => {
-    return translatable && status.translation ? status.translation.get('content')! : status.contentHtml;
-  }, [status.contentHtml, status.translation]);
+    return translatable && status.translation ? status.translation.get('content')! : status.content;
+  }, [status.content, status.translation]);
 
   if (status.content.length === 0) {
     return null;
@@ -87,6 +89,30 @@ const StatusContent: React.FC<IStatusContent> = ({
     replace(domNode) {
       if (domNode instanceof Element && ['script', 'iframe'].includes(domNode.name)) {
         return null;
+      }
+
+      if (domNode instanceof DOMText) {
+        const parts: Array<string | JSX.Element> = [];
+
+        const textNodes = domNode.data.split(/:\w+:/);
+        const shortcodes = [...domNode.data.matchAll(/:(\w+):/g)];
+
+        for (let i = 0; i < textNodes.length; i++) {
+          parts.push(textNodes[i]);
+
+          if (shortcodes[i]) {
+            const [text, shortcode] = shortcodes[i];
+            const customEmoji = customEmojis.find((e) => e.shortcode === shortcode);
+
+            if (customEmoji) {
+              parts.push(<img key={i} src={customEmoji.url} alt={shortcode} className='inline-block h-[1em]' />);
+            } else {
+              parts.push(text);
+            }
+          }
+        }
+
+        return <>{parts}</>;
       }
 
       if (domNode instanceof Element && domNode.name === 'a') {

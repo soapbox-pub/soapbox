@@ -88,7 +88,6 @@ export const StatusRecord = ImmutableRecord({
   event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
-  contentHtml: '',
   expectsCard: false,
   hidden: false,
   search_index: '',

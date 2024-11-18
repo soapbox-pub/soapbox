@@ -49,7 +49,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
       <Markup
         className='break-words'
         size='sm'
-        dangerouslySetInnerHTML={{ __html: status.contentHtml }}
+        dangerouslySetInnerHTML={{ __html: status.content }}
         direction={getTextDirection(status.search_index)}
       />
 
