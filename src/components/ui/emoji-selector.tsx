@@ -8,12 +8,12 @@ import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import EmojiPickerDropdown, { getFrequentlyUsedEmojis } from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
+import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
 import emojiData from 'soapbox/features/emoji/data.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useFrequentlyUsedEmojis } from 'soapbox/hooks/useFrequentlyUsedEmojis.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 
@@ -74,7 +74,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
 }): JSX.Element => {
   const { allowedEmoji } = useSoapboxConfig();
   const { customEmojiReacts } = useFeatures();
-  const shortcodes = useAppSelector((state) => getFrequentlyUsedEmojis(state));
+  const frequentlyUsedEmojis = useFrequentlyUsedEmojis();
 
   const dispatch = useAppDispatch();
   const [expanded, setExpanded] = useState(false);
@@ -138,7 +138,8 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     onClose?.();
   });
 
-  const recentEmojis = shortcodes.reduce<string[]>((results, shortcode) => {
+  /** Frequently used emojis converted from shortcodes to native. */
+  const frequentNative = frequentlyUsedEmojis.reduce<string[]>((results, shortcode) => {
     const emoji = emojiData.emojis[shortcode]?.skins[0]?.native;
     if (emoji) {
       results.push(emoji);
@@ -146,7 +147,8 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({
     return results;
   }, []);
 
-  const emojis = new Set([...recentEmojis, ...allowedEmoji]);
+  /** Set of native emojis to display in the selector. */
+  const emojis = new Set([...frequentNative, ...allowedEmoji]);
 
   return (
     <div
