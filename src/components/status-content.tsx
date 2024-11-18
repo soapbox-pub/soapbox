@@ -5,7 +5,6 @@ import parse, { Element, type HTMLReactParserOptions, domToReact, type DOMNode, 
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import Icon from 'soapbox/components/icon.tsx';
 
 import { getTextDirection } from '../utils/rtl.ts';
@@ -52,7 +51,6 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-  const { customEmojis } = useCustomEmojis();
 
   const isOnlyEmoji = useMemo(() => {
     const textContent = new DOMParser().parseFromString(status.content, 'text/html').body.firstChild?.textContent ?? '';
@@ -102,7 +100,7 @@ const StatusContent: React.FC<IStatusContent> = ({
 
           if (shortcodes[i]) {
             const [text, shortcode] = shortcodes[i];
-            const customEmoji = customEmojis.find((e) => e.shortcode === shortcode);
+            const customEmoji = status.emojis.find((e) => e.shortcode === shortcode);
 
             if (customEmoji) {
               parts.push(<img key={i} src={customEmoji.url} alt={shortcode} className='inline-block h-[1em]' />);
