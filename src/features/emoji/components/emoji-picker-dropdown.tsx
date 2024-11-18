@@ -55,41 +55,15 @@ export interface IEmojiPickerDropdown {
 const perLine = 8;
 const lines   = 2;
 
-const DEFAULTS = [
-  '+1',
-  'grinning',
-  'kissing_heart',
-  'heart_eyes',
-  'laughing',
-  'stuck_out_tongue_winking_eye',
-  'sweat_smile',
-  'joy',
-  'yum',
-  'disappointed',
-  'thinking_face',
-  'weary',
-  'sob',
-  'sunglasses',
-  'heart',
-  'ok_hand',
-];
-
 export const getFrequentlyUsedEmojis = createSelector([
   (state: RootState) => state.settings.get('frequentlyUsedEmojis', ImmutableMap()),
 ], (emojiCounters: ImmutableMap<string, number>) => {
-  let emojis = emojiCounters
+  return emojiCounters
     .keySeq()
     .sort((a, b) => emojiCounters.get(a)! - emojiCounters.get(b)!)
     .reverse()
     .slice(0, perLine * lines)
     .toArray();
-
-  if (emojis.length < DEFAULTS.length) {
-    const uniqueDefaults = DEFAULTS.filter(emoji => !emojis.includes(emoji));
-    emojis = emojis.concat(uniqueDefaults.slice(0, DEFAULTS.length - emojis.length));
-  }
-
-  return emojis;
 });
 
 /** Filter custom emojis to only ones visible in the picker, and sort them alphabetically. */
