@@ -36,7 +36,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     if (dsn) {
       startSentry(dsn).catch(console.error);
     }
-  }, [dsn, locale]);
+  }, [dsn]);
 
   return (
     <>
@@ -49,8 +49,8 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         {/* eslint-disable formatjs/no-literal-string-in-jsx */}
         <style type='text/css'>{`
-        html[lang='ar'] * { font-family: 'Vazirmatn' !important; }
-        html[lang='jv'] * { font-family: 'Noto Sans Javanese' !important; }
+        html[lang='ar'] *, html[lang='fa'] * { font-family: 'Vazirmatn'; }
+        html[lang='jv'] * { font-family: 'Noto Sans Javanese'; }
         `}</style>
         {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
