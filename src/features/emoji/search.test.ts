@@ -1,9 +1,8 @@
-import pick from 'lodash/pick';
 import { describe, expect, it } from 'vitest';
 
 import search, { addCustomToPool } from './search.ts';
 
-const trimEmojis = (emoji: any) => pick(emoji, ['id', 'unified', 'native', 'custom']);
+const trimEmojis = ({ id, unified, native, custom }: any) => ({ id, unified, native, custom });
 
 describe('emoji_index', () => {
   it('should give same result for emoji_index_light and emoji-mart', () => {

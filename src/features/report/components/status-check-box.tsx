@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import noop from 'lodash/noop';
 import { Suspense } from 'react';
 
 import { toggleStatusReport } from 'soapbox/actions/reports.ts';
@@ -66,7 +65,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
           media={status.media_attachments}
           sensitive={status.sensitive}
           height={110}
-          onOpenMedia={noop}
+          onOpenMedia={() => {}}
         />
       );
     }

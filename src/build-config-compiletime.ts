@@ -3,9 +3,6 @@
  * @module soapbox/build-config
  */
 
-// eslint-disable-next-line import/extensions
-import trimEnd from 'lodash/trimEnd.js';
-
 const {
   NODE_ENV,
   BACKEND_URL,
@@ -13,9 +10,9 @@ const {
   SENTRY_DSN,
 } = process.env;
 
-const sanitizeURL = (url: string | undefined = ''): string => {
+const sanitizeURL = (url: string = ''): string => {
   try {
-    return trimEnd(new URL(url).toString(), '/');
+    return new URL(url).href;
   } catch {
     return '';
   }
