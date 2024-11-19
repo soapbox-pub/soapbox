@@ -99,8 +99,8 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
   const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(content, 'text/html').body.firstChild?.textContent;
-    return Boolean(textContent && /^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
+    const textContent = new DOMParser().parseFromString(content, 'text/html').body.textContent ?? '';
+    return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
   }, [content]);
 
   const emojiReactionRows = useMemo(() => {
