@@ -1,5 +1,4 @@
 import { Map as ImmutableMap } from 'immutable';
-import sumBy from 'lodash/sumBy';
 import { useEffect } from 'react';
 import { beforeEach, describe, expect, it } from 'vitest';
 
@@ -79,8 +78,9 @@ describe('isLastMessage', () => {
         ],
         pageParams: [undefined],
       };
-      const initialFlattenedData = flattenPages(initialQueryData);
-      expect(sumBy(initialFlattenedData, (chat: IChat) => chat.unread)).toBe(0);
+      const initialFlattenedData = flattenPages<IChat>(initialQueryData);
+      const count = initialFlattenedData!.reduce((n, chat) => n + chat.unread, 0);
+      expect(count).toBe(0);
 
       queryClient.setQueryData(ChatKeys.chatSearch(), initialQueryData);
 
@@ -99,7 +99,8 @@ describe('isLastMessage', () => {
         pageParams: [undefined],
       };
       const initialFlattenedData = flattenPages(initialQueryData);
-      expect(sumBy(initialFlattenedData, (chat: IChat) => chat.unread)).toBe(0);
+      const count = initialFlattenedData!.reduce((n, chat) => n + chat.unread, 0);
+      expect(count).toBe(0);
 
       queryClient.setQueryData(ChatKeys.chatSearch(), initialQueryData);
 
@@ -297,7 +298,9 @@ describe('useChatActions', () => {
         pageParams: [undefined],
       };
       const initialFlattenedData = flattenPages(initialQueryData);
-      expect(sumBy(initialFlattenedData, (chat: IChat) => chat.unread)).toBe(0);
+      const count = initialFlattenedData!.reduce((n, chat) => n + chat.unread, 0);
+
+      expect(count).toBe(0);
 
       queryClient.setQueryData(ChatKeys.chatSearch(), initialQueryData);
 
@@ -308,8 +311,10 @@ describe('useChatActions', () => {
       });
 
       const nextQueryData = queryClient.getQueryData(ChatKeys.chatSearch());
-      const nextFlattenedData = flattenPages(nextQueryData as any);
-      expect(sumBy(nextFlattenedData as any, (chat: IChat) => chat.unread)).toBe(nextUnreadCount);
+      const nextFlattenedData = flattenPages<IChat>(nextQueryData as any);
+      const nextCount = nextFlattenedData!.reduce((n, chat) => n + chat.unread, 0);
+
+      expect(nextCount).toBe(nextUnreadCount);
     });
   });
 

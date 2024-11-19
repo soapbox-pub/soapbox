@@ -1,5 +1,4 @@
 import { InfiniteData, keepPreviousData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
-import sumBy from 'lodash/sumBy';
 
 import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer/index.ts';
 import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
@@ -146,7 +145,7 @@ const useChats = (search?: string) => {
     const { next } = response.pagination();
     const hasMore = !!next;
 
-    setUnreadChatsCount(Number(response.headers.get('x-unread-messages-count')) || sumBy(data, (chat) => chat.unread));
+    setUnreadChatsCount(Number(response.headers.get('x-unread-messages-count')) || data.reduce((n, chat) => n + chat.unread, 0));
 
     // Set the relationships to these users in the redux store.
     fetchRelationships.mutate({ accountIds: data.map((item) => item.account.id) });
@@ -225,17 +224,17 @@ const useChatActions = (chatId: string) => {
       .then(async (response) => {
         const data = await response.json();
         updatePageItem(ChatKeys.chatSearch(), data, (o, n) => o.id === n.id);
-        const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<unknown>>>(ChatKeys.chatSearch());
+        const queryData = queryClient.getQueryData<InfiniteData<PaginatedResult<IChat>>>(ChatKeys.chatSearch());
 
         if (queryData) {
-          const flattenedQueryData: any = flattenPages(queryData)?.map((chat: any) => {
+          const flattenedQueryData = flattenPages<IChat>(queryData)?.map((chat: any) => {
             if (chat.id === data.id) {
               return data;
             } else {
               return chat;
             }
           });
-          setUnreadChatsCount(sumBy(flattenedQueryData, (chat: IChat) => chat.unread));
+          setUnreadChatsCount(flattenedQueryData?.reduce((n, chat) => n + chat.unread, 0));
         }
 
         return data;
