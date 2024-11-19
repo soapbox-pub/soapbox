@@ -1312,10 +1312,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.0.8.tgz#61b50cb0eb72b14ae1938d47c4a9a91546d2a50c"
   integrity sha512-28knWH1BfOiRalfLs90U4sge5mpQ8ZH6FS0PTT+IZMKrZ7wNHDHRuKa1kQJg+uHcc6axBppnxll+HXM4c7zo/Q==
 
-"@fontsource/noto-sans-javanese@^5.0.16":
-  version "5.0.16"
-  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-javanese/-/noto-sans-javanese-5.0.16.tgz#e6a2acad3b520e379a5f760196246951d6d7eb3e"
-  integrity sha512-foh5yX/kbY28QMx6jU8aezMLAnBTKscNAVeuDIt8myScEDqXDm+1v2pIxVCh0zZUyxt/Yj/qkDTOM/Vegq9hzA==
+"@fontsource/noto-sans-javanese@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-javanese/-/noto-sans-javanese-5.1.0.tgz#bfae45a2324d40e2bc1e5b14479a7d47ae59c7a7"
+  integrity sha512-N3yvfUucmc5hC5ksxdd8DYHTGgx1rMqfgZm4qZ5T1TNMe+773exqGAKVYgdgzCyLCxdOVHQui9ATEeO8hr1Nqg==
 
 "@fontsource/roboto-mono@^5.0.0":
   version "5.0.8"

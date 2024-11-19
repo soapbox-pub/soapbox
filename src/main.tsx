@@ -17,8 +17,6 @@ import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
 import 'soapbox/features/nostr/keyring.ts';
 
 import './iframe.ts';
-import './styles/i18n/arabic.css';
-import './styles/i18n/javanese.css';
 import './styles/tailwind.css';
 
 import ready from './ready.ts';
