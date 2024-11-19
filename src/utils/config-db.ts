@@ -4,7 +4,6 @@ import {
   Set as ImmutableSet,
   fromJS,
 } from 'immutable';
-import trimStart from 'lodash/trimStart';
 
 import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma.ts';
 
@@ -27,7 +26,7 @@ const toSimplePolicy = (configs: ImmutableList<Config>): MRFSimple => {
   const reducer = (acc: ImmutableMap<string, any>, curr: ImmutableMap<string, any>) => {
     const key = curr.getIn(['tuple', 0]) as string;
     const hosts = curr.getIn(['tuple', 1]) as ImmutableList<string>;
-    return acc.set(trimStart(key, ':'), ImmutableSet(hosts));
+    return acc.set(key.replace(/^:/, ''), ImmutableSet(hosts));
   };
 
   if (config?.get) {
