@@ -146,7 +146,6 @@ const messages = defineMessages({
 
 interface IStatusActionBar {
   status: Status;
-  withLabels?: boolean;
   expandable?: boolean;
   space?: 'sm' | 'md' | 'lg';
   statusActionButtonTheme?: 'default' | 'inverse';
@@ -155,7 +154,6 @@ interface IStatusActionBar {
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
   status,
-  withLabels = false,
   expandable = true,
   space = 'sm',
   statusActionButtonTheme = 'default',
@@ -740,7 +738,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       active={status.reblogged}
       onClick={handleReblogClick}
       count={reblogCount}
-      text={withLabels ? intl.formatMessage(messages.reblog) : undefined}
       theme={statusActionButtonTheme}
     />
   );
@@ -780,7 +777,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             icon={messageCircleIcon}
             onClick={handleReplyClick}
             count={replyCount}
-            text={withLabels ? intl.formatMessage(messages.reply) : undefined}
             disabled={replyDisabled}
             theme={statusActionButtonTheme}
           />
@@ -808,7 +804,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               active={Boolean(meEmojiName)}
               count={emojiReactCount}
               emoji={meEmojiReact}
-              text={withLabels ? meEmojiTitle : undefined}
               theme={statusActionButtonTheme}
             />
           </StatusReactionWrapper>
@@ -821,7 +816,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             onClick={handleFavouriteClick}
             active={Boolean(meEmojiName)}
             count={favouriteCount}
-            text={withLabels ? meEmojiTitle : undefined}
             theme={statusActionButtonTheme}
           />
         )}
@@ -835,7 +829,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             onClick={handleDislikeClick}
             active={status.disliked}
             count={status.dislikes_count}
-            text={withLabels ? intl.formatMessage(messages.disfavourite) : undefined}
             theme={statusActionButtonTheme}
           />
         )}
@@ -848,7 +841,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             filled
             onClick={handleZapClick}
             active={status.zapped}
-            text={withLabels ? intl.formatMessage(messages.zap) : undefined}
             theme={statusActionButtonTheme}
             count={status?.zaps_amount ? status.zaps_amount / 1000 : 0}
           />
