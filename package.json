@@ -44,7 +44,7 @@
     "@fontsource/inter": "^5.0.0",
     "@fontsource/noto-sans-javanese": "^5.1.0",
     "@fontsource/roboto-mono": "^5.0.0",
-    "@fontsource/vazirmatn": "^5.0.20",
+    "@fontsource/vazirmatn": "^5.1.0",
     "@gamestdio/websocket": "^0.3.2",
     "@lexical/clipboard": "^0.18.0",
     "@lexical/hashtag": "^0.18.0",

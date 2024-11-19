@@ -1322,10 +1322,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-5.0.8.tgz#9b3df61f884f46e12d3eca46e75517fde58da68e"
   integrity sha512-vjnNX8zQCSp4HadUJ3gpZiizCsK/ROjgGMpd4bcRxuyiTNGGMaznmKbhqdyVeFVap1sX8h2Qu380awaotey/mQ==
 
-"@fontsource/vazirmatn@^5.0.20":
-  version "5.0.20"
-  resolved "https://registry.yarnpkg.com/@fontsource/vazirmatn/-/vazirmatn-5.0.20.tgz#9e8d56b712f6c397e7a6c63498a2fecca9fde9a3"
-  integrity sha512-5h9bKrZjJ3U7C5tj2OtGdDBWGzS+acOOFhlonYlNekS4vNzcwMU7qkKADHTZYGQrMqhpUNKqGwHEHlxXqZpXmQ==
+"@fontsource/vazirmatn@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/vazirmatn/-/vazirmatn-5.1.0.tgz#bf758d2fcff91a15dd6db8e01d043e5d4707d8dc"
+  integrity sha512-qoHGF9VDKRX7m92QzznU+Et4cF02HOafuaBmu1igAqYOzJdHVNAsRsWUs86revIIpZcMO0ens4pz3Xzq8KZnNw==
 
 "@formatjs/cli@^6.3.11":
   version "6.3.11"
