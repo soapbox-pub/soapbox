@@ -48,10 +48,10 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
         {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         {/* eslint-disable formatjs/no-literal-string-in-jsx */}
-        {['ar', 'jv'].includes(locale) ? <style type='text/css'>{`
+        <style type='text/css'>{`
         html[lang='ar'] * { font-family: 'Vazirmatn' !important; }
         html[lang='jv'] * { font-family: 'Noto Sans Javanese' !important; }
-        `}</style> : <style type='text/css'>{'* { font-family: \'Inter\'; }'}</style>}
+        `}</style>
         {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>
