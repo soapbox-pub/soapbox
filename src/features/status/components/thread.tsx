@@ -390,7 +390,6 @@ const Thread = (props: IThread) => {
                 status={status}
                 expandable={false}
                 space='lg'
-                withLabels
               />
             </>
           ) : null}
