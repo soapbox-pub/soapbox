@@ -53,7 +53,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const node = useRef<HTMLDivElement>(null);
 
   const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(status.content, 'text/html').body.firstChild?.textContent ?? '';
+    const textContent = new DOMParser().parseFromString(status.content, 'text/html').body.textContent ?? '';
     return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
   }, [status.content]);
 
