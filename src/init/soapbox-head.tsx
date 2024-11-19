@@ -25,14 +25,6 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
   const dsn = soapboxConfig.sentryDsn;
 
-  const loadLocaleCss = async (locale: string) => {
-    if (locale === 'ar') {
-      await import('soapbox/styles/i18n/arabic.css');
-    } else if (locale === 'jv') {
-      await import('soapbox/styles/i18n/javanese.css');
-    }
-  };
-
   const bodyClass = clsx('h-full bg-white text-base black:bg-black dark:bg-gray-800', {
     'no-reduce-motion': !reduceMotion,
     'underline-links': underlineLinks,
@@ -40,7 +32,6 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   });
 
   useEffect(() => {
-    loadLocaleCss(locale);
 
     if (dsn) {
       startSentry(dsn).catch(console.error);
@@ -57,7 +48,10 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
         {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
         {/* eslint-disable formatjs/no-literal-string-in-jsx */}
-        {(locale === 'ar' || locale === 'jv') ? <style type='text/css'>{':root { font-family: \'Soapbox i18n\'; }'}</style> : <style type='text/css'>{':root { font-family: \'Inter\'; }'}</style>}
+        {['ar', 'jv'].includes(locale) ? <style type='text/css'>{`
+        html[lang='ar'] * { font-family: 'Vazirmatn' !important; }
+        html[lang='jv'] * { font-family: 'Noto Sans Javanese' !important; }
+        `}</style> : <style type='text/css'>{'* { font-family: \'Inter\'; }'}</style>}
         {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>
