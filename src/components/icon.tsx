@@ -19,10 +19,10 @@ export interface IIcon extends React.HTMLAttributes<HTMLDivElement> {
 const Icon: React.FC<IIcon> = ({ src, alt, className, ...rest }) => {
   return (
     <div
-      className={clsx('svg-icon', className)}
+      className={clsx('flex size-4 items-center justify-center transition duration-200', className)}
       {...rest}
     >
-      <InlineSVG src={src} title={alt} loader={<></>} />
+      <InlineSVG className='size-full transition duration-200' src={src} title={alt} loader={<></>} />
     </div>
   );
 };

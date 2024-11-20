@@ -1,26 +1,17 @@
 import clsx from 'clsx';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
-import { createSelector } from 'reselect';
 
 import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 import Announcement from './announcement.tsx';
 
-import type { RootState } from 'soapbox/store.ts';
-
-const customEmojiMap = createSelector([(state: RootState) => state.custom_emojis], items => (items as ImmutableList<ImmutableMap<string, string>>).reduce((map, emoji) => map.set(emoji.get('shortcode')!, emoji), ImmutableMap<string, ImmutableMap<string, string>>()));
-
 const AnnouncementsPanel = () => {
-  const emojiMap = useAppSelector(state => customEmojiMap(state));
   const [index, setIndex] = useState(0);
-
   const { data: announcements } = useAnnouncements();
 
   if (!announcements || announcements.length === 0) return null;
@@ -37,7 +28,6 @@ const AnnouncementsPanel = () => {
             <Announcement
               key={announcement.id}
               announcement={announcement}
-              emojiMap={emojiMap}
             />
           )).reverse()}
         </ReactSwipeableViews>

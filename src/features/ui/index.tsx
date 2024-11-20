@@ -4,7 +4,6 @@ import { Switch, useHistory, useLocation, Redirect } from 'react-router-dom';
 
 import { fetchFollowRequests } from 'soapbox/actions/accounts.ts';
 import { fetchReports, fetchUsers, fetchConfig } from 'soapbox/actions/admin.ts';
-import { fetchCustomEmojis } from 'soapbox/actions/custom-emojis.ts';
 import { fetchFilters } from 'soapbox/actions/filters.ts';
 import { fetchMarker } from 'soapbox/actions/markers.ts';
 import { expandNotifications } from 'soapbox/actions/notifications.ts';
@@ -13,6 +12,7 @@ import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions.ts';
 import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
 import { useUserStream } from 'soapbox/api/hooks/index.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation.tsx';
 import ThumbNavigation from 'soapbox/components/thumb-navigation.tsx';
 import Layout from 'soapbox/components/ui/layout.tsx';
@@ -474,11 +474,11 @@ const UI: React.FC<IUI> = ({ children }) => {
   }, []);
 
   useUserStream();
+  useCustomEmojis();
 
   // The user has logged in
   useEffect(() => {
     loadAccountData();
-    dispatch(fetchCustomEmojis());
   }, [!!account]);
 
   useEffect(() => {

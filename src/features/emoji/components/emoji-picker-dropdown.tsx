@@ -1,18 +1,17 @@
-import { Map as ImmutableMap } from 'immutable';
 import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { createSelector } from 'reselect';
 
 import { chooseEmoji } from 'soapbox/actions/emojis.ts';
 import { changeSetting } from 'soapbox/actions/settings.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
 import { EmojiPicker } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFrequentlyUsedEmojis } from 'soapbox/hooks/useFrequentlyUsedEmojis.ts';
 import { useTheme } from 'soapbox/hooks/useTheme.ts';
-import { RootState } from 'soapbox/store.ts';
 
 import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
+import type { CustomEmoji as MastodonCustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -50,60 +49,21 @@ export interface IEmojiPickerDropdown {
   update?: (() => any) | null;
 }
 
-const perLine = 8;
-const lines   = 2;
+/** Filter custom emojis to only ones visible in the picker, and sort them alphabetically. */
+function filterCustomEmojis(customEmojis: MastodonCustomEmoji[]) {
+  return customEmojis.filter(e => e.visible_in_picker).sort((a, b) => {
+    const aShort = a.shortcode.toLowerCase();
+    const bShort = b.shortcode.toLowerCase();
 
-const DEFAULTS = [
-  '+1',
-  'grinning',
-  'kissing_heart',
-  'heart_eyes',
-  'laughing',
-  'stuck_out_tongue_winking_eye',
-  'sweat_smile',
-  'joy',
-  'yum',
-  'disappointed',
-  'thinking_face',
-  'weary',
-  'sob',
-  'sunglasses',
-  'heart',
-  'ok_hand',
-];
-
-export const getFrequentlyUsedEmojis = createSelector([
-  (state: RootState) => state.settings.get('frequentlyUsedEmojis', ImmutableMap()),
-], (emojiCounters: ImmutableMap<string, number>) => {
-  let emojis = emojiCounters
-    .keySeq()
-    .sort((a, b) => emojiCounters.get(a)! - emojiCounters.get(b)!)
-    .reverse()
-    .slice(0, perLine * lines)
-    .toArray();
-
-  if (emojis.length < DEFAULTS.length) {
-    const uniqueDefaults = DEFAULTS.filter(emoji => !emojis.includes(emoji));
-    emojis = emojis.concat(uniqueDefaults.slice(0, DEFAULTS.length - emojis.length));
-  }
-
-  return emojis;
-});
-
-const getCustomEmojis = createSelector([
-  (state: RootState) => state.custom_emojis,
-], emojis => emojis.filter(e => e.get('visible_in_picker')).sort((a, b) => {
-  const aShort = a.get('shortcode')!.toLowerCase();
-  const bShort = b.get('shortcode')!.toLowerCase();
-
-  if (aShort < bShort) {
-    return -1;
-  } else if (aShort > bShort) {
-    return 1;
-  } else {
-    return 0;
-  }
-}));
+    if (aShort < bShort) {
+      return -1;
+    } else if (aShort > bShort) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
+}
 
 interface IRenderAfter {
   children: React.ReactNode;
@@ -137,8 +97,8 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
   const title = intl.formatMessage(messages.emoji);
   const theme = useTheme();
 
-  const customEmojis = useAppSelector((state) => getCustomEmojis(state));
-  const frequentlyUsedEmojis = useAppSelector((state) => getFrequentlyUsedEmojis(state));
+  const { customEmojis } = useCustomEmojis();
+  const frequentlyUsedEmojis = useFrequentlyUsedEmojis();
 
   const handlePick = (emoji: any) => {
     setVisible?.(false);
@@ -226,10 +186,10 @@ const EmojiPickerDropdown: React.FC<IEmojiPickerDropdown> = ({
     <Suspense>
       <RenderAfter update={update ?? (() => {})}>
         <EmojiPicker
-          custom={withCustom ? [{ emojis: buildCustomEmojis(customEmojis) }] : undefined}
+          custom={withCustom ? [{ emojis: buildCustomEmojis(filterCustomEmojis(customEmojis)) }] : undefined}
           title={title}
           onEmojiSelect={handlePick}
-          recent={frequentlyUsedEmojis}
+          recent={frequentlyUsedEmojis.slice(0, 16)}
           perLine={8}
           skin={handleSkinTone}
           emojiSize={22}

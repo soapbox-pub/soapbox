@@ -1,5 +1,3 @@
-import noop from 'lodash/noop';
-
 import PollOption from 'soapbox/components/polls/poll-option.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -26,7 +24,7 @@ const PollPreview: React.FC<IPollPreview> = ({ pollId }) => {
           index={i}
           showResults={false}
           active={false}
-          onToggle={noop}
+          onToggle={() => {}}
         />
       ))}
     </Stack>

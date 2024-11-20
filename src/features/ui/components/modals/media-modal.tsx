@@ -315,6 +315,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               style={swipeableViewsStyle}
               containerStyle={containerStyle}
               onChangeIndex={handleSwipe}
+              className='flex items-center justify-center '
               index={getIndex()}
             >
               {content}

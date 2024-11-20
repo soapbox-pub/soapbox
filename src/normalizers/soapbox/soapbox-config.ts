@@ -4,7 +4,6 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
-import trimStart from 'lodash/trimStart';
 
 import { normalizeUsername } from 'soapbox/utils/input.ts';
 import { toTailwind } from 'soapbox/utils/tailwind.ts';
@@ -123,7 +122,7 @@ type SoapboxConfigMap = ImmutableMap<string, any>;
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
   return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
-    return trimStart(ticker, '$').toLowerCase();
+    return ticker.replace(/^\$/, '').toLowerCase();
   });
 };
 

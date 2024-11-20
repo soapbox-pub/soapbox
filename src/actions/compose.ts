@@ -24,7 +24,7 @@ import { createStatus } from './statuses.ts';
 import type { EditorState } from 'lexical';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
-import type { Account, Group } from 'soapbox/schemas/index.ts';
+import type { Account, CustomEmoji, Group } from 'soapbox/schemas/index.ts';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { APIEntity, Status, Tag } from 'soapbox/types/entities.ts';
 import type { History } from 'soapbox/types/history.ts';
@@ -512,9 +512,8 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
   });
 }, 200, { leading: true, trailing: true });
 
-const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
-  const state = getState();
-  const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, state.custom_emojis);
+const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, composeId: string, token: string, customEmojis: CustomEmoji[]) => {
+  const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, customEmojis);
 
   dispatch(readyComposeSuggestionsEmojis(composeId, token, results));
 };
@@ -553,11 +552,11 @@ const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => Root
   });
 };
 
-const fetchComposeSuggestions = (composeId: string, token: string) =>
+const fetchComposeSuggestions = (composeId: string, token: string, customEmojis: CustomEmoji[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     switch (token[0]) {
       case ':':
-        fetchComposeSuggestionsEmojis(dispatch, getState, composeId, token);
+        fetchComposeSuggestionsEmojis(dispatch, composeId, token, customEmojis);
         break;
       case '#':
         fetchComposeSuggestionsTags(dispatch, getState, composeId, token);

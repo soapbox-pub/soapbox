@@ -8,15 +8,13 @@ import { getTextDirection } from 'soapbox/utils/rtl.ts';
 import AnnouncementContent from './announcement-content.tsx';
 import ReactionsBar from './reactions-bar.tsx';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type { Announcement as AnnouncementEntity } from 'soapbox/schemas/index.ts';
 
 interface IAnnouncement {
   announcement: AnnouncementEntity;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
 }
 
-const Announcement: React.FC<IAnnouncement> = ({ announcement, emojiMap }) => {
+const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
   const features = useFeatures();
 
   const startsAt = announcement.starts_at && new Date(announcement.starts_at);
@@ -64,7 +62,6 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement, emojiMap }) => {
         <ReactionsBar
           reactions={announcement.reactions}
           announcementId={announcement.id}
-          emojiMap={emojiMap}
         />
       )}
     </Stack>

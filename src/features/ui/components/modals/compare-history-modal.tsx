@@ -43,7 +43,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
     body = (
       <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
         {versions?.map((version) => {
-          const content = { __html: version.contentHtml };
+          const content = { __html: version.content };
           const spoilerContent = { __html: version.spoilerHtml };
 
           const poll = typeof version.poll !== 'string' && version.poll;

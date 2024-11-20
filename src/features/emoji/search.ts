@@ -1,10 +1,10 @@
 // @ts-ignore
 import Index from '@akryum/flexsearch-es';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import data from './data.ts';
+import data, { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
+import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
 
-import type { Emoji } from './index.ts';
+import { buildCustomEmojis, type Emoji } from './index.ts';
 
 // @ts-ignore Wrong default export.
 const index: Index.Index = new Index({
@@ -23,8 +23,7 @@ export interface searchOptions {
   custom?: any;
 }
 
-export const addCustomToPool = (customEmojis: any[]) => {
-  // @ts-ignore
+export function addCustomToPool(customEmojis: EmojiMart<EmojiMartCustom>[]): void {
   for (const key in index.register) {
     if (key[0] === 'c') {
       index.remove(key); // remove old custom emojis
@@ -36,27 +35,27 @@ export const addCustomToPool = (customEmojis: any[]) => {
   for (const emoji of customEmojis) {
     index.add('c' + i++, emoji.id);
   }
-};
+}
 
 // we can share an index by prefixing custom emojis with 'c' and native with 'n'
 const search = (
   str: string, { maxResults = 5 }: searchOptions = {},
-  custom_emojis?: ImmutableList<ImmutableMap<string, string>>,
+  customEmojis?: CustomEmoji[],
 ): Emoji[] => {
   return index.search(str, maxResults)
     .flatMap((id: any) => {
       if (typeof id !== 'string') return;
 
-      if (id[0] === 'c' && custom_emojis) {
+      if (id[0] === 'c' && customEmojis) {
         const index = Number(id.slice(1));
-        const custom = custom_emojis.get(index);
+        const custom = customEmojis[index];
 
         if (custom) {
           return {
-            id: custom.get('shortcode', ''),
-            colons: ':' + custom.get('shortcode', '') + ':',
+            id: custom.shortcode,
+            colons: ':' + custom.shortcode + ':',
             custom: true,
-            imageUrl: custom.get('static_url', ''),
+            imageUrl: custom.url,
           };
         }
       }
@@ -73,5 +72,10 @@ const search = (
       }
     }).filter(Boolean) as Emoji[];
 };
+
+/** Import Mastodon custom emojis as emoji mart custom emojis. */
+export function autosuggestPopulate(emojis: CustomEmoji[]) {
+  addCustomToPool(buildCustomEmojis(emojis));
+}
 
 export default search;

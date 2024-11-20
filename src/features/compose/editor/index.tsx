@@ -59,7 +59,7 @@ const theme: InitialConfigType['theme'] = {
     italic: 'italic',
     strikethrough: 'line-through',
     underline: 'underline',
-    underlineStrikethrough: 'underline-line-through',
+    underlineStrikethrough: 'underline line-through',
   },
   heading: {
     h1: 'text-2xl font-bold',

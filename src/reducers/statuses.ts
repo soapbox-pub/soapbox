@@ -109,7 +109,6 @@ export const calculateStatus = (
   if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
     return status.merge({
       search_index: oldStatus.search_index,
-      contentHtml: oldStatus.contentHtml,
       spoilerHtml: oldStatus.spoilerHtml,
       hidden: oldStatus.hidden,
     });
@@ -120,7 +119,7 @@ export const calculateStatus = (
 
     return status.merge({
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
-      contentHtml: DOMPurify.sanitize(stripCompatibilityFeatures(emojify(status.content, emojiMap)), { USE_PROFILES: { html: true } }),
+      content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
       spoilerHtml: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), { USE_PROFILES: { html: true } }),
       hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
     });

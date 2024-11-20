@@ -1,48 +1,34 @@
-import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
+import NativeEmoji from 'soapbox/components/ui/emoji.tsx';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-
-import type { Map as ImmutableMap } from 'immutable';
 
 interface IEmoji {
   emoji: string;
-  emojiMap: ImmutableMap<string, ImmutableMap<string, string>>;
   hovered: boolean;
 }
 
-const Emoji: React.FC<IEmoji> = ({ emoji, emojiMap, hovered }) => {
+const Emoji: React.FC<IEmoji> = ({ emoji, hovered }) => {
   const { autoPlayGif } = useSettings();
+  const { customEmojis } = useCustomEmojis();
 
-  // @ts-ignore
-  if (unicodeMapping[emoji]) {
-    // @ts-ignore
-    const { filename, shortCode } = unicodeMapping[emoji];
-    const title = shortCode ? `:${shortCode}:` : '';
+  const custom = customEmojis.find((x) => x.shortcode === emoji);
 
-    return (
-      <img
-        draggable='false'
-        className='emojione m-0 block'
-        alt={emoji}
-        title={title}
-        src={`/packs/emoji/${filename}.svg`}
-      />
-    );
-  } else if (emojiMap.get(emoji as any)) {
-    const filename  = (autoPlayGif || hovered) ? emojiMap.getIn([emoji, 'url']) : emojiMap.getIn([emoji, 'static_url']);
+  if (custom) {
+    const filename  = (autoPlayGif || hovered) ? custom.url : custom.static_url;
     const shortCode = `:${emoji}:`;
 
     return (
       <img
         draggable='false'
-        className='emojione m-0 block'
+        className='m-0 block'
         alt={shortCode}
         title={shortCode}
         src={filename as string}
       />
     );
-  } else {
-    return null;
   }
+
+  return <NativeEmoji emoji={emoji} />;
 };
 
 export default Emoji;

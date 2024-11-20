@@ -1,6 +1,7 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { addPollOption, changePollOption, changePollSettings, clearComposeSuggestions, fetchComposeSuggestions, removePoll, removePollOption, selectComposeSuggestion } from 'soapbox/actions/compose.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import AutosuggestInput from 'soapbox/components/autosuggest-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -55,6 +56,7 @@ const Option: React.FC<IOption> = ({
   const intl = useIntl();
 
   const suggestions = useCompose(composeId).suggestions;
+  const { customEmojis } = useCustomEmojis();
 
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
@@ -68,7 +70,7 @@ const Option: React.FC<IOption> = ({
 
   const onSuggestionsClearRequested = () => dispatch(clearComposeSuggestions(composeId));
 
-  const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(composeId, token));
+  const onSuggestionsFetchRequested = (token: string) => dispatch(fetchComposeSuggestions(composeId, token, customEmojis));
 
   const onSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
     if (token && typeof token === 'string') {

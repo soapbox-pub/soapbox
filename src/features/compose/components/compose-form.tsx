@@ -15,6 +15,7 @@ import {
   selectComposeSuggestion,
   uploadCompose,
 } from 'soapbox/actions/compose.ts';
+import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -109,6 +110,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
   const spoilerTextRef = useRef<AutosuggestInput>(null);
   const editorRef = useRef<LexicalEditor>(null);
   const { isDraggedOver } = useDraggedFiles(formRef);
+  const { customEmojis } = useCustomEmojis();
 
   const text = editorRef.current?.getEditorState().read(() => $getRoot().getTextContent()) ?? '';
   const fulltext = [spoilerText, countableText(text)].join('');
@@ -161,8 +163,8 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     dispatch(clearComposeSuggestions(id));
   };
 
-  const onSuggestionsFetchRequested = (token: string | number) => {
-    dispatch(fetchComposeSuggestions(id, token as string));
+  const onSuggestionsFetchRequested = (token: string) => {
+    dispatch(fetchComposeSuggestions(id, token, customEmojis));
   };
 
   const onSpoilerSuggestionSelected = (tokenStart: number, token: string | null, value: AutoSuggestion) => {
