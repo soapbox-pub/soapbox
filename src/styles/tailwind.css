@@ -37,6 +37,17 @@
 }
 
 @layer utilities {
+  .media-modal * {
+    img {
+      max-height: 80vh;
+      width: 100%;
+      object-fit: contain;
+    }
+    
+    video {
+      @apply max-w-full max-h-[80%];
+    }
+  }
   .status {
     @apply min-h-[54px] cursor-default animate-fade opacity-100;
   }
