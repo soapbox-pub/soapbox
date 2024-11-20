@@ -243,7 +243,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   return (
-    <div className='pointer-events-auto fixed inset-0 z-[9999] h-full bg-gray-900/90'>
+    <div className='media-modal pointer-events-auto fixed inset-0 z-[9999] flex size-full bg-gray-900/90'>
       <div
         className='absolute inset-0'
         role='presentation'
@@ -311,15 +311,17 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               </div>
             )}
 
-            <ReactSwipeableViews
-              style={swipeableViewsStyle}
-              containerStyle={containerStyle}
-              onChangeIndex={handleSwipe}
-              className='flex items-center justify-center '
-              index={getIndex()}
-            >
-              {content}
-            </ReactSwipeableViews>
+            <div className='size-full'>
+              <ReactSwipeableViews
+                style={swipeableViewsStyle}
+                containerStyle={containerStyle}
+                onChangeIndex={handleSwipe}
+                className='flex items-center justify-center '
+                index={getIndex()}
+              >
+                {content}
+              </ReactSwipeableViews>
+            </div>
 
             {hasMultipleImages && (
               <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
