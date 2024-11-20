@@ -9,11 +9,14 @@ import Form from 'soapbox/components/ui/form.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import RelayEditor, { RelayData } from 'soapbox/features/nostr-relays/components/relay-editor.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
+import { queryClient } from 'soapbox/queries/client.ts';
+import toast from 'soapbox/toast.tsx';
 
 import { useAdminNostrRelays } from './hooks/useAdminNostrRelays.ts';
 
 const messages = defineMessages({
   title: { id: 'column.admin.nostr_relays', defaultMessage: 'Relays' },
+  success: { id: 'generic.saved', defaultMessage: 'Saved' },
 });
 
 const AdminNostrRelays: React.FC = () => {
@@ -25,6 +28,13 @@ const AdminNostrRelays: React.FC = () => {
 
   const mutation = useMutation({
     mutationFn: async () => api.put('/api/v1/admin/ditto/relays', relays),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['NostrRelay'] });
+      toast.success(messages.success);
+    },
+    onError: (data) => {
+      toast.error(data.message); // `data.message` is a generic error message, not the `error` message returned from the backend
+    },
   });
 
   const handleSubmit = () => {
