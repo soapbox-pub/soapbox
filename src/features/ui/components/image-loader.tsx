@@ -135,7 +135,7 @@ class ImageLoader extends PureComponent<IImageLoader> {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = 'relative size-full flex items-center justify-center flex-col';
+    const className = 'relative h-[80vh] flex items-center justify-center flex-col';
 
     return (
       <div className={className}>
