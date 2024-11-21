@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import FormActions from 'soapbox/components/ui/form-actions.tsx';
@@ -32,8 +33,17 @@ const AdminNostrRelays: React.FC = () => {
       queryClient.refetchQueries({ queryKey: ['NostrRelay'] });
       toast.success(messages.success);
     },
-    onError: (data) => {
-      toast.error(data.message); // `data.message` is a generic error message, not the `error` message returned from the backend
+    onError: async (err) => {
+      if (err instanceof HTTPError) {
+        try {
+          const { error } = await err.response.json();
+          if (typeof error === 'string') {
+            toast.error(error);
+            return;
+          }
+        } catch { /* empty */ }
+      }
+      toast.error(err.message);
     },
   });
 
