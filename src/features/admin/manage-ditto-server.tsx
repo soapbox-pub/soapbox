@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
@@ -93,7 +94,16 @@ const ManageDittoServer: React.FC = () => {
         toast.success(messages.submit_success);
       },
       onError: async (err) => {
-        toast.error(err.message); // generic error message, not the one returned by the backend
+        if (err instanceof HTTPError) {
+          try {
+            const { error } = await err.response.json();
+            if (typeof error === 'string') {
+              toast.error(error);
+              return;
+            }
+          } catch { /* empty */ }
+          toast.error(err.message);
+        }
       },
     });
   };
