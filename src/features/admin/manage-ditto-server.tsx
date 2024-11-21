@@ -102,8 +102,8 @@ const ManageDittoServer: React.FC = () => {
               return;
             }
           } catch { /* empty */ }
-          toast.error(err.message);
         }
+        toast.error(err.message);
       },
     });
   };
