@@ -1,8 +1,7 @@
 import { AxiosError } from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { putDittoInstance } from 'soapbox/actions/admin.ts';
 import { uploadMedia } from 'soapbox/actions/media.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
@@ -15,8 +14,8 @@ import Input from 'soapbox/components/ui/input.tsx';
 import  Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack  from 'soapbox/components/ui/stack.tsx';
 import Streamfield from 'soapbox/components/ui/streamfield.tsx';
+import { useManageDittoServer } from 'soapbox/features/admin/hooks/useManageDittoServer.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
 import { thumbnailSchema } from 'soapbox/schemas/instance.ts';
 import { Screenshots } from 'soapbox/schemas/manifest.ts';
@@ -63,30 +62,40 @@ export interface DittoInstanceCredentials {
 const ManageDittoServer: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { instance } = useInstance();
+  const { updateDittoInstance, data: dittoInstanceData } = useManageDittoServer();
 
   const [data, setData] = useState<DittoInstanceCredentials>({
-    title: instance.title,
-    description: instance.description,
-    short_description: instance.short_description,
-    screenshots: instance.screenshots,
-    thumbnail: instance.thumbnail,
+    title: dittoInstanceData?.title ?? '',
+    description: dittoInstanceData?.description ?? '',
+    short_description: dittoInstanceData?.short_description ?? '',
+    screenshots: dittoInstanceData?.screenshots ?? [],
+    thumbnail: dittoInstanceData?.thumbnail ?? { url: '', versions: {} },
   });
 
   const [isThumbnailLoading, setThumbnailLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (dittoInstanceData) {
+      setData({
+        title: dittoInstanceData.title,
+        description: dittoInstanceData.description,
+        short_description: dittoInstanceData.short_description,
+        screenshots: dittoInstanceData.screenshots,
+        thumbnail: dittoInstanceData.thumbnail,
+      });
+    }
+  }, [dittoInstanceData]);
+
   const handleSubmit: React.FormEventHandler = async (event) => {
     event.preventDefault();
-    try {
-      await dispatch(putDittoInstance(data));
-      toast.success(messages.submit_success);
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast.error(err.response?.data?.error || 'An error occurred');
-        return;
-      }
-      toast.error((err as Error)?.message || 'An error occurred');
-    }
+    updateDittoInstance(data, {
+      onSuccess: async () => {
+        toast.success(messages.submit_success);
+      },
+      onError: async (err) => {
+        toast.error(err.message); // generic error message, not the one returned by the backend
+      },
+    });
   };
 
   /** Set a single key in the request data. */
