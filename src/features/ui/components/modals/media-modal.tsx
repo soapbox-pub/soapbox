@@ -341,7 +341,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             {actualStatus && (
               <HStack
                 justifyContent='center'
-                className={clsx('absolute bottom-0 flex w-full transition-opacity', navigationHiddenClassName)}
+                className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
               >
                 <StatusActionBar
                   status={actualStatus}
