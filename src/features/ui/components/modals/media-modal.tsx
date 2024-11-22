@@ -258,97 +258,99 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           }
           justifyContent='between'
         >
-          <HStack
-            alignItems='center'
-            justifyContent='between'
-            className={clsx('flex-[0_0_60px] p-4 transition-opacity', navigationHiddenClassName)}
-          >
-            <IconButton
-              title={intl.formatMessage(messages.close)}
-              src={xIcon}
-              onClick={onClose}
-              theme='dark'
-              className='!p-1.5 hover:scale-105 hover:bg-gray-900'
-              iconClassName='h-5 w-5'
-            />
-
-            <HStack alignItems='center' space={2}>
+          <Stack className='relative h-full'>
+            <HStack
+              alignItems='center'
+              justifyContent='between'
+              className={clsx('absolute z-[9999] flex w-full p-4 transition-opacity', navigationHiddenClassName)}
+            >
               <IconButton
-                src={downloadIcon}
+                title={intl.formatMessage(messages.close)}
+                src={xIcon}
+                onClick={onClose}
                 theme='dark'
                 className='!p-1.5 hover:scale-105 hover:bg-gray-900'
                 iconClassName='h-5 w-5'
-                onClick={handleDownload}
               />
 
-              {status && (
+              <HStack alignItems='center' space={2}>
                 <IconButton
-                  src={isFullScreen ? arrowsMinimizeIcon : arrowsMaximizeIcon}
-                  title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
+                  src={downloadIcon}
                   theme='dark'
-                  className='hidden !p-1.5 hover:scale-105 hover:bg-gray-900 xl:block'
+                  className='!p-1.5 hover:scale-105 hover:bg-gray-900'
                   iconClassName='h-5 w-5'
-                  onClick={() => setIsFullScreen(!isFullScreen)}
+                  onClick={handleDownload}
                 />
-              )}
+
+                {status && (
+                  <IconButton
+                    src={isFullScreen ? arrowsMinimizeIcon : arrowsMaximizeIcon}
+                    title={intl.formatMessage(isFullScreen ? messages.minimize : messages.expand)}
+                    theme='dark'
+                    className='hidden !p-1.5 hover:scale-105 hover:bg-gray-900 xl:block'
+                    iconClassName='h-5 w-5'
+                    onClick={() => setIsFullScreen(!isFullScreen)}
+                  />
+                )}
+              </HStack>
             </HStack>
-          </HStack>
 
-          {/* Height based on height of top/bottom bars */}
-          <div
-            className='relative h-[calc(100vh-120px)] w-full grow'
-          >
-            {hasMultipleImages && (
-              <div className={clsx('absolute inset-y-0 left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
-                <button
-                  tabIndex={0}
-                  className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
-                  onClick={handlePrevClick}
-                  aria-label={intl.formatMessage(messages.previous)}
+            {/* Height based on height of top/bottom bars */}
+            <div
+              className='relative h-[calc(100vh-120px)] w-full grow'
+            >
+              {hasMultipleImages && (
+                <div className={clsx('absolute inset-y-0 left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
+                  <button
+                    tabIndex={0}
+                    className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                    onClick={handlePrevClick}
+                    aria-label={intl.formatMessage(messages.previous)}
+                  >
+                    <Icon src={arrowLeftIcon} className='size-5' />
+                  </button>
+                </div>
+              )}
+
+              <div className='size-full'>
+                <ReactSwipeableViews
+                  style={swipeableViewsStyle}
+                  containerStyle={containerStyle}
+                  onChangeIndex={handleSwipe}
+                  className='flex items-center justify-center'
+                  index={getIndex()}
                 >
-                  <Icon src={arrowLeftIcon} className='size-5' />
-                </button>
+                  {content}
+                </ReactSwipeableViews>
               </div>
-            )}
 
-            <div className='size-full'>
-              <ReactSwipeableViews
-                style={swipeableViewsStyle}
-                containerStyle={containerStyle}
-                onChangeIndex={handleSwipe}
-                className='flex items-center justify-center'
-                index={getIndex()}
-              >
-                {content}
-              </ReactSwipeableViews>
+              {hasMultipleImages && (
+                <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
+                  <button
+                    tabIndex={0}
+                    className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                    onClick={handleNextClick}
+                    aria-label={intl.formatMessage(messages.next)}
+                  >
+                    <Icon src={arrowRightIcon} className='size-5' />
+                  </button>
+                </div>
+              )}
             </div>
 
-            {hasMultipleImages && (
-              <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
-                <button
-                  tabIndex={0}
-                  className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
-                  onClick={handleNextClick}
-                  aria-label={intl.formatMessage(messages.next)}
-                >
-                  <Icon src={arrowRightIcon} className='size-5' />
-                </button>
-              </div>
+            {actualStatus && (
+              <HStack
+                justifyContent='center'
+                className={clsx('absolute bottom-0 flex w-full transition-opacity', navigationHiddenClassName)}
+              >
+                <StatusActionBar
+                  status={actualStatus}
+                  space='md'
+                  statusActionButtonTheme='inverse'
+                />
+              </HStack>
             )}
-          </div>
-
-          {actualStatus && (
-            <HStack
-              justifyContent='center'
-              className={clsx('flex-[0_0_60px] transition-opacity', navigationHiddenClassName)}
-            >
-              <StatusActionBar
-                status={actualStatus}
-                space='md'
-                statusActionButtonTheme='inverse'
-              />
-            </HStack>
-          )}
+          </Stack>
         </Stack>
 
         {actualStatus && (
