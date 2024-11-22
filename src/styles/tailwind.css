@@ -39,8 +39,6 @@
 @layer utilities {
   .media-modal * {
     img {
-      max-height: 80vh;
-      width: 100%;
       object-fit: contain;
     }
     
