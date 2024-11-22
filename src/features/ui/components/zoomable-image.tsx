@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { PureComponent } from 'react';
 
 const MIN_SCALE = 1;
@@ -132,7 +133,7 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
           role='presentation'
           ref={this.setImageRef}
           alt={alt}
-          className='size-auto max-h-[80%] max-w-full object-contain shadow-2xl'
+          className={clsx('size-auto max-h-[80%] max-w-full object-contain', { 'size-full max-h-full': scale !== 1 })}
           title={alt}
           src={src}
           style={{
