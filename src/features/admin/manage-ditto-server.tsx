@@ -1,9 +1,10 @@
 import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media.ts';
 import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { useInstanceV2 } from 'soapbox/api/hooks/instance/useInstanceV2.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
@@ -63,29 +64,18 @@ export interface DittoInstanceCredentials {
 const ManageDittoServer: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { updateDittoInstance, data: dittoInstanceData } = useManageDittoServer();
+  const { updateDittoInstance } = useManageDittoServer();
+  const { instance } = useInstanceV2();
 
   const [data, setData] = useState<DittoInstanceCredentials>({
-    title: dittoInstanceData?.title ?? '',
-    description: dittoInstanceData?.description ?? '',
-    short_description: dittoInstanceData?.short_description ?? '',
-    screenshots: dittoInstanceData?.screenshots ?? [],
-    thumbnail: dittoInstanceData?.thumbnail ?? { url: '', versions: {} },
+    title: instance?.title ?? '',
+    description: instance?.description ?? '',
+    short_description: instance?.short_description ?? '',
+    screenshots: instance?.screenshots ?? [],
+    thumbnail: instance?.thumbnail ?? { url: '', versions: {} },
   });
 
   const [isThumbnailLoading, setThumbnailLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (dittoInstanceData) {
-      setData({
-        title: dittoInstanceData.title,
-        description: dittoInstanceData.description,
-        short_description: dittoInstanceData.short_description,
-        screenshots: dittoInstanceData.screenshots,
-        thumbnail: dittoInstanceData.thumbnail,
-      });
-    }
-  }, [dittoInstanceData]);
 
   const handleSubmit: React.FormEventHandler = async (event) => {
     event.preventDefault();
