@@ -141,7 +141,6 @@ import {
   RegisterInvite,
   ExternalLogin,
   LandingTimeline,
-  BookmarkFolders,
   EditIdentity,
   Domains,
   NostrRelays,
@@ -151,6 +150,7 @@ import {
   Rules,
   AdminNostrRelays,
   NostrBunkerLogin,
+  ManageDittoServer,
 } from './util/async-components.ts';
 import GlobalHotkeys from './util/global-hotkeys.tsx';
 import { WrappedRoute } from './util/react-router-helpers.tsx';
@@ -258,9 +258,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       {features.lists && <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />}
       {features.lists && <WrappedRoute path='/list/:id' page={DefaultPage} component={ListTimeline} content={children} />}
-      {features.bookmarks && <WrappedRoute path='/bookmarks/all' page={DefaultPage} component={Bookmarks} content={children} />}
-      {features.bookmarks && <WrappedRoute path='/bookmarks/:id' page={DefaultPage} component={Bookmarks} content={children} />}
-      <WrappedRoute path='/bookmarks' page={DefaultPage} component={BookmarkFolders} content={children} />
+      {features.bookmarks && <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />}
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
@@ -337,6 +335,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+      {features.nostr && <WrappedRoute path='/soapbox/admin/ditto-server' adminOnly page={WidePage} component={ManageDittoServer} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
       {features.nostr && <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={WidePage} component={ManageZapSplit} content={children} exact />}

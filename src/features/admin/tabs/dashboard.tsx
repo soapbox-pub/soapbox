@@ -88,6 +88,13 @@ const Dashboard: React.FC = () => {
       </DashCounters>
 
       <List>
+        {account.admin && features.nostr && (
+          <ListItem
+            to='/soapbox/admin/ditto-server'
+            label={<FormattedMessage id='column.admin.ditto_server.manage' defaultMessage='Manage Ditto Server' />}
+          />
+        )}
+
         {account.admin && (
           <ListItem
             to='/soapbox/config'

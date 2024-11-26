@@ -8,9 +8,9 @@ import { httpErrorMessages } from 'soapbox/utils/errors.ts';
 export type ToastText = string | MessageDescriptor
 export type ToastType = 'success' | 'error' | 'info'
 
-export interface IToastOptions {
+interface IToastOptions {
   action?(): void;
-  actionLink?: string;
+  actionLink?: string; // not used in this file...
   actionLabel?: ToastText;
   duration?: number;
   summary?: string;

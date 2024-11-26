@@ -2,6 +2,7 @@
 import z from 'zod';
 
 import { accountSchema } from './account.ts';
+import { screenshotsSchema } from './manifest.ts';
 import { mrfSimpleSchema } from './pleroma.ts';
 import { ruleSchema } from './rule.ts';
 import { coerceObject, filteredArray, mimeSchema } from './utils.ts';
@@ -212,6 +213,8 @@ const instanceV2Schema = coerceObject({
   pleroma: pleromaSchema,
   registrations: registrationsSchema,
   rules: filteredArray(ruleSchema),
+  screenshots: screenshotsSchema.catch([]),
+  short_description: z.string().catch(''),
   source_url: z.string().url().optional().catch(undefined),
   thumbnail: thumbnailSchema,
   title: z.string().catch(''),
@@ -227,7 +230,7 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
       account: v1.contact_account,
       email: v1.email,
     },
-    description: v1.short_description,
+    description: v1.short_description, // Shouldn't it be "v1.description" ?
     domain: v1.uri,
     icon: [],
     languages: v1.languages,
@@ -238,6 +241,8 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
       enabled: v1.registrations,
     },
     rules: v1.rules,
+    screenshots: [],
+    short_description: v1.short_description,
     thumbnail: {
       url: v1.thumbnail,
       versions: {
@@ -255,4 +260,4 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
 type InstanceV1 = z.infer<typeof instanceV1Schema>;
 type InstanceV2 = z.infer<typeof instanceV2Schema>;
 
-export { instanceV1Schema, type InstanceV1, instanceV2Schema, type InstanceV2, upgradeInstance };
+export { instanceV1Schema, type InstanceV1, instanceV2Schema, type InstanceV2, upgradeInstance, thumbnailSchema };

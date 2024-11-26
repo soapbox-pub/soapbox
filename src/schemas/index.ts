@@ -2,7 +2,6 @@ export { accountSchema, type Account } from './account.ts';
 export { announcementSchema, adminAnnouncementSchema, type Announcement, type AdminAnnouncement } from './announcement.ts';
 export { announcementReactionSchema, type AnnouncementReaction } from './announcement-reaction.ts';
 export { attachmentSchema, type Attachment } from './attachment.ts';
-export { bookmarkFolderSchema, type BookmarkFolder } from './bookmark-folder.ts';
 export { cardSchema, type Card } from './card.ts';
 export { chatMessageSchema, type ChatMessage } from './chat-message.ts';
 export { customEmojiSchema, type CustomEmoji } from './custom-emoji.ts';

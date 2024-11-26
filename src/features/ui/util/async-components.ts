@@ -164,15 +164,13 @@ export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor/
 export const OnboardingFlowModal = lazy(() => import('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-flow-modal.tsx'));
 export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal.tsx'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal.tsx'));
-export const BookmarkFolders = lazy(() => import('soapbox/features/bookmark-folders/index.tsx'));
-export const EditBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/edit-bookmark-folder-modal.tsx'));
-export const SelectBookmarkFolderModal = lazy(() => import('soapbox/features/ui/components/modals/select-bookmark-folder-modal.tsx'));
 export const EditIdentity = lazy(() => import('soapbox/features/edit-identity/index.tsx'));
 export const Domains = lazy(() => import('soapbox/features/admin/domains.tsx'));
 export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal.tsx'));
 export const NostrRelays = lazy(() => import('soapbox/features/nostr-relays/index.tsx'));
 export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Redirect.tsx'));
 export const ManageZapSplit = lazy(() => import('soapbox/features/admin/manage-zap-split.tsx'));
+export const ManageDittoServer = lazy(() => import('soapbox/features/admin/manage-ditto-server.tsx'));
 export const Relays = lazy(() => import('soapbox/features/admin/relays.tsx'));
 export const Rules = lazy(() => import('soapbox/features/admin/rules.tsx'));
 export const EditRuleModal = lazy(() => import('soapbox/features/ui/components/modals/edit-rule-modal.tsx'));

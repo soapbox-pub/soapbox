@@ -2,7 +2,6 @@ import type * as Schemas from 'soapbox/schemas/index.ts';
 
 enum Entities {
   ACCOUNTS = 'Accounts',
-  BOOKMARK_FOLDERS = 'BookmarkFolders',
   DOMAINS = 'Domains',
   GROUPS = 'Groups',
   GROUP_MEMBERSHIPS = 'GroupMemberships',
@@ -18,7 +17,6 @@ enum Entities {
 
 interface EntityTypes {
   [Entities.ACCOUNTS]: Schemas.Account;
-  [Entities.BOOKMARK_FOLDERS]: Schemas.BookmarkFolder;
   [Entities.DOMAINS]: Schemas.Domain;
   [Entities.GROUPS]: Schemas.Group;
   [Entities.GROUP_MEMBERSHIPS]: Schemas.GroupMember;
