@@ -260,17 +260,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     blocks: v.software !== DITTO,
 
     /**
-     * Can group bookmarks in folders.
-     * @see GET /api/v1/pleroma/bookmark_folders
-     * @see POST /api/v1/pleroma/bookmark_folders
-     * @see PATCH /api/v1/pleroma/bookmark_folders/:id
-     * @see DELETE /api/v1/pleroma/bookmark_folders/:id
-     */
-    bookmarkFolders: features.includes('pleroma:bookmark_folders'),
-
-    /**
      * Can bookmark statuses.
      * @see POST /api/v1/statuses/:id/bookmark
+     * @see POST /api/v1/statuses/:id/unbookmark
      * @see GET /api/v1/bookmarks
      */
     bookmarks: any([

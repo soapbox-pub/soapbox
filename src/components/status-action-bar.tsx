@@ -12,7 +12,6 @@ import dotsIcon from '@tabler/icons/outline/dots.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import flagIcon from '@tabler/icons/outline/flag.svg';
-import foldersIcon from '@tabler/icons/outline/folders.svg';
 import gavelIcon from '@tabler/icons/outline/gavel.svg';
 import heartIcon from '@tabler/icons/outline/heart.svg';
 import lockIcon from '@tabler/icons/outline/lock.svg';
@@ -74,8 +73,6 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
-  bookmarkSetFolder: { id: 'status.bookmark_folder', defaultMessage: 'Set bookmark folder' },
-  bookmarkChangeFolder: { id: 'status.bookmark_folder_change', defaultMessage: 'Change bookmark folder' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
@@ -237,12 +234,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     dispatch(toggleBookmark(status));
-  };
-
-  const handleBookmarkFolderClick = () => {
-    dispatch(openModal('SELECT_BOOKMARK_FOLDER', {
-      statusId: status.id,
-    }));
   };
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
@@ -498,14 +489,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: handleBookmarkClick,
         icon: status.bookmarked ? bookmarkOffIcon : bookmarkIcon,
-      });
-    }
-
-    if (features.bookmarkFolders && fromBookmarks) {
-      menu.push({
-        text: intl.formatMessage(status.pleroma.get('bookmark_folder') ? messages.bookmarkChangeFolder : messages.bookmarkSetFolder),
-        action: handleBookmarkFolderClick,
-        icon: foldersIcon,
       });
     }
 
