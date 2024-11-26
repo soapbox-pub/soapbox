@@ -29,9 +29,14 @@ const config: Config = {
       fontFamily: {
         arabic: [
           'Vazirmatn',
+          'Cairo',
+          'Amiri',
+          'Tajawal',
+          'sans-serif',
         ],
         javanese: [
           'Noto Sans Javanese',
+          'serif',
         ],
         sans: [
           'Inter',

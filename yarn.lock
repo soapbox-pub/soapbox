@@ -1307,6 +1307,16 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.1.5.tgz#f0bada210a75fdf41101c48ddcc291e1b33b3f47"
   integrity sha512-3lClsx2F3ei6hup0LYFbbm+NH87qVTX/6T63IllEFCLjT7XCxmbgBM42sXf8LTZx0CE5VpRRUnISUbqSlsxGSA==
 
+"@fontsource/amiri@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/amiri/-/amiri-5.1.0.tgz#86da9f17fbab9ecdb6b23e49d083cc9501abc0dd"
+  integrity sha512-epfiqkAaDIHyIW7Mz2HVEcSTjpJZLdnvd1AkpnpKnngYWxo+GDl5TrXsQjZp6/CnL/UYZsQZoiugajiL9HGQUA==
+
+"@fontsource/cairo@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/cairo/-/cairo-5.1.0.tgz#89dc3babe15ac02ba02c5a1f32f08ea5d3457ec4"
+  integrity sha512-gjiQa8YP4ORv20WhWHHymEBgeHEZ2GP6H0VZACWylG5VoqsHXawRn3V+9YVg3nOZWIknUexCqncIrlXbKDXnqQ==
+
 "@fontsource/inter@^5.0.0":
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-5.0.8.tgz#61b50cb0eb72b14ae1938d47c4a9a91546d2a50c"
@@ -1321,6 +1331,11 @@
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-5.0.8.tgz#9b3df61f884f46e12d3eca46e75517fde58da68e"
   integrity sha512-vjnNX8zQCSp4HadUJ3gpZiizCsK/ROjgGMpd4bcRxuyiTNGGMaznmKbhqdyVeFVap1sX8h2Qu380awaotey/mQ==
+
+"@fontsource/tajawal@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/tajawal/-/tajawal-5.1.0.tgz#9508e6da41fa6eae59e025c98c791603bd73ad0a"
+  integrity sha512-CYYxryDbFK4r4ev4xis+SyklUtnGy5O8nlJoDES/zEUdEz/qc7eYn1nVlQnUqWYLPzN5DgyTqHOx/5gWwHS7BA==
 
 "@fontsource/vazirmatn@^5.1.0":
   version "5.1.0"
