@@ -67,7 +67,7 @@ import {
 } from '../actions/scheduled-statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 export const StatusListRecord = ImmutableRecord({
   next: null as string | null,
@@ -94,8 +94,9 @@ const getStatusIds = (statuses: APIEntity[] = []) => (
   ImmutableOrderedSet(statuses.map(getStatusId))
 );
 
-const setLoading = (state: State, listType: string, loading: boolean) =>
-  state.update(listType, StatusListRecord(), listMap => listMap.set('isLoading', loading));
+const setLoading = (state: State, listType: string, loading: boolean) => {
+  return state.update(listType, StatusListRecord(), listMap => listMap.set('isLoading', loading));
+};
 
 const normalizeList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
   return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
@@ -133,24 +134,6 @@ const maybeAppendScheduledStatus = (state: State, status: APIEntity) => {
   return prependOneToList(state, 'scheduled_statuses', getStatusId(status));
 };
 
-const addBookmarkToLists = (state: State, status: APIEntity) => {
-  state = prependOneToList(state, 'bookmarks', status);
-  const folderId = status.pleroma.bookmark_folder;
-  if (folderId) {
-    return prependOneToList(state, `bookmarks:${folderId}`, status);
-  }
-  return state;
-};
-
-const removeBookmarkFromLists = (state: State, status: StatusEntity) => {
-  state = removeOneFromList(state, 'bookmarks', status);
-  const folderId = status.pleroma.get('bookmark_folder');
-  if (folderId) {
-    return removeOneFromList(state, `bookmarks:${folderId}`, status);
-  }
-  return state;
-};
-
 export default function statusLists(state = initialState, action: AnyAction) {
   switch (action.type) {
     case FAVOURITED_STATUSES_FETCH_REQUEST:
@@ -175,22 +158,22 @@ export default function statusLists(state = initialState, action: AnyAction) {
       return appendToList(state, `favourites:${action.accountId}`, action.statuses, action.next);
     case BOOKMARKED_STATUSES_FETCH_REQUEST:
     case BOOKMARKED_STATUSES_EXPAND_REQUEST:
-      return setLoading(state, action.folderId ? `bookmarks:${action.folderId}` : 'bookmarks', true);
+      return setLoading(state, 'bookmarks', true);
     case BOOKMARKED_STATUSES_FETCH_FAIL:
     case BOOKMARKED_STATUSES_EXPAND_FAIL:
-      return setLoading(state, action.folderId ? `bookmarks:${action.folderId}` : 'bookmarks', false);
+      return setLoading(state, 'bookmarks', false);
     case BOOKMARKED_STATUSES_FETCH_SUCCESS:
-      return normalizeList(state, action.folderId ? `bookmarks:${action.folderId}` : 'bookmarks', action.statuses, action.next);
+      return normalizeList(state, 'bookmarks', action.statuses, action.next);
     case BOOKMARKED_STATUSES_EXPAND_SUCCESS:
-      return appendToList(state, action.folderId ? `bookmarks:${action.folderId}` : 'bookmarks', action.statuses, action.next);
+      return appendToList(state, 'bookmarks', action.statuses, action.next);
     case FAVOURITE_SUCCESS:
       return prependOneToList(state, 'favourites', action.status);
     case UNFAVOURITE_SUCCESS:
       return removeOneFromList(state, 'favourites', action.status);
     case BOOKMARK_SUCCESS:
-      return addBookmarkToLists(state, action.response);
+      return prependOneToList(state, 'bookmarks', action.response);
     case UNBOOKMARK_SUCCESS:
-      return removeBookmarkFromLists(state, action.status);
+      return removeOneFromList(state, 'bookmarks', action.status);
     case PINNED_STATUSES_FETCH_SUCCESS:
       return normalizeList(state, 'pins', action.statuses, action.next);
     case PIN_SUCCESS:

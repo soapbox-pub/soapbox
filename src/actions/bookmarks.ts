@@ -15,77 +15,71 @@ const BOOKMARKED_STATUSES_EXPAND_FAIL    = 'BOOKMARKED_STATUSES_EXPAND_FAIL';
 
 const noOp = () => new Promise(f => f(undefined));
 
-const fetchBookmarkedStatuses = (folderId?: string) =>
+const fetchBookmarkedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.get(folderId ? `bookmarks:${folderId}` : 'bookmarks')?.isLoading) {
+    if (getState().status_lists.get('bookmarks')?.isLoading) {
       return dispatch(noOp);
     }
 
-    dispatch(fetchBookmarkedStatusesRequest(folderId));
+    dispatch(fetchBookmarkedStatusesRequest());
 
-    return api(getState).get(`/api/v1/bookmarks${folderId ? `?folder_id=${folderId}` : ''}`).then(response => {
+    return api(getState).get('/api/v1/bookmarks').then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      return dispatch(fetchBookmarkedStatusesSuccess(response.data, next ? next.uri : null, folderId));
+      return dispatch(fetchBookmarkedStatusesSuccess(response.data, next ? next.uri : null));
     }).catch(error => {
-      dispatch(fetchBookmarkedStatusesFail(error, folderId));
+      dispatch(fetchBookmarkedStatusesFail(error));
     });
   };
 
-const fetchBookmarkedStatusesRequest = (folderId?: string) => ({
+const fetchBookmarkedStatusesRequest = () => ({
   type: BOOKMARKED_STATUSES_FETCH_REQUEST,
-  folderId,
 });
 
-const fetchBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | null, folderId?: string) => ({
+const fetchBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | null) => ({
   type: BOOKMARKED_STATUSES_FETCH_SUCCESS,
   statuses,
   next,
-  folderId,
 });
 
-const fetchBookmarkedStatusesFail = (error: unknown, folderId?: string) => ({
+const fetchBookmarkedStatusesFail = (error: unknown) => ({
   type: BOOKMARKED_STATUSES_FETCH_FAIL,
   error,
-  folderId,
 });
 
-const expandBookmarkedStatuses = (folderId?: string) =>
+const expandBookmarkedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const list = folderId ? `bookmarks:${folderId}` : 'bookmarks';
-    const url = getState().status_lists.get(list)?.next || null;
+    const bookmarks = 'bookmarks';
+    const url = getState().status_lists.get(bookmarks)?.next || null;
 
-    if (url === null || getState().status_lists.get(list)?.isLoading) {
+    if (url === null || getState().status_lists.get(bookmarks)?.isLoading) {
       return dispatch(noOp);
     }
 
-    dispatch(expandBookmarkedStatusesRequest(folderId));
+    dispatch(expandBookmarkedStatusesRequest());
 
     return api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      return dispatch(expandBookmarkedStatusesSuccess(response.data, next ? next.uri : null, folderId));
+      return dispatch(expandBookmarkedStatusesSuccess(response.data, next ? next.uri : null));
     }).catch(error => {
-      dispatch(expandBookmarkedStatusesFail(error, folderId));
+      dispatch(expandBookmarkedStatusesFail(error));
     });
   };
 
-const expandBookmarkedStatusesRequest = (folderId?: string) => ({
+const expandBookmarkedStatusesRequest = () => ({
   type: BOOKMARKED_STATUSES_EXPAND_REQUEST,
-  folderId,
 });
 
-const expandBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | null, folderId?: string) => ({
+const expandBookmarkedStatusesSuccess = (statuses: APIEntity[], next: string | null) => ({
   type: BOOKMARKED_STATUSES_EXPAND_SUCCESS,
   statuses,
   next,
-  folderId,
 });
 
-const expandBookmarkedStatusesFail = (error: unknown, folderId?: string) => ({
+const expandBookmarkedStatusesFail = (error: unknown) => ({
   type: BOOKMARKED_STATUSES_EXPAND_FAIL,
   error,
-  folderId,
 });
 
 export {

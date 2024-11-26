@@ -1,14 +1,12 @@
 import { defineMessages } from 'react-intl';
 
-import toast, { type IToastOptions } from 'soapbox/toast.tsx';
+import toast from 'soapbox/toast.tsx';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
-import { getFeatures } from 'soapbox/utils/features.ts';
 
 import api, { getLinks } from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts';
-import { openModal } from './modals.ts';
 import { expandGroupFeaturedTimeline } from './timelines.ts';
 
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
@@ -94,9 +92,7 @@ const ZAPS_EXPAND_FAIL = 'ZAPS_EXPAND_FAIL';
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
-  folderChanged: { id: 'status.bookmark_folder_changed', defaultMessage: 'Changed folder' },
   view: { id: 'toast.view', defaultMessage: 'View' },
-  selectFolder: { id: 'status.bookmark.select_folder', defaultMessage: 'Select folder' },
 });
 
 const reblog = (status: StatusEntity) =>
@@ -363,35 +359,17 @@ const zapFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const bookmark = (status: StatusEntity, folderId?: string) =>
+const bookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const state = getState();
-
-    const instance = state.instance;
-    const features = getFeatures(instance);
-
     dispatch(bookmarkRequest(status));
 
-    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`, {
-      folder_id: folderId,
-    }).then(function(response) {
+    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
 
-      let opts: IToastOptions = {
-        actionLabel: messages.view,
-        actionLink: folderId ? `/bookmarks/${folderId}` : '/bookmarks/all',
-      };
-      if (features.bookmarkFolders && typeof folderId !== 'string') {
-        opts = {
-          actionLabel: messages.selectFolder,
-          action: () => dispatch(openModal('SELECT_BOOKMARK_FOLDER', {
-            statusId: status.id,
-          })),
-        };
-      }
-
-      toast.success(typeof folderId === 'string' ? messages.folderChanged : messages.bookmarkAdded, opts);
+      toast.success(messages.bookmarkAdded, {
+        actionLink: '/bookmarks',
+      });
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
