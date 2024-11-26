@@ -12,13 +12,13 @@ import '@fontsource/inter/500.css';
 import '@fontsource/inter/600.css';
 import '@fontsource/inter/700.css';
 import '@fontsource/inter/900.css';
+import '@fontsource/vazirmatn/arabic.css';
+import '@fontsource/noto-sans-javanese/javanese.css';
 import '@fontsource/roboto-mono/400.css';
 import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
 import 'soapbox/features/nostr/keyring.ts';
 
 import './iframe.ts';
-import './styles/i18n/arabic.css';
-import './styles/i18n/javanese.css';
 import './styles/tailwind.css';
 
 import ready from './ready.ts';

@@ -56,7 +56,7 @@ const DevelopersChallenge = () => {
           {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         </Text>
 
-        <Text tag='pre' family='mono' theme='muted'>
+        <Text tag='pre' className='font-mono' theme='muted'>
           {challenge}
         </Text>
 

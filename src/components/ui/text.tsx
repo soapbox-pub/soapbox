@@ -45,11 +45,6 @@ const transformProperties = {
   uppercase: 'uppercase',
 };
 
-const families = {
-  sans: 'font-sans',
-  mono: 'font-mono',
-};
-
 export type Sizes = keyof typeof sizes
 type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'label' | 'div' | 'blockquote'
 type Directions = 'ltr' | 'rtl'
@@ -63,8 +58,6 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   className?: string;
   /** Text direction. */
   direction?: Directions;
-  /** Typeface of the text. */
-  family?: keyof typeof families;
   /** The "for" attribute specifies which form element a label is bound to. */
   htmlFor?: string;
   /** Font size of the text. */
@@ -92,7 +85,6 @@ const Text = forwardRef<any, IText>(
       align,
       className,
       direction,
-      family = 'sans',
       size = 'md',
       tag = 'p',
       theme = 'default',
@@ -122,7 +114,6 @@ const Text = forwardRef<any, IText>(
           [themes[theme]]: true,
           [weights[weight]]: true,
           [trackingSizes[tracking]]: true,
-          [families[family]]: true,
           [alignmentClass]: typeof align !== 'undefined',
           [transformProperties[transform]]: typeof transform !== 'undefined',
         }, className)}

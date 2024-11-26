@@ -27,8 +27,18 @@ const config: Config = {
         base: '0.9375rem',
       },
       fontFamily: {
+        arabic: [
+          'Vazirmatn',
+          'Cairo',
+          'Amiri',
+          'Tajawal',
+          'sans-serif',
+        ],
+        javanese: [
+          'Noto Sans Javanese',
+          'serif',
+        ],
         sans: [
-          'Soapbox i18n',
           'Inter',
           'ui-sans-serif',
           'system-ui',
@@ -95,11 +105,11 @@ const config: Config = {
             width: '0px',
             height: '0px',
           },
-          
+
           '29%': {
             backgroundColor: 'rgb(229, 231, 235)',
           },
-        
+
           '30%': {
             width: '3rem',
             height: '3rem',
@@ -107,7 +117,7 @@ const config: Config = {
             opacity: '1',
             borderWidth: '6px',
           },
-        
+
           '100%': {
             width: '3rem',
             height: '3rem',

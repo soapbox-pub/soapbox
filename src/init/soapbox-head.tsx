@@ -29,9 +29,13 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     'no-reduce-motion': !reduceMotion,
     'underline-links': underlineLinks,
     'demetricator': demetricator,
+    'font-sans': true,
+    '!font-arabic': ['ar', 'fa'].includes(locale),
+    '!font-javanese': locale === 'jv',
   });
 
   useEffect(() => {
+
     if (dsn) {
       startSentry(dsn).catch(console.error);
     }
