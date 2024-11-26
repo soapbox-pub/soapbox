@@ -27,6 +27,12 @@ const config: Config = {
         base: '0.9375rem',
       },
       fontFamily: {
+        arabic: [
+          'Vazirmatn',
+        ],
+        javanese: [
+          'Noto Sans Javanese',
+        ],
         sans: [
           'Inter',
           'ui-sans-serif',
