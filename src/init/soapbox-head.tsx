@@ -29,8 +29,9 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     'no-reduce-motion': !reduceMotion,
     'underline-links': underlineLinks,
     'demetricator': demetricator,
-    'font-arabic': ['ar', 'fa'].includes(locale),
-    'font-javanese': locale === 'jv',
+    'font-sans': true,
+    '!font-arabic': ['ar', 'fa'].includes(locale),
+    '!font-javanese': locale === 'jv',
   });
 
   useEffect(() => {
@@ -49,8 +50,6 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
-        {/* eslint-disable formatjs/no-literal-string-in-jsx */}
-        {/* eslint-enable formatjs/no-literal-string-in-jsx */}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
       </Helmet>
 
