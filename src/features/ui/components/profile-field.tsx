@@ -7,6 +7,7 @@ import Markup from 'soapbox/components/markup.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components.ts';
+import { htmlToPlaintext } from 'soapbox/utils/html.ts';
 
 import type { Account } from 'soapbox/schemas/index.ts';
 
@@ -34,27 +35,28 @@ interface IProfileField {
 /** Renders a single profile field. */
 const ProfileField: React.FC<IProfileField> = ({ field }) => {
   const intl = useIntl();
+  const valuePlain = htmlToPlaintext(field.value);
 
   if (isTicker(field.name)) {
     return (
       <CryptoAddress
         ticker={getTicker(field.name).toLowerCase()}
-        address={field.value_plain}
+        address={valuePlain}
       />
     );
   } else if (isZapEmoji(field.name)) {
-    return <LightningAddress address={field.value_plain} />;
+    return <LightningAddress address={valuePlain} />;
   }
 
   return (
     <dl>
       <dt title={field.name}>
-        <Markup weight='bold' tag='span' dangerouslySetInnerHTML={{ __html: field.name_emojified }} />
+        {field.name}
       </dt>
 
       <dd
         className={clsx({ 'text-success-500': field.verified_at })}
-        title={field.value_plain}
+        title={valuePlain}
       >
         <HStack space={2} alignItems='center'>
           {field.verified_at && (
@@ -63,7 +65,11 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
             </span>
           )}
 
-          <Markup className='overflow-hidden break-words' tag='span' dangerouslySetInnerHTML={{ __html: field.value_emojified }} />
+          <Markup
+            className='overflow-hidden break-words'
+            tag='span'
+            dangerouslySetInnerHTML={{ __html: field.value }}
+          />
         </HStack>
       </dd>
     </dl>

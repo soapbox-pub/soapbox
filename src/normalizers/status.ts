@@ -92,7 +92,6 @@ export const StatusRecord = ImmutableRecord({
   hidden: false,
   search_index: '',
   showFiltered: true,
-  spoilerHtml: '',
   translation: null as ImmutableMap<string, string> | null,
 });
 

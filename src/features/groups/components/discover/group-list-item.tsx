@@ -34,11 +34,9 @@ const GroupListItem = (props: IGroupListItem) => {
           />
 
           <Stack className='overflow-hidden'>
-            <Text
-              weight='bold'
-              dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-              truncate
-            />
+            <Text weight='bold' truncate>
+              {group.display_name}
+            </Text>
 
             <HStack className='text-gray-700 dark:text-gray-600' space={1} alignItems='center'>
               <Icon

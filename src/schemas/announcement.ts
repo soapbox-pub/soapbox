@@ -1,28 +1,15 @@
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji/index.ts';
-
 import { announcementReactionSchema } from './announcement-reaction.ts';
 import { customEmojiSchema } from './custom-emoji.ts';
 import { mentionSchema } from './mention.ts';
 import { tagSchema } from './tag.ts';
-import { dateSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
+import { dateSchema, filteredArray } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
-const transformAnnouncement = (announcement: Resolve<z.infer<typeof baseAnnouncementSchema>>) => {
-  const emojiMap = makeCustomEmojiMap(announcement.emojis);
-
-  const contentHtml = emojify(announcement.content, emojiMap);
-
-  return {
-    ...announcement,
-    contentHtml,
-  };
-};
-
 // https://docs.joinmastodon.org/entities/announcement/
-const baseAnnouncementSchema = z.object({
+const announcementSchema = z.object({
   id: z.string(),
   content: z.string().catch(''),
   starts_at: z.string().datetime().nullable().catch(null),
@@ -43,15 +30,13 @@ const baseAnnouncementSchema = z.object({
   updated_at: dateSchema,
 });
 
-const announcementSchema = baseAnnouncementSchema.transform(transformAnnouncement);
-
 type Announcement = Resolve<z.infer<typeof announcementSchema>>;
 
-const adminAnnouncementSchema = baseAnnouncementSchema.extend({
+const adminAnnouncementSchema = announcementSchema.extend({
   pleroma: z.object({
     raw_content: z.string().catch(''),
   }),
-}).transform(transformAnnouncement);
+});
 
 type AdminAnnouncement = Resolve<z.infer<typeof adminAnnouncementSchema>>;
 

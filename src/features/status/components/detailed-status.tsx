@@ -76,7 +76,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
                     <Link to={`/group/${(status.group as Group).slug}`} className='hover:underline'>
                       <bdi className='truncate'>
                         <strong className='text-gray-800 dark:text-gray-200'>
-                          <span dangerouslySetInnerHTML={{ __html: (status.group as Group).display_name_html }} />
+                          <span>{status.group.display_name}</span>
                         </strong>
                       </bdi>
                     </Link>

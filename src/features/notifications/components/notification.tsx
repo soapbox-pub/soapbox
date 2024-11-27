@@ -56,8 +56,9 @@ const buildLink = (account: AccountEntity): JSX.Element => (
       className='font-bold text-gray-800 hover:underline dark:text-gray-200'
       title={account.acct}
       to={`/@${account.acct}`}
-      dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-    />
+    >
+      {account.display_name}
+    </Link>
   </bdi>
 );
 

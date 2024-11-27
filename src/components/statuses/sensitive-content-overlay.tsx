@@ -129,7 +129,7 @@ const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOver
                 <div className='py-4 italic'>
                   {/* eslint-disable formatjs/no-literal-string-in-jsx */}
                   <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
-                    &ldquo;<span dangerouslySetInnerHTML={{ __html: status.spoilerHtml }} />&rdquo;
+                    &ldquo;<span>{status.spoiler_text}</span>&rdquo;
                   </Text>
                   {/* eslint-enable formatjs/no-literal-string-in-jsx */}
                 </div>

@@ -29,10 +29,11 @@ const ReplyGroupIndicator = (props: IReplyGroupIndicator) => {
         id='compose.reply_group_indicator.message'
         defaultMessage='Posting to {groupLink}'
         values={{
-          groupLink: <Link
-            to={`/group/${group.slug}`}
-            dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-          />,
+          groupLink: (
+            <Link to={`/group/${group.slug}`}>
+              {group.display_name}
+            </Link>
+          ),
         }}
       />
     </Text>

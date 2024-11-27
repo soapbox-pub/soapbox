@@ -1,7 +1,5 @@
 import z from 'zod';
 
-import type { CustomEmoji } from './custom-emoji.ts';
-
 /** Ensure HTML content is a string, and drop empty `<p>` tags. */
 const contentSchema = z.string().catch('').transform((value) => value === '<p></p>' ? '' : value);
 
@@ -21,14 +19,6 @@ function filteredArray<T extends z.ZodTypeAny>(schema: T) {
 
 /** Validates the string as an emoji. */
 const emojiSchema = z.string().refine((v) => /\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]{2}/u.test(v));
-
-/** Map a list of CustomEmoji to their shortcodes. */
-function makeCustomEmojiMap(customEmojis: CustomEmoji[]) {
-  return customEmojis.reduce<Record<string, CustomEmoji>>((result, emoji) => {
-    result[`:${emoji.shortcode}:`] = emoji;
-    return result;
-  }, {});
-}
 
 function jsonSchema(reviver?: (this: any, key: string, value: any) => any) {
   return z.string().transform((value, ctx) => {
@@ -52,4 +42,4 @@ function coerceObject<T extends z.ZodRawShape>(shape: T) {
 /** Validates a hex color code. */
 const hexColorSchema = z.string().regex(/^#([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i);
 
-export { filteredArray, hexColorSchema, makeCustomEmojiMap, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
+export { filteredArray, hexColorSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };

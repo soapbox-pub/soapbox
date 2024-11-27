@@ -2,7 +2,6 @@
  * Group normalizer:
  * Converts API groups into our internal format.
  */
-import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -12,10 +11,7 @@ import {
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji/index.ts';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
-import { unescapeHTML } from 'soapbox/utils/html.ts';
-import { makeEmojiMap } from 'soapbox/utils/normalizers.ts';
 
 import type { Emoji, GroupRelationship } from 'soapbox/types/entities.ts';
 
@@ -45,9 +41,6 @@ export const GroupRecord = ImmutableRecord({
   url: '',
 
   // Internal fields
-  display_name_html: '',
-  note_emojified: '',
-  note_plain: '',
   relationship: null as GroupRelationship | null,
 });
 
@@ -83,31 +76,6 @@ const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
 const fixDisplayName = (group: ImmutableMap<string, any>) => {
   const displayName = group.get('display_name') || '';
   return group.set('display_name', displayName.trim().length === 0 ? group.get('username') : displayName);
-};
-
-/** Emojification, etc */
-const addInternalFields = (group: ImmutableMap<string, any>) => {
-  const emojiMap = makeEmojiMap(group.get('emojis'));
-
-  return group.withMutations((group: ImmutableMap<string, any>) => {
-    // Emojify group properties
-    group.merge({
-      display_name_html: emojify(escapeTextContentForBrowser(group.get('display_name')), emojiMap),
-      note_emojified: emojify(group.get('note', ''), emojiMap),
-      note_plain: unescapeHTML(group.get('note', '')),
-    });
-
-    // Emojify fields
-    group.update('fields', ImmutableList(), fields => {
-      return fields.map((field: ImmutableMap<string, any>) => {
-        return field.merge({
-          name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
-          value_emojified: emojify(field.get('value'), emojiMap),
-          value_plain: unescapeHTML(field.get('value')),
-        });
-      });
-    });
-  });
 };
 
 const getDomainFromURL = (group: ImmutableMap<string, any>): string => {
@@ -159,7 +127,6 @@ export const normalizeGroup = (group: Record<string, any>) => {
       normalizeLocked(group);
       fixDisplayName(group);
       fixNote(group);
-      addInternalFields(group);
     }),
   );
 };

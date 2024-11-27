@@ -39,12 +39,9 @@ const GroupListItem = ({ group, onUnmute }: IGroupListItem) => {
           size={42}
         />
 
-        <Text
-          weight='semibold'
-          size='sm'
-          dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-          truncate
-        />
+        <Text weight='semibold' size='sm' truncate>
+          {group.display_name}
+        </Text>
       </HStack>
 
       <Button theme='primary' type='button' onClick={handleUnmute} size='sm'>

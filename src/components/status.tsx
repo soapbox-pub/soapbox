@@ -231,23 +231,17 @@ const Status: React.FC<IStatus> = (props) => {
                     className='hover:underline'
                   >
                     <bdi className='truncate'>
-                      <strong
-                        className='text-gray-800 dark:text-gray-200'
-                        dangerouslySetInnerHTML={{
-                          __html: status.account.display_name_html,
-                        }}
-                      />
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        {status.account.display_name}
+                      </strong>
                     </bdi>
                   </Link>
                 ),
                 group: (
                   <Link to={`/group/${group.slug}`} className='hover:underline'>
-                    <strong
-                      className='text-gray-800 dark:text-gray-200'
-                      dangerouslySetInnerHTML={{
-                        __html: group.display_name_html,
-                      }}
-                    />
+                    <strong className='text-gray-800 dark:text-gray-200'>
+                      {group.display_name}
+                    </strong>
                   </Link>
                 ),
               }}
@@ -268,12 +262,9 @@ const Status: React.FC<IStatus> = (props) => {
                 name: (
                   <Link to={`/@${status.account.acct}`} className='hover:underline'>
                     <bdi className='truncate'>
-                      <strong
-                        className='text-gray-800 dark:text-gray-200'
-                        dangerouslySetInnerHTML={{
-                          __html: status.account.display_name_html,
-                        }}
-                      />
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        {status.account.display_name}
+                      </strong>
                     </bdi>
                   </Link>
                 ),
@@ -306,7 +297,7 @@ const Status: React.FC<IStatus> = (props) => {
                   <Link to={`/group/${group.slug}`} className='hover:underline'>
                     <bdi className='truncate'>
                       <strong className='text-gray-800 dark:text-gray-200'>
-                        <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                        <span>{group.display_name}</span>
                       </strong>
                     </bdi>
                   </Link>

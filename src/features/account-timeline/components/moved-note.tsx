@@ -27,7 +27,7 @@ const MovedNote: React.FC<IMovedNote> = ({ from, to }) => (
             id='notification.move'
             defaultMessage='{name} moved to {targetName}'
             values={{
-              name: <span dangerouslySetInnerHTML={{ __html: from.display_name_html }} />,
+              name: from.display_name,
               targetName: to.acct,
             }}
           />

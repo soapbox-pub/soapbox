@@ -7,7 +7,7 @@ import { getFilters, regexFromFilters } from 'soapbox/selectors/index.ts';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { compareId } from 'soapbox/utils/comparators.ts';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
-import { unescapeHTML } from 'soapbox/utils/html.ts';
+import { htmlToPlaintext } from 'soapbox/utils/html.ts';
 import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification.ts';
 
 import { fetchRelationships } from './accounts.ts';
@@ -100,7 +100,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
 
     if (['mention', 'status'].includes(notification.type)) {
       const regex = regexFromFilters(filters);
-      const searchIndex = notification.status.spoiler_text + '\n' + unescapeHTML(notification.status.content);
+      const searchIndex = notification.status.spoiler_text + '\n' + htmlToPlaintext(notification.status.content);
       filtered = regex && regex.test(searchIndex);
     }
 
@@ -111,7 +111,7 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
 
       if (showAlert && !filtered && isNotificationsEnabled) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
-        const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
+        const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : htmlToPlaintext(notification.status ? notification.status.content : '');
 
         navigator.serviceWorker.ready.then(serviceWorkerRegistration => {
           serviceWorkerRegistration.showNotification(title, {

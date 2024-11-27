@@ -32,15 +32,4 @@ describe('normalizePoll()', () => {
     expect(result.voted).toBe(false);
     expect(result.own_votes).toBe(null);
   });
-
-  it('normalizes poll with emojis', async () => {
-    const { poll } = await import('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
-    const result = pollSchema.parse(poll);
-
-    // Emojifies poll options
-    expect(result.options[1]?.title_emojified)
-      .toContain('emojione');
-
-    expect(result.emojis[1]?.shortcode).toEqual('soapbox');
-  });
 });

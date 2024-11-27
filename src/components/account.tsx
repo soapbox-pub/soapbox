@@ -232,12 +232,9 @@ const Account = ({
             >
               <LinkEl {...linkProps}>
                 <HStack space={1} alignItems='center' grow>
-                  <Text
-                    size='sm'
-                    weight='semibold'
-                    truncate
-                    dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-                  />
+                  <Text size='sm' weight='semibold' truncate>
+                    {account.display_name}
+                  </Text>
 
                   {account.verified && <VerificationBadge />}
 
@@ -308,7 +305,7 @@ const Account = ({
                 <Text
                   truncate
                   size='sm'
-                  dangerouslySetInnerHTML={{ __html: account.note_emojified }}
+                  dangerouslySetInnerHTML={{ __html: account.note }}
                   className='mr-2 rtl:ml-2 rtl:mr-0 [&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
                 />
               )}

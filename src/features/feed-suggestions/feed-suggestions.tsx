@@ -42,12 +42,13 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
             <HStack alignItems='center' justifyContent='center' space={1}>
               <Text
                 weight='semibold'
-                dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                 truncate
                 align='center'
                 size='sm'
                 className='max-w-[95%]'
-              />
+              >
+                {account.display_name}
+              </Text>
 
               {account.verified && <VerificationBadge />}
             </HStack>

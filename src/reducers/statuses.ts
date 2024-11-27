@@ -1,12 +1,10 @@
-import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
-import emojify from 'soapbox/features/emoji/index.ts';
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts.ts';
-import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html.ts';
-import { makeEmojiMap, normalizeId } from 'soapbox/utils/normalizers.ts';
+import { htmlToPlaintext, stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
+import { normalizeId } from 'soapbox/utils/normalizers.ts';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -96,34 +94,22 @@ const buildSearchContent = (status: StatusRecord): string => {
     status.content,
   ]).concat(pollOptionTitles).concat(mentionedUsernames);
 
-  return unescapeHTML(fields.join('\n\n')) || '';
+  return htmlToPlaintext(fields.join('\n\n')) || '';
 };
 
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
 export const calculateStatus = (
   status: StatusRecord,
-  oldStatus?: StatusRecord,
   expandSpoilers: boolean = false,
 ): StatusRecord => {
-  if (oldStatus && oldStatus.content === status.content && oldStatus.spoiler_text === status.spoiler_text) {
-    return status.merge({
-      search_index: oldStatus.search_index,
-      spoilerHtml: oldStatus.spoilerHtml,
-      hidden: oldStatus.hidden,
-    });
-  } else {
-    const spoilerText   = status.spoiler_text;
-    const searchContent = buildSearchContent(status);
-    const emojiMap      = makeEmojiMap(status.emojis);
+  const searchContent = buildSearchContent(status);
 
-    return status.merge({
-      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
-      content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
-      spoilerHtml: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(spoilerText), emojiMap), { USE_PROFILES: { html: true } }),
-      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
-    });
-  }
+  return status.merge({
+    search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
+    content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
+    hidden: expandSpoilers ? false : status.spoiler_text.length > 0 || status.sensitive,
+  });
 };
 
 // Check whether a status is a quote by secondary characteristics
@@ -158,7 +144,7 @@ const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): Re
   return normalizeStatus(status).withMutations(status => {
     fixTranslation(status, oldStatus);
     fixQuote(status, oldStatus);
-    calculateStatus(status, oldStatus, expandSpoilers);
+    calculateStatus(status, expandSpoilers);
     minifyStatus(status);
   }) as ReducerStatus;
 };

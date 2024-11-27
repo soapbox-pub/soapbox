@@ -17,6 +17,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import toast from 'soapbox/toast.tsx';
 import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
+import { htmlToPlaintext } from 'soapbox/utils/html.ts';
 
 import AvatarPicker from '../edit-profile/components/avatar-picker.tsx';
 import HeaderPicker from '../edit-profile/components/header-picker.tsx';
@@ -54,7 +55,7 @@ const EditGroup: React.FC<IEditGroup> = ({ params: { groupId } }) => {
   const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(group?.header) });
 
   const displayName = useTextField(group?.display_name);
-  const note = useTextField(group?.note_plain);
+  const note = useTextField(htmlToPlaintext(group?.note || ''));
 
   const maxName = Number(instance.configuration.groups.max_characters_name);
   const maxNote = Number(instance.configuration.groups.max_characters_description);

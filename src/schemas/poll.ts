@@ -1,11 +1,7 @@
-import escapeTextContentForBrowser from 'escape-html';
-import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji/index.ts';
-
 import { customEmojiSchema } from './custom-emoji.ts';
-import { filteredArray, makeCustomEmojiMap } from './utils.ts';
+import { filteredArray } from './utils.ts';
 
 const pollOptionSchema = z.object({
   title: z.string().catch(''),
@@ -27,22 +23,12 @@ const pollSchema = z.object({
     non_anonymous: z.boolean().catch(false),
   }).optional().catch(undefined),
 }).transform((poll) => {
-  const emojiMap = makeCustomEmojiMap(poll.emojis);
-
-  const emojifiedOptions = poll.options.map((option) => ({
-    ...option,
-    title_emojified: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(option.title), emojiMap), { ALLOWED_TAGS: [] }),
-  }));
-
   // If the user has votes, they have certainly voted.
   if (poll.own_votes?.length) {
     poll.voted = true;
   }
 
-  return {
-    ...poll,
-    options: emojifiedOptions,
-  };
+  return poll;
 });
 
 type Poll = z.infer<typeof pollSchema>;

@@ -28,7 +28,7 @@ const GroupLinkPreview: React.FC<IGroupLinkPreview> = ({ card }) => {
       />
 
       <Stack space={4} className='p-4'>
-        <CardTitle title={<span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />} />
+        <CardTitle title={group.display_name} />
 
         <Button theme='primary' to={`/group/${group.slug}`} block>
           <FormattedMessage id='group.popover.action' defaultMessage='View Group' />

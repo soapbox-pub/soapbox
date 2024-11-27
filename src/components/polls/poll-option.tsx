@@ -67,12 +67,9 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
       <div className='grid w-full items-center'>
         <div className='col-start-1 row-start-1 ml-4 mr-6 justify-self-center'>
           <div className='text-primary-600 dark:text-white'>
-            <Text
-              theme='inherit'
-              weight='medium'
-              align='center'
-              dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-            />
+            <Text theme='inherit' weight='medium' align='center'>
+              {option.title}
+            </Text>
           </div>
         </div>
 
@@ -135,12 +132,9 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
             <PollPercentageBar percent={percent} leading={leading} />
 
             <div className='text-primary-600 dark:text-white'>
-              <Text
-                theme='inherit'
-                weight='medium'
-                dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-                className='relative'
-              />
+              <Text theme='inherit' weight='medium' className='relative'>
+                {option.title}
+              </Text>
             </div>
 
             <HStack space={2} alignItems='center' className='relative'>

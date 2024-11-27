@@ -1,15 +1,13 @@
-import escapeTextContentForBrowser from 'escape-html';
+import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji/index.ts';
-import { unescapeHTML } from 'soapbox/utils/html.ts';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { groupRelationshipSchema } from './group-relationship.ts';
 import { groupTagSchema } from './group-tag.ts';
-import { filteredArray, makeCustomEmojiMap } from './utils.ts';
+import { filteredArray } from './utils.ts';
 
 const groupSchema = z.object({
   avatar: z.string().catch(avatarMissing),
@@ -42,12 +40,9 @@ const groupSchema = z.object({
   group.header_static = group.header_static || group.header;
   group.locked = group.locked || group.group_visibility === 'members_only'; // TruthSocial
 
-  const customEmojiMap = makeCustomEmojiMap(group.emojis);
   return {
     ...group,
-    display_name_html: emojify(escapeTextContentForBrowser(group.display_name), customEmojiMap),
-    note_emojified: emojify(group.note, customEmojiMap),
-    note_plain: group.source?.note || unescapeHTML(group.note),
+    note: DOMPurify.sanitize(group.note, { USE_PROFILES: { html: true } }),
   };
 });
 

@@ -63,7 +63,7 @@ const ConfirmationStep: React.FC<IConfirmationStep> = ({ group }) => {
           <Text
             size='md'
             className='mx-auto max-w-sm [&_a]:text-primary-600 [&_a]:hover:underline [&_a]:dark:text-accent-blue'
-            dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+            dangerouslySetInnerHTML={{ __html: group.note }}
           />
         </Stack>
       </Stack>

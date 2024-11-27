@@ -11,7 +11,7 @@ import VerificationBadge from './verification-badge.tsx';
 import type { Account } from 'soapbox/schemas/index.ts';
 
 interface IDisplayName {
-  account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name_html'>;
+  account: Pick<Account, 'id' | 'acct' | 'fqn' | 'verified' | 'display_name'>;
   withSuffix?: boolean;
   children?: React.ReactNode;
 }
@@ -26,8 +26,9 @@ const DisplayName: React.FC<IDisplayName> = ({ account, children, withSuffix = t
         size='sm'
         weight='semibold'
         truncate
-        dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-      />
+      >
+        {account.display_name}
+      </Text>
 
       {verified && <VerificationBadge />}
     </HStack>

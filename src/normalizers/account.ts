@@ -3,7 +3,6 @@
  * Converts API accounts into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/account/}
  */
-import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -13,10 +12,8 @@ import {
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji/index.ts';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
-import { unescapeHTML } from 'soapbox/utils/html.ts';
-import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers.ts';
+import { mergeDefined } from 'soapbox/utils/normalizers.ts';
 
 import type { PatronAccount } from 'soapbox/reducers/patron.ts';
 import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities.ts';
@@ -59,11 +56,8 @@ export const AccountRecord = ImmutableRecord({
 
   // Internal fields
   admin: false,
-  display_name_html: '',
   domain: '',
   moderator: false,
-  note_emojified: '',
-  note_plain: '',
   patron: null as PatronAccount | null,
   relationship: null as Relationship | null,
   should_refetch: false,
@@ -75,11 +69,6 @@ export const FieldRecord = ImmutableRecord({
   name: '',
   value: '',
   verified_at: null as Date | null,
-
-  // Internal fields
-  name_emojified: '',
-  value_emojified: '',
-  value_plain: '',
 });
 
 // https://gitlab.com/soapbox-pub/soapbox/-/issues/549
@@ -188,31 +177,6 @@ const fixDisplayName = (account: ImmutableMap<string, any>) => {
   return account.set('display_name', displayName.trim().length === 0 ? account.get('username') : displayName);
 };
 
-/** Emojification, etc */
-const addInternalFields = (account: ImmutableMap<string, any>) => {
-  const emojiMap = makeEmojiMap(account.get('emojis'));
-
-  return account.withMutations((account: ImmutableMap<string, any>) => {
-    // Emojify account properties
-    account.merge({
-      display_name_html: emojify(escapeTextContentForBrowser(account.get('display_name')), emojiMap),
-      note_emojified: emojify(account.get('note', ''), emojiMap),
-      note_plain: unescapeHTML(account.get('note', '')),
-    });
-
-    // Emojify fields
-    account.update('fields', ImmutableList(), fields => {
-      return fields.map((field: ImmutableMap<string, any>) => {
-        return field.merge({
-          name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
-          value_emojified: emojify(field.get('value'), emojiMap),
-          value_plain: unescapeHTML(field.get('value')),
-        });
-      });
-    });
-  });
-};
-
 const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
   try {
     const url = account.get('url');
@@ -308,7 +272,6 @@ export const normalizeAccount = (account: Record<string, any>) => {
       fixDisplayName(account);
       fixBirthday(account);
       fixNote(account);
-      addInternalFields(account);
     }),
   );
 };

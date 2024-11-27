@@ -1,16 +1,13 @@
 import { NSchema as n } from '@nostrify/nostrify';
-import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
 import headerMissing from 'soapbox/assets/images/header-missing.png';
-import emojify from 'soapbox/features/emoji/index.ts';
-import { unescapeHTML } from 'soapbox/utils/html.ts';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { Relationship } from './relationship.ts';
-import { coerceObject, contentSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
+import { coerceObject, contentSchema, filteredArray } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
@@ -136,16 +133,7 @@ const filterBadges = (tags?: string[]) =>
   tags?.filter(tag => tag.startsWith('badge:')).map(tag => roleSchema.parse({ id: tag, name: tag.replace(/^badge:/, '') }));
 
 /** Add internal fields to the account. */
-const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, fields, ...account }: T) => {
-  const customEmojiMap = makeCustomEmojiMap(account.emojis);
-
-  const newFields = fields.map((field) => ({
-    ...field,
-    name_emojified: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(field.name), customEmojiMap), { USE_PROFILES: { html: true } }),
-    value_emojified: emojify(field.value, customEmojiMap),
-    value_plain: unescapeHTML(field.value),
-  }));
-
+const transformAccount = <T extends TransformableAccount>({ pleroma, other_settings, ...account }: T) => {
   const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
   const domain = account.domain ?? getDomain(account.url || account.uri);
 
@@ -159,15 +147,13 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     avatar_static: account.avatar_static || account.avatar,
     discoverable: account.discoverable || account.source?.pleroma?.discoverable || false,
     display_name: displayName,
-    display_name_html: DOMPurify.sanitize(emojify(escapeTextContentForBrowser(displayName), customEmojiMap), { USE_PROFILES: { html: true } }),
     domain,
-    fields: newFields,
     fqn: account.fqn || (account.acct.includes('@') ? account.acct : `${account.acct}@${domain}`),
     header_static: account.header_static || account.header,
     moderator: pleroma?.is_moderator || false,
     local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
-    note_emojified: DOMPurify.sanitize(emojify(account.note, customEmojiMap), { USE_PROFILES: { html: true } }),
+    note: DOMPurify.sanitize(account.note, { USE_PROFILES: { html: true } }),
     pleroma,
     roles: account.roles.length ? account.roles : filterBadges(pleroma?.tags),
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,

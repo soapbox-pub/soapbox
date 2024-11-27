@@ -90,7 +90,7 @@ const ManageGroup: React.FC<IManageGroup> = ({ params }) => {
 
             <List>
               <ListItem label={intl.formatMessage(messages.editGroup)} to={`/group/${group.slug}/manage/edit`}>
-                <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                {group.display_name}
               </ListItem>
             </List>
           </>

@@ -73,7 +73,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
           <HStack alignItems='center' space={2}>
             <Icon src={userIcon} />
             <HStack space={1} alignItems='center' grow>
-              <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
+              <span>{account.display_name}</span>
               {account.verified && <VerificationBadge />}
             </HStack>
           </HStack>

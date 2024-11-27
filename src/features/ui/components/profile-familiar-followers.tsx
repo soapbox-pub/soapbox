@@ -50,12 +50,9 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
     <HoverRefWrapper accountId={account.id} key={account.id} inline>
       <Link className='inline-block text-primary-600 hover:underline dark:text-accent-blue' to={`/@${account.acct}`}>
         <HStack space={1} alignItems='center' grow>
-          <Text
-            size='sm'
-            theme='primary'
-            truncate
-            dangerouslySetInnerHTML={{ __html: account.display_name_html }}
-          />
+          <Text size='sm' theme='primary' truncate>
+            {account.display_name}
+          </Text>
 
           {account.verified && <VerificationBadge />}
         </HStack>

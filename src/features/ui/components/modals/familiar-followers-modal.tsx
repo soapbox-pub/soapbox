@@ -28,7 +28,13 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
   if (!account || !familiarFollowerIds) {
     body = <Spinner />;
   } else {
-    const emptyMessage = <FormattedMessage id='account.familiar_followers.empty' defaultMessage='No one you know follows {name}.' values={{ name: <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} /> }} />;
+    const emptyMessage = (
+      <FormattedMessage
+        id='account.familiar_followers.empty'
+        defaultMessage='No one you know follows {name}.'
+        values={{ name: account.display_name }}
+      />
+    );
 
     body = (
       <ScrollableList
@@ -47,7 +53,13 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
 
   return (
     <Modal
-      title={<FormattedMessage id='column.familiar_followers' defaultMessage='People you know following {name}' values={{ name: <span dangerouslySetInnerHTML={{ __html: account?.display_name_html || '' }} /> }} />}
+      title={(
+        <FormattedMessage
+          id='column.familiar_followers'
+          defaultMessage='People you know following {name}'
+          values={{ name: account?.display_name ?? '' }}
+        />
+      )}
       onClose={onClickClose}
     >
       {body}
