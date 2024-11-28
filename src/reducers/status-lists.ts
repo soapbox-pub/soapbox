@@ -120,7 +120,7 @@ const appendToList = (state: State, listType: string, statuses: APIEntity[], nex
 const prependOneToList = (state: State, listType: string, status: APIEntity) => {
   const statusId = getStatusId(status);
   return state.update(listType, StatusListRecord(), listMap => listMap.update('items', items => {
-    return ImmutableOrderedSet([statusId]).union(items as ImmutableOrderedSet<string>);
+    return ImmutableOrderedSet([statusId]).union(items);
   }));
 };
 

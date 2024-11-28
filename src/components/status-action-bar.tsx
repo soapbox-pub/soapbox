@@ -146,7 +146,6 @@ interface IStatusActionBar {
   expandable?: boolean;
   space?: 'sm' | 'md' | 'lg';
   statusActionButtonTheme?: 'default' | 'inverse';
-  fromBookmarks?: boolean;
 }
 
 const StatusActionBar: React.FC<IStatusActionBar> = ({
@@ -154,7 +153,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   expandable = true,
   space = 'sm',
   statusActionButtonTheme = 'default',
-  fromBookmarks = false,
 }) => {
   const intl = useIntl();
   const history = useHistory();

@@ -129,7 +129,6 @@ const StatusList: React.FC<IStatusList> = ({
         contextType={timelineId}
         showGroup={showGroup}
         variant={divideType === 'border' ? 'slim' : 'rounded'}
-        fromBookmarks={other.scrollKey === 'bookmarked_statuses'}
       />
     );
   };
