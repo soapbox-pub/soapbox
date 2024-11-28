@@ -1,8 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { getHost } from 'soapbox/actions/instance.ts';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
-import KVStore from 'soapbox/storage/kv-store.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
 import api from '../api/index.ts';
@@ -31,17 +29,6 @@ const getSoapboxConfig = createSelector([
   });
 });
 
-const rememberSoapboxConfig = (host: string | null) =>
-  (dispatch: AppDispatch) => {
-    dispatch({ type: SOAPBOX_CONFIG_REMEMBER_REQUEST, host });
-    return KVStore.getItemOrError(`soapbox_config:${host}`).then(soapboxConfig => {
-      dispatch({ type: SOAPBOX_CONFIG_REMEMBER_SUCCESS, host, soapboxConfig });
-      return soapboxConfig;
-    }).catch(error => {
-      dispatch({ type: SOAPBOX_CONFIG_REMEMBER_FAIL, host, error, skipAlert: true });
-    });
-  };
-
 const fetchFrontendConfigurations = () =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState)
@@ -49,7 +36,7 @@ const fetchFrontendConfigurations = () =>
       .then(({ data }) => data);
 
 /** Conditionally fetches Soapbox config depending on backend features */
-const fetchSoapboxConfig = (host: string | null) =>
+const fetchSoapboxConfig = (host: string | null = null) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const features = getFeatures(getState().instance);
 
@@ -65,16 +52,6 @@ const fetchSoapboxConfig = (host: string | null) =>
     } else {
       return dispatch(fetchSoapboxJson(host));
     }
-  };
-
-/** Tries to remember the config from browser storage before fetching it */
-const loadSoapboxConfig = () =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    const host = getHost(getState());
-
-    return dispatch(rememberSoapboxConfig(host)).then(() =>
-      dispatch(fetchSoapboxConfig(host)),
-    );
   };
 
 const fetchSoapboxJson = (host: string | null) =>
@@ -115,10 +92,8 @@ export {
   SOAPBOX_CONFIG_REMEMBER_SUCCESS,
   SOAPBOX_CONFIG_REMEMBER_FAIL,
   getSoapboxConfig,
-  rememberSoapboxConfig,
   fetchFrontendConfigurations,
   fetchSoapboxConfig,
-  loadSoapboxConfig,
   fetchSoapboxJson,
   importSoapboxConfig,
   soapboxConfigFail,

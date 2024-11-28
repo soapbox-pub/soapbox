@@ -1,11 +1,10 @@
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { setSentryAccount } from 'soapbox/sentry.ts';
-import KVStore from 'soapbox/storage/kv-store.ts';
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth.ts';
 
 import api from '../api/index.ts';
 
-import { loadCredentials } from './auth.ts';
+import { verifyCredentials } from './auth.ts';
 import { importFetchedAccount } from './importer/index.ts';
 
 import type { RawAxiosRequestHeaders } from 'axios';
@@ -51,21 +50,9 @@ const fetchMe = () =>
     }
 
     dispatch(fetchMeRequest());
-    return dispatch(loadCredentials(token, accountUrl!))
+    return dispatch(verifyCredentials(token, accountUrl!))
       .catch(error => dispatch(fetchMeFail(error)));
   };
-
-/** Update the auth account in IndexedDB for Mastodon, etc. */
-const persistAuthAccount = (account: APIEntity, params: Record<string, any>) => {
-  if (account && account.url) {
-    if (!account.pleroma) account.pleroma = {};
-
-    if (!account.pleroma.settings_store) {
-      account.pleroma.settings_store = params.pleroma_settings_store || {};
-    }
-    KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
-  }
-};
 
 const patchMe = (params: Record<string, any>, isFormData = false) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -78,7 +65,6 @@ const patchMe = (params: Record<string, any>, isFormData = false) =>
     return api(getState)
       .patch('/api/v1/accounts/update_credentials', params, { headers })
       .then(response => {
-        persistAuthAccount(response.data, params);
         dispatch(patchMeSuccess(response.data));
       }).catch(error => {
         dispatch(patchMeFail(error));

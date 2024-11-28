@@ -3,7 +3,7 @@ import { IntlProvider } from 'react-intl';
 
 
 import { fetchMe } from 'soapbox/actions/me.ts';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox.ts';
+import { fetchSoapboxConfig } from 'soapbox/actions/soapbox.ts';
 import LoadingScreen from 'soapbox/components/loading-screen.tsx';
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
 import { useBunker } from 'soapbox/hooks/nostr/useBunker.ts';
@@ -22,7 +22,7 @@ const loadInitial = () => {
     // Await for authenticated fetch
     await dispatch(fetchMe());
     // Await for configuration
-    await dispatch(loadSoapboxConfig());
+    await dispatch(fetchSoapboxConfig());
   };
 };
 
