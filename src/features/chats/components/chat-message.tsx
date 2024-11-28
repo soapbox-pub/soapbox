@@ -6,7 +6,6 @@ import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
-import graphemesplit from 'graphemesplit';
 import escape from 'lodash/escape';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -25,6 +24,7 @@ import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 import { htmlToPlaintext } from 'soapbox/utils/html.ts';
+import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
 
 import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper.tsx';
 import ChatMessageReaction from './chat-message-reaction.tsx';
@@ -39,8 +39,6 @@ const messages = defineMessages({
   more: { id: 'chats.actions.more', defaultMessage: 'More' },
   report: { id: 'chats.actions.report', defaultMessage: 'Report' },
 });
-
-const BIG_EMOJI_LIMIT = 3;
 
 const parsePendingContent = (content: string) => {
   return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
@@ -88,10 +86,7 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
-  const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(content, 'text/html').body.textContent ?? '';
-    return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
-  }, [content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content, props.chatMessage.emojis.toJS(), 3), [content]);
 
   const emojiReactionRows = useMemo(() => {
     if (!chatMessage.emoji_reactions) {

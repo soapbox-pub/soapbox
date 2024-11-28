@@ -1,10 +1,10 @@
 import chevronRightIcon from '@tabler/icons/outline/chevron-right.svg';
 import clsx from 'clsx';
-import graphemesplit from 'graphemesplit';
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
+import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
 import Markup from './markup.tsx';
@@ -14,7 +14,6 @@ import type { Sizes } from 'soapbox/components/ui/text.tsx';
 import type { Status } from 'soapbox/types/entities.ts';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
-const BIG_EMOJI_LIMIT = 10;
 
 interface IReadMoreButton {
   onClick: React.MouseEventHandler;
@@ -47,11 +46,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-
-  const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(status.content, 'text/html').body.textContent ?? '';
-    return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
-  }, [status.content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(status.content, status.emojis.toJS(), 10), [status.content]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
