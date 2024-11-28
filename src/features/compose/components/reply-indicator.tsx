@@ -39,7 +39,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
     <Stack space={2} className={clsx('max-h-72 overflow-y-auto rounded-lg bg-gray-100 p-4 black:bg-gray-900 dark:bg-gray-800', className)}>
       <AccountContainer
         {...actions}
-        id={status.getIn(['account', 'id']) as string}
+        id={status.account.id}
         timestamp={status.created_at}
         showProfileHoverCard={false}
         withLinkToProfile={false}
@@ -49,8 +49,10 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
       <Markup
         className='break-words'
         size='sm'
-        dangerouslySetInnerHTML={{ __html: status.content }}
         direction={getTextDirection(status.search_index)}
+        emojis={status.emojis.toJS()}
+        mentions={status.mentions.toJS()}
+        html={{ __html: status.content }}
       />
 
       {status.media_attachments.size > 0 && (

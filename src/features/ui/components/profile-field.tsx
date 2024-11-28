@@ -68,7 +68,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
           <Markup
             className='overflow-hidden break-words'
             tag='span'
-            dangerouslySetInnerHTML={{ __html: field.value }}
+            html={{ __html: field.value }}
           />
         </HStack>
       </dd>

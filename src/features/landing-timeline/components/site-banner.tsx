@@ -19,8 +19,8 @@ const SiteBanner: React.FC = () => {
 
       <Markup
         size='lg'
-        dangerouslySetInnerHTML={{ __html: description }}
         direction={getTextDirection(description)}
+        html={{ __html: description }}
       />
     </Stack>
   );
