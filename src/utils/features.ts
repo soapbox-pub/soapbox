@@ -1,9 +1,9 @@
 /* eslint sort-keys: "error" */
+import { greaterOrEqual as gte } from '@std/semver/greater-or-equal';
+import { lessThan as lt } from '@std/semver/less-than';
+import { parse } from '@std/semver/parse';
+import { SemVer } from '@std/semver/types';
 import { createSelector } from 'reselect';
-import semverCoerce from 'semver/functions/coerce';
-import gte from 'semver/functions/gte';
-import lt from 'semver/functions/lt';
-import semverParse from 'semver/functions/parse';
 
 import { custom } from 'soapbox/custom.ts';
 import { InstanceV1, InstanceV2 } from 'soapbox/schemas/instance.ts';
@@ -132,14 +132,14 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/accounts/:id/unpin
      * @see GET /api/v1/pleroma/accounts/:id/endorsements
      */
-    accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    accountEndorsements: v.software === PLEROMA && gte(v.version, parse('2.4.50')),
 
     /**
      * Ability to set one's location on their profile.
      * @see PATCH /api/v1/accounts/update_credentials
      */
     accountLocation: any([
-      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.50')),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -150,9 +150,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     accountLookup: any([
       v.software === FIREFISH,
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-      v.software === TAKAHE && gte(v.version, '0.6.1'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.4.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.4.50')),
+      v.software === TAKAHE && gte(v.version, parse('0.6.1')),
       v.software === TRUTHSOCIAL,
       v.software === DITTO,
     ]),
@@ -161,15 +161,15 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * Move followers to a different ActivityPub account.
      * @see POST /api/pleroma/move_account
      */
-    accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    accountMoving: v.software === PLEROMA && gte(v.version, parse('2.4.50')),
 
     /**
      * Ability to subscribe to notifications every time an account posts.
      * @see POST /api/v1/accounts/:id/follow
      */
     accountNotifies: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.3.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.4.50')),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -178,7 +178,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/pleroma/accounts/:id/subscribe
      * @see POST /api/v1/pleroma/accounts/:id/unsubscribe
      */
-    accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    accountSubscriptions: v.software === PLEROMA && gte(v.version, parse('1.0.0')),
 
     /**
      * Ability to set one's website on their profile.
@@ -195,7 +195,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see DELETE /api/v1/pleroma/admin/announcements/:id
      * @see {@link https://docs.pleroma.social/backend/development/API/admin_api/#get-apiv1pleromaadminannouncements}
      */
-    adminAnnouncements: v.software === PLEROMA && gte(v.version, '2.2.49'),
+    adminAnnouncements: v.software === PLEROMA && gte(v.version, parse('2.2.49')),
 
     /**
      * An additional moderator interface is available on the domain.
@@ -210,7 +210,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see PATCH /api/v1/pleroma/admin/rules/:id
      * @see DELETE /api/v1/pleroma/admin/rules/:id
      */
-    adminRules: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.51'),
+    adminRules: v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.51')),
 
     /**
      * Can display announcements set by admins.
@@ -220,9 +220,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     announcements: any([
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
-      v.software === PLEROMA && gte(v.version, '2.2.49'),
-      v.software === TAKAHE && gte(v.version, '0.7.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.1.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.2.49')),
+      v.software === TAKAHE && gte(v.version, parse('0.7.0')),
     ]),
 
     /**
@@ -231,7 +231,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see DELETE /api/v1/announcements/:id/reactions/:name
      * @see {@link https://docs.joinmastodon.org/methods/announcements/}
      */
-    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+    announcementsReactions: v.software === MASTODON && gte(v.compatVersion, parse('3.1.0')),
 
     /**
      * Pleroma backups.
@@ -246,7 +246,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/accounts
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    birthdays: v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+    birthdays: v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.50')),
 
     /** Whether people who blocked you are visible through the API. */
     blockersVisible: features.includes('blockers_visible'),
@@ -269,10 +269,10 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === FIREFISH,
       v.software === ICESHRIMP,
       v.software === FRIENDICA,
-      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
-      v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.1.0')),
+      v.software === PLEROMA && gte(v.version, parse('0.9.9')),
       v.software === PIXELFED,
-      v.software === TAKAHE && gte(v.version, '0.9.0'),
+      v.software === TAKAHE && gte(v.version, parse('0.9.0')),
       v.software === DITTO,
     ]),
 
@@ -344,7 +344,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     chatsV2: any([
       v.software === TRUTHSOCIAL,
-      v.software === PLEROMA && gte(v.version, '2.3.0'),
+      v.software === PLEROMA && gte(v.version, parse('2.3.0')),
     ]),
 
     /**
@@ -360,8 +360,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === FIREFISH,
       v.software === ICESHRIMP,
       v.software === FRIENDICA,
-      v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
-      v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === MASTODON && gte(v.compatVersion, parse('2.6.0')),
+      v.software === PLEROMA && gte(v.version, parse('0.9.9')),
       v.software === PIXELFED,
       v.software === TAKAHE,
     ]),
@@ -372,7 +372,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     customEmojiReacts: any([
       features.includes('pleroma_custom_emoji_reactions'),
       features.includes('custom_emoji_reactions'),
-      v.software === PLEROMA && gte(v.version, '2.5.50'),
+      v.software === PLEROMA && gte(v.version, parse('2.5.50')),
     ]),
 
     /**
@@ -381,8 +381,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     directTimeline: any([
       v.software === FRIENDICA,
-      v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
-      v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === MASTODON && lt(v.compatVersion, parse('3.0.0')),
+      v.software === PLEROMA && gte(v.version, parse('0.9.9')),
     ]),
 
     /**
@@ -390,7 +390,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/friendica/statuses/:id/undislike
      * @see GET  /api/friendica/statuses/:id/disliked_by
      */
-    dislikes: v.software === FRIENDICA && gte(v.version, '2023.3.0'),
+    dislikes: v.software === FRIENDICA && gte(v.version, parse('2023.3.0')),
 
     /**
      * Ability to block users by domain.
@@ -399,7 +399,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see DELETE /api/v1/domain_blocks
      */
     domainBlocks: federation.enabled && any([
-      v.software === MASTODON && gte(v.compatVersion, '1.4.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('1.4.0')),
       v.software === PLEROMA,
     ]),
 
@@ -424,7 +424,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === MITRA,
       v.software === PIXELFED,
       v.software === PLEROMA,
-      v.software === TAKAHE && gte(v.version, '0.7.0'),
+      v.software === TAKAHE && gte(v.version, parse('0.7.0')),
       v.software === TRUTHSOCIAL,
       v.software === WILDEBEEST,
     ]),
@@ -434,10 +434,10 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see PUT /api/v1/statuses/:id
      */
     editStatuses: any([
-      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
+      v.software === FRIENDICA && gte(v.version, parse('2022.12.0')),
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.version, '3.5.0'),
-      v.software === TAKAHE && gte(v.version, '0.8.0'),
+      v.software === MASTODON && gte(v.version, parse('3.5.0')),
+      v.software === TAKAHE && gte(v.version, parse('0.8.0')),
       features.includes('editing'),
     ]),
 
@@ -467,7 +467,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see DELETE /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
     emojiReacts: any([
-      v.software === PLEROMA && gte(v.version, '2.0.0'),
+      v.software === PLEROMA && gte(v.version, parse('2.0.0')),
       features.includes('pleroma_emoji_reactions'),
     ]),
 
@@ -482,7 +482,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * The backend allows only non-RGI ("Recommended for General Interchange") emoji reactions.
      * @see PUT /api/v1/pleroma/statuses/:id/reactions/:emoji
      */
-    emojiReactsNonRGI: v.software === PLEROMA && lt(v.version, '2.2.49'),
+    emojiReactsNonRGI: v.software === PLEROMA && lt(v.version, parse('2.2.49')),
 
     /**
      * Ability to create and perform actions on events.
@@ -505,7 +505,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/statuses
      */
     explicitAddressing: any([
-      v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === PLEROMA && gte(v.version, parse('1.0.0')),
       v.software === TRUTHSOCIAL,
       v.software === DITTO,
     ]),
@@ -519,7 +519,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === FRIENDICA,
       v.software === ICESHRIMP,
       v.software === MASTODON,
-      v.software === TAKAHE && gte(v.version, '0.6.1'),
+      v.software === TAKAHE && gte(v.version, parse('0.6.1')),
       v.software === TRUTHSOCIAL,
       features.includes('exposable_reactions'),
     ]),
@@ -529,8 +529,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see GET /api/v1/accounts/familiar_followers
      */
     familiarFollowers: any([
-      v.software === MASTODON && gte(v.version, '3.5.0'),
-      v.software === PLEROMA && gte(v.version, '2.5.51') && v.build === REBASED,
+      v.software === MASTODON && gte(v.version, parse('3.5.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.5.51')) && v.build === REBASED,
       v.software === TAKAHE,
       v.software === DITTO,
     ]),
@@ -543,27 +543,27 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see {@link https://docs.joinmastodon.org/methods/filters/#v1}
      */
     filters: any([
-      v.software === MASTODON && lt(v.compatVersion, '3.6.0'),
+      v.software === MASTODON && lt(v.compatVersion, parse('3.6.0')),
       v.software === PLEROMA,
     ]),
 
     /** Whether filters can automatically expires. */
     filtersExpiration: any([
       v.software === MASTODON,
-      v.software === PLEROMA && gte(v.version, '2.3.0'),
+      v.software === PLEROMA && gte(v.version, parse('2.3.0')),
     ]),
 
     /**
      * Can edit and manage timeline filters (aka "muted words").
      * @see {@link https://docs.joinmastodon.org/methods/filters/}
      */
-    filtersV2: v.software === MASTODON && gte(v.compatVersion, '3.6.0'),
+    filtersV2: v.software === MASTODON && gte(v.compatVersion, parse('3.6.0')),
 
     /**
      * Allows setting the focal point of a media attachment.
      * @see {@link https://docs.joinmastodon.org/methods/media/}
      */
-    focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
+    focalPoint: v.software === MASTODON && gte(v.compatVersion, parse('2.3.0')),
 
     /**
      * Ability to follow hashtags.
@@ -571,9 +571,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/tags/:name/unfollow
      */
     followHashtags: any([
-      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('4.0.0')),
       v.software === PLEROMA && v.build === AKKOMA,
-      v.software === TAKAHE && gte(v.version, '0.9.0'),
+      v.software === TAKAHE && gte(v.version, parse('0.9.0')),
     ]),
 
     /**
@@ -589,7 +589,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * Ability to list followed hashtags.
      * @see GET /api/v1/followed_tags
      */
-    followedHashtagsList: v.software === MASTODON && gte(v.compatVersion, '4.1.0'),
+    followedHashtagsList: v.software === MASTODON && gte(v.compatVersion, parse('4.1.0')),
 
     /**
      * Whether client settings can be retrieved from the API.
@@ -693,7 +693,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/pleroma/blocks_import
      * @see POST /api/pleroma/mutes_import
      */
-    importData: v.software === PLEROMA && gte(v.version, '2.2.0'),
+    importData: v.software === PLEROMA && gte(v.version, parse('2.2.0')),
 
     /**
      * Mastodon server information API v2.
@@ -701,8 +701,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see {@link https://docs.joinmastodon.org/methods/instance/#v2}
     */
     instanceV2: any([
-      v.software === MASTODON && gte(v.compatVersion, '4.0.0'),
-      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.5.54'),
+      v.software === MASTODON && gte(v.compatVersion, parse('4.0.0')),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.5.54')),
       v.software === DITTO,
     ]),
 
@@ -721,8 +721,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === FIREFISH,
       v.software === FRIENDICA,
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
-      v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === MASTODON && gte(v.compatVersion, parse('2.1.0')),
+      v.software === PLEROMA && gte(v.version, parse('0.9.9')),
     ]),
 
     /**
@@ -744,8 +744,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     mastodonAdmin: any([
       v.software === DITTO,
-      v.software === MASTODON && gte(v.compatVersion, '2.9.1'),
-      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+      v.software === MASTODON && gte(v.compatVersion, parse('2.9.1')),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.50')),
     ]),
 
     /**
@@ -760,10 +760,10 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v2/media
      */
     mediaV2: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.1.3')),
       v.software === WILDEBEEST,
       // Even though Pleroma supports these endpoints, it has disadvantages
-      // v.software === PLEROMA && gte(v.version, '2.1.0'),
+      // v.software === PLEROMA && gte(v.version, parse('2.1.0')),
     ]),
 
     /**
@@ -778,8 +778,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     mutesDuration: any([
       v.software === ICESHRIMP,
-      v.software === PLEROMA && gte(v.version, '2.3.0'),
-      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+      v.software === PLEROMA && gte(v.version, parse('2.3.0')),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.3.0')),
       v.software === TAKAHE,
     ]),
 
@@ -810,8 +810,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see GET /api/v1/accounts/relationships
      */
     notes: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.2.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.4.50')),
     ]),
 
     /**
@@ -820,9 +820,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     notificationsIncludeTypes: any([
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
-      v.software === PLEROMA && gte(v.version, '2.4.50'),
-      v.software === TAKAHE && gte(v.version, '0.6.2'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
+      v.software === PLEROMA && gte(v.version, parse('2.4.50')),
+      v.software === TAKAHE && gte(v.version, parse('0.6.2')),
     ]),
 
     /**
@@ -845,9 +845,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     polls: any([
       v.software === FIREFISH,
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.version, '2.8.0'),
+      v.software === MASTODON && gte(v.version, parse('2.8.0')),
       v.software === PLEROMA,
-      v.software === TAKAHE && gte(v.version, '0.8.0'),
+      v.software === TAKAHE && gte(v.version, parse('0.8.0')),
       v.software === TRUTHSOCIAL,
     ]),
 
@@ -863,7 +863,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     profileDirectory: any([
       v.software === FRIENDICA,
-      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.0.0')),
       features.includes('profile_directory'),
     ]),
 
@@ -874,7 +874,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     profileFields: any([
       v.software === MASTODON,
       v.software === PLEROMA,
-      v.software === TAKAHE && gte(v.version, '0.7.0'),
+      v.software === TAKAHE && gte(v.version, parse('0.7.0')),
       v.software === DITTO,
     ]),
 
@@ -902,8 +902,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/statuses
      */
     quotePosts: any([
-      v.software === FRIENDICA && gte(v.version, '2023.3.0'),
-      v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, '2.4.50'),
+      v.software === FRIENDICA && gte(v.version, parse('2023.3.0')),
+      v.software === PLEROMA && [REBASED, AKKOMA].includes(v.build!) && gte(v.version, parse('2.4.50')),
       features.includes('quote_posting'),
       'feature_quote' in instance && instance.feature_quote === true,
     ]),
@@ -912,15 +912,15 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * Interact with statuses from another instance while logged-out.
      * @see POST /api/v1/pleroma/remote_interaction
      */
-    remoteInteractions: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    remoteInteractions: v.software === PLEROMA && gte(v.version, parse('2.4.50')),
 
     /**
      * Ability to remove an account from your followers.
      * @see POST /api/v1/accounts/:id/remove_from_followers
      */
     removeFromFollowers: any([
-      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
-      v.software === PLEROMA && v.build === REBASED && gte(v.version, '2.4.50'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
+      v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.50')),
     ]),
 
     /**
@@ -968,7 +968,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     scheduledStatuses: any([
       v.software === FRIENDICA,
-      v.software === MASTODON && gte(v.version, '2.7.0'),
+      v.software === MASTODON && gte(v.version, parse('2.7.0')),
       v.software === PLEROMA,
     ]),
 
@@ -979,8 +979,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     searchFromAccount: any([
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.version, '2.8.0'),
-      v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === MASTODON && gte(v.version, parse('2.8.0')),
+      v.software === PLEROMA && gte(v.version, parse('1.0.0')),
       v.software === DITTO,
     ]),
 
@@ -1022,7 +1022,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see {@link https://docs.joinmastodon.org/methods/suggestions/}
      */
     suggestions: any([
-      v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
+      v.software === MASTODON && gte(v.compatVersion, parse('2.4.3')),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
@@ -1034,7 +1034,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     suggestionsV2: any([
       v.software === FRIENDICA,
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.4.0')),
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
@@ -1051,8 +1051,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     trendingStatuses: any([
       v.software === ICESHRIMP,
-      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
-      v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+      v.software === FRIENDICA && gte(v.version, parse('2022.12.0')),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
       v.software === DITTO,
     ]),
 
@@ -1061,9 +1061,9 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see GET /api/v1/trends
      */
     trends: any([
-      v.software === FRIENDICA && gte(v.version, '2022.12.0'),
+      v.software === FRIENDICA && gte(v.version, parse('2022.12.0')),
       v.software === ICESHRIMP,
-      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      v.software === MASTODON && gte(v.compatVersion, parse('3.0.0')),
       v.software === TRUTHSOCIAL,
       v.software === DITTO,
     ]),
@@ -1090,13 +1090,13 @@ export const getFeatures = createSelector([
 /** Fediverse backend */
 interface Backend {
   /** Build name, if this software is a fork */
-  build: string | null;
+  build?: string;
   /** Name of the software */
-  software: string | null;
+  software?: string;
   /** API version number */
-  version: string;
+  version: SemVer;
   /** Mastodon API version this backend is compatible with */
-  compatVersion: string;
+  compatVersion: SemVer;
 }
 
 /** Get information about the software from its version string */
@@ -1104,26 +1104,22 @@ export const parseVersion = (version: string): Backend => {
   const regex = /^([\w+.-]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
-  const semverString = match && (match[3] || match[1]);
-  const semver = match ? semverParse(semverString) || semverCoerce(semverString, {
-    loose: true,
-  }) : null;
-  const compat = match ? semverParse(match[1]) || semverCoerce(match[1]) : null;
+  const semver = match ? parse(match[3] || match[1]) : undefined;
+  const compat = match ? parse(match[1]) : undefined;
+
   if (match && semver && compat) {
     return {
-      build: semver.build[0],
-      compatVersion: compat.version,
+      build: semver.build?.[0],
+      compatVersion: compat,
       software: match[2] || MASTODON,
-      version: semver.version.split('-')[0],
+      version: semver,
     };
   } else {
     // If we can't parse the version, this is a new and exotic backend.
     // Fall back to minimal featureset.
     return {
-      build: null,
-      compatVersion: '0.0.0',
-      software: null,
-      version: '0.0.0',
+      compatVersion: parse('0.0.0'),
+      version: parse('0.0.0'),
     };
   }
 };
