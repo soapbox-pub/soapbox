@@ -1,4 +1,4 @@
-import { default as lodashGet } from 'lodash/get';
+import { get as _get } from 'es-toolkit/compat';
 
 interface LegacyMap {
   get(key: any): unknown;
@@ -22,7 +22,7 @@ function immutableizeEntity<T extends Record<any, any>>(entity: T): T & LegacyMa
     },
 
     getIn(keyPath: any[]): unknown {
-      return lodashGet(entity, keyPath);
+      return _get(entity, keyPath);
     },
 
     toJS() {
@@ -41,7 +41,7 @@ function immutableizeStore<T, S extends Record<string, T | undefined>>(state: S)
     },
 
     getIn(keyPath: any[]): unknown {
-      return lodashGet(state, keyPath);
+      return _get(state, keyPath);
     },
 
     find(predicate: (value: T & LegacyMap, key: string) => boolean): T & LegacyMap | undefined {

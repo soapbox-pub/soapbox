@@ -1,8 +1,8 @@
 import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import clsx from 'clsx';
+import { throttle } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import throttle from 'lodash/throttle';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -78,7 +78,7 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
       })
       .catch(noOp);
 
-  }, 900, { leading: true, trailing: true }), []);
+  }, 900, { edges: ['leading', 'trailing'] }), []);
 
   useEffect(() => {
     if (value === '') {

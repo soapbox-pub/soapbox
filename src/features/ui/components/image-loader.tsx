@@ -141,7 +141,7 @@ class ImageLoader extends PureComponent<IImageLoader> {
       <div className={className}>
         {loading ? (
           <canvas
-            className={clsx('max-h-[100%] max-w-full object-contain', { 'hidden': !this.hasSize() })}
+            className={clsx('max-h-full max-w-full object-contain', { 'hidden': !this.hasSize() })}
             style={{
               background: 'url(\'../assets/images/void.png\') repeat',
             }}

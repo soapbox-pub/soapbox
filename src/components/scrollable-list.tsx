@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useEffect, useRef, useMemo, useCallback, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Virtuoso, Components, VirtuosoProps, VirtuosoHandle, ListRange, IndexLocationWithAlign } from 'react-virtuoso';
@@ -143,7 +143,7 @@ const ScrollableList = forwardRef<VirtuosoHandle, IScrollableList>(({
     } else {
       topOffset.current = 0;
     }
-  }, 150, { trailing: true }), []);
+  }, 150, { edges: ['trailing'] }), []);
 
   useEffect(() => {
     document.addEventListener('scroll', handleScroll);

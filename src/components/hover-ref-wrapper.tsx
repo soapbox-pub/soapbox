@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useRef } from 'react';
 
 import { fetchAccount } from 'soapbox/actions/accounts.ts';

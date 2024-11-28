@@ -1,6 +1,6 @@
 import axios, { Canceler } from 'axios';
+import { throttle } from 'es-toolkit';
 import { List as ImmutableList } from 'immutable';
-import throttle from 'lodash/throttle';
 import { defineMessages, IntlShape } from 'react-intl';
 
 import api from 'soapbox/api/index.ts';
@@ -510,7 +510,7 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId,
       toast.showAlertForError(error);
     }
   });
-}, 200, { leading: true, trailing: true });
+}, 200, { edges: ['leading', 'trailing'] });
 
 const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, composeId: string, token: string, customEmojis: CustomEmoji[]) => {
   const results = emojiSearch(token.replace(':', ''), { maxResults: 10 }, customEmojis);

@@ -4,8 +4,7 @@ import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
+import { debounce, throttle } from 'es-toolkit';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -126,9 +125,7 @@ const Audio: React.FC<IAudio> = (props) => {
     if (player.current) {
       _setDimensions();
     }
-  }, 250, {
-    trailing: true,
-  });
+  }, 250, { edges: ['trailing'] });
 
   const handlePlay = () => {
     setPaused(false);
@@ -263,7 +260,7 @@ const Audio: React.FC<IAudio> = (props) => {
 
       setPaused(true);
     }
-  }, 150, { trailing: true });
+  }, 150, { edges: ['trailing'] });
 
   const handleMouseEnter = () => {
     setHovered(true);

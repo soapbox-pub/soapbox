@@ -1,8 +1,8 @@
 import atIcon from '@tabler/icons/outline/at.svg';
 import checkIcon from '@tabler/icons/outline/check.svg';
 import axios from 'axios';
+import { debounce } from 'es-toolkit';
 import { Map as ImmutableMap } from 'immutable';
-import debounce from 'lodash/debounce';
 import { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
@@ -200,7 +200,7 @@ const RegistrationForm: React.FC<IRegistrationForm> = ({ inviteToken }) => {
         }
       });
 
-  }, 1000, { trailing: true }), []);
+  }, 1000, { edges: ['trailing'] }), []);
 
   const onSubmit: React.FormEventHandler = () => {
     if (!passwordsMatch()) {

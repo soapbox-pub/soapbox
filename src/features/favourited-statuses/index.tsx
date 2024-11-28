@@ -1,5 +1,5 @@
+import { debounce } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import debounce from 'lodash/debounce';
 import { useCallback, useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -44,7 +44,7 @@ const Favourites: React.FC<IFavourites> = ({ params }) => {
     } else if (account) {
       dispatch(expandAccountFavouritedStatuses(account.id));
     }
-  }, 300, { leading: true }), [account?.id]);
+  }, 300, { edges: ['leading'] }), [account?.id]);
 
   useEffect(() => {
     if (isOwnAccount)
