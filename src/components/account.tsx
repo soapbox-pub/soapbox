@@ -15,6 +15,7 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { getAcct } from 'soapbox/utils/accounts.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { displayFqn } from 'soapbox/utils/state.ts';
 
 import Badge from './badge.tsx';
@@ -233,7 +234,7 @@ const Account = ({
               <LinkEl {...linkProps}>
                 <HStack space={1} alignItems='center' grow>
                   <Text size='sm' weight='semibold' truncate>
-                    {account.display_name}
+                    {emojifyText(account.display_name, account.emojis)}
                   </Text>
 
                   {account.verified && <VerificationBadge />}

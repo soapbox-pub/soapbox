@@ -6,8 +6,8 @@ import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-
-import { getTextDirection } from '../utils/rtl.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
 import HashtagLink from './hashtag-link.tsx';
 import Markup from './markup.tsx';
@@ -90,27 +90,7 @@ const StatusContent: React.FC<IStatusContent> = ({
       }
 
       if (domNode instanceof DOMText) {
-        const parts: Array<string | JSX.Element> = [];
-
-        const textNodes = domNode.data.split(/:\w+:/);
-        const shortcodes = [...domNode.data.matchAll(/:(\w+):/g)];
-
-        for (let i = 0; i < textNodes.length; i++) {
-          parts.push(textNodes[i]);
-
-          if (shortcodes[i]) {
-            const [text, shortcode] = shortcodes[i];
-            const customEmoji = status.emojis.find((e) => e.shortcode === shortcode);
-
-            if (customEmoji) {
-              parts.push(<img key={i} src={customEmoji.url} alt={shortcode} className='inline-block h-[1em]' />);
-            } else {
-              parts.push(text);
-            }
-          }
-        }
-
-        return <>{parts}</>;
+        return emojifyText(domNode.data, status.emojis.toJS());
       }
 
       if (domNode instanceof Element && domNode.name === 'a') {

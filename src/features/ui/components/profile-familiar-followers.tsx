@@ -14,6 +14,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type { Account } from 'soapbox/schemas/index.ts';
 
@@ -51,7 +52,7 @@ const ProfileFamiliarFollowers: React.FC<IProfileFamiliarFollowers> = ({ account
       <Link className='inline-block text-primary-600 hover:underline dark:text-accent-blue' to={`/@${account.acct}`}>
         <HStack space={1} alignItems='center' grow>
           <Text size='sm' theme='primary' truncate>
-            {account.display_name}
+            {emojifyText(account.display_name, account.emojis)}
           </Text>
 
           {account.verified && <VerificationBadge />}

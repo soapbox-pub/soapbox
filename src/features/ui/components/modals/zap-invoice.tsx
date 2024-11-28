@@ -15,6 +15,7 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
@@ -48,7 +49,13 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
   };
 
   const renderTitle = () => {
-    return <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />;
+    return (
+      <FormattedMessage
+        id='zap.send_to'
+        defaultMessage='Send zaps to {target}'
+        values={{ target: emojifyText(account.display_name, account.emojis) }}
+      />
+    );
   };
 
   const handleNext = () => {

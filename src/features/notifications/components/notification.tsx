@@ -37,6 +37,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { makeGetNotification } from 'soapbox/selectors/index.ts';
 import toast from 'soapbox/toast.tsx';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { NotificationType, validType } from 'soapbox/utils/notification.ts';
 
 import type { ScrollPosition } from 'soapbox/components/status.tsx';
@@ -57,7 +58,7 @@ const buildLink = (account: AccountEntity): JSX.Element => (
       title={account.acct}
       to={`/@${account.acct}`}
     >
-      {account.display_name}
+      {emojifyText(account.display_name, account.emojis)}
     </Link>
   </bdi>
 );

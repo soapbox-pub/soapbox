@@ -7,6 +7,7 @@ import Spinner from 'soapbox/components/ui/spinner.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { makeGetAccount } from 'soapbox/selectors/index.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 const getAccount = makeGetAccount();
 
@@ -32,7 +33,7 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
       <FormattedMessage
         id='account.familiar_followers.empty'
         defaultMessage='No one you know follows {name}.'
-        values={{ name: account.display_name }}
+        values={{ name: emojifyText(account.display_name, account.emojis) }}
       />
     );
 
@@ -57,7 +58,7 @@ const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal)
         <FormattedMessage
           id='column.familiar_followers'
           defaultMessage='People you know following {name}'
-          values={{ name: account?.display_name ?? '' }}
+          values={{ name: account ? emojifyText(account.display_name, account.emojis) : '' }}
         />
       )}
       onClose={onClickClose}

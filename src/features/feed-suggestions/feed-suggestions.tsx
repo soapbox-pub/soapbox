@@ -8,6 +8,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import ActionButton from '../ui/components/action-button.tsx';
 import { HotKeys } from '../ui/components/hotkeys.tsx';
@@ -47,7 +48,7 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
                 size='sm'
                 className='max-w-[95%]'
               >
-                {account.display_name}
+                {emojifyText(account.display_name, account.emojis)}
               </Text>
 
               {account.verified && <VerificationBadge />}

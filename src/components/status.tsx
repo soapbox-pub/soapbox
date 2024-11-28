@@ -20,6 +20,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted-status-conta
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
@@ -232,7 +233,7 @@ const Status: React.FC<IStatus> = (props) => {
                   >
                     <bdi className='truncate'>
                       <strong className='text-gray-800 dark:text-gray-200'>
-                        {status.account.display_name}
+                        {emojifyText(status.account.display_name, status.account.emojis)}
                       </strong>
                     </bdi>
                   </Link>
@@ -263,7 +264,7 @@ const Status: React.FC<IStatus> = (props) => {
                   <Link to={`/@${status.account.acct}`} className='hover:underline'>
                     <bdi className='truncate'>
                       <strong className='text-gray-800 dark:text-gray-200'>
-                        {status.account.display_name}
+                        {emojifyText(status.account.display_name, status.account.emojis)}
                       </strong>
                     </bdi>
                   </Link>
