@@ -4,6 +4,7 @@ import { getSettings } from 'soapbox/actions/settings.ts';
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
 import Badge from 'soapbox/components/badge.tsx';
+import Markup from 'soapbox/components/markup.tsx';
 import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
@@ -53,13 +54,13 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
           withRelationship={false}
         />
 
-        <Text
+        <Markup
           truncate
           align='left'
           className='[&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
-        >
-          {account.note}
-        </Text>
+          emojis={account.emojis}
+          html={{ __html: account.note }}
+        />
       </Stack>
 
       <div className='grid grid-cols-3 gap-1 py-4'>

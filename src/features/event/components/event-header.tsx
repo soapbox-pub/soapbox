@@ -50,6 +50,7 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import copy from 'soapbox/utils/copy.ts';
 import { download } from 'soapbox/utils/download.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 
 import PlaceholderEventHeader from '../../placeholder/components/placeholder-event-header.tsx';
@@ -459,7 +460,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   name: (
                     <Link className='mention inline-block' to={`/@${account.acct}`}>
                       <HStack space={1} alignItems='center' grow>
-                        <span>{account.display_name}</span>
+                        <span>{emojifyText(account.display_name, account.emojis)}</span>
                         {account.verified && <VerificationBadge />}
                       </HStack>
                     </Link>

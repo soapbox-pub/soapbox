@@ -12,6 +12,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities.ts';
 
@@ -49,12 +50,15 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
               {version.spoiler_text?.length > 0 && (
                 <>
-                  <span>{version.spoiler_text}</span>
+                  <span>{emojifyText(version.spoiler_text, version.emojis.toJS())}</span>
                   <hr />
                 </>
               )}
 
-              <div className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500' dangerouslySetInnerHTML={{ __html: version.content }} />
+              <div
+                className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500'
+                dangerouslySetInnerHTML={{ __html: version.content }}
+              />
 
               {poll && (
                 <div>
@@ -69,7 +73,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                           role={poll.multiple ? 'checkbox' : 'radio'}
                         />
 
-                        <span>{option.title}</span>
+                        <span>{emojifyText(option.title, poll.emojis)}</span>
                       </HStack>
                     ))}
                   </Stack>

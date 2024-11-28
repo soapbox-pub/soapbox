@@ -4,6 +4,7 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import Markup from 'soapbox/components/markup.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import Emoji from 'soapbox/components/ui/emoji.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -303,10 +304,11 @@ const Account = ({
                   {note}
                 </Text>
               ) : withAccountNote && (
-                <Text
+                <Markup
                   truncate
                   size='sm'
-                  dangerouslySetInnerHTML={{ __html: account.note }}
+                  html={{ __html: account.note }}
+                  emojis={account.emojis}
                   className='mr-2 rtl:ml-2 rtl:mr-0 [&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
                 />
               )}
