@@ -1,7 +1,7 @@
 // @ts-ignore
 import Index from '@akryum/flexsearch-es';
 
-import data, { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
+import { EmojiData, Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
 import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
 
 import { buildCustomEmojis, type Emoji } from './index.ts';
@@ -13,10 +13,21 @@ const index: Index.Index = new Index({
   context: true,
 });
 
-const sortedEmojis = Object.entries(data.emojis).sort((a, b) => a[0].localeCompare(b[0]));
-for (const [key, emoji] of sortedEmojis) {
-  index.add('n' + key, `${emoji.id} ${emoji.name} ${emoji.keywords.join(' ')}`);
-}
+let data: EmojiData = {
+  aliases: {},
+  categories: [],
+  emojis: {},
+  sheet: { cols: 0, rows: 0 },
+};
+
+import('soapbox/features/emoji/data.ts').then((mod) => {
+  data = mod.default;
+
+  const sortedEmojis = Object.entries(data.emojis).sort((a, b) => a[0].localeCompare(b[0]));
+  for (const [key, emoji] of sortedEmojis) {
+    index.add('n' + key, `${emoji.id} ${emoji.name} ${emoji.keywords.join(' ')}`);
+  }
+}).catch(console.warn);
 
 export interface searchOptions {
   maxResults?: number;
