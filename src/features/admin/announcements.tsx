@@ -3,6 +3,7 @@ import { FormattedDate, FormattedMessage, defineMessages, useIntl } from 'react-
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { useAnnouncements } from 'soapbox/api/hooks/admin/useAnnouncements.ts';
+import Markup from 'soapbox/components/markup.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
@@ -48,7 +49,7 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
   return (
     <div key={announcement.id} className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
       <Stack space={2}>
-        <Text dangerouslySetInnerHTML={{ __html: announcement.content }} />
+        <Markup emojis={announcement.emojis} html={{ __html: announcement.content }} />
         {(announcement.starts_at || announcement.ends_at || announcement.all_day) && (
           <HStack space={2} wrap>
             {announcement.starts_at && (

@@ -17,6 +17,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
@@ -129,7 +130,7 @@ const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOver
                 <div className='py-4 italic'>
                   {/* eslint-disable formatjs/no-literal-string-in-jsx */}
                   <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
-                    &ldquo;<span>{status.spoiler_text}</span>&rdquo;
+                    &ldquo;<span>{emojifyText(status.spoiler_text, status.emojis.toJS())}</span>&rdquo;
                   </Text>
                   {/* eslint-enable formatjs/no-literal-string-in-jsx */}
                 </div>
