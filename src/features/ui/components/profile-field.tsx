@@ -50,7 +50,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
 
   return (
     <dl>
-      <dt title={field.name}>
+      <dt className='font-bold' title={field.name}>
         {field.name}
       </dt>
 
