@@ -1,3 +1,4 @@
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
 
 /** Given text and a list of custom emojis, return JSX with the emojis rendered as `<img>` elements. */
@@ -15,7 +16,11 @@ export function emojifyText(text: string, emojis: CustomEmoji[]): JSX.Element {
       const customEmoji = emojis.find((e) => e.shortcode === shortcode);
 
       if (customEmoji) {
-        parts.push(<img key={i} src={customEmoji.url} alt={shortcode} className='inline h-[1em] align-text-bottom' />);
+        parts.push(
+          <Tooltip key={i} text={`:${shortcode}:`}>
+            <img src={customEmoji.url} alt={shortcode} className='inline h-[1em] align-text-bottom' />
+          </Tooltip>,
+        );
       } else {
         parts.push(match);
       }
