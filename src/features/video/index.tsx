@@ -5,8 +5,7 @@ import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
-import debounce from 'lodash/debounce';
-import throttle from 'lodash/throttle';
+import { debounce, throttle } from 'es-toolkit';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -376,7 +375,7 @@ const Video: React.FC<IVideo> = ({
   const handleResize = useCallback(debounce(() => {
     setDimensions();
   }, 250, {
-    trailing: true,
+    edges: ['trailing'],
   }), [player.current, cacheWidth]);
 
   const handleScroll = useCallback(throttle(() => {
@@ -389,7 +388,7 @@ const Video: React.FC<IVideo> = ({
       setPaused(true);
       video.current.pause();
     }
-  }, 150, { trailing: true }), [video.current, paused]);
+  }, 150, { edges: ['trailing'] }), [video.current, paused]);
 
   const handleFullscreenChange = useCallback(() => {
     setFullscreen(isFullscreen());

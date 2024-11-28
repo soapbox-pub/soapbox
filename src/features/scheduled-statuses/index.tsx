@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -16,7 +16,7 @@ const messages = defineMessages({
 
 const handleLoadMore = debounce((dispatch) => {
   dispatch(expandScheduledStatuses());
-}, 300, { leading: true });
+}, 300, { edges: ['leading'] });
 
 const ScheduledStatuses = () => {
   const intl = useIntl();

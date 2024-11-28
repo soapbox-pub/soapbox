@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 

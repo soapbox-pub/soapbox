@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -48,7 +48,7 @@ const ConversationsList: React.FC = () => {
   const handleLoadOlder = debounce(() => {
     const maxId = conversations.getIn([-1, 'id']);
     if (maxId) dispatch(expandConversations({ maxId }));
-  }, 300, { leading: true });
+  }, 300, { edges: ['leading'] });
 
   return (
     <ScrollableList

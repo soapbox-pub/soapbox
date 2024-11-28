@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -17,7 +17,7 @@ const messages = defineMessages({
 
 const handleLoadMore = debounce((dispatch) => {
   dispatch(expandFollowRequests());
-}, 300, { leading: true });
+}, 300, { edges: ['leading'] });
 
 const FollowRequests: React.FC = () => {
   const dispatch = useAppDispatch();

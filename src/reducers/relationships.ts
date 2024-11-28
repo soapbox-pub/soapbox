@@ -1,5 +1,5 @@
+import { get } from 'es-toolkit/compat';
 import { Map as ImmutableMap } from 'immutable';
-import get from 'lodash/get';
 
 import { type Relationship, relationshipSchema } from 'soapbox/schemas/index.ts';
 

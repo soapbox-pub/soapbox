@@ -1,5 +1,5 @@
+import { debounce } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import debounce from 'lodash/debounce';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
@@ -18,7 +18,7 @@ const messages = defineMessages({
 
 const handleLoadMore = debounce((dispatch) => {
   dispatch(expandBookmarkedStatuses());
-}, 300, { leading: true });
+}, 300, { edges: ['leading'] });
 
 interface IBookmarks {
   params?: {

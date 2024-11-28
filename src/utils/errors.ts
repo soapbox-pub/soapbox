@@ -1,5 +1,4 @@
-import camelCase from 'lodash/camelCase';
-import startCase from 'lodash/startCase';
+import { camelCase, startCase } from 'es-toolkit';
 
 const toSentence = (arr: string[]) => arr
   .reduce(
