@@ -48,7 +48,6 @@
     "@fontsource/roboto-mono": "^5.0.0",
     "@fontsource/tajawal": "^5.1.0",
     "@fontsource/vazirmatn": "^5.1.0",
-    "@gamestdio/websocket": "^0.3.2",
     "@lexical/clipboard": "^0.18.0",
     "@lexical/hashtag": "^0.18.0",
     "@lexical/link": "^0.18.0",
@@ -150,6 +149,7 @@
     "vite-plugin-compile-time": "^0.2.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-static-copy": "^1.0.6",
+    "websocket-ts": "^2.1.5",
     "zod": "^3.23.5",
     "zustand": "^5.0.0"
   },
