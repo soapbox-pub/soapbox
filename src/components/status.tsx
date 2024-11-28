@@ -20,6 +20,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted-status-conta
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
@@ -231,23 +232,17 @@ const Status: React.FC<IStatus> = (props) => {
                     className='hover:underline'
                   >
                     <bdi className='truncate'>
-                      <strong
-                        className='text-gray-800 dark:text-gray-200'
-                        dangerouslySetInnerHTML={{
-                          __html: status.account.display_name_html,
-                        }}
-                      />
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        {emojifyText(status.account.display_name, status.account.emojis)}
+                      </strong>
                     </bdi>
                   </Link>
                 ),
                 group: (
                   <Link to={`/group/${group.slug}`} className='hover:underline'>
-                    <strong
-                      className='text-gray-800 dark:text-gray-200'
-                      dangerouslySetInnerHTML={{
-                        __html: group.display_name_html,
-                      }}
-                    />
+                    <strong className='text-gray-800 dark:text-gray-200'>
+                      {group.display_name}
+                    </strong>
                   </Link>
                 ),
               }}
@@ -268,12 +263,9 @@ const Status: React.FC<IStatus> = (props) => {
                 name: (
                   <Link to={`/@${status.account.acct}`} className='hover:underline'>
                     <bdi className='truncate'>
-                      <strong
-                        className='text-gray-800 dark:text-gray-200'
-                        dangerouslySetInnerHTML={{
-                          __html: status.account.display_name_html,
-                        }}
-                      />
+                      <strong className='text-gray-800 dark:text-gray-200'>
+                        {emojifyText(status.account.display_name, status.account.emojis)}
+                      </strong>
                     </bdi>
                   </Link>
                 ),
@@ -306,7 +298,7 @@ const Status: React.FC<IStatus> = (props) => {
                   <Link to={`/group/${group.slug}`} className='hover:underline'>
                     <bdi className='truncate'>
                       <strong className='text-gray-800 dark:text-gray-200'>
-                        <span dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+                        <span>{group.display_name}</span>
                       </strong>
                     </bdi>
                   </Link>

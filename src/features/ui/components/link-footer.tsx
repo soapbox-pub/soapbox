@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth.ts';
 import Text from 'soapbox/components/ui/text.tsx';
-import emojify from 'soapbox/features/emoji/index.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
@@ -70,10 +69,9 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
       <Text theme='muted' size='sm'>
         {soapboxConfig.linkFooterMessage ? (
-          <span
-            className='inline-block align-middle'
-            dangerouslySetInnerHTML={{ __html: emojify(soapboxConfig.linkFooterMessage) }}
-          />
+          <span className='inline-block align-middle'>
+            {soapboxConfig.linkFooterMessage}
+          </span>
         ) : (
           <FormattedMessage
             id='getting_started.open_source_notice'

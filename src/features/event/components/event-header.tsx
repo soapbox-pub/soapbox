@@ -459,7 +459,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
                   name: (
                     <Link className='mention inline-block' to={`/@${account.acct}`}>
                       <HStack space={1} alignItems='center' grow>
-                        <span dangerouslySetInnerHTML={{ __html: account.display_name_html }} />
+                        <span>{account.display_name}</span>
                         {account.verified && <VerificationBadge />}
                       </HStack>
                     </Link>

@@ -1,7 +1,6 @@
 /**
  * Status edit normalizer
  */
-import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -10,12 +9,10 @@ import {
 } from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
-import emojify from 'soapbox/features/emoji/index.ts';
 import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
 import { pollSchema } from 'soapbox/schemas/index.ts';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
-import { makeEmojiMap } from 'soapbox/utils/normalizers.ts';
 
 import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from 'soapbox/types/entities.ts';
 
@@ -29,10 +26,6 @@ export const StatusEditRecord = ImmutableRecord({
   poll: null as EmbeddedEntity<Poll>,
   sensitive: false,
   spoiler_text: '',
-
-  // Internal fields
-  contentHtml: '',
-  spoilerHtml: '',
 });
 
 const normalizeAttachments = (statusEdit: ImmutableMap<string, any>) => {
@@ -59,13 +52,8 @@ const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
 };
 
 const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
-  const emojiMap   = makeEmojiMap(statusEdit.get('emojis'));
-  const contentHtml = DOMPurify.sanitize(stripCompatibilityFeatures(emojify(statusEdit.get('content'), emojiMap)), { ADD_ATTR: ['target'] });
-  const spoilerHtml = DOMPurify.sanitize(emojify(escapeTextContentForBrowser(statusEdit.get('spoiler_text')), emojiMap), { ADD_ATTR: ['target'] });
-
-  return statusEdit
-    .set('contentHtml', contentHtml)
-    .set('spoilerHtml', spoilerHtml);
+  const content = DOMPurify.sanitize(stripCompatibilityFeatures(statusEdit.get('content')), { ADD_ATTR: ['target'] });
+  return statusEdit.set('content', content);
 };
 
 export const normalizeStatusEdit = (statusEdit: Record<string, any>) => {

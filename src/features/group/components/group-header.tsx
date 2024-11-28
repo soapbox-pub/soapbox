@@ -139,12 +139,9 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       </div>
 
       <Stack alignItems='center' space={3} className='mx-auto mt-10 w-5/6 py-4'>
-        <Text
-          size='xl'
-          weight='bold'
-          dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-          data-testid='group-name'
-        />
+        <Text size='xl' weight='bold' data-testid='group-name'>
+          {group.display_name}
+        </Text>
 
         {!isDeleted && (
           <>
@@ -158,7 +155,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
               <Text
                 theme='muted'
                 align='center'
-                dangerouslySetInnerHTML={{ __html: group.note_emojified }}
+                dangerouslySetInnerHTML={{ __html: group.note }}
                 className='[&_a]:text-primary-600 [&_a]:hover:underline [&_a]:dark:text-accent-blue'
               />
             </Stack>

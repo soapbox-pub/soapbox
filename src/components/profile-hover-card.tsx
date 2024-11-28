@@ -102,7 +102,6 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
   });
 
   if (!account) return null;
-  const accountBio = { __html: account.note_emojified };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const followedBy = me !== account.id && account.relationship?.followed_by === true;
 
@@ -145,7 +144,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
             ) : null}
 
             {account.note.length > 0 && (
-              <Text size='sm' dangerouslySetInnerHTML={accountBio} />
+              <Text size='sm' dangerouslySetInnerHTML={{ __html: account.note }} />
             )}
           </Stack>
 

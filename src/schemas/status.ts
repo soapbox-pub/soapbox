@@ -1,9 +1,7 @@
-import escapeTextContentForBrowser from 'escape-html';
 import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
-import emojify from 'soapbox/features/emoji/index.ts';
-import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html.ts';
+import { htmlToPlaintext, stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
 
 import { accountSchema } from './account.ts';
 import { attachmentSchema } from './attachment.ts';
@@ -15,7 +13,7 @@ import { groupSchema } from './group.ts';
 import { mentionSchema } from './mention.ts';
 import { pollSchema } from './poll.ts';
 import { tagSchema } from './tag.ts';
-import { contentSchema, dateSchema, filteredArray, makeCustomEmojiMap } from './utils.ts';
+import { contentSchema, dateSchema, filteredArray } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
@@ -94,7 +92,7 @@ const buildSearchIndex = (status: TransformableStatus): string => {
     ...mentionedUsernames,
   ];
 
-  const searchContent = unescapeHTML(fields.join('\n\n')) || '';
+  const searchContent = htmlToPlaintext(fields.join('\n\n')) || '';
   return new DOMParser().parseFromString(searchContent, 'text/html').documentElement.textContent || '';
 };
 
@@ -105,15 +103,10 @@ type Translation = {
 
 /** Add internal fields to the status. */
 const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: T) => {
-  const emojiMap = makeCustomEmojiMap(status.emojis);
-
-  const content = DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } });
-  const spoilerHtml = emojify(escapeTextContentForBrowser(status.spoiler_text), emojiMap);
-
   return {
     ...status,
     approval_status: 'approval' as const,
-    content,
+    content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
     expectsCard: false,
     event: pleroma?.event,
     filtered: [],
@@ -124,7 +117,6 @@ const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: 
     })() : undefined,
     search_index: buildSearchIndex(status),
     showFiltered: false, // TODO: this should be removed from the schema and done somewhere else
-    spoilerHtml,
     translation: undefined as Translation | undefined,
   };
 };

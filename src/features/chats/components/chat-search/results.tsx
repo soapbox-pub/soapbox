@@ -8,6 +8,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import useAccountSearch from 'soapbox/queries/search.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type { Account } from 'soapbox/types/entities.ts';
 
@@ -41,7 +42,10 @@ const Results = ({ accountSearchResult, onSelect }: IResults) => {
 
         <Stack alignItems='start'>
           <div className='flex grow items-center space-x-1'>
-            <Text weight='bold' size='sm' truncate>{account.display_name}</Text>
+            <Text weight='bold' size='sm' truncate>
+              {emojifyText(account.display_name, account.emojis)}
+            </Text>
+
             {account.verified && <VerificationBadge />}
           </div>
           <Text size='sm' weight='medium' theme='muted' direction='ltr' truncate>@{account.acct}</Text> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}

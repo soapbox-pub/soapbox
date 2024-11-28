@@ -36,7 +36,9 @@ const GroupCard: React.FC<IGroupCard> = ({ group }) => {
       {/* Group Info */}
       <Stack alignItems='center' justifyContent='end' grow className='basis-1/2 py-4' space={0.5}>
         <HStack alignItems='center' space={1.5}>
-          <Text size='lg' weight='bold' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+          <Text size='lg' weight='bold'>
+            {group.display_name}
+          </Text>
 
           {group.relationship?.pending_requests && (
             <div className='size-2 rounded-full bg-secondary-500' />

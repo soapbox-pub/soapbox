@@ -15,6 +15,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { capitalize } from 'soapbox/utils/strings.ts';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers.tsx';
@@ -142,7 +143,6 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   }
 
   const deactivated = account.pleroma?.deactivated ?? false;
-  const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.display_name_html };
   const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
   const badges = getBadges();
 
@@ -151,7 +151,9 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
       <Stack space={2}>
         <Stack>
           <HStack space={1} alignItems='center'>
-            <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
+            <Text size='lg' weight='bold' truncate>
+              {deactivated ? intl.formatMessage(messages.deactivated) : emojifyText(account.display_name, account.emojis)}
+            </Text>
 
             {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 
@@ -181,7 +183,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
         <ProfileStats account={account} />
 
         {account.note.length > 0 && (
-          <Markup size='sm' dangerouslySetInnerHTML={{ __html: account.note_emojified }} truncate />
+          <Markup size='sm' html={{ __html: account.note }} emojis={account.emojis} truncate />
         )}
 
         <div className='flex flex-col items-start gap-2 md:flex-row md:flex-wrap md:items-center'>

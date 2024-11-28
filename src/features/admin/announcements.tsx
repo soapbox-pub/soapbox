@@ -48,7 +48,7 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
   return (
     <div key={announcement.id} className='rounded-lg bg-gray-100 p-4 dark:bg-primary-800'>
       <Stack space={2}>
-        <Text dangerouslySetInnerHTML={{ __html: announcement.contentHtml }} />
+        <Text dangerouslySetInnerHTML={{ __html: announcement.content }} />
         {(announcement.starts_at || announcement.ends_at || announcement.all_day) && (
           <HStack space={2} wrap>
             {announcement.starts_at && (

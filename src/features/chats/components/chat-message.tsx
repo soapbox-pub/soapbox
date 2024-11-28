@@ -6,8 +6,6 @@ import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
-import graphemesplit from 'graphemesplit';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import escape from 'lodash/escape';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -19,14 +17,14 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import emojify from 'soapbox/features/emoji/index.ts';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
-import { stripHTML } from 'soapbox/utils/html.ts';
+import { htmlToPlaintext } from 'soapbox/utils/html.ts';
+import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
 
 import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper.tsx';
 import ChatMessageReaction from './chat-message-reaction.tsx';
@@ -42,23 +40,13 @@ const messages = defineMessages({
   report: { id: 'chats.actions.report', defaultMessage: 'Report' },
 });
 
-const BIG_EMOJI_LIMIT = 3;
-
-const makeEmojiMap = (record: any) => record.get('emojis', ImmutableList()).reduce((map: ImmutableMap<string, any>, emoji: ImmutableMap<string, any>) => {
-  return map.set(`:${emoji.get('shortcode')}:`, emoji);
-}, ImmutableMap());
-
 const parsePendingContent = (content: string) => {
   return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
 };
 
 const parseContent = (chatMessage: ChatMessageEntity) => {
-  const content = chatMessage.content || '';
-  const pending = chatMessage.pending;
-  const deleting = chatMessage.deleting;
-  const formatted = (pending && !deleting) ? parsePendingContent(content) : content;
-  const emojiMap = makeEmojiMap(chatMessage);
-  return emojify(formatted, emojiMap.toJS());
+  const { content, pending, deleting } = chatMessage;
+  return (pending && !deleting) ? parsePendingContent(content) : content;
 };
 
 interface IChatMessage {
@@ -98,10 +86,7 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
-  const isOnlyEmoji = useMemo(() => {
-    const textContent = new DOMParser().parseFromString(content, 'text/html').body.textContent ?? '';
-    return Boolean(/^\p{Extended_Pictographic}+$/u.test(textContent) && (graphemesplit(textContent).length <= BIG_EMOJI_LIMIT));
-  }, [content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content, props.chatMessage.emojis.toJS(), 3), [content]);
 
   const emojiReactionRows = useMemo(() => {
     if (!chatMessage.emoji_reactions) {
@@ -136,7 +121,7 @@ const ChatMessage = (props: IChatMessage) => {
 
   const handleCopyText = (chatMessage: ChatMessageEntity) => {
     if (navigator.clipboard) {
-      const text = stripHTML(chatMessage.content);
+      const text = htmlToPlaintext(chatMessage.content);
       navigator.clipboard.writeText(text);
     }
   };

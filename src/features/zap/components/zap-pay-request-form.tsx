@@ -22,6 +22,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import ZapButton from './zap-button/zap-button.tsx';
 
@@ -113,7 +114,11 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
         />
 
         <Text weight='semibold'>
-          <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
+          <FormattedMessage
+            id='zap.send_to'
+            defaultMessage='Send zaps to {target}'
+            values={{ target: emojifyText(account.display_name, account.emojis) }}
+          />
         </Text>
         <Avatar src={account.avatar} size={50} />
         <DisplayNameInline account={account} />
@@ -141,12 +146,15 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           {hasZapSplit && <p className='absolute right-0 font-bold sm:-right-6 sm:text-xl'>sats</p>}
         </div>
 
-        {hasZapSplit && <span className='flex justify-center text-xs'>
-          <FormattedMessage
-            id='zap.split_message.receiver'
-            defaultMessage='{receiver} will receive {amountReceiver} sats*' values={{ receiver: account.display_name, amountReceiver: zapSplitData.receiveAmount }}
-          />
-        </span>}
+        {hasZapSplit && (
+          <span className='flex justify-center text-xs'>
+            <FormattedMessage
+              id='zap.split_message.receiver'
+              defaultMessage='{receiver} will receive {amountReceiver} sats*'
+              values={{ receiver: emojifyText(account.display_name, account.emojis), amountReceiver: zapSplitData.receiveAmount }}
+            />
+          </span>
+        )}
 
       </Stack>
 
@@ -162,7 +170,8 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
           <span className='text-[10px] sm:text-xs'>
             <FormattedMessage
               id='zap.split_message.deducted'
-              defaultMessage='{amountDeducted} sats will deducted*' values={{ instance: account.display_name, amountDeducted: zapSplitData.splitAmount }}
+              defaultMessage='{amountDeducted} sats will deducted*'
+              values={{ instance: emojifyText(account.display_name, account.emojis), amountDeducted: zapSplitData.splitAmount }}
             />
           </span>
 

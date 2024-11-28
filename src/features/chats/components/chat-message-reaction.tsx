@@ -1,7 +1,6 @@
 import clsx from 'clsx';
 
 import Text from 'soapbox/components/ui/text.tsx';
-import emojify from 'soapbox/features/emoji/index.ts';
 import { EmojiReaction } from 'soapbox/types/entities.ts';
 
 interface IChatMessageReaction {
@@ -35,7 +34,7 @@ const ChatMessageReaction = (props: IChatMessageReaction) => {
         })
       }
     >
-      <span dangerouslySetInnerHTML={{ __html: emojify(emojiReaction.name) }} />
+      <span>{emojiReaction.name}</span>
       <Text tag='span' weight='medium' size='sm'>{emojiReaction.count}</Text>
     </button>
   );

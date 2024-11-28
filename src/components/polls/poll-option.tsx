@@ -7,6 +7,7 @@ import { Motion, presets, spring } from 'react-motion';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type {
   Poll as PollEntity,
@@ -67,12 +68,9 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
       <div className='grid w-full items-center'>
         <div className='col-start-1 row-start-1 ml-4 mr-6 justify-self-center'>
           <div className='text-primary-600 dark:text-white'>
-            <Text
-              theme='inherit'
-              weight='medium'
-              align='center'
-              dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-            />
+            <Text theme='inherit' weight='medium' align='center'>
+              {emojifyText(option.title, poll.emojis)}
+            </Text>
           </div>
         </div>
 
@@ -135,12 +133,9 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
             <PollPercentageBar percent={percent} leading={leading} />
 
             <div className='text-primary-600 dark:text-white'>
-              <Text
-                theme='inherit'
-                weight='medium'
-                dangerouslySetInnerHTML={{ __html: option.title_emojified }}
-                className='relative'
-              />
+              <Text theme='inherit' weight='medium' className='relative'>
+                {emojifyText(option.title, poll.emojis)}
+              </Text>
             </div>
 
             <HStack space={2} alignItems='center' className='relative'>

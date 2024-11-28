@@ -70,7 +70,9 @@ const GroupPopover = (props: IGroupPopoverContainer) => {
 
             {/* Group Info */}
             <Stack alignItems='center' justifyContent='end' grow className='basis-1/2 py-4' space={0.5}>
-              <Text size='lg' weight='bold' dangerouslySetInnerHTML={{ __html: group.display_name_html }} />
+              <Text size='lg' weight='bold'>
+                {group.display_name}
+              </Text>
 
               <HStack className='text-gray-700 dark:text-gray-600' space={2} wrap>
                 <GroupPrivacy group={group} />

@@ -60,7 +60,7 @@ import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me.ts';
 import { SETTING_CHANGE, FE_NAME, SettingsAction } from '../actions/settings.ts';
 import { TIMELINE_DELETE, TimelineAction } from '../actions/timelines.ts';
 import { normalizeAttachment } from '../normalizers/attachment.ts';
-import { unescapeHTML } from '../utils/html.ts';
+import { htmlToPlaintext } from '../utils/html.ts';
 
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
 import type {
@@ -442,7 +442,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         if (!action.withRedraft) {
           map.set('id', action.status.id);
         }
-        map.set('text', action.rawText || unescapeHTML(expandMentions(action.status)));
+        map.set('text', action.rawText || htmlToPlaintext(expandMentions(action.status)));
         map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : ImmutableOrderedSet<string>());
         map.set('in_reply_to', action.status.get('in_reply_to_id'));
         map.set('privacy', action.status.get('visibility'));

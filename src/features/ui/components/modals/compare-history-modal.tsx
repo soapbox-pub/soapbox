@@ -43,26 +43,23 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
     body = (
       <div className='divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
         {versions?.map((version) => {
-          const content = { __html: version.content };
-          const spoilerContent = { __html: version.spoilerHtml };
-
           const poll = typeof version.poll !== 'string' && version.poll;
 
           return (
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
               {version.spoiler_text?.length > 0 && (
                 <>
-                  <span dangerouslySetInnerHTML={spoilerContent} />
+                  <span>{version.spoiler_text}</span>
                   <hr />
                 </>
               )}
 
-              <div className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500' dangerouslySetInnerHTML={content} />
+              <div className='whitespace-normal p-0 pt-2.5 text-sm text-gray-700 dark:text-gray-500' dangerouslySetInnerHTML={{ __html: version.content }} />
 
               {poll && (
                 <div>
                   <Stack>
-                    {version.poll.options.map((option: any) => (
+                    {version.poll.options.map((option) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
                         <span
                           className={clsx('mr-2.5 inline-block size-4 flex-none rounded-full border border-solid border-primary-600', {
@@ -72,7 +69,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                           role={poll.multiple ? 'checkbox' : 'radio'}
                         />
 
-                        <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
+                        <span>{option.title}</span>
                       </HStack>
                     ))}
                   </Stack>

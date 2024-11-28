@@ -57,8 +57,9 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
           truncate
           align='left'
           className='[&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
-          dangerouslySetInnerHTML={{ __html: account.note_emojified || '&nbsp;' }}
-        />
+        >
+          {account.note}
+        </Text>
       </Stack>
 
       <div className='grid grid-cols-3 gap-1 py-4'>

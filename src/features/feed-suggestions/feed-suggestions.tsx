@@ -8,6 +8,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import ActionButton from '../ui/components/action-button.tsx';
 import { HotKeys } from '../ui/components/hotkeys.tsx';
@@ -42,12 +43,13 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
             <HStack alignItems='center' justifyContent='center' space={1}>
               <Text
                 weight='semibold'
-                dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                 truncate
                 align='center'
                 size='sm'
                 className='max-w-[95%]'
-              />
+              >
+                {emojifyText(account.display_name, account.emojis)}
+              </Text>
 
               {account.verified && <VerificationBadge />}
             </HStack>

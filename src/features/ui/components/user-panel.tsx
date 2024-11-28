@@ -10,6 +10,7 @@ import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { getAcct } from 'soapbox/utils/accounts.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
 import { displayFqn } from 'soapbox/utils/state.ts';
 
@@ -26,7 +27,6 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
   const fqn = useAppSelector((state) => displayFqn(state));
 
   if (!account) return null;
-  const displayNameHtml = { __html: account.display_name_html };
   const acct = !account.acct.includes('@') && domain ? `${account.acct}@${domain}` : account.acct;
   const header = account.header;
   const verified = account.verified;
@@ -59,7 +59,9 @@ const UserPanel: React.FC<IUserPanel> = ({ accountId, action, badges, domain }) 
         <Stack>
           <Link to={`/@${account.acct}`}>
             <HStack space={1} alignItems='center'>
-              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} truncate />
+              <Text size='lg' weight='bold' truncate>
+                {emojifyText(account.display_name, account.emojis)}
+              </Text>
 
               {verified && <VerificationBadge />}
 

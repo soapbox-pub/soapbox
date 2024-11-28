@@ -51,12 +51,9 @@ const GroupGridItem = forwardRef((props: IGroup, ref: React.ForwardedRef<HTMLDiv
             />
 
             <Stack space={1}>
-              <Text
-                weight='bold'
-                dangerouslySetInnerHTML={{ __html: group.display_name_html }}
-                theme='inherit'
-                truncate
-              />
+              <Text weight='bold' theme='inherit' truncate>
+                {group.display_name}
+              </Text>
 
               <HStack alignItems='center' space={1}>
                 <GroupPrivacy group={group} />

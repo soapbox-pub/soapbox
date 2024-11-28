@@ -8,6 +8,7 @@ import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { ZapSplitData } from 'soapbox/schemas/zap-split.ts';
+import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 const messages = defineMessages({
   zap_open_wallet: { id: 'zap.open_wallet', defaultMessage: 'Open Wallet' },
@@ -31,7 +32,11 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
   const renderTitleQr = () => {
     return (
       <div className='max-w-[280px] truncate'>
-        <FormattedMessage id='zap.send_to' defaultMessage='Send zaps to {target}' values={{ target: account.display_name }} />
+        <FormattedMessage
+          id='zap.send_to'
+          defaultMessage='Send zaps to {target}'
+          values={{ target: emojifyText(account.display_name, account.emojis) }}
+        />
       </div>
     );
   };
