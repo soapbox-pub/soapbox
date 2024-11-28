@@ -18,7 +18,6 @@ import { custom } from 'soapbox/custom.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { unsetSentryAccount } from 'soapbox/sentry.ts';
-import KVStore from 'soapbox/storage/kv-store.ts';
 import toast from 'soapbox/toast.tsx';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth.ts';
 import sourceCode from 'soapbox/utils/code.ts';
@@ -163,23 +162,6 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
     });
   };
 };
-
-export const rememberAuthAccount = (accountUrl: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
-    return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
-      dispatch(importFetchedAccount(account));
-      dispatch({ type: AUTH_ACCOUNT_REMEMBER_SUCCESS, account, accountUrl });
-      if (account.id === getState().me) dispatch(fetchMeSuccess(account));
-      return account;
-    }).catch(error => {
-      dispatch({ type: AUTH_ACCOUNT_REMEMBER_FAIL, error, accountUrl, skipAlert: true });
-    });
-  };
-
-export const loadCredentials = (token: string, accountUrl: string) =>
-  (dispatch: AppDispatch) => dispatch(rememberAuthAccount(accountUrl))
-    .finally(() => dispatch(verifyCredentials(token, accountUrl)));
 
 export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {

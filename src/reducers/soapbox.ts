@@ -1,7 +1,6 @@
 import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
 
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload.ts';
-import KVStore from 'soapbox/storage/kv-store.ts';
 import { ConfigDB } from 'soapbox/utils/config-db.ts';
 
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin.ts';
@@ -40,14 +39,7 @@ const preloadImport = (state: ImmutableMap<string, any>, action: Record<string, 
   }
 };
 
-const persistSoapboxConfig = (soapboxConfig: ImmutableMap<string, any>, host: string) => {
-  if (host) {
-    KVStore.setItem(`soapbox_config:${host}`, soapboxConfig.toJS()).catch(console.error);
-  }
-};
-
 const importSoapboxConfig = (state: ImmutableMap<string, any>, soapboxConfig: ImmutableMap<string, any>, host: string) => {
-  persistSoapboxConfig(soapboxConfig, host);
   return soapboxConfig;
 };
 
