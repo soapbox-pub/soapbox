@@ -1,5 +1,5 @@
+import { throttle } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import throttle from 'lodash/throttle';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { accountSearch } from 'soapbox/actions/accounts.ts';
@@ -53,7 +53,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
         setAccountIds(ImmutableOrderedSet(accountIds));
       })
       .catch(noOp);
-  }, 900, { leading: true, trailing: true }), [limit]);
+  }, 900, { edges: ['leading', 'trailing'] }), [limit]);
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = e => {
     refreshCancelToken();

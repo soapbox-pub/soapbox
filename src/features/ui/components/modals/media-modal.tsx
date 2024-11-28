@@ -5,7 +5,7 @@ import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
 import downloadIcon from '@tabler/icons/outline/download.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -201,7 +201,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         setNext(next);
       }).catch(() => { });
     }
-  }, 300, { leading: true }), [next, status]);
+  }, 300, { edges: ['leading'] }), [next, status]);
 
   /** Fetch the status (and context) from the API. */
   const fetchData = async () => {

@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
@@ -82,7 +82,7 @@ const StatusDetails: React.FC<IStatusDetails> = (props) => {
         setNext(next);
       }).catch(() => { });
     }
-  }, 300, { leading: true }), [next, status]);
+  }, 300, { edges: ['leading'] }), [next, status]);
 
   const handleRefresh = () => {
     return fetchData();

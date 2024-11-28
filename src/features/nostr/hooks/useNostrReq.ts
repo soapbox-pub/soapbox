@@ -1,5 +1,5 @@
 import { NSet, NostrEvent, NostrFilter } from '@nostrify/nostrify';
-import isEqual from 'lodash/isEqual';
+import { isEqual } from 'es-toolkit';
 import { useEffect, useRef, useState } from 'react';
 
 import { useNostr } from 'soapbox/contexts/nostr-context.tsx';

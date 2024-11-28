@@ -1,4 +1,4 @@
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import { useRef } from 'react';
 
 type Point = { x: number; y: number };

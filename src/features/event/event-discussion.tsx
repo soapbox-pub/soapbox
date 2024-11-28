@@ -1,5 +1,5 @@
+import { debounce } from 'es-toolkit';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import debounce from 'lodash/debounce';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -154,7 +154,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
         setNext(next);
       }).catch(() => {});
     }
-  }, 300, { leading: true }), [next, status]);
+  }, 300, { edges: ['leading'] }), [next, status]);
 
   const hasDescendants = descendantsIds.size > 0;
 

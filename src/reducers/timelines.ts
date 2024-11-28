@@ -1,3 +1,4 @@
+import { sample } from 'es-toolkit';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -5,7 +6,6 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
-import sample from 'lodash/sample';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,

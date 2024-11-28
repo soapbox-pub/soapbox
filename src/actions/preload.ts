@@ -1,4 +1,4 @@
-import mapValues from 'lodash/mapValues';
+import { mapValues } from 'es-toolkit';
 
 import { verifyCredentials } from './auth.ts';
 import { importFetchedAccounts } from './importer/index.ts';

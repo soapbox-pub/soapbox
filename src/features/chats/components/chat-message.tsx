@@ -6,7 +6,7 @@ import moodSmileIcon from '@tabler/icons/outline/mood-smile.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
-import escape from 'lodash/escape';
+import { escape } from 'es-toolkit';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 

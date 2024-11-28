@@ -1,6 +1,6 @@
 import clsx from 'clsx';
+import { debounce } from 'es-toolkit';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import debounce from 'lodash/debounce';
 import { useCallback, useEffect, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
@@ -77,7 +77,7 @@ const Notifications = () => {
   const handleLoadOlder = useCallback(debounce(() => {
     const last = notifications.last();
     dispatch(expandNotifications({ maxId: last && last.get('id') }));
-  }, 300, { leading: true }), [notifications]);
+  }, 300, { edges: ['leading'] }), [notifications]);
 
   const handleScrollToTop = useCallback(debounce(() => {
     dispatch(scrollTopNotifications(true));

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 

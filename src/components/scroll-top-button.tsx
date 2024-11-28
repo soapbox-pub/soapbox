@@ -1,5 +1,5 @@
 import arrowBarToUpIcon from '@tabler/icons/outline/arrow-bar-to-up.svg';
-import throttle from 'lodash/throttle';
+import { throttle } from 'es-toolkit';
 import { useState, useEffect, useCallback } from 'react';
 import { useIntl, MessageDescriptor } from 'react-intl';
 
@@ -57,7 +57,7 @@ const ScrollTopButton: React.FC<IScrollTopButton> = ({
     setScrolled(scrollTop > threshold);
     setScrolledTop(scrollTop <= autoloadThreshold);
 
-  }, 150, { trailing: true }), [threshold, autoloadThreshold]);
+  }, 150, { edges: ['trailing'] }), [threshold, autoloadThreshold]);
 
   /** Scroll to top and trigger `onClick`. */
   const handleClick: React.MouseEventHandler = useCallback(() => {

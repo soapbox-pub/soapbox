@@ -1,6 +1,6 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import { useCallback, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
