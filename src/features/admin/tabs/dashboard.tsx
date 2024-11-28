@@ -1,3 +1,4 @@
+import { format as formatSemver } from '@std/semver/format';
 import downloadIcon from '@tabler/icons/outline/download.svg';
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { FormattedMessage } from 'react-intl';
@@ -174,7 +175,7 @@ const Dashboard: React.FC = () => {
         </ListItem>
 
         <ListItem label={<FormattedMessage id='admin.software.backend' defaultMessage='Backend' />}>
-          <span>{v.software + (v.build ? `+${v.build}` : '')} {v.version}</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
+          <span>{v.software + (v.build ? `+${v.build}` : '')} {formatSemver(v.version)}</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         </ListItem>
       </List>
 
