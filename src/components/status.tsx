@@ -58,7 +58,6 @@ export interface IStatus {
   variant?: 'default' | 'rounded' | 'slim';
   showGroup?: boolean;
   accountAction?: React.ReactElement;
-  fromBookmarks?: boolean;
 }
 
 const Status: React.FC<IStatus> = (props) => {
@@ -78,7 +77,6 @@ const Status: React.FC<IStatus> = (props) => {
     hideActionBar,
     variant = 'rounded',
     showGroup = true,
-    fromBookmarks = false,
   } = props;
 
   const intl = useIntl();
@@ -479,7 +477,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} fromBookmarks={fromBookmarks} />
+                <StatusActionBar status={actualStatus} />
               </div>
             )}
           </div>
