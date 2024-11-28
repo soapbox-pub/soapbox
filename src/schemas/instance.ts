@@ -5,7 +5,7 @@ import { accountSchema } from './account.ts';
 import { screenshotsSchema } from './manifest.ts';
 import { mrfSimpleSchema } from './pleroma.ts';
 import { ruleSchema } from './rule.ts';
-import { coerceObject, filteredArray, mimeSchema } from './utils.ts';
+import { coerceObject, filteredArray, htmlSchema, mimeSchema } from './utils.ts';
 
 const versionSchema = z.string().catch('0.0.0').transform((version) => {
   // Handle Mastodon release candidates
@@ -145,7 +145,7 @@ const pleromaSchema = coerceObject({
 const registrationsSchema = coerceObject({
   approval_required: z.boolean().catch(false),
   enabled: z.boolean().catch(false),
-  message: z.string().optional().catch(undefined),
+  message: htmlSchema().nullable().catch(null),
 });
 
 const statsSchema = coerceObject({
@@ -239,6 +239,7 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
     registrations: {
       approval_required: v1.approval_required,
       enabled: v1.registrations,
+      message: null,
     },
     rules: v1.rules,
     screenshots: [],

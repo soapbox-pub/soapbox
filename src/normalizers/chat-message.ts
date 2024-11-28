@@ -7,7 +7,7 @@ import {
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
 import { emojiReactionSchema } from 'soapbox/schemas/index.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { filteredArray, htmlSchema } from 'soapbox/schemas/utils.ts';
 
 import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entities.ts';
 
@@ -16,7 +16,7 @@ export const ChatMessageRecord = ImmutableRecord({
   media_attachments: ImmutableList<Attachment>(),
   card: null as Card | null,
   chat_id: '',
-  content: '',
+  content: { __html: '' },
   created_at: '',
   emojis: ImmutableList<Emoji>(),
   expiration: null as number | null,
@@ -47,11 +47,10 @@ const normalizeChatMessageEmojiReaction = (chatMessage: ImmutableMap<string, any
 
 /** Rewrite `<p></p>` to empty string. */
 const fixContent = (chatMessage: ImmutableMap<string, any>) => {
-  if (chatMessage.get('content') === '<p></p>') {
-    return chatMessage.set('content', '');
-  } else {
-    return chatMessage;
-  }
+  const content = chatMessage.get('content');
+
+  const html = htmlSchema().catch({ __html: '' }).parse(content);
+  return chatMessage.set('content', html);
 };
 
 export const normalizeChatMessage = (chatMessage: Record<string, any>) => {

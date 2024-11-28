@@ -1,5 +1,4 @@
 import { NSchema as n } from '@nostrify/nostrify';
-import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
@@ -7,7 +6,7 @@ import headerMissing from 'soapbox/assets/images/header-missing.png';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { Relationship } from './relationship.ts';
-import { coerceObject, contentSchema, filteredArray } from './utils.ts';
+import { coerceObject, filteredArray, htmlSchema } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
@@ -17,8 +16,13 @@ const hexSchema = z.string().regex(/^#[a-f0-9]{6}$/i);
 
 const fieldSchema = z.object({
   name: z.string(),
-  value: z.string(),
+  value: htmlSchema().catch({ __html: '' }),
   verified_at: z.string().datetime().nullable().catch(null),
+});
+
+const sourceFieldSchema = z.object({
+  name: z.string(),
+  value: z.string().catch(''),
 });
 
 const roleSchema = z.object({
@@ -63,7 +67,7 @@ const baseAccountSchema = z.object({
     pubkey: n.id().optional().catch(undefined),
     lud16: z.string().email().optional().catch(undefined),
   }),
-  note: contentSchema,
+  note: htmlSchema().catch({ __html: '' }),
   /** Fedibird extra settings. */
   other_settings: z.object({
     birthday: birthdaySchema.nullish().catch(undefined),
@@ -96,7 +100,7 @@ const baseAccountSchema = z.object({
   source: z.object({
     approved: z.boolean().catch(true),
     chats_onboarded: z.boolean().catch(true),
-    fields: filteredArray(fieldSchema),
+    fields: filteredArray(sourceFieldSchema),
     note: z.string().catch(''),
     pleroma: z.object({
       discoverable: z.boolean().catch(true),
@@ -153,7 +157,6 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
-    note: DOMPurify.sanitize(account.note, { USE_PROFILES: { html: true } }),
     pleroma,
     roles: account.roles.length ? account.roles : filterBadges(pleroma?.tags),
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,

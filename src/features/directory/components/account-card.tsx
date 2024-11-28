@@ -59,7 +59,7 @@ const AccountCard: React.FC<IAccountCard> = ({ id }) => {
           align='left'
           className='[&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
           emojis={account.emojis}
-          html={{ __html: account.note }}
+          html={account.note}
         />
       </Stack>
 

@@ -4,14 +4,14 @@ import { announcementReactionSchema } from './announcement-reaction.ts';
 import { customEmojiSchema } from './custom-emoji.ts';
 import { mentionSchema } from './mention.ts';
 import { tagSchema } from './tag.ts';
-import { dateSchema, filteredArray } from './utils.ts';
+import { dateSchema, filteredArray, htmlSchema } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
 // https://docs.joinmastodon.org/entities/announcement/
 const announcementSchema = z.object({
   id: z.string(),
-  content: z.string().catch(''),
+  content: htmlSchema().catch({ __html: '' }),
   starts_at: z.string().datetime().nullable().catch(null),
   ends_at: z.string().datetime().nullable().catch(null),
   all_day: z.boolean().catch(false),

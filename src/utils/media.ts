@@ -51,47 +51,4 @@ const getVideoDuration = (file: File): Promise<number> => {
   return promise;
 };
 
-const domParser = new DOMParser();
-
-enum VideoProviders {
-  RUMBLE = 'rumble.com'
-}
-
-/** Try adding autoplay to an iframe embed for platforms such as YouTube. */
-const addAutoPlay = (html: string): string => {
-  try {
-    const document = domParser.parseFromString(html, 'text/html').documentElement;
-    const iframe = document.querySelector('iframe');
-
-    if (iframe) {
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-    }
-
-    if (iframe) {
-      const url = new URL(iframe.src);
-      const provider = new URL(iframe.src).host;
-
-      if (provider === VideoProviders.RUMBLE) {
-        url.searchParams.append('pub', '7a20');
-        url.searchParams.append('autoplay', '2');
-      } else {
-        url.searchParams.append('autoplay', '1');
-        url.searchParams.append('auto_play', '1');
-        iframe.allow = 'autoplay';
-      }
-
-      iframe.src = url.toString();
-
-      // DOM parser creates html/body elements around original HTML fragment,
-      // so we need to get innerHTML out of the body and not the entire document
-      return (document.querySelector('body') as HTMLBodyElement).innerHTML;
-    }
-  } catch (e) {
-    return html;
-  }
-
-  return html;
-};
-
-export { getVideoDuration, formatBytes, truncateFilename, addAutoPlay };
+export { getVideoDuration, formatBytes, truncateFilename };

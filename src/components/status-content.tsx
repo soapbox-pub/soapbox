@@ -46,7 +46,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(status.content, status.emojis.toJS(), 10), [status.content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(status.content.__html, status.emojis.toJS(), 10), [status.content]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -62,11 +62,11 @@ const StatusContent: React.FC<IStatusContent> = ({
     maybeSetCollapsed();
   });
 
-  const parsedHtml = useMemo((): string => {
-    return translatable && status.translation ? status.translation.get('content')! : status.content;
+  const parsedHtml = useMemo((): { __html: string } => {
+    return translatable && status.translation ? { __html: status.translation.get('content')! } : status.content;
   }, [status.content, status.translation]);
 
-  if (status.content.length === 0) {
+  if (!status.content.__html.length) {
     return null;
   }
 
@@ -94,7 +94,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         size={textSize}
         emojis={status.emojis.toJS()}
         mentions={status.mentions.toJS()}
-        html={{ __html: parsedHtml }}
+        html={parsedHtml}
       />,
     ];
 
@@ -122,7 +122,7 @@ const StatusContent: React.FC<IStatusContent> = ({
         size={textSize}
         emojis={status.emojis.toJS()}
         mentions={status.mentions.toJS()}
-        html={{ __html: parsedHtml }}
+        html={parsedHtml}
       />,
     ];
 

@@ -35,7 +35,7 @@ interface IProfileField {
 /** Renders a single profile field. */
 const ProfileField: React.FC<IProfileField> = ({ field }) => {
   const intl = useIntl();
-  const valuePlain = htmlToPlaintext(field.value);
+  const valuePlain = htmlToPlaintext(field.value.__html);
 
   if (isTicker(field.name)) {
     return (
@@ -68,7 +68,7 @@ const ProfileField: React.FC<IProfileField> = ({ field }) => {
           <Markup
             className='overflow-hidden break-words'
             tag='span'
-            html={{ __html: field.value }}
+            html={field.value}
           />
         </HStack>
       </dd>

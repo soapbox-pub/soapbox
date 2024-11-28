@@ -24,7 +24,7 @@ const Announcement: React.FC<IAnnouncement> = ({ announcement }) => {
   const skipYear = hasTimeRange && startsAt.getFullYear() === endsAt.getFullYear() && endsAt.getFullYear() === now.getFullYear();
   const skipEndDate = hasTimeRange && startsAt.getDate() === endsAt.getDate() && startsAt.getMonth() === endsAt.getMonth() && startsAt.getFullYear() === endsAt.getFullYear();
   const skipTime = announcement.all_day;
-  const direction = getTextDirection(announcement.content);
+  const direction = getTextDirection(announcement.content.__html);
 
   return (
     <Stack className='w-full' space={2}>

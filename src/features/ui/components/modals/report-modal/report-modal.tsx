@@ -229,7 +229,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
             </div>
 
             <div className='grow rounded-md bg-gray-200 p-4 dark:bg-primary-800'>
-              <Text dangerouslySetInnerHTML={{ __html: selectedChatMessage?.content as string }} />
+              <Text dangerouslySetInnerHTML={selectedChatMessage?.content} />
             </div>
           </HStack>
 

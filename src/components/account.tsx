@@ -307,7 +307,7 @@ const Account = ({
                 <Markup
                   truncate
                   size='sm'
-                  html={{ __html: account.note }}
+                  html={account.note}
                   emojis={account.emojis}
                   className='mr-2 rtl:ml-2 rtl:mr-0 [&_br]:hidden [&_p:first-child]:inline [&_p:first-child]:truncate [&_p]:hidden'
                 />

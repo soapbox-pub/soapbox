@@ -1,5 +1,4 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import DOMPurify from 'isomorphic-dompurify';
 
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts.ts';
@@ -49,8 +48,6 @@ import { TIMELINE_DELETE } from '../actions/timelines.ts';
 import type { AnyAction } from 'redux';
 import type { APIEntity } from 'soapbox/types/entities.ts';
 
-const domParser = new DOMParser();
-
 type StatusRecord = ReturnType<typeof normalizeStatus>;
 type APIEntities = Array<APIEntity>;
 
@@ -91,7 +88,7 @@ const buildSearchContent = (status: StatusRecord): string => {
 
   const fields = ImmutableList([
     status.spoiler_text,
-    status.content,
+    status.content.__html,
   ]).concat(pollOptionTitles).concat(mentionedUsernames);
 
   return htmlToPlaintext(fields.join('\n\n')) || '';
@@ -103,11 +100,8 @@ export const calculateStatus = (
   status: StatusRecord,
   expandSpoilers: boolean = false,
 ): StatusRecord => {
-  const searchContent = buildSearchContent(status);
-
   return status.merge({
-    search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
-    content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
+    search_index: buildSearchContent(status),
     hidden: expandSpoilers ? false : status.spoiler_text.length > 0 || status.sensitive,
   });
 };

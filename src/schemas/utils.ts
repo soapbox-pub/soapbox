@@ -1,7 +1,5 @@
+import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
-
-/** Ensure HTML content is a string, and drop empty `<p>` tags. */
-const contentSchema = z.string().catch('').transform((value) => value === '<p></p>' ? '' : value);
 
 /** Validate to Mastodon's date format, or use the current date. */
 const dateSchema = z.string().datetime().catch(new Date().toUTCString());
@@ -39,7 +37,15 @@ function coerceObject<T extends z.ZodRawShape>(shape: T) {
   return z.object({}).passthrough().catch({}).pipe(z.object(shape));
 }
 
+/** Sanitizes HTML with DOMPurify and returns a safe object for React. */
+function htmlSchema() {
+  return z.string().transform((value) => {
+    const html = DOMPurify.sanitize(value, { USE_PROFILES: { html: true } });
+    return { __html: html };
+  });
+}
+
 /** Validates a hex color code. */
 const hexColorSchema = z.string().regex(/^#([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i);
 
-export { filteredArray, hexColorSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
+export { filteredArray, hexColorSchema, htmlSchema, emojiSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };

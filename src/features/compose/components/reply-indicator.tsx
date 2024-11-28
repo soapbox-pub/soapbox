@@ -52,7 +52,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         direction={getTextDirection(status.search_index)}
         emojis={status.emojis.toJS()}
         mentions={status.mentions.toJS()}
-        html={{ __html: status.content }}
+        html={status.content}
       />
 
       {status.media_attachments.size > 0 && (

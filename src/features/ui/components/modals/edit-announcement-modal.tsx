@@ -14,6 +14,7 @@ import Textarea from 'soapbox/components/ui/textarea.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import toast from 'soapbox/toast.tsx';
+import { htmlToPlaintext } from 'soapbox/utils/html.ts';
 
 import type { AdminAnnouncement } from 'soapbox/schemas/index.ts';
 
@@ -36,7 +37,7 @@ const EditAnnouncementModal: React.FC<IEditAnnouncementModal> = ({ onClose, anno
   const { createAnnouncement, updateAnnouncement } = useAnnouncements();
   const intl = useIntl();
 
-  const [content, setContent] = useState(announcement?.content || '');
+  const [content, setContent] = useState(htmlToPlaintext(announcement?.content.__html ?? ''));
   const [startTime, setStartTime] = useState(announcement?.starts_at ? new Date(announcement.starts_at) : undefined);
   const [endTime, setEndTime] = useState(announcement?.ends_at ? new Date(announcement.ends_at) : undefined);
   const [allDay, setAllDay] = useState(announcement?.all_day || false);

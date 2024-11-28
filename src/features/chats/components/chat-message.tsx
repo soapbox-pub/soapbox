@@ -40,14 +40,14 @@ const messages = defineMessages({
   report: { id: 'chats.actions.report', defaultMessage: 'Report' },
 });
 
-const parsePendingContent = (content: string) => {
-  return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
-};
+function parsePendingContent({ __html: html }: { __html: string }): { __html: string } {
+  return { __html: escape(html).replace(/(?:\r\n|\r|\n)/g, '<br>') };
+}
 
-const parseContent = (chatMessage: ChatMessageEntity) => {
+function parseContent(chatMessage: ChatMessageEntity): { __html: string } {
   const { content, pending, deleting } = chatMessage;
   return (pending && !deleting) ? parsePendingContent(content) : content;
-};
+}
 
 interface IChatMessage {
   chat: IChat;
@@ -86,7 +86,7 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
-  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content, props.chatMessage.emojis.toJS(), 3), [content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content.__html, props.chatMessage.emojis.toJS(), 3), [content]);
 
   const emojiReactionRows = useMemo(() => {
     if (!chatMessage.emoji_reactions) {
@@ -121,7 +121,7 @@ const ChatMessage = (props: IChatMessage) => {
 
   const handleCopyText = (chatMessage: ChatMessageEntity) => {
     if (navigator.clipboard) {
-      const text = htmlToPlaintext(chatMessage.content);
+      const text = htmlToPlaintext(chatMessage.content.__html);
       navigator.clipboard.writeText(text);
     }
   };
@@ -295,7 +295,7 @@ const ChatMessage = (props: IChatMessage) => {
                     size='sm'
                     theme='inherit'
                     className='break-word-nested'
-                    dangerouslySetInnerHTML={{ __html: content }}
+                    dangerouslySetInnerHTML={content}
                   />
                 </div>
               </HStack>

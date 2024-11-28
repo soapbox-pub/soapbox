@@ -7,55 +7,9 @@ import { groupSchema } from './group.ts';
 
 const IDNA_PREFIX = 'xn--';
 
-/**
- * Card (aka link preview).
- * https://docs.joinmastodon.org/entities/card/
- */
-const cardSchema = z.object({
-  author_name: z.string().catch(''),
-  author_url: z.string().url().catch(''),
-  blurhash: z.string().nullable().catch(null),
-  description: z.string().catch(''),
-  embed_url: z.string().url().catch(''),
-  group: groupSchema.nullable().catch(null), // TruthSocial
-  height: z.number().catch(0),
-  html: z.string().catch(''),
-  image: z.string().nullable().catch(null),
-  pleroma: z.object({
-    opengraph: z.object({
-      width: z.number(),
-      height: z.number(),
-      html: z.string(),
-      thumbnail_url: z.string().url(),
-    }).optional().catch(undefined),
-  }).optional().catch(undefined),
-  provider_name: z.string().catch(''),
-  provider_url: z.string().url().catch(''),
-  title: z.string().catch(''),
-  type: z.enum(['link', 'photo', 'video', 'rich']).catch('link'),
-  url: z.string().url(),
-  width: z.number().catch(0),
-}).transform(({ pleroma, ...card }) => {
-  if (!card.provider_name) {
-    card.provider_name = decodeIDNA(new URL(card.url).hostname);
-  }
-
-  if (pleroma?.opengraph) {
-    if (!card.width && !card.height) {
-      card.width = pleroma.opengraph.width;
-      card.height = pleroma.opengraph.height;
-    }
-
-    if (!card.html) {
-      card.html = pleroma.opengraph.html;
-    }
-
-    if (!card.image) {
-      card.image = pleroma.opengraph.thumbnail_url;
-    }
-  }
-
-  const html = DOMPurify.sanitize(card.html, {
+/** Special HTML parsing for link previews. */
+const cardHtmlSchema = z.string().transform((value) => {
+  const html = DOMPurify.sanitize(value, {
     ALLOWED_TAGS: ['iframe'],
     ALLOWED_ATTR: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
     RETURN_DOM: true,
@@ -76,9 +30,58 @@ const cardSchema = z.object({
     }
   });
 
-  card.html = html.innerHTML;
+  return { __html: html.innerHTML };
+});
 
-  if (!card.html) {
+/**
+ * Card (aka link preview).
+ * https://docs.joinmastodon.org/entities/card/
+ */
+const cardSchema = z.object({
+  author_name: z.string().catch(''),
+  author_url: z.string().url().catch(''),
+  blurhash: z.string().nullable().catch(null),
+  description: z.string().catch(''),
+  embed_url: z.string().url().catch(''),
+  group: groupSchema.nullable().catch(null), // TruthSocial
+  height: z.number().catch(0),
+  html: cardHtmlSchema.catch({ __html: '' }),
+  image: z.string().nullable().catch(null),
+  pleroma: z.object({
+    opengraph: z.object({
+      width: z.number(),
+      height: z.number(),
+      html: cardHtmlSchema.catch({ __html: '' }),
+      thumbnail_url: z.string().url(),
+    }).optional().catch(undefined),
+  }).optional().catch(undefined),
+  provider_name: z.string().catch(''),
+  provider_url: z.string().url().catch(''),
+  title: z.string().catch(''),
+  type: z.enum(['link', 'photo', 'video', 'rich']).catch('link'),
+  url: z.string().url(),
+  width: z.number().catch(0),
+}).transform(({ pleroma, ...card }) => {
+  if (!card.provider_name) {
+    card.provider_name = decodeIDNA(new URL(card.url).hostname);
+  }
+
+  if (pleroma?.opengraph) {
+    if (!card.width && !card.height) {
+      card.width = pleroma.opengraph.width;
+      card.height = pleroma.opengraph.height;
+    }
+
+    if (!card.html.__html) {
+      card.html.__html = pleroma.opengraph.html.__html;
+    }
+
+    if (!card.image) {
+      card.image = pleroma.opengraph.thumbnail_url;
+    }
+  }
+
+  if (!card.html.__html) {
     card.type = 'link';
   }
 

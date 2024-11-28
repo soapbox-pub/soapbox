@@ -12,7 +12,6 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
-import { addAutoPlay } from 'soapbox/utils/media.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
 import type { Card as CardEntity, Attachment } from 'soapbox/types/entities.ts';
@@ -89,14 +88,13 @@ const PreviewCard: React.FC<IPreviewCard> = ({
   };
 
   const renderVideo = () => {
-    const content = { __html: addAutoPlay(card.html) };
     const ratio = getRatio(card);
     const height = width / ratio;
 
     return (
       <div
         className='relative w-full flex-none overflow-hidden'
-        dangerouslySetInnerHTML={content}
+        dangerouslySetInnerHTML={card.html}
         style={{ height }}
       />
     );

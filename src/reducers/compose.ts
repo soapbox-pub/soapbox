@@ -219,7 +219,7 @@ const privacyPreference = (a: string, b: string) => {
 const domParser = new DOMParser();
 
 const expandMentions = (status: Status) => {
-  const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;
+  const fragment = domParser.parseFromString(status.content.__html, 'text/html').documentElement;
 
   status.get('mentions').forEach((mention) => {
     const node = fragment.querySelector(`a[href="${mention.get('url')}"]`);
@@ -230,7 +230,7 @@ const expandMentions = (status: Status) => {
 };
 
 const getExplicitMentions = (me: string, status: Status) => {
-  const fragment = domParser.parseFromString(status.content, 'text/html').documentElement;
+  const fragment = domParser.parseFromString(status.content.__html, 'text/html').documentElement;
 
   const mentions = status
     .get('mentions')

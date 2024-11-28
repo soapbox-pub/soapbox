@@ -34,6 +34,7 @@ const importConfigs = (state: InstanceV2, configs: ImmutableList<any>) => {
       draft.registrations = {
         enabled: registrationsOpen ?? draft.registrations.enabled,
         approval_required: approvalRequired ?? draft.registrations.approval_required,
+        message: draft.registrations.message,
       };
     }
 

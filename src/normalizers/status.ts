@@ -14,7 +14,7 @@ import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
 import { normalizeMention } from 'soapbox/normalizers/mention.ts';
 import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from 'soapbox/schemas/index.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { filteredArray, htmlSchema } from 'soapbox/schemas/utils.ts';
 import { maybeFromJS } from 'soapbox/utils/normalizers.ts';
 
 import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities.ts';
@@ -48,7 +48,7 @@ export const StatusRecord = ImmutableRecord({
   approval_status: 'approved' as StatusApprovalStatus,
   bookmarked: false,
   card: null as Card | null,
-  content: '',
+  content: { __html: '' },
   created_at: '',
   dislikes_count: 0,
   disliked: false,
@@ -231,13 +231,12 @@ const normalizeEmojis = (status: ImmutableMap<string, any>) => {
   }
 };
 
-/** Rewrite `<p></p>` to empty string. */
+/** Sanitize status content, parse as HTML. */
 const fixContent = (status: ImmutableMap<string, any>) => {
-  if (status.get('content') === '<p></p>') {
-    return status.set('content', '');
-  } else {
-    return status;
-  }
+  const content = status.get('content');
+
+  const html = htmlSchema().catch({ __html: '' }).parse(content);
+  return status.set('content', html);
 };
 
 const normalizeFilterResults = (status: ImmutableMap<string, any>) =>

@@ -1,4 +1,3 @@
-import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
 import { htmlToPlaintext, stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
@@ -13,7 +12,7 @@ import { groupSchema } from './group.ts';
 import { mentionSchema } from './mention.ts';
 import { pollSchema } from './poll.ts';
 import { tagSchema } from './tag.ts';
-import { contentSchema, dateSchema, filteredArray } from './utils.ts';
+import { dateSchema, filteredArray, htmlSchema } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
@@ -36,7 +35,7 @@ const baseStatusSchema = z.object({
   bookmark_folder: z.string().nullable().catch(null),
   bookmarked: z.coerce.boolean(),
   card: cardSchema.nullable().catch(null),
-  content: contentSchema,
+  content: htmlSchema().catch({ __html: '' }),
   created_at: dateSchema,
   disliked: z.coerce.boolean(),
   dislikes_count: z.number().catch(0),
@@ -64,7 +63,7 @@ const baseStatusSchema = z.object({
   reblogs_count: z.number().catch(0),
   replies_count: z.number().catch(0),
   sensitive: z.coerce.boolean(),
-  spoiler_text: contentSchema,
+  spoiler_text: z.string().catch(''),
   tags: filteredArray(tagSchema),
   tombstone: z.object({
     reason: z.enum(['deleted']),
@@ -97,16 +96,17 @@ const buildSearchIndex = (status: TransformableStatus): string => {
 };
 
 type Translation = {
-  content: string;
+  content: { __html: string };
   provider: string;
 }
 
 /** Add internal fields to the status. */
 const transformStatus = <T extends TransformableStatus>({ pleroma, ...status }: T) => {
+  status.content.__html = stripCompatibilityFeatures(status.content.__html);
+
   return {
     ...status,
     approval_status: 'approval' as const,
-    content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
     expectsCard: false,
     event: pleroma?.event,
     filtered: [],

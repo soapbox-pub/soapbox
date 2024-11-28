@@ -144,8 +144,8 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               </HStack>
             ) : null}
 
-            {account.note.length > 0 && (
-              <Markup size='sm' emojis={account.emojis} html={{ __html: account.note }} />
+            {account.note.__html.length > 0 && (
+              <Markup size='sm' emojis={account.emojis} html={account.note} />
             )}
           </Stack>
 

@@ -18,7 +18,7 @@ import PollPreview from './poll-preview.tsx';
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const shouldHaveCard = (pendingStatus: StatusEntity) => {
-  return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));
+  return Boolean(pendingStatus.content.__html.match(/https?:\/\/\S*/));
 };
 
 interface IPendingStatus {
