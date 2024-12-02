@@ -44,7 +44,7 @@ const messages = defineMessages({
   reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
 });
 
-export interface INewStatus {
+export interface IPureStatus {
   id?: string;
   avatarSize?: number;
   status: EntityTypes[Entities.STATUSES];
@@ -63,7 +63,10 @@ export interface INewStatus {
   accountAction?: React.ReactElement;
 }
 
-const NewStatus: React.FC<INewStatus> = (props) => {
+/**
+ * Status accepting the full status entity in pure format.
+ */
+const PureStatus: React.FC<IPureStatus> = (props) => {
   const {
     status,
     accountAction,
@@ -496,4 +499,4 @@ const NewStatus: React.FC<INewStatus> = (props) => {
   );
 };
 
-export default NewStatus;
+export default PureStatus;

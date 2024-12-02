@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { VirtuosoHandle } from 'react-virtuoso';
 
 import LoadGap from 'soapbox/components/load-gap.tsx';
-import NewStatus from 'soapbox/components/new-status.tsx';
+import PureStatus from 'soapbox/components/pure-status.tsx';
 import ScrollableList, { IScrollableList } from 'soapbox/components/scrollable-list.tsx';
 import StatusContainer from 'soapbox/containers/status-container.tsx';
 import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
@@ -12,7 +12,7 @@ import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
 
-interface INewStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'>{
+interface IPureStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'>{
   /** List of statuses to display. */
   statuses: readonly EntityTypes[Entities.STATUSES][]|null;
   /** Pinned statuses to show at the top of the feed. */
@@ -26,7 +26,10 @@ interface INewStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'
   [key: string]: any;
 }
 
-const NewStatusList: React.FC<INewStatusList> = ({
+/**
+ * Feed of statuses, built atop ScrollableList.
+ */
+const PureStatusList: React.FC<IPureStatusList> = ({
   statuses,
   featuredStatusIds,
   isLoading,
@@ -85,7 +88,7 @@ const NewStatusList: React.FC<INewStatusList> = ({
 
   const renderStatus = (status: EntityTypes[Entities.STATUSES]) => {
     return (
-      <NewStatus
+      <PureStatus
         status={status}
         key={status.id}
         id={status.id}
@@ -197,4 +200,4 @@ const NewStatusList: React.FC<INewStatusList> = ({
   );
 };
 
-export default NewStatusList;
+export default PureStatusList;

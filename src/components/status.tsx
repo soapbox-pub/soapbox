@@ -60,6 +60,10 @@ export interface IStatus {
   accountAction?: React.ReactElement;
 }
 
+/**
+ * Legacy Status accepting a the full entity in immutable.
+ * @deprecated Use the PureStatus component.
+ */
 const Status: React.FC<IStatus> = (props) => {
   const {
     status,

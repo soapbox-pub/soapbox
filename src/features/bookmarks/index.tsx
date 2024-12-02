@@ -4,8 +4,8 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks.ts';
 import { useBookmarks } from 'soapbox/api/hooks/index.ts';
-import NewStatusList from 'soapbox/components/new-status-list.tsx';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
+import PureStatusList from 'soapbox/components/pure-status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -51,7 +51,7 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   return (
     <Column label={intl.formatMessage(messages.heading)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
-        <NewStatusList
+        <PureStatusList
           className='black:p-4 black:sm:p-5'
           statuses={bookmarks}
           scrollKey='bookmarked_statuses'
