@@ -43,6 +43,9 @@ export { useUnmuteGroup } from './groups/useUnmuteGroup.ts';
 export { useUpdateGroup } from './groups/useUpdateGroup.ts';
 export { useUpdateGroupTag } from './groups/useUpdateGroupTag.ts';
 
+// Statuses
+export { useBookmarks } from './statuses/useBookmarks.ts';
+
 // Streaming
 export { useUserStream } from './streaming/useUserStream.ts';
 export { useCommunityStream } from './streaming/useCommunityStream.ts';

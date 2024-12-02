@@ -1,11 +1,11 @@
 import { debounce } from 'es-toolkit';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from 'soapbox/actions/bookmarks.ts';
+import { useBookmarks } from 'soapbox/api/hooks/index.ts';
+import NewStatusList from 'soapbox/components/new-status-list.tsx';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import StatusList from 'soapbox/components/status-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -33,11 +33,10 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   const theme = useTheme();
   const isMobile = useIsMobile();
 
-  const bookmarks = 'bookmarks';
+  const { bookmarks } = useBookmarks();
 
-  const statusIds = useAppSelector((state) => state.status_lists.get(bookmarks)?.items || ImmutableOrderedSet<string>());
-  const isLoading = useAppSelector((state) => state.status_lists.get(bookmarks)?.isLoading === true);
-  const hasMore = useAppSelector((state) => !!state.status_lists.get(bookmarks)?.next);
+  const isLoading = useAppSelector((state) => state.status_lists.get('bookmarks')?.isLoading === true);
+  const hasMore = useAppSelector((state) => !!state.status_lists.get('bookmarks')?.next);
 
   useEffect(() => {
     dispatch(fetchBookmarkedStatuses());
@@ -52,9 +51,9 @@ const Bookmarks: React.FC<IBookmarks> = ({ params }) => {
   return (
     <Column label={intl.formatMessage(messages.heading)} transparent>
       <PullToRefresh onRefresh={handleRefresh}>
-        <StatusList
+        <NewStatusList
           className='black:p-4 black:sm:p-5'
-          statusIds={statusIds}
+          statuses={bookmarks}
           scrollKey='bookmarked_statuses'
           hasMore={hasMore}
           isLoading={typeof isLoading === 'boolean' ? isLoading : true}
