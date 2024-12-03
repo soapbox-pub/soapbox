@@ -91,11 +91,11 @@ const PureStatusList: React.FC<IPureStatusList> = ({
   };
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const maxId = lastStatusId || statuses.slice(-1)[0].id;
+    const maxId = lastStatusId || statuses.slice(-1)?.[0]?.id;
     if (onLoadMore && maxId) {
       onLoadMore(maxId.replace('末suggestions-', ''));
     }
-  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statuses.slice(-1)[0].id]);
+  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statuses.slice(-1)?.[0]?.id]);
 
   const selectChild = (index: number) => {
     node.current?.scrollIntoView({
