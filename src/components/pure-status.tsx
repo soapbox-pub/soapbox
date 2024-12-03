@@ -368,7 +368,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus?.pleroma?.quote_visible === false) {
+    if ((actualStatus?.pleroma?.quote_visible ?? true) === false) {
       quote = (
         <div>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
