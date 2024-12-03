@@ -6,8 +6,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { mentionCompose } from 'soapbox/actions/compose.ts';
+import { toggleReblog } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
@@ -21,6 +21,8 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted-status-conta
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
+import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
@@ -34,8 +36,6 @@ import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
-
-
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };
@@ -104,6 +104,9 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
 
   const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
+  const { replyCompose } = useReplyCompose();
+  const { toggleFavourite } = useFavourite();
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -165,11 +168,11 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(replyCompose(statusImmutable)); // fix later
+    replyCompose(status.id);
   };
 
   const handleHotkeyFavourite = (): void => {
-    toggleFavourite(statusImmutable); // fix later
+    toggleFavourite(status.id);
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
