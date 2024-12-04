@@ -8,7 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
-import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
+import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
@@ -24,6 +24,7 @@ import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
 import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useStatusHidden } from 'soapbox/hooks/useStatusHidden.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
@@ -107,6 +108,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   const { replyCompose } = useReplyCompose();
   const { toggleFavourite } = useFavourite();
   const { toggleReblog } = useReblog();
+  const { toggleStatusHidden } = useStatusHidden();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -211,7 +213,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   };
 
   const handleHotkeyToggleHidden = (): void => {
-    dispatch(toggleStatusHidden(statusImmutable)); // fix later
+    toggleStatusHidden(status.id);
   };
 
   const handleHotkeyToggleSensitive = (): void => {
