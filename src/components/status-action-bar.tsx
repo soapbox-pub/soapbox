@@ -54,11 +54,9 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import toast from 'soapbox/toast.tsx';
 import copy from 'soapbox/utils/copy.ts';
-import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji-reacts.ts';
 
 import GroupPopover from './groups/popover/group-popover.tsx';
 
@@ -170,9 +168,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
-  const soapboxConfig = useSoapboxConfig();
-
-  const { allowedEmoji } = soapboxConfig;
 
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -662,14 +657,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const reblogCount = status.reblogs_count;
   const favouriteCount = status.favourites_count;
 
-  const emojiReactCount = status.reactions ? reduceEmoji(
-    status.reactions,
-    favouriteCount,
-    status.favourited,
-    allowedEmoji,
-  ).reduce((acc, cur) => acc + (cur.count || 0), 0) : undefined;
+  const emojiReactCount = status.reactions?.reduce((acc, reaction) => acc + (reaction.count ?? 0), 0) ?? 0; // allow all emojis
 
-  const meEmojiReact = getReactForStatus(status, allowedEmoji);
+  const meEmojiReact = status.reactions?.find((emojiReact) => emojiReact.me); // allow all emojis
   const meEmojiName = meEmojiReact?.name as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
@@ -783,7 +773,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               filled
               color='accent'
               active={Boolean(meEmojiName)}
-              count={emojiReactCount}
+              count={emojiReactCount + favouriteCount}
               emoji={meEmojiReact}
               theme={statusActionButtonTheme}
             />
