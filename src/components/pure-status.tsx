@@ -7,7 +7,6 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose.ts';
-import { toggleReblog } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
@@ -22,6 +21,7 @@ import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
@@ -106,6 +106,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
 
   const { replyCompose } = useReplyCompose();
   const { toggleFavourite } = useFavourite();
+  const { toggleReblog } = useReblog();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -176,11 +177,11 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    const modalReblog = () => dispatch(toggleReblog(statusImmutable)); // fix later
+    const modalReblog = () => toggleReblog(status.id);
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: statusImmutable, onReblog: modalReblog })); // fix later
     }
   };
 
