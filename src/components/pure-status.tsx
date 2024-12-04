@@ -6,7 +6,6 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose } from 'soapbox/actions/compose.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
@@ -21,6 +20,7 @@ import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
+import { useMentionCompose } from 'soapbox/hooks/useMentionCompose.ts';
 import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
@@ -106,6 +106,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
   const { replyCompose } = useReplyCompose();
+  const { mentionCompose } = useMentionCompose();
   const { toggleFavourite } = useFavourite();
   const { toggleReblog } = useReblog();
   const { toggleStatusHidden } = useStatusHidden();
@@ -183,13 +184,13 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: statusImmutable, onReblog: modalReblog })); // fix later
+      dispatch(openModal('BOOST', { status: statusImmutable, onReblog: modalReblog })); // fix later, ReplyIndicator component: status.emojis.toJS is not a function
     }
   };
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(mentionCompose(actualStatus.account));
+    mentionCompose(actualStatus.account);
   };
 
   const handleHotkeyOpen = (): void => {
