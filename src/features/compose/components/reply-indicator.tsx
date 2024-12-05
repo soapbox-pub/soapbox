@@ -50,7 +50,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         className='break-words'
         size='sm'
         direction={getTextDirection(status.search_index)}
-        emojis={status.emojis.toJS()}
+        emojis={status?.emojis?.toJS() ?? status.emojis}
         mentions={status.mentions.toJS()}
         html={{ __html: status.content }}
       />

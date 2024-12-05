@@ -184,7 +184,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: statusImmutable, onReblog: modalReblog })); // fix later, ReplyIndicator component: status.emojis.toJS is not a function
+      dispatch(openModal('BOOST', { status: status, onReblog: modalReblog }));
     }
   };
 
