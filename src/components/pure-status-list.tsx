@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import LoadGap from 'soapbox/components/load-gap.tsx';
 import PureStatus from 'soapbox/components/pure-status.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import StatusContainer from 'soapbox/containers/status-container.tsx';
 import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
@@ -154,15 +153,15 @@ const PureStatusList: React.FC<IPureStatusList> = ({
     if (!featuredStatuses) return [];
 
     return (featuredStatuses ?? []).map(status => (
-      <StatusContainer
+      <PureStatus
+        status={status}
         key={`f-${status.id}`}
         id={status.id}
         featured
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
-        contextType={timelineId}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'default'}
+        variant={divideType === 'border' ? 'slim' : 'default'} // shouldn't "default" be changed to "rounded" ?
       />
     ));
   };
