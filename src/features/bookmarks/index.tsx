@@ -1,5 +1,4 @@
 import { debounce } from 'es-toolkit';
-import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { useBookmarks } from 'soapbox/api/hooks/index.ts';
@@ -24,10 +23,6 @@ const Bookmarks: React.FC = () => {
   }, 300, { edges: ['leading'] });
 
   const { bookmarks, isLoading, hasNextPage, fetchEntities, fetchNextPage } = useBookmarks();
-
-  useEffect(() => {
-    fetchEntities();
-  }, []);
 
   const handleRefresh = () => {
     return fetchEntities();
