@@ -50,7 +50,7 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         className='break-words'
         size='sm'
         direction={getTextDirection(status.search_index)}
-        emojis={status?.emojis?.toJS() ?? status.emojis}
+        emojis={status?.emojis?.toJS() ?? status.emojis} // Use toJS() if status.emojis is immutable; otherwise, fallback to plain status.emojis
         mentions={status.mentions.toJS()}
         html={{ __html: status.content }}
       />
