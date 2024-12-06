@@ -11,8 +11,8 @@ import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
 import PureStatusContent from 'soapbox/components/pure-status-content.tsx';
 import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
+import PureTranslateButton from 'soapbox/components/pure-translate-button.tsx';
 import PureSensitiveContentOverlay from 'soapbox/components/statuses/pure-sensitive-content-overlay.tsx';
-import TranslateButton from 'soapbox/components/translate-button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
@@ -475,7 +475,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
                     translatable
                   />
 
-                  <TranslateButton status={statusImmutable} /> {/* fix later */}
+                  <PureTranslateButton status={status} />
 
                   {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
