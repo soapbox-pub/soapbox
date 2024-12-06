@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
+import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
@@ -33,7 +34,6 @@ import EventPreview from './event-preview.tsx';
 import StatusActionBar from './status-action-bar.tsx';
 import StatusContent from './status-content.tsx';
 import StatusMedia from './status-media.tsx';
-import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
@@ -451,7 +451,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
           />
 
           <div className='status--content-wrapper'>
-            <StatusReplyMentions status={statusImmutable} hoverable={hoverable} /> {/* fix later */}
+            <PureStatusReplyMentions status={status} hoverable={hoverable} />
 
             <Stack
               className='relative z-0'
