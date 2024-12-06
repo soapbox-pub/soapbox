@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
+import PureSensitiveContentOverlay from 'soapbox/components/statuses/pure-sensitive-content-overlay.tsx';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
@@ -34,7 +35,6 @@ import EventPreview from './event-preview.tsx';
 import StatusActionBar from './status-action-bar.tsx';
 import StatusContent from './status-content.tsx';
 import StatusMedia from './status-media.tsx';
-import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
 
@@ -458,8 +458,8 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
               style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
             >
               {(isUnderReview || isSensitive) && (
-                <SensitiveContentOverlay
-                  status={statusImmutable} // fix later
+                <PureSensitiveContentOverlay
+                  status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
                   ref={overlay}
