@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
+import { importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
@@ -126,11 +127,16 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     }
   }, [overlay.current]);
 
+  // START: this is a temporary code, it will be removed
+  useEffect(() => {
+    dispatch(importFetchedStatuses([status]));
+  }, []);
   const getStatus = useCallback(makeGetStatus(), []);
   const statusImmutable = useAppSelector(state => getStatus(state, { id: status.id }));
   if (!statusImmutable) {
     return null;
   }
+  // END: this is a temporary code, it will be removed
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
