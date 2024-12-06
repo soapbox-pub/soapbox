@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
+import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
 import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
 import PureSensitiveContentOverlay from 'soapbox/components/statuses/pure-sensitive-content-overlay.tsx';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
@@ -31,7 +32,6 @@ import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
-import EventPreview from './event-preview.tsx';
 import StatusActionBar from './status-action-bar.tsx';
 import StatusContent from './status-content.tsx';
 import StatusMedia from './status-media.tsx';
@@ -466,7 +466,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
                 />
               )}
 
-              {actualStatus.event ? <EventPreview className='shadow-xl' status={statusImmutable} /> : ( // fix later
+              {actualStatus.event ? <PureEventPreview className='shadow-xl' status={status} /> : (
                 <Stack space={4}>
                   <StatusContent
                     status={statusImmutable} // fix later
