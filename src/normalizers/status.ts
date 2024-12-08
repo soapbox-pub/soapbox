@@ -62,7 +62,7 @@ export const StatusRecord = ImmutableRecord({
   in_reply_to_id: null as string | null,
   id: '',
   language: null as string | null,
-  media_attachments: ImmutableList<Attachment>(),
+  media_attachments: [] as Attachment[],
   mentions: ImmutableList<Mention>(),
   muted: false,
   pinned: false,
