@@ -1,3 +1,4 @@
+import { Attachment } from 'soapbox/types/entities.ts';
 import { isIntegerId } from 'soapbox/utils/numbers.tsx';
 
 import type { IntlShape } from 'react-intl';
@@ -40,8 +41,8 @@ export const shouldHaveCard = (status: Pick<Status, 'content'>): boolean => {
 
 /** Whether the media IDs on this status have integer IDs (opposed to FlakeIds). */
 // https://gitlab.com/soapbox-pub/soapbox/-/merge_requests/1087
-export const hasIntegerMediaIds = (status: Pick<Status, 'media_attachments'>): boolean => {
-  return status.media_attachments.some(({ id }) => isIntegerId(id));
+export const hasIntegerMediaIds = (media_attachments: Attachment[]): boolean => {
+  return media_attachments.some(({ id }) => isIntegerId(id));
 };
 
 /** Sanitize status text for use with screen readers. */
