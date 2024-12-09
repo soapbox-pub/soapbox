@@ -1,4 +1,4 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
@@ -12,7 +12,7 @@ import type { AnyAction } from 'redux';
 import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
-  items: ImmutableList<Tag>(),
+  items: [] as Tag[],
   isLoading: false,
 });
 
@@ -23,10 +23,11 @@ export default function trendsReducer(state: State = ReducerRecord(), action: An
     case TRENDS_FETCH_REQUEST:
       return state.set('isLoading', true);
     case TRENDS_FETCH_SUCCESS:
-      return state.withMutations(map => {
-        map.set('items', ImmutableList(action.tags.map((item: APIEntity) => normalizeTag(item))));
-        map.set('isLoading', false);
-      });
+      return {
+        ...state,
+        items: action.tags.map((item: APIEntity) => normalizeTag(item)),
+        isLoading: false,
+      };
     case TRENDS_FETCH_FAIL:
       return state.set('isLoading', false);
     default:
