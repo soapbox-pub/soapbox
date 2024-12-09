@@ -127,7 +127,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     }
   }, [overlay.current]);
 
-  // START: this is a temporary code, it will be removed
+  // TODO: remove this code, it will be removed once all components in this file are pure.
   useEffect(() => {
     dispatch(importFetchedStatuses([status]));
   }, []);
@@ -136,7 +136,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
   if (!statusImmutable) {
     return null;
   }
-  // END: this is a temporary code, it will be removed
+  // END TODO
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
@@ -486,7 +486,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
                   {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={statusImmutable} // fix later
+                        status={statusImmutable} // FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusMedia'
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}
@@ -502,7 +502,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={statusImmutable} /> {/* fix later */}
+                <StatusActionBar status={statusImmutable} /> {/* FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusActionBar' */}
               </div>
             )}
           </div>
