@@ -53,7 +53,6 @@ import {
   COMPOSE_SET_GROUP_TIMELINE_VISIBLE,
   ComposeAction,
   COMPOSE_CHANGE_MEDIA_ORDER,
-  changeMediaOrder,
 } from '../actions/compose.ts';
 import { EVENT_COMPOSE_CANCEL, EVENT_FORM_SET, type EventsAction } from '../actions/events.ts';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS, MeAction } from '../actions/me.ts';
@@ -795,11 +794,21 @@ export default function compose(state = initialState, action: ComposeAction | Ev
       }));
 
     case COMPOSE_CHANGE_MEDIA_ORDER:
-      return updateCompose(state, action.id, compose => ({
-        ...compose,
-        media_attachments: changeMediaOrder(compose.media_attachments.id, action.a, action.b),
-      }));
+      return updateCompose(state, action.id, (compose) => {
+        const mediaAttachments = [...compose.media_attachments]; const indexA = mediaAttachments.findIndex(x => x.id === action.a);
+        const indexB = mediaAttachments.findIndex(x => x.id === action.b);
 
+        if (indexA === -1 || indexB === -1) {
+          return compose;
+        }
+
+        const [movedItem] = mediaAttachments.splice(indexA, 1);
+        mediaAttachments.splice(indexB, 0, movedItem);
+        return {
+          ...compose,
+          media_attachments: mediaAttachments,
+        };
+      });
     default:
       return state;
   }
