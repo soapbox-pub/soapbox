@@ -1,7 +1,6 @@
 import {
   AdminAccountRecord,
   AdminReportRecord,
-  AttachmentRecord,
   ChatRecord,
   ChatMessageRecord,
   EmojiRecord,
@@ -25,7 +24,19 @@ import type { LegacyMap } from 'soapbox/utils/legacy.ts';
 
 type AdminAccount = ReturnType<typeof AdminAccountRecord>;
 type AdminReport = ReturnType<typeof AdminReportRecord>;
-type Attachment = ReturnType<typeof AttachmentRecord>;
+type Attachment = {
+  blurhash?: string;
+  description: string;
+  id: string;
+  meta: Record<string, any>;
+  pleroma: Record<string, any>;
+  preview_url: string;
+  remote_url: string | null;
+  type: string;
+  url: string;
+  account?: string | null;
+  status?: string | null;
+};
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
@@ -45,7 +56,7 @@ type Account = SchemaAccount & LegacyMap;
 
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
-  quote: EmbeddedEntity<Status>;
+  quote: string | null;
   reblog: EmbeddedEntity<Status>;
 }
 
