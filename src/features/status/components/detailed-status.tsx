@@ -159,7 +159,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
             <TranslateButton status={actualStatus} />
 
-            {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
+            {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.length > 0)) && (
               <Stack space={4}>
                 <StatusMedia
                   status={actualStatus}
