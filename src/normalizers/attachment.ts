@@ -3,60 +3,63 @@
  * Converts API attachments into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/attachment/}
  */
-import {
-  Map as ImmutableMap,
-  Record as ImmutableRecord,
-  fromJS,
-} from 'immutable';
-
-import { mergeDefined } from 'soapbox/utils/normalizers.ts';
+import { Attachment } from 'soapbox/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/attachment/
-export const AttachmentRecord = ImmutableRecord({
-  blurhash: undefined,
+export const AttachmentRecord = (attachment = {}) => ({
+  blurhash: undefined as string | undefined,
   description: '',
   id: '',
-  meta: ImmutableMap(),
-  pleroma: ImmutableMap(),
+  meta: {},
+  pleroma: {},
   preview_url: '',
-  remote_url: null as string | null,
+  remote_url: null,
   type: 'unknown',
   url: '',
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js
-  account: null as any,
-  status: null as any,
+  account: null,
+  status: null,
+
+  ...attachment,
 });
 
 // Ensure attachments have required fields
-const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
+const normalizeUrls = (attachment: Attachment) => {
   const url = [
-    attachment.get('url'),
-    attachment.get('preview_url'),
-    attachment.get('remote_url'),
+    attachment.url,
+    attachment.preview_url,
+    attachment.remote_url,
   ].find(url => url) || '';
 
-  const base = ImmutableMap({
+  const base = {
     url,
     preview_url: url,
-  });
+  };
 
-  return attachment.mergeWith(mergeDefined, base);
+  return {
+    ...attachment,
+    url: attachment.url !== undefined ? attachment.url : base.url,
+    preview_url: attachment.preview_url !== undefined ? attachment.preview_url : base.preview_url,
+  };
 };
 
 // Ensure meta is not null
-const normalizeMeta = (attachment: ImmutableMap<string, any>) => {
-  const meta = ImmutableMap().merge(attachment.get('meta'));
+const normalizeMeta = (attachment: Attachment) => {
+  const meta = { ...attachment.meta };
 
-  return attachment.set('meta', meta);
+  return {
+    ...attachment,
+    meta: meta,
+  };
 };
 
 export const normalizeAttachment = (attachment: Record<string, any>) => {
-  return AttachmentRecord(
-    ImmutableMap(fromJS(attachment)).withMutations((attachment: ImmutableMap<string, any>) => {
-      normalizeUrls(attachment);
-      normalizeMeta(attachment);
-    }),
-  );
+  let normalizedAttachment: Attachment = AttachmentRecord(attachment);
+
+  normalizedAttachment = normalizeUrls(normalizedAttachment);
+  normalizedAttachment = normalizeMeta(normalizedAttachment);
+
+  return normalizedAttachment;
 };
