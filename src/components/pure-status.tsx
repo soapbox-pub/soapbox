@@ -2,37 +2,42 @@ import circlesIcon from '@tabler/icons/outline/circles.svg';
 import pinnedIcon from '@tabler/icons/outline/pinned.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
-import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
-import TranslateButton from 'soapbox/components/translate-button.tsx';
+import { unfilterStatus } from 'soapbox/actions/statuses.ts';
+import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
+import PureStatusContent from 'soapbox/components/pure-status-content.tsx';
+import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
+import PureTranslateButton from 'soapbox/components/pure-translate-button.tsx';
+import PureSensitiveContentOverlay from 'soapbox/components/statuses/pure-sensitive-content-overlay.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
+import { useMentionCompose } from 'soapbox/hooks/useMentionCompose.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
+import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useStatusHidden } from 'soapbox/hooks/useStatusHidden.ts';
+import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
-import EventPreview from './event-preview.tsx';
 import StatusActionBar from './status-action-bar.tsx';
-import StatusContent from './status-content.tsx';
 import StatusMedia from './status-media.tsx';
-import StatusReplyMentions from './status-reply-mentions.tsx';
-import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
-
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };
@@ -41,10 +46,10 @@ const messages = defineMessages({
   reblogged_by: { id: 'status.reblogged_by', defaultMessage: '{name} reposted' },
 });
 
-export interface IStatus {
+export interface IPureStatus {
   id?: string;
   avatarSize?: number;
-  status: StatusEntity;
+  status: EntityTypes[Entities.STATUSES];
   onClick?: () => void;
   muted?: boolean;
   hidden?: boolean;
@@ -61,10 +66,9 @@ export interface IStatus {
 }
 
 /**
- * Legacy Status accepting a the full entity in immutable.
- * @deprecated Use the PureStatus component.
+ * Status accepting the full status entity in pure format.
  */
-const Status: React.FC<IStatus> = (props) => {
+const PureStatus: React.FC<IPureStatus> = (props) => {
   const {
     status,
     accountAction,
@@ -100,7 +104,13 @@ const Status: React.FC<IStatus> = (props) => {
   const statusUrl = `/@${actualStatus.account.acct}/posts/${actualStatus.id}`;
   const group = actualStatus.group;
 
-  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
+  const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
+
+  const { replyCompose } = useReplyCompose();
+  const { mentionCompose } = useMentionCompose();
+  const { toggleFavourite } = useFavourite();
+  const { toggleReblog } = useReblog();
+  const { toggleStatusHidden } = useStatusHidden();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -116,6 +126,17 @@ const Status: React.FC<IStatus> = (props) => {
       setMinHeight(overlay.current.getBoundingClientRect().height);
     }
   }, [overlay.current]);
+
+  // TODO: remove this code, it will be removed once all components in this file are pure.
+  useEffect(() => {
+    dispatch(importFetchedStatuses([status]));
+  }, []);
+  const getStatus = useCallback(makeGetStatus(), []);
+  const statusImmutable = useAppSelector(state => getStatus(state, { id: status.id }));
+  if (!statusImmutable) {
+    return null;
+  }
+  // END TODO
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
@@ -142,7 +163,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const status = actualStatus;
-    const firstAttachment = status.media_attachments.first();
+    const firstAttachment = status.media_attachments[0];
 
     e?.preventDefault();
 
@@ -157,25 +178,25 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyReply = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(replyCompose(actualStatus));
+    replyCompose(status.id);
   };
 
   const handleHotkeyFavourite = (): void => {
-    toggleFavourite(actualStatus);
+    toggleFavourite(status.id);
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    const modalReblog = () => dispatch(toggleReblog(actualStatus));
+    const modalReblog = () => toggleReblog(status.id);
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: status, onReblog: modalReblog }));
     }
   };
 
   const handleHotkeyMention = (e?: KeyboardEvent): void => {
     e?.preventDefault();
-    dispatch(mentionCompose(actualStatus.account));
+    mentionCompose(actualStatus.account);
   };
 
   const handleHotkeyOpen = (): void => {
@@ -199,7 +220,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyToggleHidden = (): void => {
-    dispatch(toggleStatusHidden(actualStatus));
+    toggleStatusHidden(status.id);
   };
 
   const handleHotkeyToggleSensitive = (): void => {
@@ -210,7 +231,7 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
-  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.length ? status.id : actualStatus.id));
 
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
@@ -360,14 +381,14 @@ const Status: React.FC<IStatus> = (props) => {
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if ((actualStatus?.pleroma?.quote_visible ?? true) === false) {
       quote = (
         <div>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
         </div>
       );
     } else {
-      quote = <QuotedStatus statusId={actualStatus.quote as string} />;
+      quote = <QuotedStatus statusId={actualStatus.quote.id} />;
     }
   }
 
@@ -436,14 +457,14 @@ const Status: React.FC<IStatus> = (props) => {
           />
 
           <div className='status--content-wrapper'>
-            <StatusReplyMentions status={actualStatus} hoverable={hoverable} />
+            <PureStatusReplyMentions status={status} hoverable={hoverable} />
 
             <Stack
               className='relative z-0'
               style={{ minHeight: isUnderReview || isSensitive ? Math.max(minHeight, 208) + 12 : undefined }}
             >
               {(isUnderReview || isSensitive) && (
-                <SensitiveContentOverlay
+                <PureSensitiveContentOverlay
                   status={status}
                   visible={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}
@@ -451,21 +472,21 @@ const Status: React.FC<IStatus> = (props) => {
                 />
               )}
 
-              {actualStatus.event ? <EventPreview className='shadow-xl' status={actualStatus} /> : (
+              {actualStatus.event ? <PureEventPreview className='shadow-xl' status={status} /> : (
                 <Stack space={4}>
-                  <StatusContent
-                    status={actualStatus}
+                  <PureStatusContent
+                    status={status}
                     onClick={handleClick}
                     collapsable
                     translatable
                   />
 
-                  <TranslateButton status={actualStatus} />
+                  <PureTranslateButton status={status} />
 
-                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                  {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={actualStatus}
+                        status={statusImmutable} // FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusMedia'
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}
@@ -481,7 +502,7 @@ const Status: React.FC<IStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={actualStatus} />
+                <StatusActionBar status={statusImmutable} /> {/* FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusActionBar' */}
               </div>
             )}
           </div>
@@ -491,4 +512,4 @@ const Status: React.FC<IStatus> = (props) => {
   );
 };
 
-export default Status;
+export default PureStatus;

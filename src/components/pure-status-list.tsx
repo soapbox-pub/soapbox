@@ -4,26 +4,26 @@ import { useRef, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import LoadGap from 'soapbox/components/load-gap.tsx';
+import PureStatus from 'soapbox/components/pure-status.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import StatusContainer from 'soapbox/containers/status-container.tsx';
+import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
-import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable-list.tsx';
 
-interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
+interface IPureStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'>{
   /** Unique key to preserve the scroll position when navigating back. */
   scrollKey: string;
-  /** List of status IDs to display. */
-  statusIds: ImmutableOrderedSet<string>;
+  /** List of statuses to display. */
+  statuses: readonly EntityTypes[Entities.STATUSES][];
   /** Last _unfiltered_ status ID (maxId) for pagination. */
   lastStatusId?: string;
   /** Pinned statuses to show at the top of the feed. */
-  featuredStatusIds?: ImmutableOrderedSet<string>;
+  featuredStatuses?: readonly EntityTypes[Entities.STATUSES][];
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: (lastStatusId: string) => void;
   /** Whether the data is currently being fetched. */
@@ -45,13 +45,12 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
 }
 
 /**
- * Legacy Feed of statuses, built atop ScrollableList.
- * @deprecated Use the PureStatusList component.
+ * Feed of statuses, built atop ScrollableList.
  */
-const StatusList: React.FC<IStatusList> = ({
-  statusIds,
+const PureStatusList: React.FC<IPureStatusList> = ({
+  statuses,
   lastStatusId,
-  featuredStatusIds,
+  featuredStatuses,
   divideType = 'border',
   onLoadMore,
   timelineId,
@@ -66,14 +65,17 @@ const StatusList: React.FC<IStatusList> = ({
   const node = useRef<VirtuosoHandle>(null);
 
   const getFeaturedStatusCount = () => {
-    return featuredStatusIds?.size || 0;
+    return featuredStatuses?.length || 0;
   };
 
   const getCurrentStatusIndex = (id: string, featured: boolean): number => {
     if (featured) {
-      return featuredStatusIds?.keySeq().findIndex(key => key === id) || 0;
+      return (featuredStatuses ?? []).findIndex(key => key.id === id) || 0;
     } else {
-      return statusIds.keySeq().findIndex(key => key === id) + getFeaturedStatusCount();
+      return (
+        (statuses?.map(status => status.id) ?? []).findIndex(key => key === id) +
+        getFeaturedStatusCount()
+      );
     }
   };
 
@@ -88,11 +90,11 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const maxId = lastStatusId || statusIds.last();
+    const maxId = lastStatusId || statuses.slice(-1)?.[0]?.id;
     if (onLoadMore && maxId) {
       onLoadMore(maxId.replace('末suggestions-', ''));
     }
-  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statusIds.last()]);
+  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statuses.slice(-1)?.[0]?.id]);
 
   const selectChild = (index: number) => {
     node.current?.scrollIntoView({
@@ -106,9 +108,9 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const renderLoadGap = (index: number) => {
-    const ids = statusIds.toList();
-    const nextId = ids.get(index + 1);
-    const prevId = ids.get(index - 1);
+    const ids = statuses?.map(status => status.id) ?? [];
+    const nextId = ids[index + 1];
+    const prevId = ids[index - 1];
 
     if (index < 1 || !nextId || !prevId || !onLoadMore) return null;
 
@@ -122,14 +124,14 @@ const StatusList: React.FC<IStatusList> = ({
     );
   };
 
-  const renderStatus = (statusId: string) => {
+  const renderStatus = (status: EntityTypes[Entities.STATUSES]) => {
     return (
-      <StatusContainer
-        key={statusId}
-        id={statusId}
+      <PureStatus
+        status={status}
+        key={status.id}
+        id={status.id}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
-        contextType={timelineId}
         showGroup={showGroup}
         variant={divideType === 'border' ? 'slim' : 'rounded'}
       />
@@ -148,18 +150,18 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const renderFeaturedStatuses = (): React.ReactNode[] => {
-    if (!featuredStatusIds) return [];
+    if (!featuredStatuses) return [];
 
-    return featuredStatusIds.toArray().map(statusId => (
-      <StatusContainer
-        key={`f-${statusId}`}
-        id={statusId}
+    return (featuredStatuses ?? []).map(status => (
+      <PureStatus
+        status={status}
+        key={`f-${status.id}`}
+        id={status.id}
         featured
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
-        contextType={timelineId}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'default'}
+        variant={divideType === 'border' ? 'slim' : 'default'} // shouldn't "default" be changed to "rounded" ?
       />
     ));
   };
@@ -176,22 +178,22 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const renderStatuses = (): React.ReactNode[] => {
-    if (isLoading || statusIds.size > 0) {
-      return statusIds.toList().reduce((acc, statusId, index) => {
-        if (statusId === null) {
+    if (isLoading || (statuses?.length ?? 0) > 0) {
+      return (statuses ?? []).reduce((acc, status, index) => {
+        if (status.id === null) {
           const gap = renderLoadGap(index);
           // one does not simply push a null item to Virtuoso: https://github.com/petyosi/react-virtuoso/issues/206#issuecomment-747363793
           if (gap) {
             acc.push(gap);
           }
-        } else if (statusId.startsWith('末suggestions-')) {
+        } else if (status.id.startsWith('末suggestions-')) {
           if (soapboxConfig.feedInjection) {
-            acc.push(renderFeedSuggestions(statusId));
+            acc.push(renderFeedSuggestions(status.id));
           }
-        } else if (statusId.startsWith('末pending-')) {
-          acc.push(renderPendingStatus(statusId));
+        } else if (status.id.startsWith('末pending-')) {
+          acc.push(renderPendingStatus(status.id));
         } else {
-          acc.push(renderStatus(statusId));
+          acc.push(renderStatus(status));
         }
 
         return acc;
@@ -232,7 +234,7 @@ const StatusList: React.FC<IStatusList> = ({
       id='status-list'
       key='scrollable-list'
       isLoading={isLoading}
-      showLoading={isLoading && statusIds.size === 0}
+      showLoading={isLoading && statuses.length === 0}
       onLoadMore={handleLoadOlder}
       placeholderComponent={() => <PlaceholderStatus variant={divideType === 'border' ? 'slim' : 'rounded'} />}
       placeholderCount={20}
@@ -250,5 +252,4 @@ const StatusList: React.FC<IStatusList> = ({
   );
 };
 
-export default StatusList;
-export type { IStatusList };
+export default PureStatusList;
