@@ -16,8 +16,6 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 
 import SvgIcon from './ui/svg-icon.tsx';
 
-import type { List as ImmutableList } from 'immutable';
-
 // const Gameboy = lazy(() => import('./gameboy'));
 
 const ATTACHMENT_LIMIT = 4;
@@ -46,7 +44,7 @@ const withinLimits = (aspectRatio: number) => {
 };
 
 const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']) as number | undefined;
+  const aspectRatio = attachment.meta.original.aspect as number | undefined;
   if (!aspectRatio) return true;
 
   return !withinLimits(aspectRatio);
@@ -159,7 +157,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <SvgIcon
         className={clsx('size-16 text-gray-800 dark:text-gray-200', { 'size-8': compact })}
-        src={MIMETYPE_ICONS[attachment.getIn(['pleroma', 'mime_type']) as string] || paperclipIcon}
+        src={MIMETYPE_ICONS[attachment.pleroma.mime_type as string] || paperclipIcon}
       />
     );
 
@@ -291,9 +289,9 @@ const Item: React.FC<IItem> = ({
 
 export interface IMediaGallery {
   sensitive?: boolean;
-  media: ImmutableList<Attachment>;
+  media: Attachment[];
   height?: number;
-  onOpenMedia: (media: ImmutableList<Attachment>, index: number) => void;
+  onOpenMedia: (media: Attachment[], index: number) => void;
   defaultWidth?: number;
   cacheWidth?: (width: number) => void;
   visible?: boolean;
@@ -323,7 +321,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
 
   const getSizeDataSingle = (): SizeData => {
     const w = width || defaultWidth;
-    const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']) as number | undefined;
+    const aspectRatio = media[0].meta.original.aspect as number | undefined;
 
     const getHeight = () => {
       if (!aspectRatio) return w * 9 / 16;
@@ -349,7 +347,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     let itemsDimensions: Dimensions[] = [];
 
     const ratios = Array(size).fill(null).map((_, i) =>
-      media.getIn([i, 'meta', 'original', 'aspect']) as number,
+      media[i].meta.original.aspect as number,
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;
@@ -547,9 +545,9 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     };
   };
 
-  const sizeData: SizeData = getSizeData(media.size);
+  const sizeData: SizeData = getSizeData(media.length);
 
-  const children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
+  const children = media.slice(0, ATTACHMENT_LIMIT).map((attachment, i) => (
     <Item
       key={attachment.id}
       onClick={handleClick}
@@ -560,7 +558,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
       visible={!!props.visible}
       dimensions={sizeData.itemsDimensions[i]}
       last={i === ATTACHMENT_LIMIT - 1}
-      total={media.size}
+      total={media.length}
       compact={compact}
     />
   ));
