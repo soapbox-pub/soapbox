@@ -140,7 +140,7 @@ const Upload: React.FC<IUpload> = ({
   };
 
   const handleOpenModal = () => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(media).toJS(), index: 0 }));
   };
 
   const active = hovered || focused;

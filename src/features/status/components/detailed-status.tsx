@@ -17,17 +17,18 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { getActualStatus } from 'soapbox/utils/status.ts';
 
 import StatusInteractionBar from './status-interaction-bar.tsx';
 
-import type { Group, Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Group, Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 interface IDetailedStatus {
-  status: StatusEntity;
+  status: LegacyStatus;
   showMedia?: boolean;
   withMedia?: boolean;
-  onOpenCompareHistoryModal: (status: StatusEntity) => void;
+  onOpenCompareHistoryModal: (status: LegacyStatus) => void;
   onToggleMediaVisibility: () => void;
 }
 
@@ -162,7 +163,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
               <Stack space={4}>
                 <StatusMedia
-                  status={actualStatus}
+                  status={actualStatus.toJS() as StatusEntity}
                   showMedia={showMedia}
                   onToggleVisibility={onToggleMediaVisibility}
                 />

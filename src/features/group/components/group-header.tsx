@@ -63,7 +63,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       type: 'image',
       url: group.avatar,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar).toJS(), index: 0 }));
   };
 
   const handleAvatarClick: React.MouseEventHandler = (e) => {
@@ -78,7 +78,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       type: 'image',
       url: group.header,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(header).toJS(), index: 0 }));
   };
 
   const handleHeaderClick: React.MouseEventHandler = (e) => {

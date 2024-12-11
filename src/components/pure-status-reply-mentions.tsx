@@ -4,13 +4,12 @@ import { Link } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals.ts';
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
 import HoverStatusWrapper from 'soapbox/components/hover-status-wrapper.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { shortenNostr } from 'soapbox/utils/nostr.ts';
 
-
 interface IPureStatusReplyMentions {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   hoverable?: boolean;
 }
 

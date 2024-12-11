@@ -7,7 +7,6 @@ import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import PureEventActionButton from 'soapbox/features/event/components/pure-event-action-button.tsx';
 import PureEventDate from 'soapbox/features/event/components/pure-event-date.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -15,6 +14,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import Icon from './icon.tsx';
 import VerificationBadge from './verification-badge.tsx';
 
+import type { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -23,7 +23,7 @@ const messages = defineMessages({
 });
 
 interface IPureEventPreview {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   className?: string;
   hideAction?: boolean;
   floatingAction?: boolean;

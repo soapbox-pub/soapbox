@@ -55,13 +55,14 @@ import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import toast from 'soapbox/toast.tsx';
 import copy from 'soapbox/utils/copy.ts';
 
 import GroupPopover from './groups/popover/group-popover.tsx';
 
 import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Group, Status } from 'soapbox/types/entities.ts';
+import type { Group, Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
@@ -140,7 +141,7 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: Status;
+  status: LegacyStatus;
   expandable?: boolean;
   space?: 'sm' | 'md' | 'lg';
   statusActionButtonTheme?: 'default' | 'inverse';
@@ -826,7 +827,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenu items={menu} status={status}>
+        <DropdownMenu items={menu} status={status.toJS() as StatusEntity}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={dotsIcon}

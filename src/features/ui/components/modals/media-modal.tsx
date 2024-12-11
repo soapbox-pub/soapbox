@@ -24,14 +24,13 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import Thread from 'soapbox/features/status/components/thread.tsx';
 import Video from 'soapbox/features/video/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { Status as StatusEntity, Attachment } from 'soapbox/schemas/index.ts';
+import { Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import { getActualStatus } from 'soapbox/utils/status.ts';
 
 import ImageLoader from '../image-loader.tsx';
-
-import type { List as ImmutableList } from 'immutable';
-import type { Attachment, Status } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -55,8 +54,8 @@ const containerStyle: React.CSSProperties = {
 };
 
 interface IMediaModal {
-  media: ImmutableList<Attachment>;
-  status?: Status;
+  media: readonly Attachment[];
+  status?: StatusEntity;
   index: number;
   time?: number;
   onClose(): void;
@@ -74,8 +73,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const history = useHistory();
   const intl = useIntl();
 
-  const getStatus = useCallback(makeGetStatus(), []);
-  const actualStatus = useAppSelector((state) => getStatus(state, { id: status?.id as string }));
+  const actualStatus = status ? getActualStatus(status) : undefined;
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
   const [next, setNext] = useState<string>();
@@ -83,11 +81,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const [navigationHidden, setNavigationHidden] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(!status);
 
-  const hasMultipleImages = media.size > 1;
+  const hasMultipleImages = media.length > 1;
 
-  const handleSwipe = (index: number) => setIndex(index % media.size);
-  const handleNextClick = () => setIndex((getIndex() + 1) % media.size);
-  const handlePrevClick = () => setIndex((media.size + getIndex() - 1) % media.size);
+  const handleSwipe = (index: number) => setIndex(index % media.length);
+  const handleNextClick = () => setIndex((getIndex() + 1) % media.length);
+  const handlePrevClick = () => setIndex((media.length + getIndex() - 1) % media.length);
 
   const navigationHiddenClassName = navigationHidden ? 'pointer-events-none opacity-0' : '';
 
@@ -107,7 +105,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   const handleDownload = () => {
-    const mediaItem = hasMultipleImages ? media.get(index as number) : media.get(0);
+    const mediaItem = hasMultipleImages ? media[index as number] : media[0];
     window.open(mediaItem?.url);
   };
 
@@ -126,8 +124,8 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   const content = media.map((attachment, i) => {
-    const width  = (attachment.meta.getIn(['original', 'width']) || undefined) as number | undefined;
-    const height = (attachment.meta.getIn(['original', 'height']) || undefined) as number | undefined;
+    const width  = 'meta' in attachment && 'original' in attachment.meta ? (attachment)?.meta?.original?.width : undefined;
+    const height = 'meta' in attachment && 'original' in attachment.meta ? (attachment)?.meta?.original?.height : undefined;
 
     const link = (status && (
       <a href={status.url} onClick={handleStatusClick}>
@@ -151,7 +149,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
       return (
         <Video
           preview={attachment.preview_url}
-          blurhash={attachment.blurhash}
+          blurhash={attachment.blurhash ?? undefined}
           src={attachment.url}
           width={width}
           height={height}
@@ -169,11 +167,11 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
         <Audio
           src={attachment.url}
           alt={attachment.description}
-          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : (status?.getIn(['account', 'avatar_static'])) as string | undefined}
-          backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
-          foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
-          accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}
-          duration={attachment.meta.getIn(['original', 'duration'], 0) as number | undefined}
+          poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status?.account.avatar_static}
+          backgroundColor={attachment.meta?.colors?.background}
+          foregroundColor={attachment.meta?.colors?.foreground}
+          accentColor={attachment.meta?.colors?.accent}
+          duration={attachment?.meta?.duration ?? 0}
           key={attachment.url}
         />
       );
@@ -193,7 +191,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
     }
 
     return null;
-  }).toArray();
+  });
 
   const handleLoadMore = useCallback(debounce(() => {
     if (next && status) {
@@ -344,7 +342,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                 className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
               >
                 <StatusActionBar
-                  status={actualStatus}
+                  status={normalizeStatus(actualStatus) as LegacyStatus}
                   space='md'
                   statusActionButtonTheme='inverse'
                 />
@@ -362,7 +360,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             }
           >
             <Thread
-              status={actualStatus}
+              status={normalizeStatus(actualStatus) as LegacyStatus}
               withMedia={false}
               useWindowScroll={false}
               itemClassName='px-4'

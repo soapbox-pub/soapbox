@@ -5,14 +5,14 @@ import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses
 import Button from 'soapbox/components/ui/button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
 interface IPureTranslateButton {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
 }
 
 const PureTranslateButton: React.FC<IPureTranslateButton> = ({ status }) => {

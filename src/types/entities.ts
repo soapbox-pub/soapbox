@@ -43,6 +43,9 @@ type Tag = ReturnType<typeof TagRecord>;
 
 type Account = SchemaAccount & LegacyMap;
 
+/**
+ * @deprecated Use the Status from 'soapbox/schemas/index.ts'
+ */
 interface Status extends ReturnType<typeof StatusRecord> {
   // HACK: same as above
   quote: EmbeddedEntity<Status>;

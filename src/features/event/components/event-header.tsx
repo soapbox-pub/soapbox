@@ -128,7 +128,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    dispatch(openModal('MEDIA', { media: ImmutableList([event.banner]) }));
+    dispatch(openModal('MEDIA', { media: ImmutableList([event.banner]).toJS() }));
   };
 
   const handleExportClick = () => {

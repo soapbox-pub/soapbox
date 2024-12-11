@@ -3,12 +3,10 @@ import { Suspense } from 'react';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-
-import type { List as ImmutableList } from 'immutable';
-import type { Attachment } from 'soapbox/types/entities.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 
 interface IAttachmentThumbs {
-  media: ImmutableList<Attachment>;
+  media: readonly Attachment[];
   onClick?(): void;
   sensitive?: boolean;
 }
@@ -18,7 +16,7 @@ const AttachmentThumbs = (props: IAttachmentThumbs) => {
   const dispatch = useAppDispatch();
 
   const fallback = <div className='!h-[50px] bg-transparent' />;
-  const onOpenMedia = (media: ImmutableList<Attachment>, index: number) => dispatch(openModal('MEDIA', { media, index }));
+  const onOpenMedia = (media: readonly Attachment[], index: number) => dispatch(openModal('MEDIA', { media, index }));
 
   return (
     <div className='relative'>

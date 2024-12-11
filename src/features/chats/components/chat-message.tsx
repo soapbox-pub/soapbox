@@ -23,6 +23,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 import { htmlToPlaintext } from 'soapbox/utils/html.ts';
 import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
 
@@ -112,7 +113,7 @@ const ChatMessage = (props: IChatMessage) => {
           'rounded-br-sm': isMyMessage && content,
           'rounded-bl-sm': !isMyMessage && content,
         })}
-        media={chatMessage.media_attachments}
+        media={chatMessage.media_attachments.toJS() as unknown as Attachment[]}
         onOpenMedia={onOpenMedia}
         visible
       />

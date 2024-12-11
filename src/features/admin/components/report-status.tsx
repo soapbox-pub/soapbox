@@ -10,8 +10,9 @@ import StatusMedia from 'soapbox/components/status-media.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
-import type { AdminReport, Status } from 'soapbox/types/entities.ts';
+import type { AdminReport, Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -19,7 +20,7 @@ const messages = defineMessages({
 });
 
 interface IReportStatus {
-  status: Status;
+  status: LegacyStatus;
   report?: AdminReport;
 }
 
@@ -52,7 +53,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     <HStack space={2} alignItems='start'>
       <Stack space={2} className='overflow-hidden' grow>
         <StatusContent status={status} />
-        <StatusMedia status={status} />
+        <StatusMedia status={status.toJS() as StatusEntity}  />
       </Stack>
 
       <div className='flex-none'>
