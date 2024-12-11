@@ -3,7 +3,6 @@ import linkIcon from '@tabler/icons/outline/link.svg';
 import playerPlayIcon from '@tabler/icons/outline/player-play.svg';
 import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import { useState, useEffect, useRef } from 'react';
 
 import Blurhash from 'soapbox/components/blurhash.tsx';
@@ -22,7 +21,7 @@ interface IPreviewCard {
   card: CardEntity;
   maxTitle?: number;
   maxDescription?: number;
-  onOpenMedia: (attachments: ImmutableList<Attachment>, index: number) => void;
+  onOpenMedia: (attachments: Attachment[], index: number) => void;
   compact?: boolean;
   defaultWidth?: number;
   cacheWidth?: (width: number) => void;
@@ -75,7 +74,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
       },
     });
 
-    onOpenMedia(ImmutableList([attachment]), 0);
+    onOpenMedia([attachment], 0);
   };
 
   const handleEmbedClick: React.MouseEventHandler = (e) => {
