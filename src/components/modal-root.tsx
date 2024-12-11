@@ -12,18 +12,18 @@ import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
 
 import type { ModalType } from 'soapbox/features/ui/components/modal-root.tsx';
 import type { ReducerRecord as ReducerComposeEvent } from 'soapbox/reducers/compose-event.ts';
-import type { ReducerCompose } from 'soapbox/reducers/compose.ts';
+import type { Compose } from 'soapbox/reducers/compose.ts';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
-export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) => {
+export const checkComposeContent = (compose: Compose) => {
   return !!compose && [
     compose.editorState && compose.editorState.length > 0,
     compose.spoiler_text.length > 0,
-    compose.media_attachments.size > 0,
+    compose.media_attachments.length > 0,
     compose.poll !== null,
   ].some(check => check === true);
 };
@@ -69,7 +69,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleOnClose = () => {
     dispatch((_, getState) => {
-      const compose = getState().compose.get('compose-modal');
+      const compose: Compose = getState().compose['compose-modal'];
       const hasComposeContent = checkComposeContent(compose);
       const hasEventComposeContent = checkEventComposeContent(getState().compose_event);
 
