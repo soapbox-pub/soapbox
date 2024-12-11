@@ -9,7 +9,6 @@ import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import type { List as ImmutableList } from 'immutable';
 import type { Status, Attachment } from 'soapbox/types/entities.ts';
 
 interface IStatusMedia {
@@ -35,8 +34,8 @@ const StatusMedia: React.FC<IStatusMedia> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const size = status.media_attachments.size;
-  const firstAttachment = status.media_attachments.first();
+  const size = status.media_attachments.length;
+  const firstAttachment = status.media_attachments[0];
 
   let media: JSX.Element | null = null;
 
@@ -52,7 +51,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
-  const openMedia = (media: ImmutableList<Attachment>, index: number) => {
+  const openMedia = (media: Attachment[], index: number) => {
     dispatch(openModal('MEDIA', { media, status, index }));
   };
 
