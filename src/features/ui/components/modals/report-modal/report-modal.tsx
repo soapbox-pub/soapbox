@@ -27,7 +27,6 @@ import ConfirmationStep from './steps/confirmation-step.tsx';
 import OtherActionsStep from './steps/other-actions-step.tsx';
 import ReasonStep from './steps/reason-step.tsx';
 
-
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
   done: { id: 'report.done', defaultMessage: 'Done' },
