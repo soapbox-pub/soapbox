@@ -266,7 +266,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       type: 'image',
       url: account.avatar,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar).toJS(), index: 0 }));
   };
 
   const handleAvatarClick: React.MouseEventHandler = (e) => {
@@ -281,7 +281,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       type: 'image',
       url: account.header,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(header).toJS(), index: 0 }));
   };
 
   const handleHeaderClick: React.MouseEventHandler = (e) => {

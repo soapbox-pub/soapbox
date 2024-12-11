@@ -36,7 +36,7 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
       const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
       const index = media.findIndex(x => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status, account: attachment.account }));
+      dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status, account: attachment.account })); // NOTE: why 'account' field is here? it doesn't exist in MediaModal component
     }
   };
 

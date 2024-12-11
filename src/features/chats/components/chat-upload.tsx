@@ -22,7 +22,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
   const clickable = attachment.type !== 'unknown';
 
   const handleOpenModal = () => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(attachment), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(attachment).toJS(), index: 0 }));
   };
 
   return (

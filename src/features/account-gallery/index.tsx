@@ -74,7 +74,7 @@ const AccountGallery = () => {
       const media = (attachment.status as Status).media_attachments;
       const index = media.findIndex((x) => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
+      dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status }));
     }
   };
 

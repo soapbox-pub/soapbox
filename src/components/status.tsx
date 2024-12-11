@@ -151,7 +151,7 @@ const Status: React.FC<IStatus> = (props) => {
       if (firstAttachment.type === 'video') {
         dispatch(openModal('VIDEO', { status, media: firstAttachment, time: 0 }));
       } else {
-        dispatch(openModal('MEDIA', { status, media: status.media_attachments, index: 0 }));
+        dispatch(openModal('MEDIA', { status: status.toJS(), media: status.media_attachments.toJS(), index: 0 }));
       }
     }
   };

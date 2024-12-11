@@ -34,7 +34,7 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
       const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
       const index = media.findIndex(x => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media, index, status: attachment.status }));
+      dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status }));
     }
   };
 
