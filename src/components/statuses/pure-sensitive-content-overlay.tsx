@@ -13,14 +13,13 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
-
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -37,7 +36,7 @@ const messages = defineMessages({
 });
 
 interface IPureSensitiveContentOverlay {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   onToggleVisibility?(): void;
   visible?: boolean;
 }

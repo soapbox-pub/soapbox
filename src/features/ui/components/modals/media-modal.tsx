@@ -19,7 +19,6 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import Audio from 'soapbox/features/audio/index.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import Thread from 'soapbox/features/status/components/thread.tsx';
@@ -27,8 +26,8 @@ import Video from 'soapbox/features/video/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
-import { Status } from 'soapbox/types/entities.ts';
+import { Status as StatusEntity, Attachment } from 'soapbox/schemas/index.ts';
+import { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 import { getActualStatus } from 'soapbox/utils/status.ts';
 
 import ImageLoader from '../image-loader.tsx';
@@ -56,7 +55,7 @@ const containerStyle: React.CSSProperties = {
 
 interface IMediaModal {
   media: readonly Attachment[];
-  status?: EntityTypes[Entities.STATUSES];
+  status?: StatusEntity;
   index: number;
   time?: number;
   onClose(): void;
@@ -343,7 +342,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                 className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
               >
                 <StatusActionBar
-                  status={normalizeStatus(actualStatus) as Status}
+                  status={normalizeStatus(actualStatus) as LegacyStatus}
                   space='md'
                   statusActionButtonTheme='inverse'
                 />
@@ -361,7 +360,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             }
           >
             <Thread
-              status={normalizeStatus(actualStatus) as Status}
+              status={normalizeStatus(actualStatus) as LegacyStatus}
               withMedia={false}
               useWindowScroll={false}
               itemClassName='px-4'

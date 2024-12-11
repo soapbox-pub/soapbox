@@ -4,16 +4,15 @@ import { Suspense } from 'react';
 import { openModal } from 'soapbox/actions/modals.ts';
 import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
 import PreviewCard from 'soapbox/components/preview-card.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-preview.tsx';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
+import { Status as StatusEntity, Attachment } from 'soapbox/schemas/index.ts';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   /** Whether to display compact media. */
   muted?: boolean;
   /** Callback when compact media is clicked. */

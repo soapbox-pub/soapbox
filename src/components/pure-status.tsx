@@ -18,7 +18,6 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
@@ -29,7 +28,8 @@ import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useStatusHidden } from 'soapbox/hooks/useStatusHidden.ts';
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { Status } from 'soapbox/types/entities.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
@@ -48,7 +48,7 @@ const messages = defineMessages({
 export interface IPureStatus {
   id?: string;
   avatarSize?: number;
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   onClick?: () => void;
   muted?: boolean;
   hidden?: boolean;
@@ -126,7 +126,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     }
   }, [overlay.current]);
 
-  const statusImmutable = normalizeStatus(status) as Status; // TODO: remove this line, it will be removed once all components in this file are pure.
+  const statusImmutable = normalizeStatus(status) as LegacyStatus; // TODO: remove this line, it will be removed once all components in this file are pure.
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);

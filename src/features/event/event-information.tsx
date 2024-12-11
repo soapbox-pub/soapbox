@@ -15,16 +15,16 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as StatusLegacy } from 'soapbox/types/entities.ts';
 
 type RouteParams = { statusId: string };
 
@@ -36,7 +36,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   const dispatch = useAppDispatch();
   const getStatus = useCallback(makeGetStatus(), []);
 
-  const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusEntity;
+  const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusLegacy;
 
   const { tileServer } = useSoapboxConfig();
   const { displayMedia } = useSettings();
@@ -209,7 +209,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       )}
 
       <StatusMedia
-        status={status.toJS() as EntityTypes[Entities.STATUSES]}
+        status={status.toJS() as StatusEntity}
         showMedia={showMedia}
         onToggleVisibility={handleToggleMediaVisibility}
       />
