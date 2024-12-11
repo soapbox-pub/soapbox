@@ -1,4 +1,4 @@
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
 import { Account } from 'soapbox/schemas/index.ts';
@@ -78,7 +78,7 @@ interface Poll {
   multiple: boolean;
 }
 
-interface Compose {
+export interface Compose {
   caretPosition: number | null;
   content_type: string;
   editorState: string | null;
@@ -109,7 +109,7 @@ interface Compose {
   group_timeline_visible: boolean; // TruthSocial
 }
 
-const initialCompose: Compose = {
+export const initialCompose: Compose = {
   caretPosition: null,
   content_type: 'text/plain',
   editorState: null,
@@ -137,7 +137,7 @@ const initialCompose: Compose = {
   tagHistory: [],
   text: '',
   to: [],
-  group_timeline_visible: false,
+  group_timeline_visible: false, // TruthSocial
 };
 
 // export const ReducerCompose = ImmutableRecord({
@@ -171,7 +171,9 @@ const initialCompose: Compose = {
 //   group_timeline_visible: false, // TruthSocial
 // });
 
-type State = Record<string, Compose>;
+type State = {
+  [key: string]: Compose;
+};
 // type Compose = ReturnType<typeof ReducerCompose>;
 const PollRecord = (): Poll => ({
   options: ['', ''],
@@ -335,21 +337,23 @@ const getExplicitMentions = (me: string, status: Status) => {
   return [...new Set(mentions)].sort();
 };
 
-const getAccountSettings = (account: ImmutableMap<string, any>) => {
-  return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
+const getAccountSettings = (account: APIEntity) => {
+  const settingsStore = account.pleroma?.settings_store;
+  return settingsStore && settingsStore[FE_NAME] ? settingsStore[FE_NAME] : {};
 };
 
-const importAccount = (compose: Compose, account: APIEntity) => {
-  const settings = getAccountSettings(ImmutableMap(fromJS(account)));
+const importAccount = (compose: Compose, account: Account | APIEntity) => {
+  const settings = getAccountSettings(account);
 
-  const defaultPrivacy = settings.get('defaultPrivacy');
-  const defaultContentType = settings.get('defaultContentType');
+  const defaultPrivacy = settings.defaultPrivacy;
+  const defaultContentType = settings.defaultContentType;
 
-  return compose.withMutations(compose => {
-    if (defaultPrivacy) compose.set('privacy', defaultPrivacy);
-    if (defaultContentType) compose.set('content_type', defaultContentType);
-    compose.set('tagHistory', ImmutableList(tagHistory.get(account.id)));
-  });
+  return {
+    ...compose,
+    privacy: defaultPrivacy !== undefined ? defaultPrivacy : compose.privacy,
+    content_type: defaultContentType !== undefined ? defaultContentType : compose.content_type,
+    tagHistory: tagHistory.get(account.id) || [],
+  };
 };
 
 const updateSetting = (compose: Compose, path: string[], value: string) => {
