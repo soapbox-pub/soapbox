@@ -9,12 +9,11 @@ import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 's
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Portal from 'soapbox/components/ui/portal.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 
 import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
-
-import type { Status } from 'soapbox/types/entities.ts';
 
 export type Menu = Array<MenuItem | null>;
 
@@ -28,7 +27,7 @@ interface IDropdownMenu {
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>;
   placement?: Placement;
   src?: string;
-  status?: Status;
+  status?: EntityTypes[Entities.STATUSES];
   title?: string;
 }
 

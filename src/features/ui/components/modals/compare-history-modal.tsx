@@ -12,6 +12,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities.ts';
@@ -81,7 +82,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               )}
 
               {version.media_attachments.size > 0 && (
-                <AttachmentThumbs media={version.media_attachments} />
+                <AttachmentThumbs media={version.media_attachments.toJS() as unknown as Attachment[]} />
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>

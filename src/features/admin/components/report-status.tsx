@@ -9,6 +9,7 @@ import StatusContent from 'soapbox/components/status-content.tsx';
 import StatusMedia from 'soapbox/components/status-media.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import type { AdminReport, Status } from 'soapbox/types/entities.ts';
@@ -52,7 +53,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     <HStack space={2} alignItems='start'>
       <Stack space={2} className='overflow-hidden' grow>
         <StatusContent status={status} />
-        <StatusMedia status={status} />
+        <StatusMedia status={status.toJS() as EntityTypes[Entities.STATUSES]}  />
       </Stack>
 
       <div className='flex-none'>

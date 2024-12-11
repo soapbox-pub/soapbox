@@ -4,15 +4,15 @@ import { spring } from 'react-motion';
 
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
 import Motion from '../../util/optional-motion.tsx';
 
 import type { Menu, MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 interface IActionsModal {
-  status: StatusEntity;
+  status: EntityTypes[Entities.STATUSES];
   actions: Menu;
   onClick: () => void;
   onClose: () => void;

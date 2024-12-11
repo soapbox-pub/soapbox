@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom';
 import StatusMedia from 'soapbox/components/status-media.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
@@ -138,7 +139,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
               {status.media_attachments.size > 0 && (
                 <StatusMedia
-                  status={status}
+                  status={status.toJS() as EntityTypes[Entities.STATUSES]}
                   muted={compose}
                   showMedia={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}

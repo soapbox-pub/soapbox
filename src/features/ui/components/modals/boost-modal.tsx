@@ -5,6 +5,7 @@ import Icon from 'soapbox/components/icon.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
 
 import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
@@ -37,7 +38,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
       confirmationText={intl.formatMessage(buttonText)}
     >
       <Stack space={4}>
-        <ReplyIndicator status={status} hideActions />
+        <ReplyIndicator status={status.toJS() as EntityTypes[Entities.STATUSES]} hideActions />
 
         <Text>
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}

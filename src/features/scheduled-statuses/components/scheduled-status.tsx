@@ -8,6 +8,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import PollPreview from 'soapbox/features/ui/components/poll-preview.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 
 import { buildStatus } from '../builder.tsx';
 
@@ -55,7 +56,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
 
           {status.media_attachments.size > 0 && (
             <AttachmentThumbs
-              media={status.media_attachments}
+              media={status.media_attachments.toJS() as unknown as Attachment[]}
               sensitive={status.sensitive}
             />
           )}

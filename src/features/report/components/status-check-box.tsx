@@ -7,6 +7,7 @@ import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 
 interface IStatusCheckBox {
   id: string;
@@ -62,7 +63,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
     } else {
       media = (
         <MediaGallery
-          media={status.media_attachments}
+          media={status.media_attachments.toJS() as unknown as Attachment[]}
           sensitive={status.sensitive}
           height={110}
           onOpenMedia={() => {}}

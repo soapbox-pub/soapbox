@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
 import ReplyIndicator from '../components/reply-indicator.tsx';
@@ -16,7 +17,7 @@ const makeMapStateToProps = () => {
     const editing = !!state.compose.get(composeId)?.id;
 
     return {
-      status: getStatus(state, { id: statusId }) as Status,
+      status: (getStatus(state, { id: statusId }) as Status)?.toJS() as EntityTypes[Entities.STATUSES],
       hideActions: editing,
     };
   };

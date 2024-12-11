@@ -16,6 +16,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { getActualStatus } from 'soapbox/utils/status.ts';
 
@@ -162,7 +163,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
               <Stack space={4}>
                 <StatusMedia
-                  status={actualStatus}
+                  status={actualStatus.toJS() as EntityTypes[Entities.STATUSES]}
                   showMedia={showMedia}
                   onToggleVisibility={onToggleMediaVisibility}
                 />

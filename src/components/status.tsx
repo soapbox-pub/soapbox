@@ -16,6 +16,7 @@ import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
@@ -465,7 +466,7 @@ const Status: React.FC<IStatus> = (props) => {
                   {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={actualStatus}
+                        status={actualStatus.toJS() as EntityTypes[Entities.STATUSES]}
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}

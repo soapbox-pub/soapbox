@@ -2,11 +2,10 @@ import circlesIcon from '@tabler/icons/outline/circles.svg';
 import pinnedIcon from '@tabler/icons/outline/pinned.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import clsx from 'clsx';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
@@ -23,14 +22,14 @@ import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
 import { useMentionCompose } from 'soapbox/hooks/useMentionCompose.ts';
 import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useStatusHidden } from 'soapbox/hooks/useStatusHidden.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { Status } from 'soapbox/types/entities.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
@@ -127,16 +126,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
     }
   }, [overlay.current]);
 
-  // TODO: remove this code, it will be removed once all components in this file are pure.
-  useEffect(() => {
-    dispatch(importFetchedStatuses([status]));
-  }, []);
-  const getStatus = useCallback(makeGetStatus(), []);
-  const statusImmutable = useAppSelector(state => getStatus(state, { id: status.id }));
-  if (!statusImmutable) {
-    return null;
-  }
-  // END TODO
+  const statusImmutable = normalizeStatus(status) as Status; // TODO: remove this line, it will be removed once all components in this file are pure.
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
@@ -486,7 +476,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
                   {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={statusImmutable} // FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusMedia'
+                        status={status}
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}
