@@ -661,9 +661,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const emojiReactCount = status.reactions?.reduce((acc, reaction) => acc + (reaction.count ?? 0), 0) ?? 0; // allow all emojis
 
   const meEmojiReact = status.reactions?.find((emojiReact) => emojiReact.me) // allow all emojis
-    ?? (account && status.favourited)
-    ? { count: 1, me: status.account.id === account!.id, name: '👍' }
-    : undefined;
+  ?? (
+    status.favourited && account
+      ? { count: 1, me: status.account.id === account.id, name: '👍' }
+      : undefined
+  );
+
   const meEmojiName = meEmojiReact?.name as keyof typeof reactMessages | undefined;
 
   const reactMessages = {
