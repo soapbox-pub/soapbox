@@ -45,6 +45,7 @@ export { useUpdateGroupTag } from './groups/useUpdateGroupTag.ts';
 
 // Statuses
 export { useBookmarks } from './statuses/useBookmarks.ts';
+export { useBookmark } from './statuses/useBookmark.ts';
 
 // Streaming
 export { useUserStream } from './streaming/useUserStream.ts';
