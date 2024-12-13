@@ -368,7 +368,7 @@ const bookmark = (status: StatusEntity) =>
       dispatch(bookmarkSuccess(status, response.data));
 
       toast.success(messages.bookmarkAdded, {
-        actionLink: '/bookmarks',
+        actionLink: '/bookmarks/all', actionLabel: messages.view,
       });
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
