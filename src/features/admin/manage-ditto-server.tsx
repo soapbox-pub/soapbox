@@ -278,9 +278,9 @@ const ScreenshotInput: StreamfieldComponent<Screenshot> = ({ value, onChange }) 
         const height = attachment?.meta?.getIn(['original', 'height']);
 
         if (typeof width === 'number' && typeof height === 'number') {
-          onChange({ ...value, [key]: attachment.get('url'), ['sizes']: `${width}x${height}`, 'label': value.label });
+          onChange({ ...value, [key]: attachment.url, ['sizes']: `${width}x${height}`, 'label': value.label });
         } else {
-          onChange({ ...value, [key]: attachment.get('url'), 'label': value.label });
+          onChange({ ...value, [key]: attachment.url, 'label': value.label });
         }
 
         toast.success(messages.upload_screenshot_success);
