@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -25,13 +24,13 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
 
   const [loading, setLoading] = useState(true);
 
-  const attachments: ImmutableList<Attachment> = useAppSelector((state) => account ? getAccountGallery(state, account?.id) : ImmutableList());
+  const attachments: Attachment[] = useAppSelector((state) => account ? getAccountGallery(state, account?.id) : []);
 
   const handleOpenMedia = (attachment: Attachment): void => {
     if (attachment.type === 'video') {
       dispatch(openModal('VIDEO', { media: attachment, status: attachment.status }));
     } else {
-      const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
+      const media = attachment.status?.media_attachments as Attachment[];
       const index = media.findIndex(x => x.id === attachment.id);
 
       dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status }));
@@ -50,15 +49,15 @@ const ProfileMediaPanel: React.FC<IProfileMediaPanel> = ({ account }) => {
   }, [account?.id]);
 
   const renderAttachments = () => {
-    const publicAttachments = attachments.filter(attachment => attachment.getIn(['status', 'visibility']) === 'public');
+    const publicAttachments = attachments.filter(attachment => attachment.status?.visibility === 'public');
     const nineAttachments = publicAttachments.slice(0, 9);
 
-    if (!nineAttachments.isEmpty()) {
+    if (nineAttachments.length > 0) {
       return (
         <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
-              key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
+              key={`${attachment.status!.id}+${attachment.id}`}
               attachment={attachment}
               onOpenMedia={handleOpenMedia}
             />

@@ -25,8 +25,8 @@ const ErrorColumn: React.FC<IErrorColumn> = ({ error, onRetry = () => location.r
     onRetry?.();
   };
 
-  if (!isNetworkError(error)) {
-    throw error;
+  if (!error || !isNetworkError(error)) {
+    throw error || new Error('Unknown error occurred');
   }
 
   return (

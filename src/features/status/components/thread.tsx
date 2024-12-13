@@ -173,10 +173,10 @@ const Thread = (props: IThread) => {
 
     e?.preventDefault();
 
-    if (media && media.size) {
-      const firstAttachment = media.first()!;
+    if (media && media.length) {
+      const firstAttachment = media[0];
 
-      if (media.size === 1 && firstAttachment.type === 'video') {
+      if (media.length === 1 && firstAttachment.type === 'video') {
         dispatch(openModal('VIDEO', { media: firstAttachment, status: status }));
       } else {
         dispatch(openModal('MEDIA', { media: media.toJS(), index: 0, status: status.toJS() }));

@@ -1,10 +1,10 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 import { useState } from 'react';
 
 import type { Attachment as AttachmentEntity } from 'soapbox/types/entities.ts';
 
 interface IPlaceholderMediaGallery {
-  media: ImmutableList<AttachmentEntity>;
+  media: AttachmentEntity[];
   defaultWidth?: number;
 }
 
@@ -81,11 +81,11 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     return <div key={i} className='relative float-left box-border block animate-pulse overflow-hidden rounded-sm border-0 bg-primary-200' style={{ position, float, left, top, right, bottom, height, width }} />;
   };
 
-  const sizeData = getSizeData(media.size);
+  const sizeData = getSizeData(media.length);
 
   return (
     <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={sizeData.get('style')} ref={handleRef}>
-      {media.take(4).map((_, i) => renderItem(sizeData.get('itemsDimensions')[i], i))}
+      {media.slice(0, 4).map((_, i) => renderItem(sizeData.get('itemsDimensions')[i], i))}
     </div>
   );
 };

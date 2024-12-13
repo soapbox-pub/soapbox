@@ -22,7 +22,7 @@ export const StatusEditRecord = ImmutableRecord({
   created_at: new Date(),
   emojis: ImmutableList<Emoji>(),
   favourited: false,
-  media_attachments: ImmutableList<Attachment>(),
+  media_attachments: [] as Attachment[],
   poll: null as EmbeddedEntity<Poll>,
   sensitive: false,
   spoiler_text: '',

@@ -20,6 +20,7 @@ interface IConfirmationModal {
   onCancel: () => void;
   checkbox?: JSX.Element;
   confirmationTheme?: ButtonThemes;
+  baka: boolean;
 }
 
 const ConfirmationModal: React.FC<IConfirmationModal> = ({

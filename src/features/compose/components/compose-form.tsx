@@ -101,7 +101,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
   const hasPoll = !!compose.poll;
   const isEditing = compose.id !== null;
-  const anyMedia = compose.media_attachments.size > 0;
+  const anyMedia = compose.media_attachments.length > 0;
 
   const [composeFocused, setComposeFocused] = useState(false);
 
@@ -260,7 +260,9 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
       {!shouldCondense && !event && !group && groupId && <ReplyGroupIndicator composeId={id} />}
 
-      {!shouldCondense && !event && !group && <ReplyIndicatorContainer composeId={id} />}
+      {!shouldCondense && !event && !group && <ReplyIndicatorContainer
+        composeId={id}
+      />}
 
       {!shouldCondense && !event && !group && <ReplyMentions composeId={id} />}
 

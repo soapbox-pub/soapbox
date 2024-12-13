@@ -42,7 +42,7 @@ const GroupTimeline: React.FC<IGroupTimeline> = (props) => {
 
   const composeId = `group:${groupId}`;
   const canComposeGroupStatus = !!account && group?.relationship?.member;
-  const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
+  const groupTimelineVisible = useAppSelector((state) => !!state.compose.composeId?.group_timeline_visible);
   const featuredStatusIds = useAppSelector((state) => getStatusIds(state, { type: `group:${group?.id}:pinned` }));
 
   const { isDragging, isDraggedOver } = useDraggedFiles(composer, (files) => {

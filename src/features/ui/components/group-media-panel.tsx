@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -27,13 +26,13 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
   const isMember = !!group?.relationship?.member;
   const isPrivate = group?.locked;
 
-  const attachments: ImmutableList<Attachment> = useAppSelector((state) => group ? getGroupGallery(state, group?.id) : ImmutableList());
+  const attachments: Attachment[] = useAppSelector((state) => group ? getGroupGallery(state, group?.id) : []);
 
   const handleOpenMedia = (attachment: Attachment): void => {
     if (attachment.type === 'video') {
       dispatch(openModal('VIDEO', { media: attachment, status: attachment.status }));
     } else {
-      const media = attachment.getIn(['status', 'media_attachments']) as ImmutableList<Attachment>;
+      const media = attachment.status?.media_attachments as Attachment[];
       const index = media.findIndex(x => x.id === attachment.id);
 
       dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status, account: attachment.account })); // NOTE: why 'account' field is here? it doesn't exist in MediaModal component
@@ -54,12 +53,12 @@ const GroupMediaPanel: React.FC<IGroupMediaPanel> = ({ group }) => {
   const renderAttachments = () => {
     const nineAttachments = attachments.slice(0, 9);
 
-    if (!nineAttachments.isEmpty()) {
+    if (nineAttachments.length > 0) {
       return (
         <div className='grid grid-cols-3 gap-1'>
           {nineAttachments.map((attachment, _index) => (
             <MediaItem
-              key={`${attachment.getIn(['status', 'id'])}+${attachment.id}`}
+              key={`${attachment.status!.id}+${attachment.id}`}
               attachment={attachment}
               onOpenMedia={handleOpenMedia}
             />

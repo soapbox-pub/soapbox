@@ -34,8 +34,8 @@ type Attachment = {
   remote_url: string | null;
   type: string;
   url: string;
-  account?: string | null;
-  status?: string | null;
+  account?: Account | null;
+  status?: Status | null;
 };
 type Chat = ReturnType<typeof ChatRecord>;
 type ChatMessage = ReturnType<typeof ChatMessageRecord>;

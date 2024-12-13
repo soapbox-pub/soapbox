@@ -32,7 +32,13 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
   } = useGroupMedia(groupId);
 
   const attachments = statuses.reduce<Attachment[]>((result, status) => {
-    result.push(...status.media_attachments.map((a) => a.set('status', status)));
+    const mappedAttachments = status.media_attachments.map((a) => {
+      return {
+        ...a, 
+        status,
+      } as Attachment;
+    });
+    result.push(...mappedAttachments);
     return result;
   }, []);
 
@@ -70,7 +76,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
       <div role='feed' className='mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3'>
         {attachments.map((attachment) => (
           <MediaItem
-            key={`${attachment.status.id}+${attachment.id}`}
+            key={`${attachment.status!.id}+${attachment.id}`}
             attachment={attachment}
             onOpenMedia={handleOpenMedia}
           />

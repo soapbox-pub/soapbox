@@ -33,7 +33,7 @@ interface IPendingStatusMedia {
 }
 
 const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
-  if (status.media_attachments && !status.media_attachments.isEmpty()) {
+  if (status.media_attachments && status.media_attachments.length > 0) {
     return (
       <PlaceholderMediaGallery
         media={status.media_attachments}

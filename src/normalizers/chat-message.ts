@@ -13,7 +13,7 @@ import type { Attachment, Card, Emoji, EmojiReaction } from 'soapbox/types/entit
 
 export const ChatMessageRecord = ImmutableRecord({
   account_id: '',
-  media_attachments: ImmutableList<Attachment>(),
+  media_attachments: [] as Attachment[],
   card: null as Card | null,
   chat_id: '',
   content: '',

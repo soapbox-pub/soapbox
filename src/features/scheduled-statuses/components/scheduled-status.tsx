@@ -54,7 +54,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
             collapsable
           />
 
-          {status.media_attachments.size > 0 && (
+          {status.media_attachments.length > 0 && (
             <AttachmentThumbs
               media={status.media_attachments.toJS() as unknown as Attachment[]}
               sensitive={status.sensitive}
