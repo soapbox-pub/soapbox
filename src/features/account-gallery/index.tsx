@@ -1,4 +1,3 @@
-import { List as ImmutableList } from 'immutable';
 import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -43,7 +42,7 @@ const AccountGallery = () => {
     isUnavailable,
   } = useAccountLookup(username, { withRelationship: true });
 
-  const attachments: ImmutableList<Attachment> = useAppSelector((state) => account ? getAccountGallery(state, account.id) : ImmutableList());
+  const attachments: Attachment[] = useAppSelector((state) => account ? getAccountGallery(state, account.id) : []);
   const isLoading = useAppSelector((state) => state.timelines.get(`account:${account?.id}:media`)?.isLoading);
   const hasMore = useAppSelector((state) => state.timelines.get(`account:${account?.id}:media`)?.hasMore);
   const next = useAppSelector(state => state.timelines.get(`account:${account?.id}:media`)?.next);
@@ -52,7 +51,7 @@ const AccountGallery = () => {
 
   const handleScrollToBottom = () => {
     if (hasMore) {
-      handleLoadMore(attachments.size > 0 ? attachments.last()!.status.id : undefined);
+      handleLoadMore(attachments.length > 0 ? attachments.at(-1)!.status!.id : null);
     }
   };
 
@@ -100,7 +99,7 @@ const AccountGallery = () => {
 
   let loadOlder = null;
 
-  if (hasMore && !(isLoading && attachments.size === 0)) {
+  if (hasMore && !(isLoading && attachments.length === 0)) {
     loadOlder = <LoadMore className='my-auto' visible={!isLoading} onClick={handleLoadOlder} />;
   }
 
@@ -118,16 +117,16 @@ const AccountGallery = () => {
     <Column label={`@${account.acct}`} transparent withHeader={false}>
       <div role='feed' className='grid grid-cols-2 gap-2 sm:grid-cols-3' ref={node}>
         {attachments.map((attachment, index) => attachment === null ? (
-          <LoadMoreMedia key={'more:' + attachments.get(index + 1)?.id} maxId={index > 0 ? (attachments.get(index - 1)?.id || null) : null} onLoadMore={handleLoadMore} />
+          <LoadMoreMedia key={'more:' + attachments[index + 1].id} maxId={index > 0 ? (attachments[index - 1].id || null) : null} onLoadMore={handleLoadMore} />
         ) : (
           <MediaItem
-            key={`${attachment.status.id}+${attachment.id}`}
+            key={`${attachment.status!.id}+${attachment.id}`}
             attachment={attachment}
             onOpenMedia={handleOpenMedia}
           />
         ))}
 
-        {!isLoading && attachments.size === 0 && (
+        {!isLoading && attachments.length === 0 && (
           <div className='col-span-2 flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300 sm:col-span-3'>
             <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
           </div>
@@ -136,7 +135,7 @@ const AccountGallery = () => {
         {loadOlder}
       </div>
 
-      {isLoading && attachments.size === 0 && (
+      {isLoading && attachments.length === 0 && (
         <div className='relative flex flex-1 p-[30px_15px]'>
           <Spinner />
         </div>
