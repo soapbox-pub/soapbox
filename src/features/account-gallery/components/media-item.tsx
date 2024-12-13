@@ -52,7 +52,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
   };
 
   const status = attachment.status;
-  const title  = status.spoiler_text || attachment.description;
+  const title  = status!.spoiler_text || attachment.description;
 
   let thumbnail: React.ReactNode = '';
   let icon;
@@ -121,7 +121,7 @@ const MediaItem: React.FC<IMediaItem> = ({ attachment, onOpenMedia }) => {
 
   return (
     <div className='col-span-1'>
-      <a className='relative z-[1] block aspect-1 size-full cursor-zoom-in leading-none text-gray-400 no-underline' href={status.url} target='_blank' onClick={handleClick} title={title}>
+      <a className='relative z-[1] block aspect-1 size-full cursor-zoom-in leading-none text-gray-400 no-underline' href={status!.url} target='_blank' onClick={handleClick} title={title}>
         <Blurhash
           hash={attachment.blurhash}
           className={clsx('absolute left-0 top-0 z-0 size-full rounded-lg bg-gray-200 object-cover dark:bg-gray-900', {
