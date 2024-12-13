@@ -24,6 +24,8 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { SearchFilter } from 'soapbox/reducers/search.ts';
+import type { Tag } from 'soapbox/types/entities.ts';
+
 
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
@@ -200,7 +202,7 @@ const SearchResults = () => {
     if (results.hashtags && results.hashtags.size > 0) {
       searchResults = results.hashtags.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
-      searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
+      searchResults = trends.map((hashtag: Tag) => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
         <div className='flex min-h-[160px] flex-1 items-center justify-center rounded-lg bg-primary-50 p-10 text-center text-gray-900 dark:bg-gray-700 dark:text-gray-300'>
