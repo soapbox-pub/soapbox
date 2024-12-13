@@ -1,3 +1,4 @@
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 import { shouldHaveCard } from 'soapbox/utils/status.ts';
@@ -277,7 +278,7 @@ const unmuteStatus = (id: string) =>
     });
   };
 
-const toggleMuteStatus = (status: Status) =>
+const toggleMuteStatus = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (status.muted) {
       dispatch(unmuteStatus(status.id));

@@ -363,7 +363,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(toggleMuteStatus(status));
+    dispatch(toggleMuteStatus(status.toJS() as StatusEntity));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
