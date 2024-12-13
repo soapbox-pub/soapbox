@@ -11,17 +11,18 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 import { addAutoPlay } from 'soapbox/utils/media.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
-import type { Card as CardEntity, Attachment } from 'soapbox/types/entities.ts';
+import type { Card as CardEntity } from 'soapbox/types/entities.ts';
 
 /** Props for `PreviewCard`. */
 interface IPreviewCard {
   card: CardEntity;
   maxTitle?: number;
   maxDescription?: number;
-  onOpenMedia: (attachments: Attachment[], index: number) => void;
+  onOpenMedia: (attachments: readonly Attachment[], index: number) => void;
   compact?: boolean;
   defaultWidth?: number;
   cacheWidth?: (width: number) => void;
@@ -72,9 +73,9 @@ const PreviewCard: React.FC<IPreviewCard> = ({
           height: card.height,
         },
       },
-    });
+    }).toJS();
 
-    onOpenMedia([attachment], 0);
+    onOpenMedia([{ ...attachment, blurhash: attachment.blurhash === undefined ? null : attachment.blurhash } as Attachment], 0);
   };
 
   const handleEmbedClick: React.MouseEventHandler = (e) => {

@@ -8,7 +8,7 @@ import StillImage from 'soapbox/components/still-image.tsx';
 import { MIMETYPE_ICONS } from 'soapbox/components/upload.tsx';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { Attachment } from 'soapbox/types/entities.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 import { truncateFilename } from 'soapbox/utils/media.ts';
 
 import { isIOS } from '../is-mobile.ts';
@@ -44,7 +44,8 @@ const withinLimits = (aspectRatio: number) => {
 };
 
 const shouldLetterbox = (attachment: Attachment): boolean => {
-  const aspectRatio = attachment.meta.original.aspect as number | undefined;
+  const aspectRatio = 'meta' in attachment && 'original' in attachment.meta && (attachment).meta.original?.aspect;
+
   if (!aspectRatio) return true;
 
   return !withinLimits(aspectRatio);
@@ -157,7 +158,7 @@ const Item: React.FC<IItem> = ({
     const attachmentIcon = (
       <SvgIcon
         className={clsx('size-16 text-gray-800 dark:text-gray-200', { 'size-8': compact })}
-        src={MIMETYPE_ICONS[attachment.pleroma.mime_type as string] || paperclipIcon}
+        src={MIMETYPE_ICONS[attachment?.pleroma?.mime_type!] || paperclipIcon}
       />
     );
 
@@ -289,9 +290,9 @@ const Item: React.FC<IItem> = ({
 
 export interface IMediaGallery {
   sensitive?: boolean;
-  media: Attachment[];
+  media: readonly Attachment[];
   height?: number;
-  onOpenMedia: (media: Attachment[], index: number) => void;
+  onOpenMedia: (media: readonly Attachment[], index: number) => void;
   defaultWidth?: number;
   cacheWidth?: (width: number) => void;
   visible?: boolean;
@@ -321,7 +322,7 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
 
   const getSizeDataSingle = (): SizeData => {
     const w = width || defaultWidth;
-    const aspectRatio = media[0].meta.original.aspect as number | undefined;
+    const aspectRatio = 'meta' in media[0] && 'original' in media[0].meta && (media[0])?.meta.original?.aspect;
 
     const getHeight = () => {
       if (!aspectRatio) return w * 9 / 16;
@@ -347,7 +348,9 @@ const MediaGallery: React.FC<IMediaGallery> = (props) => {
     let itemsDimensions: Dimensions[] = [];
 
     const ratios = Array(size).fill(null).map((_, i) =>
-      media[i].meta.original.aspect as number,
+      'meta' in media[i] && 'original' in media[i].meta && typeof media[i].meta.original?.aspect === 'number'
+        ? media[i].meta.original.aspect
+        : undefined as unknown as number, // NOTE: the old logic returned undefined anyways, and the implementation of the functions below call 'isNaN', such as the 'isPortrait' function
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;

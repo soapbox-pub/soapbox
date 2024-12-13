@@ -8,6 +8,7 @@ import StatusMedia from 'soapbox/components/status-media.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
@@ -17,7 +18,7 @@ import StatusContent from './status-content.tsx';
 import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -25,7 +26,7 @@ const messages = defineMessages({
 
 interface IQuotedStatus {
   /** The quoted status entity. */
-  status?: StatusEntity;
+  status?: LegacyStatus;
   /** Callback when cancelled (during compose). */
   onCancel?: Function;
   /** Whether the status is shown in the post composer. */
@@ -138,7 +139,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
               {status.media_attachments.length > 0 && (
                 <StatusMedia
-                  status={status}
+                  status={status.toJS() as StatusEntity}
                   muted={compose}
                   showMedia={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}

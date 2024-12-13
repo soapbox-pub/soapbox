@@ -5,13 +5,12 @@ import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
 import Markup from 'soapbox/components/markup.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
-
-import type { Status } from 'soapbox/types/entities.ts';
 
 interface IReplyIndicator {
   className?: string;
-  status?: Status;
+  status?: StatusEntity;
   onCancel?: () => void;
   hideActions: boolean;
 }
@@ -50,12 +49,12 @@ const ReplyIndicator: React.FC<IReplyIndicator> = ({ className, status, hideActi
         className='break-words'
         size='sm'
         direction={getTextDirection(status.search_index)}
-        emojis={status?.emojis?.toJS() ?? status.emojis} // Use toJS() if status.emojis is immutable; otherwise, fallback to plain status.emojis
-        mentions={status.mentions.toJS()}
+        emojis={status.emojis}
+        mentions={status.mentions}
         html={{ __html: status.content }}
       />
 
-      {status.media_attachments.size > 0 && (
+      {status.media_attachments.length > 0 && (
         <AttachmentThumbs
           media={status.media_attachments}
           sensitive={status.sensitive}

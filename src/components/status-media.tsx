@@ -8,12 +8,11 @@ import { GroupLinkPreview } from 'soapbox/features/groups/components/group-link-
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder-card.tsx';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-
-import type { Status, Attachment } from 'soapbox/types/entities.ts';
+import { Status as StatusEntity, Attachment } from 'soapbox/schemas/index.ts';
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: Status;
+  status: StatusEntity;
   /** Whether to display compact media. */
   muted?: boolean;
   /** Callback when compact media is clicked. */
@@ -51,7 +50,7 @@ const StatusMedia: React.FC<IStatusMedia> = ({
     return <div className='relative mt-2 block cursor-pointer border-0 bg-cover bg-center bg-no-repeat' style={{ height: '285px' }} />;
   };
 
-  const openMedia = (media: Attachment[], index: number) => {
+  const openMedia = (media: readonly Attachment[], index: number) => {
     dispatch(openModal('MEDIA', { media, status, index }));
   };
 
@@ -71,10 +70,10 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         <Suspense fallback={renderLoadingVideoPlayer()}>
           <Video
             preview={video.preview_url}
-            blurhash={video.blurhash}
+            blurhash={video.blurhash ?? undefined}
             src={video.url}
             alt={video.description}
-            aspectRatio={Number(video.meta.getIn(['original', 'aspect']))}
+            aspectRatio={Number(video.meta?.original?.aspect)}
             height={285}
             visible={showMedia}
             inline
@@ -89,11 +88,11 @@ const StatusMedia: React.FC<IStatusMedia> = ({
           <Audio
             src={attachment.url}
             alt={attachment.description}
-            poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.getIn(['account', 'avatar_static']) as string | undefined}
-            backgroundColor={attachment.meta.getIn(['colors', 'background']) as string | undefined}
-            foregroundColor={attachment.meta.getIn(['colors', 'foreground']) as string | undefined}
-            accentColor={attachment.meta.getIn(['colors', 'accent']) as string | undefined}
-            duration={attachment.meta.getIn(['original', 'duration'], 0)  as number | undefined}
+            poster={attachment.preview_url !== attachment.url ? attachment.preview_url : status.account.avatar_static}
+            backgroundColor={attachment.meta?.colors?.background}
+            foregroundColor={attachment.meta?.colors?.foreground}
+            accentColor={attachment.meta?.colors?.accent}
+            duration={attachment.meta?.duration  ?? 0}
             height={263}
           />
         </Suspense>

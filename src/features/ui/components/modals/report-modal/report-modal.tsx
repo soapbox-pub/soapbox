@@ -21,6 +21,7 @@ import AccountContainer from 'soapbox/containers/account-container.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { Attachment } from 'soapbox/schemas/index.ts';
 
 import ConfirmationStep from './steps/confirmation-step.tsx';
 import OtherActionsStep from './steps/other-actions-step.tsx';
@@ -91,7 +92,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
 
       {status.media_attachments.size > 0 && (
         <AttachmentThumbs
-          media={status.media_attachments}
+          media={status.media_attachments.toJS() as unknown as Attachment[]}
           sensitive={status.sensitive}
         />
       )}

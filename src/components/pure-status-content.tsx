@@ -4,7 +4,7 @@ import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
 import { getTextDirection } from 'soapbox/utils/rtl.ts';
 
@@ -28,7 +28,7 @@ const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
 );
 
 interface IPureStatusContent {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   onClick?: () => void;
   collapsable?: boolean;
   translatable?: boolean;

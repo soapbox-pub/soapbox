@@ -5,9 +5,9 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { joinEvent, leaveEvent } from 'soapbox/actions/events.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import Button from 'soapbox/components/ui/button.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
 import type { ButtonThemes } from 'soapbox/components/ui/useButtonStyles.ts';
 
@@ -17,7 +17,7 @@ const messages = defineMessages({
 });
 
 interface IPureEventAction {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
   theme?: ButtonThemes;
 }
 

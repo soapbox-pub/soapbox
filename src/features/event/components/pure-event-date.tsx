@@ -3,11 +3,10 @@ import { FormattedDate } from 'react-intl';
 
 import Icon from 'soapbox/components/icon.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { Entities, EntityTypes } from 'soapbox/entity-store/entities.ts';
-
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
 interface IPureEventDate {
-  status: EntityTypes[Entities.STATUSES];
+  status: StatusEntity;
 }
 
 const PureEventDate: React.FC<IPureEventDate> = ({ status }) => {

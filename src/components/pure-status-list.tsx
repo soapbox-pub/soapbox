@@ -6,11 +6,11 @@ import { FormattedMessage } from 'react-intl';
 import LoadGap from 'soapbox/components/load-gap.tsx';
 import PureStatus from 'soapbox/components/pure-status.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
 import FeedSuggestions from 'soapbox/features/feed-suggestions/feed-suggestions.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
 import type { IScrollableList } from 'soapbox/components/scrollable-list.tsx';
@@ -19,11 +19,11 @@ interface IPureStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children
   /** Unique key to preserve the scroll position when navigating back. */
   scrollKey: string;
   /** List of statuses to display. */
-  statuses: readonly EntityTypes[Entities.STATUSES][];
+  statuses: readonly StatusEntity[];
   /** Last _unfiltered_ status ID (maxId) for pagination. */
   lastStatusId?: string;
   /** Pinned statuses to show at the top of the feed. */
-  featuredStatuses?: readonly EntityTypes[Entities.STATUSES][];
+  featuredStatuses?: readonly StatusEntity[];
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: (lastStatusId: string) => void;
   /** Whether the data is currently being fetched. */
@@ -124,7 +124,7 @@ const PureStatusList: React.FC<IPureStatusList> = ({
     );
   };
 
-  const renderStatus = (status: EntityTypes[Entities.STATUSES]) => {
+  const renderStatus = (status: StatusEntity) => {
     return (
       <PureStatus
         status={status}

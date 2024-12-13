@@ -6,8 +6,9 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ReplyIndicator from 'soapbox/features/compose/components/reply-indicator.tsx';
+import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
@@ -15,8 +16,8 @@ const messages = defineMessages({
 });
 
 interface IBoostModal {
-  status: StatusEntity;
-  onReblog: (status: StatusEntity) => void;
+  status: LegacyStatus;
+  onReblog: (status: LegacyStatus) => void;
   onClose: () => void;
 }
 
@@ -37,7 +38,7 @@ const BoostModal: React.FC<IBoostModal> = ({ status, onReblog, onClose }) => {
       confirmationText={intl.formatMessage(buttonText)}
     >
       <Stack space={4}>
-        <ReplyIndicator status={status} hideActions />
+        <ReplyIndicator status={status.toJS() as StatusEntity} hideActions />
 
         <Text>
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
