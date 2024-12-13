@@ -83,8 +83,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     <AutosuggestInput
       value={value}
       onChange={handleChange}
-      suggestions={accountIds.toList()}
-      onSuggestionsFetchRequested={noOp}
+      suggestions={Array.from(accountIds)}      onSuggestionsFetchRequested={noOp}
       onSuggestionsClearRequested={noOp}
       onSuggestionSelected={handleSelected}
       searchTokens={[]}
