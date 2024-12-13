@@ -14,9 +14,19 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const mapStateToProps = (state: RootState, { composeId }: { composeId: string }) => {
-    const statusId = state.compose.get(composeId)?.in_reply_to!;
-    const editing = !!state.compose.get(composeId)?.id;
-
+    const compose = state.compose[composeId];
+  
+    if (!compose) {
+      console.warn(`composeId '${composeId}' does not exist in state.compose`);
+      return {
+        status: null,
+        hideActions: false,
+      };
+    }
+  
+    const statusId = compose.in_reply_to!;
+    const editing = !!compose.id;
+  
     return {
       status: (getStatus(state, { id: statusId }) as LegacyStatus)?.toJS() as StatusEntity,
       hideActions: editing,
