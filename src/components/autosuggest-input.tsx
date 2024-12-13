@@ -17,7 +17,7 @@ export type AutoSuggestion = string | Emoji;
 
 export interface IAutosuggestInput extends Pick<React.HTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyUp' | 'onKeyDown'> {
   value: string;
-  suggestions: ImmutableList<any>;
+  suggestions: any[];
   disabled?: boolean;
   placeholder?: string;
   onSuggestionSelected: (tokenStart: number, lastToken: string | null, suggestion: AutoSuggestion) => void;
@@ -81,7 +81,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
     const { suggestions, menu, disabled } = this.props;
     const { selectedSuggestion, suggestionsHidden } = this.state;
     const firstIndex = this.getFirstIndex();
-    const lastIndex = suggestions.size + (menu || []).length - 1;
+    const lastIndex = suggestions.length + (menu || []).length - 1;
 
     if (disabled) {
       e.preventDefault();
@@ -96,7 +96,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
 
     switch (e.key) {
       case 'Escape':
-        if (suggestions.size === 0 || suggestionsHidden) {
+        if (suggestions.length === 0 || suggestionsHidden) {
           document.querySelector('.ui')?.parentElement?.focus();
         } else {
           e.preventDefault();
@@ -105,14 +105,14 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
 
         break;
       case 'ArrowDown':
-        if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
+        if (!suggestionsHidden && (suggestions.length > 0 || menu)) {
           e.preventDefault();
           this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, lastIndex) });
         }
 
         break;
       case 'ArrowUp':
-        if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
+        if (!suggestionsHidden && (suggestions.length > 0 || menu)) {
           e.preventDefault();
           this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, firstIndex) });
         }
@@ -121,15 +121,15 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
       case 'Enter':
       case 'Tab':
         // Select suggestion
-        if (!suggestionsHidden && selectedSuggestion > -1 && (suggestions.size > 0 || menu)) {
+        if (!suggestionsHidden && selectedSuggestion > -1 && (suggestions.length > 0 || menu)) {
           e.preventDefault();
           e.stopPropagation();
           this.setState({ selectedSuggestion: firstIndex });
 
-          if (selectedSuggestion < suggestions.size) {
-            this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
+          if (selectedSuggestion < suggestions.length) {
+            this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions[selectedSuggestion]);
           } else if (menu) {
-            const item = menu[selectedSuggestion - suggestions.size];
+            const item = menu[selectedSuggestion - suggestions.length];
             this.handleMenuItemAction(item, e);
           }
         }
@@ -156,7 +156,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
 
   onSuggestionClick: React.EventHandler<React.MouseEvent | React.TouchEvent> = (e) => {
     const index = Number(e.currentTarget?.getAttribute('data-index'));
-    const suggestion = this.props.suggestions.get(index);
+    const suggestion = this.props.suggestions[index];
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.input?.focus();
     e.preventDefault();
@@ -164,7 +164,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
 
   componentDidUpdate(prevProps: IAutosuggestInput, prevState: any) {
     const { suggestions } = this.props;
-    if (suggestions !== prevProps.suggestions && suggestions.size > 0 && prevState.suggestionsHidden && prevState.focused) {
+    if (suggestions !== prevProps.suggestions && suggestions.length > 0 && prevState.suggestionsHidden && prevState.focused) {
       this.setState({ suggestionsHidden: false });
     }
   }
@@ -234,7 +234,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
 
     return menu.map((item, i) => (
       <a // eslint-disable-line jsx-a11y/anchor-is-valid
-        className={clsx('flex cursor-pointer items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 dark:focus:bg-primary-800', { selected: suggestions.size - selectedSuggestion === i })}
+        className={clsx('flex cursor-pointer items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800 dark:focus:bg-primary-800', { selected: suggestions.length - selectedSuggestion === i })}
         href='/'
         role='button'
         tabIndex={0}
@@ -264,7 +264,7 @@ export default class AutosuggestInput extends PureComponent<IAutosuggestInput> {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu, theme } = this.props;
     const { suggestionsHidden } = this.state;
 
-    const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
+    const visible = !suggestionsHidden && (suggestions.length > 0 || (menu && value));
 
     return [
       <div key='input' className='relative w-full'>
