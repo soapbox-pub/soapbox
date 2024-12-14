@@ -95,11 +95,17 @@ const messages = defineMessages({
   view: { id: 'toast.view', defaultMessage: 'View' },
 });
 
-const reblog = (status: StatusEntity) =>
+type ReblogEffects = {
+  reblogEffect: (statusId: string) => void;
+  unreblogEffect: (statusId: string) => void;
+}
+
+const reblog = (status: StatusEntity, effects?: ReblogEffects) =>
   function(dispatch: AppDispatch, getState: () => RootState) {
     if (!isLoggedIn(getState)) return;
 
     dispatch(reblogRequest(status));
+    effects?.reblogEffect(status.id);
 
     api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then(function(response) {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
@@ -108,28 +114,31 @@ const reblog = (status: StatusEntity) =>
       dispatch(reblogSuccess(status));
     }).catch(error => {
       dispatch(reblogFail(status, error));
+      effects?.unreblogEffect(status.id);
     });
   };
 
-const unreblog = (status: StatusEntity) =>
+const unreblog = (status: StatusEntity, effects?: ReblogEffects) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch(unreblogRequest(status));
+    effects?.unreblogEffect(status.id);
 
     api(getState).post(`/api/v1/statuses/${status.id}/unreblog`).then(() => {
       dispatch(unreblogSuccess(status));
     }).catch(error => {
       dispatch(unreblogFail(status, error));
+      effects?.reblogEffect(status.id);
     });
   };
 
-const toggleReblog = (status: StatusEntity) =>
+const toggleReblog = (status: StatusEntity, effects?: ReblogEffects) =>
   (dispatch: AppDispatch) => {
     if (status.reblogged) {
-      dispatch(unreblog(status));
+      dispatch(unreblog(status, effects));
     } else {
-      dispatch(reblog(status));
+      dispatch(reblog(status, effects));
     }
   };
 
