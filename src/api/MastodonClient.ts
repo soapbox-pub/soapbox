@@ -93,13 +93,9 @@ export class MastodonClient {
       body,
     });
 
-    const fetchPromise = this.fetch(request);
-
-    if (opts.onUploadProgress) {
-      MastodonClient.fakeProgress(fetchPromise, opts.onUploadProgress);
-    }
-
-    const response = MastodonResponse.fromResponse(await fetchPromise);
+    const response = opts.onUploadProgress
+      ? await this.xhr(request, opts)
+      : MastodonResponse.fromResponse(await this.fetch(request));
 
     if (!response.ok) {
       throw new HTTPError(response, request);
@@ -109,34 +105,65 @@ export class MastodonClient {
   }
 
   /**
-   * `fetch` does not natively support upload progress. Implement a fake progress callback instead.
-   * TODO: Replace this with: https://stackoverflow.com/a/69400632
+   * Perform an XHR request from the native `Request` object and get back a `MastodonResponse`.
+   * This is needed because unfortunately `fetch` does not support upload progress.
    */
-  private static async fakeProgress(promise: Promise<unknown>, cb: (e: ProgressEvent) => void) {
-    const controller = new AbortController();
+  private async xhr(request: Request, opts: Opts = {}): Promise<MastodonResponse> {
+    const xhr = new XMLHttpRequest();
+    const { resolve, reject, promise } = Promise.withResolvers<MastodonResponse>();
 
-    let loaded = 0;
-    const total = 100;
+    xhr.responseType = 'arraybuffer';
 
-    cb(new ProgressEvent('loadstart', { lengthComputable: true, loaded, total }));
+    xhr.onreadystatechange = () => {
+      if (xhr.readyState !== XMLHttpRequest.DONE) {
+        return;
+      }
 
-    promise.then(() => {
-      loaded = 100;
-      controller.abort();
-      cb(new ProgressEvent('loadend', { lengthComputable: true, loaded, total }));
-      cb(new ProgressEvent('load', { lengthComputable: true, loaded, total }));
-    }).catch(() => {
-      loaded = 0;
-      controller.abort();
-      cb(new ProgressEvent('loadend', { lengthComputable: true, loaded, total }));
-      cb(new ProgressEvent('error', { lengthComputable: true, loaded, total }));
-    });
+      const headers = new Headers(
+        xhr.getAllResponseHeaders()
+          .trim()
+          .split(/[\r\n]+/)
+          .map((line): [string, string] => {
+            const [name, ...rest] = line.split(': ');
+            const value = rest.join(': ');
+            return [name, value];
+          }),
+      );
 
-    while (!controller.signal.aborted && loaded < 90) {
-      await new Promise(resolve => setTimeout(resolve, 10));
-      loaded += 10;
-      cb(new ProgressEvent('progress', { lengthComputable: true, loaded, total }));
+      const response = new MastodonResponse(xhr.response, {
+        status: xhr.status,
+        statusText: xhr.statusText,
+        headers,
+      });
+
+      resolve(response);
+    };
+
+    xhr.onerror = () => {
+      reject(new TypeError('Network request failed'));
+    };
+
+    xhr.onabort = () => {
+      reject(new DOMException('The request was aborted', 'AbortError'));
+    };
+
+    if (opts.onUploadProgress) {
+      xhr.upload.onprogress = opts.onUploadProgress;
     }
+
+    if (opts.signal) {
+      opts.signal.addEventListener('abort', () => xhr.abort(), { once: true });
+    }
+
+    xhr.open(request.method, request.url, true);
+
+    for (const [name, value] of request.headers) {
+      xhr.setRequestHeader(name, value);
+    }
+
+    xhr.send(await request.arrayBuffer());
+
+    return promise;
   }
 
 }
