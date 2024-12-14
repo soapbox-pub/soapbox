@@ -75,7 +75,8 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     if (!instance.isLoading && !nostrLoading) {
       dispatch(loadInitial()).then(() => {
         setIsLoaded(true);
-      }).catch(() => {
+      }).catch((error) => {
+        console.error(error);
         setIsLoaded(true);
       });
     }

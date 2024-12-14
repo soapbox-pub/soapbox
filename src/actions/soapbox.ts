@@ -33,7 +33,7 @@ const fetchFrontendConfigurations = () =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState)
       .get('/api/pleroma/frontend_configurations')
-      .then((response) => response.json()).then((data) => data);
+      .then((response) => response.json());
 
 /** Conditionally fetches Soapbox config depending on backend features */
 const fetchSoapboxConfig = (host: string | null = null) =>
@@ -41,7 +41,7 @@ const fetchSoapboxConfig = (host: string | null = null) =>
     const features = getFeatures(getState().instance);
 
     if (features.frontendConfigurations) {
-      return dispatch(fetchFrontendConfigurations()).then(data => {
+      return dispatch(fetchFrontendConfigurations()).then((data) => {
         if (data.soapbox_fe) {
           dispatch(importSoapboxConfig(data.soapbox_fe, host));
           return data.soapbox_fe;

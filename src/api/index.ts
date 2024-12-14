@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { MastodonClient } from 'soapbox/api/MastodonClient.ts';
+import * as BuildConfig from 'soapbox/build-config.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { RootState } from 'soapbox/store.ts';
 import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth.ts';
@@ -13,14 +14,13 @@ const getAuthBaseURL = createSelector([
   (state: RootState, me: string | false | null) => me ? selectAccount(state, me)?.url : undefined,
   (state: RootState, _me: string | false | null) => state.auth.me,
 ], (accountUrl, authUserUrl) => {
-  const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);
-  return baseURL !== window.location.origin ? baseURL : '';
+  return parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);
 });
 
 /** Base client for HTTP requests. */
 export const baseClient = (
   accessToken?: string | null,
-  baseURL: string = '',
+  baseURL: string = location.origin,
 ): MastodonClient => {
   return new MastodonClient(baseURL, accessToken || undefined);
 };
@@ -33,7 +33,7 @@ export default (getState: () => RootState, authType: string = 'user'): MastodonC
   const state = getState();
   const accessToken = getToken(state, authType);
   const me = state.me;
-  const baseURL = me ? getAuthBaseURL(state, me) : '';
+  const baseURL = BuildConfig.BACKEND_URL ?? (me ? getAuthBaseURL(state, me) : location.origin);
 
   return baseClient(accessToken, baseURL);
 };
