@@ -36,7 +36,7 @@ import { blockAccount } from 'soapbox/actions/accounts.ts';
 import { launchChat } from 'soapbox/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose.ts';
 import { editEvent } from 'soapbox/actions/events.ts';
-import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from 'soapbox/actions/interactions.ts';
+import { pinToGroup, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
@@ -44,7 +44,7 @@ import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses.ts';
 import { deleteFromTimelines } from 'soapbox/actions/timelines.ts';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus.ts';
-import { useBlockGroupMember, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
+import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
 import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
@@ -73,6 +73,8 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
+  bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
@@ -138,6 +140,7 @@ const messages = defineMessages({
   unmuteSuccess: { id: 'group.unmute.success', defaultMessage: 'Unmuted the group' },
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
   unpinFromGroup: { id: 'status.unpin_to_group', defaultMessage: 'Unpin from Group' },
+  view: { id: 'toast.view', defaultMessage: 'View' },
   zap: { id: 'status.zap', defaultMessage: 'Zap' },
 });
 
@@ -176,6 +179,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const isAdmin = account ? account.admin : false;
 
   const { toggleReblog } = useReblog();
+  const { bookmark, unbookmark } = useBookmark();
 
   if (!status) {
     return null;
@@ -230,7 +234,21 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(toggleBookmark(status));
+    if (status.bookmarked) {
+      unbookmark(status.id).then(({ success }) => {
+        if (success) {
+          toast.success(messages.bookmarkRemoved);
+        }
+      }).catch(null);
+    } else {
+      bookmark(status.id).then(({ success }) => {
+        if (success) {
+          toast.success(messages.bookmarkAdded, {
+            actionLink: '/bookmarks/all', actionLabel: messages.view,
+          });
+        }
+      }).catch(null);
+    }
   };
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
