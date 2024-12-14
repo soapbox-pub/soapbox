@@ -20,9 +20,9 @@ const getAuthBaseURL = createSelector([
 /** Base client for HTTP requests. */
 export const baseClient = (
   accessToken?: string | null,
-  baseURL: string = location.origin,
+  baseURL?: string,
 ): MastodonClient => {
-  return new MastodonClient(baseURL, accessToken || undefined);
+  return new MastodonClient(baseURL || location.origin, accessToken || undefined);
 };
 
 /**
@@ -33,7 +33,7 @@ export default (getState: () => RootState, authType: string = 'user'): MastodonC
   const state = getState();
   const accessToken = getToken(state, authType);
   const me = state.me;
-  const baseURL = BuildConfig.BACKEND_URL ?? (me ? getAuthBaseURL(state, me) : location.origin);
+  const baseURL = BuildConfig.BACKEND_URL || (me ? getAuthBaseURL(state, me) : undefined) || location.origin;
 
   return baseClient(accessToken, baseURL);
 };
