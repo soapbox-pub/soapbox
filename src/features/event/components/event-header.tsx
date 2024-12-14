@@ -29,7 +29,7 @@ import { blockAccount } from 'soapbox/actions/accounts.ts';
 import { launchChat } from 'soapbox/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose.ts';
 import { editEvent, fetchEventIcs } from 'soapbox/actions/events.ts';
-import { toggleBookmark, togglePin, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { toggleBookmark, togglePin } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
@@ -47,6 +47,7 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import copy from 'soapbox/utils/copy.ts';
 import { download } from 'soapbox/utils/download.ts';
@@ -58,7 +59,7 @@ import EventActionButton from '../components/event-action-button.tsx';
 import EventDate from '../components/event-date.tsx';
 
 import type { Menu as MenuType } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -92,7 +93,7 @@ const messages = defineMessages({
 });
 
 interface IEventHeader {
-  status?: StatusEntity;
+  status?: LegacyStatus;
 }
 
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {
@@ -105,6 +106,8 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
+
+  const { toggleReblog } = useReblog();
 
   if (!status || !status.event) {
     return (
@@ -148,11 +151,11 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const handleReblogClick = () => {
-    const modalReblog = () => dispatch(toggleReblog(status));
+    const modalReblog = () => toggleReblog(status.id);
     if (!boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: status.toJS(), onReblog: modalReblog }));
     }
   };
 

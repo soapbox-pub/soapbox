@@ -17,7 +17,7 @@ import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, F
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from 'soapbox/actions/compose.ts';
-import { reblog, favourite, unreblog, unfavourite } from 'soapbox/actions/interactions.ts';
+import { favourite, unreblog, unfavourite } from 'soapbox/actions/interactions.ts';
 import { patchMe } from 'soapbox/actions/me.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { getSettings } from 'soapbox/actions/settings.ts';
@@ -35,13 +35,14 @@ import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { makeGetNotification } from 'soapbox/selectors/index.ts';
 import toast from 'soapbox/toast.tsx';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { NotificationType, validType } from 'soapbox/utils/notification.ts';
 
 import type { ScrollPosition } from 'soapbox/components/status.tsx';
-import type { Account as AccountEntity, Status as StatusEntity, Notification as NotificationEntity } from 'soapbox/types/entities.ts';
+import type { Account as AccountEntity, Status as StatusLegacy, Notification as NotificationEntity } from 'soapbox/types/entities.ts';
 
 const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
   const output = [message];
@@ -204,7 +205,7 @@ interface INotification {
   notification: NotificationEntity;
   onMoveUp?: (notificationId: string) => void;
   onMoveDown?: (notificationId: string) => void;
-  onReblog?: (status: StatusEntity, e?: KeyboardEvent) => void;
+  onReblog?: (status: StatusLegacy, e?: KeyboardEvent) => void;
   getScrollPosition?: () => ScrollPosition | undefined;
   updateScrollBottom?: (bottom: number) => void;
 }
@@ -221,6 +222,7 @@ const Notification: React.FC<INotification> = (props) => {
   const history = useHistory();
   const intl = useIntl();
   const { instance } = useInstance();
+  const { reblog } = useReblog();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -277,10 +279,10 @@ const Notification: React.FC<INotification> = (props) => {
           dispatch(unreblog(status));
         } else {
           if (e?.shiftKey || !boostModal) {
-            dispatch(reblog(status));
+            reblog(status.id);
           } else {
-            dispatch(openModal('BOOST', { status, onReblog: (status: StatusEntity) => {
-              dispatch(reblog(status));
+            dispatch(openModal('BOOST', { status: status.toJS(), onReblog: (status: StatusLegacy) => {
+              reblog(status.id);
             } }));
           }
         }

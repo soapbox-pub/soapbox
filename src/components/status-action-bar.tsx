@@ -36,7 +36,7 @@ import { blockAccount } from 'soapbox/actions/accounts.ts';
 import { launchChat } from 'soapbox/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose.ts';
 import { editEvent } from 'soapbox/actions/events.ts';
-import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup } from 'soapbox/actions/interactions.ts';
+import { pinToGroup, toggleBookmark, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
@@ -53,6 +53,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
@@ -174,6 +175,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 
+  const { toggleReblog } = useReblog();
+
   if (!status) {
     return null;
   }
@@ -232,11 +235,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
-      const modalReblog = () => dispatch(toggleReblog(status));
+      const modalReblog = () => toggleReblog(status.id);
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
-        dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
+        dispatch(openModal('BOOST', { status: status.toJS(), onReblog: modalReblog }));
       }
     } else {
       onOpenUnauthorizedModal('REBLOG');

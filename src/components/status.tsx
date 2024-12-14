@@ -7,7 +7,7 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { toggleFavourite, toggleReblog } from 'soapbox/actions/interactions.ts';
+import { toggleFavourite } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
 import TranslateButton from 'soapbox/components/translate-button.tsx';
@@ -19,6 +19,7 @@ import AccountContainer from 'soapbox/containers/account-container.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
@@ -103,6 +104,8 @@ const Status: React.FC<IStatus> = (props) => {
 
   const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
 
+  const { toggleReblog } = useReblog();
+
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
     didShowCard.current = Boolean(!muted && !hidden && status?.card);
@@ -166,11 +169,11 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    const modalReblog = () => dispatch(toggleReblog(actualStatus));
+    const modalReblog = () => toggleReblog(actualStatus.id);
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: actualStatus.toJS(), onReblog: modalReblog }));
     }
   };
 

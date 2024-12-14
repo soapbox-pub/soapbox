@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { type VirtuosoHandle } from 'react-virtuoso';
 
 import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { favourite, reblog, unfavourite, unreblog } from 'soapbox/actions/interactions.ts';
+import { favourite, unfavourite, unreblog } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { getSettings } from 'soapbox/actions/settings.ts';
 import { hideStatus, revealStatus } from 'soapbox/actions/statuses.ts';
@@ -20,6 +20,7 @@ import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import PendingStatus from 'soapbox/features/ui/components/pending-status.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { RootState } from 'soapbox/store.ts';
 import { type Account, type Status } from 'soapbox/types/entities.ts';
@@ -100,6 +101,8 @@ const Thread = (props: IThread) => {
 
   const isUnderReview = status?.visibility === 'self';
 
+  const { reblog } = useReblog();
+
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {
     let ancestorsIds = ImmutableOrderedSet<string>();
     let descendantsIds = ImmutableOrderedSet<string>();
@@ -149,7 +152,7 @@ const Thread = (props: IThread) => {
 
   const handleReplyClick = (status: Status) => dispatch(replyCompose(status));
 
-  const handleModalReblog = (status: Status) => dispatch(reblog(status));
+  const handleModalReblog = (status: Status) => reblog(status.id);
 
   const handleReblogClick = (status: Status, e?: React.MouseEvent) => {
     dispatch((_, getState) => {
@@ -160,7 +163,7 @@ const Thread = (props: IThread) => {
         if ((e && e.shiftKey) || !boostModal) {
           handleModalReblog(status);
         } else {
-          dispatch(openModal('BOOST', { status, onReblog: handleModalReblog }));
+          dispatch(openModal('BOOST', { status: status.toJS(), onReblog: handleModalReblog }));
         }
       }
     });
