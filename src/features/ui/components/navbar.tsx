@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, Redirect } from 'react-router-dom';
 
-import { logIn, verifyCredentials } from 'soapbox/actions/auth.ts';
+import { logIn, MfaRequiredError, verifyCredentials } from 'soapbox/actions/auth.ts';
 import { fetchInstance } from 'soapbox/actions/instance.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { openSidebar } from 'soapbox/actions/sidebar.ts';
@@ -28,8 +28,6 @@ import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications
 
 import ProfileDropdown from './profile-dropdown.tsx';
 
-import type { AxiosError } from 'axios';
-
 const messages = defineMessages({
   login: { id: 'navbar.login.action', defaultMessage: 'Log in' },
   username: { id: 'navbar.login.username.placeholder', defaultMessage: 'Email or username' },
@@ -52,7 +50,7 @@ const Navbar = () => {
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [mfaToken, setMfaToken] = useState<boolean>(false);
+  const [mfaToken, setMfaToken] = useState<string>();
 
   const onOpenSidebar = () => dispatch(openSidebar());
 
@@ -74,17 +72,18 @@ const Navbar = () => {
             .then(() => dispatch(fetchInstance()))
         );
       })
-      .catch((error: AxiosError) => {
+      .catch((error: unknown) => {
         setLoading(false);
 
-        const data: any = error.response?.data;
-        if (data?.error === 'mfa_required') {
-          setMfaToken(data.mfa_token);
+        if (error instanceof MfaRequiredError) {
+          setMfaToken(error.token);
         }
       });
   };
 
-  if (mfaToken) return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
+  if (mfaToken) {
+    return <Redirect to={`/login?token=${encodeURIComponent(mfaToken)}`} />;
+  }
 
   return (
     <nav

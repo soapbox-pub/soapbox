@@ -1,11 +1,11 @@
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
@@ -49,9 +49,10 @@ const ChatSearch = (props: IChatSearch) => {
 
   const handleClickOnSearchResult = useMutation({
     mutationFn: (accountId: string) => getOrCreateChatByAccountId(accountId),
-    onError: (error: AxiosError) => {
-      const data = error.response?.data as any;
-      toast.error(data?.error);
+    onError: (error) => {
+      if (error instanceof HTTPError) {
+        toast.showAlertForError(error);
+      }
     },
     onSuccess: async (response) => {
       const data = await response.json();

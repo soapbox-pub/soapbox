@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import FormGroup from 'soapbox/components/ui/form-group.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
@@ -12,8 +13,6 @@ import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import toast from 'soapbox/toast.tsx';
-
-import type { AxiosError } from 'axios';
 
 const closeIcon = xIcon;
 
@@ -56,11 +55,14 @@ const DisplayNameStep: React.FC<IDisplayNameStep> = ({ onClose, onNext }) => {
       .then(() => {
         setSubmitting(false);
         onNext();
-      }).catch((error: AxiosError) => {
+      }).catch(async (error) => {
         setSubmitting(false);
 
-        if (error.response?.status === 422) {
-          setErrors([(error.response.data as any).error.replace('Validation failed: ', '')]);
+        if (error instanceof HTTPError && error.response?.status === 422) {
+          const data = await error.response.error();
+          if (data) {
+            setErrors([data.error]);
+          }
         } else {
           toast.error(messages.error);
         }

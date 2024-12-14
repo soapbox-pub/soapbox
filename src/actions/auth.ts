@@ -14,6 +14,7 @@ import { createApp } from 'soapbox/actions/apps.ts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me.ts';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth.ts';
 import { startOnboarding } from 'soapbox/actions/onboarding.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { custom } from 'soapbox/custom.ts';
 import { queryClient } from 'soapbox/queries/client.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
@@ -28,7 +29,6 @@ import api, { baseClient } from '../api/index.ts';
 
 import { importFetchedAccount } from './importer/index.ts';
 
-import type { AxiosError } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -132,7 +132,7 @@ export const otpVerify = (code: string, mfa_token: string) =>
       challenge_type: 'totp',
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
       scope: getScopes(getState()),
-    }).then(({ data: token }) => dispatch(authLoggedIn(token)));
+    }).then((response) => response.json()).then((token) => dispatch(authLoggedIn(token)));
   };
 
 export const verifyCredentials = (token: string, accountUrl?: string) => {
@@ -141,7 +141,7 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST, token });
 
-    return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
+    return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then((response) => response.json()).then((account) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       if (account.id === getState().me) dispatch(fetchMeSuccess(account));
@@ -149,7 +149,7 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
     }).catch(error => {
       if (error?.response?.status === 403 && error?.response?.data?.id) {
         // The user is waitlisted
-        const account = error.response.data;
+        const account = error.data;
         dispatch(importFetchedAccount(account));
         dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
         if (account.id === getState().me) dispatch(fetchMeSuccess(account));
@@ -163,18 +163,31 @@ export const verifyCredentials = (token: string, accountUrl?: string) => {
   };
 };
 
+export class MfaRequiredError extends Error {
+
+  constructor(public token: string) {
+    super('MFA is required');
+  }
+
+}
+
 export const logIn = (username: string, password: string) =>
   (dispatch: AppDispatch) => dispatch(getAuthApp()).then(() => {
     return dispatch(createUserToken(normalizeUsername(username), password));
-  }).catch((error: AxiosError) => {
-    if ((error.response?.data as any)?.error === 'mfa_required') {
-      // If MFA is required, throw the error and handle it in the component.
-      throw error;
-    } else if ((error.response?.data as any)?.identifier === 'awaiting_approval') {
-      toast.error(messages.awaitingApproval);
-    } else {
-      // Return "wrong password" message.
-      toast.error(messages.invalidCredentials);
+  }).catch(async (error) => {
+    if (error instanceof HTTPError) {
+      const data = await error.response.error();
+      if (data) {
+        if (data.error === 'mfa_required' && 'mfa_token' in data && typeof data.mfa_token === 'string') {
+          // If MFA is required, throw the error and handle it in the component.
+          throw new MfaRequiredError(data.mfa_token);
+        } else if (data.error === 'awaiting_approval') {
+          toast.error(messages.awaitingApproval);
+        } else {
+          // Return "wrong password" message.
+          toast.error(messages.invalidCredentials);
+        }
+      }
     }
     throw error;
   });

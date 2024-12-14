@@ -2,7 +2,8 @@ import { HTTPError } from './HTTPError.ts';
 import { MastodonResponse } from './MastodonResponse.ts';
 
 interface Opts {
-  searchParams?: URLSearchParams | Record<string, string | number | boolean>;
+  searchParams?: URLSearchParams | Record<string, string | number | boolean | string[] | number[] | boolean[] | null | undefined>;
+  onUploadProgress?: (e: ProgressEvent) => void;
   headers?: Record<string, string>;
   signal?: AbortSignal;
 }
@@ -56,7 +57,16 @@ export class MastodonClient {
         ? opts.searchParams
         : Object
           .entries(opts.searchParams)
-          .map(([key, value]) => ([key, String(value)]));
+          .reduce<[string, string][]>((acc, [key, value]) => {
+            if (Array.isArray(value)) {
+              for (const v of value) {
+                acc.push([`${key}[]`, String(v)]);
+              }
+            } else if (value !== undefined && value !== null) {
+              acc.push([key, String(value)]);
+            }
+            return acc;
+          }, []);
 
       url.search = new URLSearchParams(params).toString();
     }
@@ -70,7 +80,6 @@ export class MastodonClient {
     let body: BodyInit | undefined;
 
     if (data instanceof FormData) {
-      headers.set('Content-Type', 'multipart/form-data');
       body = data;
     } else if (data !== undefined) {
       headers.set('Content-Type', 'application/json');
@@ -84,19 +93,50 @@ export class MastodonClient {
       body,
     });
 
-    const response = await this.fetch(request);
+    const fetchPromise = this.fetch(request);
+
+    if (opts.onUploadProgress) {
+      MastodonClient.fakeProgress(fetchPromise, opts.onUploadProgress);
+    }
+
+    const response = MastodonResponse.fromResponse(await fetchPromise);
 
     if (!response.ok) {
       throw new HTTPError(response, request);
     }
 
-    // Fix for non-compliant browsers.
-    // https://developer.mozilla.org/en-US/docs/Web/API/Response/body
-    if (response.status === 204 || request.method === 'HEAD') {
-      return new MastodonResponse(null, response);
-    }
+    return response;
+  }
 
-    return new MastodonResponse(response.body, response);
+  /**
+   * `fetch` does not natively support upload progress. Implement a fake progress callback instead.
+   * TODO: Replace this with: https://stackoverflow.com/a/69400632
+   */
+  private static async fakeProgress(promise: Promise<unknown>, cb: (e: ProgressEvent) => void) {
+    const controller = new AbortController();
+
+    let loaded = 0;
+    const total = 100;
+
+    cb(new ProgressEvent('loadstart', { lengthComputable: true, loaded, total }));
+
+    promise.then(() => {
+      loaded = 100;
+      controller.abort();
+      cb(new ProgressEvent('loadend', { lengthComputable: true, loaded, total }));
+      cb(new ProgressEvent('load', { lengthComputable: true, loaded, total }));
+    }).catch(() => {
+      loaded = 0;
+      controller.abort();
+      cb(new ProgressEvent('loadend', { lengthComputable: true, loaded, total }));
+      cb(new ProgressEvent('error', { lengthComputable: true, loaded, total }));
+    });
+
+    while (!controller.signal.aborted && loaded < 90) {
+      await new Promise(resolve => setTimeout(resolve, 10));
+      loaded += 10;
+      cb(new ProgressEvent('progress', { lengthComputable: true, loaded, total }));
+    }
   }
 
 }

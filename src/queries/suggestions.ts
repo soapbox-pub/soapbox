@@ -33,7 +33,7 @@ const useSuggestions = () => {
   const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
     const endpoint = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get(endpoint);
-    const { next } = response.pagination();
+    const next = response.next();
     const hasMore = !!next;
 
     const data: Suggestion[] = await response.json();
@@ -44,7 +44,7 @@ const useSuggestions = () => {
 
     return {
       result: data.map(x => ({ ...x, account: x.account.id })),
-      link: next,
+      link: next ?? undefined,
       hasMore,
     };
   };
@@ -92,7 +92,7 @@ function useOnboardingSuggestions() {
   const getV2Suggestions = async (pageParam: any): Promise<{ data: Suggestion[]; link: string | undefined; hasMore: boolean }> => {
     const link = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get(link);
-    const { next } = response.pagination();
+    const next = response.next();
     const hasMore = !!next;
 
     const data: Suggestion[] = await response.json();
@@ -103,7 +103,7 @@ function useOnboardingSuggestions() {
 
     return {
       data: data,
-      link: next,
+      link: next ?? undefined,
       hasMore,
     };
   };

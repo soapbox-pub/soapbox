@@ -3,9 +3,8 @@ import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } fr
 import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
 import { filterBadges, getTagDiff } from 'soapbox/utils/badges.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
-import type { AxiosResponse } from 'axios';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { APIEntity } from 'soapbox/types/entities.ts';
 
@@ -74,7 +73,7 @@ const fetchConfig = () =>
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
     return api(getState)
       .get('/api/v1/pleroma/admin/config')
-      .then(({ data }) => {
+      .then((response) => response.json()).then((data) => {
         dispatch({ type: ADMIN_CONFIG_FETCH_SUCCESS, configs: data.configs, needsReboot: data.need_reboot });
       }).catch(error => {
         dispatch({ type: ADMIN_CONFIG_FETCH_FAIL, error });
@@ -86,7 +85,7 @@ const updateConfig = (configs: Record<string, any>[]) =>
     dispatch({ type: ADMIN_CONFIG_UPDATE_REQUEST, configs });
     return api(getState)
       .post('/api/v1/pleroma/admin/config', { configs })
-      .then(({ data }) => {
+      .then((response) => response.json()).then((data) => {
         dispatch({ type: ADMIN_CONFIG_UPDATE_SUCCESS, configs: data.configs, needsReboot: data.need_reboot });
       }).catch(error => {
         dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error, configs });
@@ -111,7 +110,8 @@ function fetchReports(params: Record<string, any> = {}) {
     dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
 
     try {
-      const { data: reports } = await api(getState).get('/api/v1/admin/reports', { params });
+      const response = await api(getState).get('/api/v1/admin/reports', { searchParams: params });
+      const reports  = await response.json();
       reports.forEach((report: APIEntity) => {
         dispatch(importFetchedAccount(report.account?.account));
         dispatch(importFetchedAccount(report.target_account?.account));
@@ -158,8 +158,9 @@ function fetchUsers(filters: Record<string, boolean>, page = 1, query?: string |
     };
 
     try {
-      const { data: accounts, ...response } = await api(getState).get(url || '/api/v1/admin/accounts', { params });
-      const next = getLinks(response as AxiosResponse<any, any>).refs.find(link => link.rel === 'next')?.uri;
+      const response = await api(getState).get(url || '/api/v1/admin/accounts', { searchParams: params });
+      const accounts = await response.json();
+      const next = response.next();
 
       dispatch(importFetchedAccounts(accounts.map(({ account }: APIEntity) => account)));
       dispatch(fetchRelationships(accounts.map((account_1: APIEntity) => account_1.id)));
@@ -206,8 +207,9 @@ const deleteUser = (accountId: string) =>
     const nicknames = accountIdsToAccts(getState(), [accountId]);
     dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountId });
     return api(getState)
-      .delete('/api/v1/pleroma/admin/users', { data: { nicknames } })
-      .then(({ data: nicknames }) => {
+      .request('DELETE', '/api/v1/pleroma/admin/users', { nicknames })
+      .then((response) => response.json())
+      .then(({ nicknames }) => {
         dispatch({ type: ADMIN_USERS_DELETE_SUCCESS, nicknames, accountId });
       }).catch(error => {
         dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, accountId });
@@ -218,8 +220,9 @@ function approveUser(accountId: string) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountId });
     try {
-      const { data: user } = await api(getState)
-        .post(`/api/v1/admin/accounts/${accountId}/approve`);
+      const { user } = await api(getState)
+        .post(`/api/v1/admin/accounts/${accountId}/approve`)
+        .then((response) => response.json());
       dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, user, accountId });
     } catch (error) {
       dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountId });
@@ -231,8 +234,9 @@ function rejectUser(accountId: string) {
   return async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: ADMIN_USERS_REJECT_REQUEST, accountId });
     try {
-      const { data: user } = await api(getState)
-        .post(`/api/v1/admin/accounts/${accountId}/reject`);
+      const { user } = await api(getState)
+        .post(`/api/v1/admin/accounts/${accountId}/reject`)
+        .then((response) => response.json());
       dispatch({ type: ADMIN_USERS_REJECT_SUCCESS, user, accountId });
     } catch (error) {
       dispatch({ type: ADMIN_USERS_REJECT_FAIL, error, accountId });
@@ -288,7 +292,7 @@ const untagUsers = (accountIds: string[], tags: string[]) =>
 
     dispatch({ type: ADMIN_USERS_UNTAG_REQUEST, accountIds, tags });
     return api(getState)
-      .delete('/api/v1/pleroma/admin/users/tag', { data: { nicknames, tags } })
+      .request('DELETE', '/api/v1/pleroma/admin/users/tag', { nicknames, tags })
       .then(() => {
         dispatch({ type: ADMIN_USERS_UNTAG_SUCCESS, accountIds, tags });
       }).catch(error => {
@@ -320,7 +324,7 @@ const addPermission = (accountIds: string[], permissionGroup: string) =>
     dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
       .post(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { nicknames })
-      .then(({ data }) => {
+      .then((response) => response.json()).then((data) => {
         dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_SUCCESS, accountIds, permissionGroup, data });
       }).catch(error => {
         dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });
@@ -332,8 +336,8 @@ const removePermission = (accountIds: string[], permissionGroup: string) =>
     const nicknames = accountIdsToAccts(getState(), accountIds);
     dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
-      .delete(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { data: { nicknames } })
-      .then(({ data }) => {
+      .request('DELETE', `/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { nicknames })
+      .then((response) => response.json()).then((data) => {
         dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS, accountIds, permissionGroup, data });
       }).catch(error => {
         dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });

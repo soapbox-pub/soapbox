@@ -3,7 +3,7 @@ import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { getSettings, changeSetting } from 'soapbox/actions/settings.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { History } from 'soapbox/types/history.ts';
@@ -38,22 +38,19 @@ const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
 
 const fetchChatsV1 = () =>
   (dispatch: AppDispatch, getState: () => RootState) =>
-    api(getState).get('/api/v1/pleroma/chats').then((response) => {
-      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data });
+    api(getState).get('/api/v1/pleroma/chats').then((response) => response.json()).then((data) => {
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
 
 const fetchChatsV2 = () =>
   (dispatch: AppDispatch, getState: () => RootState) =>
-    api(getState).get('/api/v2/pleroma/chats').then((response) => {
-      let next: { uri: string } | undefined = getLinks(response).refs.find(link => link.rel === 'next');
+    api(getState).get('/api/v2/pleroma/chats').then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      if (!next && response.data.length) {
-        next = { uri: `/api/v2/pleroma/chats?max_id=${response.data[response.data.length - 1].id}&offset=0` };
-      }
-
-      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data, next: next ? next.uri : null });
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data, next });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
@@ -81,10 +78,11 @@ const expandChats = () =>
     }
 
     dispatch({ type: CHATS_EXPAND_REQUEST });
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch({ type: CHATS_EXPAND_SUCCESS, chats: response.data, next: next ? next.uri : null });
+      dispatch({ type: CHATS_EXPAND_SUCCESS, chats: data, next });
     }).catch(error => {
       dispatch({ type: CHATS_EXPAND_FAIL, error });
     });
@@ -93,7 +91,8 @@ const expandChats = () =>
 const fetchChatMessages = (chatId: string, maxId: string | null = null) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId, maxId });
-    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`, { params: { max_id: maxId } }).then(({ data }) => {
+    const searchParams = maxId ? { max_id: maxId } : undefined;
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`, { searchParams }).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, maxId, chatMessages: data });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, maxId, error });
@@ -105,7 +104,7 @@ const sendChatMessage = (chatId: string, params: Record<string, any>) =>
     const uuid = `末_${Date.now()}_${crypto.randomUUID()}`;
     const me = getState().me;
     dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params, uuid, me });
-    return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
+    return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, chatMessage: data, uuid });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGE_SEND_FAIL, chatId, error, uuid });
@@ -164,7 +163,7 @@ const toggleMainWindow = () =>
 const fetchChat = (chatId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CHAT_FETCH_REQUEST, chatId });
-    return api(getState).get(`/api/v1/pleroma/chats/${chatId}`).then(({ data }) => {
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}`).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_FETCH_SUCCESS, chat: data });
     }).catch(error => {
       dispatch({ type: CHAT_FETCH_FAIL, chatId, error });
@@ -174,7 +173,7 @@ const fetchChat = (chatId: string) =>
 const startChat = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CHAT_FETCH_REQUEST, accountId });
-    return api(getState).post(`/api/v1/pleroma/chats/by-account-id/${accountId}`).then(({ data }) => {
+    return api(getState).post(`/api/v1/pleroma/chats/by-account-id/${accountId}`).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_FETCH_SUCCESS, chat: data });
       return data;
     }).catch(error => {
@@ -191,7 +190,7 @@ const markChatRead = (chatId: string, lastReadId?: string | null) =>
     if (!lastReadId) return;
 
     dispatch({ type: CHAT_READ_REQUEST, chatId, lastReadId });
-    api(getState).post(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId }).then(({ data }) => {
+    api(getState).post(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId }).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_READ_SUCCESS, chat: data, lastReadId });
     }).catch(error => {
       dispatch({ type: CHAT_READ_FAIL, chatId, error, lastReadId });
@@ -201,7 +200,7 @@ const markChatRead = (chatId: string, lastReadId?: string | null) =>
 const deleteChatMessage = (chatId: string, messageId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CHAT_MESSAGE_DELETE_REQUEST, chatId, messageId });
-    api(getState).delete(`/api/v1/pleroma/chats/${chatId}/messages/${messageId}`).then(({ data }) => {
+    api(getState).delete(`/api/v1/pleroma/chats/${chatId}/messages/${messageId}`).then((response) => response.json()).then((data) => {
       dispatch({ type: CHAT_MESSAGE_DELETE_SUCCESS, chatId, messageId, chatMessage: data });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGE_DELETE_FAIL, chatId, messageId, error });

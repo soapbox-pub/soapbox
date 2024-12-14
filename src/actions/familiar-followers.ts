@@ -18,7 +18,7 @@ export const fetchAccountFamiliarFollowers = (accountId: string) => (dispatch: A
   });
 
   api(getState).get(`/api/v1/accounts/familiar_followers?id[]=${accountId}`)
-    .then(({ data }) => {
+    .then((response) => response.json()).then((data) => {
       const accounts = data.find(({ id }: { id: string }) => id === accountId).accounts;
 
       dispatch(importFetchedAccounts(accounts));

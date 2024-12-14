@@ -51,7 +51,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   });
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
-  const [next, setNext] = useState<string>();
+  const [next, setNext] = useState<string | null>(null);
 
   const node = useRef<HTMLDivElement>(null);
   const scroller = useRef<VirtuosoHandle>(null);

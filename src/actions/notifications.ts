@@ -2,7 +2,7 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
-import api, { getLinks } from 'soapbox/api/index.ts';
+import api from 'soapbox/api/index.ts';
 import { getFilters, regexFromFilters } from 'soapbox/selectors/index.ts';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { compareId } from 'soapbox/utils/comparators.ts';
@@ -213,10 +213,11 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
 
     dispatch(expandNotificationsRequest(isLoadingMore));
 
-    return api(getState).get('/api/v1/notifications', { params }).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get('/api/v1/notifications', { searchParams: params }).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      const entries = (response.data as APIEntity[]).reduce((acc, item) => {
+      const entries = (data as APIEntity[]).reduce((acc, item) => {
         if (item.account?.id) {
           acc.accounts[item.account.id] = item.account;
         }
@@ -239,8 +240,8 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       const statusesFromGroups = (Object.values(entries.statuses) as Status[]).filter((status) => !!status.group);
       dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
 
-      dispatch(expandNotificationsSuccess(response.data, next ? next.uri : null, isLoadingMore));
-      fetchRelatedRelationships(dispatch, response.data);
+      dispatch(expandNotificationsSuccess(data, next, isLoadingMore));
+      fetchRelatedRelationships(dispatch, data);
       done();
     }).catch(error => {
       dispatch(expandNotificationsFail(error, isLoadingMore));

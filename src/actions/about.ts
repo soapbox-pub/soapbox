@@ -12,7 +12,8 @@ const fetchAboutPage = (slug = 'index', locale?: string) => (dispatch: React.Dis
 
   const filename = `${slug}${locale ? `.${locale}` : ''}.html`;
   return api(getState).get(`/instance/about/${filename}`)
-    .then(({ data: html }) => {
+    .then((response) => response.text())
+    .then((html) => {
       dispatch({ type: FETCH_ABOUT_PAGE_SUCCESS, slug, locale, html });
       return html;
     })

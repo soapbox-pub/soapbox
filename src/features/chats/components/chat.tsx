@@ -1,9 +1,9 @@
-import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import { MutableRefObject, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { uploadMedia } from 'soapbox/actions/media.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -71,10 +71,12 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       onSuccess: () => {
         setErrorMessage(undefined);
       },
-      onError: (error: AxiosError<{ error: string }>, _variables, context) => {
-        const message = error.response?.data?.error;
-        setErrorMessage(message || intl.formatMessage(messages.failedToSend));
-        setContent(context.prevContent as string);
+      onError: async (error: unknown, _variables, context) => {
+        if (error instanceof HTTPError) {
+          const data = await error.response.error();
+          setErrorMessage(data?.error || intl.formatMessage(messages.failedToSend));
+          setContent(context.prevContent as string);
+        }
       },
     });
 
@@ -158,7 +160,8 @@ const Chat: React.FC<ChatInterface> = ({ chat, inputRef, className }) => {
       const data = new FormData();
       data.append('file', file);
       const response = await dispatch(uploadMedia(data, onUploadProgress));
-      return normalizeAttachment(response.data);
+      const json = await response.json();
+      return normalizeAttachment(json);
     });
 
     return Promise.all(promises)

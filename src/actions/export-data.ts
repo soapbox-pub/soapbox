@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
-import api, { getLinks } from 'soapbox/api/index.ts';
+import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
+import api from 'soapbox/api/index.ts';
 import { normalizeAccount } from 'soapbox/normalizers/index.ts';
 import toast from 'soapbox/toast.tsx';
 
-import type { AxiosResponse } from 'axios';
 import type { RootState } from 'soapbox/store.ts';
 
 export const EXPORT_FOLLOWS_REQUEST = 'EXPORT_FOLLOWS_REQUEST';
@@ -49,18 +49,31 @@ function fileExport(content: string, fileName: string) {
   document.body.removeChild(fileToDownload);
 }
 
-const listAccounts = (getState: () => RootState) => async(apiResponse: AxiosResponse<any, any>) => {
-  const followings = apiResponse.data;
-  let accounts = [];
-  let next = getLinks(apiResponse).refs.find(link => link.rel === 'next');
-  while (next) {
-    apiResponse = await api(getState).get(next.uri);
-    next = getLinks(apiResponse).refs.find(link => link.rel === 'next');
-    Array.prototype.push.apply(followings, apiResponse.data);
-  }
+const listAccounts = (getState: () => RootState) => {
+  return async(response: MastodonResponse) => {
+    let { next } = response.pagination();
+    const data = await response.json();
 
-  accounts = followings.map((account: any) => normalizeAccount(account).fqn);
-  return Array.from(new Set(accounts));
+    const map = new Map<string, Record<string, any>>();
+
+    for (const account of data) {
+      map.set(account.id, account);
+    }
+
+    while (next) {
+      const response = await api(getState).get(next);
+      next = response.pagination().next;
+      const data = await response.json();
+
+      for (const account of data) {
+        map.set(account.id, account);
+      }
+    }
+
+    const accts = [...map.values()].map((account) => normalizeAccount(account).fqn);
+
+    return accts;
+  };
 };
 
 export const exportFollows = () => (dispatch: React.Dispatch<ExportDataActions>, getState: () => RootState) => {

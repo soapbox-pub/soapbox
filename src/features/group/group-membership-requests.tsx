@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
 import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
@@ -85,14 +85,17 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   async function handleAuthorize(account: AccountEntity) {
     return authorize(account.id)
       .then(() => Promise.resolve())
-      .catch((error: AxiosError) => {
+      .catch(async (error: unknown) => {
         refetch();
 
-        let message = intl.formatMessage(messages.authorizeFail, { name: account.username });
-        if (error.response?.status === 409) {
-          message = (error.response?.data as any).error;
+        const message = intl.formatMessage(messages.authorizeFail, { name: account.username });
+
+        if (error instanceof HTTPError && error.response.status === 409) {
+          const data = await error.response.error();
+          toast.error(data?.error || message);
+        } else {
+          toast.error(message);
         }
-        toast.error(message);
 
         return Promise.reject();
       });
@@ -101,14 +104,17 @@ const GroupMembershipRequests: React.FC<IGroupMembershipRequests> = ({ params })
   async function handleReject(account: AccountEntity) {
     return reject(account.id)
       .then(() => Promise.resolve())
-      .catch((error: AxiosError) => {
+      .catch(async (error: unknown) => {
         refetch();
 
-        let message = intl.formatMessage(messages.rejectFail, { name: account.username });
-        if (error.response?.status === 409) {
-          message = (error.response?.data as any).error;
+        const message = intl.formatMessage(messages.rejectFail, { name: account.username });
+
+        if (error instanceof HTTPError && error.response.status === 409) {
+          const data = await error.response.error();
+          toast.error(data?.error || message);
+        } else {
+          toast.error(message);
         }
-        toast.error(message);
 
         return Promise.reject();
       });

@@ -32,7 +32,7 @@ interface EntityCallbacks<Value, Error = unknown> {
 
 /**
  * Passed into hooks to make requests.
- * Must return an Axios response.
+ * Must return a Response object.
  */
 type EntityFn<T> = (value: T) => Promise<Response>
 

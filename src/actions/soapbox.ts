@@ -33,7 +33,7 @@ const fetchFrontendConfigurations = () =>
   (dispatch: AppDispatch, getState: () => RootState) =>
     api(getState)
       .get('/api/pleroma/frontend_configurations')
-      .then(({ data }) => data);
+      .then((response) => response.json()).then((data) => data);
 
 /** Conditionally fetches Soapbox config depending on backend features */
 const fetchSoapboxConfig = (host: string | null = null) =>

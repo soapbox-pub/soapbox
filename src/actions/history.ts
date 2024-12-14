@@ -19,7 +19,7 @@ const fetchHistory = (statusId: string) =>
 
     dispatch(fetchHistoryRequest(statusId));
 
-    api(getState).get(`/api/v1/statuses/${statusId}/history`).then(({ data }) => {
+    api(getState).get(`/api/v1/statuses/${statusId}/history`).then((response) => response.json()).then((data) => {
       dispatch(importFetchedAccounts(data.map((x: APIEntity) => x.account)));
       dispatch(fetchHistorySuccess(statusId, data));
     }).catch(error => dispatch(fetchHistoryFail(error)));

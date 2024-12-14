@@ -1,7 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts } from './importer/index.ts';
@@ -23,7 +23,7 @@ const SUGGESTIONS_V2_FETCH_FAIL = 'SUGGESTIONS_V2_FETCH_FAIL';
 const fetchSuggestionsV1 = (params: Record<string, any> = {}) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: SUGGESTIONS_FETCH_REQUEST, skipLoading: true });
-    return api(getState).get('/api/v1/suggestions', { params }).then(({ data: accounts }) => {
+    return api(getState).get('/api/v1/suggestions', { searchParams: params }).then((response) => response.json()).then((accounts) => {
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: SUGGESTIONS_FETCH_SUCCESS, accounts, skipLoading: true });
       return accounts;
@@ -39,10 +39,10 @@ const fetchSuggestionsV2 = (params: Record<string, any> = {}) =>
 
     dispatch({ type: SUGGESTIONS_V2_FETCH_REQUEST, skipLoading: true });
 
-    return api(getState).get(next ? next : '/api/v2/suggestions', next ? {} : { params }).then((response) => {
-      const suggestions: APIEntity[] = response.data;
+    return api(getState).get(next ?? '/api/v2/suggestions', next ? {} : { searchParams: params }).then(async (response) => {
+      const suggestions: APIEntity[] = await response.json();
       const accounts = suggestions.map(({ account }) => account);
-      const next = getLinks(response).refs.find(link => link.rel === 'next')?.uri;
+      const next = response.next();
 
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: SUGGESTIONS_V2_FETCH_SUCCESS, suggestions, next, skipLoading: true });

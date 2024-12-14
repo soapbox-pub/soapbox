@@ -21,7 +21,7 @@ export const APP_VERIFY_CREDENTIALS_FAIL    = 'APP_VERIFY_CREDENTIALS_FAIL';
 export function createApp(params?: Record<string, string>, baseURL?: string) {
   return (dispatch: React.Dispatch<AnyAction>) => {
     dispatch({ type: APP_CREATE_REQUEST, params });
-    return baseClient(null, baseURL).post('/api/v1/apps', params).then(({ data: app }) => {
+    return baseClient(null, baseURL).post('/api/v1/apps', params).then((response) => response.json()).then((app) => {
       dispatch({ type: APP_CREATE_SUCCESS, params, app });
       return app as Record<string, string>;
     }).catch(error => {
@@ -34,7 +34,7 @@ export function createApp(params?: Record<string, string>, baseURL?: string) {
 export function verifyAppCredentials(token: string) {
   return (dispatch: React.Dispatch<AnyAction>) => {
     dispatch({ type: APP_VERIFY_CREDENTIALS_REQUEST, token });
-    return baseClient(token).get('/api/v1/apps/verify_credentials').then(({ data: app }) => {
+    return baseClient(token).get('/api/v1/apps/verify_credentials').then((response) => response.json()).then((app) => {
       dispatch({ type: APP_VERIFY_CREDENTIALS_SUCCESS, token, app });
       return app;
     }).catch(error => {
