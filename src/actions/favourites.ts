@@ -1,6 +1,6 @@
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
@@ -33,10 +33,11 @@ const fetchFavouritedStatuses = () =>
 
     dispatch(fetchFavouritedStatusesRequest());
 
-    api(getState).get('/api/v1/favourites').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      dispatch(fetchFavouritedStatusesSuccess(response.data, next ? next.uri : null));
+    api(getState).get('/api/v1/favourites').then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      dispatch(fetchFavouritedStatusesSuccess(data, next));
     }).catch(error => {
       dispatch(fetchFavouritedStatusesFail(error));
     });
@@ -72,10 +73,11 @@ const expandFavouritedStatuses = () =>
 
     dispatch(expandFavouritedStatusesRequest());
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      dispatch(expandFavouritedStatusesSuccess(response.data, next ? next.uri : null));
+    api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      dispatch(expandFavouritedStatusesSuccess(data, next));
     }).catch(error => {
       dispatch(expandFavouritedStatusesFail(error));
     });
@@ -106,10 +108,11 @@ const fetchAccountFavouritedStatuses = (accountId: string) =>
 
     dispatch(fetchAccountFavouritedStatusesRequest(accountId));
 
-    api(getState).get(`/api/v1/pleroma/accounts/${accountId}/favourites`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      dispatch(fetchAccountFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
+    api(getState).get(`/api/v1/pleroma/accounts/${accountId}/favourites`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      dispatch(fetchAccountFavouritedStatusesSuccess(accountId, data, next));
     }).catch(error => {
       dispatch(fetchAccountFavouritedStatusesFail(accountId, error));
     });
@@ -148,10 +151,11 @@ const expandAccountFavouritedStatuses = (accountId: string) =>
 
     dispatch(expandAccountFavouritedStatusesRequest(accountId));
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      dispatch(expandAccountFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
+    api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      dispatch(expandAccountFavouritedStatusesSuccess(accountId, data, next));
     }).catch(error => {
       dispatch(expandAccountFavouritedStatusesFail(accountId, error));
     });

@@ -89,13 +89,13 @@ const useChatMessages = (chat: IChat) => {
     const response = await api.get(uri);
     const data = await response.json();
 
-    const { next } = response.pagination();
+    const next = response.next();
     const hasMore = !!next;
     const result = data.map(normalizeChatMessage);
 
     return {
       result,
-      link: next,
+      link: next ?? undefined,
       hasMore,
     };
   };
@@ -142,7 +142,7 @@ const useChats = (search?: string) => {
     });
     const data: IChat[] = await response.json();
 
-    const { next } = response.pagination();
+    const next = response.next();
     const hasMore = !!next;
 
     setUnreadChatsCount(Number(response.headers.get('x-unread-messages-count')) || data.reduce((n, chat) => n + chat.unread, 0));
@@ -154,7 +154,7 @@ const useChats = (search?: string) => {
     return {
       result: data,
       hasMore,
-      link: next,
+      link: next ?? undefined,
     };
   };
 

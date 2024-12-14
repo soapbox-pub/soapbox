@@ -21,7 +21,7 @@ import type { AppDispatch, RootState } from 'soapbox/store.ts';
 const fetchExternalInstance = (baseURL?: string) => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => instanceV1Schema.parse(instance))
+    .then((response) => response.json()).then((instance) => instanceV1Schema.parse(instance))
     .catch(error => {
       if (error.response?.status === 401) {
         // Authenticated fetch is enabled.

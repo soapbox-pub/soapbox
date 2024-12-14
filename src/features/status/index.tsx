@@ -57,7 +57,7 @@ const StatusDetails: React.FC<IStatusDetails> = (props) => {
   const status = useAppSelector((state) => getStatus(state, { id: props.params.statusId }));
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
-  const [next, setNext] = useState<string>();
+  const [next, setNext] = useState<string | null>(null);
 
   /** Fetch the status (and context) from the API. */
   const fetchData = async () => {

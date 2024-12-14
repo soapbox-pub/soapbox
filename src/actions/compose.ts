@@ -1,8 +1,8 @@
-import axios, { Canceler } from 'axios';
 import { throttle } from 'es-toolkit';
 import { List as ImmutableList } from 'immutable';
 import { defineMessages, IntlShape } from 'react-intl';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import api from 'soapbox/api/index.ts';
 import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
 import emojiSearch from 'soapbox/features/emoji/search.ts';
@@ -29,9 +29,7 @@ import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { APIEntity, Status, Tag } from 'soapbox/types/entities.ts';
 import type { History } from 'soapbox/types/history.ts';
 
-const { CancelToken, isCancel } = axios;
-
-let cancelFetchComposeSuggestions: Canceler;
+let cancelFetchComposeSuggestions: AbortController | undefined;
 
 const COMPOSE_CHANGE          = 'COMPOSE_CHANGE' as const;
 const COMPOSE_SUBMIT_REQUEST  = 'COMPOSE_SUBMIT_REQUEST' as const;
@@ -369,9 +367,7 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
     const attachmentLimit = getState().instance.configuration.statuses.max_media_attachments;
 
     const media  = getState().compose.get(composeId)?.media_attachments;
-    const progress = new Array(files.length).fill(0);
-    let total = Array.from(files).reduce((a, v) => a + v.size, 0);
-
+    const progress: number[] = new Array(files.length).fill(0);
     const mediaCount = media ? media.size : 0;
 
     if (files.length + mediaCount > attachmentLimit) {
@@ -389,11 +385,10 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
         intl,
         (data) => dispatch(uploadComposeSuccess(composeId, data, f)),
         (error) => dispatch(uploadComposeFail(composeId, error)),
-        ({ loaded }: any) => {
-          progress[i] = loaded;
-          dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), total));
+        (e: ProgressEvent) => {
+          progress[i] = e.loaded;
+          dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), e.total));
         },
-        (value) => total += value,
       ));
 
     });
@@ -433,8 +428,8 @@ const changeUploadCompose = (composeId: string, id: string, params: Record<strin
 
     dispatch(changeUploadComposeRequest(composeId));
 
-    dispatch(updateMedia(id, params)).then(response => {
-      dispatch(changeUploadComposeSuccess(composeId, response.data));
+    dispatch(updateMedia(id, params)).then((response) => response.json()).then((data) => {
+      dispatch(changeUploadComposeSuccess(composeId, data));
     }).catch(error => {
       dispatch(changeUploadComposeFail(composeId, id, error));
     });
@@ -480,9 +475,8 @@ const setGroupTimelineVisible = (composeId: string, groupTimelineVisible: boolea
 });
 
 const clearComposeSuggestions = (composeId: string) => {
-  if (cancelFetchComposeSuggestions) {
-    cancelFetchComposeSuggestions();
-  }
+  cancelFetchComposeSuggestions?.abort();
+
   return {
     type: COMPOSE_SUGGESTIONS_CLEAR,
     id: composeId,
@@ -490,23 +484,20 @@ const clearComposeSuggestions = (composeId: string) => {
 };
 
 const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, composeId, token) => {
-  if (cancelFetchComposeSuggestions) {
-    cancelFetchComposeSuggestions(composeId);
-  }
+  cancelFetchComposeSuggestions?.abort();
+
   api(getState).get('/api/v1/accounts/search', {
-    cancelToken: new CancelToken(cancel => {
-      cancelFetchComposeSuggestions = cancel;
-    }),
-    params: {
+    signal: cancelFetchComposeSuggestions?.signal,
+    searchParams: {
       q: token.slice(1),
       resolve: false,
       limit: 10,
     },
-  }).then(response => {
-    dispatch(importFetchedAccounts(response.data));
-    dispatch(readyComposeSuggestionsAccounts(composeId, token, response.data));
+  }).then((response) => response.json()).then((data) => {
+    dispatch(importFetchedAccounts(data));
+    dispatch(readyComposeSuggestionsAccounts(composeId, token, data));
   }).catch(error => {
-    if (!isCancel(error)) {
+    if (error instanceof HTTPError) {
       toast.showAlertForError(error);
     }
   });
@@ -519,9 +510,7 @@ const fetchComposeSuggestionsEmojis = (dispatch: AppDispatch, composeId: string,
 };
 
 const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => RootState, composeId: string, token: string) => {
-  if (cancelFetchComposeSuggestions) {
-    cancelFetchComposeSuggestions(composeId);
-  }
+  cancelFetchComposeSuggestions?.abort();
 
   const state = getState();
 
@@ -535,18 +524,16 @@ const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => Root
   }
 
   api(getState).get('/api/v2/search', {
-    cancelToken: new CancelToken(cancel => {
-      cancelFetchComposeSuggestions = cancel;
-    }),
-    params: {
+    signal: cancelFetchComposeSuggestions?.signal,
+    searchParams: {
       q: token.slice(1),
       limit: 10,
       type: 'hashtags',
     },
-  }).then(response => {
-    dispatch(updateSuggestionTags(composeId, token, response.data?.hashtags.map(normalizeTag)));
+  }).then((response) => response.json()).then((data) => {
+    dispatch(updateSuggestionTags(composeId, token, data?.hashtags.map(normalizeTag)));
   }).catch(error => {
-    if (!isCancel(error)) {
+    if (error instanceof HTTPError) {
       toast.showAlertForError(error);
     }
   });

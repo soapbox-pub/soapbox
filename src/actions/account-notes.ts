@@ -15,8 +15,9 @@ const submitAccountNote = (id: string, value: string) =>
       .post(`/api/v1/accounts/${id}/note`, {
         comment: value,
       })
-      .then(response => {
-        dispatch(submitAccountNoteSuccess(response.data));
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch(submitAccountNoteSuccess(data));
       })
       .catch(error => dispatch(submitAccountNoteFail(error)));
   };

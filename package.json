@@ -90,8 +90,6 @@
     "@types/semver": "^7.3.9",
     "@webbtc/webln-types": "^3.0.0",
     "autoprefixer": "^10.4.15",
-    "axios": "^1.2.2",
-    "axios-mock-adapter": "^1.22.0",
     "blurhash": "^2.0.0",
     "bowser": "^2.11.0",
     "browserslist": "^4.16.6",

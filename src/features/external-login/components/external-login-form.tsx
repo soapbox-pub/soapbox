@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
 import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import FormActions from 'soapbox/components/ui/form-actions.tsx';
 import FormGroup from 'soapbox/components/ui/form-group.tsx';
@@ -10,8 +11,6 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import toast from 'soapbox/toast.tsx';
-
-import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   instanceLabel: { id: 'login.fields.instance_label', defaultMessage: 'Instance' },
@@ -41,13 +40,14 @@ const ExternalLoginForm: React.FC = () => {
 
     dispatch(externalLogin(host))
       .then(() => setLoading(false))
-      .catch((error: AxiosError) => {
+      .catch((error: unknown) => {
         console.error(error);
-        const status = error.response?.status;
+
+        const status = error instanceof HTTPError ? error.response.status : undefined;
 
         if (status) {
           toast.error(intl.formatMessage(messages.instanceFailed));
-        } else if (!status && error.code === 'ERR_NETWORK') {
+        } else if (error && typeof error === 'object' && 'code' in error && error.code === 'ERR_NETWORK') {
           toast.error(intl.formatMessage(messages.networkFailed));
         }
 

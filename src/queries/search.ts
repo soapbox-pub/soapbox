@@ -20,12 +20,12 @@ export default function useAccountSearch(q: string) {
     });
     const data = await response.json();
 
-    const { next } = response.pagination();
+    const next = response.next();
     const hasMore = !!next;
 
     return {
       result: data,
-      link: next,
+      link: next ?? undefined,
       hasMore,
     };
   };

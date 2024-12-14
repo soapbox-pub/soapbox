@@ -31,15 +31,11 @@ const updateMedia = (mediaId: string, params: Record<string, any>) =>
 
 const uploadMediaV1 = (data: FormData, onUploadProgress = noOp) =>
   (dispatch: any, getState: () => RootState) =>
-    api(getState).post('/api/v1/media', data, {
-      onUploadProgress: onUploadProgress,
-    });
+    api(getState).post('/api/v1/media', data, { onUploadProgress });
 
 const uploadMediaV2 = (data: FormData, onUploadProgress = noOp) =>
   (dispatch: any, getState: () => RootState) =>
-    api(getState).post('/api/v2/media', data, {
-      onUploadProgress: onUploadProgress,
-    });
+    api(getState).post('/api/v2/media', data, { onUploadProgress });
 
 const uploadMedia = (data: FormData, onUploadProgress = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
@@ -59,8 +55,7 @@ const uploadFile = (
   intl: IntlShape,
   onSuccess: (data: APIEntity) => void = () => {},
   onFail: (error: unknown) => void = () => {},
-  onProgress: (loaded: number) => void = () => {},
-  changeTotal: (value: number) => void = () => {},
+  onUploadProgress: (e: ProgressEvent) => void = () => {},
 ) =>
   async (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
@@ -92,21 +87,23 @@ const uploadFile = (
     }
 
     // FIXME: Don't define const in loop
-    resizeImage(file).then(resized => {
+    resizeImage(file).then((resized) => {
       const data = new FormData();
       data.append('file', resized);
-      // Account for disparity in size of original image and resized data
-      changeTotal(resized.size - file.size);
 
-      return dispatch(uploadMedia(data, onProgress))
-        .then(({ status, data }) => {
+      return dispatch(uploadMedia(data, onUploadProgress))
+        .then(async (response) => {
+          const { status } = response;
+          const data = await response.json();
           // If server-side processing of the media attachment has not completed yet,
           // poll the server until it is, before showing the media attachment as uploaded
           if (status === 200) {
             onSuccess(data);
           } else if (status === 202) {
             const poll = () => {
-              dispatch(fetchMedia(data.id)).then(({ status, data }) => {
+              dispatch(fetchMedia(data.id)).then(async (response) => {
+                const { status } = response;
+                const data = await response.json();
                 if (status === 200) {
                   onSuccess(data);
                 } else if (status === 206) {

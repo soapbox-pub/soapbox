@@ -1,7 +1,7 @@
 import { APIEntity } from 'soapbox/types/entities.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
@@ -23,13 +23,14 @@ const fetchTrendingStatuses = () =>
     if (!features.trendingStatuses) return;
 
     dispatch({ type: TRENDING_STATUSES_FETCH_REQUEST });
-    return api(getState).get('/api/v1/trends/statuses').then((response) => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get('/api/v1/trends/statuses').then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      const statuses = response.data;
+      const statuses = data;
 
       dispatch(importFetchedStatuses(statuses));
-      dispatch(fetchTrendingStatusesSuccess(statuses, next ? next.uri : null));
+      dispatch(fetchTrendingStatusesSuccess(statuses, next));
       return statuses;
     }).catch(error => {
       dispatch(fetchTrendingStatusesFail(error));
@@ -50,13 +51,14 @@ const fetchTrendingStatusesFail = (error: unknown) => ({
 
 const expandTrendingStatuses = (path: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    api(getState).get(path).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    api(getState).get(path).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      const statuses = response.data;
+      const statuses = data;
 
       dispatch(importFetchedStatuses(statuses));
-      dispatch(expandTrendingStatusesSuccess(statuses, next ? next.uri : null));
+      dispatch(expandTrendingStatusesSuccess(statuses, next));
     }).catch(error => {
       dispatch(expandTrendingStatusesFail(error));
     });

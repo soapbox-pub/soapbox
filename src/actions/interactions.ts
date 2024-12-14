@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 import toast from 'soapbox/toast.tsx';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts';
@@ -101,10 +101,10 @@ const reblog = (status: StatusEntity) =>
 
     dispatch(reblogRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then(function(response) {
+    api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then((response) => response.json()).then((data) => {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
       // interested in how the original is modified, hence passing it skipping the wrapper
-      dispatch(importFetchedStatus(response.data.reblog));
+      dispatch(importFetchedStatus(data.reblog));
       dispatch(reblogSuccess(status));
     }).catch(error => {
       dispatch(reblogFail(status, error));
@@ -322,8 +322,8 @@ const zap = (account: AccountEntity, status: StatusEntity | undefined, amount: n
 
   if (status) dispatch(zapRequest(status));
 
-  return api(getState).post('/api/v1/ditto/zap', { amount, comment, account_id: account.id, status_id: status?.id }).then(async function(response) {
-    const { invoice } =  response.data;
+  return api(getState).post('/api/v1/ditto/zap', { amount, comment, account_id: account.id, status_id: status?.id }).then(async (response) => {
+    const { invoice } =  await response.json();
     if (!invoice) throw Error('Could not generate invoice');
     if (!window.webln) return invoice;
 
@@ -363,9 +363,9 @@ const bookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(bookmarkRequest(status));
 
-    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then(function(response) {
-      dispatch(importFetchedStatus(response.data));
-      dispatch(bookmarkSuccess(status, response.data));
+    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedStatus(data));
+      dispatch(bookmarkSuccess(status, data));
 
       toast.success(messages.bookmarkAdded, {
         actionLink: '/bookmarks',
@@ -379,9 +379,9 @@ const unbookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(unbookmarkRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/unbookmark`).then(response => {
-      dispatch(importFetchedStatus(response.data));
-      dispatch(unbookmarkSuccess(status, response.data));
+    api(getState).post(`/api/v1/statuses/${status.id}/unbookmark`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedStatus(data));
+      dispatch(unbookmarkSuccess(status, data));
       toast.success(messages.bookmarkRemoved);
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
@@ -437,11 +437,12 @@ const fetchReblogs = (id: string) =>
 
     dispatch(fetchReblogsRequest(id));
 
-    api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(fetchReblogsSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
+      dispatch(fetchReblogsSuccess(id, data, next));
     }).catch(error => {
       dispatch(fetchReblogsFail(id, error));
     });
@@ -467,11 +468,12 @@ const fetchReblogsFail = (id: string, error: unknown) => ({
 
 const expandReblogs = (id: string, path: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    api(getState).get(path).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(expandReblogsSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(path).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
+      dispatch(expandReblogsSuccess(id, data, next));
     }).catch(error => {
       dispatch(expandReblogsFail(id, error));
     });
@@ -496,11 +498,12 @@ const fetchFavourites = (id: string) =>
 
     dispatch(fetchFavouritesRequest(id));
 
-    api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(fetchFavouritesSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
+      dispatch(fetchFavouritesSuccess(id, data, next));
     }).catch(error => {
       dispatch(fetchFavouritesFail(id, error));
     });
@@ -526,11 +529,12 @@ const fetchFavouritesFail = (id: string, error: unknown) => ({
 
 const expandFavourites = (id: string, path: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    api(getState).get(path).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(expandFavouritesSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(path).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
+      dispatch(expandFavouritesSuccess(id, data, next));
     }).catch(error => {
       dispatch(expandFavouritesFail(id, error));
     });
@@ -555,10 +559,10 @@ const fetchDislikes = (id: string) =>
 
     dispatch(fetchDislikesRequest(id));
 
-    api(getState).get(`/api/friendica/statuses/${id}/disliked_by`).then(response => {
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
-      dispatch(fetchDislikesSuccess(id, response.data));
+    api(getState).get(`/api/friendica/statuses/${id}/disliked_by`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
+      dispatch(fetchDislikesSuccess(id, data));
     }).catch(error => {
       dispatch(fetchDislikesFail(id, error));
     });
@@ -585,9 +589,9 @@ const fetchReactions = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchReactionsRequest(id));
 
-    api(getState).get(`/api/v1/pleroma/statuses/${id}/reactions`).then(response => {
-      dispatch(importFetchedAccounts((response.data as APIEntity[]).map(({ accounts }) => accounts).flat()));
-      dispatch(fetchReactionsSuccess(id, response.data));
+    api(getState).get(`/api/v1/pleroma/statuses/${id}/reactions`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedAccounts((data as APIEntity[]).map(({ accounts }) => accounts).flat()));
+      dispatch(fetchReactionsSuccess(id, data));
     }).catch(error => {
       dispatch(fetchReactionsFail(id, error));
     });
@@ -614,10 +618,11 @@ const fetchZaps = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchZapsRequest(id));
 
-    api(getState).get(`/api/v1/ditto/statuses/${id}/zapped_by`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts((response.data as APIEntity[]).map(({ account }) => account).flat()));
-      dispatch(fetchZapsSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(`/api/v1/ditto/statuses/${id}/zapped_by`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts((data as APIEntity[]).map(({ account }) => account).flat()));
+      dispatch(fetchZapsSuccess(id, data, next));
     }).catch(error => {
       dispatch(fetchZapsFail(id, error));
     });
@@ -643,11 +648,12 @@ const fetchZapsFail = (id: string, error: unknown) => ({
 
 const expandZaps = (id: string, path: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    api(getState).get(path).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data.map((item: APIEntity) => item.account)));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.account.id)));
-      dispatch(expandZapsSuccess(id, response.data, next ? next.uri : null));
+    api(getState).get(path).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data.map((item: APIEntity) => item.account)));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.account.id)));
+      dispatch(expandZapsSuccess(id, data, next));
     }).catch(error => {
       dispatch(expandZapsFail(id, error));
     });
@@ -672,8 +678,8 @@ const pin = (status: StatusEntity) =>
 
     dispatch(pinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/pin`).then(response => {
-      dispatch(importFetchedStatus(response.data));
+    api(getState).post(`/api/v1/statuses/${status.id}/pin`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedStatus(data));
       dispatch(pinSuccess(status));
     }).catch(error => {
       dispatch(pinFail(status, error));
@@ -719,8 +725,8 @@ const unpin = (status: StatusEntity) =>
 
     dispatch(unpinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/unpin`).then(response => {
-      dispatch(importFetchedStatus(response.data));
+    api(getState).post(`/api/v1/statuses/${status.id}/unpin`).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedStatus(data));
       dispatch(unpinSuccess(status));
     }).catch(error => {
       dispatch(unpinFail(status, error));
@@ -759,7 +765,7 @@ const remoteInteraction = (ap_id: string, profile: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(remoteInteractionRequest(ap_id, profile));
 
-    return api(getState).post('/api/v1/pleroma/remote_interaction', { ap_id, profile }).then(({ data }) => {
+    return api(getState).post('/api/v1/pleroma/remote_interaction', { ap_id, profile }).then((response) => response.json()).then((data) => {
       if (data.error) throw new Error(data.error);
 
       dispatch(remoteInteractionSuccess(ap_id, profile, data.url));

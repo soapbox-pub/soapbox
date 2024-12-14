@@ -8,8 +8,6 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-import type { AxiosResponse } from 'axios';
-
 const noOp = () => {};
 
 const messages = defineMessages({
@@ -44,8 +42,8 @@ const CaptchaField: React.FC<ICaptchaField> = ({
   const [refresh, setRefresh] = useState<NodeJS.Timeout | undefined>(undefined);
 
   const getCaptcha = () => {
-    dispatch(fetchCaptcha()).then((response: AxiosResponse) => {
-      const captcha = ImmutableMap<string, any>(response.data);
+    dispatch(fetchCaptcha()).then((response) => response.json()).then((data) => {
+      const captcha = ImmutableMap<string, any>(data);
       setCaptcha(captcha);
       onFetch(captcha);
     }).catch((error: Error) => {

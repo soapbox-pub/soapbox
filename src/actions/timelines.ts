@@ -4,7 +4,7 @@ import { getSettings } from 'soapbox/actions/settings.ts';
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { shouldFilter } from 'soapbox/utils/timelines.ts';
 
-import api, { getNextLink, getPrevLink } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchGroupRelationships } from './groups.ts';
 import { importFetchedStatus, importFetchedStatuses } from './importer/index.ts';
@@ -169,17 +169,20 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
 
     dispatch(expandTimelineRequest(timelineId, isLoadingMore));
 
-    return api(getState).get(path, { params }).then(response => {
-      dispatch(importFetchedStatuses(response.data));
+    return api(getState).get(path, { searchParams: params }).then(async (response) => {
+      const { next, prev } = response.pagination();
+      const data: APIEntity[] = await response.json();
 
-      const statusesFromGroups = (response.data as Status[]).filter((status) => !!status.group);
+      dispatch(importFetchedStatuses(data));
+
+      const statusesFromGroups = (data as Status[]).filter((status) => !!status.group);
       dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
 
       dispatch(expandTimelineSuccess(
         timelineId,
-        response.data,
-        getNextLink(response),
-        getPrevLink(response),
+        data,
+        next,
+        prev,
         response.status === 206,
         isLoadingRecent,
         isLoadingMore,
@@ -267,8 +270,8 @@ const expandTimelineRequest = (timeline: string, isLoadingMore: boolean) => ({
 const expandTimelineSuccess = (
   timeline: string,
   statuses: APIEntity[],
-  next: string | undefined,
-  prev: string | undefined,
+  next: string | null,
+  prev: string | null,
   partial: boolean,
   isLoadingRecent: boolean,
   isLoadingMore: boolean,

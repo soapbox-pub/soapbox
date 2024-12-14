@@ -1,4 +1,4 @@
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
@@ -25,14 +25,15 @@ export const fetchStatusQuotes = (statusId: string) =>
       type: STATUS_QUOTES_FETCH_REQUEST,
     });
 
-    return api(getState).get(`/api/v1/pleroma/statuses/${statusId}/quotes`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
+    return api(getState).get(`/api/v1/pleroma/statuses/${statusId}/quotes`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
       return dispatch({
         type: STATUS_QUOTES_FETCH_SUCCESS,
         statusId,
-        statuses: response.data,
-        next: next ? next.uri : null,
+        statuses: data,
+        next,
       });
     }).catch(error => {
       dispatch({
@@ -56,14 +57,14 @@ export const expandStatusQuotes = (statusId: string) =>
       statusId,
     });
 
-    return api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
+    return api(getState).get(url).then(async (response)  => {
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
       dispatch({
         type: STATUS_QUOTES_EXPAND_SUCCESS,
         statusId,
-        statuses: response.data,
-        next: next ? next.uri : null,
+        statuses: data,
+        next: response.next(),
       });
     }).catch(error => {
       dispatch({

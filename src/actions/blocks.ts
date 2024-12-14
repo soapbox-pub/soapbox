@@ -1,6 +1,6 @@
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts } from './importer/index.ts';
@@ -22,11 +22,12 @@ const fetchBlocks = () => (dispatch: AppDispatch, getState: () => RootState) => 
 
   return api(getState)
     .get('/api/v1/blocks')
-    .then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchBlocksSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);
+    .then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchBlocksSuccess(data, next));
+      dispatch(fetchRelationships(data.map((item: any) => item.id)) as any);
     })
     .catch(error => dispatch(fetchBlocksFail(error)));
 };
@@ -63,11 +64,12 @@ const expandBlocks = () => (dispatch: AppDispatch, getState: () => RootState) =>
 
   return api(getState)
     .get(url)
-    .then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandBlocksSuccess(response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: any) => item.id)) as any);
+    .then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedAccounts(data));
+      dispatch(expandBlocksSuccess(data, next));
+      dispatch(fetchRelationships(data.map((item: any) => item.id)) as any);
     })
     .catch(error => dispatch(expandBlocksFail(error)));
 };

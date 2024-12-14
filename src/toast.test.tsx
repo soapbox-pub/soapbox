@@ -1,9 +1,10 @@
 import { render } from '@testing-library/react';
-import { AxiosError, AxiosHeaders } from 'axios';
 import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
 import { act, screen } from 'soapbox/jest/test-helpers.tsx';
 
 import toast from './toast.tsx';
@@ -67,17 +68,18 @@ describe('toasts', () =>{
   });
 
   describe('showAlertForError()', () => {
-    const buildError = (message: string, status: number) => new AxiosError<any>(message, String(status), undefined, null, {
-      data: {
-        error: message,
-      },
-      statusText: String(status),
-      status,
-      headers: {},
-      config: {
-        headers: new AxiosHeaders(),
-      },
-    });
+    const buildError = (message: string, status: number): HTTPError => {
+      const request = new Request('http://localhost:3000');
+
+      const response = new MastodonResponse(JSON.stringify({ error: message }), {
+        status,
+        headers: {
+          'Content-type': 'application/json',
+        },
+      });
+
+      return new HTTPError(response, request);
+    };
 
     describe('with a 502 status code', () => {
       it('renders the correct message', async() => {
@@ -154,7 +156,7 @@ describe('toasts', () =>{
 
     describe('without a response', () => {
       it('renders the default message', async() => {
-        const error = new AxiosError();
+        const error = new HTTPError(new MastodonResponse(null), new Request('http://localhost:3000'));
         const { toast } = renderApp();
 
         act(() => {

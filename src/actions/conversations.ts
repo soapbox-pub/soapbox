@@ -1,6 +1,6 @@
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import {
   importFetchedAccounts,
@@ -53,13 +53,14 @@ const expandConversations = ({ maxId }: Record<string, any> = {}) => (dispatch: 
 
   const isLoadingRecent = !!params.since_id;
 
-  api(getState).get('/api/v1/conversations', { params })
-    .then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+  api(getState).get('/api/v1/conversations', { searchParams: params })
+    .then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data.reduce((aggr: Array<APIEntity>, item: APIEntity) => aggr.concat(item.accounts), [])));
-      dispatch(importFetchedStatuses(response.data.map((item: Record<string, any>) => item.last_status).filter((x?: APIEntity) => !!x)));
-      dispatch(expandConversationsSuccess(response.data, next ? next.uri : null, isLoadingRecent));
+      dispatch(importFetchedAccounts(data.reduce((aggr: Array<APIEntity>, item: APIEntity) => aggr.concat(item.accounts), [])));
+      dispatch(importFetchedStatuses(data.map((item: Record<string, any>) => item.last_status).filter((x?: APIEntity) => !!x)));
+      dispatch(expandConversationsSuccess(data, next, isLoadingRecent));
     })
     .catch(err => dispatch(expandConversationsFail(err)));
 };

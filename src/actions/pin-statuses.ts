@@ -18,9 +18,9 @@ const fetchPinnedStatuses = () =>
 
     dispatch(fetchPinnedStatusesRequest());
 
-    api(getState).get(`/api/v1/accounts/${me}/statuses`, { params: { pinned: true } }).then(response => {
-      dispatch(importFetchedStatuses(response.data));
-      dispatch(fetchPinnedStatusesSuccess(response.data, null));
+    api(getState).get(`/api/v1/accounts/${me}/statuses`, { searchParams: { pinned: true } }).then((response) => response.json()).then((data) => {
+      dispatch(importFetchedStatuses(data));
+      dispatch(fetchPinnedStatusesSuccess(data, null));
     }).catch(error => {
       dispatch(fetchPinnedStatusesFail(error));
     });

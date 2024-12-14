@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
 import toast from 'react-hot-toast';
 import { defineMessages, MessageDescriptor } from 'react-intl';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import Toast from 'soapbox/components/ui/toast.tsx';
 import { httpErrorMessages } from 'soapbox/utils/errors.ts';
 
@@ -42,9 +42,11 @@ const messages = defineMessages({
   unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'Something went wrong.' },
 });
 
-function showAlertForError(networkError: AxiosError<any>) {
-  if (networkError?.response) {
-    const { data, status, statusText } = networkError.response;
+async function showAlertForError(networkError: HTTPError): Promise<void> {
+  const { response } = networkError;
+
+  if (response) {
+    const { status, statusText } = response;
 
     if (status === 502) {
       return error('The server is down');
@@ -52,22 +54,17 @@ function showAlertForError(networkError: AxiosError<any>) {
 
     if (status === 404 || status === 410) {
       // Skip these errors as they are reflected in the UI
-      return null;
+      return;
     }
 
-    let message: string | undefined = statusText;
-
-    if (data?.error) {
-      message = data.error;
+    const data = await response.error();
+    if (data) {
+      return error(data.error);
     }
 
-    if (!message) {
-      message = httpErrorMessages.find((httpError) => httpError.code === status)?.description;
-    }
+    const message = httpErrorMessages.find((httpError) => httpError.code === status)?.description;
 
-    if (message) {
-      return error(message);
-    }
+    return error(message ?? statusText);
   } else {
     console.error(networkError);
     return error(messages.unexpectedMessage);

@@ -45,8 +45,8 @@ const fetchAliases = (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch(fetchAliasesRequest());
 
   api(getState).get('/api/pleroma/aliases')
-    .then(response => {
-      dispatch(fetchAliasesSuccess(response.data.aliases));
+    .then((response) => response.json()).then((data) => {
+      dispatch(fetchAliasesSuccess(data.aliases));
     })
     .catch(err => dispatch(fetchAliasesFail(err)));
 };
@@ -75,7 +75,7 @@ const fetchAliasesSuggestions = (q: string) =>
       limit: 4,
     };
 
-    api(getState).get('/api/v1/accounts/search', { params }).then(({ data }) => {
+    api(getState).get('/api/v1/accounts/search', { searchParams: params }).then((response) => response.json()).then((data) => {
       dispatch(importFetchedAccounts(data));
       dispatch(fetchAliasesSuggestionsReady(q, data));
     }).catch(error => toast.showAlertForError(error));
@@ -111,11 +111,12 @@ const addToAliases = (account: Account) =>
       dispatch(addToAliasesRequest());
 
       api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.pleroma?.ap_id] })
-        .then((response => {
+        .then((response) => response.json())
+        .then((data) => {
           toast.success(messages.createSuccess);
           dispatch(addToAliasesSuccess);
-          dispatch(patchMeSuccess(response.data));
-        }))
+          dispatch(patchMeSuccess(data));
+        })
         .catch(err => dispatch(addToAliasesFail(err)));
 
       return;
@@ -162,10 +163,10 @@ const removeFromAliases = (account: string) =>
       dispatch(removeFromAliasesRequest());
 
       api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: alsoKnownAs.filter((id: string) => id !== account) })
-        .then(response => {
+        .then((response) => response.json()).then((data) => {
           toast.success(messages.removeSuccess);
           dispatch(removeFromAliasesSuccess);
-          dispatch(patchMeSuccess(response.data));
+          dispatch(patchMeSuccess(data));
         })
         .catch(err => dispatch(removeFromAliasesFail(err)));
 
@@ -174,12 +175,10 @@ const removeFromAliases = (account: string) =>
 
     dispatch(addToAliasesRequest());
 
-    api(getState).delete('/api/pleroma/aliases', {
-      data: {
-        alias: account,
-      },
+    api(getState).request('DELETE', '/api/pleroma/aliases', {
+      alias: account,
     })
-      .then(response => {
+      .then(() => {
         toast.success(messages.removeSuccess);
         dispatch(removeFromAliasesSuccess);
         dispatch(fetchAliases);
