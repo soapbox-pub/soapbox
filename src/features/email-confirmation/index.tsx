@@ -37,8 +37,8 @@ const EmailConfirmation = () => {
         .catch((error) => {
           setStatus(Statuses.FAIL);
 
-          if (error.response.data.error) {
-            const message = buildErrorMessage(error.response.data.error);
+          if (error.data.error) {
+            const message = buildErrorMessage(error.data.error);
             toast.error(message);
           }
         });

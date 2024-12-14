@@ -1,3 +1,5 @@
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
+
 import {
   AUTH_LOGGED_OUT,
   AUTH_ACCOUNT_REMEMBER_SUCCESS,
@@ -10,14 +12,13 @@ import {
   ME_PATCH_SUCCESS,
 } from '../actions/me.ts';
 
-import type { AxiosError } from 'axios';
 import type { AnyAction } from 'redux';
 import type { Me } from 'soapbox/types/soapbox.ts';
 
 const initialState: Me = null;
 
-const handleForbidden = (state: Me, error: AxiosError) => {
-  if (([401, 403] as any[]).includes(error.response?.status)) {
+const handleForbidden = (state: Me, error: unknown) => {
+  if (error instanceof HTTPError && ([401, 403]).includes(error.response.status)) {
     return false;
   } else {
     return state;

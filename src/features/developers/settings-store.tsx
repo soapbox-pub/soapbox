@@ -60,7 +60,7 @@ const SettingsStore: React.FC = () => {
       pleroma_settings_store: {
         [FE_NAME]: settings,
       },
-    })).then(response => {
+    })).then(() => {
       dispatch({ type: SETTINGS_UPDATE, settings });
       setLoading(false);
     }).catch(error => {

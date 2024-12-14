@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
@@ -18,8 +19,6 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import toast from 'soapbox/toast.tsx';
 import { isDefaultHeader } from 'soapbox/utils/accounts.ts';
 import resizeImage from 'soapbox/utils/resize-image.ts';
-
-import type { AxiosError } from 'axios';
 
 const closeIcon = xIcon;
 
@@ -68,13 +67,18 @@ const CoverPhotoSelectionModal: React.FC<ICoverPhotoSelectionModal> = ({ onClose
         setDisabled(false);
         setSubmitting(false);
         onNext();
-      }).catch((error: AxiosError) => {
+      }).catch(async (error) => {
         setSubmitting(false);
         setDisabled(false);
         setSelectedFile(null);
 
-        if (error.response?.status === 422) {
-          toast.error((error.response.data as any).error.replace('Validation failed: ', ''));
+        if (error instanceof HTTPError && error.response?.status === 422) {
+          const data = await error.response.error();
+          if (data) {
+            toast.error(data.error);
+          } else {
+            toast.error(messages.error);
+          }
         } else {
           toast.error(messages.error);
         }

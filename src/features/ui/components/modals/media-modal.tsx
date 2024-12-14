@@ -76,7 +76,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const actualStatus = status ? getActualStatus(status) : undefined;
 
   const [isLoaded, setIsLoaded] = useState<boolean>(!!status);
-  const [next, setNext] = useState<string>();
+  const [next, setNext] = useState<string | null>(null);
   const [index, setIndex] = useState<number | null>(null);
   const [navigationHidden, setNavigationHidden] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(!status);

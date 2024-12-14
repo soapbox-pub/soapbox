@@ -27,7 +27,8 @@ export const fetchInstance = createAsyncThunk<InstanceData, InstanceData['host']
   'instance/fetch',
   async(host, { dispatch, getState, rejectWithValue }) => {
     try {
-      const { data } = await api(getState).get('/api/v1/instance');
+      const response = await api(getState).get('/api/v1/instance');
+      const data = await response.json();
       const instance = instanceV1Schema.parse(data);
       const features = getFeatures(instance);
 
@@ -46,7 +47,8 @@ export const fetchInstanceV2 = createAsyncThunk<InstanceData, InstanceData['host
   'instanceV2/fetch',
   async(host, { getState, rejectWithValue }) => {
     try {
-      const { data } = await api(getState).get('/api/v2/instance');
+      const response = await api(getState).get('/api/v2/instance');
+      const data = await response.json();
       const instance = instanceV2Schema.parse(data);
       return { instance, host };
     } catch (e) {

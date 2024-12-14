@@ -1,7 +1,7 @@
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import type { EntityStore } from 'soapbox/entity-store/types.ts';
 import type { Account } from 'soapbox/schemas/index.ts';
@@ -61,13 +61,10 @@ const unblockDomain = (domain: string) =>
 
     dispatch(unblockDomainRequest(domain));
 
-    // Do it both ways for maximum compatibility
-    const params = {
-      params: { domain },
-      data: { domain },
-    };
+    const data = new FormData();
+    data.append('domain', domain);
 
-    api(getState).delete('/api/v1/domain_blocks', params).then(() => {
+    api(getState).request('DELETE', '/api/v1/domain_blocks', data).then(() => {
       const accounts = selectAccountsByDomain(getState(), domain);
       if (!accounts) return;
       dispatch(unblockDomainSuccess(domain, accounts));
@@ -99,9 +96,10 @@ const fetchDomainBlocks = () =>
 
     dispatch(fetchDomainBlocksRequest());
 
-    api(getState).get('/api/v1/domain_blocks').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(fetchDomainBlocksSuccess(response.data, next ? next.uri : null));
+    api(getState).get('/api/v1/domain_blocks').then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(fetchDomainBlocksSuccess(data, next));
     }).catch(err => {
       dispatch(fetchDomainBlocksFail(err));
     });
@@ -134,9 +132,10 @@ const expandDomainBlocks = () =>
 
     dispatch(expandDomainBlocksRequest());
 
-    api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(expandDomainBlocksSuccess(response.data, next ? next.uri : null));
+    api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(expandDomainBlocksSuccess(data, next));
     }).catch(err => {
       dispatch(expandDomainBlocksFail(err));
     });

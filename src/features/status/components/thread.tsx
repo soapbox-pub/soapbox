@@ -80,7 +80,7 @@ interface IThread {
   withMedia?: boolean;
   useWindowScroll?: boolean;
   itemClassName?: string;
-  next: string | undefined;
+  next?: string | null;
   handleLoadMore: () => void;
 }
 

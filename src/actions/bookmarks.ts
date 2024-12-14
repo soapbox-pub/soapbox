@@ -1,4 +1,4 @@
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
@@ -23,10 +23,11 @@ const fetchBookmarkedStatuses = () =>
 
     dispatch(fetchBookmarkedStatusesRequest());
 
-    return api(getState).get('/api/v1/bookmarks').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      return dispatch(fetchBookmarkedStatusesSuccess(response.data, next ? next.uri : null));
+    return api(getState).get('/api/v1/bookmarks').then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      return dispatch(fetchBookmarkedStatusesSuccess(data, next));
     }).catch(error => {
       dispatch(fetchBookmarkedStatusesFail(error));
     });
@@ -58,10 +59,11 @@ const expandBookmarkedStatuses = () =>
 
     dispatch(expandBookmarkedStatusesRequest());
 
-    return api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedStatuses(response.data));
-      return dispatch(expandBookmarkedStatusesSuccess(response.data, next ? next.uri : null));
+    return api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+      dispatch(importFetchedStatuses(data));
+      return dispatch(expandBookmarkedStatusesSuccess(data, next));
     }).catch(error => {
       dispatch(expandBookmarkedStatusesFail(error));
     });

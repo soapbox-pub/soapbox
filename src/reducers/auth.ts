@@ -1,7 +1,7 @@
-import { AxiosError } from 'axios';
 import { produce } from 'immer';
 import { z } from 'zod';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { keyring } from 'soapbox/features/nostr/keyring.ts';
 import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
 import { Application, applicationSchema } from 'soapbox/schemas/application.ts';
@@ -162,8 +162,8 @@ function deleteUser(auth: SoapboxAuth, accountUrl: string): SoapboxAuth {
   });
 }
 
-function deleteForbiddenToken(auth: SoapboxAuth, error: AxiosError, token: string): SoapboxAuth {
-  if ([401, 403].includes(error.response?.status!)) {
+function deleteForbiddenToken(auth: SoapboxAuth, error: HTTPError, token: string): SoapboxAuth {
+  if ([401, 403].includes(error.response.status)) {
     return deleteToken(auth, token);
   } else {
     return auth;
@@ -205,7 +205,7 @@ function reducer(state: SoapboxAuth, action: UnknownAction): SoapboxAuth {
       }
     }
     case VERIFY_CREDENTIALS_FAIL: {
-      if (action.error instanceof AxiosError && typeof action.token === 'string') {
+      if (action.error instanceof HTTPError && typeof action.token === 'string') {
         return deleteForbiddenToken(state, action.error, action.token);
       } else {
         return state;

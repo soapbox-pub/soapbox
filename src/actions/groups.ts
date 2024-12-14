@@ -1,6 +1,6 @@
 import { deleteEntities } from 'soapbox/entity-store/actions.ts';
 
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedGroups, importFetchedAccounts } from './importer/index.ts';
@@ -114,7 +114,7 @@ const fetchGroup = (id: string) => (dispatch: AppDispatch, getState: () => RootS
   dispatch(fetchGroupRequest(id));
 
   return api(getState).get(`/api/v1/groups/${id}`)
-    .then(({ data }) => {
+    .then((response) => response.json()).then((data) => {
       dispatch(importFetchedGroups([data]));
       dispatch(fetchGroupSuccess(data));
     })
@@ -141,7 +141,7 @@ const fetchGroups = () => (dispatch: AppDispatch, getState: () => RootState) => 
   dispatch(fetchGroupsRequest());
 
   return api(getState).get('/api/v1/groups')
-    .then(({ data }) => {
+    .then((response) => response.json()).then((data) => {
       dispatch(importFetchedGroups(data));
       dispatch(fetchGroupsSuccess(data));
       dispatch(fetchGroupRelationships(data.map((item: APIEntity) => item.id)));
@@ -174,8 +174,8 @@ const fetchGroupRelationships = (groupIds: string[]) =>
 
     dispatch(fetchGroupRelationshipsRequest(newGroupIds));
 
-    return api(getState).get(`/api/v1/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
-      dispatch(fetchGroupRelationshipsSuccess(response.data));
+    return api(getState).get(`/api/v1/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then((response) => response.json()).then((data) => {
+      dispatch(fetchGroupRelationshipsSuccess(data));
     }).catch(error => {
       dispatch(fetchGroupRelationshipsFail(error));
     });
@@ -232,11 +232,12 @@ const fetchGroupBlocks = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupBlocksRequest(id));
 
-    return api(getState).get(`/api/v1/groups/${id}/blocks`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(`/api/v1/groups/${id}/blocks`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchGroupBlocksSuccess(id, response.data, next ? next.uri : null));
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchGroupBlocksSuccess(id, data, next));
     }).catch(error => {
       dispatch(fetchGroupBlocksFail(id, error));
     });
@@ -271,12 +272,13 @@ const expandGroupBlocks = (id: string) =>
 
     dispatch(expandGroupBlocksRequest(id));
 
-    return api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandGroupBlocksSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(importFetchedAccounts(data));
+      dispatch(expandGroupBlocksSuccess(id, data, next));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
     }).catch(error => {
       dispatch(expandGroupBlocksFail(id, error));
     });
@@ -361,7 +363,8 @@ const groupPromoteAccount = (groupId: string, accountId: string, role: GroupRole
     dispatch(groupPromoteAccountRequest(groupId, accountId));
 
     return api(getState).post(`/api/v1/groups/${groupId}/promote`, { account_ids: [accountId], role: role })
-      .then((response) => dispatch(groupPromoteAccountSuccess(groupId, accountId, response.data)))
+      .then((response) => response.json())
+      .then((data) => dispatch(groupPromoteAccountSuccess(groupId, accountId, data)))
       .catch(err => dispatch(groupPromoteAccountFail(groupId, accountId, err)));
   };
 
@@ -390,7 +393,8 @@ const groupDemoteAccount = (groupId: string, accountId: string, role: GroupRole)
     dispatch(groupDemoteAccountRequest(groupId, accountId));
 
     return api(getState).post(`/api/v1/groups/${groupId}/demote`, { account_ids: [accountId], role: role })
-      .then((response) => dispatch(groupDemoteAccountSuccess(groupId, accountId, response.data)))
+      .then((response) => response.json())
+      .then((data) => dispatch(groupDemoteAccountSuccess(groupId, accountId, data)))
       .catch(err => dispatch(groupDemoteAccountFail(groupId, accountId, err)));
   };
 
@@ -418,11 +422,12 @@ const fetchGroupMemberships = (id: string, role: GroupRole) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupMembershipsRequest(id, role));
 
-    return api(getState).get(`/api/v1/groups/${id}/memberships`, { params: { role } }).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(`/api/v1/groups/${id}/memberships`, { searchParams: { role } }).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data.map((membership: APIEntity) => membership.account)));
-      dispatch(fetchGroupMembershipsSuccess(id, role, response.data, next ? next.uri : null));
+      dispatch(importFetchedAccounts(data.map((membership: APIEntity) => membership.account)));
+      dispatch(fetchGroupMembershipsSuccess(id, role, data, next));
     }).catch(error => {
       dispatch(fetchGroupMembershipsFail(id, role, error));
     });
@@ -460,12 +465,13 @@ const expandGroupMemberships = (id: string, role: GroupRole) =>
 
     dispatch(expandGroupMembershipsRequest(id, role));
 
-    return api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data.map((membership: APIEntity) => membership.account)));
-      dispatch(expandGroupMembershipsSuccess(id, role, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(importFetchedAccounts(data.map((membership: APIEntity) => membership.account)));
+      dispatch(expandGroupMembershipsSuccess(id, role, data, next));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
     }).catch(error => {
       dispatch(expandGroupMembershipsFail(id, role, error));
     });
@@ -496,11 +502,12 @@ const fetchGroupMembershipRequests = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(fetchGroupMembershipRequestsRequest(id));
 
-    return api(getState).get(`/api/v1/groups/${id}/membership_requests`).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(`/api/v1/groups/${id}/membership_requests`).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(fetchGroupMembershipRequestsSuccess(id, response.data, next ? next.uri : null));
+      dispatch(importFetchedAccounts(data));
+      dispatch(fetchGroupMembershipRequestsSuccess(id, data, next));
     }).catch(error => {
       dispatch(fetchGroupMembershipRequestsFail(id, error));
     });
@@ -535,12 +542,13 @@ const expandGroupMembershipRequests = (id: string) =>
 
     dispatch(expandGroupMembershipRequestsRequest(id));
 
-    return api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+    return api(getState).get(url).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
 
-      dispatch(importFetchedAccounts(response.data));
-      dispatch(expandGroupMembershipRequestsSuccess(id, response.data, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.map((item: APIEntity) => item.id)));
+      dispatch(importFetchedAccounts(data));
+      dispatch(expandGroupMembershipRequestsSuccess(id, data, next));
+      dispatch(fetchRelationships(data.map((item: APIEntity) => item.id)));
     }).catch(error => {
       dispatch(expandGroupMembershipRequestsFail(id, error));
     });

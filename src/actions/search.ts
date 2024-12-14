@@ -1,4 +1,4 @@
-import api, { getLinks } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts, importFetchedStatuses } from './importer/index.ts';
@@ -72,20 +72,21 @@ const submitSearch = (filter?: SearchFilter) =>
     if (accountId) params.account_id = accountId;
 
     api(getState).get('/api/v2/search', {
-      params,
-    }).then(response => {
-      if (response.data.accounts) {
-        dispatch(importFetchedAccounts(response.data.accounts));
+      searchParams: params,
+    }).then(async (response) => {
+      const next = response.next();
+      const data = await response.json();
+
+      if (data.accounts) {
+        dispatch(importFetchedAccounts(data.accounts));
       }
 
-      if (response.data.statuses) {
-        dispatch(importFetchedStatuses(response.data.statuses));
+      if (data.statuses) {
+        dispatch(importFetchedStatuses(data.statuses));
       }
 
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
-
-      dispatch(fetchSearchSuccess(response.data, value, type, next ? next.uri : null));
-      dispatch(fetchRelationships(response.data.accounts.map((item: APIEntity) => item.id)));
+      dispatch(fetchSearchSuccess(data, value, type, next));
+      dispatch(fetchRelationships(data.accounts.map((item: APIEntity) => item.id)));
     }).catch(error => {
       dispatch(fetchSearchFail(error));
     });
@@ -143,9 +144,10 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
   }
 
   api(getState).get(url, {
-    params,
-  }).then(response => {
-    const data = response.data;
+    searchParams: params,
+  }).then(async (response) => {
+    const next = response.next();
+    const data = await response.json();
 
     if (data.accounts) {
       dispatch(importFetchedAccounts(data.accounts));
@@ -155,9 +157,7 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
       dispatch(importFetchedStatuses(data.statuses));
     }
 
-    const next = getLinks(response).refs.find(link => link.rel === 'next');
-
-    dispatch(expandSearchSuccess(data, value, type, next ? next.uri : null));
+    dispatch(expandSearchSuccess(data, value, type, next));
     dispatch(fetchRelationships(data.accounts.map((item: APIEntity) => item.id)));
   }).catch(error => {
     dispatch(expandSearchFail(error));

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth.ts';
+import { logIn, verifyCredentials, switchAccount, MfaRequiredError } from 'soapbox/actions/auth.ts';
 import { fetchInstance } from 'soapbox/actions/instance.ts';
 import { closeModal, openModal } from 'soapbox/actions/modals.ts';
 import { BigCard } from 'soapbox/components/big-card.tsx';
@@ -15,8 +15,6 @@ import { getRedirectUrl } from 'soapbox/utils/redirect.ts';
 import ConsumersList from './consumers-list.tsx';
 import LoginForm from './login-form.tsx';
 import OtpAuthForm from './otp-auth-form.tsx';
-
-import type { AxiosError } from 'axios';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -53,11 +51,10 @@ const LoginPage = () => {
         } else {
           setShouldRedirect(true);
         }
-      }).catch((error: AxiosError) => {
-        const data: any = error.response?.data;
-        if (data?.error === 'mfa_required') {
+      }).catch((error) => {
+        if (error instanceof MfaRequiredError) {
           setMfaAuthNeeded(true);
-          setMfaToken(data.mfa_token);
+          setMfaToken(error.token);
         }
         setIsLoading(false);
       });

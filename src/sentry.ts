@@ -18,7 +18,7 @@ async function startSentry(dsn: string): Promise<void> {
     // https://docs.sentry.io/platforms/javascript/configuration/filtering/
     ignoreErrors: [
       // Network errors.
-      'AxiosError',
+      'HTTPError',
       // sw.js couldn't be downloaded.
       'Failed to update a ServiceWorker for scope',
       // Useful for try/catch, useless as a Sentry error.

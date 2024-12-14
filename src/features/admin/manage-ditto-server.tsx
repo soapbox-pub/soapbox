@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -150,7 +149,8 @@ const ManageDittoServer: React.FC = () => {
 
       try {
         const response = await dispatch(uploadMedia(data));
-        const attachment = normalizeAttachment(response.data);
+        const json = await response.json();
+        const attachment = normalizeAttachment(json);
 
         if (attachment.type !== 'image') {
           throw new Error('Only images supported.');
@@ -166,11 +166,9 @@ const ManageDittoServer: React.FC = () => {
         setThumbnailLoading(false);
         e.target.value = '';
 
-        if (err instanceof AxiosError) {
-          toast.error(err.response?.data?.error || 'An error occurred');
-          return;
+        if (err instanceof HTTPError) {
+          toast.showAlertForError(err);
         }
-        toast.error((err as Error)?.message || 'An error occurred');
       }
     };
   };
@@ -268,7 +266,8 @@ const ScreenshotInput: StreamfieldComponent<Screenshot> = ({ value, onChange }) 
 
       try {
         const response = await dispatch(uploadMedia(data));
-        const attachment = normalizeAttachment(response.data);
+        const json = await response.json();
+        const attachment = normalizeAttachment(json);
 
         if (attachment.type !== 'image') {
           throw new Error('Only images supported.');
@@ -289,11 +288,9 @@ const ScreenshotInput: StreamfieldComponent<Screenshot> = ({ value, onChange }) 
         setLoading(false);
         e.target.value = '';
 
-        if (err instanceof AxiosError) {
-          toast.error(err.response?.data?.error || 'An error occurred');
-          return;
+        if (err instanceof HTTPError) {
+          toast.showAlertForError(err);
         }
-        toast.error((err as Error)?.message || 'An error occurred');
       }
     };
   };

@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import * as BuildConfig from 'soapbox/build-config.ts';
 import { isURL } from 'soapbox/utils/auth.ts';
 import sourceCode from 'soapbox/utils/code.ts';
@@ -36,17 +34,12 @@ export const prepareRequest = (provider: string) => {
     localStorage.setItem('soapbox:external:baseurl', baseURL);
     localStorage.setItem('soapbox:external:scopes', scopes);
 
-    const params = {
-      provider,
-      authorization: {
-        client_id,
-        redirect_uri,
-        scope: scopes,
-      },
-    };
+    const query = new URLSearchParams({ provider });
 
-    const formdata = axios.toFormData(params);
-    const query = new URLSearchParams(formdata as any);
+    // FIXME: I don't know if this is the correct way to encode the query params.
+    query.append('authorization.client_id', client_id);
+    query.append('authorization.redirect_uri', redirect_uri);
+    query.append('authorization.scope', scopes);
 
     location.href = `${baseURL}/oauth/prepare_request?${query.toString()}`;
   };

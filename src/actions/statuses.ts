@@ -3,7 +3,7 @@ import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { getFeatures } from 'soapbox/utils/features.ts';
 import { shouldHaveCard } from 'soapbox/utils/status.ts';
 
-import api, { getNextLink } from '../api/index.ts';
+import api from '../api/index.ts';
 
 import { setComposeToStatus } from './compose-status.ts';
 import { fetchGroupRelationships } from './groups.ts';
@@ -60,12 +60,13 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
   return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey, editing: !!statusId });
 
-    return api(getState).request({
-      url: statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`,
-      method: statusId === null ? 'post' : 'put',
-      data: params,
-      headers: { 'Idempotency-Key': idempotencyKey },
-    }).then(({ data: status }) => {
+    const method = statusId === null ? 'POST' : 'PUT';
+    const path = statusId === null ? '/api/v1/statuses' : `/api/v1/statuses/${statusId}`;
+    const headers = { 'Idempotency-Key': idempotencyKey };
+
+    return api(getState).request(method, path, params, { headers }).then(async (response) => {
+      const status = await response.json();
+
       // The backend might still be processing the rich media attachment
       if (!status.card && shouldHaveCard(status)) {
         status.expectsCard = true;
@@ -79,9 +80,9 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
         const delay = 1000;
 
         const poll = (retries = 5) => {
-          api(getState).get(`/api/v1/statuses/${status.id}`).then(response => {
-            if (response.data?.card) {
-              dispatch(importFetchedStatus(response.data));
+          api(getState).get(`/api/v1/statuses/${status.id}`).then((response) => response.json()).then((data) => {
+            if (data?.card) {
+              dispatch(importFetchedStatus(data));
             } else if (retries > 0 && response.status === 200) {
               setTimeout(() => poll(retries - 1), delay);
             }
@@ -108,9 +109,9 @@ const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootS
 
   dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
 
-  api(getState).get(`/api/v1/statuses/${id}/source`).then(response => {
+  api(getState).get(`/api/v1/statuses/${id}/source`).then((response) => response.json()).then((data) => {
     dispatch({ type: STATUS_FETCH_SOURCE_SUCCESS });
-    dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.content_type, false));
+    dispatch(setComposeToStatus(status, data.text, data.spoiler_text, data.content_type, false));
     dispatch(openModal('COMPOSE'));
   }).catch(error => {
     dispatch({ type: STATUS_FETCH_SOURCE_FAIL, error });
@@ -124,7 +125,7 @@ const fetchStatus = (id: string) => {
 
     dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
 
-    return api(getState).get(`/api/v1/statuses/${id}`).then(({ data: status }) => {
+    return api(getState).get(`/api/v1/statuses/${id}`).then((response) => response.json()).then((status) => {
       dispatch(importFetchedStatus(status));
       if (status.group) {
         dispatch(fetchGroupRelationships([status.group.id]));
@@ -151,12 +152,12 @@ const deleteStatus = (id: string, withRedraft = false) => {
 
     return api(getState)
       .delete(`/api/v1/statuses/${id}`)
-      .then(response => {
+      .then((response) => response.json()).then((data) => {
         dispatch({ type: STATUS_DELETE_SUCCESS, id });
         dispatch(deleteFromTimelines(id));
 
         if (withRedraft) {
-          dispatch(setComposeToStatus(status, response.data.text, response.data.spoiler_text, response.data.pleroma?.content_type, withRedraft));
+          dispatch(setComposeToStatus(status, data.text, data.spoiler_text, data.pleroma?.content_type, withRedraft));
           dispatch(openModal('COMPOSE'));
         }
       })
@@ -173,7 +174,7 @@ const fetchContext = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
-    return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
+    return api(getState).get(`/api/v1/statuses/${id}/context`).then((response) => response.json()).then((context) => {
       if (Array.isArray(context)) {
         // Mitra: returns a list of statuses
         dispatch(importFetchedStatuses(context));
@@ -199,29 +200,33 @@ const fetchContext = (id: string) =>
 const fetchNext = (statusId: string, next: string) =>
   async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(next);
-    dispatch(importFetchedStatuses(response.data));
+    const data = await response.json();
+
+    dispatch(importFetchedStatuses(data));
 
     dispatch({
       type: CONTEXT_FETCH_SUCCESS,
       id: statusId,
       ancestors: [],
-      descendants: response.data,
+      descendants: data,
     });
 
-    return { next: getNextLink(response) };
+    return { next: response.pagination().next };
   };
 
 const fetchAncestors = (id: string) =>
   async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/ancestors`);
-    dispatch(importFetchedStatuses(response.data));
+    const data = await response.json();
+    dispatch(importFetchedStatuses(data));
     return response;
   };
 
 const fetchDescendants = (id: string) =>
   async(dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/descendants`);
-    dispatch(importFetchedStatuses(response.data));
+    const data = await response.json();
+    dispatch(importFetchedStatuses(data));
     return response;
   };
 
@@ -231,7 +236,8 @@ const fetchStatusWithContext = (id: string) =>
 
     if (features.paginatedContext) {
       await dispatch(fetchStatus(id));
-      const responses = await Promise.all([
+
+      const [ancestors, descendants] = await Promise.all([
         dispatch(fetchAncestors(id)),
         dispatch(fetchDescendants(id)),
       ]);
@@ -239,18 +245,17 @@ const fetchStatusWithContext = (id: string) =>
       dispatch({
         type: CONTEXT_FETCH_SUCCESS,
         id,
-        ancestors: responses[0].data,
-        descendants: responses[1].data,
+        ancestors: await ancestors.json(),
+        descendants: await descendants.json(),
       });
 
-      const next = getNextLink(responses[1]);
-      return { next };
+      return descendants.pagination();
     } else {
       await Promise.all([
         dispatch(fetchContext(id)),
         dispatch(fetchStatus(id)),
       ]);
-      return { next: undefined };
+      return { next: null, prev: null };
     }
   };
 
@@ -323,11 +328,11 @@ const translateStatus = (id: string, lang?: string) => (dispatch: AppDispatch, g
   api(getState).post(`/api/v1/statuses/${id}/translate`, {
     lang, // Mastodon API
     target_language: lang, // HACK: Rebased and Pleroma compatibility
-  }).then(response => {
+  }).then((response) => response.json()).then((data) => {
     dispatch({
       type: STATUS_TRANSLATE_SUCCESS,
       id,
-      translation: response.data,
+      translation: data,
     });
   }).catch(error => {
     dispatch({
