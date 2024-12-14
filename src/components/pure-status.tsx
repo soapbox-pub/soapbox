@@ -9,6 +9,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
 import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
+import PureStatusActionBar from 'soapbox/components/pure-status-action-bar.tsx';
 import PureStatusContent from 'soapbox/components/pure-status-content.tsx';
 import PureStatusReplyMentions from 'soapbox/components/pure-status-reply-mentions.tsx';
 import PureTranslateButton from 'soapbox/components/pure-translate-button.tsx';
@@ -27,13 +28,10 @@ import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useStatusHidden } from 'soapbox/hooks/useStatusHidden.ts';
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
 
-import StatusActionBar from './status-action-bar.tsx';
 import StatusMedia from './status-media.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
@@ -125,8 +123,6 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
       setMinHeight(overlay.current.getBoundingClientRect().height);
     }
   }, [overlay.current]);
-
-  const statusImmutable = normalizeStatus(status) as LegacyStatus; // TODO: remove this line, it will be removed once all components in this file are pure.
 
   const handleToggleMediaVisibility = (): void => {
     setShowMedia(!showMedia);
@@ -492,7 +488,7 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
 
             {(!hideActionBar && !isUnderReview) && (
               <div className='pt-4'>
-                <StatusActionBar status={statusImmutable} /> {/* FIXME: stop using 'statusImmutable' and use 'status' variable directly, for that create a new component called 'PureStatusActionBar' */}
+                <PureStatusActionBar status={status} />
               </div>
             )}
           </div>
