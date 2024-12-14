@@ -61,7 +61,7 @@ function useBookmark() {
       const response = await api.post(`/api/v1/statuses/${statusId}/bookmark`);
       const result = statusSchema.safeParse(await response.json());
       if (result.success) {
-        dispatch(importEntities([result.data], Entities.STATUSES, 'bookmarks'));
+        dispatch(importEntities([result.data], Entities.STATUSES, 'bookmarks', 'start'));
       }
       return { success: true };
     } catch (e) {
