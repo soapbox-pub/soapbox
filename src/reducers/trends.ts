@@ -1,5 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-
 import { normalizeTag } from 'soapbox/normalizers/index.ts';
 
 import {
@@ -11,24 +9,32 @@ import {
 import type { AnyAction } from 'redux';
 import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
 
-const ReducerRecord = ImmutableRecord({
-  items: ImmutableList<Tag>(),
+interface State {
+  items: Tag[];
+  isLoading: boolean;
+}
+
+const ReducerRecord: State = {
+  items: [] as Tag[],
   isLoading: false,
-});
+};
 
-type State = ReturnType<typeof ReducerRecord>;
+interface TrendsFetchSuccessAction extends AnyAction {
+  type: typeof TRENDS_FETCH_SUCCESS;
+  tags: APIEntity[];
+}
 
-export default function trendsReducer(state: State = ReducerRecord(), action: AnyAction) {
+export default function trendsReducer(state: State = ReducerRecord, action: AnyAction) {
   switch (action.type) {
     case TRENDS_FETCH_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case TRENDS_FETCH_SUCCESS:
-      return state.withMutations(map => {
-        map.set('items', ImmutableList(action.tags.map((item: APIEntity) => normalizeTag(item))));
-        map.set('isLoading', false);
-      });
+    {
+      const typedAction = action as TrendsFetchSuccessAction;
+      return { ...state, items: typedAction.tags.map((item: APIEntity) => normalizeTag(item)), isLoading: false };
+    }
     case TRENDS_FETCH_FAIL:
-      return state.set('isLoading', false);
+      return { ...state, isLoading: false };
     default:
       return state;
   }
