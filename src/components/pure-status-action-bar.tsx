@@ -45,8 +45,8 @@ import { deleteFromTimelines } from 'soapbox/actions/timelines.ts';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus.ts';
 import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
 import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import PureStatusReactionWrapper from 'soapbox/components/pure-status-reaction-wrapper.tsx';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
-import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -805,7 +805,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
         )}
 
         {features.emojiReacts ? (
-          <StatusReactionWrapper statusId={status.id}>
+          <PureStatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={heartIcon}
@@ -816,7 +816,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
               emoji={meEmojiReact}
               theme={statusActionButtonTheme}
             />
-          </StatusReactionWrapper>
+          </PureStatusReactionWrapper>
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
