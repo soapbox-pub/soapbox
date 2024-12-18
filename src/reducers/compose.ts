@@ -110,7 +110,7 @@ export interface Compose {
   group_timeline_visible: boolean; // TruthSocial
 }
 
-const initialCompose: Compose = {
+export const initialCompose: Compose = {
   caretPosition: null,
   content_type: 'text/plain',
   editorState: null,
@@ -351,11 +351,6 @@ const importAccount = (compose: Compose, account: APIEntity) => {
     content_type: defaultContentType ?? compose.content_type,
     tagHistory: tagHistory.get(account.id) || compose.tagHistory,
   };
-  // compose.withMutations(compose => {
-  //   if (defaultPrivacy) compose.set('privacy', defaultPrivacy);
-  //   if (defaultContentType) compose.set('content_type', defaultContentType);
-  //   compose.set('tagHistory', ImmutableList(tagHistory.get(account.id)));
-  // });
 };
 
 const updateSetting = (compose: Compose, path: string[], value: string) => {
@@ -371,10 +366,12 @@ const updateSetting = (compose: Compose, path: string[], value: string) => {
 };
 
 const updateCompose = (state: State, key: string, updater: (compose: Compose) => Compose) => {
-  const updatedCompose = updater(state[key]);
+  const defaultCompose = state.default;
+  const currentCompose = state[key] || defaultCompose;
+
   return {
-    ...compose,
-    [key]: updatedCompose,
+    ...state,
+    [key]: updater(currentCompose),
   };
 };
 
