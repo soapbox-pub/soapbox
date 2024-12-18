@@ -156,7 +156,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
             onChange={onChangeOption}
             onRemove={onRemoveOption}
             maxChars={maxOptionChars}
-            numOptions={options.size}
+            numOptions={options.length}
             onRemovePoll={onRemovePoll}
           />
         ))}
@@ -164,7 +164,7 @@ const PollForm: React.FC<IPollForm> = ({ composeId }) => {
         <HStack space={2}>
           <div className='w-6' />
 
-          {options.size < maxOptions && (
+          {options.length < maxOptions && (
             <Button
               theme='secondary'
               onClick={handleAddOption}

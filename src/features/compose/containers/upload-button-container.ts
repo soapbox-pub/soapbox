@@ -8,8 +8,8 @@ import type { IntlShape } from 'react-intl';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
 const mapStateToProps = (state: RootState, { composeId }: { composeId: string }) => ({
-  disabled: state.compose.get(composeId)?.is_uploading,
-  resetFileKey: state.compose.get(composeId)?.resetFileKey!,
+  disabled: state.compose[composeId]?.is_uploading,
+  resetFileKey: state.compose[composeId]?.resetFileKey!,
 });
 
 const mapDispatchToProps = (dispatch: AppDispatch, { composeId }: { composeId: string }) => ({

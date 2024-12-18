@@ -2,7 +2,6 @@ import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import clsx from 'clsx';
 import { throttle } from 'es-toolkit';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -26,7 +25,7 @@ interface ILocationSearch {
 const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const [locationIds, setLocationIds] = useState(ImmutableOrderedSet<string>());
+  const [locationIds, setLocationIds] = useState(new Set<string>());
   const controller = useRef(new AbortController());
 
   const [value, setValue] = useState('');
@@ -67,14 +66,14 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
   };
 
   const clearResults = () => {
-    setLocationIds(ImmutableOrderedSet());
+    setLocationIds(new Set<string>());
   };
 
   const handleLocationSearch = useCallback(throttle(q => {
     dispatch(locationSearch(q, controller.current.signal))
       .then((locations: { origin_id: string }[]) => {
         const locationIds = locations.map(location => location.origin_id);
-        setLocationIds(ImmutableOrderedSet(locationIds));
+        setLocationIds(new Set<string>(locationIds));
       })
       .catch(noOp);
 
@@ -93,7 +92,7 @@ const LocationSearch: React.FC<ILocationSearch> = ({ onSelected }) => {
         placeholder={intl.formatMessage(messages.placeholder)}
         value={value}
         onChange={handleChange}
-        suggestions={locationIds.toList()}
+        suggestions={Array.from(locationIds)}
         onSuggestionsFetchRequested={noOp}
         onSuggestionsClearRequested={noOp}
         onSuggestionSelected={handleSelected}

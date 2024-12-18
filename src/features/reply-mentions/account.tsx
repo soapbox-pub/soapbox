@@ -29,7 +29,7 @@ const Account: React.FC<IAccount> = ({ composeId, accountId, author }) => {
 
   const compose = useCompose(composeId);
   const { account } = useAccount(accountId);
-  const added = !!account && compose.to?.includes(account.acct);
+  const added = !!account && Array.from(compose.to)?.includes(account.acct);
 
   const onRemove = () => dispatch(removeFromMentions(composeId, accountId));
   const onAdd = () => dispatch(addToMentions(composeId, accountId));

@@ -297,7 +297,7 @@ const AutosuggestPlugin = ({
   };
 
   const onSelectSuggestion = (index: number) => {
-    const suggestion = suggestions.get(index) as AutoSuggestion;
+    const suggestion = suggestions[index] as AutoSuggestion;
 
     editor.update(() => {
       dispatch((dispatch, getState) => {
@@ -443,11 +443,11 @@ const AutosuggestPlugin = ({
   ]);
 
   useEffect(() => {
-    if (suggestions && suggestions.size > 0) setSuggestionsHidden(false);
+    if (suggestions && suggestions.length > 0) setSuggestionsHidden(false);
   }, [suggestions]);
 
   useEffect(() => {
-    if (resolution !== null && !suggestionsHidden && !suggestions.isEmpty()) {
+    if (resolution !== null && !suggestionsHidden && suggestions.length > 0) {
       const handleClick = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
 
@@ -459,7 +459,7 @@ const AutosuggestPlugin = ({
 
       return () => document.removeEventListener('click', handleClick);
     }
-  }, [resolution, suggestionsHidden, suggestions.isEmpty()]);
+  }, [resolution, suggestionsHidden, suggestions.length === 0]);
 
   useEffect(() => {
     if (resolution === null) return;
@@ -469,8 +469,8 @@ const AutosuggestPlugin = ({
         KEY_ARROW_UP_COMMAND,
         (payload) => {
           const event = payload;
-          if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
-            const newSelectedSuggestion = selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.size - 1;
+          if (suggestions !== null && suggestions.length && selectedSuggestion !== null) {
+            const newSelectedSuggestion = selectedSuggestion !== 0 ? selectedSuggestion - 1 : suggestions.length - 1;
             setSelectedSuggestion(newSelectedSuggestion);
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -483,8 +483,8 @@ const AutosuggestPlugin = ({
         KEY_ARROW_DOWN_COMMAND,
         (payload) => {
           const event = payload;
-          if (suggestions !== null && suggestions.size && selectedSuggestion !== null) {
-            const newSelectedSuggestion = selectedSuggestion !== suggestions.size - 1 ? selectedSuggestion + 1 : 0;
+          if (suggestions !== null && suggestions.length && selectedSuggestion !== null) {
+            const newSelectedSuggestion = selectedSuggestion !== suggestions.length - 1 ? selectedSuggestion + 1 : 0;
             setSelectedSuggestion(newSelectedSuggestion);
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -540,8 +540,8 @@ const AutosuggestPlugin = ({
             <div
               className={clsx({
                 'scroll-smooth snap-y snap-always will-change-scroll mt-6 overflow-y-auto max-h-56 relative w-max z-[1000] shadow bg-white dark:bg-gray-900 rounded-lg py-1 space-y-0 dark:ring-2 dark:ring-primary-700 focus:outline-none': true,
-                hidden: suggestionsHidden || suggestions.isEmpty(),
-                block: !suggestionsHidden && !suggestions.isEmpty(),
+                hidden: suggestionsHidden || suggestions.length === 0,
+                block: !suggestionsHidden && suggestions.length > 0,
               })}
             >
               {suggestions.map(renderSuggestion)}
