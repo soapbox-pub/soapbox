@@ -1,5 +1,4 @@
 import { throttle } from 'es-toolkit';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
 import { accountSearch } from 'soapbox/actions/accounts.ts';
@@ -32,7 +31,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   ...rest
 }) => {
   const dispatch = useAppDispatch();
-  const [accountIds, setAccountIds] = useState(ImmutableOrderedSet<string>());
+  const [accountIds, setAccountIds] = useState(new Set<string>());
   const controller = useRef(new AbortController());
 
   const refreshCancelToken = () => {
@@ -41,7 +40,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
   };
 
   const clearResults = () => {
-    setAccountIds(ImmutableOrderedSet());
+    setAccountIds(new Set<string>());
   };
 
   const handleAccountSearch = useCallback(throttle((q) => {
@@ -50,7 +49,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     dispatch(accountSearch(params, controller.current.signal))
       .then((accounts: { id: string }[]) => {
         const accountIds = accounts.map(account => account.id);
-        setAccountIds(ImmutableOrderedSet(accountIds));
+        setAccountIds(new Set<string>(accountIds));
       })
       .catch(noOp);
   }, 900, { edges: ['leading', 'trailing'] }), [limit]);
@@ -83,7 +82,7 @@ const AutosuggestAccountInput: React.FC<IAutosuggestAccountInput> = ({
     <AutosuggestInput
       value={value}
       onChange={handleChange}
-      suggestions={accountIds.toList()}
+      suggestions={Array.from(accountIds)}
       onSuggestionsFetchRequested={noOp}
       onSuggestionsClearRequested={noOp}
       onSuggestionSelected={handleSelected}
