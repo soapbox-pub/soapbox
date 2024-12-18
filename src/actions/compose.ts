@@ -307,7 +307,7 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
 
     if (mentions) {
       const trimmedMentions = mentions.map(mention => mention.trim().slice(1));
-      to = new Set([...to, ...trimmedMentions]);
+      to = [...to, ...trimmedMentions];
     }
 
     dispatch(submitComposeRequest(composeId));

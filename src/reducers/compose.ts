@@ -106,7 +106,7 @@ export interface Compose {
   suggestion_token: string | null;
   tagHistory: string[];
   text: string;
-  to: Set<string>;
+  to: string[];
   group_timeline_visible: boolean; // TruthSocial
 }
 
@@ -137,43 +137,12 @@ export const initialCompose: Compose = {
   suggestion_token: null,
   tagHistory: [],
   text: '',
-  to: new Set<string>(),
+  to: [],
   group_timeline_visible: false, // TruthSocial
 };
 
-// export const ReducerCompose = ImmutableRecord({
-// caretPosition: null as number | null,
-// content_type: 'text/plain',
-// editorState: null as string | null,
-// focusDate: null as Date | null,
-// group_id: null as string | null,
-// idempotencyKey: '',
-// id: null as string | null,
-// in_reply_to: null as string | null,
-// is_changing_upload: false,
-// is_composing: false,
-// is_submitting: false,
-// is_uploading: false,
-// media_attachments: ImmutableList<AttachmentEntity>(),
-// poll: null as Poll | null,
-// privacy: 'public',
-// progress: 0,
-// quote: null as string | null,
-// resetFileKey: null as number | null,
-// schedule: null as Date | null,
-// sensitive: false,
-// spoiler: false,
-// spoiler_text: '',
-// suggestions: ImmutableList<string>(),
-// suggestion_token: null as string | null,
-// tagHistory: ImmutableList<string>(),
-// text: '',
-// to: ImmutableOrderedSet<string>(),
-// group_timeline_visible: false, // TruthSocial
-// });
 
 type State = Record<string, Compose>;
-// type Poll = ReturnType<typeof PollRecord>;
 type Poll = {
   options: string[];
   expires_in: number;
@@ -198,11 +167,11 @@ export const statusToMentionsArray = (status: Status, account: Account) => {
   const author = status.account.acct as string;
   const mentions = status.mentions?.map((m) => m.acct) || [];
 
-  const mentionsSet = new Set<string>([author, ...mentions]);
+  const mentionsSet = [author, ...mentions];
 
-  mentionsSet.delete(account.acct);
+  const updatedArray = mentionsSet.filter(item => item !== account.acct);
 
-  return mentionsSet;
+  return updatedArray;
 };
 
 export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: Account) => {
@@ -332,7 +301,7 @@ const getExplicitMentions = (me: string, status: Status) => {
     .filter((mention) => !(fragment.querySelector(`a[href="${mention.url}"]`) || mention.id === me))
     .map((m) => m.acct);
 
-  return new Set(mentions);
+  return mentions.toJS();
 };
 
 const getAccountSettings = (account: ImmutableMap<string, any>) => {
@@ -431,7 +400,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
           ...compose,
           group_id: action.status.group?.id as string,
           in_reply_to: action.status.id,
-          to: action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : new Set<string>(),
+          to: action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : [] as string[],
           text: !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '',
           privacy: privacyPreference(action.status.visibility, defaultCompose.privacy),
           focusDate: new Date(),
@@ -465,7 +434,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         let updatedCompose = {
           ...compose,
           quote: action.status.id,
-          to: new Set<string>([author]),
+          to: [author],
           text: '',
           privacy: privacyPreference(action.status.visibility, defaultCompose.privacy),
           focusDate: new Date(),
@@ -621,7 +590,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         let updatedCompose = {
           ...compose,
           text: action.rawText || htmlToPlaintext(expandMentions(action.status)),
-          to: action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : new Set<string>(),
+          to: action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : [],
           in_reply_to: action.status.in_reply_to_id,
           privacy: action.status.visibility,
           focusDate: new Date(),
@@ -744,16 +713,13 @@ export default function compose(state = initialState, action: ComposeAction | Ev
       });
     case COMPOSE_ADD_TO_MENTIONS:
       return updateCompose(state, action.id, compose => ({
-        ...compose, to: compose.to.add(action.account),
+        ...compose, to: [...compose.to, action.account],
       }));
     case COMPOSE_REMOVE_FROM_MENTIONS:
       return updateCompose(state, action.id, compose => {
-        const updatedTo = new Set(compose.to);
-        updatedTo.delete(action.account);
-
         return {
           ...compose,
-          to: updatedTo,
+          to: compose.to.filter(item => item !== action.account),
         };
       });
     case COMPOSE_SET_GROUP_TIMELINE_VISIBLE:
