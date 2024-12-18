@@ -59,14 +59,14 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     );
   }
 
-  const accounts = to.slice(0, 2).map((acct: string) => {
+  const accounts = [...to].slice(0, 2).map((acct: string) => {
     const username = acct.split('@')[0];
     return (
       <span className='inline-block text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue'>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
         @{shortenNostr(username)}
       </span>
     );
-  }).toArray();
+  });
 
   if (to.size > 2) {
     accounts.push(
