@@ -22,7 +22,7 @@ export const baseClient = (
   accessToken?: string | null,
   baseURL?: string,
 ): MastodonClient => {
-  return new MastodonClient(baseURL || location.origin, accessToken || undefined);
+  return new MastodonClient(baseURL || BuildConfig.BACKEND_URL || location.origin, accessToken || undefined);
 };
 
 /**

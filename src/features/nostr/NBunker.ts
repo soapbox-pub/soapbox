@@ -183,7 +183,7 @@ export class NBunker {
   private async sendResponse(pubkey: string, response: NostrConnectResponse): Promise<void> {
     const { bunkerSigner, relay } = this.opts;
 
-    const content = await bunkerSigner.nip04!.encrypt(pubkey, JSON.stringify(response));
+    const content = await bunkerSigner.nip44!.encrypt(pubkey, JSON.stringify(response));
 
     const event = await bunkerSigner.signEvent({
       kind: 24133,
@@ -198,11 +198,7 @@ export class NBunker {
   /** Auto-decrypt NIP-44 or NIP-04 ciphertext. */
   private async decrypt(pubkey: string, ciphertext: string): Promise<string> {
     const { bunkerSigner } = this.opts;
-    try {
-      return await bunkerSigner.nip44!.decrypt(pubkey, ciphertext);
-    } catch {
-      return await bunkerSigner.nip04!.decrypt(pubkey, ciphertext);
-    }
+    return await bunkerSigner.nip44!.decrypt(pubkey, ciphertext);
   }
 
   /** Authorize the pubkey to perform signer actions (ie any other actions besides `connect`). */

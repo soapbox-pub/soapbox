@@ -57,18 +57,25 @@ export class MastodonClient {
         ? opts.searchParams
         : Object
           .entries(opts.searchParams)
-          .reduce<[string, string][]>((acc, [key, value]) => {
+          .reduce<URLSearchParams>((acc, [key, value]) => {
             if (Array.isArray(value)) {
               for (const v of value) {
-                acc.push([`${key}[]`, String(v)]);
+                acc.append(`${key}[]`, String(v));
               }
             } else if (value !== undefined && value !== null) {
-              acc.push([key, String(value)]);
+              acc.append(key, String(value));
             }
             return acc;
-          }, []);
+          }, new URLSearchParams());
 
-      url.search = new URLSearchParams(params).toString();
+      // Merge search params.
+      // If a key exists in the URL, it will be replaced. Otherwise it will be added.
+      for (const key of params.keys()) {
+        url.searchParams.delete(key);
+      }
+      for (const [key, value] of params) {
+        url.searchParams.append(key, value);
+      }
     }
 
     const headers = new Headers(opts.headers);
