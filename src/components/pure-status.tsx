@@ -8,6 +8,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals.ts';
 import { unfilterStatus } from 'soapbox/actions/statuses.ts';
+import { useFavourite } from 'soapbox/api/hooks/index.ts';
 import PureEventPreview from 'soapbox/components/pure-event-preview.tsx';
 import PureStatusActionBar from 'soapbox/components/pure-status-action-bar.tsx';
 import PureStatusContent from 'soapbox/components/pure-status-content.tsx';
@@ -22,7 +23,6 @@ import AccountContainer from 'soapbox/containers/account-container.tsx';
 import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFavourite } from 'soapbox/hooks/useFavourite.ts';
 import { useMentionCompose } from 'soapbox/hooks/useMentionCompose.ts';
 import { useReblog } from 'soapbox/hooks/useReblog.ts';
 import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
