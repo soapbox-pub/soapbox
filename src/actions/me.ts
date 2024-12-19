@@ -53,16 +53,12 @@ const fetchMe = () =>
       .catch(error => dispatch(fetchMeFail(error)));
   };
 
-const patchMe = (params: Record<string, any>, isFormData = false) =>
+const patchMe = (params: Record<string, any> | FormData) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(patchMeRequest());
 
-    const headers = isFormData ? {
-      'Content-Type': 'multipart/form-data',
-    } : undefined;
-
     return api(getState)
-      .patch('/api/v1/accounts/update_credentials', params, { headers })
+      .patch('/api/v1/accounts/update_credentials', params)
       .then((response) => response.json()).then((data) => {
         dispatch(patchMeSuccess(data));
       }).catch(error => {
