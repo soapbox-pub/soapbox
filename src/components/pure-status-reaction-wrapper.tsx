@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, cloneElement } from 'react';
 
-import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
+import { useReaction } from 'soapbox/api/hooks/index.ts';
 import EmojiSelector from 'soapbox/components/ui/emoji-selector.tsx';
 import Portal from 'soapbox/components/ui/portal.tsx';
 import { Entities } from 'soapbox/entity-store/entities.ts';
@@ -10,10 +10,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useGetState } from 'soapbox/hooks/useGetState.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-
-import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 interface IPureStatusReactionWrapper {
   statusId: string;
@@ -27,6 +24,7 @@ const PureStatusReactionWrapper: React.FC<IPureStatusReactionWrapper> = ({ statu
   const getState = useGetState();
 
   const status = selectEntity<StatusEntity>(getState(), Entities.STATUSES, statusId);
+  const { simpleEmojiReact } = useReaction();
 
   const timeout = useRef<NodeJS.Timeout>();
   const [visible, setVisible] = useState(false);
@@ -71,7 +69,7 @@ const PureStatusReactionWrapper: React.FC<IPureStatusReactionWrapper> = ({ statu
 
   const handleReact = (emoji: string, custom?: string): void => {
     if (ownAccount) {
-      dispatch(simpleEmojiReact(normalizeStatus(status) as LegacyStatus, emoji, custom));
+      simpleEmojiReact(status, emoji);
     } else {
       handleUnauthorized();
     }
