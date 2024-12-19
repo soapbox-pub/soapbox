@@ -79,11 +79,6 @@ interface AccountCredentialsSource {
   sensitive?: boolean;
   /** Default language to use for authored statuses. (ISO 6391) */
   language?: string;
-  /** Nostr metadata. */
-  nostr?: {
-    /** Nostr NIP-05 identifier. */
-    nip05?: string;
-  };
 }
 
 /**
@@ -214,6 +209,10 @@ const EditProfile: React.FC = () => {
   const avatar = useImageField({ maxPixels: 400 * 400, preview: nonDefaultAvatar(account?.avatar) });
   const header = useImageField({ maxPixels: 1920 * 1080, preview: nonDefaultHeader(account?.header) });
 
+  // `null` means the file was explicitly cleared. `undefined` means unchanged.
+  useEffect(() => updateData('avatar', avatar.file === null ? '' : avatar.file), [avatar.file]);
+  useEffect(() => updateData('header', header.file === null ? '' : header.file), [header.file]);
+
   useEffect(() => {
     if (account) {
       const credentials = accountToCredentials(account);
@@ -231,14 +230,38 @@ const EditProfile: React.FC = () => {
   };
 
   const handleSubmit: React.FormEventHandler = (event) => {
-    const promises = [];
+    const formdata = new FormData();
 
-    const params = { ...data };
-    if (params.fields_attributes?.length === 0) params.fields_attributes = [{ name: '', value: '' }];
-    if (header.file !== undefined) params.header = header.file || '';
-    if (avatar.file !== undefined) params.avatar = avatar.file || '';
+    for (const [key, value] of Object.entries(data) as [string, unknown][]) {
+      if (key === 'fields_attributes') {
+        const fields = data.fields_attributes || [];
+        fields.forEach((field, i) => {
+          formdata.set(`fields_attributes[${i}][name]`, field.name);
+          formdata.set(`fields_attributes[${i}][value]`, field.value);
+        });
+      } else if (key === 'source') {
+        for (const [k, v] of Object.entries(data.source || {})) {
+          formdata.set(`source[${k}]`, String(v));
+        }
+      } else if (value instanceof Blob) {
+        formdata.set(key, value);
+      } else if (['string', 'number', 'boolean'].includes(typeof value)) {
+        formdata.set(key, String(value));
+      } else if (value) {
+        throw new Error('Could not encode profile data into a FormData object.');
+      }
+    }
 
-    promises.push(dispatch(patchMe(params, true)));
+    // Having zero profile fields should remove them from the account.
+    // On Mastodon, it's only possible to do this by sending one field with empty values.
+    if (data.fields_attributes?.length === 0) {
+      formdata.set('fields_attributes[0][name]', '');
+      formdata.set('fields_attributes[0][value]', '');
+    }
+
+    const promises = [
+      dispatch(patchMe(formdata)),
+    ];
 
     if (features.muteStrangers) {
       promises.push(
