@@ -15,14 +15,6 @@ import {
 import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses.ts';
 
 import {
-  BOOKMARKED_STATUSES_FETCH_REQUEST,
-  BOOKMARKED_STATUSES_FETCH_SUCCESS,
-  BOOKMARKED_STATUSES_FETCH_FAIL,
-  BOOKMARKED_STATUSES_EXPAND_REQUEST,
-  BOOKMARKED_STATUSES_EXPAND_SUCCESS,
-  BOOKMARKED_STATUSES_EXPAND_FAIL,
-} from '../actions/bookmarks.ts';
-import {
   RECENT_EVENTS_FETCH_REQUEST,
   RECENT_EVENTS_FETCH_SUCCESS,
   RECENT_EVENTS_FETCH_FAIL,
@@ -156,16 +148,6 @@ export default function statusLists(state = initialState, action: AnyAction) {
       return normalizeList(state, `favourites:${action.accountId}`, action.statuses, action.next);
     case ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS:
       return appendToList(state, `favourites:${action.accountId}`, action.statuses, action.next);
-    case BOOKMARKED_STATUSES_FETCH_REQUEST:
-    case BOOKMARKED_STATUSES_EXPAND_REQUEST:
-      return setLoading(state, 'bookmarks', true);
-    case BOOKMARKED_STATUSES_FETCH_FAIL:
-    case BOOKMARKED_STATUSES_EXPAND_FAIL:
-      return setLoading(state, 'bookmarks', false);
-    case BOOKMARKED_STATUSES_FETCH_SUCCESS:
-      return normalizeList(state, 'bookmarks', action.statuses, action.next);
-    case BOOKMARKED_STATUSES_EXPAND_SUCCESS:
-      return appendToList(state, 'bookmarks', action.statuses, action.next);
     case FAVOURITE_SUCCESS:
       return prependOneToList(state, 'favourites', action.status);
     case UNFAVOURITE_SUCCESS:
