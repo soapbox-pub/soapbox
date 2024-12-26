@@ -57,9 +57,13 @@ async function showAlertForError(networkError: HTTPError): Promise<void> {
       return;
     }
 
-    const data = await response.error();
-    if (data) {
-      return error(data.error);
+    try {
+      const data = await response.error();
+      if (data) {
+        return error(data.error);
+      }
+    } catch {
+      // fallthrough
     }
 
     const message = httpErrorMessages.find((httpError) => httpError.code === status)?.description;
