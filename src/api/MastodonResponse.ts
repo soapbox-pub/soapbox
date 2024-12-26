@@ -81,7 +81,7 @@ export class MastodonResponse extends Response {
         z.string(),
         z.object({ error: z.string(), description: z.string() }).array(),
       ).optional(),
-    });
+    }).passthrough();
   }
 
 }
