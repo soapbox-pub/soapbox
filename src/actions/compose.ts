@@ -384,7 +384,10 @@ const uploadCompose = (composeId: string, files: FileList, intl: IntlShape) =>
         f,
         intl,
         (data) => dispatch(uploadComposeSuccess(composeId, data, f)),
-        (error) => dispatch(uploadComposeFail(composeId, error)),
+        (error) => {
+          console.error(error);
+          dispatch(uploadComposeFail(composeId, error));
+        },
         (e: ProgressEvent) => {
           progress[i] = e.loaded;
           dispatch(uploadComposeProgress(composeId, progress.reduce((a, v) => a + v, 0), e.total));

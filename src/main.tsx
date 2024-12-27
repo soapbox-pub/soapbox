@@ -1,3 +1,5 @@
+import 'soapbox/polyfill/Promise.withResolvers.ts';
+
 import { enableMapSet } from 'immer';
 import { createRoot } from 'react-dom/client';
 
