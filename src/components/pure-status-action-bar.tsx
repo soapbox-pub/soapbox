@@ -34,26 +34,31 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import { blockAccount } from 'soapbox/actions/accounts.ts';
 import { launchChat } from 'soapbox/actions/chats.ts';
-import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose.ts';
+import { directCompose, mentionCompose } from 'soapbox/actions/compose.ts';
 import { editEvent } from 'soapbox/actions/events.ts';
-import { pinToGroup, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
+import { ReportableEntities } from 'soapbox/actions/reports.ts';
 import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses.ts';
 import { deleteFromTimelines } from 'soapbox/actions/timelines.ts';
 import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus.ts';
-import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
+import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup, useFavourite } from 'soapbox/api/hooks/index.ts';
 import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
+import PureStatusReactionWrapper from 'soapbox/components/pure-status-reaction-wrapper.tsx';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
-import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useDislike } from 'soapbox/hooks/useDislike.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInitReport } from 'soapbox/hooks/useInitReport.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { usePin } from 'soapbox/hooks/usePin.ts';
+import { usePinGroup } from 'soapbox/hooks/usePinGroup.ts';
+import { useQuoteCompose } from 'soapbox/hooks/useQuoteCompose.ts';
 import { useReblog } from 'soapbox/hooks/useReblog.ts';
+import { useReplyCompose } from 'soapbox/hooks/useReplyCompose.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { GroupRoles } from 'soapbox/schemas/group-member.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
@@ -63,7 +68,7 @@ import copy from 'soapbox/utils/copy.ts';
 import GroupPopover from './groups/popover/group-popover.tsx';
 
 import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Group, Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Group } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
@@ -144,14 +149,14 @@ const messages = defineMessages({
   zap: { id: 'status.zap', defaultMessage: 'Zap' },
 });
 
-interface IStatusActionBar {
-  status: LegacyStatus;
+interface IPureStatusActionBar {
+  status: StatusEntity;
   expandable?: boolean;
   space?: 'sm' | 'md' | 'lg';
   statusActionButtonTheme?: 'default' | 'inverse';
 }
 
-const StatusActionBar: React.FC<IStatusActionBar> = ({
+const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   status,
   expandable = true,
   space = 'sm',
@@ -178,8 +183,15 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 
-  const { toggleReblog } = useReblog();
+  const { replyCompose } = useReplyCompose();
+  const { toggleFavourite } = useFavourite();
+  const { toggleDislike } = useDislike();
   const { bookmark, unbookmark } = useBookmark();
+  const { toggleReblog } = useReblog();
+  const { quoteCompose } = useQuoteCompose();
+  const { togglePin } = usePin();
+  const { unpinFromGroup, pinToGroup } = usePinGroup();
+  const { initReport } = useInitReport();
 
   if (!status) {
     return null;
@@ -194,7 +206,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReplyClick: React.MouseEventHandler = (e) => {
     if (me) {
-      dispatch(replyCompose(status));
+      replyCompose(status.id);
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -211,7 +223,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(toggleFavourite(status));
+      toggleFavourite(status.id);
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
@@ -219,7 +231,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleDislikeClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(toggleDislike(status));
+      toggleDislike(status.id);
     } else {
       onOpenUnauthorizedModal('DISLIKE');
     }
@@ -257,7 +269,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
-        dispatch(openModal('BOOST', { status: status.toJS(), onReblog: modalReblog }));
+        dispatch(openModal('BOOST', { status, onReblog: modalReblog }));
       }
     } else {
       onOpenUnauthorizedModal('REBLOG');
@@ -266,7 +278,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleQuoteClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(quoteCompose(status));
+      quoteCompose(status.id);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -302,17 +314,15 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(togglePin(status));
+    togglePin(status.id);
   };
 
   const handleGroupPinClick: React.EventHandler<React.MouseEvent> = () => {
-    const group = status.group as Group;
-
     if (status.pinned) {
-      dispatch(unpinFromGroup(status, group));
+      unpinFromGroup(status.id);
     } else {
-      dispatch(pinToGroup(status, group))
-        .then(() => toast.success(intl.formatMessage(messages.pinToGroupSuccess)))
+      pinToGroup(status.id)
+        ?.then(() => toast.success(intl.formatMessage(messages.pinToGroupSuccess)))
         .catch(() => null);
     }
   };
@@ -367,7 +377,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
         dispatch(blockAccount(account.id));
-        dispatch(initReport(ReportableEntities.STATUS, account, { status }));
+        initReport(ReportableEntities.STATUS, account, { statusId: status.id });
       },
     }));
   };
@@ -380,11 +390,11 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleReport: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(initReport(ReportableEntities.STATUS, status.account, { status }));
+    initReport(ReportableEntities.STATUS, status.account, { statusId: status.id });
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(toggleMuteStatus(status.toJS() as StatusEntity));
+    dispatch(toggleMuteStatus(status));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
@@ -470,8 +480,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       }
     }
 
-    if (features.federating && (status.ditto?.get('external_url') || !account.local)) {
-      const externalNostrUrl: string | undefined = status.ditto?.get('external_url');
+    if (features.federating && (status.ditto?.external_url || !account.local)) {
+      const externalNostrUrl: string | undefined = status.ditto?.external_url;
       const { hostname: domain } = new URL(externalNostrUrl || status.uri);
 
       menu.push({
@@ -794,7 +804,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
         )}
 
         {features.emojiReacts ? (
-          <StatusReactionWrapper statusId={status.id}>
+          <PureStatusReactionWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={heartIcon}
@@ -805,7 +815,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
               emoji={meEmojiReact}
               theme={statusActionButtonTheme}
             />
-          </StatusReactionWrapper>
+          </PureStatusReactionWrapper>
         ) : (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
@@ -854,7 +864,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenu items={menu} status={status.toJS() as StatusEntity}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={dotsIcon}
@@ -866,4 +876,4 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   );
 };
 
-export default StatusActionBar;
+export default PureStatusActionBar;
