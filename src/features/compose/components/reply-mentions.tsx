@@ -46,7 +46,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     return null;
   }
 
-  if (to.length === 0) {
+  if (to.size === 0) {
     return (
       <Link to={'/'} className='inline-flex'>
         <button className='mb-1 cursor-pointer space-x-2 !border-none !bg-transparent !p-0 text-sm !text-gray-700 dark:!text-gray-600 rtl:space-x-reverse' onClick={handleClick}>
@@ -68,9 +68,9 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     );
   });
 
-  if (to.length > 2) {
+  if (to.size > 2) {
     accounts.push(
-      <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.length - 2 }} />,
+      <FormattedMessage id='reply_mentions.more' defaultMessage='{count} more' values={{ count: to.size - 2 }} />,
     );
   }
 
