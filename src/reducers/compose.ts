@@ -106,7 +106,7 @@ export interface Compose {
   suggestion_token: string | null;
   tagHistory: string[];
   text: string;
-  to: string[];
+  to: Set<string>;
   group_timeline_visible: boolean; // TruthSocial
 }
 
@@ -137,7 +137,7 @@ export const initialCompose: Compose = {
   suggestion_token: null,
   tagHistory: [],
   text: '',
-  to: [],
+  to: new Set(),
   group_timeline_visible: false, // TruthSocial
 };
 
@@ -167,11 +167,11 @@ export const statusToMentionsArray = (status: Status, account: Account) => {
   const author = status.account.acct as string;
   const mentions = status.mentions?.map((m) => m.acct) || [];
 
-  const mentionsSet = [author, ...mentions];
+  const mentionsSet = new Set([author, ...mentions]);
 
-  const updatedArray = mentionsSet.filter(item => item !== account.acct);
+  mentionsSet.delete(account.acct);
 
-  return updatedArray;
+  return mentionsSet;
 };
 
 export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: Account) => {
@@ -301,7 +301,7 @@ const getExplicitMentions = (me: string, status: Status) => {
     .filter((mention) => !(fragment.querySelector(`a[href="${mention.url}"]`) || mention.id === me))
     .map((m) => m.acct);
 
-  return mentions.toJS();
+  return new Set(mentions);
 };
 
 const getAccountSettings = (account: ImmutableMap<string, any>) => {
@@ -400,7 +400,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
           ...compose,
           group_id: action.status.group?.id as string,
           in_reply_to: action.status.id,
-          to: action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : [] as string[],
+          to: action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : new Set<string>(),
           text: !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '',
           privacy: privacyPreference(action.status.visibility, defaultCompose.privacy),
           focusDate: new Date(),
@@ -434,7 +434,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         let updatedCompose = {
           ...compose,
           quote: action.status.id,
-          to: [author],
+          to: new Set([author]),
           text: '',
           privacy: privacyPreference(action.status.visibility, defaultCompose.privacy),
           focusDate: new Date(),
@@ -590,7 +590,7 @@ export default function compose(state = initialState, action: ComposeAction | Ev
         let updatedCompose = {
           ...compose,
           text: action.rawText || htmlToPlaintext(expandMentions(action.status)),
-          to: action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : [],
+          to: action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : new Set<string>(),
           in_reply_to: action.status.in_reply_to_id,
           privacy: action.status.visibility,
           focusDate: new Date(),
@@ -713,13 +713,15 @@ export default function compose(state = initialState, action: ComposeAction | Ev
       });
     case COMPOSE_ADD_TO_MENTIONS:
       return updateCompose(state, action.id, compose => ({
-        ...compose, to: [...compose.to, action.account],
+        ...compose, to: new Set(compose.to).add(action.account),
       }));
     case COMPOSE_REMOVE_FROM_MENTIONS:
       return updateCompose(state, action.id, compose => {
+        const updatedTo = new Set(compose.to);
+        updatedTo.delete(action.account);
         return {
           ...compose,
-          to: compose.to.filter(item => item !== action.account),
+          to: updatedTo,
         };
       });
     case COMPOSE_SET_GROUP_TIMELINE_VISIBLE:
