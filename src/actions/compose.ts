@@ -307,7 +307,7 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
 
     if (mentions) {
       const trimmedMentions = mentions.map(mention => mention.trim().slice(1));
-      to = [...to, ...trimmedMentions];
+      to = new Set([...to, ...trimmedMentions]);
     }
 
     dispatch(submitComposeRequest(composeId));
@@ -326,7 +326,7 @@ const submitCompose = (composeId: string, opts: SubmitComposeOpts = {}) =>
       content_type: compose.content_type,
       poll: compose.poll,
       scheduled_at: compose.schedule,
-      to,
+      to: [...to],
     };
 
     if (compose.privacy === 'group') {
