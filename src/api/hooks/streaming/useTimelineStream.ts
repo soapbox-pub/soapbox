@@ -9,7 +9,7 @@ import { getAccessToken } from 'soapbox/utils/auth.ts';
 function useTimelineStream(...args: Parameters<typeof connectTimelineStream>) {
   // TODO: get rid of streaming.ts and move the actual opts here.
   const [timelineId, path] = args;
-  const { enabled = true } = args[4] ?? {};
+  const { enabled = true } = args[3] ?? {};
 
   const dispatch = useAppDispatch();
   const { instance } = useInstance();

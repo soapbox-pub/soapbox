@@ -9,7 +9,6 @@ function useListStream(listId: string) {
     `list:${listId}`,
     `list&list=${listId}`,
     null,
-    null,
     { enabled: isLoggedIn },
   );
 }
