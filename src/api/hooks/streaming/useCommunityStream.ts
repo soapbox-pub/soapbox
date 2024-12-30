@@ -10,7 +10,6 @@ function useCommunityStream({ onlyMedia, enabled }: UseCommunityStreamOpts = {})
     `community${onlyMedia ? ':media' : ''}`,
     `public:local${onlyMedia ? ':media' : ''}`,
     undefined,
-    undefined,
     { enabled },
   );
 }

@@ -9,7 +9,6 @@ function useDirectStream() {
     'direct',
     'direct',
     null,
-    null,
     { enabled: isLoggedIn },
   );
 }
