@@ -293,7 +293,7 @@ const getSimplePolicy = createSelector([
 });
 
 const getRemoteInstanceFavicon = (state: RootState, host: string) => {
-  const accounts = state.entities[Entities.ACCOUNTS]?.store as EntityStore<AccountSchema>;
+  const accounts = state.entities[Entities.ACCOUNTS]?.store ?? {} as EntityStore<AccountSchema>;
   const account = Object.entries(accounts).find(([_, account]) => account && getDomain(account) === host)?.[1];
   return account?.pleroma?.favicon;
 };
