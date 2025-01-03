@@ -4,42 +4,20 @@ import { getAccessToken } from 'soapbox/utils/auth.ts';
 
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
 
-const randomIntUpTo = (max: number) => Math.floor(Math.random() * Math.floor(max));
-
 interface ConnectStreamCallbacks {
   onConnect(): void;
   onDisconnect(): void;
   onReceive(websocket: Websocket, data: unknown): void;
 }
 
-type PollingRefreshFn = (dispatch: AppDispatch, done?: () => void) => void
-
 export function connectStream(
   path: string,
-  pollingRefresh: PollingRefreshFn | null = null,
   callbacks: (dispatch: AppDispatch, getState: () => RootState) => ConnectStreamCallbacks,
 ) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const streamingAPIBaseURL = getState().instance.configuration.urls.streaming;
     const accessToken = getAccessToken(getState());
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
-
-    let polling: NodeJS.Timeout | null = null;
-
-    const setupPolling = () => {
-      if (pollingRefresh) {
-        pollingRefresh(dispatch, () => {
-          polling = setTimeout(() => setupPolling(), 20000 + randomIntUpTo(20000));
-        });
-      }
-    };
-
-    const clearPolling = () => {
-      if (polling) {
-        clearTimeout(polling);
-        polling = null;
-      }
-    };
 
     let subscription: Websocket;
 
@@ -48,18 +26,10 @@ export function connectStream(
     try {
       subscription = getStream(streamingAPIBaseURL!, accessToken!, path, {
         connected() {
-          if (pollingRefresh) {
-            clearPolling();
-          }
-
           onConnect();
         },
 
         disconnected() {
-          if (pollingRefresh) {
-            polling = setTimeout(() => setupPolling(), randomIntUpTo(40000));
-          }
-
           onDisconnect();
         },
 
@@ -68,11 +38,6 @@ export function connectStream(
         },
 
         reconnected() {
-          if (pollingRefresh) {
-            clearPolling();
-            pollingRefresh(dispatch);
-          }
-
           onConnect();
         },
 
@@ -85,8 +50,6 @@ export function connectStream(
       if (subscription) {
         subscription.close();
       }
-
-      clearPolling();
     };
 
     return disconnect;

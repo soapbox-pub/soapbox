@@ -1,6 +1,7 @@
 import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
+import { relationshipSchema } from 'soapbox/schemas/relationship.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
@@ -15,7 +16,7 @@ import {
 
 import type { Map as ImmutableMap } from 'immutable';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Status } from 'soapbox/types/entities.ts';
+import type { APIEntity, Relationship, Status } from 'soapbox/types/entities.ts';
 import type { History } from 'soapbox/types/history.ts';
 
 const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
@@ -609,7 +610,7 @@ const expandFollowingFail = (id: string, error: unknown) => ({
 });
 
 const fetchRelationships = (accountIds: string[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
     const loadedRelationships = getState().relationships;
@@ -621,14 +622,31 @@ const fetchRelationships = (accountIds: string[]) =>
 
     dispatch(fetchRelationshipsRequest(newAccountIds));
 
-    return api(getState)
-      .get(`/api/v1/accounts/relationships?${newAccountIds.map(id => `id[]=${id}`).join('&')}`)
-      .then((response) => response.json()).then((data) => {
-        dispatch(importEntities(data, Entities.RELATIONSHIPS));
-        dispatch(fetchRelationshipsSuccess(data));
-      })
-      .catch(error => dispatch(fetchRelationshipsFail(error)));
+    const results: Relationship[] = [];
+
+    try {
+      for (const ids of chunkArray(newAccountIds, 20)) {
+        const response = await api(getState).get('/api/v1/accounts/relationships', { searchParams: { id: ids } });
+        const json = await response.json();
+        const data = relationshipSchema.array().parse(json);
+
+        results.push(...data);
+      }
+
+      dispatch(importEntities(results, Entities.RELATIONSHIPS));
+      dispatch(fetchRelationshipsSuccess(results));
+    } catch (error) {
+      dispatch(fetchRelationshipsFail(error));
+    }
   };
+
+function* chunkArray<T>(array: T[], chunkSize: number): Iterable<T[]> {
+  if (chunkSize <= 0) throw new Error('Chunk size must be greater than zero.');
+
+  for (let i = 0; i < array.length; i += chunkSize) {
+    yield array.slice(i, i + chunkSize);
+  }
+}
 
 const fetchRelationshipsRequest = (ids: string[]) => ({
   type: RELATIONSHIPS_FETCH_REQUEST,

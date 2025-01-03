@@ -99,10 +99,9 @@ interface TimelineStreamOpts {
 const connectTimelineStream = (
   timelineId: string,
   path: string,
-  pollingRefresh: ((dispatch: AppDispatch, done?: () => void) => void) | null = null,
   accept: ((status: APIEntity) => boolean) | null = null,
   opts?: TimelineStreamOpts,
-) => connectStream(path, pollingRefresh, (dispatch: AppDispatch, getState: () => RootState) => {
+) => connectStream(path, (dispatch: AppDispatch, getState: () => RootState) => {
   const locale = getLocale(getState());
 
   return {
