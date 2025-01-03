@@ -17,7 +17,8 @@ import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema
 import { filteredArray } from 'soapbox/schemas/utils.ts';
 import { maybeFromJS } from 'soapbox/utils/normalizers.ts';
 
-import type { Account, Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities.ts';
+import type { Attachment } from 'soapbox/schemas/index.ts';
+import type { Account, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from 'soapbox/types/entities.ts';
 
 export type StatusApprovalStatus = 'pending' | 'approval' | 'rejected';
 export type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct' | 'self' | 'group';
@@ -62,7 +63,7 @@ export const StatusRecord = ImmutableRecord({
   in_reply_to_id: null as string | null,
   id: '',
   language: null as string | null,
-  media_attachments: ImmutableList<Attachment>(),
+  media_attachments: [] as Attachment[],
   mentions: ImmutableList<Mention>(),
   muted: false,
   pinned: false,
@@ -206,8 +207,8 @@ const normalizeEvent = (status: ImmutableMap<string, any>) => {
       mediaAttachments = mediaAttachments.shift();
     }
 
-    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') === 'text/html');
-    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma.get('mime_type') !== 'text/html');
+    const links = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma?.mime_type === 'text/html');
+    mediaAttachments = mediaAttachments.filter((attachment: Attachment) => attachment.pleroma?.mime_type !== 'text/html');
 
     const event = EventRecord(
       (status.getIn(['pleroma', 'event']) as ImmutableMap<string, any>)
