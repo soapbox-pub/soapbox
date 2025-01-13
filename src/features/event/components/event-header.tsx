@@ -29,12 +29,13 @@ import { blockAccount } from 'soapbox/actions/accounts.ts';
 import { launchChat } from 'soapbox/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose } from 'soapbox/actions/compose.ts';
 import { editEvent, fetchEventIcs } from 'soapbox/actions/events.ts';
-import { toggleBookmark, togglePin } from 'soapbox/actions/interactions.ts';
+import { togglePin } from 'soapbox/actions/interactions.ts';
 import { openModal } from 'soapbox/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
 import { initMuteModal } from 'soapbox/actions/mutes.ts';
 import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
 import { deleteStatus } from 'soapbox/actions/statuses.ts';
+import { useBookmark } from 'soapbox/api/hooks/index.ts';
 import StillImage from 'soapbox/components/still-image.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -106,6 +107,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
+  const { bookmark, unbookmark } = useBookmark();
 
   const { toggleReblog } = useReblog();
 
@@ -147,7 +149,11 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   };
 
   const handleBookmarkClick = () => {
-    dispatch(toggleBookmark(status));
+    if (status.bookmarked) {
+      unbookmark(status.id);
+    } else {
+      bookmark(status.id);
+    }
   };
 
   const handleReblogClick = () => {
