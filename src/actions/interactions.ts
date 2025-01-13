@@ -61,7 +61,6 @@ const UNPIN_SUCCESS = 'UNPIN_SUCCESS';
 const UNPIN_FAIL    = 'UNPIN_FAIL';
 
 const BOOKMARK_REQUEST = 'BOOKMARK_REQUEST';
-const BOOKMARK_SUCCESS = 'BOOKMARKED_SUCCESS';
 const BOOKMARK_FAIL    = 'BOOKMARKED_FAIL';
 
 const UNBOOKMARK_REQUEST = 'UNBOOKMARKED_REQUEST';
@@ -368,22 +367,6 @@ const zapFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const bookmark = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(bookmarkRequest(status));
-
-    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
-      dispatch(bookmarkSuccess(status, data));
-
-      toast.success(messages.bookmarkAdded, {
-        actionLink: '/bookmarks/all', actionLabel: messages.view,
-      });
-    }).catch(function(error) {
-      dispatch(bookmarkFail(status, error));
-    });
-  };
-
 const unbookmark = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(unbookmarkRequest(status));
@@ -397,24 +380,9 @@ const unbookmark = (status: StatusEntity) =>
     });
   };
 
-const toggleBookmark = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (status.bookmarked) {
-      dispatch(unbookmark(status));
-    } else {
-      dispatch(bookmark(status));
-    }
-  };
-
 const bookmarkRequest = (status: StatusEntity) => ({
   type: BOOKMARK_REQUEST,
   status: status,
-});
-
-const bookmarkSuccess = (status: StatusEntity, response: APIEntity) => ({
-  type: BOOKMARK_SUCCESS,
-  status: status,
-  response: response,
 });
 
 const bookmarkFail = (status: StatusEntity, error: unknown) => ({
@@ -844,7 +812,6 @@ export {
   UNPIN_SUCCESS,
   UNPIN_FAIL,
   BOOKMARK_REQUEST,
-  BOOKMARK_SUCCESS,
   BOOKMARK_FAIL,
   UNBOOKMARK_REQUEST,
   UNBOOKMARK_SUCCESS,
@@ -890,11 +857,8 @@ export {
   undislikeRequest,
   undislikeSuccess,
   undislikeFail,
-  bookmark,
   unbookmark,
-  toggleBookmark,
   bookmarkRequest,
-  bookmarkSuccess,
   bookmarkFail,
   unbookmarkRequest,
   unbookmarkSuccess,
