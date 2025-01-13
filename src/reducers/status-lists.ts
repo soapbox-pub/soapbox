@@ -39,7 +39,6 @@ import {
 import {
   FAVOURITE_SUCCESS,
   UNFAVOURITE_SUCCESS,
-  UNBOOKMARK_SUCCESS,
   PIN_SUCCESS,
   UNPIN_SUCCESS,
 } from '../actions/interactions.ts';
@@ -151,8 +150,6 @@ export default function statusLists(state = initialState, action: AnyAction) {
       return prependOneToList(state, 'favourites', action.status);
     case UNFAVOURITE_SUCCESS:
       return removeOneFromList(state, 'favourites', action.status);
-    case UNBOOKMARK_SUCCESS:
-      return removeOneFromList(state, 'bookmarks', action.status);
     case PINNED_STATUSES_FETCH_SUCCESS:
       return normalizeList(state, 'pins', action.statuses, action.next);
     case PIN_SUCCESS:
