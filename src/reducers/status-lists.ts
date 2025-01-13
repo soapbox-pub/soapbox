@@ -71,7 +71,6 @@ type StatusList = ReturnType<typeof StatusListRecord>;
 
 const initialState: State = ImmutableMap({
   favourites: StatusListRecord(),
-  bookmarks: StatusListRecord(),
   pins: StatusListRecord(),
   scheduled_statuses: StatusListRecord(),
   recent_events: StatusListRecord(),
