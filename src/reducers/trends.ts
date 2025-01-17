@@ -1,4 +1,4 @@
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { tagSchema, type Tag } from 'soapbox/schemas/index.ts';
 
 import {
   TRENDS_FETCH_REQUEST,
@@ -7,7 +7,7 @@ import {
 } from '../actions/trends.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 interface State {
   items: Tag[];
@@ -31,7 +31,7 @@ export default function trendsReducer(state: State = ReducerRecord, action: AnyA
     case TRENDS_FETCH_SUCCESS:
     {
       const typedAction = action as TrendsFetchSuccessAction;
-      return { ...state, items: typedAction.tags.map((item: APIEntity) => normalizeTag(item)), isLoading: false };
+      return { ...state, items: typedAction.tags.map((item: APIEntity) => tagSchema.parse(item)), isLoading: false };
     }
     case TRENDS_FETCH_FAIL:
       return { ...state, isLoading: false };
