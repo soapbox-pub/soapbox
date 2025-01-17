@@ -1,7 +1,7 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
-import { Account } from 'soapbox/schemas/index.ts';
+import { Account, Tag } from 'soapbox/schemas/index.ts';
 import { tagHistory } from 'soapbox/settings.ts';
 import { PLEROMA } from 'soapbox/utils/features.ts';
 import { hasIntegerMediaIds } from 'soapbox/utils/status.ts';
@@ -68,8 +68,8 @@ import type {
   Attachment as AttachmentEntity,
   Status,
   Status as StatusEntity,
-  Tag,
 } from 'soapbox/types/entities';
+
 
 const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
 
@@ -251,7 +251,7 @@ const updateSuggestionTags = (compose: Compose, token: string, tags: Tag[]) => {
   return {
     ...compose,
     suggestions: tags
-      .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
+      .filter((tag) => tag.name.toLowerCase().startsWith(prefix.toLowerCase()))
       .slice(0, 4)
       .map((tag) => '#' + tag.name),
     suggestion_token: token,
