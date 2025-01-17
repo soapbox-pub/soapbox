@@ -8,10 +8,10 @@ import {
   FOLLOWED_HASHTAGS_EXPAND_SUCCESS,
   FOLLOWED_HASHTAGS_EXPAND_FAIL,
 } from 'soapbox/actions/tags.ts';
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { tagSchema, type Tag } from 'soapbox/schemas/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableList<Tag>(),
@@ -25,7 +25,7 @@ export default function followed_tags(state = ReducerRecord(), action: AnyAction
       return state.set('isLoading', true);
     case FOLLOWED_HASHTAGS_FETCH_SUCCESS:
       return state.withMutations(map => {
-        map.set('items', ImmutableList(action.followed_tags.map((item: APIEntity) => normalizeTag(item))));
+        map.set('items', ImmutableList(action.followed_tags.map((item: APIEntity) => tagSchema.parse(item))));
         map.set('isLoading', false);
         map.set('next', action.next);
       });
@@ -35,7 +35,7 @@ export default function followed_tags(state = ReducerRecord(), action: AnyAction
       return state.set('isLoading', true);
     case FOLLOWED_HASHTAGS_EXPAND_SUCCESS:
       return state.withMutations(map => {
-        map.update('items', list => list.concat(action.followed_tags.map((item: APIEntity) => normalizeTag(item))));
+        map.update('items', list => list.concat(action.followed_tags.map((item: APIEntity) => tagSchema.parse(item))));
         map.set('isLoading', false);
         map.set('next', action.next);
       });
