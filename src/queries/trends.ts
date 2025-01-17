@@ -3,9 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchTrendsSuccess } from 'soapbox/actions/trends.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
-
-import type { Tag } from 'soapbox/types/entities.ts';
+import { tagSchema, type Tag } from 'soapbox/schemas/index.ts';
 
 export default function useTrends() {
   const api = useApi();
@@ -17,7 +15,7 @@ export default function useTrends() {
 
     dispatch(fetchTrendsSuccess(data));
 
-    const normalizedData = data.map((tag) => normalizeTag(tag));
+    const normalizedData = data.map((tag) => tagSchema.parse(tag));
     return normalizedData;
   };
 
