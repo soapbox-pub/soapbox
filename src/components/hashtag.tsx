@@ -6,17 +6,17 @@ import { Sparklines, SparklinesCurve } from 'react-sparklines';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import { type Tag } from 'soapbox/schemas/index.ts';
 
 import { shortNumberFormat } from '../utils/numbers.tsx';
 
-import type { Tag } from 'soapbox/types/entities.ts';
 
 interface IHashtag {
   hashtag: Tag;
 }
 
 const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
-  const count = Number(hashtag.history?.get(0)?.accounts);
+  const count = Number(hashtag.history?.[0]?.accounts);
 
   return (
     <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
@@ -44,7 +44,7 @@ const Hashtag: React.FC<IHashtag> = ({ hashtag }) => {
           <Sparklines
             width={40}
             height={28}
-            data={hashtag.history.reverse().map((day) => +day.uses).toArray()}
+            data={hashtag.history.reverse().map((day) => +day.uses)}
           >
             <SparklinesCurve style={{ fill: 'none' }} color='#818cf8' />
           </Sparklines>
