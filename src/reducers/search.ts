@@ -1,6 +1,6 @@
 import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { tagSchema, type Tag } from 'soapbox/schemas/index.ts';
 
 import {
   COMPOSE_MENTION,
@@ -22,7 +22,8 @@ import {
 } from '../actions/search.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
+import type { APIEntity } from 'soapbox/types/entities.ts';
+
 
 const ResultsRecord = ImmutableRecord({
   accounts: ImmutableOrderedSet<string>(),
@@ -65,7 +66,7 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
         statuses: toIds(results.statuses),
         accounts: toIds(results.accounts),
         groups: toIds(results.groups),
-        hashtags: new Set(results.hashtags.map(normalizeTag)), // it's a list of records
+        hashtags: new Set(results.hashtags.map(tagSchema.parse)), // it's a list of records
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         groupsHasMore: results.groups?.length >= 20,
@@ -92,7 +93,7 @@ const paginateResults = (state: State, searchType: SearchFilter, results: APIEnt
         const data = results[searchType];
         // Hashtags are a list of maps. Others are IDs.
         if (searchType === 'hashtags') {
-          return (items as ImmutableOrderedSet<string>).concat((fromJS(data) as Record<string, any>).map(normalizeTag));
+          return (items as ImmutableOrderedSet<string>).concat((fromJS(data) as Record<string, any>).map(tagSchema.parse));
         } else {
           return (items as ImmutableOrderedSet<string>).concat(toIds(data));
         }
