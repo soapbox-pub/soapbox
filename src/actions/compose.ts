@@ -5,7 +5,7 @@ import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import api from 'soapbox/api/index.ts';
 import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
 import emojiSearch from 'soapbox/features/emoji/search.ts';
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { tagSchema, type Tag, Account, CustomEmoji, Group } from 'soapbox/schemas/index.ts';
 import { selectAccount, selectOwnAccount } from 'soapbox/selectors/index.ts';
 import { tagHistory } from 'soapbox/settings.ts';
 import toast from 'soapbox/toast.tsx';
@@ -23,9 +23,8 @@ import { createStatus } from './statuses.ts';
 import type { EditorState } from 'lexical';
 import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 import type { Emoji } from 'soapbox/features/emoji/index.ts';
-import type { Account, CustomEmoji, Group } from 'soapbox/schemas/index.ts';
 import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Status, Tag } from 'soapbox/types/entities.ts';
+import type { APIEntity, Status } from 'soapbox/types/entities.ts';
 import type { History } from 'soapbox/types/history.ts';
 
 let cancelFetchComposeSuggestions: AbortController | undefined;
@@ -534,7 +533,7 @@ const fetchComposeSuggestionsTags = (dispatch: AppDispatch, getState: () => Root
       type: 'hashtags',
     },
   }).then((response) => response.json()).then((data) => {
-    dispatch(updateSuggestionTags(composeId, token, data?.hashtags.map(normalizeTag)));
+    dispatch(updateSuggestionTags(composeId, token, data?.hashtags.map(tagSchema.parse)));
   }).catch(error => {
     if (error instanceof HTTPError) {
       toast.showAlertForError(error);
