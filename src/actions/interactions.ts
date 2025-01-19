@@ -1,6 +1,3 @@
-import { defineMessages } from 'react-intl';
-
-import toast from 'soapbox/toast.tsx';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
 import api from '../api/index.ts';
@@ -61,11 +58,9 @@ const UNPIN_SUCCESS = 'UNPIN_SUCCESS';
 const UNPIN_FAIL    = 'UNPIN_FAIL';
 
 const BOOKMARK_REQUEST = 'BOOKMARK_REQUEST';
-const BOOKMARK_SUCCESS = 'BOOKMARKED_SUCCESS';
 const BOOKMARK_FAIL    = 'BOOKMARKED_FAIL';
 
 const UNBOOKMARK_REQUEST = 'UNBOOKMARKED_REQUEST';
-const UNBOOKMARK_SUCCESS = 'UNBOOKMARKED_SUCCESS';
 const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
 
 const REMOTE_INTERACTION_REQUEST = 'REMOTE_INTERACTION_REQUEST';
@@ -88,12 +83,6 @@ const ZAPS_FETCH_FAIL    = 'ZAPS_FETCH_FAIL';
 
 const ZAPS_EXPAND_SUCCESS = 'ZAPS_EXPAND_SUCCESS';
 const ZAPS_EXPAND_FAIL = 'ZAPS_EXPAND_FAIL';
-
-const messages = defineMessages({
-  bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
-  bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
-  view: { id: 'toast.view', defaultMessage: 'View' },
-});
 
 type ReblogEffects = {
   reblogEffect: (statusId: string) => void;
@@ -368,53 +357,9 @@ const zapFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const bookmark = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(bookmarkRequest(status));
-
-    return api(getState).post(`/api/v1/statuses/${status.id}/bookmark`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
-      dispatch(bookmarkSuccess(status, data));
-
-      toast.success(messages.bookmarkAdded, {
-        actionLink: '/bookmarks/all', actionLabel: messages.view,
-      });
-    }).catch(function(error) {
-      dispatch(bookmarkFail(status, error));
-    });
-  };
-
-const unbookmark = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(unbookmarkRequest(status));
-
-    api(getState).post(`/api/v1/statuses/${status.id}/unbookmark`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
-      dispatch(unbookmarkSuccess(status, data));
-      toast.success(messages.bookmarkRemoved);
-    }).catch(error => {
-      dispatch(unbookmarkFail(status, error));
-    });
-  };
-
-const toggleBookmark = (status: StatusEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    if (status.bookmarked) {
-      dispatch(unbookmark(status));
-    } else {
-      dispatch(bookmark(status));
-    }
-  };
-
 const bookmarkRequest = (status: StatusEntity) => ({
   type: BOOKMARK_REQUEST,
   status: status,
-});
-
-const bookmarkSuccess = (status: StatusEntity, response: APIEntity) => ({
-  type: BOOKMARK_SUCCESS,
-  status: status,
-  response: response,
 });
 
 const bookmarkFail = (status: StatusEntity, error: unknown) => ({
@@ -426,12 +371,6 @@ const bookmarkFail = (status: StatusEntity, error: unknown) => ({
 const unbookmarkRequest = (status: StatusEntity) => ({
   type: UNBOOKMARK_REQUEST,
   status: status,
-});
-
-const unbookmarkSuccess = (status: StatusEntity, response: APIEntity) => ({
-  type: UNBOOKMARK_SUCCESS,
-  status: status,
-  response: response,
 });
 
 const unbookmarkFail = (status: StatusEntity, error: unknown) => ({
@@ -844,10 +783,8 @@ export {
   UNPIN_SUCCESS,
   UNPIN_FAIL,
   BOOKMARK_REQUEST,
-  BOOKMARK_SUCCESS,
   BOOKMARK_FAIL,
   UNBOOKMARK_REQUEST,
-  UNBOOKMARK_SUCCESS,
   UNBOOKMARK_FAIL,
   REMOTE_INTERACTION_REQUEST,
   REMOTE_INTERACTION_SUCCESS,
@@ -890,14 +827,9 @@ export {
   undislikeRequest,
   undislikeSuccess,
   undislikeFail,
-  bookmark,
-  unbookmark,
-  toggleBookmark,
   bookmarkRequest,
-  bookmarkSuccess,
   bookmarkFail,
   unbookmarkRequest,
-  unbookmarkSuccess,
   unbookmarkFail,
   fetchReblogs,
   fetchReblogsRequest,
