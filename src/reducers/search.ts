@@ -29,7 +29,7 @@ const ResultsRecord = ImmutableRecord({
   accounts: ImmutableOrderedSet<string>(),
   statuses: ImmutableOrderedSet<string>(),
   groups: ImmutableOrderedSet<string>(),
-  hashtags: new Set<Tag>(), // it's a list of maps
+  hashtags: [] as Tag[], // it's a list of maps
   accountsHasMore: false,
   statusesHasMore: false,
   groupsHasMore: false,
@@ -66,7 +66,7 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
         statuses: toIds(results.statuses),
         accounts: toIds(results.accounts),
         groups: toIds(results.groups),
-        hashtags: new Set(results.hashtags.map(tagSchema.parse)), // it's a list of records
+        hashtags: results.hashtags.map(tagSchema.parse), // it's a list of records
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         groupsHasMore: results.groups?.length >= 20,

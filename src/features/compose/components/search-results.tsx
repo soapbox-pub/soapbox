@@ -49,7 +49,7 @@ const SearchResults = () => {
   const { account } = useAccount(filterByAccount);
 
   const handleLoadMore = () => {
-    if (results.accounts.size || results.statuses.size || results.hashtags.size) {
+    if (results.accounts.size || results.statuses.size || results.hashtags.length) {
       dispatch(expandSearch(selectedFilter));
     } else if (nextTrendingStatuses) {
       dispatch(expandTrendingStatuses(nextTrendingStatuses));
@@ -197,7 +197,7 @@ const SearchResults = () => {
     loaded = results.hashtagsLoaded;
     placeholderComponent = PlaceholderHashtag;
 
-    if (results.hashtags && results.hashtags.size > 0) {
+    if (results.hashtags && results.hashtags.length > 0) {
       searchResults = [...results.hashtags].map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (!submitted && suggestions && !suggestions.isEmpty()) {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);

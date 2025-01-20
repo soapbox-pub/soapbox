@@ -123,7 +123,7 @@ const setFilter = (filterType: SearchFilter) =>
 
 const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: () => RootState) => {
   const value     = getState().search.value;
-  const offset    = getState().search.results[type].size;
+  const offset    = type !== 'hashtags' ? getState().search.results?.[type].size : getState().search.results[type].length;
   const accountId = getState().search.accountId;
 
   dispatch(expandSearchRequest(type));
