@@ -36,8 +36,6 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   emptyMessage: React.ReactNode;
   /** ID of the timeline in Redux. */
   timelineId?: string;
-  /** Whether to display a gap or border between statuses in the list. */
-  divideType?: 'space' | 'border';
   /** Whether to display ads. */
   showAds?: boolean;
   /** Whether to show group information. */
@@ -52,7 +50,6 @@ const StatusList: React.FC<IStatusList> = ({
   statusIds,
   lastStatusId,
   featuredStatusIds,
-  divideType = 'border',
   onLoadMore,
   timelineId,
   isLoading,
@@ -131,7 +128,6 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveDown={handleMoveDown}
         contextType={timelineId}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'rounded'}
       />
     );
   };
@@ -159,7 +155,6 @@ const StatusList: React.FC<IStatusList> = ({
         onMoveDown={handleMoveDown}
         contextType={timelineId}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'default'}
       />
     ));
   };
@@ -234,15 +229,10 @@ const StatusList: React.FC<IStatusList> = ({
       isLoading={isLoading}
       showLoading={isLoading && statusIds.size === 0}
       onLoadMore={handleLoadOlder}
-      placeholderComponent={() => <PlaceholderStatus variant={divideType === 'border' ? 'slim' : 'rounded'} />}
+      placeholderComponent={() => <PlaceholderStatus />}
       placeholderCount={20}
       ref={node}
-      listClassName={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
-        'divide-none': divideType !== 'border',
-      }, className)}
-      itemClassName={clsx({
-        'pb-3': divideType !== 'border',
-      })}
+      listClassName={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', className)}
       {...other}
     >
       {renderScrollableContent()}

@@ -13,7 +13,6 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -24,7 +23,6 @@ const HomeTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const { instance } = useInstance();
-  const theme = useTheme();
 
   const polling = useRef<NodeJS.Timeout | null>(null);
   const isMobile = useIsMobile();
@@ -75,7 +73,6 @@ const HomeTimeline: React.FC = () => {
           scrollKey='home_timeline'
           onLoadMore={handleLoadMore}
           timelineId='home'
-          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
           emptyMessage={
             <Stack space={1}>
               <Text size='xl' weight='medium' align='center'>

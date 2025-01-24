@@ -10,13 +10,11 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 
 const CommunityTimeline = () => {
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const { instance } = useInstance();
 
   const settings = useSettings();
@@ -50,7 +48,6 @@ const CommunityTimeline = () => {
           prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
-          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>

@@ -57,7 +57,7 @@ export interface IStatus {
   featured?: boolean;
   hideActionBar?: boolean;
   hoverable?: boolean;
-  variant?: 'default' | 'rounded' | 'slim';
+  variant?: 'default' | 'slim';
   showGroup?: boolean;
   accountAction?: React.ReactElement;
 }
@@ -81,7 +81,7 @@ const Status: React.FC<IStatus> = (props) => {
     featured,
     unread,
     hideActionBar,
-    variant = 'rounded',
+    variant = 'slim',
     showGroup = true,
   } = props;
 
@@ -419,7 +419,8 @@ const Status: React.FC<IStatus> = (props) => {
         <Card
           variant={variant}
           className={clsx('status--wrapper space-y-4', {
-            'py-6 sm:p-5': variant === 'rounded', muted, read: unread === false,
+            muted,
+            read: unread === false,
           })}
           data-id={status.id}
         >

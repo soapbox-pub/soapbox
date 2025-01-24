@@ -10,7 +10,6 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },
@@ -23,7 +22,6 @@ const Quotes: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const { statusId } = useParams<{ statusId: string }>();
-  const theme = useTheme();
   const isMobile = useIsMobile();
 
   const statusIds = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'items'], ImmutableOrderedSet<string>()));
@@ -51,7 +49,6 @@ const Quotes: React.FC = () => {
         onLoadMore={() => handleLoadMore(statusId, dispatch)}
         onRefresh={handleRefresh}
         emptyMessage={emptyMessage}
-        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

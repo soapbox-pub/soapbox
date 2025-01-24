@@ -47,7 +47,6 @@ const GroupTagTimeline: React.FC<IGroupTimeline> = (props) => {
         scrollKey='group_timeline'
         timelineId={`group:tags:${groupId}:${tag.name}`}
         onLoadMore={handleLoadMore}
-        divideType='border'
         showGroup={false}
         emptyMessageCard={false}
         emptyMessage={
