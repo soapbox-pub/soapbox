@@ -44,8 +44,8 @@ const SidebarNavigationLink = forwardRef((props: ISidebarNavigationLink, ref: Re
       ref={ref}
       onClick={handleClick}
       className={clsx({
-        'flex items-center px-4 py-3.5 text-base font-semibold space-x-4 rtl:space-x-reverse rounded-full group text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100 hover:bg-primary-200 dark:hover:bg-primary-900': true,
-        'dark:text-gray-100 text-gray-900': isActive,
+        'flex items-center px-4 py-3.5 text-base font-semibold space-x-4 rtl:space-x-reverse rounded-full group text-gray-600 hover:text-gray-900 dark:text-gray-500 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-primary-800': true,
+        'dark:text-gray-0 text-gray-900': isActive,
       })}
     >
       <span className='relative'>
@@ -54,8 +54,8 @@ const SidebarNavigationLink = forwardRef((props: ISidebarNavigationLink, ref: Re
           count={count}
           countMax={countMax}
           className={clsx('size-5', {
-            'text-gray-600 black:text-white dark:text-gray-500 group-hover:text-primary-500 dark:group-hover:text-primary-400': !isActive,
-            'text-primary-500 dark:text-primary-400': isActive,
+            'text-gray-600 black:text-white dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-50': !isActive,
+            'text-gray-900 dark:text-gray-50': isActive,
           })}
         />
       </span>
