@@ -508,7 +508,9 @@ const UI: React.FC<IUI> = ({ children }) => {
         <BackgroundShapes />
 
         <div className='z-10 flex min-h-screen flex-col'>
-          <Navbar />
+          <div className='sticky top-0 z-50 sm:hidden'>
+            <Navbar />
+          </div>
 
           <Layout>
             <Layout.Sidebar>

@@ -85,7 +85,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className='sticky top-0 z-50 border-b border-gray-200 bg-white shadow black:border-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900'
+      className='border-b border-gray-200 bg-white shadow black:border-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900'
       ref={node}
       data-testid='navbar'
     >

@@ -21,9 +21,12 @@ import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
+import SiteLogo from 'soapbox/components/site-logo.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import Search from 'soapbox/features/compose/components/search.tsx';
 import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -139,7 +142,14 @@ const SidebarNavigation = () => {
   };
 
   return (
-    <Stack space={4}>
+    <Stack space={6}>
+      <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
+        <SiteLogo alt='Logo' className='h-10 w-auto cursor-pointer' />
+        <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
+      </Link>
+
+      <Search openInRoute autosuggest />
+
       <Stack space={2}>
         <SidebarNavigationLink
           to='/'
