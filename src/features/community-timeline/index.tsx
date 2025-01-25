@@ -37,7 +37,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column label={instance.domain} slim>
+    <Column label={instance.domain} slim withHeader={false}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           className='black:p-4 black:sm:p-5'

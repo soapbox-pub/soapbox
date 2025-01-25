@@ -399,9 +399,7 @@ const Thread = (props: IThread) => {
         </div>
       </HotKeys>
 
-      {hasDescendants && (
-        <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
-      )}
+      <hr className='-mx-4 mt-2 max-w-[100vw] border-t-2 black:border-t dark:border-gray-800' />
     </div>
   );
 
