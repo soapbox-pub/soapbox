@@ -137,9 +137,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   if (!account) {
     return (
-      <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
+      <div>
         <div>
-          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 lg:h-48' />
         </div>
 
         <div className='px-4 sm:px-6'>
@@ -679,13 +679,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const acceptsZaps = account.ditto.accepts_zaps === true;
 
   return (
-    <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
+    <div>
       {(account.moved && typeof account.moved === 'object') && (
         <MovedNote from={account} to={account.moved as Account} />
       )}
 
       <div>
-        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48'>
+        <div className='relative isolate flex h-32 w-full flex-col justify-center overflow-hidden bg-gray-200 dark:bg-gray-900/50 lg:h-48'>
           {renderHeader()}
 
           <div className='absolute left-2 top-2'>

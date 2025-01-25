@@ -8,7 +8,6 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
@@ -22,7 +21,6 @@ const CommunityTimeline = () => {
   const next = useAppSelector(state => state.timelines.get('community')?.next);
 
   const timelineId = 'community';
-  const isMobile = useIsMobile();
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandCommunityTimeline({ url: next, maxId, onlyMedia }));
@@ -39,7 +37,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column className='-mt-3 sm:mt-0' label={instance.domain} transparent={!isMobile}>
+    <Column label={instance.domain} slim>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           className='black:p-4 black:sm:p-5'

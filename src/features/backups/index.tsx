@@ -84,7 +84,7 @@ const Backups = () => {
   const showLoading = isLoading && backups.count() === 0;
 
   const emptyMessage = (
-    <Card variant='rounded' size='lg'>
+    <Card size='lg'>
       {intl.formatMessage(messages.emptyMessage, {
         action: (
           <Link to={'/'} className='inline-flex'>

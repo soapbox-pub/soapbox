@@ -11,7 +11,7 @@ interface IDivider {
 const Divider = ({ text, textSize = 'md' }: IDivider) => (
   <div className='relative' data-testid='divider'>
     <div className='absolute inset-0 flex items-center' aria-hidden='true'>
-      <div className='w-full border-t-2 border-solid border-gray-100 black:border-t dark:border-gray-800' />
+      <div className='w-full border-t border-solid border-gray-100 dark:border-gray-800' />
     </div>
 
     {text && (

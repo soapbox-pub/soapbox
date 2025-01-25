@@ -65,7 +65,6 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
             'py-6 sm:p-5': !thread,
             'status-reply': !!status.in_reply_to_id,
           })}
-          variant={thread ? 'default' : 'rounded'}
         >
           <div className='mb-4'>
             <HStack justifyContent='between' alignItems='start'>

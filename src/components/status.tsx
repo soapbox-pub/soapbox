@@ -57,9 +57,9 @@ export interface IStatus {
   featured?: boolean;
   hideActionBar?: boolean;
   hoverable?: boolean;
-  variant?: 'default' | 'slim';
   showGroup?: boolean;
   accountAction?: React.ReactElement;
+  slim?: boolean;
 }
 
 /**
@@ -81,8 +81,8 @@ const Status: React.FC<IStatus> = (props) => {
     featured,
     unread,
     hideActionBar,
-    variant = 'slim',
     showGroup = true,
+    slim,
   } = props;
 
   const intl = useIntl();
@@ -417,12 +417,12 @@ const Status: React.FC<IStatus> = (props) => {
         role='link'
       >
         <Card
-          variant={variant}
           className={clsx('status--wrapper space-y-4', {
             muted,
             read: unread === false,
           })}
           data-id={status.id}
+          slim={slim}
         >
           {renderStatusInfo()}
 

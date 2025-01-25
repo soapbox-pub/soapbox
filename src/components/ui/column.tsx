@@ -1,12 +1,12 @@
 import clsx from 'clsx';
-import { throttle } from 'es-toolkit';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 
-import { Card, CardBody, CardHeader, CardTitle, type CardSizes } from './card.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from './card.tsx';
 
 type IColumnHeader = Pick<IColumn, 'label' | 'backHref' | 'className' | 'action'>;
 
@@ -47,6 +47,8 @@ export interface IColumn {
   label?: string;
   /** Whether this column should have a transparent background. */
   transparent?: boolean;
+  /** Whether to display the column without padding. */
+  slim?: boolean;
   /** Whether this column should have a title and back button. */
   withHeader?: boolean;
   /** Extra class name for top <div> element. */
@@ -60,26 +62,13 @@ export interface IColumn {
   /** Action for the ColumnHeader, displayed at the end. */
   action?: React.ReactNode;
   /** Column size, inherited from Card. */
-  size?: CardSizes;
+  size?: 'md' | 'lg' | 'xl';
 }
 
 /** A backdrop for the main section of the UI. */
 const Column = forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true, className, bodyClassName, action, size } = props;
+  const { backHref, children, label, transparent = false, slim, withHeader = true, className, bodyClassName, action, size } = props;
   const soapboxConfig = useSoapboxConfig();
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const handleScroll = useCallback(throttle(() => {
-    setIsScrolled(window.pageYOffset > 32);
-  }, 50), []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (
     <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
@@ -95,25 +84,25 @@ const Column = forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Element => 
         )}
       </Helmet>
 
-      <Card size={size} variant={transparent ? undefined : 'rounded'} className={className}>
+      <Stack>
         {withHeader && (
           <ColumnHeader
             label={label}
             backHref={backHref}
-            className={clsx({
-              'rounded-t-3xl': !isScrolled && !transparent,
+            className={clsx('px-5 py-4', {
               'sticky top-12 z-10 bg-white/90 dark:bg-primary-900/90 black:bg-black/90 backdrop-blur lg:top-16': !transparent,
-              'p-4 sm:p-0 sm:pb-4 black:p-4': transparent,
-              '-mt-4 p-4': size !== 'lg' && !transparent,
-              '-mt-4 p-4 sm:-mt-6 sm:-mx-6 sm:p-6': size === 'lg' && !transparent,
+              '-mb-4': !slim,
             })}
             action={action}
           />
         )}
-        <CardBody className={bodyClassName}>
-          {children}
-        </CardBody>
-      </Card>
+
+        <Card size={size} transparent={transparent} className={className} slim={slim}>
+          <CardBody className={bodyClassName}>
+            {children}
+          </CardBody>
+        </Card>
+      </Stack>
     </div>
   );
 });

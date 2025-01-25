@@ -14,7 +14,6 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker.tsx';
@@ -38,7 +37,6 @@ const PublicTimeline = () => {
   const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
-  const isMobile = useIsMobile();
 
   const explanationBoxExpanded = settings.explanationBox;
   const showExplanationBox = settings.showExplanationBox && !features.nostr;
@@ -72,10 +70,9 @@ const PublicTimeline = () => {
 
   return (
     <Column
-      className='-mt-3 sm:mt-0'
       label={intl.formatMessage(messages.title)}
-      transparent={!isMobile}
       action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
+      slim
     >
       <PinnedHostsPicker />
 

@@ -38,9 +38,9 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
 
   if (!group) {
     return (
-      <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6' data-testid='group-header-missing'>
+      <div data-testid='group-header-missing'>
         <div>
-          <div className='relative h-32 w-full bg-gray-200 black:rounded-t-none dark:bg-gray-900/50 md:rounded-t-xl lg:h-48' />
+          <div className='relative h-32 w-full bg-gray-200 dark:bg-gray-900/50 lg:h-48' />
         </div>
 
         <div className='px-4 sm:px-6'>
@@ -123,7 +123,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
   };
 
   return (
-    <div className='-mx-4 -mt-4 sm:-mx-6 sm:-mt-6'>
+    <div>
       <div className='relative'>
         {renderHeader()}
 

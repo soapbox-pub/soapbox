@@ -46,7 +46,7 @@ const LandingTimeline = () => {
   }, []);
 
   return (
-    <Column transparent={!isMobile} withHeader={false}>
+    <Column transparent={!isMobile} withHeader={false} slim>
       <div className='my-12 mb-16 px-4 sm:mb-20'>
         <SiteBanner />
       </div>

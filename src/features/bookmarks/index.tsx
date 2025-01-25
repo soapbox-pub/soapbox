@@ -26,7 +26,7 @@ const Bookmarks: React.FC = () => {
   const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
   return (
-    <Column label={intl.formatMessage(messages.heading)} transparent>
+    <Column label={intl.formatMessage(messages.heading)}>
       <PullToRefresh onRefresh={handleRefresh}>
         <PureStatusList
           className='black:p-4 black:sm:p-5'

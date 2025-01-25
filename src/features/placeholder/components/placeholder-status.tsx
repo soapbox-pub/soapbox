@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { memo } from 'react';
 
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -6,9 +7,13 @@ import PlaceholderAvatar from './placeholder-avatar.tsx';
 import PlaceholderDisplayName from './placeholder-display-name.tsx';
 import PlaceholderStatusContent from './placeholder-status-content.tsx';
 
+interface IPlaceholderStatus {
+  slim?: boolean;
+}
+
 /** Fake status to display while data is loading. */
-const PlaceholderStatus: React.FC = () => (
-  <div className='status-placeholder bg-white py-4 black:bg-black dark:bg-primary-900'>
+const PlaceholderStatus: React.FC<IPlaceholderStatus> = ({ slim }) => (
+  <div className={clsx('status-placeholder bg-white black:bg-black dark:bg-primary-900', { 'p-4': !slim })}>
     <div className='w-full animate-pulse overflow-hidden'>
       <div>
         <HStack space={3} alignItems='center'>

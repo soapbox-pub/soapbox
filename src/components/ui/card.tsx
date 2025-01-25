@@ -9,23 +9,16 @@ import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import HStack from './hstack.tsx';
 import Text from './text.tsx';
 
-const sizes = {
-  md: 'p-4 sm:rounded-xl',
-  lg: 'p-4 sm:p-6 sm:rounded-xl',
-  xl: 'p-4 sm:p-10 sm:rounded-3xl',
-};
-
 const messages = defineMessages({
   back: { id: 'card.back.label', defaultMessage: 'Back' },
 });
 
-export type CardSizes = keyof typeof sizes
-
 interface ICard {
-  /** The type of card. */
-  variant?: 'default' | 'rounded' | 'slim';
+  rounded?: boolean;
+  transparent?: boolean;
+  slim?: boolean;
   /** Card size preset. */
-  size?: CardSizes;
+  size?: 'md' | 'lg' | 'xl';
   /** Extra classnames for the <div> element. */
   className?: string;
   /** Elements inside the card. */
@@ -34,15 +27,16 @@ interface ICard {
 }
 
 /** An opaque backdrop to hold a collection of related elements. */
-const Card = forwardRef<HTMLDivElement, ICard>(({ children, variant = 'default', size = 'md', className, ...filteredProps }, ref): JSX.Element => (
+const Card = forwardRef<HTMLDivElement, ICard>(({ children, rounded, transparent, slim, size = 'md', className, ...filteredProps }, ref): JSX.Element => (
   <div
     ref={ref}
     {...filteredProps}
     className={clsx({
-      'bg-white dark:bg-primary-900 black:bg-black text-gray-900 dark:text-gray-100 shadow-lg dark:shadow-none': variant === 'rounded',
-      [sizes[size]]: variant === 'rounded',
-      'py-4': variant === 'slim',
-      'black:rounded-none': size !== 'xl',
+      'bg-white dark:bg-primary-900 black:bg-black': !transparent,
+      'overflow-hidden': rounded,
+      'rounded-xl': rounded && size !== 'xl',
+      'rounded-3xl': rounded && size === 'xl',
+      'py-4 px-5': !slim,
     }, className)}
   >
     {children}

@@ -418,7 +418,6 @@ const PureStatus: React.FC<IPureStatus> = (props) => {
         role='link'
       >
         <Card
-          variant='slim'
           className={clsx('status--wrapper space-y-4', {
             muted,
             read: unread === false,

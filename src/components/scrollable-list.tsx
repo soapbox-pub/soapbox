@@ -169,7 +169,7 @@ const ScrollableList = forwardRef<VirtuosoHandle, IScrollableList>(({
         ) : (
           <>
             {emptyMessageCard ? (
-              <Card variant='rounded' size='lg'>
+              <Card size='lg'>
                 {emptyMessage}
               </Card>
             ) : emptyMessage}

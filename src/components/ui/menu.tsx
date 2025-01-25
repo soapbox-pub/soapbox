@@ -36,6 +36,6 @@ const MenuList: React.FC<IMenuList> = (props) => {
 };
 
 /** Divides menu items. */
-const MenuDivider = () => <hr className='mx-2 my-1 border-t-2 border-gray-100 black:border-t dark:border-gray-800' />;
+const MenuDivider = () => <hr className='mx-2 my-1 border-t border-gray-100 dark:border-gray-800' />;
 
 export { Menu, MenuButton, MenuDivider, MenuItems, MenuItem, MenuList, MenuLink };

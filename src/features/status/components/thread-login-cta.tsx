@@ -15,7 +15,7 @@ const ThreadLoginCta: React.FC = () => {
   if (!displayCta) return null;
 
   return (
-    <Card className='space-y-6 px-6 py-12 text-center' variant='rounded'>
+    <Card className='space-y-6 px-6 py-12 text-center'>
       <Stack>
         <CardTitle title={<FormattedMessage id='thread_login.title' defaultMessage='Continue the conversation' />} />
         <Text>

@@ -36,7 +36,7 @@ const DirectTimeline = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)} slim>
       <AccountSearch
         placeholder={intl.formatMessage(messages.searchPlaceholder)}
         onSelected={handleSuggestion}
