@@ -11,9 +11,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 
@@ -29,7 +27,6 @@ interface IRemoteTimeline {
 const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
 
   const instance = params?.instance as string;
   const settings = useSettings();
@@ -39,7 +36,6 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   const next = useAppSelector(state => state.timelines.get('remote')?.next);
 
   const pinned = settings.remote_timeline.pinnedHosts.includes(instance);
-  const isMobile = useIsMobile();
 
   const handleCloseClick: React.MouseEventHandler = () => {
     history.push('/timeline/fediverse');
@@ -56,7 +52,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
   }, [onlyMedia]);
 
   return (
-    <Column label={instance} transparent={!isMobile}>
+    <Column label={instance} slim>
       {instance && <PinnedHostsPicker host={instance} />}
 
       {!pinned && (
@@ -84,7 +80,6 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
             values={{ instance }}
           />
         }
-        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

@@ -12,16 +12,12 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 
 const ListTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const theme = useTheme();
-  const isMobile = useIsMobile();
 
   const list = useAppSelector((state) => state.lists.get(id));
   const next = useAppSelector(state => state.timelines.get(`list:${id}`)?.next);
@@ -66,14 +62,13 @@ const ListTimeline: React.FC = () => {
   );
 
   return (
-    <Column label={title} transparent={!isMobile}>
+    <Column label={title}>
       <Timeline
         className='black:p-4 black:sm:p-5'
         scrollKey='list_timeline'
         timelineId={`list:${id}`}
         onLoadMore={handleLoadMore}
         emptyMessage={emptyMessage}
-        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

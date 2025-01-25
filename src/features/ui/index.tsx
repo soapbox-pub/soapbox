@@ -43,7 +43,6 @@ import SearchPage from 'soapbox/pages/search-page.tsx';
 import StatusPage from 'soapbox/pages/status-page.tsx';
 import WidePage from 'soapbox/pages/wide-page.tsx';
 
-import BackgroundShapes from './components/background-shapes.tsx';
 import FloatingActionButton from './components/floating-action-button.tsx';
 import Navbar from './components/navbar.tsx';
 import {
@@ -505,10 +504,10 @@ const UI: React.FC<IUI> = ({ children }) => {
           })}
         />
 
-        <BackgroundShapes />
-
         <div className='z-10 flex min-h-screen flex-col'>
-          <Navbar />
+          <div className='sticky top-0 z-50 sm:hidden'>
+            <Navbar />
+          </div>
 
           <Layout>
             <Layout.Sidebar>

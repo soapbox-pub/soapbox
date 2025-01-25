@@ -68,8 +68,8 @@ const Settings = () => {
   const displayName = account.display_name || account.username;
 
   return (
-    <Column label={intl.formatMessage(messages.settings)} transparent withHeader={false}>
-      <Card className='space-y-4' variant='rounded'>
+    <Column label={intl.formatMessage(messages.settings)} transparent withHeader={false} slim>
+      <Card className='space-y-4'>
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.profile)} />
         </CardHeader>

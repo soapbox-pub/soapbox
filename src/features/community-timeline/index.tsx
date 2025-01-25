@@ -8,15 +8,12 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 
 const CommunityTimeline = () => {
   const dispatch = useAppDispatch();
-  const theme = useTheme();
   const { instance } = useInstance();
 
   const settings = useSettings();
@@ -24,7 +21,6 @@ const CommunityTimeline = () => {
   const next = useAppSelector(state => state.timelines.get('community')?.next);
 
   const timelineId = 'community';
-  const isMobile = useIsMobile();
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandCommunityTimeline({ url: next, maxId, onlyMedia }));
@@ -41,7 +37,7 @@ const CommunityTimeline = () => {
   }, [onlyMedia]);
 
   return (
-    <Column className='-mt-3 sm:mt-0' label={instance.domain} transparent={!isMobile}>
+    <Column label={instance.domain} slim withHeader={false}>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
           className='black:p-4 black:sm:p-5'
@@ -50,7 +46,6 @@ const CommunityTimeline = () => {
           prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
-          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>

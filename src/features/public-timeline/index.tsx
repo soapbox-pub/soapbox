@@ -14,9 +14,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import PinnedHostsPicker from '../remote-timeline/components/pinned-hosts-picker.tsx';
 import Timeline from '../ui/components/timeline.tsx';
@@ -30,7 +28,6 @@ const PublicTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
-  const theme = useTheme();
 
   const [language, setLanguage] = useState<string>(localStorage.getItem('soapbox:global:language') || '');
 
@@ -40,7 +37,6 @@ const PublicTimeline = () => {
   const next = useAppSelector(state => state.timelines.get('public')?.next);
 
   const timelineId = 'public';
-  const isMobile = useIsMobile();
 
   const explanationBoxExpanded = settings.explanationBox;
   const showExplanationBox = settings.showExplanationBox && !features.nostr;
@@ -74,10 +70,9 @@ const PublicTimeline = () => {
 
   return (
     <Column
-      className='-mt-3 sm:mt-0'
       label={intl.formatMessage(messages.title)}
-      transparent={!isMobile}
       action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
+      slim
     >
       <PinnedHostsPicker />
 
@@ -118,7 +113,6 @@ const PublicTimeline = () => {
           prefix='home'
           onLoadMore={handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.public' defaultMessage='There is nothing here! Write something publicly, or manually follow users from other servers to fill it up' />}
-          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
         />
       </PullToRefresh>
     </Column>

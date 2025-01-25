@@ -12,8 +12,6 @@ import { expandTimelineSuccess } from 'soapbox/actions/timelines.ts';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Timeline from 'soapbox/features/ui/components/timeline.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.test', defaultMessage: 'Test timeline' },
@@ -31,8 +29,6 @@ const onlyMedia = false;
 const TestTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const theme = useTheme();
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     dispatch(importFetchedStatuses(MOCK_STATUSES));
@@ -40,12 +36,11 @@ const TestTimeline: React.FC = () => {
   }, []);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} transparent={!isMobile}>
+    <Column label={intl.formatMessage(messages.title)} slim>
       <Timeline
         scrollKey={`${timelineId}_timeline`}
         timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
         emptyMessage={<FormattedMessage id='empty_column.test' defaultMessage='The test timeline is empty.' />}
-        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

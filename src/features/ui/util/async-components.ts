@@ -82,7 +82,6 @@ export const ServerInfo = lazy(() => import('soapbox/features/server-info/index.
 export const Dashboard = lazy(() => import('soapbox/features/admin/index.tsx'));
 export const ModerationLog = lazy(() => import('soapbox/features/admin/moderation-log.tsx'));
 export const ThemeEditor = lazy(() => import('soapbox/features/theme-editor/index.tsx'));
-export const UserPanel = lazy(() => import('soapbox/features/ui/components/user-panel.tsx'));
 export const PromoPanel = lazy(() => import('soapbox/features/ui/components/promo-panel.tsx'));
 export const SignUpPanel = lazy(() => import('soapbox/features/ui/components/panels/sign-up-panel.tsx'));
 export const CtaBanner = lazy(() => import('soapbox/features/ui/components/cta-banner.tsx'));

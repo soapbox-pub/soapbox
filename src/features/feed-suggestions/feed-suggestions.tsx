@@ -98,7 +98,7 @@ const FeedSuggestions: React.FC<IFeedSuggesetions> = ({ statusId, onMoveUp, onMo
 
   return (
     <HotKeys handlers={handlers}>
-      <Card size='lg' variant='rounded' className='focusable space-y-6' tabIndex={0}>
+      <Card size='lg' className='focusable space-y-6' tabIndex={0}>
         <HStack justifyContent='between' alignItems='center'>
           <CardTitle title={intl.formatMessage(messages.heading)} />
 

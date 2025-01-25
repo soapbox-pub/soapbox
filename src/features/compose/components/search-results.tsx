@@ -154,13 +154,11 @@ const SearchResults = () => {
 
     if (results.statuses && results.statuses.size > 0) {
       searchResults = results.statuses.map((statusId: string) => (
-        // @ts-ignore
         <StatusContainer
           key={statusId}
           id={statusId}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
-          variant='slim'
         />
       ));
       resultsIds = results.statuses;
@@ -173,7 +171,6 @@ const SearchResults = () => {
           id={statusId}
           onMoveUp={handleMoveUp}
           onMoveDown={handleMoveDown}
-          variant='slim'
         />
       ));
       resultsIds = trendingStatuses;
@@ -227,7 +224,9 @@ const SearchResults = () => {
             />
           </Text>
         </HStack>
-      ) : renderFilterBar()}
+      ) : (
+        <div className='px-4'>{renderFilterBar()}</div>
+      )}
 
       {noResultsMessage || (
         <ScrollableList
@@ -244,7 +243,8 @@ const SearchResults = () => {
           listClassName={clsx({
             'divide-gray-200 dark:divide-gray-800 divide-solid divide-y': selectedFilter === 'statuses',
           })}
-          itemClassName={clsx('px-4', {
+          itemClassName={clsx({
+            'px-4': selectedFilter !== 'statuses',
             'pb-4': selectedFilter === 'accounts',
             'pb-3': selectedFilter === 'hashtags',
           })}

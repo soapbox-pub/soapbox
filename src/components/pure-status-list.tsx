@@ -36,8 +36,6 @@ interface IPureStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children
   emptyMessage: React.ReactNode;
   /** ID of the timeline in Redux. */
   timelineId?: string;
-  /** Whether to display a gap or border between statuses in the list. */
-  divideType?: 'space' | 'border';
   /** Whether to display ads. */
   showAds?: boolean;
   /** Whether to show group information. */
@@ -51,7 +49,6 @@ const PureStatusList: React.FC<IPureStatusList> = ({
   statuses,
   lastStatusId,
   featuredStatuses,
-  divideType = 'border',
   onLoadMore,
   timelineId,
   isLoading,
@@ -133,7 +130,6 @@ const PureStatusList: React.FC<IPureStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'rounded'}
       />
     );
   };
@@ -161,7 +157,6 @@ const PureStatusList: React.FC<IPureStatusList> = ({
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
         showGroup={showGroup}
-        variant={divideType === 'border' ? 'slim' : 'default'} // shouldn't "default" be changed to "rounded" ?
       />
     ));
   };
@@ -236,15 +231,10 @@ const PureStatusList: React.FC<IPureStatusList> = ({
       isLoading={isLoading}
       showLoading={isLoading && statuses.length === 0}
       onLoadMore={handleLoadOlder}
-      placeholderComponent={() => <PlaceholderStatus variant={divideType === 'border' ? 'slim' : 'rounded'} />}
+      placeholderComponent={() => <PlaceholderStatus />}
       placeholderCount={20}
       ref={node}
-      listClassName={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', {
-        'divide-none': divideType !== 'border',
-      }, className)}
-      itemClassName={clsx({
-        'pb-3': divideType !== 'border',
-      })}
+      listClassName={clsx('divide-y divide-solid divide-gray-200 dark:divide-gray-800', className)}
       {...other}
     >
       {renderScrollableContent()}

@@ -21,10 +21,15 @@ import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
+import Account from 'soapbox/components/account.tsx';
+import SiteLogo from 'soapbox/components/site-logo.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
+import Search from 'soapbox/features/compose/components/search.tsx';
 import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
+import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
@@ -139,100 +144,119 @@ const SidebarNavigation = () => {
   };
 
   return (
-    <Stack space={4}>
-      <Stack space={2}>
-        <SidebarNavigationLink
-          to='/'
-          icon={homeIcon}
-          activeIcon={homeFilledIcon}
-          text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
-        />
+    <Stack justifyContent='between' className='min-h-screen py-6'>
+      <Stack space={6}>
+        <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
+          <SiteLogo alt='Logo' className='h-10 w-auto cursor-pointer' />
+          <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
+        </Link>
 
-        <SidebarNavigationLink
-          to='/search'
-          icon={searchIcon}
-          text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
-        />
+        <Search openInRoute autosuggest />
+
+        <Stack space={2}>
+          <SidebarNavigationLink
+            to='/'
+            icon={homeIcon}
+            activeIcon={homeFilledIcon}
+            text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
+          />
+
+          <SidebarNavigationLink
+            to='/search'
+            icon={searchIcon}
+            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
+          />
+
+          {account && (
+            <>
+              <SidebarNavigationLink
+                to='/notifications'
+                icon={bellIcon}
+                activeIcon={bellFilledIcon}
+                count={notificationCount}
+                text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
+              />
+
+              {renderMessagesLink()}
+
+              {features.groups && (
+                <SidebarNavigationLink
+                  to='/groups'
+                  icon={circlesIcon}
+                  activeIcon={circlesFilledIcon}
+                  text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
+                />
+              )}
+
+              <SidebarNavigationLink
+                to={`/@${account.acct}`}
+                icon={userIcon}
+                activeIcon={userFilledIcon}
+                text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
+              />
+
+              <SidebarNavigationLink
+                to='/settings'
+                icon={settingsIcon}
+                activeIcon={settingsFilledIcon}
+                text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
+                count={settingsNotifications.size}
+              />
+
+              {account.staff && (
+                <SidebarNavigationLink
+                  to='/soapbox/admin'
+                  icon={dashboardIcon}
+                  count={dashboardCount}
+                  text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
+                />
+              )}
+            </>
+          )}
+
+          {(features.publicTimeline) && (
+            <>
+              {(account || !restrictUnauth.timelines.local) && (
+                <SidebarNavigationLink
+                  to='/timeline/local'
+                  icon={features.federating ? atIcon : worldIcon}
+                  text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
+                />
+              )}
+
+              {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
+                <SidebarNavigationLink
+                  to='/timeline/global'
+                  icon={worldIcon}
+                  text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
+                />
+              )}
+            </>
+          )}
+
+          {menu.length > 0 && (
+            <DropdownMenu items={menu} placement='top'>
+              <SidebarNavigationLink
+                icon={dotsCircleHorizontalIcon}
+                text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
+              />
+            </DropdownMenu>
+          )}
+        </Stack>
 
         {account && (
-          <>
-            <SidebarNavigationLink
-              to='/notifications'
-              icon={bellIcon}
-              activeIcon={bellFilledIcon}
-              count={notificationCount}
-              text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
-            />
-
-            {renderMessagesLink()}
-
-            {features.groups && (
-              <SidebarNavigationLink
-                to='/groups'
-                icon={circlesIcon}
-                activeIcon={circlesFilledIcon}
-                text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
-              />
-            )}
-
-            <SidebarNavigationLink
-              to={`/@${account.acct}`}
-              icon={userIcon}
-              activeIcon={userFilledIcon}
-              text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
-            />
-
-            <SidebarNavigationLink
-              to='/settings'
-              icon={settingsIcon}
-              activeIcon={settingsFilledIcon}
-              text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
-              count={settingsNotifications.size}
-            />
-
-            {account.staff && (
-              <SidebarNavigationLink
-                to='/soapbox/admin'
-                icon={dashboardIcon}
-                count={dashboardCount}
-                text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
-              />
-            )}
-          </>
-        )}
-
-        {(features.publicTimeline) && (
-          <>
-            {(account || !restrictUnauth.timelines.local) && (
-              <SidebarNavigationLink
-                to='/timeline/local'
-                icon={features.federating ? atIcon : worldIcon}
-                text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-              />
-            )}
-
-            {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
-              <SidebarNavigationLink
-                to='/timeline/global'
-                icon={worldIcon}
-                text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-              />
-            )}
-          </>
-        )}
-
-        {menu.length > 0 && (
-          <DropdownMenu items={menu} placement='top'>
-            <SidebarNavigationLink
-              icon={dotsCircleHorizontalIcon}
-              text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
-            />
-          </DropdownMenu>
+          <ComposeButton />
         )}
       </Stack>
 
       {account && (
-        <ComposeButton />
+        <div className='mt-12'>
+          <ProfileDropdown account={account} placement='top'>
+            <div className='w-full p-2'>
+              <Account account={account} showProfileHoverCard={false} withLinkToProfile={false} hideActions />
+            </div>
+          </ProfileDropdown>
+        </div>
       )}
     </Stack>
   );

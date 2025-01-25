@@ -52,7 +52,7 @@ const DeleteAccount = () => {
   }, [password, dispatch, intl]);
 
   return (
-    <Card variant='rounded'>
+    <Card>
       <CardHeader backHref='/settings'>
         <CardTitle title={intl.formatMessage(messages.deleteHeader)} />
       </CardHeader>

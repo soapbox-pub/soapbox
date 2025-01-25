@@ -9,7 +9,6 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import AboutPage from '../about/index.tsx';
 import Timeline from '../ui/components/timeline.tsx';
@@ -19,7 +18,6 @@ import { SiteBanner } from './components/site-banner.tsx';
 const LandingTimeline = () => {
   const dispatch = useAppDispatch();
   const { instance } = useInstance();
-  const theme = useTheme();
   const isMobile = useIsMobile();
 
   const timelineEnabled = !instance.pleroma.metadata.restrict_unauthenticated.timelines.local;
@@ -48,7 +46,7 @@ const LandingTimeline = () => {
   }, []);
 
   return (
-    <Column transparent={!isMobile} withHeader={false}>
+    <Column transparent={!isMobile} withHeader={false} slim>
       <div className='my-12 mb-16 px-4 sm:mb-20'>
         <SiteBanner />
       </div>
@@ -62,7 +60,6 @@ const LandingTimeline = () => {
             prefix='home'
             onLoadMore={handleLoadMore}
             emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
-            divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
           />
         </PullToRefresh>
       ) : (

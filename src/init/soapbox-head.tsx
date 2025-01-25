@@ -25,7 +25,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
   const dsn = soapboxConfig.sentryDsn;
 
-  const bodyClass = clsx('h-full bg-white text-base black:bg-black dark:bg-gray-800', {
+  const bodyClass = clsx('h-full bg-white text-base black:bg-black dark:bg-primary-900', {
     'no-reduce-motion': !reduceMotion,
     'underline-links': underlineLinks,
     'demetricator': demetricator,

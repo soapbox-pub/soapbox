@@ -69,7 +69,7 @@ const AboutPage: React.FC = () => {
 
   return (
     <div>
-      <Card variant='rounded'>
+      <Card>
         <div className='prose mx-auto py-4 dark:prose-invert sm:p-6'>
           <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
           {alsoAvailable}

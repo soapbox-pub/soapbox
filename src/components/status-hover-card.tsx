@@ -8,7 +8,6 @@ import {
   updateStatusHoverCard,
 } from 'soapbox/actions/status-hover-card.ts';
 import { fetchStatus } from 'soapbox/actions/statuses.ts';
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
 import StatusContainer from 'soapbox/containers/status-container.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -67,20 +66,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
     };
   }, []);
 
-  if (!statusId) return null;
-
-  const renderStatus = (statusId: string) => {
-    return (
-      // @ts-ignore
-      <StatusContainer
-        key={statusId}
-        id={statusId}
-        hoverable={false}
-        hideActionBar
-        muted
-      />
-    );
-  };
+  if (!status) return null;
 
   return (
     <div
@@ -94,11 +80,9 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
       onMouseEnter={handleMouseEnter()}
       onMouseLeave={handleMouseLeave()}
     >
-      <Card className='relative'>
-        <CardBody>
-          {renderStatus(statusId)}
-        </CardBody>
-      </Card>
+      <div className='overflow-hidden rounded-xl bg-white p-4 black:bg-black dark:bg-primary-900'>
+        <StatusContainer id={status.id} hoverable={false} hideActionBar muted slim />
+      </div>
     </div>
   );
 };

@@ -12,8 +12,6 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -24,10 +22,8 @@ const HomeTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const { instance } = useInstance();
-  const theme = useTheme();
 
   const polling = useRef<NodeJS.Timeout | null>(null);
-  const isMobile = useIsMobile();
 
   const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
   const next = useAppSelector(state => state.timelines.get('home')?.next);
@@ -68,14 +64,12 @@ const HomeTimeline: React.FC = () => {
   }, [isPartial]);
 
   return (
-    <Column className='py-0' label={intl.formatMessage(messages.title)} transparent={!isMobile} withHeader={false}>
+    <Column label={intl.formatMessage(messages.title)} withHeader={false} slim>
       <PullToRefresh onRefresh={handleRefresh}>
         <Timeline
-          className='black:p-4 black:sm:p-5'
           scrollKey='home_timeline'
           onLoadMore={handleLoadMore}
           timelineId='home'
-          divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
           emptyMessage={
             <Stack space={1}>
               <Text size='xl' weight='medium' align='center'>
