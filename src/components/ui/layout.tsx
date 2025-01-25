@@ -31,7 +31,7 @@ const Layout: LayoutComponent = ({ children }) => (
 /** Left sidebar container in the UI. */
 const Sidebar: React.FC<ISidebar> = ({ children }) => (
   <div className='hidden lg:col-span-3 lg:block'>
-    <StickyBox className='py-6'>
+    <StickyBox>
       {children}
     </StickyBox>
   </div>
