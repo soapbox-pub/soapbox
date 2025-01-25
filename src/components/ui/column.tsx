@@ -90,7 +90,7 @@ const Column = forwardRef<HTMLDivElement, IColumn>((props, ref): JSX.Element => 
             label={label}
             backHref={backHref}
             className={clsx('px-5 py-4', {
-              'sticky top-12 z-10 bg-white/90 dark:bg-primary-900/90 black:bg-black/90 backdrop-blur lg:top-16': !transparent,
+              'sticky top-12 z-20 bg-white/90 dark:bg-primary-900/90 black:bg-black/90 backdrop-blur lg:top-0': !transparent,
               '-mb-4': !slim,
             })}
             action={action}
