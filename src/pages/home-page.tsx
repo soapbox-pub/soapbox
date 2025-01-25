@@ -104,22 +104,22 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {me && features.announcements && (
           <AnnouncementsPanel />
         )}
-        {(hasCrypto && cryptoLimit > 0 && me) && (
-          <CryptoDonatePanel limit={cryptoLimit} />
-        )}
-        {(hasPatron && me) && (
-          <FundingPanel />
-        )}
-        {features.birthdays && (
-          <BirthdayPanel limit={10} />
-        )}
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
         {features.suggestions && (
           <WhoToFollowPanel limit={3} />
         )}
+        {features.birthdays && (
+          <BirthdayPanel limit={10} />
+        )}
         <PromoPanel />
+        {(hasCrypto && cryptoLimit > 0 && me) && (
+          <CryptoDonatePanel limit={cryptoLimit} />
+        )}
+        {(hasPatron && me) && (
+          <FundingPanel />
+        )}
         <LinkFooter />
       </Layout.Aside>
     </>
