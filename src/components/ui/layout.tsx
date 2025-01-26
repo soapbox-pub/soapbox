@@ -39,7 +39,7 @@ const Sidebar: React.FC<ISidebar> = ({ children }) => (
 
 /** Center column container in the UI. */
 const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
-  <main className={clsx('border-gray-200 bg-white pb-6 black:border-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900 md:col-span-12 lg:col-span-9 lg:border-l xl:col-span-6 xl:border-r', className)}>
+  <main className={clsx('border-gray-200 bg-white pb-36 black:border-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900 sm:pb-6 md:col-span-12 lg:col-span-9 lg:border-l xl:col-span-6 xl:border-r', className)}>
     {children}
   </main>
 );
