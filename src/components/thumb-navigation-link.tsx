@@ -38,7 +38,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
           src={icon}
           className={clsx({
             'size-5': true,
-            'text-gray-600 black:text-white': active,
+            'text-black dark:text-white black:text-white': active,
             'text-primary-500': !active,
           })}
           count={count}
@@ -49,7 +49,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
           src={icon}
           className={clsx({
             'size-5': true,
-            'text-white': active,
+            'text-black dark:text-white black:text-white': active,
             'text-primary-500': !active,
           })}
         />
@@ -60,8 +60,8 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, countMax, 
         size='xs'
         weight='medium'
         className={clsx({
-          'text-gray-600': !active,
-          'text-primary-500': active,
+          'text-greed-600': active,
+          'text-primary-500': !active,
         })}
       >
         {text}
