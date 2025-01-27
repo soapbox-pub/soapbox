@@ -55,7 +55,7 @@ const SidebarNavigationLink = forwardRef((props: ISidebarNavigationLink, ref: Re
           count={count}
           countMax={countMax}
           className={clsx('size-5', {
-            'text-gray-600 black:text-white dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-50': !isActive,
+            'text-gray-600 black:text-gray-500 dark:text-gray-500 group-hover:text-gray-900 dark:group-hover:text-gray-50': !isActive,
             'text-gray-900 dark:text-gray-50': isActive,
           })}
         />
