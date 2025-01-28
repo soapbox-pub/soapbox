@@ -16,11 +16,11 @@ import DisplayUserNameStep from './steps/display-identity-step.tsx';
 import DisplayNameStep from './steps/display-name-step.tsx';
 import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
 
-interface IOnboardingFlowModal {
+interface IOnboardingModal {
   onClose(): void;
 }
 
-const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
+const OnboardingModal: React.FC<IOnboardingModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -115,4 +115,4 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   );
 };
 
-export default OnboardingFlowModal;
+export default OnboardingModal;
