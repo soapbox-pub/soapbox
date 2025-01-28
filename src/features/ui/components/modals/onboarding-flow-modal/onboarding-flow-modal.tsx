@@ -78,43 +78,39 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
 
 
   return (
-    <Stack justifyContent='center' alignItems='center' className='relative w-full'>
-      <Modal width='2xl' onClose={handleComplete} theme='transparent'>
-        <Stack space={4}>
-          <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
-            {steps.map((step, i) => (
-              <div key={i} className='w-full'>
-                <div
-                  className={clsx({
-                    'transition-opacity ease-linear': true,
-                    'opacity-0 duration-500': currentStep !== i,
-                    'opacity-100 duration-75': currentStep === i,
-                  })}
-                >
-                  {step}
-                </div>
+    <Stack space={5} justifyContent='center' alignItems='center' className='relative w-full'>
+      <Modal width='2xl' onClose={handleComplete}>
+        <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
+          {steps.map((step, i) => (
+            <div key={i} className='w-full'>
+              <div
+                className={clsx({
+                  'transition-opacity ease-linear': true,
+                  'opacity-0 duration-500': currentStep !== i,
+                  'opacity-100 duration-75': currentStep === i,
+                })}
+              >
+                {step}
               </div>
-            ))}
-          </ReactSwipeableViews>
-
-          <div className='relative flex w-full justify-center'>
-            <HStack space={3} alignItems='center' justifyContent='center' className='absolute h-10'>
-              {steps.map((_, i) => (
-                <button
-                  key={i}
-                  tabIndex={0}
-                  onClick={() => handleDotClick(i)}
-                  className={clsx({
-                    'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
-                    'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
-                    'bg-primary-600': i === currentStep,
-                  })}
-                />
-              ))}
-            </HStack>
-          </div>
-        </Stack>
+            </div>
+          ))}
+        </ReactSwipeableViews>
       </Modal>
+
+      <HStack space={3} alignItems='center' justifyContent='center' className='pointer-events-auto'>
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            tabIndex={0}
+            onClick={() => handleDotClick(i)}
+            className={clsx({
+              'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
+              'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
+              'bg-primary-600': i === currentStep,
+            })}
+          />
+        ))}
+      </HStack>
     </Stack>
   );
 };
