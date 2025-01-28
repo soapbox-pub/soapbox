@@ -41,7 +41,7 @@ const SoapboxMount = () => {
 
   useEffect(() => {
     if (showOnboarding && !showCaptcha) {
-      dispatch(openModal('ONBOARDING_FLOW'));
+      dispatch(openModal('ONBOARDING'));
     }
   }, [showOnboarding, showCaptcha]);
 

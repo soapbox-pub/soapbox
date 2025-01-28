@@ -12,15 +12,15 @@ import AvatarSelectionModal from './steps/avatar-step.tsx';
 import BioStep from './steps/bio-step.tsx';
 import CompletedModal from './steps/completed-step.tsx';
 import CoverPhotoSelectionModal from './steps/cover-photo-selection-step.tsx';
-import DisplayUserNameStep from './steps/display-identity-step.tsx';
 import DisplayNameStep from './steps/display-name-step.tsx';
 import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
+import UsernameStep from './steps/username-step.tsx';
 
-interface IOnboardingFlowModal {
+interface IOnboardingModal {
   onClose(): void;
 }
 
-const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
+const OnboardingModal: React.FC<IOnboardingModal> = ({ onClose }) => {
   const dispatch = useAppDispatch();
 
   const [currentStep, setCurrentStep] = useState<number>(0);
@@ -49,7 +49,7 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
   const steps = [
     <AvatarSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <DisplayNameStep onClose={handleComplete} onNext={handleNextStep} />,
-    <DisplayUserNameStep onClose={handleComplete} onNext={handleNextStep} />,
+    <UsernameStep onClose={handleComplete} onNext={handleNextStep} />,
     <BioStep onClose={handleComplete} onNext={handleNextStep} />,
     <CoverPhotoSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <SuggestedAccountsModal onClose={handleComplete} onNext={handleNextStep} />,
@@ -78,44 +78,41 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
 
 
   return (
-    <Stack space={4} justifyContent='center' alignItems='center' className='relative w-full'>
-      <Modal width='2xl' onClose={handleComplete} theme='transparent' >
-        <Stack space={4}>
-          <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
-            {steps.map((step, i) => (
-              <div key={i} className='w-full'>
-                <div
-                  className={clsx({
-                    'transition-opacity ease-linear': true,
-                    'opacity-0 duration-500': currentStep !== i,
-                    'opacity-100 duration-75': currentStep === i,
-                  })}
-                >
-                  {step}
-                </div>
-              </div>
-            ))}
-          </ReactSwipeableViews>
-        </Stack>
-        <div className='relative flex w-full justify-center'>
-          <HStack space={3} alignItems='center' justifyContent='center' className='absolute h-10'>
-            {steps.map((_, i) => (
-              <button
-                key={i}
-                tabIndex={0}
-                onClick={() => handleDotClick(i)}
+    <Stack space={5} justifyContent='center' alignItems='center' className='relative w-full'>
+      <Modal width='2xl' onClose={handleComplete}>
+        <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
+          {steps.map((step, i) => (
+            <div key={i} className='w-full'>
+              <div
                 className={clsx({
-                  'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
-                  'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
-                  'bg-primary-600': i === currentStep,
+                  'transition-opacity ease-linear': true,
+                  'opacity-0 duration-500': currentStep !== i,
+                  'opacity-100 duration-75': currentStep === i,
                 })}
-              />
-            ))}
-          </HStack>
-        </div>
+              >
+                {step}
+              </div>
+            </div>
+          ))}
+        </ReactSwipeableViews>
       </Modal>
+
+      <HStack space={3} alignItems='center' justifyContent='center' className='pointer-events-auto'>
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            tabIndex={0}
+            onClick={() => handleDotClick(i)}
+            className={clsx({
+              'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
+              'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
+              'bg-primary-600': i === currentStep,
+            })}
+          />
+        ))}
+      </HStack>
     </Stack>
   );
 };
 
-export default OnboardingFlowModal;
+export default OnboardingModal;

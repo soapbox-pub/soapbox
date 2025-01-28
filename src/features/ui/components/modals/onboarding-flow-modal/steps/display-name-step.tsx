@@ -11,7 +11,6 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import toast from 'soapbox/toast.tsx';
 
 const closeIcon = xIcon;
@@ -30,14 +29,12 @@ const DisplayNameStep: React.FC<IDisplayNameStep> = ({ onClose, onNext }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const { account } = useOwnAccount();
-  const [value, setValue] = useState<string>(account?.display_name || '');
+  const [value, setValue] = useState<string>('');
   const [isSubmitting, setSubmitting] = useState<boolean>(false);
   const [errors, setErrors] = useState<string[]>([]);
 
-  const trimmedValue = value.trim();
-  const isValid = trimmedValue.length > 0;
-  const isDisabled = !isValid || value.length > 30;
+  const isValid = value.trim().length > 0;
+  const isDisabled = !isValid;
 
   const hintText = useMemo(() => {
     const charsLeft = 30 - value.length;
