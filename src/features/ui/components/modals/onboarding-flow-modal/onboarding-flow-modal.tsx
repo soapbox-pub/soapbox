@@ -78,8 +78,8 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
 
 
   return (
-    <Stack space={4} justifyContent='center' alignItems='center' className='relative w-full'>
-      <Modal width='2xl' onClose={handleComplete} theme='transparent' >
+    <Stack justifyContent='center' alignItems='center' className='relative w-full'>
+      <Modal width='2xl' onClose={handleComplete} theme='transparent'>
         <Stack space={4}>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
@@ -96,23 +96,24 @@ const OnboardingFlowModal: React.FC<IOnboardingFlowModal> = ({ onClose }) => {
               </div>
             ))}
           </ReactSwipeableViews>
+
+          <div className='relative flex w-full justify-center'>
+            <HStack space={3} alignItems='center' justifyContent='center' className='absolute h-10'>
+              {steps.map((_, i) => (
+                <button
+                  key={i}
+                  tabIndex={0}
+                  onClick={() => handleDotClick(i)}
+                  className={clsx({
+                    'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
+                    'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
+                    'bg-primary-600': i === currentStep,
+                  })}
+                />
+              ))}
+            </HStack>
+          </div>
         </Stack>
-        <div className='relative flex w-full justify-center'>
-          <HStack space={3} alignItems='center' justifyContent='center' className='absolute h-10'>
-            {steps.map((_, i) => (
-              <button
-                key={i}
-                tabIndex={0}
-                onClick={() => handleDotClick(i)}
-                className={clsx({
-                  'w-5 h-5 rounded-full focus:ring-primary-600 focus:ring-2 focus:ring-offset-2': true,
-                  'bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-700/75 hover:bg-gray-400': i !== currentStep,
-                  'bg-primary-600': i === currentStep,
-                })}
-              />
-            ))}
-          </HStack>
-        </div>
       </Modal>
     </Stack>
   );
