@@ -27,7 +27,7 @@ const messages = defineMessages({
   skip: { id: 'onboarding.skip', defaultMessage: 'Skip for now' },
 });
 
-interface IDisplayUserNameStep {
+interface IUsernameStep {
   onClose?(): void;
   onNext: () => void;
 }
@@ -45,7 +45,7 @@ function useRequestName() {
   });
 }
 
-const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }) => {
+const UsernameStep: React.FC<IUsernameStep> = ({ onClose, onNext }) => {
   const intl = useIntl();
   const { instance } = useInstance();
   const { mutate } = useRequestName();
@@ -127,4 +127,4 @@ const DisplayUserNameStep: React.FC<IDisplayUserNameStep> = ({ onClose, onNext }
 };
 
 
-export default DisplayUserNameStep;
+export default UsernameStep;

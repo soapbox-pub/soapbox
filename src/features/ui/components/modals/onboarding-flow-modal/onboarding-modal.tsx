@@ -12,9 +12,9 @@ import AvatarSelectionModal from './steps/avatar-step.tsx';
 import BioStep from './steps/bio-step.tsx';
 import CompletedModal from './steps/completed-step.tsx';
 import CoverPhotoSelectionModal from './steps/cover-photo-selection-step.tsx';
-import DisplayUserNameStep from './steps/display-identity-step.tsx';
 import DisplayNameStep from './steps/display-name-step.tsx';
 import SuggestedAccountsModal from './steps/suggested-accounts-step.tsx';
+import UsernameStep from './steps/username-step.tsx';
 
 interface IOnboardingModal {
   onClose(): void;
@@ -49,7 +49,7 @@ const OnboardingModal: React.FC<IOnboardingModal> = ({ onClose }) => {
   const steps = [
     <AvatarSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <DisplayNameStep onClose={handleComplete} onNext={handleNextStep} />,
-    <DisplayUserNameStep onClose={handleComplete} onNext={handleNextStep} />,
+    <UsernameStep onClose={handleComplete} onNext={handleNextStep} />,
     <BioStep onClose={handleComplete} onNext={handleNextStep} />,
     <CoverPhotoSelectionModal onClose={handleComplete} onNext={handleNextStep} />,
     <SuggestedAccountsModal onClose={handleComplete} onNext={handleNextStep} />,
