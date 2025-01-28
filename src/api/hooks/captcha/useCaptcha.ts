@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { fetchMe } from 'soapbox/actions/me.ts';
 import { closeModal } from 'soapbox/actions/modals.ts';
 import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
@@ -8,8 +9,6 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha.ts';
 import toast from 'soapbox/toast.tsx';
-
-
 
 const messages = defineMessages({
   sucessMessage: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha.' },
@@ -66,12 +65,10 @@ const useCaptcha = () => {
       };
 
       try {
-        await api.post(`/api/v1/ditto/captcha/${captcha.id}/verify`, result).then(() => {
-          setTryAgain(true);
-
-          dispatch(closeModal('CAPTCHA'));
-          toast.success(messages.sucessMessage);
-        });
+        await api.post(`/api/v1/ditto/captcha/${captcha.id}/verify`, result);
+        dispatch(closeModal('CAPTCHA'));
+        await dispatch(fetchMe()); // refetch account so `captcha_solved` changes.
+        toast.success(messages.sucessMessage);
       } catch (error) {
         setTryAgain(true);
 

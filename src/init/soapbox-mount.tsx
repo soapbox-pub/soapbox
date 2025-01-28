@@ -39,9 +39,11 @@ const SoapboxMount = () => {
     }
   }, [showCaptcha]);
 
-  if (showOnboarding) {
-    dispatch(openModal('ONBOARDING_FLOW'));
-  }
+  useEffect(() => {
+    if (showOnboarding && !showCaptcha) {
+      dispatch(openModal('ONBOARDING_FLOW'));
+    }
+  }, [showOnboarding, showCaptcha]);
 
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 
