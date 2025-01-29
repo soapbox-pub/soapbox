@@ -505,7 +505,7 @@ const UI: React.FC<IUI> = ({ children }) => {
         />
 
         <div className='z-10 flex min-h-screen flex-col'>
-          <div className='sticky top-0 z-50 sm:hidden'>
+          <div className='sticky top-0 z-50 lg:hidden'>
             <Navbar />
           </div>
 
