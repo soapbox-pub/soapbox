@@ -52,15 +52,18 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
 
   const [username, setUsername] = useState<string>('');
   const [reason, setReason] = useState<string>('');
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!submitted) return;
+
     const dismissed = new Set(dismissedSettingsNotifications);
 
     if (!dismissed.has('needsNip05')) {
       dismissed.add('needsNip05');
       dispatch(changeSetting(['dismissedSettingsNotifications'], [...dismissed]));
     }
-  }, []);
+  }, [submitted]);
 
   if (!account) return null;
 
@@ -85,6 +88,7 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
         });
         setUsername('');
         setReason('');
+        setSubmitted(true);
       },
     });
   };
