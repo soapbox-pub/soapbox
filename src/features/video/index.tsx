@@ -482,7 +482,11 @@ const Video: React.FC<IVideo> = ({
   const playerStyle: React.CSSProperties = {};
 
   const startTimeout = () => {
-    timeoutRef.current = setTimeout(() => setHovered(false), 1000);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setHovered(false);
+      timeoutRef.current = null;
+    }, 1000);
   };
 
   if (inline && containerWidth) {
