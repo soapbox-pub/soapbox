@@ -24,6 +24,7 @@ type PageParam = {
 
 const SuggestionKeys = {
   suggestions: ['suggestions'] as const,
+  localSuggestions: ['suggestions', 'local'] as const,
 };
 
 const useSuggestions = () => {
@@ -133,4 +134,53 @@ function useOnboardingSuggestions() {
   };
 }
 
-export { useOnboardingSuggestions, useSuggestions, useDismissSuggestion };
+const useLocalSuggestions = () => {
+  const api = useApi();
+  const dispatch = useAppDispatch();
+
+  const getLocalSuggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
+    const endpoint = pageParam?.link || '/api/v2/ditto/suggestions/local';
+    const response = await api.get(endpoint);
+    const next = response.next();
+    const hasMore = !!next;
+
+    const data: Suggestion[] = await response.json();
+    const accounts = data.map(({ account }) => account);
+    const accountIds = accounts.map((account) => account.id);
+    dispatch(importFetchedAccounts(accounts));
+    dispatch(fetchRelationships(accountIds));
+
+    return {
+      result: data.map(x => ({ ...x, account: x.account.id })),
+      link: next ?? undefined,
+      hasMore,
+    };
+  };
+
+  const result = useInfiniteQuery({
+    queryKey: SuggestionKeys.localSuggestions,
+    queryFn: ({ pageParam }: any) => getLocalSuggestions(pageParam),
+    placeholderData: keepPreviousData,
+    initialPageParam: { nextLink: undefined },
+    getNextPageParam: (config) => {
+      if (config?.hasMore) {
+        return { nextLink: config?.link };
+      }
+
+      return undefined;
+    },
+  });
+
+  const data: any = result.data?.pages.reduce<Suggestion[]>(
+    (prev: any, curr: any) => [...prev, ...curr.result],
+    [],
+  );
+
+  return {
+    ...result,
+    data: data || [],
+  };
+};
+
+
+export { useOnboardingSuggestions, useSuggestions, useDismissSuggestion, useLocalSuggestions };
