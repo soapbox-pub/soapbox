@@ -191,10 +191,12 @@ const Video: React.FC<IVideo> = ({
   };
 
   const handleTimeUpdate = () => {
-    if (video.current) {
-      setCurrentTime(Math.floor(video.current.currentTime));
-      setDuration(Math.floor(video.current.duration));
-    }
+    if (!video.current) return;
+
+    const { duration, currentTime } = video.current;
+
+    setCurrentTime(Math.floor(currentTime));
+    setDuration(Number.isNaN(duration) || (duration === Infinity) ? 0 : Math.floor(duration));
   };
 
   const handleVolumeMouseDown: React.MouseEventHandler = e => {
@@ -480,7 +482,11 @@ const Video: React.FC<IVideo> = ({
   const playerStyle: React.CSSProperties = {};
 
   const startTimeout = () => {
-    timeoutRef.current = setTimeout(() => setHovered(false), 1000);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setHovered(false);
+      timeoutRef.current = null;
+    }, 1000);
   };
 
   if (inline && containerWidth) {
@@ -649,9 +655,13 @@ const Video: React.FC<IVideo> = ({
 
             <span>
               <span className='text-sm font-medium text-white/75'>{formatTime(currentTime)}</span>
-              {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
-              <span className='mx-1.5 inline-block text-sm font-medium text-white/75'>/</span>
-              <span className='text-sm font-medium text-white/75'>{formatTime(duration)}</span>
+              {duration > 0 && (
+                <>
+                  {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
+                  <span className='mx-1.5 inline-block text-sm font-medium text-white/75'>/</span>
+                  <span className='text-sm font-medium text-white/75'>{formatTime(duration)}</span>
+                </>
+              )}
             </span>
 
             {link && (
@@ -660,7 +670,6 @@ const Video: React.FC<IVideo> = ({
               </span>
             )}
           </div>
-
           <div className='flex min-w-[30px] flex-auto items-center truncate text-[16px]'>
             <button
               type='button'
