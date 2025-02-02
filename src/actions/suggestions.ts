@@ -80,7 +80,7 @@ const fetchSuggestions = (params: Record<string, any> = { limit: 50 }) =>
   };
 
 const fetchSuggestionsForTimeline = () => (dispatch: AppDispatch, _getState: () => RootState) => {
-  dispatch(fetchSuggestions({ limit: 20 }))?.then(() => dispatch(insertSuggestionsIntoTimeline()));
+  dispatch(insertSuggestionsIntoTimeline());
 };
 
 const dismissSuggestion = (accountId: string) =>
