@@ -1,4 +1,4 @@
-import { useFloating } from '@floating-ui/react';
+import { Placement, useFloating } from '@floating-ui/react';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
 import clsx from 'clsx';
@@ -29,6 +29,7 @@ const messages = defineMessages({
 interface IProfileDropdown {
   account: AccountEntity;
   children: React.ReactNode;
+  placement?: Placement;
 }
 
 type IMenuItem = {
@@ -39,13 +40,13 @@ type IMenuItem = {
   action?: (event: React.MouseEvent) => void;
 }
 
-const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
+const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children, placement = 'bottom-end' }) => {
   const dispatch = useAppDispatch();
   const features = useFeatures();
   const intl = useIntl();
 
   const [visible, setVisible] = useState(false);
-  const { x, y, strategy, refs } = useFloating<HTMLButtonElement>({ placement: 'bottom-end' });
+  const { x, y, strategy, refs } = useFloating<HTMLButtonElement>({ placement });
 
   const getOtherAccounts = useCallback(makeGetOtherAccounts(), []);
   const otherAccounts = useAppSelector((state) => getOtherAccounts(state));
@@ -117,7 +118,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   return (
     <>
       <button
-        className='rounded-full focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-gray-800 dark:ring-offset-0 dark:focus:ring-primary-500'
+        className='w-full rounded-full focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:ring-gray-800 dark:ring-offset-0 dark:focus:ring-primary-500'
         type='button'
         ref={refs.setReference}
         onClick={toggleVisible}

@@ -19,9 +19,7 @@ import Portal from 'soapbox/components/ui/portal.tsx';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 import FilterBar from './components/filter-bar.tsx';
 import Notification from './components/notification.tsx';
@@ -62,9 +60,6 @@ const Notifications = () => {
   // const isUnread = useAppSelector(state => state.notifications.unread > 0);
   const hasMore = useAppSelector(state => state.notifications.hasMore);
   const totalQueuedNotificationsCount = useAppSelector(state => state.notifications.totalQueuedNotificationsCount || 0);
-
-  const theme = useTheme();
-  const isMobile = useIsMobile();
 
   const node = useRef<VirtuosoHandle>(null);
   const column = useRef<HTMLDivElement>(null);
@@ -186,7 +181,7 @@ const Notifications = () => {
       ref={column}
       label={intl.formatMessage(messages.title)}
       withHeader={false}
-      className={clsx({ '!p-0': isMobile || theme === 'black' })}
+      className='!p-0'
     >
       {filterBarContainer}
 

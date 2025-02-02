@@ -101,7 +101,7 @@ const AuthTokenList: React.FC = () => {
 
   return (
     <Column label={intl.formatMessage(messages.header)} transparent withHeader={false}>
-      <Card variant='rounded'>
+      <Card>
         <CardHeader backHref='/settings'>
           <CardTitle title={intl.formatMessage(messages.header)} />
         </CardHeader>

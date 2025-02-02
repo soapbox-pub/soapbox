@@ -55,7 +55,7 @@ const EmbeddedStatus: React.FC<IEmbeddedStatus> = ({ params }) => {
     if (loading) {
       return <Spinner />;
     } else if (status) {
-      return <Status status={status} accountAction={logo} variant='default' />;
+      return <Status status={status} accountAction={logo} />;
     } else {
       return <MissingIndicator nested />;
     }

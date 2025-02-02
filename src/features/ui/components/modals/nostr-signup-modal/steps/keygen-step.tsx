@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { fetchAccount } from 'soapbox/actions/accounts.ts';
 import { logInNostr } from 'soapbox/actions/nostr.ts';
+import { startOnboarding } from 'soapbox/actions/onboarding.ts';
 import { closeSidebar } from 'soapbox/actions/sidebar.ts';
 import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
@@ -79,6 +80,7 @@ const KeygenStep: React.FC<IKeygenStep> = ({ onClose }) => {
       dispatch(closeSidebar());
     }
 
+    dispatch(startOnboarding());
   };
 
   return (

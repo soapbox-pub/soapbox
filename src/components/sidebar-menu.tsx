@@ -381,7 +381,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     </button>
 
                     {switcher && (
-                      <div className='border-t-2 border-solid border-gray-100 black:border-t dark:border-gray-800'>
+                      <div className='border-t border-solid border-gray-100 dark:border-gray-800'>
                         {otherAccounts.map(account => renderAccount(account))}
 
                         <NavLink className='flex items-center space-x-1 py-2' to='/login/add' onClick={handleClose}>

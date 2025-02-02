@@ -49,7 +49,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
     }
 
     return (
-      <Card variant='rounded' size='lg'>
+      <Card size='lg'>
         {emptyMessage}
       </Card>
     );

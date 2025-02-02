@@ -11,9 +11,7 @@ import Timeline from 'soapbox/features/ui/components/timeline.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
 
 interface IHashtagTimeline {
   params?: {
@@ -29,8 +27,6 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   const tag = useAppSelector((state) => state.tags.get(id));
   const next = useAppSelector(state => state.timelines.get(`hashtag:${id}`)?.next);
   const { isLoggedIn } = useLoggedIn();
-  const theme = useTheme();
-  const isMobile = useIsMobile();
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandHashtagTimeline(id, { url: next, maxId }));
@@ -57,7 +53,7 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
   }, [id]);
 
   return (
-    <Column label={`#${id}`} transparent={!isMobile}>
+    <Column label={`#${id}`} slim>
       {features.followHashtags && isLoggedIn && (
         <List>
           <ListItem
@@ -76,7 +72,6 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
         timelineId={`hashtag:${id}`}
         onLoadMore={handleLoadMore}
         emptyMessage={<FormattedMessage id='empty_column.hashtag' defaultMessage='There is nothing in this hashtag yet.' />}
-        divideType={(theme === 'black' || isMobile) ? 'border' : 'space'}
       />
     </Column>
   );

@@ -127,7 +127,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
 
   if (!account) {
     return (
-      <div className='mt-6 min-w-0 flex-1 sm:px-2'>
+      <div>
         <Stack space={2}>
           <Stack>
             <HStack space={1} alignItems='center'>
@@ -147,7 +147,7 @@ const ProfileInfoPanel: React.FC<IProfileInfoPanel> = ({ account, username }) =>
   const badges = getBadges();
 
   return (
-    <div className='mt-6 min-w-0 flex-1 sm:px-2'>
+    <div>
       <Stack space={2}>
         <Stack>
           <HStack space={1} alignItems='center'>

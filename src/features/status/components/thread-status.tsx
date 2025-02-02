@@ -44,7 +44,7 @@ const ThreadStatus: React.FC<IThreadStatus> = (props): JSX.Element => {
         // @ts-ignore FIXME
         <StatusContainer {...props} showGroup={false} />
       ) : (
-        <PlaceholderStatus variant='default' />
+        <PlaceholderStatus slim />
       )}
     </div>
   );

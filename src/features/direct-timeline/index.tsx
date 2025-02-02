@@ -36,7 +36,7 @@ const DirectTimeline = () => {
   };
 
   return (
-    <Column label={intl.formatMessage(messages.heading)}>
+    <Column label={intl.formatMessage(messages.heading)} slim>
       <AccountSearch
         placeholder={intl.formatMessage(messages.searchPlaceholder)}
         onSelected={handleSuggestion}
@@ -47,7 +47,6 @@ const DirectTimeline = () => {
         timelineId='direct'
         onLoadMore={handleLoadMore}
         emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
-        divideType='border'
       />
     </Column>
   );

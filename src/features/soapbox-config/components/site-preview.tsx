@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { defaultSettings } from 'soapbox/actions/settings.ts';
 import SiteLogo from 'soapbox/components/site-logo.tsx';
-import BackgroundShapes from 'soapbox/features/ui/components/background-shapes.tsx';
 import { useSystemTheme } from 'soapbox/hooks/useSystemTheme.ts';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
 import { generateThemeCss } from 'soapbox/utils/theme.ts';
@@ -39,7 +38,6 @@ const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
     <div className={bodyClass}>
       {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
       <style>{`.site-preview {${generateThemeCss(soapboxConfig)}}`}</style>
-      <BackgroundShapes position='absolute' />
 
       <div className='absolute z-[2] self-center overflow-hidden rounded-lg bg-accent-500 p-2 text-white'>
         <FormattedMessage id='site_preview.preview' defaultMessage='Preview' />

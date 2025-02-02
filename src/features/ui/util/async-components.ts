@@ -82,7 +82,6 @@ export const ServerInfo = lazy(() => import('soapbox/features/server-info/index.
 export const Dashboard = lazy(() => import('soapbox/features/admin/index.tsx'));
 export const ModerationLog = lazy(() => import('soapbox/features/admin/moderation-log.tsx'));
 export const ThemeEditor = lazy(() => import('soapbox/features/theme-editor/index.tsx'));
-export const UserPanel = lazy(() => import('soapbox/features/ui/components/user-panel.tsx'));
 export const PromoPanel = lazy(() => import('soapbox/features/ui/components/promo-panel.tsx'));
 export const SignUpPanel = lazy(() => import('soapbox/features/ui/components/panels/sign-up-panel.tsx'));
 export const CtaBanner = lazy(() => import('soapbox/features/ui/components/cta-banner.tsx'));
@@ -94,7 +93,7 @@ export const ProfileFieldsPanel = lazy(() => import('soapbox/features/ui/compone
 export const PinnedAccountsPanel = lazy(() => import('soapbox/features/ui/components/pinned-accounts-panel.tsx'));
 export const InstanceInfoPanel = lazy(() => import('soapbox/features/ui/components/instance-info-panel.tsx'));
 export const InstanceModerationPanel = lazy(() => import('soapbox/features/ui/components/instance-moderation-panel.tsx'));
-export const LatestAccountsPanel = lazy(() => import('soapbox/features/admin/components/latest-accounts-panel.tsx'));
+export const LatestAdminAccountsPanel = lazy(() => import('soapbox/features/admin/components/latest-accounts-panel.tsx'));
 export const SidebarMenu = lazy(() => import('soapbox/components/sidebar-menu.tsx'));
 export const ModalContainer = lazy(() => import('soapbox/features/ui/containers/modal-container.ts'));
 export const ProfileHoverCard = lazy(() => import('soapbox/components/profile-hover-card.tsx'));
@@ -110,6 +109,7 @@ export const FederationRestrictions = lazy(() => import('soapbox/features/federa
 export const Aliases = lazy(() => import('soapbox/features/aliases/index.tsx'));
 export const Migration = lazy(() => import('soapbox/features/migration/index.tsx'));
 export const WhoToFollowPanel = lazy(() => import('soapbox/features/ui/components/who-to-follow-panel.tsx'));
+export const LatestAccountsPanel = lazy(() => import('soapbox/features/ui/components/latest-accounts-panel.tsx'));
 export const FollowRecommendations = lazy(() => import('soapbox/features/follow-recommendations/index.tsx'));
 export const Directory = lazy(() => import('soapbox/features/directory/index.tsx'));
 export const RegisterInvite = lazy(() => import('soapbox/features/register-invite/index.tsx'));
@@ -161,7 +161,7 @@ export const EditAnnouncementModal = lazy(() => import('soapbox/features/ui/comp
 export const FollowedTags = lazy(() => import('soapbox/features/followed-tags/index.tsx'));
 export const AccountNotePanel = lazy(() => import('soapbox/features/ui/components/panels/account-note-panel.tsx'));
 export const ComposeEditor = lazy(() => import('soapbox/features/compose/editor/index.tsx'));
-export const OnboardingFlowModal = lazy(() => import('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-flow-modal.tsx'));
+export const OnboardingModal = lazy(() => import('soapbox/features/ui/components/modals/onboarding-flow-modal/onboarding-modal.tsx'));
 export const NostrSignupModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-signup-modal/nostr-signup-modal.tsx'));
 export const NostrLoginModal = lazy(() => import('soapbox/features/ui/components/modals/nostr-login-modal/nostr-login-modal.tsx'));
 export const EditIdentity = lazy(() => import('soapbox/features/edit-identity/index.tsx'));

@@ -16,7 +16,7 @@ interface IBigCard {
 
 const BigCard: React.FC<IBigCard> = ({ title, subtitle, children, onClose }) => {
   return (
-    <Card variant='rounded' size='xl'>
+    <Card size='xl' rounded>
       <CardBody className='relative'>
         <div className='-mx-4 mb-4 border-b border-solid border-gray-200 pb-4 dark:border-gray-800 sm:-mx-10 sm:pb-10'>
           <Stack space={2}>

@@ -43,7 +43,6 @@ import SearchPage from 'soapbox/pages/search-page.tsx';
 import StatusPage from 'soapbox/pages/status-page.tsx';
 import WidePage from 'soapbox/pages/wide-page.tsx';
 
-import BackgroundShapes from './components/background-shapes.tsx';
 import FloatingActionButton from './components/floating-action-button.tsx';
 import Navbar from './components/navbar.tsx';
 import {
@@ -263,8 +262,9 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
       <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} publicRoute />
-      {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
-      {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
+      {features.suggestionsLocal && <WrappedRoute path='/suggestions/local' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} componentParams={{ local: true }} />}
+      {features.suggestions && <WrappedRoute path='/suggestions' exact publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
+      {features.profileDirectory && <WrappedRoute path='/directory' exact publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
@@ -505,10 +505,10 @@ const UI: React.FC<IUI> = ({ children }) => {
           })}
         />
 
-        <BackgroundShapes />
-
         <div className='z-10 flex min-h-screen flex-col'>
-          <Navbar />
+          <div className='sticky top-0 z-50 lg:hidden'>
+            <Navbar />
+          </div>
 
           <Layout>
             <Layout.Sidebar>

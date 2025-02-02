@@ -21,7 +21,6 @@ import Search from 'soapbox/features/compose/components/search.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
@@ -44,7 +43,6 @@ const Navbar = () => {
   const { isOpen } = useRegistrationStatus();
   const { account } = useOwnAccount();
   const node = useRef(null);
-  const isMobile = useIsMobile();
   const settingsNotifications = useSettingsNotifications();
 
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -87,10 +85,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={clsx(
-        'sticky top-0 z-50 border-gray-200 bg-white shadow black:border-b black:border-b-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900',
-        { 'border-b': isMobile },
-      )}
+      className='border-b border-gray-200 bg-white shadow black:border-gray-800 black:bg-black dark:border-gray-800 dark:bg-primary-900'
       ref={node}
       data-testid='navbar'
     >
