@@ -1027,6 +1027,8 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       features.includes('v2_suggestions'),
     ]),
 
+    suggestionsLocal: v.software === DITTO,
+
     /**
      * Supports V2 suggested accounts.
      * @see GET /api/v2/suggestions

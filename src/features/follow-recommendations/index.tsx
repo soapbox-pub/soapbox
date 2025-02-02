@@ -1,41 +1,33 @@
 import { debounce } from 'es-toolkit';
-import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchSuggestions } from 'soapbox/actions/suggestions.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSuggestions } from 'soapbox/queries/suggestions.ts';
 
 const messages = defineMessages({
   heading: { id: 'follow_recommendations.heading', defaultMessage: 'Suggested Profiles' },
 });
 
-const FollowRecommendations: React.FC = () => {
-  const dispatch = useAppDispatch();
+interface IFollowRecommendations {
+  local?: boolean;
+}
+
+const FollowRecommendations: React.FC<IFollowRecommendations> = ({ local = false }) => {
   const intl = useIntl();
 
-  const suggestions = useAppSelector((state) => state.suggestions.items);
-  const hasMore = useAppSelector((state) => !!state.suggestions.next);
-  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
+  const { data: suggestions, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useSuggestions({ local });
 
   const handleLoadMore = debounce(() => {
-    if (isLoading) {
-      return null;
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
+  }, 1000);
 
-    return dispatch(fetchSuggestions({ limit: 20 }));
-  }, 300);
-
-  useEffect(() => {
-    dispatch(fetchSuggestions({ limit: 20 }));
-  }, []);
-
-  if (suggestions.size === 0 && !isLoading) {
+  if (suggestions.length === 0 && !isLoading) {
     return (
       <Column label={intl.formatMessage(messages.heading)}>
         <Text align='center'>
@@ -52,7 +44,7 @@ const FollowRecommendations: React.FC = () => {
           isLoading={isLoading}
           scrollKey='suggestions'
           onLoadMore={handleLoadMore}
-          hasMore={hasMore}
+          hasMore={hasNextPage}
           itemClassName='pb-4'
         >
           {suggestions.map((suggestion) => (
