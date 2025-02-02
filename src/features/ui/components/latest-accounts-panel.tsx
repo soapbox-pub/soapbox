@@ -1,11 +1,13 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
+import Text from 'soapbox/components/ui/text.tsx';
 import Widget from 'soapbox/components/ui/widget.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import PlaceholderSidebarSuggestions from 'soapbox/features/placeholder/components/placeholder-sidebar-suggestions.tsx';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useDismissSuggestion, useLocalSuggestions } from 'soapbox/queries/suggestions.ts';
+import { useDismissSuggestion, useSuggestions } from 'soapbox/queries/suggestions.ts';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
 
@@ -21,7 +23,7 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit }) => {
   const intl = useIntl();
 
   const { account } = useOwnAccount();
-  const { data: suggestions, isFetching } = useLocalSuggestions();
+  const { data: suggestions, isFetching } = useSuggestions({ local: true });
   const dismissSuggestion = useDismissSuggestion();
 
   const suggestionsToRender = suggestions.slice(0, limit);
@@ -35,7 +37,16 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit }) => {
   }
 
   return (
-    <Widget title={<FormattedMessage id='latest_accounts.title' defaultMessage='Latest Accounts' />}>
+    <Widget
+      title={<FormattedMessage id='latest_accounts.title' defaultMessage='Latest Accounts' />}
+      action={
+        <Link className='text-right' to='/suggestions/local'>
+          <Text tag='span' theme='primary' size='sm' className='hover:underline'>
+            <FormattedMessage id='feed_suggestions.view_all' defaultMessage='View all' />
+          </Text>
+        </Link>
+      }
+    >
       {isFetching ? (
         <PlaceholderSidebarSuggestions limit={limit} />
       ) : (

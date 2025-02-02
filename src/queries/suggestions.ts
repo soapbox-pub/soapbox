@@ -7,14 +7,15 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 import { PaginatedResult, removePageItem } from '../utils/queries.ts';
 
-import type { IAccount } from './accounts.ts';
+import type { Account } from 'soapbox/schemas/account.ts';
 
 type Suggestion = {
-  source: 'staff';
-  account: IAccount;
+  source: string;
+  account: Account;
 }
 
 type Result = {
+  source: string;
   account: string;
 }
 
@@ -27,45 +28,48 @@ const SuggestionKeys = {
   localSuggestions: ['suggestions', 'local'] as const,
 };
 
-const useSuggestions = () => {
+interface UseSuggestionsOpts {
+  local?: boolean;
+}
+
+const useSuggestions = (opts?: UseSuggestionsOpts) => {
   const api = useApi();
   const dispatch = useAppDispatch();
+  const local = opts?.local ?? false;
 
-  const getV2Suggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
-    const endpoint = pageParam?.link || '/api/v2/suggestions';
+  const getV2Suggestions = async (pageParam?: PageParam): Promise<PaginatedResult<Result>> => {
+    const endpoint = pageParam?.link || (local ? '/api/v2/ditto/suggestions/local' : '/api/v2/suggestions');
     const response = await api.get(endpoint);
     const next = response.next();
-    const hasMore = !!next;
 
     const data: Suggestion[] = await response.json();
     const accounts = data.map(({ account }) => account);
     const accountIds = accounts.map((account) => account.id);
+
     dispatch(importFetchedAccounts(accounts));
     dispatch(fetchRelationships(accountIds));
 
     return {
       result: data.map(x => ({ ...x, account: x.account.id })),
       link: next ?? undefined,
-      hasMore,
+      hasMore: !!next,
     };
   };
 
   const result = useInfiniteQuery({
-    queryKey: SuggestionKeys.suggestions,
-    queryFn: ({ pageParam }: any) => getV2Suggestions(pageParam),
+    queryKey: local ? SuggestionKeys.localSuggestions : SuggestionKeys.suggestions,
+    queryFn: ({ pageParam }) => getV2Suggestions(pageParam),
     placeholderData: keepPreviousData,
-    initialPageParam: { nextLink: undefined },
-    getNextPageParam: (config) => {
+    initialPageParam: undefined as PageParam | undefined,
+    getNextPageParam: (config): PageParam | undefined => {
       if (config?.hasMore) {
-        return { nextLink: config?.link };
+        return { link: config?.link };
       }
-
-      return undefined;
     },
   });
 
-  const data: any = result.data?.pages.reduce<Suggestion[]>(
-    (prev: any, curr: any) => [...prev, ...curr.result],
+  const data = result.data?.pages.reduce<Result[]>(
+    (prev, curr) => [...prev, ...curr.result],
     [],
   );
 
@@ -134,53 +138,5 @@ function useOnboardingSuggestions() {
   };
 }
 
-const useLocalSuggestions = () => {
-  const api = useApi();
-  const dispatch = useAppDispatch();
 
-  const getLocalSuggestions = async (pageParam: PageParam): Promise<PaginatedResult<Result>> => {
-    const endpoint = pageParam?.link || '/api/v2/ditto/suggestions/local';
-    const response = await api.get(endpoint);
-    const next = response.next();
-    const hasMore = !!next;
-
-    const data: Suggestion[] = await response.json();
-    const accounts = data.map(({ account }) => account);
-    const accountIds = accounts.map((account) => account.id);
-    dispatch(importFetchedAccounts(accounts));
-    dispatch(fetchRelationships(accountIds));
-
-    return {
-      result: data.map(x => ({ ...x, account: x.account.id })),
-      link: next ?? undefined,
-      hasMore,
-    };
-  };
-
-  const result = useInfiniteQuery({
-    queryKey: SuggestionKeys.localSuggestions,
-    queryFn: ({ pageParam }: any) => getLocalSuggestions(pageParam),
-    placeholderData: keepPreviousData,
-    initialPageParam: { nextLink: undefined },
-    getNextPageParam: (config) => {
-      if (config?.hasMore) {
-        return { nextLink: config?.link };
-      }
-
-      return undefined;
-    },
-  });
-
-  const data: any = result.data?.pages.reduce<Suggestion[]>(
-    (prev: any, curr: any) => [...prev, ...curr.result],
-    [],
-  );
-
-  return {
-    ...result,
-    data: data || [],
-  };
-};
-
-
-export { useOnboardingSuggestions, useSuggestions, useDismissSuggestion, useLocalSuggestions };
+export { useOnboardingSuggestions, useSuggestions, useDismissSuggestion };

@@ -262,8 +262,9 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
       <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} publicRoute />
-      {features.suggestions && <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
-      {features.profileDirectory && <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />}
+      {features.suggestionsLocal && <WrappedRoute path='/suggestions/local' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} componentParams={{ local: true }} />}
+      {features.suggestions && <WrappedRoute path='/suggestions' exact publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
+      {features.profileDirectory && <WrappedRoute path='/directory' exact publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
 
       {features.chats && <WrappedRoute path='/chats' exact page={ChatsPage} component={ChatIndex} content={children} />}
