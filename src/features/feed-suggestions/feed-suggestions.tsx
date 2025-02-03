@@ -7,7 +7,8 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useSuggestions } from 'soapbox/queries/suggestions.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 
 import ActionButton from '../ui/components/action-button.tsx';
@@ -66,18 +67,19 @@ const SuggestionItem: React.FC<ISuggestionItem> = ({ accountId }) => {
   );
 };
 
-interface IFeedSuggesetions {
+interface IFeedSuggestions {
   statusId: string;
   onMoveUp?: (statusId: string, featured?: boolean) => void;
   onMoveDown?: (statusId: string, featured?: boolean) => void;
 }
 
-const FeedSuggestions: React.FC<IFeedSuggesetions> = ({ statusId, onMoveUp, onMoveDown }) => {
+const FeedSuggestions: React.FC<IFeedSuggestions> = ({ statusId, onMoveUp, onMoveDown }) => {
   const intl = useIntl();
-  const suggestedProfiles = useAppSelector((state) => state.suggestions.items);
-  const isLoading = useAppSelector((state) => state.suggestions.isLoading);
+  const features = useFeatures();
 
-  if (!isLoading && suggestedProfiles.size === 0) return null;
+  const { data: suggestedProfiles, isLoading } = useSuggestions({ local: features.suggestionsLocal });
+
+  if (!isLoading && suggestedProfiles.length === 0) return null;
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent): void => {
     if (onMoveUp) {

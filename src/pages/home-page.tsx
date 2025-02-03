@@ -20,6 +20,7 @@ import {
   BirthdayPanel,
   CtaBanner,
   AnnouncementsPanel,
+  LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -61,6 +62,14 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   const acct = account ? account.acct : '';
   const avatar = account ? account.avatar : '';
+
+  const renderSuggestions = () => {
+    if (features.suggestionsLocal && pathname !== '/timeline/global') {
+      return <LatestAccountsPanel limit={3} />;
+    } else if (features.suggestions) {
+      return <WhoToFollowPanel limit={3} />;
+    }
+  };
 
   return (
     <>
@@ -120,9 +129,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
-        {features.suggestions && (
-          <WhoToFollowPanel limit={3} />
-        )}
+        {renderSuggestions()}
         {features.birthdays && (
           <BirthdayPanel limit={10} />
         )}

@@ -93,7 +93,7 @@ export const ProfileFieldsPanel = lazy(() => import('soapbox/features/ui/compone
 export const PinnedAccountsPanel = lazy(() => import('soapbox/features/ui/components/pinned-accounts-panel.tsx'));
 export const InstanceInfoPanel = lazy(() => import('soapbox/features/ui/components/instance-info-panel.tsx'));
 export const InstanceModerationPanel = lazy(() => import('soapbox/features/ui/components/instance-moderation-panel.tsx'));
-export const LatestAccountsPanel = lazy(() => import('soapbox/features/admin/components/latest-accounts-panel.tsx'));
+export const LatestAdminAccountsPanel = lazy(() => import('soapbox/features/admin/components/latest-accounts-panel.tsx'));
 export const SidebarMenu = lazy(() => import('soapbox/components/sidebar-menu.tsx'));
 export const ModalContainer = lazy(() => import('soapbox/features/ui/containers/modal-container.ts'));
 export const ProfileHoverCard = lazy(() => import('soapbox/components/profile-hover-card.tsx'));
@@ -109,6 +109,7 @@ export const FederationRestrictions = lazy(() => import('soapbox/features/federa
 export const Aliases = lazy(() => import('soapbox/features/aliases/index.tsx'));
 export const Migration = lazy(() => import('soapbox/features/migration/index.tsx'));
 export const WhoToFollowPanel = lazy(() => import('soapbox/features/ui/components/who-to-follow-panel.tsx'));
+export const LatestAccountsPanel = lazy(() => import('soapbox/features/ui/components/latest-accounts-panel.tsx'));
 export const FollowRecommendations = lazy(() => import('soapbox/features/follow-recommendations/index.tsx'));
 export const Directory = lazy(() => import('soapbox/features/directory/index.tsx'));
 export const RegisterInvite = lazy(() => import('soapbox/features/register-invite/index.tsx'));
