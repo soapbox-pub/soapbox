@@ -20,6 +20,7 @@ import PlaceholderHashtag from 'soapbox/features/placeholder/components/placehol
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useSuggestions } from 'soapbox/queries/suggestions.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
@@ -37,9 +38,10 @@ const SearchResults = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
+  const { data: suggestions } = useSuggestions();
+
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
-  const suggestions = useAppSelector((state) => state.suggestions.items);
   const trendingStatuses = useAppSelector((state) => state.trending_statuses.items);
   const nextTrendingStatuses = useAppSelector((state) => state.trending_statuses.next);
   const trends = useAppSelector((state) => state.trends.items);
@@ -133,7 +135,7 @@ const SearchResults = () => {
 
     if (results.accounts && results.accounts.size > 0) {
       searchResults = results.accounts.map(accountId => <AccountContainer key={accountId} id={accountId} />);
-    } else if (!submitted && suggestions && !suggestions.isEmpty()) {
+    } else if (!submitted && suggestions.length) {
       searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.account} id={suggestion.account} />);
     } else if (loaded) {
       noResultsMessage = (
@@ -196,7 +198,7 @@ const SearchResults = () => {
 
     if (results.hashtags && results.hashtags.size > 0) {
       searchResults = results.hashtags.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
-    } else if (!submitted && suggestions && !suggestions.isEmpty()) {
+    } else if (!submitted && !trends.isEmpty()) {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
@@ -235,7 +237,7 @@ const SearchResults = () => {
           key={selectedFilter}
           scrollKey={`${selectedFilter}:${value}`}
           isLoading={submitted && !loaded}
-          showLoading={submitted && !loaded && searchResults?.isEmpty()}
+          showLoading={submitted && !loaded && (Array.isArray(searchResults) ? !searchResults.length : searchResults?.isEmpty())}
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}
