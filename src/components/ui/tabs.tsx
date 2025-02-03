@@ -116,6 +116,8 @@ export type Item = {
   count?: number;
   /** Unique name for this tab. */
   name: string;
+  /** Display a notificationicon over the tab */
+  notification?: boolean;
 }
 
 interface ITabs {
@@ -142,7 +144,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
   };
 
   const renderItem = (item: Item, idx: number) => {
-    const { name, text, title, count } = item;
+    const { name, text, title, count, notification } = item;
 
     return (
       <AnimatedTab
@@ -160,7 +162,10 @@ const Tabs = ({ items, activeItem }: ITabs) => {
             </span>
           ) : null}
 
-          {text}
+          <div className='relative flex items-center justify-center gap-1.5'>
+            {text}
+            {notification && <div className='absolute -right-4 size-2 animate-pulse rounded-full bg-primary-500' />}
+          </div>
         </div>
       </AnimatedTab>
     );

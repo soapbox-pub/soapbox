@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 
 import { uploadCompose } from 'soapbox/actions/compose.ts';
@@ -30,6 +31,7 @@ import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { RootState } from 'soapbox/store.ts';
 
 import ComposeForm from '../features/compose/components/compose-form.tsx';
 
@@ -41,6 +43,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const notifications = useSelector((state: RootState) => state.notificationsTab);
 
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
@@ -105,8 +108,8 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         <div className='sticky top-12 z-20 bg-white/90 backdrop-blur black:bg-black/90 dark:bg-primary-900/90 lg:top-0'>
           <Tabs
             items={[
-              { name: 'home', text: <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />, to: '/' },
-              { name: 'local', text: <div className='block max-w-xs truncate'>{instance.domain}</div>, to: '/timeline/local' },
+              { name: 'home', text: <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />, to: '/', notification: notifications.home },
+              { name: 'local', text: <div className='block max-w-xs truncate'>{instance.domain}</div>, to: '/timeline/local', notification: notifications.instance },
             ]}
             activeItem={pathname === '/timeline/local' ? 'local' : 'home'}
           />
