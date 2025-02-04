@@ -1,19 +1,13 @@
 import { debounce } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { useCallback } from 'react';
-import { defineMessages } from 'react-intl';
+import { useCallback, useEffect, useState } from 'react';
 
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines.ts';
-import ScrollTopButton from 'soapbox/components/scroll-top-button.tsx';
 import StatusList, { IStatusList } from 'soapbox/components/status-list.tsx';
-import Portal from 'soapbox/components/ui/portal.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { setNotification } from 'soapbox/reducers/notificationsSlice.ts';
 import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
-
-const messages = defineMessages({
-  queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
-});
 
 interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
   /** ID of the timeline in Redux. */
@@ -37,7 +31,11 @@ const Timeline: React.FC<ITimeline> = ({
   const isLoading = useAppSelector(state => (state.timelines.get(timelineId) || { isLoading: true }).isLoading === true);
   const isPartial = useAppSelector(state => (state.timelines.get(timelineId)?.isPartial || false) === true);
   const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
-  const totalQueuedItemsCount = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
+  const hasQueuedItems = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
+
+  const [isInTop, setIsInTop] = useState<boolean>(window.scrollY < 50);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+
 
   const handleDequeueTimeline = useCallback(() => {
     dispatch(dequeueTimeline(timelineId, onLoadMore));
@@ -48,20 +46,42 @@ const Timeline: React.FC<ITimeline> = ({
   }, 100), [timelineId]);
 
   const handleScroll = useCallback(debounce(() => {
+    setIsInTop(window.scrollY < 50);
     dispatch(scrollTopTimeline(timelineId, false));
   }, 100), [timelineId]);
 
+  useEffect(() => {
+    if (hasQueuedItems) {
+      dispatch(setNotification({ timelineId: timelineId, value: hasQueuedItems > 0 }));
+    }
+  }, [hasQueuedItems, timelineId]);
+
+  useEffect(() => {
+    if (isInTop) {
+      handleDequeueTimeline();
+      const interval = setInterval(handleDequeueTimeline, 2000);
+      setIntervalId(interval);
+      dispatch(setNotification({ timelineId: timelineId, value: false }));
+
+    } else if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isInTop, handleDequeueTimeline]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [handleScroll]);
+
   return (
     <>
-      <Portal>
-        <ScrollTopButton
-          key='timeline-queue-button-header'
-          onClick={handleDequeueTimeline}
-          count={totalQueuedItemsCount}
-          message={messages.queue}
-        />
-      </Portal>
-
       <StatusList
         timelineId={timelineId}
         onScrollToTop={handleScrollToTop}

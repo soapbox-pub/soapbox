@@ -32,6 +32,7 @@ import meta from './meta.ts';
 import modals from './modals.ts';
 import mutes from './mutes.ts';
 import notifications from './notifications.ts';
+import notificationsTab from './notificationsSlice.ts';
 import onboarding from './onboarding.ts';
 import patron from './patron.ts';
 import pending_statuses from './pending-statuses.ts';
@@ -87,6 +88,7 @@ export default combineReducers({
   modals,
   mutes,
   notifications,
+  notificationsTab,
   onboarding,
   patron,
   pending_statuses,
