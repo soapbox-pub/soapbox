@@ -1,6 +1,6 @@
 import { debounce } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines.ts';
 import StatusList, { IStatusList } from 'soapbox/components/status-list.tsx';
@@ -34,7 +34,7 @@ const Timeline: React.FC<ITimeline> = ({
   const hasQueuedItems = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
 
   const [isInTop, setIsInTop] = useState<boolean>(window.scrollY < 50);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
 
   const handleDequeueTimeline = useCallback(() => {
@@ -58,18 +58,24 @@ const Timeline: React.FC<ITimeline> = ({
 
   useEffect(() => {
     if (isInTop) {
-      handleDequeueTimeline();
-      const interval = setInterval(handleDequeueTimeline, 2000);
-      setIntervalId(interval);
-      dispatch(setNotification({ timelineId: timelineId, value: false }));
-
-    } else if (intervalId) {
-      clearInterval(intervalId);
-      setIntervalId(null);
+      if (!intervalRef.current) {
+        handleDequeueTimeline();
+        const interval = setInterval(handleDequeueTimeline, 2000);
+        intervalRef.current = interval;
+        dispatch(setNotification({ timelineId: timelineId, value: false }));
+      }
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     }
 
     return () => {
-      if (intervalId) clearInterval(intervalId);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
   }, [isInTop, handleDequeueTimeline]);
 
