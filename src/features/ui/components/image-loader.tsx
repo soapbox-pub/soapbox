@@ -12,6 +12,7 @@ interface IImageLoader {
   width?: number;
   height?: number;
   onClick?: React.MouseEventHandler;
+  isMobile?: boolean;
 }
 
 class ImageLoader extends PureComponent<IImageLoader> {
@@ -154,6 +155,7 @@ class ImageLoader extends PureComponent<IImageLoader> {
             alt={alt}
             src={src}
             onClick={onClick}
+            isMobile={this.props.isMobile}
           />
         )}
       </div>

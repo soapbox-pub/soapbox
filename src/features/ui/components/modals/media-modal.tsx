@@ -24,6 +24,7 @@ import PlaceholderStatus from 'soapbox/features/placeholder/components/placehold
 import Thread from 'soapbox/features/status/components/thread.tsx';
 import Video from 'soapbox/features/video/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { userTouching } from 'soapbox/is-mobile.ts';
 import { normalizeStatus } from 'soapbox/normalizers/index.ts';
 import { Status as StatusEntity, Attachment } from 'soapbox/schemas/index.ts';
@@ -72,6 +73,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
+  const isMobile = useIsMobile();
 
   const actualStatus = status ? getActualStatus(status) : undefined;
 
@@ -143,6 +145,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           alt={attachment.description}
           key={attachment.url}
           onClick={toggleNavigation}
+          isMobile={isMobile}
         />
       );
     } else if (attachment.type === 'video') {
@@ -241,7 +244,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   return (
-    <div className='media-modal pointer-events-auto fixed inset-0 z-[9999] flex size-full bg-gray-900/90'>
+    <div className='pointer-events-auto fixed inset-0 z-[9999] flex size-full bg-gray-900/90'>
       <div
         className='absolute inset-0'
         role='presentation'
