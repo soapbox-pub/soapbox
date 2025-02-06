@@ -38,8 +38,12 @@ const baseAccountSchema = z.object({
   display_name: z.string().catch(''),
   ditto: coerceObject({
     accepts_zaps: z.boolean().catch(false),
-    is_registered: z.boolean().catch(false),
     external_url: z.string().optional().catch(undefined),
+    streak: coerceObject({
+      days: z.number().catch(0),
+      start: z.string().datetime().nullable().catch(null),
+      end: z.string().datetime().nullable().catch(null),
+    }),
   }),
   domain: z.string().optional().catch(undefined),
   emojis: filteredArray(customEmojiSchema),
