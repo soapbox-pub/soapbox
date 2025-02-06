@@ -145,8 +145,8 @@ const Video: React.FC<IVideo> = ({
 
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.5);
-  const [preVolume, setPreVolume] = useState(0);
+  const [volume, setVolume] = useState(0);
+  const [preVolume, setPreVolume] = useState(1);
   const [paused, setPaused] = useState(true);
   const [dragging, setDragging] = useState(false);
   const [containerWidth, setContainerWidth] = useState(width);
@@ -154,7 +154,7 @@ const Video: React.FC<IVideo> = ({
   const [hovered, setHovered] = useState(false);
   const [volumeHovered, setVolumeHovered] = useState(false);
   const [seekHovered, setSeekHovered] = useState(false);
-  const [muted, setMuted] = useState(false);
+  const [muted, setMuted] = useState(true);
   const [buffer, setBuffer] = useState(0);
 
   const setDimensions = () => {
@@ -552,6 +552,7 @@ const Video: React.FC<IVideo> = ({
         src={src}
         loop
         role='button'
+        autoPlay
         tabIndex={0}
         aria-label={alt}
         title={alt}
@@ -569,6 +570,7 @@ const Video: React.FC<IVideo> = ({
         onLoadedData={handleLoadedData}
         onProgress={handleProgress}
         onVolumeChange={handleVolumeChange}
+        muted={muted}
       />
 
       <div
@@ -645,11 +647,11 @@ const Video: React.FC<IVideo> = ({
                   transform: 'translateY(-50%)',
                 }}
               />
-              <div className={clsx('absolute left-0 top-1/2 block h-1 -translate-y-1/2 rounded-md bg-accent-500', { 'bottom-[27px]': fullscreen || detailed })} style={{ width: `${volume * 100}%` }} />
+              <div className={clsx('absolute left-0 top-1/2 block h-1 -translate-y-1/2 rounded-md bg-accent-500', { 'bottom-[27px]': fullscreen || detailed })} style={{ width: `${muted ? 0 : volume * 100}%` }} />
               <span
                 className={clsx('absolute left-0 top-1/2 z-30 -ml-1.5 size-3 -translate-y-1/2 rounded-full bg-accent-500 opacity-0 shadow-[1px_2px_6px_rgba(0,0,0,0.3)] transition-opacity duration-100', { 'opacity-100': volumeHovered, 'bottom-[23px]': fullscreen || detailed })}
                 tabIndex={0}
-                style={{ left: `${volume * 100}%` }}
+                style={{ left: `${muted ? 0 : volume * 100}%` }}
               />
             </div>
 
