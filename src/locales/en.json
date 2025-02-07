@@ -1160,6 +1160,7 @@
   "settings.nostr.cashu": "Cashu",
   "cashu.title": "Cashu",
   "cashu.wallet.create": "Create Cashu Wallet",
+  "cashu.nutzap.info": "Your nutzap info",
   "cashu.wallet.mints": "Your mints",
   "cashu.wallet.mint_placeholder": "https://<mint-url>",
   "nostr_extension.found": "<link>Sign in</link> with browser extension.",

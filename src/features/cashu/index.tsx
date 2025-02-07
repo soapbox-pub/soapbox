@@ -16,13 +16,14 @@ import toast from 'soapbox/toast.tsx';
 const messages = defineMessages({
   title: { id: 'cashu.wallet.create', defaultMessage: 'Create Cashu Wallet' },
   mints: { id: 'cashu.wallet.mints', defaultMessage: 'Your mints' },
+  nutzap_info: { id: 'cashu.nutzap.info', defaultMessage: 'Your nutzap info' },
   mint_placeholder:  { id: 'cashu.wallet.mint_placeholder', defaultMessage: 'https://<mint-url>' },
   submit_success: { id: 'generic.saved', defaultMessage: 'Saved!' },
 });
 
 const Cashu = () => {
   const intl = useIntl();
-  const { createWallet } = useCashu();
+  const { createWallet, createNutzapInfo } = useCashu();
 
   const [mints, setMints] = useState<string[]>([]);
 
@@ -48,7 +49,7 @@ const Cashu = () => {
     setMints(prevData => [...prevData, '']);
   };
 
-  const handleSubmit: React.FormEventHandler = async (event) => {
+  const handleCreateWalletSubmit: React.FormEventHandler = async (event) => {
     event.preventDefault();
     createWallet({ mints }, {
       onSuccess: async () => {
@@ -69,13 +70,57 @@ const Cashu = () => {
     });
   };
 
+  const handleCreateNutzapInfoSubmit: React.FormEventHandler = async (event) => {
+    event.preventDefault();
+    createNutzapInfo({ mints, relays: [] }, {
+      onSuccess: async () => {
+        toast.success(messages.submit_success);
+      },
+      onError: async (err) => {
+        if (err instanceof HTTPError) {
+          try {
+            const { error } = await err.response.json();
+            if (typeof error === 'string') {
+              toast.error(error);
+              return;
+            }
+          } catch { /* empty */ }
+        }
+        toast.error(err.message);
+      },
+    });
+  };
+
   return (
     <Column label={intl.formatMessage(messages.title)}>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleCreateWalletSubmit}>
         <Stack space={4}>
 
           <Streamfield
             label={intl.formatMessage(messages.mints)}
+            component={ScreenshotInput}
+            values={mints}
+            onChange={handleStreamItemChange()}
+            onAddItem={handleAddMint}
+            onRemoveItem={deleteStreamItem()}
+          />
+
+          <FormActions>
+            <Button to='/settings' theme='tertiary'>
+              <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
+            </Button>
+
+            <Button theme='primary' type='submit'>
+              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+            </Button>
+          </FormActions>
+        </Stack>
+      </Form>
+      <Form onSubmit={handleCreateNutzapInfoSubmit}>
+        <Stack space={4}>
+
+          <Streamfield
+            label={intl.formatMessage(messages.nutzap_info)}
             component={ScreenshotInput}
             values={mints}
             onChange={handleStreamItemChange()}
