@@ -2473,10 +2473,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tabler/icons@^3.19.0":
-  version "3.19.0"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.19.0.tgz#5998b0557ef34572e003f2d75ac95e7c04f88c81"
-  integrity sha512-A4WEWqpdbTfnpFEtwXqwAe9qf9sp1yRPvzppqAuwcoF0q5YInqB+JkJtSFToCyBpPVeLxJUxxkapLvt2qQgnag==
+"@tabler/icons@^3.29.0":
+  version "3.29.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-3.29.0.tgz#f78d0bb098641088ccfe3e727fc296502eb8a930"
+  integrity sha512-VWNINymdmhay3MDvWVREmRwuWLSrX3YiInKvs5L4AHRF4bAfJabLlEReE0BW/XFsBt22ff8/C8Eam/LXlF97mA==
 
 "@tailwindcss/aspect-ratio@^0.4.2":
   version "0.4.2"
