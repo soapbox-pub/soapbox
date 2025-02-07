@@ -32,6 +32,7 @@ const messages = defineMessages({
   editProfile: { id: 'settings.edit_profile', defaultMessage: 'Edit Profile' },
   editIdentity: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
   editRelays: { id: 'nostr_relays.title', defaultMessage: 'Relays' },
+  manageCashu: { id: 'settings.nostr.cashu', defaultMessage: 'Cashu' },
   exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
@@ -88,6 +89,7 @@ const Settings = () => {
               </ListItem>
             )}
             {features.nostr && <ListItem label={intl.formatMessage(messages.editRelays)} to='/settings/relays' />}
+            {features.nostr && <ListItem label={intl.formatMessage(messages.manageCashu)} to='/settings/cashu' />}
           </List>
         </CardBody>
 

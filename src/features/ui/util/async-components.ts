@@ -168,6 +168,7 @@ export const EditIdentity = lazy(() => import('soapbox/features/edit-identity/in
 export const Domains = lazy(() => import('soapbox/features/admin/domains.tsx'));
 export const EditDomainModal = lazy(() => import('soapbox/features/ui/components/modals/edit-domain-modal.tsx'));
 export const NostrRelays = lazy(() => import('soapbox/features/nostr-relays/index.tsx'));
+export const Cashu = lazy(() => import('soapbox/features/cashu/index.tsx'));
 export const Bech32Redirect = lazy(() => import('soapbox/features/nostr/Bech32Redirect.tsx'));
 export const ManageZapSplit = lazy(() => import('soapbox/features/admin/manage-zap-split.tsx'));
 export const ManageDittoServer = lazy(() => import('soapbox/features/admin/manage-ditto-server.tsx'));

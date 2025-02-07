@@ -142,7 +142,7 @@ import {
   LandingTimeline,
   EditIdentity,
   Domains,
-  NostrRelays,
+  Cashu,
   Bech32Redirect,
   Relays,
   ManageZapSplit,
@@ -150,6 +150,7 @@ import {
   AdminNostrRelays,
   NostrBunkerLogin,
   ManageDittoServer,
+  NostrRelays,
 } from './util/async-components.ts';
 import GlobalHotkeys from './util/global-hotkeys.tsx';
 import { WrappedRoute } from './util/react-router-helpers.tsx';
@@ -325,6 +326,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
       <WrappedRoute path='/settings/relays' page={DefaultPage} component={NostrRelays} content={children} />
+      <WrappedRoute path='/settings/cashu' page={DefaultPage} component={Cashu} content={children} />
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
