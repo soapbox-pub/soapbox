@@ -20,9 +20,17 @@ function useCashu() {
     },
   });
 
+  const { mutate: swapCashuToWallet } = useMutation({
+    mutationFn: () => api.post('/api/v1/ditto/nutzap/swap_to_wallet'),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['cashu', 'swap', 'wallet'] });
+    },
+  });
+
   return {
     createWallet,
     createNutzapInfo,
+    swapCashuToWallet,
   };
 }
 

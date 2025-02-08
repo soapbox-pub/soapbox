@@ -17,13 +17,14 @@ const messages = defineMessages({
   title: { id: 'cashu.wallet.create', defaultMessage: 'Create Cashu Wallet' },
   mints: { id: 'cashu.wallet.mints', defaultMessage: 'Your mints' },
   nutzap_info: { id: 'cashu.nutzap.info', defaultMessage: 'Your nutzap info' },
+  swap_cashu: { id: 'cashu.nutzap.swap', defaultMessage: 'Swap your Cashu' },
   mint_placeholder:  { id: 'cashu.wallet.mint_placeholder', defaultMessage: 'https://<mint-url>' },
   submit_success: { id: 'generic.saved', defaultMessage: 'Saved!' },
 });
 
 const Cashu = () => {
   const intl = useIntl();
-  const { createWallet, createNutzapInfo } = useCashu();
+  const { createWallet, createNutzapInfo, swapCashuToWallet } = useCashu();
 
   const [mints, setMints] = useState<string[]>([]);
 
@@ -91,6 +92,27 @@ const Cashu = () => {
     });
   };
 
+  const handleSwapWalletSubmit: React.FormEventHandler = async (event) => {
+    event.preventDefault();
+    swapCashuToWallet(undefined, {
+      onSuccess: async () => {
+        toast.success(messages.submit_success);
+      },
+      onError: async (err) => {
+        if (err instanceof HTTPError) {
+          try {
+            const { error } = await err.response.json();
+            if (typeof error === 'string') {
+              toast.error(error);
+              return;
+            }
+          } catch { /* empty */ }
+        }
+        toast.error(err.message);
+      },
+    });
+  };
+
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <Form onSubmit={handleCreateWalletSubmit}>
@@ -98,7 +120,7 @@ const Cashu = () => {
 
           <Streamfield
             label={intl.formatMessage(messages.mints)}
-            component={ScreenshotInput}
+            component={CashuInput}
             values={mints}
             onChange={handleStreamItemChange()}
             onAddItem={handleAddMint}
@@ -121,7 +143,30 @@ const Cashu = () => {
 
           <Streamfield
             label={intl.formatMessage(messages.nutzap_info)}
-            component={ScreenshotInput}
+            component={CashuInput}
+            values={mints}
+            onChange={handleStreamItemChange()}
+            onAddItem={handleAddMint}
+            onRemoveItem={deleteStreamItem()}
+          />
+
+          <FormActions>
+            <Button to='/settings' theme='tertiary'>
+              <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
+            </Button>
+
+            <Button theme='primary' type='submit'>
+              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+            </Button>
+          </FormActions>
+        </Stack>
+      </Form>
+      <Form onSubmit={handleSwapWalletSubmit}>
+        <Stack space={4}>
+
+          <Streamfield
+            label={intl.formatMessage(messages.swap_cashu)}
+            component={CashuInput}
             values={mints}
             onChange={handleStreamItemChange()}
             onAddItem={handleAddMint}
@@ -145,7 +190,7 @@ const Cashu = () => {
 
 type Mint = string
 
-const ScreenshotInput: StreamfieldComponent<Mint> = ({ value, onChange }) => {
+const CashuInput: StreamfieldComponent<Mint> = ({ value, onChange }) => {
   const intl = useIntl();
 
   const handleChange = (): React.ChangeEventHandler<HTMLInputElement> => {
