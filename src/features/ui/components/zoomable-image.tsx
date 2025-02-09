@@ -46,6 +46,7 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
   startY = 0;
   startScrollLeft = 0;
   startScrollTop = 0;
+  isMobile = this.props.isMobile;
 
   componentDidMount() {
     this.container?.addEventListener('touchstart', this.handleTouchStart);
@@ -114,6 +115,7 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
     if (!this.isDragging || !this.container) return;
 
     e.preventDefault();
+    e.stopPropagation();
 
     const deltaX = this.startX - e.clientX;
     const deltaY = this.startY - e.clientY;
@@ -124,7 +126,7 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
     this.container.scrollTop = this.startScrollTop + deltaY;
   };
 
-  handleMouseUp = () => {
+  handleMouseUp = (e: MouseEvent) => {
     this.isDragging = false;
     window.removeEventListener('mousemove', this.handleMouseMove);
     window.removeEventListener('mouseup', this.handleMouseUp);
@@ -154,14 +156,14 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
       if (!this.container) return;
       this.container.scrollLeft = nextScrollLeft;
       this.container.scrollTop = nextScrollTop;
-      this.image!.style.transformOrigin = `${originX}% ${originY}%`;
+      if (!this.isMobile) this.image!.style.transformOrigin = `${originX}% ${originY}%`;
     });
   }
 
   handleClick: React.MouseEventHandler = e => {
     e.stopPropagation();
 
-    if (this.props.isMobile) {
+    if (this.isMobile) {
       const handler = this.props.onClick;
       if (handler) handler(e);
     } else {
@@ -197,18 +199,18 @@ class ZoomableImage extends PureComponent<IZoomableImage> {
       <div
         className='relative flex size-full items-center justify-center'
         ref={this.setContainerRef}
-        style={{ overflow, cursor: scale > 1 ? 'grab' : 'pointer' }}
+        style={{ overflow, cursor: scale > 1 ? 'grab' : 'default' }}
       >
         <img
           role='presentation'
           ref={this.setImageRef}
           alt={alt}
-          className={clsx('size-auto max-h-[80%] max-w-full object-contain', { 'size-full max-h-full': scale !== 1 })}
+          className={clsx('size-auto max-h-[80%] max-w-full object-contain', scale !== 1 ? 'size-full' : 'hover:cursor-pointer')}
           title={alt}
           src={src}
           style={{
             transform: `scale(${scale})`,
-            transformOrigin: `${scale > 1 ? 'bottom' : '0 0'}`,
+            transformOrigin: `${scale > 1 && !this.isMobile ? 'center' : '0 0'}`,
           }}
           onClick={this.handleClick}
           onMouseDown={this.handleMouseDown}

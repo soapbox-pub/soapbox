@@ -13,6 +13,8 @@ interface IImageLoader {
   height?: number;
   onClick?: React.MouseEventHandler;
   isMobile?: boolean;
+  hasMultipleMedias?: boolean;
+
 }
 
 class ImageLoader extends PureComponent<IImageLoader> {
@@ -136,7 +138,7 @@ class ImageLoader extends PureComponent<IImageLoader> {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 
-    const className = 'relative h-screen flex items-center justify-center flex-col';
+    const className = clsx('relative flex h-screen grow flex-col items-center justify-center', { 'w-screen': !this.props.hasMultipleMedias });
 
     return (
       <div className={className}>

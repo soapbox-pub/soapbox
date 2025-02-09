@@ -146,6 +146,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           key={attachment.url}
           onClick={toggleNavigation}
           isMobile={isMobile}
+          hasMultipleMedias={media.length > 1}
         />
       );
     } else if (attachment.type === 'video') {
