@@ -259,7 +259,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           }
           justifyContent='between'
         >
-          <Stack className='relative h-full'>
+          <Stack className='relative h-full items-center'>
             <HStack
               alignItems='center'
               justifyContent='between'
@@ -336,10 +336,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               )}
             </div>
 
-            {isMobile && actualStatus && (
+            {isFullScreen && actualStatus && (
               <HStack
                 justifyContent='center'
-                className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
+                className={clsx('absolute bottom-2 flex transition-opacity', navigationHiddenClassName)}
               >
                 <StatusActionBar
                   status={normalizeStatus(actualStatus) as LegacyStatus}
