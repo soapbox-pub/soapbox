@@ -146,7 +146,6 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
           key={attachment.url}
           onClick={toggleNavigation}
           isMobile={isMobile}
-          hasMultipleMedias={media.length > 1}
         />
       );
     } else if (attachment.type === 'video') {
@@ -299,10 +298,10 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
 
             {/* Height based on height of top/bottom bars */}
             <div
-              className='relative h-[calc(100vh-120px)] w-full grow'
+              className='relative flex h-[calc(100vh-120px)] w-full grow items-center justify-center'
             >
               {hasMultipleImages && (
-                <div className={clsx('absolute inset-y-0 left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
+                <div className={clsx('absolute left-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
                   <button
                     tabIndex={0}
                     className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
@@ -314,23 +313,20 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                 </div>
               )}
 
-              <div className='size-full'>
-                <ReactSwipeableViews
-                  style={swipeableViewsStyle}
-                  containerStyle={containerStyle}
-                  onChangeIndex={handleSwipe}
-                  className='flex items-center justify-center'
-                  index={getIndex()}
-                >
-                  {content}
-                </ReactSwipeableViews>
-              </div>
+              <ReactSwipeableViews
+                style={swipeableViewsStyle}
+                containerStyle={containerStyle}
+                onChangeIndex={handleSwipe}
+                index={getIndex()}
+              >
+                {content}
+              </ReactSwipeableViews>
 
               {hasMultipleImages && (
-                <div className={clsx('absolute inset-y-0 right-5 z-10 flex items-center transition-opacity', navigationHiddenClassName)}>
+                <div className={clsx('absolute right-5 flex items-center transition-opacity', navigationHiddenClassName)}>
                   <button
                     tabIndex={0}
-                    className='flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
+                    className='z-10 flex size-10 items-center justify-center rounded-full bg-gray-900 text-white'
                     onClick={handleNextClick}
                     aria-label={intl.formatMessage(messages.next)}
                   >
@@ -340,7 +336,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
               )}
             </div>
 
-            {actualStatus && (
+            {isMobile && actualStatus && (
               <HStack
                 justifyContent='center'
                 className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
