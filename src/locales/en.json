@@ -55,6 +55,7 @@
   "account.search_self": "Search your posts",
   "account.share": "Share @{name}'s profile",
   "account.show_reblogs": "Show reposts from @{name}",
+  "account.streak": "Day Streak",
   "account.subscribe": "Subscribe to notifications from @{name}",
   "account.subscribe.failure": "An error occurred trying to subscribe to this account.",
   "account.subscribe.success": "You have subscribed to this account.",
