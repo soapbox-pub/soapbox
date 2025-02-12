@@ -1,8 +1,9 @@
 import { useFloating } from '@floating-ui/react';
+import flameIcon from '@tabler/icons/filled/flame.svg';
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts.ts';
@@ -33,6 +34,12 @@ import { dateFormatOptions } from './relative-timestamp.tsx';
 
 import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
 import type { AppDispatch } from 'soapbox/store.ts';
+
+const messages = defineMessages({
+  followers: { id: 'account.followers', defaultMessage: 'Followers' },
+  follows: { id: 'account.follows', defaultMessage: 'Following' },
+  streak: { id: 'account.streak', defaultMessage: 'Day Streak' },
+});
 
 const getBadges = (
   account?: Pick<Account, 'admin' | 'moderator'>,
@@ -123,7 +130,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
       onMouseEnter={handleMouseEnter(dispatch)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
-      <Card className='relative isolate overflow-hidden' rounded slim>
+      <Card className='relative isolate overflow-hidden border border-gray-200' rounded slim>
         <CardBody className='relative'>
           <div className='relative h-24 overflow-hidden bg-gray-200'>
             <StillImage src={account.header} />
@@ -190,6 +197,19 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
                     </Text>
                   </HStack>
                 </Link>
+              )}
+
+              {account.ditto?.streak?.days > 0 && (
+                <HStack alignItems='center' space={1}>
+                  <Text theme='primary'>
+                    <span role='img' aria-label={intl.formatMessage(messages.streak)}>
+                      <Icon src={flameIcon} className='size-4' />
+                    </span>
+                  </Text>
+                  <Text weight='bold' size='sm' className='text-black'>
+                    {shortNumberFormat(account.ditto.streak.days)}
+                  </Text>
+                </HStack>
               )}
             </HStack>
 
