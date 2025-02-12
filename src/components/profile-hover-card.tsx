@@ -198,7 +198,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
               )}
 
               {account.ditto?.streak?.days > 0 && (
-                <HStack alignItems='center' space={1}>
+                <HStack alignItems='center'>
                   <Text theme='primary'>
                     <span role='img' aria-label={intl.formatMessage(messages.streak)}>
                       <Icon src={flameIcon} className='size-4' />
