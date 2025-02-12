@@ -30,8 +30,6 @@ const StreakModal: React.FC<IStreakModal> = ({ onClose }) => {
   const intl = useIntl();
   if (!account) return null;
 
-  // const streakCount = account ? shortNumberFormat(account.ditto.streak.days) : 0;
-
   return (
     <Modal
       title={
