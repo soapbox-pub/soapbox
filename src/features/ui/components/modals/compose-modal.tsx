@@ -15,6 +15,7 @@ import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useCompose } from 'soapbox/hooks/useCompose.ts';
 import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 import ComposeForm from '../../../compose/components/compose-form.tsx';
 
@@ -33,12 +34,15 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
   const dispatch = useAppDispatch();
   const node = useRef<HTMLDivElement>(null);
   const compose = useCompose(composeId);
+  const { account } = useOwnAccount();
 
   const { id: statusId, privacy, in_reply_to: inReplyTo, quote, group_id: groupId } = compose!;
 
   const { isDragging, isDraggedOver } = useDraggedFiles(node, (files) => {
     dispatch(uploadCompose(composeId, files, intl));
   });
+
+  const userStreak = useAppSelector((state) => account?.ditto?.streak?.days ?? 0);
 
   const onClickClose = () => {
     if (checkComposeContent(compose)) {
@@ -93,6 +97,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
         id={composeId}
         extra={<ComposeFormGroupToggle composeId={composeId} groupId={groupId} />}
         autoFocus
+        streak={userStreak}
       />
     </Modal>
   );
