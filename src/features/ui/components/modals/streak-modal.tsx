@@ -106,18 +106,18 @@ const StreakModal: React.FC<IStreakModal> = ({ onClose }) => {
                   </Link>
                 )}
 
-                {account.ditto?.streak?.days > 0 && (
-                  <HStack alignItems='center'>
-                    <Text theme='primary'>
-                      <span role='img' aria-label={intl.formatMessage(messages.streak)}>
-                        <Icon src={flameIcon} className='size-4' />
-                      </span>
-                    </Text>
-                    <Text weight='bold' size='sm' className='text-black'>
-                      {shortNumberFormat(account.ditto.streak.days)}
-                    </Text>
-                  </HStack>
-                )}
+                <HStack alignItems='center'>
+                  <Text theme='primary'>
+                    <span role='img' aria-label={intl.formatMessage(messages.streak)}>
+                      <Icon src={flameIcon} className='size-4' />
+                    </span>
+                  </Text>
+                  <Text weight='bold' size='sm' className='text-black'>
+                    {account.ditto?.streak?.days > 0 ?
+                      shortNumberFormat(account.ditto.streak.days) :
+                      <FormattedMessage id='streak_modal.streak_count' defaultMessage='1' />}
+                  </Text>
+                </HStack>
               </HStack>
 
             </Stack>
