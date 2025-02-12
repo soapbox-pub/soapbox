@@ -158,7 +158,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     dispatch(changeCompose(id, text));
     dispatch(submitCompose(id, { history }));
 
-    if (streak) {
+    if (streak === 0) {
       dispatch(openModal('STREAK'));
     }
 

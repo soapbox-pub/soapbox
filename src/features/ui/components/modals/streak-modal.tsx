@@ -1,11 +1,8 @@
 import flameIcon from '@tabler/icons/filled/flame.svg';
-import calendarIcon from '@tabler/icons/outline/calendar.svg';
-import clsx from 'clsx';
 import React from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
 import StillImage from 'soapbox/components/still-image.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
@@ -32,34 +29,30 @@ const StreakModal: React.FC<IStreakModal> = ({ onClose }) => {
   const { account } = useOwnAccount();
   const intl = useIntl();
   if (!account) return null;
-  const memberSinceDate = intl.formatDate(account.created_at, { month: 'long', year: 'numeric' });
 
   // const streakCount = account ? shortNumberFormat(account.ditto.streak.days) : 0;
 
   return (
     <Modal
       title={
-        <HStack alignItems='center' justifyContent='center' space={1} className='-mr-8'>
-          <Text weight='bold' size='lg' className='text-black'>
+        <HStack alignItems='center' justifyContent='center' space={1} className='my-6 -mr-8'>
+          <Text weight='bold' size='2xl' className='text-black'>
             <FormattedMessage id='streak_modal.title' defaultMessage="You've unlocked a" />
           </Text>
           <Text theme='primary'>
             <Icon src={flameIcon} className='size-6' />
           </Text>
-          <Text weight='bold' size='lg' className='text-black'>
+          <Text weight='bold' size='2xl' className='text-black'>
             <FormattedMessage id='streak_modal.sub' defaultMessage='streak!' />
           </Text>
         </HStack>
       }
       onClose={onClose}
     >
-      <div
-        className={clsx({
-        })}
-      >
-        <Card className='relative isolate overflow-hidden border border-gray-200' rounded slim>
+      <div className='mx-auto'>
+        <Card className='relative isolate mx-auto my-4 w-80 overflow-hidden border border-gray-200' rounded slim>
           <CardBody className='relative'>
-            <div className='relative h-24 overflow-hidden bg-gray-200'>
+            <div className='relative h-14 overflow-hidden bg-gray-200'>
               <StillImage src={account.header} />
             </div>
 
@@ -127,29 +120,13 @@ const StreakModal: React.FC<IStreakModal> = ({ onClose }) => {
                 )}
               </HStack>
 
-              {account.local ? (
-                <HStack alignItems='center' space={0.5}>
-                  <Icon
-                    src={calendarIcon}
-                    className='size-4 text-gray-800 dark:text-gray-200'
-                  />
-
-                  <Text size='sm' title={intl.formatDate(account.created_at, dateFormatOptions)}>
-                    <FormattedMessage
-                      id='account.member_since' defaultMessage='Joined {date}' values={{
-                        date: memberSinceDate,
-                      }}
-                    />
-                  </Text>
-                </HStack>
-              ) : null}
             </Stack>
 
           </CardBody>
         </Card>
       </div>
       <HStack justifyContent='center'>
-        <Text className=''>
+        <Text className='my-6'>
           <FormattedMessage id='streak_modal.message' defaultMessage='Post every day to keep it going.' />
         </Text>
       </HStack>
