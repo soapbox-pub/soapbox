@@ -36,8 +36,6 @@ import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
 import type { AppDispatch } from 'soapbox/store.ts';
 
 const messages = defineMessages({
-  followers: { id: 'account.followers', defaultMessage: 'Followers' },
-  follows: { id: 'account.follows', defaultMessage: 'Following' },
   streak: { id: 'account.streak', defaultMessage: 'Day Streak' },
 });
 
