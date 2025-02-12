@@ -19,6 +19,7 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
+import walletIcon from '@tabler/icons/outline/wallet.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -193,6 +194,13 @@ const SidebarNavigation = () => {
                 icon={userIcon}
                 activeIcon={userFilledIcon}
                 text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
+              />
+
+              <SidebarNavigationLink
+                to={'/my-wallet'}
+                icon={walletIcon}
+                activeIcon={walletIcon}
+                text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='My Wallet' />}
               />
 
               <SidebarNavigationLink

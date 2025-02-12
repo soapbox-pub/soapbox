@@ -181,3 +181,4 @@ export const ZapsModal = lazy(() => import('soapbox/features/ui/components/modal
 export const ZapSplitModal = lazy(() => import('soapbox/features/ui/components/modals/zap-split/zap-split-modal.tsx'));
 export const CaptchaModal = lazy(() => import('soapbox/features/ui/components/modals/captcha-modal/captcha-modal.tsx'));
 export const NostrBunkerLogin = lazy(() => import('soapbox/features/nostr/nostr-bunker-login.tsx'));
+export const MyWallet = lazy(() => import('soapbox/features/my-wallet/index.tsx'));
