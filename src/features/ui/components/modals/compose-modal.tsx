@@ -42,7 +42,7 @@ const ComposeModal: React.FC<IComposeModal> = ({ onClose, composeId = 'compose-m
     dispatch(uploadCompose(composeId, files, intl));
   });
 
-  const userStreak = useAppSelector((state) => account?.ditto?.streak?.days ?? 0);
+  const userStreak = account?.ditto.streak.days;
 
   const onClickClose = () => {
     if (checkComposeContent(compose)) {
