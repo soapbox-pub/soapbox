@@ -15,6 +15,7 @@ import {
   selectComposeSuggestion,
   uploadCompose,
 } from 'soapbox/actions/compose.ts';
+import { openModal } from 'soapbox/actions/modals.ts';
 import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
@@ -72,9 +73,10 @@ interface IComposeForm<ID extends string> {
   event?: string;
   group?: string;
   extra?: React.ReactNode;
+  streak?: number;
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra, streak }: IComposeForm<ID>) => {
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -155,6 +157,10 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
     dispatch(changeCompose(id, text));
     dispatch(submitCompose(id, { history }));
+
+    if (streak === 0 && features.streak) {
+      dispatch(openModal('STREAK'));
+    }
 
     editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };

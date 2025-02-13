@@ -1018,6 +1018,12 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     spoilers: v.software !== TRUTHSOCIAL,
 
     /**
+     * Can view user streaks.
+     * @see GET /api/v1/accounts/verify_credentials
+     */
+    streak: v.software === DITTO,
+
+    /**
      * Can display suggested accounts.
      * @see {@link https://docs.joinmastodon.org/methods/suggestions/}
      */
