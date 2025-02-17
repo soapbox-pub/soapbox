@@ -27,7 +27,15 @@ function useCashu() {
     },
   });
 
+  const { mutate: createQuote } = useMutation({
+    mutationFn: (data: {mint: string; amount: number}) => api.post('/api/v1/ditto/cashu/quote', data),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['cashu', 'nutzap', 'info'] });
+    },
+  });
+
   return {
+    createQuote,
     createWallet,
     createNutzapInfo,
     swapCashuToWallet,

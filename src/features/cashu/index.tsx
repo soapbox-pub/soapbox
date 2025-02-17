@@ -20,11 +20,12 @@ const messages = defineMessages({
   swap_cashu: { id: 'cashu.nutzap.swap', defaultMessage: 'Swap your Cashu' },
   mint_placeholder:  { id: 'cashu.wallet.mint_placeholder', defaultMessage: 'https://<mint-url>' },
   submit_success: { id: 'generic.saved', defaultMessage: 'Saved!' },
+  create_cashu_quote: { id: 'cashu.quote', defaultMessage: 'Create Cashu Quote' },
 });
 
 const Cashu = () => {
   const intl = useIntl();
-  const { createWallet, createNutzapInfo, swapCashuToWallet } = useCashu();
+  const { createWallet, createNutzapInfo, swapCashuToWallet, createQuote } = useCashu();
 
   const [mints, setMints] = useState<string[]>([]);
 
@@ -113,6 +114,27 @@ const Cashu = () => {
     });
   };
 
+  const handleMintQuote: React.FormEventHandler = async (event) => {
+    event.preventDefault();
+    createQuote({ mint: mints[0], amount: 20 }, {
+      onSuccess: async () => {
+        toast.success(messages.submit_success);
+      },
+      onError: async (err) => {
+        if (err instanceof HTTPError) {
+          try {
+            const { error } = await err.response.json();
+            if (typeof error === 'string') {
+              toast.error(error);
+              return;
+            }
+          } catch { /* empty */ }
+        }
+        toast.error(err.message);
+      },
+    });
+  };
+
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <Form onSubmit={handleCreateWalletSubmit}>
@@ -166,6 +188,30 @@ const Cashu = () => {
 
           <Streamfield
             label={intl.formatMessage(messages.swap_cashu)}
+            component={CashuInput}
+            values={mints}
+            onChange={handleStreamItemChange()}
+            onAddItem={handleAddMint}
+            onRemoveItem={deleteStreamItem()}
+          />
+
+          <FormActions>
+            <Button to='/settings' theme='tertiary'>
+              <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
+            </Button>
+
+            <Button theme='primary' type='submit'>
+              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+            </Button>
+          </FormActions>
+        </Stack>
+      </Form>
+
+      <Form onSubmit={handleMintQuote}>
+        <Stack space={4}>
+
+          <Streamfield
+            label={intl.formatMessage(messages.create_cashu_quote)}
             component={CashuInput}
             values={mints}
             onChange={handleStreamItemChange()}

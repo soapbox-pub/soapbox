@@ -1162,6 +1162,7 @@
   "cashu.wallet.create": "Create Cashu Wallet",
   "cashu.nutzap.info": "Your nutzap info",
   "cashu.nutzap.swap": "Swap your Cashu",
+  "cashu.quote": "Create Cashu Quote",
   "cashu.wallet.mints": "Your mints",
   "cashu.wallet.mint_placeholder": "https://<mint-url>",
   "nostr_extension.found": "<link>Sign in</link> with browser extension.",
