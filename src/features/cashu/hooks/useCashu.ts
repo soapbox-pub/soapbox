@@ -34,7 +34,15 @@ function useCashu() {
     },
   });
 
+  const { mutate: getQuoteState } = useMutation({
+    mutationFn: (quote_id: string) => api.get(`/api/v1/ditto/cashu/quote/${quote_id}`),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['cashu', 'nutzap', 'info'] });
+    },
+  });
+
   return {
+    getQuoteState,
     createQuote,
     createWallet,
     createNutzapInfo,
