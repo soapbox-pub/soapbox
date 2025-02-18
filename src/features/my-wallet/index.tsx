@@ -1,71 +1,66 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchMfa } from 'soapbox/actions/mfa.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Balance from 'soapbox/features/my-wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/my-wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/my-wallet/components/transactions.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
+import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
-  accountAliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
-  accountMigration: { id: 'settings.account_migration', defaultMessage: 'Move Account' },
-  backups: { id: 'column.backups', defaultMessage: 'Backups' },
-  blocks: { id: 'settings.blocks', defaultMessage: 'Blocks' },
-  changeEmail: { id: 'settings.change_email', defaultMessage: 'Change Email' },
-  changePassword: { id: 'settings.change_password', defaultMessage: 'Change Password' },
-  configureMfa: { id: 'settings.configure_mfa', defaultMessage: 'Configure MFA' },
-  deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
-  editProfile: { id: 'settings.edit_profile', defaultMessage: 'Edit Profile' },
-  editIdentity: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
-  editRelays: { id: 'nostr_relays.title', defaultMessage: 'Relays' },
-  exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
-  importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
-  mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
-  mfaEnabled: { id: 'mfa.enabled', defaultMessage: 'Enabled' },
-  mutes: { id: 'settings.mutes', defaultMessage: 'Mutes' },
-  other: { id: 'settings.other', defaultMessage: 'Other Options' },
-  preferences: { id: 'settings.preferences', defaultMessage: 'Preferences' },
+  relays: { id: 'my_wallet.relays', defaultMessage: 'Relays' },
   transactions: { id: 'my_wallet.transactions', defaultMessage: 'Transactions' },
-  myWallet: { id: 'my_wallet.my_wallet', defaultMessage: 'My Wallet' },
-  security: { id: 'settings.security', defaultMessage: 'Security' },
-  sessions: { id: 'settings.sessions', defaultMessage: 'Active sessions' },
-  settings: { id: 'settings.settings', defaultMessage: 'Settings' },
+  myWallet: { id: 'my_wallet', defaultMessage: 'My Wallet' },
+  management: { id: 'my_wallet.management', defaultMessage: 'Wallet Management' },
+  mints: { id: 'my_wallet.mints', defaultMessage: 'Mints' },
 });
 
-/** User settings page. */
+/** User Wallet page. */
 const MyWallet = () => {
-  const dispatch = useAppDispatch();
+  const api = useApi();
   const intl = useIntl();
 
-  const features = useFeatures();
   const { account } = useOwnAccount();
+  const [walletData, setWalletData] = useState<WalletData | undefined>(undefined);
+
+  const fetchWallet = async () => {
+
+    try {
+      const response = await api.get('/api/v1/ditto/cashu/wallet');
+      const data: WalletData = await response.json();
+      if (data) {
+        const normalizedData = baseWalletSchema.parse(data);
+        setWalletData(normalizedData);
+      }
+
+    } catch (error) {
+      toast.error('Wallet not found');
+    }
+  };
 
   useEffect(() => {
-    if (features.security) dispatch(fetchMfa());
-  }, [dispatch]);
+    fetchWallet();
+  }, []);
 
   if (!account) return null;
 
-  const hasWallet = false;
-
   return (
-    <Column label={intl.formatMessage(messages.settings)} transparent withHeader={false} slim>
+    <Column label={intl.formatMessage(messages.myWallet)} transparent withHeader={false} slim>
       <Card className='space-y-4'>
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.myWallet)} />
         </CardHeader>
 
-        {hasWallet ? (
+        {walletData ? (
           <>
             <CardBody>
-              <Balance />
+              <Balance balance={walletData.balance} />
             </CardBody>
 
             <CardHeader>
@@ -77,13 +72,13 @@ const MyWallet = () => {
             </CardBody>
 
             <CardHeader>
-              <CardTitle title={'Wallet Management'} />
+              <CardTitle title={intl.formatMessage(messages.management)} />
             </CardHeader>
 
             <CardBody>
               <List>
-                <ListItem label={'Mints'} to='/settings/profile' />
-                <ListItem label={intl.formatMessage(messages.editRelays)} to='/settings/relays' />
+                <ListItem label={intl.formatMessage(messages.mints)} to='/settings/profile' />
+                <ListItem label={intl.formatMessage(messages.relays)} to='/settings/relays' />
               </List>
             </CardBody>
 
@@ -92,7 +87,7 @@ const MyWallet = () => {
           :
           <>
             <CardBody>
-              <CreateWallet />
+              <CreateWallet setWalletData={setWalletData} />
             </CardBody>
 
           </>
