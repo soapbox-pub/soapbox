@@ -40,7 +40,7 @@ const ExplorerCards = () => {
             src={arrowIcon}
             theme='transparent'
             onClick={() => setIsOpen(!isOpen)}
-            className={`transition-transform duration-300${
+            className={`transition-transform duration-300 ${
               isOpen ? 'rotate-0' : 'rotate-180'
             }`}
           />

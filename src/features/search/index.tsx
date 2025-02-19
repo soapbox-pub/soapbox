@@ -5,8 +5,9 @@ import Divider from 'soapbox/components/ui/divider.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
 import Search from 'soapbox/features/compose/components/search.tsx';
-import ExplorerCards from 'soapbox/features/search/components/explorerCards.tsx';
+import ExplorerCards from 'soapbox/features/search/components/explorer-cards.tsx';
 import ExplorerFilter from 'soapbox/features/search/components/explorerFilter.tsx';
+import AccountsCarousel from 'soapbox/features/search/components/people-to-follow-card.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.search', defaultMessage: 'Explorer' },
@@ -21,9 +22,13 @@ const SearchPage = () => {
       <Stack space={4}>
         <ExplorerCards />
 
-        <Divider text='Explorer' />
+        <Divider text='Filters' />
 
         <ExplorerFilter />
+
+        <Divider />
+
+        <AccountsCarousel />
 
         <Divider />
 

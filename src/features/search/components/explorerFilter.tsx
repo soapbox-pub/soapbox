@@ -107,7 +107,7 @@ const ExplorerFilter = () => {
   const [showReplies, setShowReplies] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [include, setInclude] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const hasValue = inputValue.length > 0;
 
@@ -147,7 +147,7 @@ const ExplorerFilter = () => {
     return (
       <div
         key={name}
-        className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-lg font-medium shadow-sm hover:cursor-pointer hover:pr-1 ${borderColor} `}
+        className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer hover:pr-1 ${borderColor} `}
       >
         {name}
         <IconButton
@@ -163,7 +163,7 @@ const ExplorerFilter = () => {
     <Stack className='px-4' space={3}>
 
       {/* Filters */}
-      <HStack alignItems='start' space={1}>
+      <HStack alignItems='start' justifyContent='between' space={1}>
         <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
           <Text size='lg' weight='bold'>
             {intl.formatMessage(messages.filters)}
@@ -175,7 +175,7 @@ const ExplorerFilter = () => {
         <IconButton
           src={arrowIcon}
           theme='transparent'
-          className={`transition-transform duration-300${ isOpen ? 'rotate-0' : 'rotate-180'}`}
+          className={`transition-transform duration-300 ${ isOpen ? 'rotate-0' : 'rotate-180'}`}
           onClick={() => setIsOpen(!isOpen)}
         />
       </HStack>

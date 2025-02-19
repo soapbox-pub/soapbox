@@ -22,6 +22,10 @@ const config: Config = {
       boxShadow: ({ theme }) => ({
         '3xl': '0 25px 75px -15px rgba(0, 0, 0, 0.25)',
         'inset-ring': `inset 0 0 0 2px ${theme('colors.accent-blue')}`,
+        'card': `rgba(0, 0, 0, 0.35}, 0.1) 0px 4px 16px, 
+                   rgba(0, 0, 0, 0.35}, 0.1) 0px 8px 24px, 
+                   rgba(0, 0, 0, 0.35}, 0.1) 0px 16px 56px`,
+        'card-inset': 'rgba(0, 0, 0, 0.60) 0px -120px 36px -28px inset',
       }),
       fontSize: {
         base: '0.9375rem',

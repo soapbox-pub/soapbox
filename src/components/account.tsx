@@ -34,7 +34,7 @@ const messages = defineMessages({
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
-const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
+export const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
   const history = useHistory();
   const [missing, setMissing] = useState<boolean>(false);
 

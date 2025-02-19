@@ -438,6 +438,7 @@
   "column_forbidden.body": "You do not have permission to access this page.",
   "column_forbidden.title": "Forbidden",
   "column.explorer": "Explorer",
+  "column.explorer.popular_accounts": "Popular Accounts",
   "column.explorer.welcome_card.title": "Welcome to Explorer",
   "column.explorer.welcome_card.text": "Explore the world of <span>decentralized social media</span>, dive into <span>Nostr</span> or cross the bridge to other networks, and connect with a global community. All in one place.",
   "column.explorer.nostr_card.title": "Nostr",
