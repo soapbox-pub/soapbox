@@ -1112,6 +1112,7 @@
   "mutes.empty.groups": "You haven't muted any groups yet.",
   "my_wallet": "My Wallet",
   "my_wallet.balance.exchange_button": "Exchange",
+  "my_wallet.balance.sats": "{amount} sats",
   "my_wallet.balance.withdraw_button": "Withdraw",
   "my_wallet.create_wallet.button": "Create wallet",
   "my_wallet.create_wallet.question": "Do you want create one?",
