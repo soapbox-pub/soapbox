@@ -41,7 +41,23 @@ function useCashu() {
     },
   });
 
+  const { mutate: getWallet } = useMutation({
+    mutationFn: () => api.get('/api/v1/ditto/cashu/wallet'),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['cashu', 'nutzap', 'info'] });
+    },
+  });
+
+  const { mutate: mintTheMint } = useMutation({
+    mutationFn: (quote_id: string) => api.post(`/api/v1/ditto/cashu/mint/${quote_id}`),
+    onSuccess: () => {
+      queryClient.refetchQueries({ queryKey: ['cashu', 'nutzap', 'info'] });
+    },
+  });
+
   return {
+    getWallet,
+    mintTheMint,
     getQuoteState,
     createQuote,
     createWallet,

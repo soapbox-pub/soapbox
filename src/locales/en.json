@@ -1165,6 +1165,7 @@
   "cashu.quote": "Create Cashu Quote",
   "cashu.quote.state": "Get Cashu Quote State",
   "cashu.wallet.mints": "Your mints",
+  "cashu.quote.mint": "Mint the Mint",
   "cashu.wallet.mint_placeholder": "https://<mint-url>",
   "nostr_extension.found": "<link>Sign in</link> with browser extension.",
   "nostr_extension.not_found": "Browser extension not found.",
