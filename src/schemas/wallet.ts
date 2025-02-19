@@ -3,9 +3,8 @@ import { z } from 'zod';
 
 const baseWalletSchema = z.object({
   pubkey_p2pk: n.id(),
-  mints: z.array(z.string()),
-  // .nonempty()
-  relays: z.array(z.string().url()).nonempty(),
+  mints: z.array(z.string().url()).nonempty(),
+  relays: z.array(z.string()).nonempty(),
   balance: z.number(),
 });
 
