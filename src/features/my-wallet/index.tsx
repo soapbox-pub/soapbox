@@ -4,6 +4,8 @@ import { defineMessages, useIntl } from 'react-intl';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Stack from 'soapbox/components/ui/stack.tsx';
 import Balance from 'soapbox/features/my-wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/my-wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/my-wallet/components/transactions.tsx';
@@ -28,6 +30,7 @@ const MyWallet = () => {
 
   const { account } = useOwnAccount();
   const [walletData, setWalletData] = useState<WalletData | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchWallet = async () => {
 
@@ -41,6 +44,8 @@ const MyWallet = () => {
 
     } catch (error) {
       toast.error('Wallet not found');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,49 +56,59 @@ const MyWallet = () => {
   if (!account) return null;
 
   return (
-    <Column label={intl.formatMessage(messages.myWallet)} transparent withHeader={false} slim>
-      <Card className='space-y-4'>
-        <CardHeader>
-          <CardTitle title={intl.formatMessage(messages.myWallet)} />
-        </CardHeader>
+    <>
+      {isLoading ?
+        <Stack className='h-screen justify-center'>
+          <Spinner size={40} withText={false} />
+        </Stack>
+        :
+        (
+          <Column label={intl.formatMessage(messages.myWallet)} transparent withHeader={false} slim>
+            <Card className='space-y-4'>
+              <CardHeader>
+                <CardTitle title={intl.formatMessage(messages.myWallet)} />
+              </CardHeader>
 
-        {walletData ? (
-          <>
-            <CardBody>
-              <Balance balance={walletData.balance} />
-            </CardBody>
+              {walletData ? (
+                <>
+                  <CardBody>
+                    <Balance balance={walletData.balance} />
+                  </CardBody>
 
-            <CardHeader>
-              <CardTitle title={intl.formatMessage(messages.transactions)} />
-            </CardHeader>
+                  <CardHeader>
+                    <CardTitle title={intl.formatMessage(messages.transactions)} />
+                  </CardHeader>
 
-            <CardBody>
-              <Transactions />
-            </CardBody>
+                  <CardBody>
+                    <Transactions />
+                  </CardBody>
 
-            <CardHeader>
-              <CardTitle title={intl.formatMessage(messages.management)} />
-            </CardHeader>
+                  <CardHeader>
+                    <CardTitle title={intl.formatMessage(messages.management)} />
+                  </CardHeader>
 
-            <CardBody>
-              <List>
-                <ListItem label={intl.formatMessage(messages.mints)} to='/settings/profile' />
-                <ListItem label={intl.formatMessage(messages.relays)} to='/settings/relays' />
-              </List>
-            </CardBody>
+                  <CardBody>
+                    <List>
+                      <ListItem label={intl.formatMessage(messages.mints)} to='/my-wallet-mints' />
+                      <ListItem label={intl.formatMessage(messages.relays)} to='/my-wallet-relays' />
+                    </List>
+                  </CardBody>
 
-          </>
+                </>
+              )
+                :
+                <>
+                  <CardBody>
+                    <CreateWallet setWalletData={setWalletData} />
+                  </CardBody>
+
+                </>
+              }
+            </Card>
+          </Column>
         )
-          :
-          <>
-            <CardBody>
-              <CreateWallet setWalletData={setWalletData} />
-            </CardBody>
-
-          </>
-        }
-      </Card>
-    </Column>
+      }
+    </>
   );
 };
 
