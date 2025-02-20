@@ -2,9 +2,10 @@ import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+import { changeSearch, submitSearch } from 'soapbox/actions/search.ts';
 import Button from 'soapbox/components/ui/button.tsx';
 import Checkbox from 'soapbox/components/ui/checkbox.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -16,6 +17,7 @@ import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
@@ -30,10 +32,11 @@ const messages = defineMessages({
   bluesky: { id: 'column.explorer.filters.bluesky', defaultMessage: 'Bluesky' },
   fediverse: { id: 'column.explorer.filters.fediverse', defaultMessage: 'Fediverse' },
   cancel: { id: 'column.explorer.filters.cancel', defaultMessage: 'Cancel' },
-  applyFilter: { id: 'column.explorer.filters.apply_filter', defaultMessage: 'Apply Filter' },
+  addFilter: { id: 'column.explorer.filters.add_filter', defaultMessage: 'Add Filter' },
 });
 
 const languages = {
+  default: 'Global',
   en: 'English',
   ar: 'العربية',
   ast: 'Asturianu',
@@ -100,30 +103,59 @@ const languages = {
 
 interface IGenerateFilter {
   name: string;
-  status: boolean | null;
+  state: boolean | null;
+  value: string;
 }
 
 const ExplorerFilter = () => {
+  const dispatch = useAppDispatch();
   const [showReplies, setShowReplies] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const [include, setInclude] = useState(true);
+  const [include, setInclude] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
   const hasValue = inputValue.length > 0;
 
   const intl = useIntl();
 
-  const [testList, setTestList] = useState([
-    { 'name': 'EN', 'status': true },
-    { 'name': 'Nostr', 'status': null },
-    { 'name': 'Bluesky', 'status': null },
-    { 'name': 'Fediverse', 'status': null },
-    { 'name': 'Bitcoin', 'status': false },
-    { 'name': 'NostrInArgentina', 'status': true },
-    { 'name': 'ElonForPresident', 'status': false },
+  const [tagFilters, setTagFilters] = useState<IGenerateFilter[]>([
+    { 'name': 'Nostr', state: null, 'value': 'protocol:nostr' },
+    { 'name': 'Bluesky', state: null, 'value': 'protocol:atproto' },
+    { 'name': 'Fediverse', state: null, 'value': 'protocol:activitypub' },
   ]);
 
-  const generateFilter = ({ name, status }: IGenerateFilter) => {
+  const handleToggleReplies: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setShowReplies(!showReplies);
+    const isOn = e.target.checked;
+
+    if (isOn) {
+      setTagFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'reply'), { name: 'Reply', state: null, value: 'reply:true' }]);
+    } else {
+      setTagFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'reply')]);
+    }
+  };
+
+  const toggleProtocolFilter = (protocolName: string, protocolValue: string) => {
+    setTagFilters(prevFilters => {
+
+      const exists = prevFilters.some(tag => tag.name.toLowerCase() === protocolName.toLowerCase() && tag.value[0] !== '-');
+      const newFilterList = prevFilters.filter(tag => tag.name.toLowerCase() !== protocolName.toLowerCase());
+
+      const newFilter = {
+        name: protocolName,
+        state: null,
+        value: exists ? `-protocol:${protocolValue}` : `protocol:${protocolValue}`,
+      };
+
+      if (newFilterList.length === 0) {
+        return [newFilter];
+      }
+
+      return [newFilterList[0], newFilter, ...newFilterList.slice(1)];
+    });
+  };
+
+  const generateFilter = ({ name, state }: IGenerateFilter) => {
     let borderColor = '';
     let textColor = '';
     switch (name.toLowerCase()) {
@@ -140,8 +172,13 @@ const ExplorerFilter = () => {
         textColor = 'text-indigo-500';
         break;
       default:
-        borderColor = status ? 'border-green-500' : 'border-red-500';
-        textColor = status ? 'text-green-500' : 'text-red-500';
+        if (name.toLowerCase() === 'reply' || Object.keys(languages).some((lang) => lang === name.toLowerCase())) {
+          borderColor = 'border-grey-500';
+          textColor = 'text-grey-500';
+          break;
+        }
+        borderColor = state ? 'border-green-500' : 'border-red-500';
+        textColor = state ? 'text-green-500' : 'text-red-500';
     }
 
     return (
@@ -151,13 +188,44 @@ const ExplorerFilter = () => {
       >
         {name}
         <IconButton
-          iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon} onClick={() => setTestList((prevValue) => {
+          iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon} onClick={() => setTagFilters((prevValue) => {
             return prevValue.filter((x) => x.name !== name);
           })}
         />
       </div>
     );
   };
+
+  const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const value = e.target.value;
+
+    if (value.toLowerCase() === 'default') {
+      setTagFilters((prevValue) => prevValue.filter((value) => !value.value.includes('language:')));
+    } else {
+      setTagFilters((prevValue) => {
+        return [{ name: value.toUpperCase(), state: null, value: `language:${value}` }, ...prevValue.filter((value) => !value.value.includes('language:'))];
+      });
+    }
+  };
+
+  const handleAddFilter = () => {
+    setTagFilters((prev) => {
+      return [...prev, { name: inputValue, state: include === '', value: `${include}${inputValue.split(' ').join(` ${include}`)}` }];
+    });
+  };
+
+  useEffect(
+    () => {
+
+      const value = tagFilters
+        .filter((searchFilter) => !searchFilter.value.startsWith('protocol:'))
+        .map((searchFilter) => searchFilter.value)
+        .join(' ');
+
+      dispatch(changeSearch(value));
+      dispatch(submitSearch(undefined, value));
+    }, [tagFilters, dispatch],
+  );
 
   return (
     <Stack className='px-4' space={3}>
@@ -169,13 +237,13 @@ const ExplorerFilter = () => {
             {intl.formatMessage(messages.filters)}
           </Text>
 
-          {testList.map(generateFilter)}
+          {tagFilters.length > 0 && [...tagFilters.slice(0, 3).filter((x)=> x.value[0] !== '-' && x.state === null).map(generateFilter), ...tagFilters.slice(3).map(generateFilter)]}
 
         </HStack>
         <IconButton
           src={arrowIcon}
           theme='transparent'
-          className={`transition-transform duration-300 ${ isOpen ? 'rotate-0' : 'rotate-180'}`}
+          className={`transition-transform duration-300 ${ isOpen ? 'rotate-180' : 'rotate-0'}`}
           onClick={() => setIsOpen(!isOpen)}
         />
       </HStack>
@@ -190,7 +258,7 @@ const ExplorerFilter = () => {
 
           <Toggle
             checked={showReplies}
-            onChange={() => setShowReplies(!showReplies)}
+            onChange={handleToggleReplies}
           />
 
         </HStack>
@@ -204,7 +272,8 @@ const ExplorerFilter = () => {
           <SelectDropdown
             className='max-w-[200px]'
             items={languages}
-            defaultValue={languages.en}
+            defaultValue={languages.default}
+            onChange={handleSelectChange}
           />
         </HStack>
 
@@ -218,17 +287,8 @@ const ExplorerFilter = () => {
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='nostr'
-              checked={testList.some((tag)=> tag.name.toLowerCase() === 'nostr')}
-              onChange={() => setTestList((prevValue) => {
-                const exists = prevValue.some((x) => x.name.toLowerCase() === 'nostr');
-                if (exists) {
-                  return prevValue.filter((x) => x.name.toLowerCase() !== 'nostr');
-                } else {
-                  return [...prevValue, { name: 'Nostr', status: null }];
-                }
-              })}
-              // checked={params.get('agreement', false)}
-              // required
+              checked={tagFilters.some(tag => tag.name.toLowerCase() === 'nostr' && tag.value[0] !== '-')}
+              onChange={() => toggleProtocolFilter('Nostr', 'nostr')}
             />
             <Text size='lg'>
               {intl.formatMessage(messages.nostr)}
@@ -239,15 +299,8 @@ const ExplorerFilter = () => {
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='bluesky'
-              checked={testList.some((tag)=> tag.name.toLowerCase() === 'bluesky')}
-              onChange={() => setTestList((prevValue) => {
-                const exists = prevValue.some((x) => x.name.toLowerCase() === 'bluesky');
-                if (exists) {
-                  return prevValue.filter((x) => x.name.toLowerCase() !== 'bluesky');
-                } else {
-                  return [...prevValue, { name: 'Bluesky', status: null }];
-                }
-              })}
+              checked={tagFilters.some(tag => tag.name.toLowerCase() === 'bluesky' && tag.value[0] !== '-')}
+              onChange={() => toggleProtocolFilter('Bluesky', 'atproto')}
             />
             <Text size='lg'>
               {intl.formatMessage(messages.bluesky)}
@@ -258,15 +311,8 @@ const ExplorerFilter = () => {
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='fediverse'
-              checked={testList.some((tag)=> tag.name.toLowerCase() === 'fediverse')}
-              onChange={() => setTestList((prevValue) => {
-                const exists = prevValue.some((x) => x.name.toLowerCase() === 'fediverse');
-                if (exists) {
-                  return prevValue.filter((x) => x.name.toLowerCase() !== 'fediverse');
-                } else {
-                  return [...prevValue, { name: 'Fediverse', status: null }];
-                }
-              })}
+              checked={tagFilters.some(tag => tag.name.toLowerCase() === 'fediverse' && tag.value[0] !== '-')}
+              onChange={() => toggleProtocolFilter('Fediverse', 'activitypub')}
             />
             <Text size='lg'>
               {intl.formatMessage(messages.fediverse)}
@@ -315,8 +361,10 @@ const ExplorerFilter = () => {
               <HStack alignItems='center' space={2}>
                 <Checkbox
                   name='include'
-                  checked={include}
-                  onChange={() => setInclude(!include)}
+                  checked={!(include.length > 0)}
+                  onChange={() => {
+                    setInclude('');
+                  }}
                 />
                 <Text size='lg'>
                   {intl.formatMessage(messages.include)}
@@ -327,8 +375,10 @@ const ExplorerFilter = () => {
               <HStack alignItems='center' space={2}>
                 <Checkbox
                   name='exclude'
-                  checked={!include}
-                  onChange={() => setInclude(!include)}
+                  checked={(include.length > 0)}
+                  onChange={() => {
+                    setInclude('-');
+                  }}
                 />
                 <Text size='lg'>
                   {intl.formatMessage(messages.exclude)}
@@ -337,13 +387,19 @@ const ExplorerFilter = () => {
             </HStack>
           </Stack>
 
-          <HStack className='w-full' space={2}>
-            <Button className='w-1/2' theme='secondary'>
+          <HStack className='w-full p-0.5' space={2}>
+            <Button
+              className='w-1/2' theme='secondary' onClick={() => {
+                setInclude('');
+                setInputValue('');
+              }
+              }
+            >
               {intl.formatMessage(messages.cancel)}
             </Button>
 
-            <Button className='w-1/2' theme='primary'>
-              {intl.formatMessage(messages.applyFilter)}
+            <Button className='w-1/2' theme='primary' onClick={handleAddFilter}>
+              {intl.formatMessage(messages.addFilter)}
             </Button>
           </HStack>
 
