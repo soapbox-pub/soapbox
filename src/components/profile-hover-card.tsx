@@ -140,7 +140,7 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
                 <Avatar src={account.avatar} size={80} className='size-20 overflow-hidden bg-gray-50 ring-2 ring-white' />
               </Link>
 
-              <div className='mt-2'>
+              <div className='relative z-50 mt-2'>
                 <ActionButton account={account} small />
               </div>
             </HStack>
