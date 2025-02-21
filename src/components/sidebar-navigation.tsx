@@ -15,7 +15,7 @@ import homeIcon from '@tabler/icons/outline/home.svg';
 import listIcon from '@tabler/icons/outline/list.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
-import searchIcon from '@tabler/icons/outline/search.svg';
+import rocketIcon from '@tabler/icons/outline/rocket.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
@@ -163,8 +163,8 @@ const SidebarNavigation = () => {
 
           <SidebarNavigationLink
             to='/search'
-            icon={searchIcon}
-            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
+            icon={rocketIcon}
+            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explorer' />}
           />
 
           {account && (

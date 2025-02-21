@@ -8,7 +8,7 @@ import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
 import homeIcon from '@tabler/icons/outline/home.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
-import searchIcon from '@tabler/icons/outline/search.svg';
+import rocketIcon from '@tabler/icons/outline/rocket.svg';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link.tsx';
@@ -84,8 +84,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       )}
 
       <ThumbNavigationLink
-        src={searchIcon}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Discover' />}
+        src={rocketIcon}
+        text={<FormattedMessage id='navigation.search' defaultMessage='Explorer' />}
         to='/search'
         exact
       />
