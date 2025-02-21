@@ -11,6 +11,7 @@ import Text from 'soapbox/components/ui/text.tsx';
 import {
   CreateFilter,
   LanguageFilter,
+  MediaFilter,
   PlatformFilters,
   RepliesFilter,
   generateFilter,
@@ -88,6 +89,9 @@ const ExplorerFilter = () => {
 
         {/* Show Reply toggle */}
         <RepliesFilter onChangeFilters={setTagFilters} />
+
+        {/* Media toggle */}
+        <MediaFilter onChangeFilters={setTagFilters} />
 
         {/* Language */}
         <LanguageFilter onChangeFilters={setTagFilters} />

@@ -20,6 +20,7 @@ import { IGenerateFilter } from 'soapbox/features/search/components/explorerFilt
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
   showReplies: { id: 'column.explorer.filters.show_replies', defaultMessage: 'Show replies:' },
+  showMedia: { id: 'column.explorer.filters.show_text_posts', defaultMessage: 'Just text posts:' },
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
@@ -337,6 +338,35 @@ const RepliesFilter = ({ onChangeFilters }: IFilter) => {
 
 };
 
+const MediaFilter = ({ onChangeFilters }: IFilter) => {
+  const intl = useIntl();
+  const [showMedia, setShowMedia] = useState(false);
+
+  const handleToggleReplies: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setShowMedia(!showMedia);
+    const isOn = e.target.checked;
+
+    if (isOn) {
+      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'text'), { name: 'Text', state: null, value: 'media:false' }]);
+    } else {
+      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'text')]);
+    }
+  };
+
+  return (
+    <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
+      <Text size='lg' weight='bold'>
+        {intl.formatMessage(messages.showMedia)}
+      </Text>
+      <Toggle
+        checked={showMedia}
+        onChange={handleToggleReplies}
+      />
+    </HStack>
+  );
+
+};
+
 const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React.Dispatch<React.SetStateAction<IGenerateFilter[]>>) => {
   let borderColor = '';
   let textColor = '';
@@ -354,7 +384,7 @@ const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React
       textColor = 'text-indigo-500';
       break;
     default:
-      if (name.toLowerCase() === 'reply' || Object.keys(languages).some((lang) => lang === name.toLowerCase())) {
+      if (name.toLowerCase() === 'reply' || name.toLowerCase() === 'text' || Object.keys(languages).some((lang) => lang === name.toLowerCase())) {
         borderColor = 'border-grey-500';
         textColor = 'text-grey-500';
         break;
@@ -378,4 +408,4 @@ const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React
   );
 };
 
-export { CreateFilter, PlatformFilters, LanguageFilter, RepliesFilter, generateFilter };
+export { CreateFilter, PlatformFilters, LanguageFilter, RepliesFilter, MediaFilter, generateFilter };
