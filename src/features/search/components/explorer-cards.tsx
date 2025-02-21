@@ -15,9 +15,9 @@ const messages = defineMessages({
   welcomeTitle: { id: 'column.explorer.welcome_card.title', defaultMessage: 'Welcome to Explorer' },
   welcomeText: { id: 'column.explorer.welcome_card.text', defaultMessage: 'Explore the world of <span>decentralized social media</span>, dive into <span>Nostr</span> or cross the bridge to other networks, and connect with a global community. All in one place.' },
   nostrTitle: { id: 'column.explorer.nostr_card.title', defaultMessage: 'Nostr' },
-  nostrText: { id: 'column.explorer.nostr_card.text', defaultMessage: 'Wondering about Nostr? Find Out More' },
+  nostrText: { id: 'column.explorer.nostr_card.text', defaultMessage: 'Wondering about Nostr? <a>Click here</a>' },
   bridgeTitle: { id: 'column.explorer.bridge_card.title', defaultMessage: 'Bridge' },
-  bridgeText: { id: 'column.explorer.bridge_card.text', defaultMessage: 'Curious about Bridges? Click here' },
+  bridgeText: { id: 'column.explorer.bridge_card.text', defaultMessage: 'Curious about Bridges? <a>Click here</a>' },
 });
 
 const ExplorerCards = () => {
@@ -27,7 +27,7 @@ const ExplorerCards = () => {
     <Stack>
       <Stack
         space={4}
-        className={`rounded-xl bg-gradient-to-r from-pink-400 via-purple-500 to-blue-400 ${isOpen ? 'mx-4 mb-4 px-5 pb-8 pt-4' : 'm-4 p-4'}`}
+        className={`m-2 rounded-xl bg-gradient-to-r from-pink-400 via-purple-500 to-blue-400 sm:m-4 ${isOpen ? 'mt-0 px-5 pb-8 pt-4' : 'p-4'}`}
       >
         <HStack justifyContent='between' className='text-white'>
           <HStack space={2}>
@@ -41,7 +41,7 @@ const ExplorerCards = () => {
             theme='transparent'
             onClick={() => setIsOpen(!isOpen)}
             className={`transition-transform duration-300 ${
-              isOpen ? 'rotate-0' : 'rotate-180'
+              isOpen ? 'rotate-180' : 'rotate-0'
             }`}
           />
         </HStack>
@@ -53,26 +53,28 @@ const ExplorerCards = () => {
         </Text>
       </Stack>
 
-      <HStack className={`mx-4 mb-4 ${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`} space={4}>
+      <HStack className={`mx-2 mb-2 sm:mx-4 sm:mb-4 ${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`} space={2}>
         {/* Nostr */}
         <Stack
           space={4}
           className='w-1/2 rounded-xl bg-gradient-to-r from-pink-400 to-purple-500 px-5 pb-8 pt-4'
           justifyContent='center'
         >
-          <HStack space={2} alignItems='center' justifyContent='center'>
+          <HStack alignItems='center' className='!box-border sm:w-48' space={2} justifyContent='between'>
             {/* Title */}
             <Stack space={2}>
               <p className='text-xl font-bold text-white'>
                 {intl.formatMessage(messages.nostrTitle)}
               </p>
               <Text className='text-white'>
-                {intl.formatMessage(messages.nostrText)}
+                {intl.formatMessage(messages.nostrText, {
+                  a: (node) => <a className='text-black underline' target='_blank' href='https://soapbox.pub/blog/nostr101/'>{node}</a>,
+                })}
               </Text>
             </Stack>
 
-            <div className='w-1/2 rounded-full bg-white p-2'>
-              <img src={nostrImg} alt='' />
+            <div className='rounded-full bg-white p-2 sm:size-16'>
+              <img className='min-h-14 min-w-14' src={nostrImg} alt='' />
             </div>
           </HStack>
         </Stack>
@@ -82,17 +84,19 @@ const ExplorerCards = () => {
           space={4}
           className='w-1/2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-400 px-5 pb-8 pt-4'
         >
-          <HStack space={2} alignItems='center'>
+          <HStack  alignItems='center' className='sm:min-w-48'>
             {/* Title */}
             <Stack space={2}>
               <p className='text-xl font-bold text-white'> {intl.formatMessage(messages.bridgeTitle)} </p>
               <Text className='text-white'>
-                {intl.formatMessage(messages.bridgeText)}
+                {intl.formatMessage(messages.bridgeText, {
+                  a: (node) => <a className='text-black underline' target='_blank' href='https://soapbox.pub/blog/mostr-fediverse-nostr-bridge/'>{node}</a>,
+                })}
               </Text>
             </Stack>
 
-            <div className='w-1/2 rounded-full bg-white p-2'>
-              <img src={bridgeImg} alt='' />
+            <div className='w-1/2 rounded-full bg-white p-2 sm:size-16'>
+              <img className='min-h-14 min-w-14' src={bridgeImg} alt='' />
             </div>
           </HStack>
         </Stack>
