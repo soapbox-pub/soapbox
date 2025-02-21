@@ -10,7 +10,7 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { MintEditor } from 'soapbox/features/my-wallet/components/relay-field/editable-lists.tsx';
+import { MintEditor } from 'soapbox/features/my-wallet/components/editable-lists.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';

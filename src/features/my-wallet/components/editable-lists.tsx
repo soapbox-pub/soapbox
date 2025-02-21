@@ -56,3 +56,4 @@ const RelayEditor: React.FC<IEditableList<string>> = ({ items, setItems }) => {
 };
 
 export { RelayEditor, MintEditor };
+export type { IEditableList };

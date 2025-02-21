@@ -182,4 +182,6 @@ export const ZapSplitModal = lazy(() => import('soapbox/features/ui/components/m
 export const CaptchaModal = lazy(() => import('soapbox/features/ui/components/modals/captcha-modal/captcha-modal.tsx'));
 export const NostrBunkerLogin = lazy(() => import('soapbox/features/nostr/nostr-bunker-login.tsx'));
 export const MyWallet = lazy(() => import('soapbox/features/my-wallet/index.tsx'));
+export const MyWalletRelays = lazy(() => import('soapbox/features/my-wallet/components/wallet-relays.tsx'));
+export const MyWalletMints = lazy(() => import('soapbox/features/my-wallet/components/wallet-mints.tsx'));
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
