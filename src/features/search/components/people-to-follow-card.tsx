@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -6,85 +7,21 @@ import { useAccount } from 'soapbox/api/hooks/index.ts';
 import { InstanceFavicon } from 'soapbox/components/account.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
 import {
-  // useDismissSuggestion,
   useSuggestions,
 } from 'soapbox/queries/suggestions.ts';
 
 import 'swiper/css';
 
-// Delete
-const lightenColor = (rgb: string, percent: number) => {
-  const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  if (!match) return '#888888';
-
-  let r = parseInt(match[1]);
-  let g = parseInt(match[2]);
-  let b = parseInt(match[3]);
-
-  r = Math.min(255, r + (255 - r) * percent / 100);
-  g = Math.min(255, g + (255 - g) * percent / 100);
-  b = Math.min(255, b + (255 - b) * percent / 100);
-
-  return `rgb(${r}, ${g}, ${b})`;
-};
-
-// Delete
-const getFaviconColor = (src: string): Promise<string> => {
-  return new Promise((resolve) => {
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.src = src;
-
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-
-      if (!ctx) return resolve('#888888');
-
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const imageData = ctx.getImageData(0, 0, img.width, img.height).data;
-      let r = 0, g = 0, b = 0, count = 0;
-
-      for (let i = 0; i < imageData.length; i += 4) {
-        r += imageData[i];
-        g += imageData[i + 1];
-        b += imageData[i + 2];
-        count++;
-      }
-
-      r = Math.floor(r / count);
-      g = Math.floor(g / count);
-      b = Math.floor(b / count);
-
-      resolve(`rgb(${r}, ${g}, ${b})`);
-    };
-
-    img.onerror = () => resolve('#888888');
-  });
-};
-
-
 const PeopleToFollowCard = ({ id }: { id: string }) => {
   const account = useAccount(id).account;
   const { logo } = useSoapboxConfig();
-  const [bgColor, setBgColor] = useState<string>('#888888');
-
-  useEffect(() => {
-    if (account?.pleroma?.favicon) {
-      getFaviconColor(account.pleroma.favicon).then((color) => {
-        setBgColor(lightenColor(color, 0));
-      }).catch(() => setBgColor('#888888'));
-    }
-  }, [account?.pleroma?.favicon]);
 
   return (
     <Stack className='rounded-lg' >
@@ -104,10 +41,7 @@ const PeopleToFollowCard = ({ id }: { id: string }) => {
 
           <HStack className='p-2'>
             <HStack
-              alignItems='center' space={1} className='max-w-28 rounded-full border px-2 py-0.5 !text-white' style={{
-                backgroundColor: bgColor,
-                borderColor: bgColor,
-              }}
+              alignItems='center' space={1} className='max-w-28 rounded-full border bg-primary-500 px-2 py-0.5 !text-white'
             >
               <InstanceFavicon account={account} />
               <Text className='!text-white' size='xs' truncate>
@@ -136,25 +70,28 @@ const PeopleToFollowCard = ({ id }: { id: string }) => {
 const AccountsCarousel = () => {
   const isMobile = useIsMobile();
   const { data: suggestions, isFetching } = useSuggestions();
-  // const dismissSuggestion = useDismissSuggestion();
+  const [isOpen, setIsOpen] = useState(false);
 
-  // const handleDismiss = (account: AccountEntity) => {
-  //   dismissSuggestion.mutate(account.id);
-  // };
 
   if (!isFetching && !suggestions.length) {
     return null;
   }
 
   return (
-    <Stack space={4}>
-      <HStack className='px-4'>
+    <Stack space={4} className='px-4'>
+      <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage id='column.explorer.popular_accounts' defaultMessage={'Popular Accounts'} />
         </Text>
+        <IconButton
+          src={arrowIcon}
+          theme='transparent'
+          className={`transition-transform duration-300 ${ isOpen ? 'rotate-180' : 'rotate-0'}`}
+          onClick={() => setIsOpen(!isOpen)}
+        />
       </HStack>
 
-      <HStack className='overflow-hidden px-4 '>
+      <HStack className={`transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'hidden max-h-0 opacity-0'}`}>
         <Swiper
           spaceBetween={10}
           slidesPerView={isMobile ? 2 : 3}
