@@ -185,6 +185,10 @@ export const UsernameInput: React.FC<React.ComponentProps<typeof Input>> = (prop
   return (
     <Input
       placeholder={intl.formatMessage(messages.username)}
+      autoComplete='off'
+      autoCorrect='off'
+      autoCapitalize='off'
+      pattern='^[\w.]+$'
       append={(
         <HStack alignItems='center' space={1} className='rounded p-1 text-sm backdrop-blur'>
           <Icon className='size-4' src={atIcon} />
