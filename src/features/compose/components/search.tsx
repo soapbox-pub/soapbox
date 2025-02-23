@@ -88,7 +88,7 @@ const Search = (props: ISearch) => {
       dispatch(setSearchAccount(null));
       dispatch(submitSearch());
 
-      history.push('/search');
+      history.push('/explorer');
     } else {
       dispatch(submitSearch());
     }

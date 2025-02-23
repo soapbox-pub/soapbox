@@ -162,7 +162,7 @@ const SidebarNavigation = () => {
           />
 
           <SidebarNavigationLink
-            to='/search'
+            to='/explorer'
             icon={rocketIcon}
             text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explorer' />}
           />

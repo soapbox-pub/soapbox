@@ -38,7 +38,7 @@ const TrendsPanel = ({ limit }: ITrendsPanel) => {
     <Widget
       title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}
       action={
-        <Link className='text-right' to='/search' onClick={setHashtagsFilter}>
+        <Link className='text-right' to='/explorer' onClick={setHashtagsFilter}>
           <Text tag='span' theme='primary' size='sm' className='hover:underline'>
             {intl.formatMessage(messages.viewAll)}
           </Text>
