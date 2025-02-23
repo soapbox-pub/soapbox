@@ -57,10 +57,10 @@ const ExplorerCards = () => {
         {/* Nostr */}
         <Stack
           space={4}
-          className='w-1/2 rounded-xl bg-gradient-to-r from-pink-400 to-purple-500 px-5 pb-8 pt-4'
+          className='w-1/2 rounded-xl bg-gradient-to-r from-pink-400 to-purple-500 px-5 pb-6 pt-4'
           justifyContent='center'
         >
-          <HStack alignItems='center' className='!box-border sm:w-48' space={2} justifyContent='between'>
+          <HStack alignItems='center' justifyContent='between'>
             {/* Title */}
             <Stack space={2}>
               <p className='text-xl font-bold text-white'>
@@ -73,8 +73,8 @@ const ExplorerCards = () => {
               </Text>
             </Stack>
 
-            <div className='rounded-full bg-white p-2 sm:size-16'>
-              <img className='min-h-14 min-w-14' src={nostrImg} alt='' />
+            <div className='flex min-h-20 min-w-20 items-center justify-center rounded-full bg-white p-1 sm:size-16'>
+              <img className='size-16' src={nostrImg} alt='' />
             </div>
           </HStack>
         </Stack>
@@ -82,7 +82,7 @@ const ExplorerCards = () => {
         {/* Bridge */}
         <Stack
           space={4}
-          className='w-1/2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-400 px-5 pb-8 pt-4'
+          className='w-1/2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-400 px-5 pb-6 pt-4'
         >
           <HStack  alignItems='center' className='sm:min-w-48'>
             {/* Title */}
@@ -95,8 +95,8 @@ const ExplorerCards = () => {
               </Text>
             </Stack>
 
-            <div className='w-1/2 rounded-full bg-white p-2 sm:size-16'>
-              <img className='min-h-14 min-w-14' src={bridgeImg} alt='' />
+            <div className='flex min-h-20 min-w-20 items-center justify-center rounded-full bg-white p-1 sm:size-16'>
+              <img className='size-16' src={bridgeImg} alt='' />
             </div>
           </HStack>
         </Stack>

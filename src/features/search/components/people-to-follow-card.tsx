@@ -78,7 +78,7 @@ const AccountsCarousel = () => {
   }
 
   return (
-    <Stack space={4} className='px-4'>
+    <Stack space={4} className={`px-4 ${isOpen && 'pb-4'}`}>
       <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage id='column.explorer.popular_accounts' defaultMessage={'Popular Accounts'} />
