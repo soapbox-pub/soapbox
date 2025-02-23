@@ -7,7 +7,6 @@ import SearchResults from 'soapbox/features/compose/components/search-results.ts
 import Search from 'soapbox/features/compose/components/search.tsx';
 import ExplorerCards from 'soapbox/features/search/components/explorer-cards.tsx';
 import ExplorerFilter from 'soapbox/features/search/components/explorerFilter.tsx';
-import AccountsCarousel from 'soapbox/features/search/components/people-to-follow-card.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.search', defaultMessage: 'Explorer' },
@@ -25,10 +24,6 @@ const SearchPage = () => {
         <Divider text='Filters' />
 
         <ExplorerFilter />
-
-        <Divider />
-
-        <AccountsCarousel />
 
         <Divider />
 
