@@ -2,7 +2,7 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { debounce } from 'es-toolkit';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -55,6 +55,7 @@ const Search = (props: ISearch) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const intl = useIntl();
+  const [inputValue, setInputValue] = useState('');
 
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
@@ -67,6 +68,7 @@ const Search = (props: ISearch) => {
     const { value } = event.target;
 
     dispatch(changeSearch(value));
+    setInputValue(value);
 
     if (autoSubmit) {
       debouncedSubmit();
@@ -124,7 +126,7 @@ const Search = (props: ISearch) => {
     type: 'text',
     id: 'search',
     placeholder: intl.formatMessage(messages.placeholder),
-    value,
+    inputValue,
     onChange: handleChange,
     onKeyDown: handleKeyDown,
     onFocus: handleFocus,
