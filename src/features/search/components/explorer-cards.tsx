@@ -24,10 +24,10 @@ const ExplorerCards = () => {
   const [isOpen, setIsOpen] = useState(true);
   const intl = useIntl();
   return (
-    <Stack>
+    <Stack className='mx-4 mt-4' space={2}>
       <Stack
         space={4}
-        className={`m-2 rounded-xl bg-gradient-to-r from-pink-400 via-purple-500 to-blue-400 sm:m-4 ${isOpen ? 'mt-0 px-5 pb-8 pt-4' : 'p-4'}`}
+        className={`rounded-xl bg-gradient-to-r from-primary-400 to-primary-700 ${isOpen ? 'mt-0 px-5 pb-8 pt-4' : 'p-4'}`}
       >
         <HStack justifyContent='between' className='text-white'>
           <HStack space={2}>
@@ -53,11 +53,11 @@ const ExplorerCards = () => {
         </Text>
       </Stack>
 
-      <HStack className={`mx-2 mb-2 sm:mx-4 sm:mb-4 ${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`} space={2}>
+      <HStack className={`${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`} space={2}>
         {/* Nostr */}
         <Stack
           space={4}
-          className='w-1/2 rounded-xl bg-gradient-to-r from-pink-400 to-purple-500 px-5 pb-6 pt-4'
+          className='w-1/2 rounded-xl bg-gradient-to-r from-primary-400 to-primary-600 px-5 pb-6 pt-4'
           justifyContent='center'
         >
           <HStack alignItems='center' justifyContent='between'>
@@ -82,7 +82,7 @@ const ExplorerCards = () => {
         {/* Bridge */}
         <Stack
           space={4}
-          className='w-1/2 rounded-xl bg-gradient-to-r from-purple-500 to-blue-400 px-5 pb-6 pt-4'
+          className='w-1/2 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 px-5 pb-6 pt-4'
         >
           <HStack  alignItems='center' className='sm:min-w-48'>
             {/* Title */}
