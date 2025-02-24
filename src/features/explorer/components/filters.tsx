@@ -13,9 +13,8 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFilter.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { IGenerateFilter } from 'soapbox/features/search/components/explorerFilter.tsx';
-// import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
@@ -48,7 +47,6 @@ const languages = {
   da: 'Dansk',
   de: 'Deutsch',
   el: 'Ελληνικά',
-  'en-Shaw': '𐑖𐑱𐑝𐑾𐑯',
   eo: 'Esperanto',
   es: 'Español',
   eu: 'Euskara',
@@ -80,14 +78,12 @@ const languages = {
   oc: 'Occitan',
   pl: 'Polski',
   pt: 'Português',
-  'pt-BR': 'Português do Brasil',
   ro: 'Română',
   ru: 'Русский',
   sk: 'Slovenčina',
   sl: 'Slovenščina',
   sq: 'Shqip',
   sr: 'Српски',
-  'sr-Latn': 'Srpski (latinica)',
   sv: 'Svenska',
   ta: 'தமிழ்',
   te: 'తెలుగు',
@@ -95,9 +91,6 @@ const languages = {
   tr: 'Türkçe',
   uk: 'Українська',
   zh: '中文',
-  'zh-CN': '简体中文',
-  'zh-HK': '繁體中文（香港）',
-  'zh-TW': '繁體中文（臺灣）',
 };
 
 interface IFilter {
@@ -370,6 +363,7 @@ const MediaFilter = ({ onChangeFilters }: IFilter) => {
 const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React.Dispatch<React.SetStateAction<IGenerateFilter[]>>) => {
   let borderColor = '';
   let textColor = '';
+  let hasButton = false;
   switch (name.toLowerCase()) {
     case 'nostr':
       borderColor = 'border-purple-500';
@@ -391,19 +385,20 @@ const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React
       }
       borderColor = state ? 'border-green-500' : 'border-red-500';
       textColor = state ? 'text-green-500' : 'text-red-500';
+      hasButton = true;
   }
 
   return (
     <div
       key={name}
-      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer hover:pr-1 ${borderColor} `}
+      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer ${hasButton ? 'hover:pr-1' : '' } ${borderColor} `}
     >
       {name}
-      <IconButton
+      {hasButton && <IconButton
         iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon} onClick={() => onChangeFilters((prevValue) => {
           return prevValue.filter((x) => x.name !== name);
         })}
-      />
+      />}
     </div>
   );
 };

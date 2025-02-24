@@ -1,48 +1,59 @@
+import globeIcon from '@tabler/icons/outline/globe.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
+import trendIcon from '@tabler/icons/outline/trending-up.svg';
+import userIcon from '@tabler/icons/outline/user.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import { useEffect, useRef } from 'react';
-import { 
-  FormattedMessage, 
-  // defineMessages, 
-  // useIntl
+import { useEffect, useRef, useState } from 'react';
+import {
+  FormattedMessage,
+  defineMessages,
+  useIntl,
 } from 'react-intl';
 
-import { 
+import {
   expandSearch,
-  // setFilter, 
-  // setSearchAccount
+  setFilter,
+  setSearchAccount,
 } from 'soapbox/actions/search.ts';
 import { expandTrendingStatuses, fetchTrendingStatuses } from 'soapbox/actions/trending-statuses.ts';
-// import { useAccount } from 'soapbox/api/hooks/index.ts';
+import { useAccount } from 'soapbox/api/hooks/index.ts';
 import Hashtag from 'soapbox/components/hashtag.tsx';
+import IconButton from 'soapbox/components/icon-button.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
+import ExplorerTabs from 'soapbox/components/ui/explorer-tabs.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-// import Tabs from 'soapbox/components/ui/tabs.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import StatusContainer from 'soapbox/containers/status-container.tsx';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag.tsx';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
+import PublicTimeline from 'soapbox/features/public-timeline/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useSuggestions } from 'soapbox/queries/suggestions.ts';
+import { SearchFilter } from 'soapbox/reducers/search.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
-// import type { SearchFilter } from 'soapbox/reducers/search.ts';
 
-// const messages = defineMessages({
-//   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
-//   statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
-//   hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
-// });
+const messages = defineMessages({
+  accounts: { id: 'search_results.posts', defaultMessage: 'Accounts' },
+  statuses: { id: 'search_results.accounts', defaultMessage: 'Posts' },
+  trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
+  search: { id: 'common.search', defaultMessage: 'Search' },
+});
 
 const SearchResults = () => {
   const node = useRef<VirtuosoHandle>(null);
 
-  // const intl = useIntl();
+  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const { data: suggestions } = useSuggestions();
+  const [globalTimeline, setGlobalTimeline] = useState(true);
 
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
@@ -51,8 +62,8 @@ const SearchResults = () => {
   const trends = useAppSelector((state) => state.trends.items);
   const submitted = useAppSelector((state) => state.search.submitted);
   const selectedFilter = useAppSelector((state) => state.search.filter);
-  // const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
-  // const { account } = useAccount(filterByAccount);
+  const filterByAccount = useAppSelector((state) => state.search.accountId || undefined);
+  const { account } = useAccount(filterByAccount);
 
   const handleLoadMore = () => {
     if (results.accounts.size || results.statuses.size || results.hashtags.size) {
@@ -62,35 +73,45 @@ const SearchResults = () => {
     }
   };
 
-  // const handleUnsetAccount = () => dispatch(setSearchAccount(null));
+  const handleUnsetAccount = () => dispatch(setSearchAccount(null));
+  const handleAction = (filter: SearchFilter) =>{
+    setGlobalTimeline(false);
+    selectFilter(filter);
+  };
 
-  // const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
+  const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
-  // const renderFilterBar = () => {
-  //   const items = [];
-  //   items.push(
-  //     {
-  //       text: intl.formatMessage(messages.statuses),
-  //       action: () => selectFilter('statuses'),
-  //       name: 'statuses',
-  //     },
-  //     {
-  //       text: intl.formatMessage(messages.accounts),
-  //       action: () => selectFilter('accounts'),
-  //       name: 'accounts',
-  //     },
-  //   );
+  const renderFilterBar = () => {
+    const items = [];
+    items.push(
+      {
+        label: intl.formatMessage(messages.statuses),
+        action: () => setGlobalTimeline(true),
+        name: 'statuses',
+        icon: globeIcon,
+      },
+      {
+        label: intl.formatMessage(messages.trends),
+        action: () => handleAction('statuses'),
+        name: 'trends',
+        icon: trendIcon,
+      },
+      {
+        label: intl.formatMessage(messages.accounts),
+        action: () => handleAction('accounts'),
+        name: 'accounts',
+        icon: userIcon,
+      },
+      {
+        label: intl.formatMessage(messages.search),
+        action: () => null,
+        name: 'search',
+        icon: searchIcon,
+      },
+    );
 
-  //   items.push(
-  //     {
-  //       text: intl.formatMessage(messages.hashtags),
-  //       action: () => selectFilter('hashtags'),
-  //       name: 'hashtags',
-  //     },
-  //   );
-
-  //   return <Tabs items={items} activeItem={selectedFilter} />;
-  // };
+    return <ExplorerTabs items={items} activeItem={selectedFilter} />;
+  };
 
   const getCurrentIndex = (id: string): number => {
     return resultsIds?.keySeq().findIndex(key => key === id);
@@ -219,7 +240,7 @@ const SearchResults = () => {
 
   return (
     <>
-      {/* {filterByAccount ? (
+      {filterByAccount ? (
         <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={xIcon} onClick={handleUnsetAccount} />
           <Text truncate>
@@ -231,10 +252,12 @@ const SearchResults = () => {
           </Text>
         </HStack>
       ) : (
-        <div className='px-4'>{renderFilterBar()}</div>
-      )} */}
+        <div className='relative px-4'>
+          {renderFilterBar()}
+        </div>
+      )}
 
-      {noResultsMessage || (
+      {globalTimeline ? <PublicTimeline /> : (noResultsMessage || (
         <ScrollableList
           id='search-results'
           ref={node}
@@ -257,7 +280,7 @@ const SearchResults = () => {
         >
           {searchResults || []}
         </ScrollableList>
-      )}
+      ))}
     </>
   );
 };

@@ -48,7 +48,6 @@ import Navbar from './components/navbar.tsx';
 import {
   Status,
   CommunityTimeline,
-  PublicTimeline,
   RemoteTimeline,
   AccountTimeline,
   AccountGallery,
@@ -194,7 +193,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         https://stackoverflow.com/a/68637108
       */}
       {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
-      {features.federating && <WrappedRoute path='/timeline/global' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} publicRoute />}
 
       {features.conversations && <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} />}
@@ -209,11 +207,11 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/web/:path' to='/:path' />
       <Redirect from='/timelines/home' to='/' />
       <Redirect from='/timelines/public/local' to='/timeline/local' />
-      <Redirect from='/timelines/public' to='/timeline/global' />
+      <Redirect from='/timelines/public' to='/explorer' />
       <Redirect from='/timelines/direct' to='/messages' />
 
       {/* Pleroma FE web routes */}
-      <Redirect from='/main/all' to='/timeline/global' />
+      <Redirect from='/main/all' to='/explorer' />
       <Redirect from='/main/public' to='/timeline/local' />
       <Redirect from='/main/friends' to='/' />
       <Redirect from='/tag/:id' to='/tags/:id' />
@@ -251,7 +249,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/auth/mfa' to='/settings/mfa' />
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
-      <Redirect from='/timeline/fediverse' to='/timeline/global' />
+      <Redirect from='/timeline/fediverse' to='/explorer' />
 
       <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
@@ -261,7 +259,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-      <WrappedRoute path='/search' page={SearchPage} component={Search} content={children} publicRoute />
+      <WrappedRoute path='/explorer' page={SearchPage} component={Search} content={children} publicRoute />
       {features.suggestionsLocal && <WrappedRoute path='/suggestions/local' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} componentParams={{ local: true }} />}
       {features.suggestions && <WrappedRoute path='/suggestions' exact publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' exact publicRoute page={DefaultPage} component={Directory} content={children} />}

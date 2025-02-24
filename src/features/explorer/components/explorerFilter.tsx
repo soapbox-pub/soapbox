@@ -15,7 +15,7 @@ import {
   PlatformFilters,
   RepliesFilter,
   generateFilter,
-} from 'soapbox/features/search/components/filters.tsx';
+} from 'soapbox/features/explorer/components/filters.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
