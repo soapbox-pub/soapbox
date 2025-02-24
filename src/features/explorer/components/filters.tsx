@@ -13,8 +13,8 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
+import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFilter.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { IGenerateFilter } from 'soapbox/features/search/components/explorerFilter.tsx';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },

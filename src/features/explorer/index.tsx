@@ -4,9 +4,9 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
-import ExplorerCards from 'soapbox/features/search/components/explorer-cards.tsx';
-import ExplorerFilter from 'soapbox/features/search/components/explorerFilter.tsx';
-import AccountsCarousel from 'soapbox/features/search/components/popular-accounts.tsx';
+import ExplorerCards from 'soapbox/features/explorer/components/explorer-cards.tsx';
+import ExplorerFilter from 'soapbox/features/explorer/components/explorerFilter.tsx';
+import AccountsCarousel from 'soapbox/features/explorer/components/popular-accounts.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.explorer', defaultMessage: 'Explorer' },

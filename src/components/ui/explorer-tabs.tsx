@@ -38,32 +38,43 @@ const ExplorerTabs: React.FC<TabsProps> = ({ items, activeItem }) => {
 
   return (
     <HStack className='inset-x-0 bottom-4 z-[999] w-full p-2' alignItems='center' justifyContent='center'>
-      {/* Cabeçalho das abas */}
-      <HStack space={1} className='w-full rounded-full bg-gray-800 p-1.5' justifyContent='around'>
+      {/* Header */}
+      <HStack space={1} className='w-full rounded-full bg-gray-200/60 p-1.5 dark:bg-gray-800' justifyContent='around'>
         {items.map(({ name, label, icon }) => {
           const isSelected = activeTab === name;
+          const shouldKeepBg = lastSelected === name && activeTab === 'search';
 
           return (
             <HStack key={name} alignItems='center' justifyContent='center'>
               {name === 'search' && isSelected ? (
-                // Renderiza o componente Search fora do botão
                 <Search autoSubmit />
               ) : (
                 <HStack
                   space={1}
                   alignItems='center'
+                  justifyContent='center'
                   onClick={() => handleTabClick(name)}
+                  /* eslint-disable-next-line tailwindcss/no-custom-classname */
                   className={clsx(
                     'group cursor-pointer rounded-full px-5 py-3 text-sm font-medium transition-all duration-300',
-                    isSelected
-                      ? 'group border-gray-700 bg-gray-700 text-white shadow-md'
-                      : 'text-gray-500 hover:bg-gray-200/60 hover:!text-white dark:hover:bg-gray-800',
+                    isSelected || shouldKeepBg
+                      ? 'border-gray-500 bg-gray-500 text-white shadow-md dark:border-gray-700 dark:bg-gray-700'
+                      : 'dark:hover:bg-gray-800/200 text-gray-500 hover:bg-gray-400/60 hover:!text-white',
+                    { '!p-2': shouldKeepBg },
                   )}
-                  justifyContent='center'
                 >
-                  <SvgIcon src={icon} className={clsx('size-5', { 'text-white': lastSelected === name && activeTab === 'search' })} />
-                  {activeTab !== 'search' && (isMobile ? isSelected : !isMobile) && (
-                    <Text className={clsx('transition-all duration-300', { '!text-gray-500 group-hover:!text-white': !isSelected })}>
+                  <SvgIcon
+                    src={icon}
+                    className='size-5 '
+                  />
+                  {(activeTab !== 'search' || isSelected) &&
+                    (isMobile ? isSelected : !isMobile) && (
+                    <Text
+                      className={clsx('transition-all duration-300', {
+                        '!text-gray-500 group-hover:!text-white': !isSelected,
+                        '!text-white': isSelected || shouldKeepBg,
+                      })}
+                    >
                       {label}
                     </Text>
                   )}
