@@ -17,9 +17,10 @@ import {
   useSuggestions,
 } from 'soapbox/queries/suggestions.ts';
 
+// @ts-ignore
 import 'swiper/css';
 
-const PeopleToFollowCard = ({ id }: { id: string }) => {
+const PopularAccounts = ({ id }: { id: string }) => {
   const account = useAccount(id).account;
   const { logo } = useSoapboxConfig();
 
@@ -70,7 +71,7 @@ const PeopleToFollowCard = ({ id }: { id: string }) => {
 const AccountsCarousel = () => {
   const isMobile = useIsMobile();
   const { data: suggestions, isFetching } = useSuggestions();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
 
   if (!isFetching && !suggestions.length) {
@@ -101,7 +102,7 @@ const AccountsCarousel = () => {
         >
           {suggestions.map((suggestion) => (
             <SwiperSlide key={suggestion.account}>
-              <PeopleToFollowCard id={suggestion.account} />
+              <PopularAccounts id={suggestion.account} />
             </SwiperSlide>
           ))}
         </Swiper>
