@@ -70,6 +70,7 @@ const PublicTimeline = () => {
 
   return (
     <Column
+      withHeader={false}
       label={intl.formatMessage(messages.title)}
       action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
       slim

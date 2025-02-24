@@ -15,7 +15,6 @@ import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { IGenerateFilter } from 'soapbox/features/search/components/explorerFilter.tsx';
-// import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
