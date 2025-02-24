@@ -6,6 +6,7 @@ import userFilledIcon from '@tabler/icons/filled/user.svg';
 import atIcon from '@tabler/icons/outline/at.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import compassIcon from '@tabler/icons/outline/brand-safari.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import codeIcon from '@tabler/icons/outline/code.svg';
@@ -15,7 +16,6 @@ import homeIcon from '@tabler/icons/outline/home.svg';
 import listIcon from '@tabler/icons/outline/list.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
-import rocketIcon from '@tabler/icons/outline/rocket.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
@@ -163,7 +163,7 @@ const SidebarNavigation = () => {
 
           <SidebarNavigationLink
             to='/explorer'
-            icon={rocketIcon}
+            icon={compassIcon}
             text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explorer' />}
           />
 
@@ -221,14 +221,6 @@ const SidebarNavigation = () => {
                   to='/timeline/local'
                   icon={features.federating ? atIcon : worldIcon}
                   text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-                />
-              )}
-
-              {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
-                <SidebarNavigationLink
-                  to='/timeline/global'
-                  icon={worldIcon}
-                  text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
                 />
               )}
             </>

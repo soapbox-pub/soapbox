@@ -280,15 +280,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
                       onClick={onClose}
                     />
-
-                    {features.federating && (
-                      <SidebarLink
-                        to='/timeline/global'
-                        icon={worldIcon}
-                        text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-                        onClick={onClose}
-                      />
-                    )}
                   </>}
 
                   <Divider />
