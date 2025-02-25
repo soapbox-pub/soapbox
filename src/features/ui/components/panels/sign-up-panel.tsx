@@ -7,11 +7,9 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 
 const SignUpPanel = () => {
-  const { nostrSignup } = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);
   const dispatch = useAppDispatch();
@@ -38,8 +36,7 @@ const SignUpPanel = () => {
       <HStack space={2}>
         <Button
           theme='tertiary'
-          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_LOGIN')) : undefined}
-          to={nostrSignup ? undefined : '/login'}
+          onClick={() => dispatch(openModal('NOSTR_LOGIN'))}
           block
         >
           <FormattedMessage id='account.login' defaultMessage='Log in' />
@@ -47,8 +44,7 @@ const SignUpPanel = () => {
 
         <Button
           theme='primary'
-          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_SIGNUP')) : undefined}
-          to={nostrSignup ? undefined : '/signup'}
+          onClick={() => dispatch(openModal('NOSTR_SIGNUP'))}
           block
         >
           <FormattedMessage id='account.register' defaultMessage='Sign up' />
