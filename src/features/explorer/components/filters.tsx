@@ -15,11 +15,16 @@ import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
 import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFilter.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { changeLanguage, createFilter, handleToggle, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
+import { AppDispatch, RootState } from 'soapbox/store.ts';
+import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
   showReplies: { id: 'column.explorer.filters.show_replies', defaultMessage: 'Show replies:' },
   showMedia: { id: 'column.explorer.filters.show_text_posts', defaultMessage: 'Just text posts:' },
+  showVideo: { id: 'column.explorer.filters.show_video_posts', defaultMessage: 'Just posts with video:' },
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
@@ -93,36 +98,46 @@ const languages = {
   zh: '中文',
 };
 
-interface IFilter {
-  onChangeFilters: React.Dispatch<React.SetStateAction<IGenerateFilter[]>>;
-}
-
-interface IPlatformFilters {
-  filters: IGenerateFilter[];
-  onChangeFilters: React.Dispatch<React.SetStateAction<IGenerateFilter[]>>;
-}
-
-const PlatformFilters = ({ onChangeFilters, filters }: IPlatformFilters) => {
+const PlatformFilters = () => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+  const filterList = useAppSelector((state: RootState) => state.search_filter);
 
-  const toggleProtocolFilter = (protocolName: string, protocolValue: string) => {
-    onChangeFilters(prevFilters => {
+  const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const protocol = e.target.name;
 
-      const exists = prevFilters.some(tag => tag.name.toLowerCase() === protocolName.toLowerCase() && tag.value[0] !== '-');
-      const newFilterList = prevFilters.filter(tag => tag.name.toLowerCase() !== protocolName.toLowerCase());
+    dispatch(selectProtocol(protocol));
+  };
 
-      const newFilter = {
-        name: protocolName,
-        state: null,
-        value: exists ? `-protocol:${protocolValue}` : `protocol:${protocolValue}`,
-      };
+  const CheckBox = ({ protocolN } : { protocolN: string }) => {
+    const filter = filterList.find((filter) => filter.name.toLowerCase() === protocolN);
+    const checked = filter?.status;
 
-      if (newFilterList.length === 0) {
-        return [newFilter];
-      }
+    let message;
+    switch (protocolN) {
+      case 'nostr':
+        message = messages.nostr;
+        break;
+      case 'bluesky':
+        message = messages.bluesky;
+        break;
+      default:
+        message = messages.fediverse;
+    }
 
-      return [newFilterList[0], newFilter, ...newFilterList.slice(1)];
-    });
+
+    return (
+      <HStack alignItems='center' space={2}>
+        <Checkbox
+          name={protocolN}
+          checked={checked}
+          onChange={handleProtocolFilter}
+        />
+        <Text size='lg'>
+          {intl.formatMessage(message)}
+        </Text>
+      </HStack>
+    );
   };
 
   return (
@@ -132,56 +147,33 @@ const PlatformFilters = ({ onChangeFilters, filters }: IPlatformFilters) => {
       </Text>
 
       {/* Nostr */}
-      <HStack alignItems='center' space={2}>
-        <Checkbox
-          name='nostr'
-          checked={filters.some(tag => tag.name.toLowerCase() === 'nostr' && tag.value[0] !== '-')}
-          onChange={() => toggleProtocolFilter('Nostr', 'nostr')}
-        />
-        <Text size='lg'>
-          {intl.formatMessage(messages.nostr)}
-        </Text>
-      </HStack>
+      <CheckBox protocolN={'nostr'} />
 
       {/* Bluesky */}
-      <HStack alignItems='center' space={2}>
-        <Checkbox
-          name='bluesky'
-          checked={filters.some(tag => tag.name.toLowerCase() === 'bluesky' && tag.value[0] !== '-')}
-          onChange={() => toggleProtocolFilter('Bluesky', 'atproto')}
-        />
-        <Text size='lg'>
-          {intl.formatMessage(messages.bluesky)}
-        </Text>
-      </HStack>
+      <CheckBox protocolN={'bluesky'} />
 
       {/* Fediverse */}
-      <HStack alignItems='center' space={2}>
-        <Checkbox
-          name='fediverse'
-          checked={filters.some(tag => tag.name.toLowerCase() === 'fediverse' && tag.value[0] !== '-')}
-          onChange={() => toggleProtocolFilter('Fediverse', 'activitypub')}
-        />
-        <Text size='lg'>
-          {intl.formatMessage(messages.fediverse)}
-        </Text>
-      </HStack>
+      <CheckBox protocolN={'fediverse'} />
 
     </HStack>
   );
 
 };
 
-const CreateFilter = ({ onChangeFilters }: IFilter) => {
+const CreateFilter = () => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
+
   const [inputValue, setInputValue] = useState('');
-  const [include, setInclude] = useState('');
+  const [include, setInclude] = useState(true);
   const hasValue = inputValue.length > 0;
 
   const handleAddFilter = () => {
-    onChangeFilters((prev) => {
-      return [...prev, { name: inputValue, state: include === '', value: `${include}${inputValue.split(' ').join(` ${include}`)}` }];
-    });
+    if (inputValue.length > 0) {
+      dispatch(createFilter({ name: inputValue, status: include }));
+    } else {
+      toast.error('Hey there... you forget to write the filter!');
+    }
   };
 
   return (
@@ -223,9 +215,9 @@ const CreateFilter = ({ onChangeFilters }: IFilter) => {
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='include'
-              checked={!(include.length > 0)}
+              checked={include}
               onChange={() => {
-                setInclude('');
+                setInclude(true);
               }}
             />
             <Text size='lg'>
@@ -237,9 +229,9 @@ const CreateFilter = ({ onChangeFilters }: IFilter) => {
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='exclude'
-              checked={(include.length > 0)}
+              checked={!include}
               onChange={() => {
-                setInclude('-');
+                setInclude(false);
               }}
             />
             <Text size='lg'>
@@ -252,7 +244,7 @@ const CreateFilter = ({ onChangeFilters }: IFilter) => {
       <HStack className='w-full p-0.5' space={2}>
         <Button
           className='w-1/2' theme='secondary' onClick={() => {
-            setInclude('');
+            setInclude(false);
             setInputValue('');
           }
           }
@@ -270,19 +262,13 @@ const CreateFilter = ({ onChangeFilters }: IFilter) => {
 
 };
 
-const LanguageFilter = ({ onChangeFilters }: IFilter) => {
+const LanguageFilter = () => {
   const intl = useIntl();
+  const dispatch = useAppDispatch();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
-    const value = e.target.value;
-
-    if (value.toLowerCase() === 'default') {
-      onChangeFilters((prevValue) => prevValue.filter((value) => !value.value.includes('language:')));
-    } else {
-      onChangeFilters((prevValue) => {
-        return [{ name: value.toUpperCase(), state: null, value: `language:${value}` }, ...prevValue.filter((value) => !value.value.includes('language:'))];
-      });
-    }
+    const language = e.target.value;
+    dispatch(changeLanguage(language));
   };
 
   return (
@@ -302,105 +288,97 @@ const LanguageFilter = ({ onChangeFilters }: IFilter) => {
 
 };
 
-const RepliesFilter = ({ onChangeFilters }: IFilter) => {
+const ToggleFilter = ({ type }: {type: 'reply' | 'media' | 'video'}) => {
   const intl = useIntl();
-  const [showReplies, setShowReplies] = useState(false);
+  const dispatch = useAppDispatch();
+  const filterType = type.toLowerCase();
+  let label;
 
-  const handleToggleReplies: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setShowReplies(!showReplies);
-    const isOn = e.target.checked;
+  switch (type) {
+    case 'reply':
+      label = intl.formatMessage(messages.showReplies);
+      break;
+    case 'media':
+      label = intl.formatMessage(messages.showMedia);
+      break;
+    default:
+      label = intl.formatMessage(messages.showVideo);
+  }
 
-    if (isOn) {
-      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'reply'), { name: 'Reply', state: null, value: 'reply:true' }]);
-    } else {
-      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'reply')]);
-    }
+  const filters = useAppSelector((state) => state.search_filter);
+  const repliesFilter = filters.find((filter) => filter.name.toLowerCase() === filterType);
+  const checked = repliesFilter?.status;
+
+  const handleToggleComponent = () => {
+    dispatch(handleToggle({ type: filterType, checked: !checked }));
   };
 
   return (
     <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
       <Text size='lg' weight='bold'>
-        {intl.formatMessage(messages.showReplies)}
+        {label}
       </Text>
       <Toggle
-        checked={showReplies}
-        onChange={handleToggleReplies}
+        checked={checked}
+        onChange={handleToggleComponent}
       />
     </HStack>
   );
-
 };
 
-const MediaFilter = ({ onChangeFilters }: IFilter) => {
-  const intl = useIntl();
-  const [showMedia, setShowMedia] = useState(false);
-
-  const handleToggleReplies: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setShowMedia(!showMedia);
-    const isOn = e.target.checked;
-
-    if (isOn) {
-      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'text'), { name: 'Text', state: null, value: 'media:false' }]);
-    } else {
-      onChangeFilters((prevValue) => [...prevValue.filter((prev) => prev.name.toLowerCase() !== 'text')]);
-    }
-  };
-
-  return (
-    <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
-      <Text size='lg' weight='bold'>
-        {intl.formatMessage(messages.showMedia)}
-      </Text>
-      <Toggle
-        checked={showMedia}
-        onChange={handleToggleReplies}
-      />
-    </HStack>
-  );
-
-};
-
-const generateFilter = ({ name, state }: IGenerateFilter, onChangeFilters: React.Dispatch<React.SetStateAction<IGenerateFilter[]>>) => {
+const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter) => {
   let borderColor = '';
   let textColor = '';
   let hasButton = false;
-  switch (name.toLowerCase()) {
-    case 'nostr':
-      borderColor = 'border-purple-500';
-      textColor = 'text-purple-500';
-      break;
-    case 'bluesky':
-      borderColor = 'border-blue-500';
-      textColor = 'text-blue-500';
-      break;
-    case 'fediverse':
-      borderColor = 'border-indigo-500';
-      textColor = 'text-indigo-500';
-      break;
-    default:
-      if (name.toLowerCase() === 'reply' || name.toLowerCase() === 'text' || Object.keys(languages).some((lang) => lang === name.toLowerCase())) {
-        borderColor = 'border-grey-500';
-        textColor = 'text-grey-500';
+  const nameLowCase = name.toLowerCase();
+
+  const handleChangeFilters = () => {
+    dispatch(removeFilter(name));
+  };
+
+  if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
+    borderColor = 'border-gray-500';
+    textColor = 'text-gray-500';
+  } else {
+    switch (nameLowCase) {
+      case 'reply':
+      case 'media':
+      case 'video':
+        borderColor = 'border-gray-500';
+        textColor = 'text-gray-500';
         break;
-      }
-      borderColor = state ? 'border-green-500' : 'border-red-500';
-      textColor = state ? 'text-green-500' : 'text-red-500';
-      hasButton = true;
+      case 'nostr':
+        borderColor = 'border-purple-500';
+        textColor = 'text-purple-500';
+        break;
+      case 'bluesky':
+        borderColor = 'border-blue-500';
+        textColor = 'text-blue-500';
+        break;
+      case 'fediverse':
+        borderColor = 'border-indigo-500';
+        textColor = 'text-indigo-500';
+        break;
+      default:
+        borderColor = status ? 'border-green-500' : 'border-red-500';
+        textColor = status ? 'text-green-500' : 'text-red-500';
+        hasButton = true;
+    }
   }
 
   return (
     <div
       key={name}
-      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer ${hasButton ? 'hover:pr-1' : '' } ${borderColor} `}
+      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer ${hasButton ? 'hover:pr-1' : '' } ${borderColor} ${textColor} `}
     >
       {name}
       {hasButton && <IconButton
-        iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon} onClick={() => onChangeFilters((prevValue) => {
-          return prevValue.filter((x) => x.name !== name);
-        })}
+        iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon}
+        onClick={handleChangeFilters}
+
       />}
     </div>
   );
 };
 
-export { CreateFilter, PlatformFilters, LanguageFilter, RepliesFilter, MediaFilter, generateFilter };
+export { CreateFilter, PlatformFilters, LanguageFilter, ToggleFilter, generateFilter };

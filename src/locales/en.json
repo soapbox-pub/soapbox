@@ -385,6 +385,7 @@
   "column.explorer.filters.platforms": "Platforms:",
   "column.explorer.filters.show_replies": "Show replies:",
   "column.explorer.filters.show_text_posts": "Just text posts:",
+  "column.explorer.filters.show_video_posts": "Just posts with video:",
   "column.explorer.nostr_card.text": "Wondering about Nostr? <a>Click here</a>",
   "column.explorer.nostr_card.title": "Nostr",
   "column.explorer.popular_accounts": "Popular Accounts",

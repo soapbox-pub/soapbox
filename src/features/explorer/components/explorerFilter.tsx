@@ -11,57 +11,43 @@ import Text from 'soapbox/components/ui/text.tsx';
 import {
   CreateFilter,
   LanguageFilter,
-  MediaFilter,
   PlatformFilters,
-  RepliesFilter,
+  ToggleFilter,
   generateFilter,
 } from 'soapbox/features/explorer/components/filters.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
-  showReplies: { id: 'column.explorer.filters.show_replies', defaultMessage: 'Show replies:' },
-  language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
-  platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
-  createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
-  filterByWords: { id: 'column.explorer.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
-  include: { id: 'column.explorer.filters.include', defaultMessage: 'Include' },
-  exclude: { id: 'column.explorer.filters.exclude', defaultMessage: 'Exclude' },
-  nostr: { id: 'column.explorer.filters.nostr', defaultMessage: 'Nostr' },
-  bluesky: { id: 'column.explorer.filters.bluesky', defaultMessage: 'Bluesky' },
-  fediverse: { id: 'column.explorer.filters.fediverse', defaultMessage: 'Fediverse' },
-  cancel: { id: 'column.explorer.filters.cancel', defaultMessage: 'Cancel' },
-  addFilter: { id: 'column.explorer.filters.add_filter', defaultMessage: 'Add Filter' },
 });
 
 interface IGenerateFilter {
   name: string;
-  state: boolean | null;
+  status: boolean | null;
   value: string;
 }
 
 const ExplorerFilter = () => {
   const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.search_filter);
   const intl = useIntl();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const [tagFilters, setTagFilters] = useState<IGenerateFilter[]>([
-    { 'name': 'Nostr', state: null, 'value': 'protocol:nostr' },
-    { 'name': 'Bluesky', state: null, 'value': 'protocol:atproto' },
-    { 'name': 'Fediverse', state: null, 'value': 'protocol:activitypub' },
-  ]);
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(
     () => {
-
-      const value = tagFilters
-        .filter((searchFilter) => !searchFilter.value.startsWith('protocol:'))
+      const language = filters[0].name.toLowerCase() !== 'default' ? filters[0].value : '';
+      const protocols = filters.slice(1, 4).filter((protocol) => !protocol.status).map((filter) => filter.value).join(' ');
+      const defaultFilters = filters.slice(4, 7).filter((x) => x.status).map((filter) => filter.value).join(' ');
+      const newFilters = filters.slice(7)
         .map((searchFilter) => searchFilter.value)
         .join(' ');
 
+      const value = [ language, protocols, defaultFilters, newFilters ].join(' ');
+
       dispatch(changeSearch(value));
       dispatch(submitSearch(undefined, value));
-    }, [tagFilters, dispatch],
+    }, [filters, dispatch],
   );
 
   return (
@@ -74,7 +60,7 @@ const ExplorerFilter = () => {
             {intl.formatMessage(messages.filters)}
           </Text>
 
-          {tagFilters.length > 0 && [...tagFilters.slice(0, 3).filter((x)=> x.value[0] !== '-' && x.state === null).map((value) => generateFilter(value, setTagFilters)), ...tagFilters.slice(3).map((value) => generateFilter(value, setTagFilters))]}
+          {filters.length > 0 && [...filters.slice(0, 7).filter((value) => value.status).map((value) => generateFilter(dispatch, value)), ...filters.slice(7).map((value) => generateFilter(dispatch, value))]}
 
         </HStack>
         <IconButton
@@ -88,21 +74,24 @@ const ExplorerFilter = () => {
       <Stack className={`overflow-hidden transition-all duration-500 ease-in-out  ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={3}>
 
         {/* Show Reply toggle */}
-        <RepliesFilter onChangeFilters={setTagFilters} />
+        <ToggleFilter type='reply' />
 
         {/* Media toggle */}
-        <MediaFilter onChangeFilters={setTagFilters} />
+        <ToggleFilter type='media' />
+
+        {/* Video toggle */}
+        <ToggleFilter type='video' />
 
         {/* Language */}
-        <LanguageFilter onChangeFilters={setTagFilters} />
+        <LanguageFilter />
 
         {/* Platforms */}
-        <PlatformFilters onChangeFilters={setTagFilters} filters={tagFilters} />
+        <PlatformFilters />
 
         <Divider />
 
         {/* Create your filter */}
-        <CreateFilter onChangeFilters={setTagFilters} />
+        <CreateFilter />
 
       </Stack>
 
