@@ -1467,6 +1467,8 @@
   "settings.settings": "Settings",
   "shared.tos": "Terms of Service",
   "signup_panel.subtitle": "Sign up now to discuss what's happening.",
+  "login_panel.subtitle": "Dive into the best of social media!",
+  "signup_panel.greeting_title": "{greeting}! Welcome aboard!",
   "signup_panel.title": "New to {site_title}?",
   "site_preview.preview": "Preview",
   "soapbox_config.authenticated_profile_hint": "Users must be logged-in to view replies and media on user profiles.",
