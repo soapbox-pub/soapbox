@@ -5,6 +5,7 @@ import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import { patchMe } from 'soapbox/actions/me.ts';
 import { changeSetting } from 'soapbox/actions/settings.ts';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
@@ -89,6 +90,11 @@ const EditIdentity: React.FC<IEditIdentity> = () => {
         setUsername('');
         setReason('');
         setSubmitted(true);
+      },
+      onError(error) {
+        if (error instanceof HTTPError) {
+          toast.showAlertForError(error);
+        }
       },
     });
   };
