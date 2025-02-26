@@ -14,7 +14,7 @@ import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 const messages = defineMessages({
-  title: { id: 'column.home', defaultMessage: 'Home' },
+  title: { id: 'column.my_nostr', defaultMessage: 'My Nostr' },
 });
 
 const HomeTimeline: React.FC = () => {
@@ -109,5 +109,6 @@ const HomeTimeline: React.FC = () => {
     </Column>
   );
 };
+
 
 export default HomeTimeline;

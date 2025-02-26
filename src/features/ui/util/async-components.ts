@@ -5,10 +5,9 @@ export const EmojiPicker = lazy(() => import('soapbox/features/emoji/components/
 export const EmojiPickerModal = lazy(() => import('soapbox/features/ui/components/modals/emoji-picker-modal.tsx'));
 export const Notifications = lazy(() => import('soapbox/features/notifications/index.tsx'));
 export const LandingTimeline = lazy(() => import('soapbox/features/landing-timeline/index.tsx'));
-export const HomeTimeline = lazy(() => import('soapbox/features/home-timeline/index.tsx'));
+export const MyNostrTimeline = lazy(() => import('soapbox/features/my-nostr-timeline/index.tsx'));
 export const PublicTimeline = lazy(() => import('soapbox/features/public-timeline/index.tsx'));
 export const RemoteTimeline = lazy(() => import('soapbox/features/remote-timeline/index.tsx'));
-export const CommunityTimeline = lazy(() => import('soapbox/features/community-timeline/index.tsx'));
 export const HashtagTimeline = lazy(() => import('soapbox/features/hashtag-timeline/index.tsx'));
 export const DirectTimeline = lazy(() => import('soapbox/features/direct-timeline/index.tsx'));
 export const Conversations = lazy(() => import('soapbox/features/conversations/index.tsx'));

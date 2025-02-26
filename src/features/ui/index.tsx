@@ -47,12 +47,11 @@ import FloatingActionButton from './components/floating-action-button.tsx';
 import Navbar from './components/navbar.tsx';
 import {
   Status,
-  CommunityTimeline,
   PublicTimeline,
   RemoteTimeline,
   AccountTimeline,
   AccountGallery,
-  HomeTimeline,
+  MyNostrTimeline,
   Followers,
   Following,
   DirectTimeline,
@@ -184,7 +183,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
       {isLoggedIn ? (
-        <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
+        <WrappedRoute path='/' exact page={HomePage} component={MyNostrTimeline} content={children} />
       ) : (
         <WrappedRoute path='/' exact page={LandingPage} component={LandingTimeline} content={children} publicRoute />
       )}
@@ -193,7 +192,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         NOTE: we cannot nest routes in a fragment
         https://stackoverflow.com/a/68637108
       */}
-      {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/global' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} publicRoute />}
 
