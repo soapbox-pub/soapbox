@@ -18,7 +18,6 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
-import usersIcon from '@tabler/icons/outline/users.svg';
 import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -191,17 +190,6 @@ const SidebarNavigation = () => {
                 />
               )}
             </>)}
-
-          {/* TODO: Add community page when ready */}
-          {false && (features.publicTimeline) && (
-            (account || !restrictUnauth.timelines.local) && (
-              <SidebarNavigationLink
-                to='/timeline/local'
-                icon={features.federating ? usersIcon : worldIcon}
-                text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-              />
-            )
-          )}
 
           {account && (
             <>
