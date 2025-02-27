@@ -114,7 +114,7 @@ const Navbar = () => {
           >
             <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
               <SiteLogo alt='Logo' className='h-5 w-auto cursor-pointer' />
-              <span className='hidden'><FormattedMessage id='tabs_bar.my_nostr' defaultMessage='My Nostr' /></span>
+              <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
             </Link>
 
             {account && (

@@ -1,11 +1,11 @@
-import affiliateFilledIcon from '@tabler/icons/filled/affiliate.svg';
 import bellFilledIcon from '@tabler/icons/filled/bell.svg';
 import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
+import homeFilledIcon from '@tabler/icons/filled/home.svg';
 import mailFilledIcon from '@tabler/icons/filled/mail.svg';
-import affiliateIcon from '@tabler/icons/outline/affiliate.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
+import homeIcon from '@tabler/icons/outline/home.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
@@ -66,9 +66,9 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       }}
     >
       <ThumbNavigationLink
-        src={affiliateIcon}
-        activeSrc={affiliateFilledIcon}
-        text={<FormattedMessage id='navigation.my_nostr' defaultMessage='My Nostr' />}
+        src={homeIcon}
+        activeSrc={homeFilledIcon}
+        text={<FormattedMessage id='navigation.home' defaultMessage='Home' />}
         to='/'
         exact
       />

@@ -1,9 +1,8 @@
-import affiliateFilledIcon from '@tabler/icons/filled/affiliate.svg';
 import bellFilledIcon from '@tabler/icons/filled/bell.svg';
 import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
+import homeFilledIcon from '@tabler/icons/filled/home.svg';
 import settingsFilledIcon from '@tabler/icons/filled/settings.svg';
 import userFilledIcon from '@tabler/icons/filled/user.svg';
-import affiliateIcon from '@tabler/icons/outline/affiliate.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
@@ -11,6 +10,7 @@ import circlesIcon from '@tabler/icons/outline/circles.svg';
 import codeIcon from '@tabler/icons/outline/code.svg';
 import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
 import dotsCircleHorizontalIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
+import homeIcon from '@tabler/icons/outline/home.svg';
 import listIcon from '@tabler/icons/outline/list.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
@@ -148,7 +148,7 @@ const SidebarNavigation = () => {
       <Stack space={6}>
         <Link key='logo' to='/' data-preview-title-id='column.home' className='ml-4 flex shrink-0 items-center'>
           <SiteLogo alt='Logo' className='h-10 w-auto cursor-pointer' />
-          <span className='hidden'><FormattedMessage id='tabs_bar.my_nostr' defaultMessage='My Nostr' /></span>
+          <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
         </Link>
 
         <Search openInRoute autosuggest />
@@ -156,9 +156,9 @@ const SidebarNavigation = () => {
         <Stack space={2}>
           <SidebarNavigationLink
             to='/'
-            icon={affiliateIcon}
-            activeIcon={affiliateFilledIcon}
-            text={<FormattedMessage id='tabs_bar.my_nostr' defaultMessage='My Nostr' />}
+            icon={homeIcon}
+            activeIcon={homeFilledIcon}
+            text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
           />
 
           {account && (

@@ -10,7 +10,7 @@ import { expandNotifications } from 'soapbox/actions/notifications.ts';
 import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer.ts';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions.ts';
-import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import { expandFollowsTimeline } from 'soapbox/actions/timelines.ts';
 import { useUserStream } from 'soapbox/api/hooks/index.ts';
 import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation.tsx';
@@ -51,7 +51,7 @@ import {
   RemoteTimeline,
   AccountTimeline,
   AccountGallery,
-  MyNostrTimeline,
+  HomeTimeline,
   Followers,
   Following,
   DirectTimeline,
@@ -183,7 +183,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
       {isLoggedIn ? (
-        <WrappedRoute path='/' exact page={HomePage} component={MyNostrTimeline} content={children} />
+        <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
       ) : (
         <WrappedRoute path='/' exact page={LandingPage} component={LandingTimeline} content={children} publicRoute />
       )}
@@ -418,7 +418,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const loadAccountData = () => {
     if (!account) return;
 
-    dispatch(expandHomeTimeline({}, () => {
+    dispatch(expandFollowsTimeline({}, () => {
       dispatch(fetchSuggestionsForTimeline());
     }));
 

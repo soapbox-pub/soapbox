@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import { expandFollowsTimeline } from 'soapbox/actions/timelines.ts';
 import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
@@ -14,10 +14,10 @@ import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
 const messages = defineMessages({
-  title: { id: 'column.my_nostr', defaultMessage: 'My Nostr' },
+  title: { id: 'column.home', defaultMessage: 'Home' },
 });
 
-const HomeTimeline: React.FC = () => {
+const FollowsTimeline: React.FC = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const features = useFeatures();
@@ -29,7 +29,7 @@ const HomeTimeline: React.FC = () => {
   const next = useAppSelector(state => state.timelines.get('home')?.next);
 
   const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ url: next, maxId }));
+    dispatch(expandFollowsTimeline({ url: next, maxId }));
   };
 
   // Mastodon generates the feed in Redis, and can return a partial timeline
@@ -37,7 +37,7 @@ const HomeTimeline: React.FC = () => {
   const checkIfReloadNeeded = () => {
     if (isPartial) {
       polling.current = setInterval(() => {
-        dispatch(expandHomeTimeline());
+        dispatch(expandFollowsTimeline());
       }, 3000);
     } else {
       stopPolling();
@@ -52,7 +52,7 @@ const HomeTimeline: React.FC = () => {
   };
 
   const handleRefresh = () => {
-    return dispatch(expandHomeTimeline());
+    return dispatch(expandFollowsTimeline());
   };
 
   useEffect(() => {
@@ -111,4 +111,4 @@ const HomeTimeline: React.FC = () => {
 };
 
 
-export default HomeTimeline;
+export default FollowsTimeline;

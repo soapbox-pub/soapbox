@@ -1,16 +1,14 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, Suspense } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Tabs from 'soapbox/components/ui/tabs.tsx';
+import { CommunityTimeline, FollowsTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
-const HomeTimeline = lazy(() => import('soapbox/features/my-nostr-timeline/home-timeline.tsx'));
-const CommunityTimeline = lazy(() => import('soapbox/features/my-nostr-timeline/community-timeline.tsx'));
-
-const MyNostrTimeline = () => {
+const HomeTimeline = () => {
   const { instance } = useInstance();
-  const [activeTab, setActiveTab] = useState('forYou');
+  const [activeTab, setActiveTab] = useState('follows');
   const notifications = useAppSelector((state) => state.notificationsTab);
 
   return (
@@ -18,9 +16,9 @@ const MyNostrTimeline = () => {
       <Tabs
         items={[
           {
-            name: 'forYou',
-            text: <FormattedMessage id='tabs_bar.for_you' defaultMessage='For You' />,
-            action: () => setActiveTab('forYou'),
+            name: 'follows',
+            text: <FormattedMessage id='tabs_bar.follows' defaultMessage='Follows' />,
+            action: () => setActiveTab('follows'),
             notification: notifications.home,
           },
           {
@@ -34,10 +32,10 @@ const MyNostrTimeline = () => {
       />
 
       <Suspense fallback={<div className='p-4 text-center'><FormattedMessage id='loading_indicator.label' defaultMessage='Loading...' /></div>}>
-        {activeTab === 'forYou' ? <HomeTimeline /> : <CommunityTimeline />}
+        {activeTab === 'follows' ? <FollowsTimeline /> : <CommunityTimeline />}
       </Suspense>
     </>
   );
 };
 
-export default MyNostrTimeline;
+export default HomeTimeline;
