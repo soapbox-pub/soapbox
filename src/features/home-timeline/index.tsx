@@ -31,7 +31,7 @@ const HomeTimeline = () => {
         activeItem={activeTab}
       />
 
-      <Suspense fallback={<div className='p-4 text-center'><FormattedMessage id='loading_indicator.label' defaultMessage='Loading...' /></div>}>
+      <Suspense fallback={<div className='p-4 text-center'><FormattedMessage id='loading_indicator.label' defaultMessage='Loading…' /></div>}>
         {activeTab === 'follows' ? <FollowsTimeline /> : <CommunityTimeline />}
       </Suspense>
     </>
