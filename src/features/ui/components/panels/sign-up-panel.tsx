@@ -18,7 +18,7 @@ const SignUpPanel = () => {
 
   function getGreeting() {
     const hours = new Date().getHours();
-    return hours < 12 ? 'GM' : 'Hey There';
+    return hours < 12 ? <FormattedMessage id='signup_panel.greeting.gm' defaultMessage='GM' /> : <FormattedMessage id='signup_panel.greeting.hey' defaultMessage='Hey there' />;
   }
 
   return (

@@ -1467,6 +1467,8 @@
   "settings.sessions": "Active sessions",
   "settings.settings": "Settings",
   "shared.tos": "Terms of Service",
+  "signup_panel.greeting.gm": "GM",
+  "signup_panel.greeting.hey": "Hey there",
   "signup_panel.greeting_title": "{greeting}! Welcome aboard!",
   "signup_panel.subtitle": "Sign up now to discuss what's happening.",
   "signup_panel.title": "New to {site_title}?",
