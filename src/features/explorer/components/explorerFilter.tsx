@@ -11,12 +11,14 @@ import Text from 'soapbox/components/ui/text.tsx';
 import {
   CreateFilter,
   LanguageFilter,
+  MediaFilter,
   PlatformFilters,
-  ToggleFilter,
+  ToggleRepliesFilter,
   generateFilter,
 } from 'soapbox/features/explorer/components/filters.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { IFilters } from 'soapbox/reducers/search-filter.ts';
 
 const messages = defineMessages({
   filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
@@ -28,6 +30,15 @@ interface IGenerateFilter {
   value: string;
 }
 
+export const formatFilters = (filters: IFilters[]): string => {
+  const language = filters[0].name.toLowerCase() !== 'default' ? filters[0].value : '';
+  const protocols = filters.slice(1, 4).filter((protocol) => !protocol.status).map((filter) => filter.value).join(' ');
+  const defaultFilters = filters.slice(4, 8).filter((x) => x.status).map((filter) => filter.value).join(' ');
+  const newFilters = filters.slice(8).map((searchFilter) => searchFilter.value).join(' ');
+
+  return [language, protocols, defaultFilters, newFilters].join(' ').trim();
+};
+
 const ExplorerFilter = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.search_filter);
@@ -36,14 +47,7 @@ const ExplorerFilter = () => {
 
   useEffect(
     () => {
-      const language = filters[0].name.toLowerCase() !== 'default' ? filters[0].value : '';
-      const protocols = filters.slice(1, 4).filter((protocol) => !protocol.status).map((filter) => filter.value).join(' ');
-      const defaultFilters = filters.slice(4, 7).filter((x) => x.status).map((filter) => filter.value).join(' ');
-      const newFilters = filters.slice(7)
-        .map((searchFilter) => searchFilter.value)
-        .join(' ');
-
-      const value = [ language, protocols, defaultFilters, newFilters ].join(' ');
+      const value = formatFilters(filters);
 
       dispatch(changeSearch(value));
       dispatch(submitSearch(undefined, value));
@@ -60,7 +64,7 @@ const ExplorerFilter = () => {
             {intl.formatMessage(messages.filters)}
           </Text>
 
-          {filters.length > 0 && [...filters.slice(0, 7).filter((value) => value.status).map((value) => generateFilter(dispatch, value)), ...filters.slice(7).map((value) => generateFilter(dispatch, value))]}
+          {filters.length > 0 && [...filters.slice(0, 8).filter((value) => value.status).map((value) => generateFilter(dispatch, value)), ...filters.slice(8).map((value) => generateFilter(dispatch, value))]}
 
         </HStack>
         <IconButton
@@ -74,13 +78,11 @@ const ExplorerFilter = () => {
       <Stack className={`overflow-hidden transition-all duration-500 ease-in-out  ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={3}>
 
         {/* Show Reply toggle */}
-        <ToggleFilter type='reply' />
+        <ToggleRepliesFilter />
 
         {/* Media toggle */}
-        <ToggleFilter type='media' />
+        <MediaFilter />
 
-        {/* Video toggle */}
-        <ToggleFilter type='video' />
 
         {/* Language */}
         <LanguageFilter />

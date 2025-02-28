@@ -1,19 +1,18 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 interface IFilters {
-  name: string;  // The name of the filter.
-  status: boolean;  // Whether the filter is active or not.
-  value: string;  // The filter value used for searching.
+  name: string;
+  status: boolean;
+  value: string;
 }
 
 interface IToggle {
-  type: string;  // The filter type to toggle.
-  checked: boolean;  // The new status of the filter.
+  checked: boolean;
 }
 
 interface INewFilter {
-  name: string;  // The name of the new filter.
-  status: boolean;  // Whether the filter should be active by default.
+  name: string;
+  status: boolean;
 }
 
 const initialState: IFilters[] = [
@@ -21,9 +20,10 @@ const initialState: IFilters[] = [
   { name: 'Nostr', status: true, value: 'protocol:nostr' },
   { name: 'Bluesky', status: true, value: 'protocol:atproto' },
   { name: 'Fediverse', status: true, value: 'protocol:activitypub' },
-  { name: 'Reply', status: false, value: 'reply:true' },
-  { name: 'Media', status: false, value: 'media:true' },
-  { name: 'Video', status: false, value: 'video:true' },
+  { name: 'No Replies', status: false, value: 'reply:false' },
+  { name: 'Video Only', status: false, value: 'video:true' },
+  { name: 'Image Only', status: false, value: 'media:true -video:true' },
+  { name: 'No media', status: false, value: '-media:true' },
 ];
 
 const search_filter = createSlice({
@@ -31,20 +31,56 @@ const search_filter = createSlice({
   initialState,
   reducers: {
     /**
-     * Toggles the status of a filter.
+     * Toggles the status of reply filter.
      */
-    handleToggle: (state, action: PayloadAction<IToggle>) => {
+    handleToggleReplies: (state, action: PayloadAction<IToggle>) => {
       return state.map((currentState) => {
         const checked = action.payload.checked;
-        const type = action.payload.type.toLowerCase();
-        return currentState.name.toLowerCase() === type
+        return currentState.value.toLowerCase().includes('reply')
           ? {
             ...currentState,
             status: checked,
-            value: `${type}:${checked}`,
           }
           : currentState;
       });
+    },
+
+    /**
+     * Changes the media filter.
+     */
+    changeMedia: (state, action: PayloadAction<string>) => {
+      const selected = action.payload.toLowerCase();
+
+      const resetMediaState = state.map((currentFilter, index) => {
+        return index > 3 && index <= 7
+          ? {
+            ...currentFilter,
+            status: false,
+          }
+          : currentFilter;
+      });
+
+      const applyMediaFilter = (searchFilter: string) => {
+        return resetMediaState.map((currentState) =>
+          currentState.name.toLowerCase().includes(searchFilter)
+            ? {
+              ...currentState,
+              status: true,
+            }
+            : currentState,
+        );
+      };
+
+      switch (selected) {
+        case 'text':
+        case 'video':
+        case 'image':
+          return applyMediaFilter(`${selected} only`);
+        case 'none':
+          return applyMediaFilter('no media');
+        default:
+          return resetMediaState;
+      }
     },
 
     /**
@@ -105,5 +141,6 @@ const search_filter = createSlice({
   },
 });
 
-export const { handleToggle, changeLanguage, selectProtocol, createFilter, removeFilter, resetFilters } = search_filter.actions;
+export type { IFilters };
+export const { handleToggleReplies, changeMedia, changeLanguage, selectProtocol, createFilter, removeFilter, resetFilters } = search_filter.actions;
 export default search_filter.reducer;

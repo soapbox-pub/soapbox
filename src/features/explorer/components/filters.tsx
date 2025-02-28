@@ -2,7 +2,7 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import Checkbox from 'soapbox/components/ui/checkbox.tsx';
@@ -17,14 +17,13 @@ import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFi
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { changeLanguage, createFilter, handleToggle, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
+import { changeLanguage, changeMedia, createFilter, handleToggleReplies, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
 import { AppDispatch, RootState } from 'soapbox/store.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  showReplies: { id: 'column.explorer.filters.show_replies', defaultMessage: 'Show replies:' },
-  showMedia: { id: 'column.explorer.filters.show_text_posts', defaultMessage: 'Just text posts:' },
-  showVideo: { id: 'column.explorer.filters.show_video_posts', defaultMessage: 'Just posts with video:' },
+  noReplies: { id: 'column.explorer.filters.no_replies', defaultMessage: 'No Replies:' },
+  media: { id: 'column.explorer.filters.media', defaultMessage: 'Media:' },
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
@@ -36,6 +35,10 @@ const messages = defineMessages({
   fediverse: { id: 'column.explorer.filters.fediverse', defaultMessage: 'Fediverse' },
   cancel: { id: 'column.explorer.filters.cancel', defaultMessage: 'Cancel' },
   addFilter: { id: 'column.explorer.filters.add_filter', defaultMessage: 'Add Filter' },
+  all: { id: 'column.explorer.media_filters.all', defaultMessage: 'All' },
+  textOnly: { id: 'column.explorer.media_filters.text', defaultMessage: 'Text only' },
+  videoOnly: { id: 'column.explorer.media_filters.video', defaultMessage: 'Video only' },
+  none: { id: 'column.explorer.media_filters.none', defaultMessage: 'No media' },
 });
 
 const languages = {
@@ -133,7 +136,7 @@ const PlatformFilters = () => {
           checked={checked}
           onChange={handleProtocolFilter}
         />
-        <Text size='lg'>
+        <Text size='md'>
           {intl.formatMessage(message)}
         </Text>
       </HStack>
@@ -142,7 +145,7 @@ const PlatformFilters = () => {
 
   return (
     <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
-      <Text size='lg' weight='bold'>
+      <Text size='md' weight='bold'>
         {intl.formatMessage(messages.platforms)}
       </Text>
 
@@ -178,12 +181,12 @@ const CreateFilter = () => {
 
   return (
     <Stack space={3}>
-      <Text size='lg' weight='bold'>
+      <Text size='md' weight='bold'>
         {intl.formatMessage(messages.createYourFilter)}
       </Text>
 
-      <Stack>
-        <Text size='lg'>
+      <Stack space={2}>
+        <Text size='md'>
           {intl.formatMessage(messages.filterByWords)}
         </Text>
 
@@ -191,7 +194,7 @@ const CreateFilter = () => {
 
 
           <div className='relative w-full items-center'>
-            <Input theme='search' value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+            <Input theme='search' value={inputValue} className='h-9' onChange={(e) => setInputValue(e.target.value)} />
             <div
               role='button'
               tabIndex={0}
@@ -220,7 +223,7 @@ const CreateFilter = () => {
                 setInclude(true);
               }}
             />
-            <Text size='lg'>
+            <Text size='md'>
               {intl.formatMessage(messages.include)}
             </Text>
           </HStack>
@@ -234,7 +237,7 @@ const CreateFilter = () => {
                 setInclude(false);
               }}
             />
-            <Text size='lg'>
+            <Text size='md'>
               {intl.formatMessage(messages.exclude)}
             </Text>
           </HStack>
@@ -262,9 +265,49 @@ const CreateFilter = () => {
 
 };
 
+const MediaFilter = () => {
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.search_filter).slice(4, 8);
+
+  const mediaFilters = {
+    all: intl.formatMessage(messages.all),
+    text: intl.formatMessage(messages.textOnly),
+    video: intl.formatMessage(messages.videoOnly),
+    none: intl.formatMessage(messages.none),
+  };
+
+
+  const defaultValue = (Object.keys(mediaFilters) as Array<keyof typeof mediaFilters>).find((key) => mediaFilters[key] === filters.find((filter) => filter.status === true)?.name) || mediaFilters.all;
+
+  const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
+    const filter = e.target.value;
+    dispatch(changeMedia(filter));
+  };
+
+  return (
+    <HStack alignItems='center' space={2}>
+      <Text size='md' weight='bold'>
+        {intl.formatMessage(messages.media)}
+      </Text>
+
+      <SelectDropdown
+        className='max-w-[130px]'
+        items={mediaFilters}
+        defaultValue={defaultValue}
+        onChange={handleSelectChange}
+      />
+    </HStack>
+  );
+
+};
+
 const LanguageFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const languageFilter = useAppSelector((state) => state.search_filter)[0];
+
+  const defaultValue = languageFilter.name.toLowerCase();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
@@ -273,14 +316,14 @@ const LanguageFilter = () => {
 
   return (
     <HStack alignItems='center' space={2}>
-      <Text size='lg' weight='bold'>
+      <Text size='md' weight='bold'>
         {intl.formatMessage(messages.language)}
       </Text>
 
       <SelectDropdown
-        className='max-w-[200px]'
+        className='max-w-[130px]'
         items={languages}
-        defaultValue={languages.default}
+        defaultValue={defaultValue}
         onChange={handleSelectChange}
       />
     </HStack>
@@ -288,39 +331,27 @@ const LanguageFilter = () => {
 
 };
 
-const ToggleFilter = ({ type }: {type: 'reply' | 'media' | 'video'}) => {
+const ToggleRepliesFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const filterType = type.toLowerCase();
-  let label;
-
-  switch (type) {
-    case 'reply':
-      label = intl.formatMessage(messages.showReplies);
-      break;
-    case 'media':
-      label = intl.formatMessage(messages.showMedia);
-      break;
-    default:
-      label = intl.formatMessage(messages.showVideo);
-  }
+  const label = intl.formatMessage(messages.noReplies);
 
   const filters = useAppSelector((state) => state.search_filter);
-  const repliesFilter = filters.find((filter) => filter.name.toLowerCase() === filterType);
+  const repliesFilter = filters.find((filter) => filter.value.toLowerCase().includes('reply'));
   const checked = repliesFilter?.status;
 
-  const handleToggleComponent = () => {
-    dispatch(handleToggle({ type: filterType, checked: !checked }));
+  const handleToggle = () => {
+    dispatch(handleToggleReplies({ checked: !checked }));
   };
 
   return (
     <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
-      <Text size='lg' weight='bold'>
+      <Text size='md' weight='bold'>
         {label}
       </Text>
       <Toggle
         checked={checked}
-        onChange={handleToggleComponent}
+        onChange={handleToggle}
       />
     </HStack>
   );
@@ -341,9 +372,10 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
     textColor = 'text-gray-500';
   } else {
     switch (nameLowCase) {
-      case 'reply':
-      case 'media':
-      case 'video':
+      case 'no replies':
+      case 'text only':
+      case 'video only':
+      case 'no media':
         borderColor = 'border-gray-500';
         textColor = 'text-gray-500';
         break;
@@ -371,7 +403,7 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
       key={name}
       className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer ${hasButton ? 'hover:pr-1' : '' } ${borderColor} ${textColor} `}
     >
-      {name}
+      {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explorer.filters.language.default' defaultMessage='Global' />}
       {hasButton && <IconButton
         iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon}
         onClick={handleChangeFilters}
@@ -381,4 +413,4 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
   );
 };
 
-export { CreateFilter, PlatformFilters, LanguageFilter, ToggleFilter, generateFilter };
+export { CreateFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };
