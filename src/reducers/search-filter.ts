@@ -7,7 +7,8 @@ interface IFilters {
 }
 
 interface IToggle {
-  checked: boolean;
+  type: string;
+  status: boolean;
 }
 
 interface INewFilter {
@@ -21,8 +22,8 @@ const initialState: IFilters[] = [
   { name: 'Bluesky', status: true, value: 'protocol:atproto' },
   { name: 'Fediverse', status: true, value: 'protocol:activitypub' },
   { name: 'No Replies', status: false, value: 'reply:false' },
-  { name: 'Video Only', status: false, value: 'video:true' },
-  { name: 'Image Only', status: false, value: 'media:true -video:true' },
+  { name: 'Video only', status: false, value: 'video:true' },
+  { name: 'Image only', status: false, value: 'media:true -video:true' },
   { name: 'No media', status: false, value: '-media:true' },
 ];
 
@@ -33,13 +34,14 @@ const search_filter = createSlice({
     /**
      * Toggles the status of reply filter.
      */
-    handleToggleReplies: (state, action: PayloadAction<IToggle>) => {
+    changeStatus: (state, action: PayloadAction<IToggle>) => {
       return state.map((currentState) => {
-        const checked = action.payload.checked;
-        return currentState.value.toLowerCase().includes('reply')
+        const status = action.payload.status;
+        const type = action.payload.type;
+        return currentState.name.toLowerCase().includes(type)
           ? {
             ...currentState,
-            status: checked,
+            status: status,
           }
           : currentState;
       });
@@ -103,7 +105,7 @@ const search_filter = createSlice({
      * Toggles the status of a protocol filter.
      */
     selectProtocol: (state, action: PayloadAction<string>) => {
-      const protocol = action.payload.toLowerCase();
+      const protocol = action.payload;
       return state.map((currentState) => {
         const newStatus = !currentState.status;
         if (currentState.name.toLowerCase() !== protocol) return currentState;
@@ -142,5 +144,5 @@ const search_filter = createSlice({
 });
 
 export type { IFilters };
-export const { handleToggleReplies, changeMedia, changeLanguage, selectProtocol, createFilter, removeFilter, resetFilters } = search_filter.actions;
+export const { changeStatus, changeMedia, changeLanguage, selectProtocol, createFilter, removeFilter, resetFilters } = search_filter.actions;
 export default search_filter.reducer;

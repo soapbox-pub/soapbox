@@ -1,7 +1,7 @@
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
@@ -17,7 +17,7 @@ import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFi
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { changeLanguage, changeMedia, createFilter, handleToggleReplies, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
+import { changeStatus, changeLanguage, changeMedia, createFilter, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
 import { AppDispatch, RootState } from 'soapbox/store.ts';
 import toast from 'soapbox/toast.tsx';
 
@@ -36,7 +36,7 @@ const messages = defineMessages({
   cancel: { id: 'column.explorer.filters.cancel', defaultMessage: 'Cancel' },
   addFilter: { id: 'column.explorer.filters.add_filter', defaultMessage: 'Add Filter' },
   all: { id: 'column.explorer.media_filters.all', defaultMessage: 'All' },
-  textOnly: { id: 'column.explorer.media_filters.text', defaultMessage: 'Text only' },
+  imageOnly: { id: 'column.explorer.media_filters.image', defaultMessage: 'Image only' },
   videoOnly: { id: 'column.explorer.media_filters.video', defaultMessage: 'Video only' },
   none: { id: 'column.explorer.media_filters.none', defaultMessage: 'No media' },
 });
@@ -107,7 +107,7 @@ const PlatformFilters = () => {
   const filterList = useAppSelector((state: RootState) => state.search_filter);
 
   const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const protocol = e.target.name;
+    const protocol = e.target.name.toLowerCase();
 
     dispatch(selectProtocol(protocol));
   };
@@ -270,15 +270,22 @@ const MediaFilter = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.search_filter).slice(4, 8);
 
-  const mediaFilters = {
+  const mediaFilters = useMemo(() => ({
     all: intl.formatMessage(messages.all),
-    text: intl.formatMessage(messages.textOnly),
+    image: intl.formatMessage(messages.imageOnly),
     video: intl.formatMessage(messages.videoOnly),
     none: intl.formatMessage(messages.none),
-  };
+  }), [intl]);
 
+  const [selectedMedia, setSelectedMedia] = useState<string>(mediaFilters.all);
 
-  const defaultValue = (Object.keys(mediaFilters) as Array<keyof typeof mediaFilters>).find((key) => mediaFilters[key] === filters.find((filter) => filter.status === true)?.name) || mediaFilters.all;
+  useEffect(() => {
+    const newMediaValue = (Object.keys(mediaFilters) as Array<keyof typeof mediaFilters>)
+      .find((key) => mediaFilters[key] === filters.find((filter) => filter.status === true)?.name)
+      || mediaFilters.all;
+
+    setSelectedMedia(newMediaValue);
+  }, [filters, mediaFilters]);
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const filter = e.target.value;
@@ -292,9 +299,10 @@ const MediaFilter = () => {
       </Text>
 
       <SelectDropdown
+        key={selectedMedia}
         className='max-w-[130px]'
         items={mediaFilters}
-        defaultValue={defaultValue}
+        defaultValue={selectedMedia}
         onChange={handleSelectChange}
       />
     </HStack>
@@ -306,8 +314,6 @@ const LanguageFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const languageFilter = useAppSelector((state) => state.search_filter)[0];
-
-  const defaultValue = languageFilter.name.toLowerCase();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
@@ -321,9 +327,10 @@ const LanguageFilter = () => {
       </Text>
 
       <SelectDropdown
+        key={languageFilter?.name}
         className='max-w-[130px]'
         items={languages}
-        defaultValue={defaultValue}
+        defaultValue={languageFilter.name.toLowerCase()}
         onChange={handleSelectChange}
       />
     </HStack>
@@ -341,7 +348,7 @@ const ToggleRepliesFilter = () => {
   const checked = repliesFilter?.status;
 
   const handleToggle = () => {
-    dispatch(handleToggleReplies({ checked: !checked }));
+    dispatch(changeStatus({ type: 'no replies', status: !checked }));
   };
 
   return (
@@ -358,14 +365,10 @@ const ToggleRepliesFilter = () => {
 };
 
 const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter) => {
-  let borderColor = '';
-  let textColor = '';
-  let hasButton = false;
   const nameLowCase = name.toLowerCase();
 
-  const handleChangeFilters = () => {
-    dispatch(removeFilter(name));
-  };
+  let borderColor = '';
+  let textColor = '';
 
   if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
     borderColor = 'border-gray-500';
@@ -373,7 +376,7 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
   } else {
     switch (nameLowCase) {
       case 'no replies':
-      case 'text only':
+      case 'image only':
       case 'video only':
       case 'no media':
         borderColor = 'border-gray-500';
@@ -394,21 +397,32 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
       default:
         borderColor = status ? 'border-green-500' : 'border-red-500';
         textColor = status ? 'text-green-500' : 'text-red-500';
-        hasButton = true;
     }
   }
+
+  const handleChangeFilters = () => {
+    if (['nostr', 'bluesky', 'fediverse'].includes(nameLowCase)) {
+      dispatch(selectProtocol(nameLowCase));
+    } else if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
+      dispatch(changeLanguage('default'));
+    } else if (['no replies', 'image only', 'video only', 'no media'].includes(nameLowCase)) {
+      dispatch(changeStatus({ type: nameLowCase, status: false }));
+    } else {
+      dispatch(removeFilter(nameLowCase));
+    }
+  };
 
   return (
     <div
       key={name}
-      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer ${hasButton ? 'hover:pr-1' : '' } ${borderColor} ${textColor} `}
+      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer hover:pr-1 ${borderColor} ${textColor} `}
     >
       {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explorer.filters.language.default' defaultMessage='Global' />}
-      {hasButton && <IconButton
+      <IconButton
         iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon}
         onClick={handleChangeFilters}
 
-      />}
+      />
     </div>
   );
 };
