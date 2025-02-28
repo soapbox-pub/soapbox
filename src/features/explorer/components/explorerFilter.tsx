@@ -12,6 +12,7 @@ import {
   CreateFilter,
   LanguageFilter,
   MediaFilter,
+  PersistentFilter,
   PlatformFilters,
   ToggleRepliesFilter,
   generateFilter,
@@ -49,6 +50,8 @@ const ExplorerFilter = () => {
     () => {
       const value = formatFilters(filters);
 
+      sessionStorage.setItem('reduxFilterState', JSON.stringify(filters));
+
       dispatch(changeSearch(value));
       dispatch(submitSearch(undefined, value));
     }, [filters, dispatch],
@@ -83,7 +86,6 @@ const ExplorerFilter = () => {
         {/* Media toggle */}
         <MediaFilter />
 
-
         {/* Language */}
         <LanguageFilter />
 
@@ -94,6 +96,10 @@ const ExplorerFilter = () => {
 
         {/* Create your filter */}
         <CreateFilter />
+
+        <Divider />
+        {/* Reset your filters */}
+        <PersistentFilter />
 
       </Stack>
 

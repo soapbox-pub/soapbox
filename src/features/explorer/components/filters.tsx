@@ -17,7 +17,7 @@ import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFi
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { changeStatus, changeLanguage, changeMedia, createFilter, removeFilter, selectProtocol } from 'soapbox/reducers/search-filter.ts';
+import { changeStatus, changeLanguage, changeMedia, createFilter, removeFilter, selectProtocol, resetFilters } from 'soapbox/reducers/search-filter.ts';
 import { AppDispatch, RootState } from 'soapbox/store.ts';
 import toast from 'soapbox/toast.tsx';
 
@@ -27,6 +27,7 @@ const messages = defineMessages({
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
+  filterPersistence: { id: 'column.explorer.filters.filter_persistence', defaultMessage: 'Filter persistence:' },
   filterByWords: { id: 'column.explorer.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
   include: { id: 'column.explorer.filters.include', defaultMessage: 'Include' },
   exclude: { id: 'column.explorer.filters.exclude', defaultMessage: 'Exclude' },
@@ -163,6 +164,38 @@ const PlatformFilters = () => {
 
 };
 
+const PersistentFilter = () => {
+  const intl = useIntl();
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.search_filter);
+
+
+  const handleSalveFilter = () => {
+    localStorage.setItem('reduxFilterState', JSON.stringify(filters));
+  };
+
+  const handleReset = () => {
+    dispatch(resetFilters());
+    localStorage.removeItem('reduxFilterState');
+  };
+
+
+  return (
+    <HStack alignItems='center' space={2}>
+      <Text size='md' weight='bold'>
+        {intl.formatMessage(messages.filterPersistence)}
+      </Text>
+
+      <HStack alignItems='center' space={2} grow className='p-1'>
+        <Button text='Reset Filters' className='w-full' theme='tertiary' onClick={handleReset} />
+        <Button text='Save Filters' className='w-full' theme='primary' onClick={handleSalveFilter} />
+      </HStack>
+    </HStack>
+
+  );
+
+};
+
 const CreateFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -193,7 +226,7 @@ const CreateFilter = () => {
         <HStack space={6}>
 
 
-          <div className='relative w-full items-center'>
+          <div className='relative w-full items-center p-0.5'>
             <Input theme='search' value={inputValue} className='h-9' onChange={(e) => setInputValue(e.target.value)} />
             <div
               role='button'
@@ -246,7 +279,7 @@ const CreateFilter = () => {
 
       <HStack className='w-full p-0.5' space={2}>
         <Button
-          className='w-1/2' theme='secondary' onClick={() => {
+          className='w-1/2' theme='muted' onClick={() => {
             setInclude(false);
             setInputValue('');
           }
@@ -255,7 +288,7 @@ const CreateFilter = () => {
           {intl.formatMessage(messages.cancel)}
         </Button>
 
-        <Button className='w-1/2' theme='primary' onClick={handleAddFilter}>
+        <Button className='w-1/2' theme='secondary' onClick={handleAddFilter}>
           {intl.formatMessage(messages.addFilter)}
         </Button>
       </HStack>
@@ -427,4 +460,4 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
   );
 };
 
-export { CreateFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };
+export { CreateFilter, PersistentFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };

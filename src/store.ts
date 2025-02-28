@@ -7,8 +7,21 @@ import appReducer from './reducers/index.ts';
 
 import type { AnyAction } from 'redux';
 
+const loadState = () => {
+  try {
+    const savedState = localStorage.getItem('reduxFilterState');
+    return savedState ? JSON.parse(savedState) : undefined;
+  } catch (error) {
+    console.error('Failed to load state:', error);
+    return undefined;
+  }
+};
+
+const preloadedState = { ...loadState() ? { search_filter: loadState() } : {}  };
+
 export const store = configureStore({
   reducer: appReducer,
+  preloadedState,
   middleware: () => new Tuple(
     thunk,
     errorsMiddleware(),
