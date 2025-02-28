@@ -1,5 +1,4 @@
 import globeIcon from '@tabler/icons/outline/globe.svg';
-import searchIcon from '@tabler/icons/outline/search.svg';
 import trendIcon from '@tabler/icons/outline/trending-up.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
@@ -34,26 +33,29 @@ import PublicTimeline from 'soapbox/features/public-timeline/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useSuggestions } from 'soapbox/queries/suggestions.ts';
+import { initialState as filterInitialState } from 'soapbox/reducers/search-filter.ts';
 import { SearchFilter } from 'soapbox/reducers/search.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 
 const messages = defineMessages({
-  accounts: { id: 'search_results.posts', defaultMessage: 'Accounts' },
-  statuses: { id: 'search_results.accounts', defaultMessage: 'Posts' },
+  accounts: { id: 'search_results.accounts', defaultMessage: 'Accounts' },
+  statuses: { id: 'search_results.posts', defaultMessage: 'Posts' },
   trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
   search: { id: 'common.search', defaultMessage: 'Search' },
 });
 
 const SearchResults = () => {
   const node = useRef<VirtuosoHandle>(null);
+  const filters = useAppSelector((state) => state.search_filter);
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const { data: suggestions } = useSuggestions();
-  const [globalTimeline, setGlobalTimeline] = useState(true);
+  const [withFilter, setWithFilter] = useState(false);
+  const [tab, setTab] = useState('global');
 
   const value = useAppSelector((state) => state.search.submittedValue);
   const results = useAppSelector((state) => state.search.results);
@@ -74,9 +76,9 @@ const SearchResults = () => {
   };
 
   const handleUnsetAccount = () => dispatch(setSearchAccount(null));
-  const handleAction = (filter: SearchFilter) =>{
-    setGlobalTimeline(false);
+  const handleAction = (filter: SearchFilter, tab: string) =>{
     selectFilter(filter);
+    setTab(tab);
   };
 
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
@@ -86,31 +88,26 @@ const SearchResults = () => {
     items.push(
       {
         label: intl.formatMessage(messages.statuses),
-        action: () => setGlobalTimeline(true),
-        name: 'statuses',
+        action: () => handleAction('statuses', 'global'),
+        name: 'global',
         icon: globeIcon,
       },
       {
         label: intl.formatMessage(messages.trends),
-        action: () => handleAction('statuses'),
-        name: 'trends',
+        action: () => handleAction('statuses', 'statuses'),
+        name: 'statuses',
         icon: trendIcon,
       },
+      // TODO : limit search accounts to only be able use include
       {
         label: intl.formatMessage(messages.accounts),
-        action: () => handleAction('accounts'),
+        action: () => handleAction('accounts', 'accounts'),
         name: 'accounts',
         icon: userIcon,
       },
-      {
-        label: intl.formatMessage(messages.search),
-        action: () => null,
-        name: 'search',
-        icon: searchIcon,
-      },
     );
 
-    return <ExplorerTabs items={items} activeItem={selectedFilter} />;
+    return <ExplorerTabs items={items} activeItem={tab} />;
   };
 
   const getCurrentIndex = (id: string): number => {
@@ -145,6 +142,16 @@ const SearchResults = () => {
   useEffect(() => {
     dispatch(fetchTrendingStatuses());
   }, []);
+
+  useEffect(() => {
+    setWithFilter(filters.length !== filterInitialState.length ||
+      !filters.every((filter, index) =>
+        filter.name === filterInitialState[index].name &&
+        filter.status === filterInitialState[index].status &&
+        filter.value === filterInitialState[index].value,
+      ),
+    );
+  }, [filters]);
 
   let searchResults;
   let hasMore = false;
@@ -257,7 +264,7 @@ const SearchResults = () => {
         </div>
       )}
 
-      {globalTimeline ? <PublicTimeline /> : (noResultsMessage || (
+      {tab === 'global' && !withFilter ? <PublicTimeline /> : (noResultsMessage || (
         <ScrollableList
           id='search-results'
           ref={node}

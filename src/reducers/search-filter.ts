@@ -144,5 +144,6 @@ const search_filter = createSlice({
 });
 
 export type { IFilters };
+export { initialState };
 export const { changeStatus, changeMedia, changeLanguage, selectProtocol, createFilter, removeFilter, resetFilters } = search_filter.actions;
 export default search_filter.reducer;
