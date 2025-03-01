@@ -34,13 +34,13 @@ const StreakModal: React.FC<IStreakModal> = ({ onClose }) => {
     <Modal
       title={
         <HStack alignItems='center' justifyContent='center' space={1} className='my-6 -mr-8'>
-          <Text weight='bold' size='2xl' className='text-black'>
-            <FormattedMessage id='streak_modal.title' defaultMessage="You've unlocked a" />
+          <Text weight='bold' size='xl' className='text-black'>
+            <FormattedMessage id='streak_modal.title' defaultMessage='You unlocked a' />
           </Text>
           <Text theme='primary'>
             <Icon src={flameIcon} className='size-6' />
           </Text>
-          <Text weight='bold' size='2xl' className='text-black'>
+          <Text weight='bold' size='xl' className='text-black'>
             <FormattedMessage id='streak_modal.sub' defaultMessage='streak!' />
           </Text>
         </HStack>
