@@ -6,15 +6,14 @@ import { closeModal } from 'soapbox/actions/modals.ts';
 import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  sucessMessage: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha.' },
-  wrongMessage: { id: 'nostr_signup.captcha_message.wrong', defaultMessage: 'Oops! It looks like your captcha response was incorrect. Please try again.' },
-  errorMessage: { id: 'nostr_signup.captcha_message.error', defaultMessage: 'It seems an error has occurred. Please try again. If the problem persists, please contact us.' },
-  misbehavingMessage: { id: 'nostr_signup.captcha_message.misbehaving', defaultMessage: 'It looks like we\'re experiencing issues with the {instance}. Please try again. If the error persists, try again later.' },
+  success: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha.' },
+  wrong: { id: 'nostr_signup.captcha_message.wrong', defaultMessage: 'Oops! It looks like your captcha response was incorrect. Please try again.' },
+  expired: { id: 'nostr_signup.captcha_message.expired', defaultMessage: 'The captcha has expired. Please start over.' },
+  error: { id: 'nostr_signup.captcha_message.error', defaultMessage: 'It seems an error has occurred. Please try again. If the problem persists, please contact us.' },
 });
 
 function getRandomNumber(min: number, max: number): number {
@@ -23,7 +22,6 @@ function getRandomNumber(min: number, max: number): number {
 
 const useCaptcha = () => {
   const api = useApi();
-  const { instance } = useInstance();
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const [captcha, setCaptcha] = useState<CaptchaData>();
@@ -68,7 +66,7 @@ const useCaptcha = () => {
         await api.post(`/api/v1/ditto/captcha/${captcha.id}/verify`, result);
         dispatch(closeModal('CAPTCHA'));
         await dispatch(fetchMe()); // refetch account so `captcha_solved` changes.
-        toast.success(messages.sucessMessage);
+        toast.success(messages.success);
       } catch (error) {
         setTryAgain(true);
 
@@ -77,13 +75,13 @@ const useCaptcha = () => {
 
         switch (status) {
           case 400:
-            message = intl.formatMessage(messages.wrongMessage);
+            message = intl.formatMessage(messages.wrong);
             break;
-          case 422:
-            message = intl.formatMessage(messages.misbehavingMessage, { instance: instance.title });
+          case 410:
+            message = intl.formatMessage(messages.expired);
             break;
           default:
-            message = intl.formatMessage(messages.errorMessage);
+            message = intl.formatMessage(messages.error);
             console.error(error);
             break;
         }
