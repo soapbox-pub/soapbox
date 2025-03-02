@@ -7,25 +7,24 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
 
 const SignUpPanel = () => {
+  const { instance } = useInstance();
+  const { nostrSignup } = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);
   const dispatch = useAppDispatch();
 
   if (me || !isOpen) return null;
 
-  function getGreeting() {
-    const hours = new Date().getHours();
-    return hours < 12 ? <FormattedMessage id='signup_panel.greeting.gm' defaultMessage='GM' /> : <FormattedMessage id='signup_panel.greeting.hey' defaultMessage='Hey there' />;
-  }
-
   return (
     <Stack space={2} data-testid='sign-up-panel'>
       <Stack>
         <Text size='lg' weight='bold'>
-          <FormattedMessage id='signup_panel.greeting_title' defaultMessage='{greeting}! Welcome aboard!' values={{ greeting: getGreeting() }} />
+          <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{ site_title: instance.title }} />
         </Text>
 
         <Text size='sm' theme='muted'>
@@ -36,7 +35,8 @@ const SignUpPanel = () => {
       <HStack space={2}>
         <Button
           theme='tertiary'
-          onClick={() => dispatch(openModal('NOSTR_LOGIN'))}
+          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_LOGIN')) : undefined}
+          to={nostrSignup ? undefined : '/login'}
           block
         >
           <FormattedMessage id='account.login' defaultMessage='Log in' />
@@ -44,7 +44,8 @@ const SignUpPanel = () => {
 
         <Button
           theme='primary'
-          onClick={() => dispatch(openModal('NOSTR_SIGNUP'))}
+          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_SIGNUP')) : undefined}
+          to={nostrSignup ? undefined : '/signup'}
           block
         >
           <FormattedMessage id='account.register' defaultMessage='Sign up' />
