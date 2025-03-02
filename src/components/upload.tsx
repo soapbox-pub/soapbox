@@ -251,8 +251,8 @@ const Upload: React.FC<IUpload> = ({
 
             <div className='absolute inset-0 z-[-1] size-full'>
               {mediaType === 'video' && (
-                <video className='size-full object-cover' autoPlay playsInline muted loop>
-                  <source src={media.preview_url} />
+                <video className='size-full object-cover' poster={media.preview_url} autoPlay playsInline muted loop>
+                  <source src={media.url} />
                 </video>
               )}
               {uploadIcon}

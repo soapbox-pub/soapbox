@@ -133,6 +133,7 @@ const Video: React.FC<IVideo> = ({
   aspectRatio = 16 / 9,
   link,
   blurhash,
+  preview,
 }) => {
   const intl = useIntl();
   const isMobile = useIsMobile();
@@ -571,6 +572,7 @@ const Video: React.FC<IVideo> = ({
         onProgress={handleProgress}
         onVolumeChange={handleVolumeChange}
         muted={muted}
+        poster={preview}
       />
 
       <div
