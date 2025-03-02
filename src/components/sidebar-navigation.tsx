@@ -3,7 +3,6 @@ import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
 import homeFilledIcon from '@tabler/icons/filled/home.svg';
 import settingsFilledIcon from '@tabler/icons/filled/settings.svg';
 import userFilledIcon from '@tabler/icons/filled/user.svg';
-import atIcon from '@tabler/icons/outline/at.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
@@ -161,6 +160,16 @@ const SidebarNavigation = () => {
             text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
           />
 
+          {account && (
+            <SidebarNavigationLink
+              to='/notifications'
+              icon={bellIcon}
+              activeIcon={bellFilledIcon}
+              count={notificationCount}
+              text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
+            />
+          )}
+
           <SidebarNavigationLink
             to='/search'
             icon={searchIcon}
@@ -169,13 +178,6 @@ const SidebarNavigation = () => {
 
           {account && (
             <>
-              <SidebarNavigationLink
-                to='/notifications'
-                icon={bellIcon}
-                activeIcon={bellFilledIcon}
-                count={notificationCount}
-                text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
-              />
 
               {renderMessagesLink()}
 
@@ -187,6 +189,10 @@ const SidebarNavigation = () => {
                   text={<FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />}
                 />
               )}
+            </>)}
+
+          {account && (
+            <>
 
               <SidebarNavigationLink
                 to={`/@${account.acct}`}
@@ -215,23 +221,13 @@ const SidebarNavigation = () => {
           )}
 
           {(features.publicTimeline) && (
-            <>
-              {(account || !restrictUnauth.timelines.local) && (
-                <SidebarNavigationLink
-                  to='/timeline/local'
-                  icon={features.federating ? atIcon : worldIcon}
-                  text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-                />
-              )}
+            features.federating && (account || !restrictUnauth.timelines.federated)) && (
+            <SidebarNavigationLink
+              to='/timeline/global'
+              icon={worldIcon}
+              text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
+            />
 
-              {(features.federating && (account || !restrictUnauth.timelines.federated)) && (
-                <SidebarNavigationLink
-                  to='/timeline/global'
-                  icon={worldIcon}
-                  text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-                />
-              )}
-            </>
           )}
 
           {menu.length > 0 && (

@@ -1,4 +1,3 @@
-import atIcon from '@tabler/icons/outline/at.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
@@ -36,7 +35,6 @@ import ProfileStats from 'soapbox/features/ui/components/profile-stats.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
 import { makeGetOtherAccounts } from 'soapbox/selectors/index.ts';
 
@@ -114,7 +112,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const { instance } = useInstance();
   const settingsNotifications = useSettingsNotifications();
 
   const closeButtonRef = useRef(null);
@@ -271,25 +268,14 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
                   )}
 
-                  {features.publicTimeline && <>
-                    <Divider />
-
+                  {features.publicTimeline && features.federating && (
                     <SidebarLink
-                      to='/timeline/local'
-                      icon={features.federating ? atIcon : worldIcon}
-                      text={features.federating ? instance.domain : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                      to='/timeline/global'
+                      icon={worldIcon}
+                      text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
                       onClick={onClose}
                     />
-
-                    {features.federating && (
-                      <SidebarLink
-                        to='/timeline/global'
-                        icon={worldIcon}
-                        text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-                        onClick={onClose}
-                      />
-                    )}
-                  </>}
+                  )}
 
                   <Divider />
 
