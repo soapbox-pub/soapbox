@@ -1,3 +1,4 @@
+import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
@@ -27,7 +28,7 @@ const messages = defineMessages({
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
-  filterPersistence: { id: 'column.explorer.filters.filter_persistence', defaultMessage: 'Filter persistence:' },
+  resetFilter: { id: 'column.explorer.filters.reset', defaultMessage: 'Reset Filters' },
   filterByWords: { id: 'column.explorer.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
   include: { id: 'column.explorer.filters.include', defaultMessage: 'Include' },
   exclude: { id: 'column.explorer.filters.exclude', defaultMessage: 'Exclude' },
@@ -164,38 +165,6 @@ const PlatformFilters = () => {
 
 };
 
-const PersistentFilter = () => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const filters = useAppSelector((state) => state.search_filter);
-
-
-  const handleSalveFilter = () => {
-    localStorage.setItem('reduxFilterState', JSON.stringify(filters));
-  };
-
-  const handleReset = () => {
-    dispatch(resetFilters());
-    localStorage.removeItem('reduxFilterState');
-  };
-
-
-  return (
-    <HStack alignItems='center' space={2}>
-      <Text size='md' weight='bold'>
-        {intl.formatMessage(messages.filterPersistence)}
-      </Text>
-
-      <HStack alignItems='center' space={2} grow className='p-1'>
-        <Button text='Reset Filters' className='w-full' theme='tertiary' onClick={handleReset} />
-        <Button text='Save Filters' className='w-full' theme='primary' onClick={handleSalveFilter} />
-      </HStack>
-    </HStack>
-
-  );
-
-};
-
 const CreateFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -212,11 +181,20 @@ const CreateFilter = () => {
     }
   };
 
+  const handleReset = () => {
+    dispatch(resetFilters());
+    localStorage.removeItem('soapbox:explorer:filters');
+  };
+
   return (
     <Stack space={3}>
-      <Text size='md' weight='bold'>
-        {intl.formatMessage(messages.createYourFilter)}
-      </Text>
+      <HStack justifyContent='between' alignItems='center'>
+        <Text size='md' weight='bold'>
+          {intl.formatMessage(messages.createYourFilter)}
+        </Text>
+
+        <IconButton src={refreshIcon} iconClassName='w-4' className='px-4' text={intl.formatMessage(messages.resetFilter)} theme='secondary' onClick={handleReset} />
+      </HStack>
 
       <Stack space={2}>
         <Text size='md'>
@@ -229,7 +207,7 @@ const CreateFilter = () => {
           <div className='relative w-full items-center p-0.5'>
             <Input theme='search' value={inputValue} className='h-9' onChange={(e) => setInputValue(e.target.value)} />
             <div
-              role='button'
+              // role='button'
               tabIndex={0}
               className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
             >
@@ -460,4 +438,4 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
   );
 };
 
-export { CreateFilter, PersistentFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };
+export { CreateFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };

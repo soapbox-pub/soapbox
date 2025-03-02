@@ -23,14 +23,14 @@ const ExplorerCards = () => {
   const handleClick = () => {
     setIsOpen((prev) => {
       const newValue = !prev;
-      localStorage.setItem('soapbox:explorer:card', JSON.stringify(!isOpen));
+      localStorage.setItem('soapbox:explorer:card:status', JSON.stringify(!isOpen));
       return newValue;
     });
   };
 
   useEffect(
     () => {
-      const value = localStorage.getItem('soapbox:explorer:card');
+      const value = localStorage.getItem('soapbox:explorer:card:status');
       if (value !== null) {
         setIsOpen(JSON.parse(value));
       }

@@ -12,7 +12,6 @@ import {
   CreateFilter,
   LanguageFilter,
   MediaFilter,
-  PersistentFilter,
   PlatformFilters,
   ToggleRepliesFilter,
   generateFilter,
@@ -49,7 +48,7 @@ const ExplorerFilter = () => {
   const handleClick = () => {
     setIsOpen((prev) => {
       const newValue = !prev;
-      localStorage.setItem('soapbox:explorer:filter', JSON.stringify(newValue));
+      localStorage.setItem('soapbox:explorer:filter:status', JSON.stringify(newValue));
       return newValue;
     });
   };
@@ -58,7 +57,7 @@ const ExplorerFilter = () => {
     () => {
       const value = formatFilters(filters);
 
-      sessionStorage.setItem('reduxFilterState', JSON.stringify(filters));
+      localStorage.setItem('soapbox:explorer:filters', JSON.stringify(filters));
 
       dispatch(changeSearch(value));
       dispatch(submitSearch(undefined, value));
@@ -67,7 +66,7 @@ const ExplorerFilter = () => {
 
   useEffect(
     () => {
-      const isOpenStatus = localStorage.getItem('soapbox:explorer:filter');
+      const isOpenStatus = localStorage.getItem('soapbox:explorer:filter:status');
       if (isOpenStatus !== null) {
         setIsOpen(JSON.parse(isOpenStatus));
       }
@@ -116,7 +115,6 @@ const ExplorerFilter = () => {
 
         <Divider />
         {/* Reset your filters */}
-        <PersistentFilter />
 
       </Stack>
 

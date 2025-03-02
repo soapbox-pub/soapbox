@@ -9,7 +9,7 @@ import type { AnyAction } from 'redux';
 
 const loadState = () => {
   try {
-    const savedState = localStorage.getItem('reduxFilterState');
+    const savedState = localStorage.getItem('soapbox:explorer:filters');
     return savedState ? JSON.parse(savedState) : undefined;
   } catch (error) {
     console.error('Failed to load state:', error);
