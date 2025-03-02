@@ -1,112 +1,47 @@
-import { useEffect, useRef } from 'react';
-import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Suspense } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
-import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import Tabs from 'soapbox/components/ui/tabs.tsx';
+import { CommunityTimeline, FollowsTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
 
-const messages = defineMessages({
-  title: { id: 'column.home', defaultMessage: 'Home' },
-});
-
-const HomeTimeline: React.FC = () => {
-  const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const features = useFeatures();
+const HomeTimeline = () => {
   const { instance } = useInstance();
 
-  const polling = useRef<NodeJS.Timeout | null>(null);
-
-  const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
-  const next = useAppSelector(state => state.timelines.get('home')?.next);
-
-  const handleLoadMore = (maxId: string) => {
-    dispatch(expandHomeTimeline({ url: next, maxId }));
-  };
-
-  // Mastodon generates the feed in Redis, and can return a partial timeline
-  // (HTTP 206) for new users. Poll until we get a full page of results.
-  const checkIfReloadNeeded = () => {
-    if (isPartial) {
-      polling.current = setInterval(() => {
-        dispatch(expandHomeTimeline());
-      }, 3000);
-    } else {
-      stopPolling();
-    }
-  };
-
-  const stopPolling = () => {
-    if (polling.current) {
-      clearInterval(polling.current);
-      polling.current = null;
-    }
-  };
-
-  const handleRefresh = () => {
-    return dispatch(expandHomeTimeline());
-  };
-
-  useEffect(() => {
-    checkIfReloadNeeded();
-
-    return () => {
-      stopPolling();
-    };
-  }, [isPartial]);
+  const match = useRouteMatch();
+  const notifications = useAppSelector((state) => state.notificationsTab);
 
   return (
-    <Column label={intl.formatMessage(messages.title)} withHeader={false} slim>
-      <PullToRefresh onRefresh={handleRefresh}>
-        <Timeline
-          scrollKey='home_timeline'
-          onLoadMore={handleLoadMore}
-          timelineId='home'
-          emptyMessage={
-            <Stack space={1}>
-              <Text size='xl' weight='medium' align='center'>
-                <FormattedMessage
-                  id='empty_column.home.title'
-                  defaultMessage="You're not following anyone yet"
-                />
-              </Text>
-
-              <Text theme='muted' align='center'>
-                <FormattedMessage
-                  id='empty_column.home.subtitle'
-                  defaultMessage='{siteTitle} gets more interesting once you follow other users.'
-                  values={{ siteTitle: instance.title }}
-                />
-              </Text>
-
-              {features.federating && (
-                <Text theme='muted' align='center'>
-                  <FormattedMessage
-                    id='empty_column.home'
-                    defaultMessage='Or you can visit {public} to get started and meet other users.'
-                    values={{
-                      public: (
-                        <Link to='/timeline/local' className='text-primary-600 hover:underline dark:text-primary-400'>
-                          <FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: instance.title }} />
-                        </Link>
-                      ),
-                    }}
-                  />
-                </Text>
-              )}
-            </Stack>
-          }
+    <>
+      <div className='sticky top-11 z-50 bg-white black:bg-black dark:bg-primary-900 lg:top-0'>
+        <Tabs
+          items={[
+            {
+              to: '/',
+              name: '/',
+              text: <FormattedMessage id='tabs_bar.follows' defaultMessage='Follows' />,
+              notification: notifications.home,
+            },
+            {
+              to: '/timeline/local',
+              name: '/timeline/local',
+              text: <div className='block max-w-xs truncate'>{instance.title}</div>,
+              notification: notifications.instance,
+            },
+          ]}
+          activeItem={match.path}
         />
-      </PullToRefresh>
-    </Column>
+      </div>
+
+      <Suspense fallback={<div className='p-4 text-center'><FormattedMessage id='loading_indicator.label' defaultMessage='Loading…' /></div>}>
+        <Switch>
+          <Route path='/' exact component={FollowsTimeline} />
+          <Route path='/timeline/local' exact component={CommunityTimeline} />
+        </Switch>
+      </Suspense>
+    </>
   );
 };
 

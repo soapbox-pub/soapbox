@@ -100,7 +100,7 @@ const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string)
     } else {
       if (timelineId === 'home') {
         dispatch(clearTimeline(timelineId));
-        dispatch(expandHomeTimeline(optionalExpandArgs));
+        dispatch(expandFollowsTimeline(optionalExpandArgs));
       } else if (timelineId === 'community') {
         dispatch(clearTimeline(timelineId));
         dispatch(expandCommunityTimeline(optionalExpandArgs));
@@ -194,20 +194,20 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
     });
   };
 
-interface ExpandHomeTimelineOpts {
+interface ExpandFollowsTimelineOpts {
   maxId?: string;
   url?: string;
 }
 
-interface HomeTimelineParams {
+interface FollowsTimelineParams {
   max_id?: string;
   exclude_replies?: boolean;
   with_muted?: boolean;
 }
 
-const expandHomeTimeline = ({ url, maxId }: ExpandHomeTimelineOpts = {}, done = noOp) => {
+const expandFollowsTimeline = ({ url, maxId }: ExpandFollowsTimelineOpts = {}, done = noOp) => {
   const endpoint = url || '/api/v1/timelines/home';
-  const params: HomeTimelineParams = {};
+  const params: FollowsTimelineParams = {};
 
   if (!url && maxId) {
     params.max_id = maxId;
@@ -337,7 +337,7 @@ export {
   deleteFromTimelines,
   clearTimeline,
   expandTimeline,
-  expandHomeTimeline,
+  expandFollowsTimeline,
   expandPublicTimeline,
   expandRemoteTimeline,
   expandCommunityTimeline,
