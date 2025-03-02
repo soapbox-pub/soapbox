@@ -133,7 +133,7 @@ const search_filter = createSlice({
      * Removes a filter.
      */
     removeFilter: (state, action: PayloadAction<string>) => {
-      return state.filter((filter) => filter.name !== action.payload);
+      return state.filter((filter) => filter.name.toLowerCase() !== action.payload);
     },
 
     /**
