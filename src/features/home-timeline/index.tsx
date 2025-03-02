@@ -15,23 +15,25 @@ const HomeTimeline = () => {
 
   return (
     <>
-      <Tabs
-        items={[
-          {
-            to: '/',
-            name: '/',
-            text: <FormattedMessage id='tabs_bar.follows' defaultMessage='Follows' />,
-            notification: notifications.home,
-          },
-          {
-            to: '/timeline/local',
-            name: '/timeline/local',
-            text: <div className='block max-w-xs truncate'>{instance.title}</div>,
-            notification: notifications.instance,
-          },
-        ]}
-        activeItem={match.path}
-      />
+      <div className='sticky top-11 z-50 bg-white black:bg-black dark:bg-primary-900 lg:top-0'>
+        <Tabs
+          items={[
+            {
+              to: '/',
+              name: '/',
+              text: <FormattedMessage id='tabs_bar.follows' defaultMessage='Follows' />,
+              notification: notifications.home,
+            },
+            {
+              to: '/timeline/local',
+              name: '/timeline/local',
+              text: <div className='block max-w-xs truncate'>{instance.title}</div>,
+              notification: notifications.instance,
+            },
+          ]}
+          activeItem={match.path}
+        />
+      </div>
 
       <Suspense fallback={<div className='p-4 text-center'><FormattedMessage id='loading_indicator.label' defaultMessage='Loading…' /></div>}>
         <Switch>
