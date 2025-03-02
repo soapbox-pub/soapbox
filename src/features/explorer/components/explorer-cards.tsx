@@ -1,6 +1,6 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import rocketIcon from '@tabler/icons/outline/rocket.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -19,6 +19,23 @@ const messages = defineMessages({
 const ExplorerCards = () => {
   const [isOpen, setIsOpen] = useState(true);
   const intl = useIntl();
+
+  const handleClick = () => {
+    setIsOpen((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('soapbox:explorer:card', JSON.stringify(!isOpen));
+      return newValue;
+    });
+  };
+
+  useEffect(
+    () => {
+      const value = localStorage.getItem('soapbox:explorer:card');
+      if (value !== null) {
+        setIsOpen(JSON.parse(value));
+      }
+    }, []);
+
   return (
     <Stack className='mx-4 mt-4' space={2}>
       <Stack
@@ -35,7 +52,7 @@ const ExplorerCards = () => {
           <IconButton
             src={arrowIcon}
             theme='transparent'
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={handleClick}
             className={`transition-transform duration-300 ${
               isOpen ? 'rotate-180' : 'rotate-0'
             }`}

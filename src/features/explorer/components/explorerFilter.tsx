@@ -44,7 +44,15 @@ const ExplorerFilter = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.search_filter);
   const intl = useIntl();
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleClick = () => {
+    setIsOpen((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('soapbox:explorer:filter', JSON.stringify(newValue));
+      return newValue;
+    });
+  };
 
   useEffect(
     () => {
@@ -56,6 +64,15 @@ const ExplorerFilter = () => {
       dispatch(submitSearch(undefined, value));
     }, [filters, dispatch],
   );
+
+  useEffect(
+    () => {
+      const isOpenStatus = localStorage.getItem('soapbox:explorer:filter');
+      if (isOpenStatus !== null) {
+        setIsOpen(JSON.parse(isOpenStatus));
+      }
+    }
+    , []);
 
   return (
     <Stack className='px-4' space={3}>
@@ -74,7 +91,7 @@ const ExplorerFilter = () => {
           src={arrowIcon}
           theme='transparent'
           className={`transition-transform duration-300 ${ isOpen ? 'rotate-180' : 'rotate-0'}`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleClick}
         />
       </HStack>
 
