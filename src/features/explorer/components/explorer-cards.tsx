@@ -61,8 +61,8 @@ const ExplorerCards = () => {
 
         <Text className={`text-white ${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`}>
           {intl.formatMessage(messages.welcomeText, {
-            nostrLink: <a className='text-secondary-400 underline' href='https://soapbox.pub/blog/nostr101/'>{intl.formatMessage(messages.nostrTitle)}</a>,
-            bridgeLink: <a className='text-secondary-400 underline' href='https://soapbox.pub/blog/mostr-fediverse-nostr-bridge/'>{intl.formatMessage(messages.bridgeTitle)}</a>,
+            nostrLink: <a className='font-medium text-secondary-400 underline' href='https://soapbox.pub/blog/nostr101/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.nostrTitle)}</a>,
+            bridgeLink: <a className='font-medium text-secondary-400 underline' href='https://soapbox.pub/blog/mostr-fediverse-nostr-bridge/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.bridgeTitle)}</a>,
           })}
         </Text>
       </Stack>
