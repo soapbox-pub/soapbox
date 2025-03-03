@@ -207,7 +207,6 @@ const CreateFilter = () => {
           <div className='relative w-full items-center p-0.5'>
             <Input theme='search' value={inputValue} className='h-9' onChange={(e) => setInputValue(e.target.value)} />
             <div
-              // role='button'
               tabIndex={0}
               className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
             >

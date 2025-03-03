@@ -17,7 +17,6 @@ import {
   useSuggestions,
 } from 'soapbox/queries/suggestions.ts';
 
-// @ts-ignore
 import 'swiper/css';
 
 const PopularAccounts = ({ id }: { id: string }) => {
@@ -33,7 +32,6 @@ const PopularAccounts = ({ id }: { id: string }) => {
           backgroundSize: `${account?.header ? 'cover' : 'auto' }`,
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          height: 'full',
         }}
         space={3}
       >
