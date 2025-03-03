@@ -463,7 +463,6 @@
   "column_forbidden.body": "You do not have permission to access this page.",
   "column_forbidden.title": "Forbidden",
   "common.cancel": "Cancel",
-  "common.search": "Search",
   "compare_history_modal.header": "Edit history",
   "compose.character_counter.title": "Used {chars} out of {maxChars} {maxChars, plural, one {character} other {characters}}",
   "compose.edit_success": "Your post was edited",

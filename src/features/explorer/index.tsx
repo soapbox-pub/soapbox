@@ -1,7 +1,7 @@
 import globeIcon from '@tabler/icons/outline/globe.svg';
 import trendIcon from '@tabler/icons/outline/trending-up.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom-v5-compat';
@@ -100,10 +100,19 @@ const SearchPage = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  const [selectedFilter, setSelectedFilter] = useState('global');
+  const path = useLocation().pathname;
 
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
+
+  const selectedValue = useMemo(() => {
+    if (path === '/explorer') return 'posts';
+    if (path === '/explorer/trends') return 'statuses';
+    dispatch(setFilter('accounts'));
+    return 'accounts';
+  }, [path, dispatch]);
+
+
+  const [selectedFilter, setSelectedFilter] = useState(selectedValue);
 
   const renderFilterBar = () => {
     const items = [];
@@ -116,7 +125,7 @@ const SearchPage = () => {
       } else {
         dispatch(setFilter('statuses'));
       }
-      setSelectedFilter(filter ?? 'global');
+      setSelectedFilter(filter ?? 'posts');
       navigate(`/explorer${path}`);
     };
 
@@ -124,7 +133,7 @@ const SearchPage = () => {
       {
         text: intl.formatMessage(messages.statuses),
         action: () =>  handleTabs(''),
-        name: 'global',
+        name: 'posts',
         icon: globeIcon,
       },
       {
