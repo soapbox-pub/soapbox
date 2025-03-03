@@ -7,8 +7,10 @@ import appReducer from './reducers/index.ts';
 
 import type { AnyAction } from 'redux';
 
-const loadState = () => {
+const loadState = (pathname: string) => {
   try {
+    if (pathname !== '/explorer') return undefined;
+
     const savedState = localStorage.getItem('soapbox:explorer:filters');
     return savedState ? JSON.parse(savedState) : undefined;
   } catch (error) {
@@ -17,7 +19,10 @@ const loadState = () => {
   }
 };
 
-const preloadedState = { ...loadState() ? { search_filter: loadState() } : {}  };
+const preloadedState = (() => {
+  const storedFilter = loadState(window.location.pathname);
+  return storedFilter ? { search_filter: storedFilter } : {};
+})();
 
 export const store = configureStore({
   reducer: appReducer,

@@ -48,6 +48,7 @@ import Navbar from './components/navbar.tsx';
 import {
   Status,
   RemoteTimeline,
+  PublicTimeline,
   AccountTimeline,
   AccountGallery,
   HomeTimeline,
