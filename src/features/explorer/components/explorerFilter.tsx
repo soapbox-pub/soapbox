@@ -83,7 +83,7 @@ const ExplorerFilter = () => {
             {intl.formatMessage(messages.filters)}
           </Text>
 
-          {filters.length > 0 && [...filters.slice(0, 8).filter((value) => value.status).map((value) => generateFilter(dispatch, value)), ...filters.slice(8).map((value) => generateFilter(dispatch, value))]}
+          {filters.length > 0 && [...filters.slice(0, 8).filter((value) => value.status).map((value) => generateFilter(dispatch, intl, value)), ...filters.slice(8).map((value) => generateFilter(dispatch, intl, value))]}
 
         </HStack>
         <IconButton

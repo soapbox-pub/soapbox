@@ -3,7 +3,7 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useEffect, useMemo, useState } from 'react';
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import { FormattedMessage, IntlShape, defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import Checkbox from 'soapbox/components/ui/checkbox.tsx';
@@ -41,6 +41,8 @@ const messages = defineMessages({
   imageOnly: { id: 'column.explorer.media_filters.image', defaultMessage: 'Image only' },
   videoOnly: { id: 'column.explorer.media_filters.video', defaultMessage: 'Video only' },
   none: { id: 'column.explorer.media_filters.none', defaultMessage: 'No media' },
+  clearSearch: { id: 'column.explorer.filters.clear_input', defaultMessage: 'Clear filter input' },
+  removeFilter: { id: 'column.explorer.filters.remove_filter', defaultMessage: 'Remove filter: {name}' },
 });
 
 const languages = {
@@ -218,6 +220,7 @@ const CreateFilter = () => {
               <SvgIcon
                 src={xIcon}
                 onClick={() => setInputValue('')}
+                aria-label={intl.formatMessage(messages.clearSearch)}
                 className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
               />
             </div>
@@ -374,7 +377,7 @@ const ToggleRepliesFilter = () => {
   );
 };
 
-const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter) => {
+const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, status }: IGenerateFilter) => {
   const nameLowCase = name.toLowerCase();
 
   let borderColor = '';
@@ -425,13 +428,13 @@ const generateFilter = (dispatch: AppDispatch, { name, status }: IGenerateFilter
   return (
     <div
       key={name}
-      className={`group m-1 flex items-center gap-0.5 whitespace-normal break-words rounded-full border-2 bg-transparent px-3 text-base font-medium shadow-sm hover:cursor-pointer hover:pr-1 ${borderColor} ${textColor} `}
+      className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor} `}
     >
       {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explorer.filters.language.default' defaultMessage='Global' />}
       <IconButton
-        iconClassName='!w-4' className={`hidden !p-0 px-1 group-hover:block ${textColor}`} src={xIcon}
+        iconClassName='!w-4' className={` !py-0 group-hover:block ${textColor}`} src={xIcon}
         onClick={handleChangeFilters}
-
+        aria-label={intl.formatMessage(messages.removeFilter, { name })}
       />
     </div>
   );
