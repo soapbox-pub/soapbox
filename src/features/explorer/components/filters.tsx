@@ -43,6 +43,7 @@ const messages = defineMessages({
   none: { id: 'column.explorer.media_filters.none', defaultMessage: 'No media' },
   clearSearch: { id: 'column.explorer.filters.clear_input', defaultMessage: 'Clear filter input' },
   removeFilter: { id: 'column.explorer.filters.remove_filter', defaultMessage: 'Remove filter: {name}' },
+  empty: { id: 'column.explorer.filters.empty', defaultMessage: 'Hey there... You forget to write the filter!' },
 });
 
 const languages = {
@@ -189,7 +190,7 @@ const CreateFilter = () => {
       dispatch(createFilter({ name: inputValue, status: include }));
       handleClearValue();
     } else {
-      toast.error('Hey there... you forget to write the filter!');
+      toast.error(intl.formatMessage(messages.empty));
     }
   };
 

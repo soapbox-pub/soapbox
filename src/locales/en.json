@@ -376,6 +376,7 @@
   "column.explorer.filters.cancel": "Cancel",
   "column.explorer.filters.clear_input": "Clear filter input",
   "column.explorer.filters.create_your_filter": "Create your filter",
+  "column.explorer.filters.empty": "Hey there... You forget to write the filter!",
   "column.explorer.filters.exclude": "Exclude",
   "column.explorer.filters.fediverse": "Fediverse",
   "column.explorer.filters.filter_by_words": "Filter by this/these words",
