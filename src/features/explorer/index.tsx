@@ -107,10 +107,14 @@ const SearchPage = () => {
   const selectedValue = useMemo(() => {
     if (path === '/explorer') return 'posts';
     if (path === '/explorer/trends') return 'statuses';
-    dispatch(setFilter('accounts'));
     return 'accounts';
-  }, [path, dispatch]);
+  }, [path]);
 
+  useEffect(() => {
+    if (selectedValue === 'accounts') {
+      dispatch(setFilter('accounts'));
+    }
+  }, [selectedValue, dispatch]);
 
   const [selectedFilter, setSelectedFilter] = useState(selectedValue);
 
@@ -121,9 +125,8 @@ const SearchPage = () => {
       if (filter) {
         selectFilter(filter);
         dispatch(clearSearch());
-        dispatch(setFilter(filter));
       } else {
-        dispatch(setFilter('statuses'));
+        selectFilter('statuses');
       }
       setSelectedFilter(filter ?? 'posts');
       navigate(`/explorer${path}`);
@@ -163,7 +166,6 @@ const SearchPage = () => {
         </div>
 
         <Switch>
-          <Route exact path={'/'} component={PostsTab} />
           <Route exact path={'/explorer'} component={PostsTab} />
           <Route path={'/explorer/trends'} component={TrendsTab} />
           <Route path={'/explorer/accounts'} component={AccountsTab} />
