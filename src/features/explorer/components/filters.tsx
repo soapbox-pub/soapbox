@@ -237,6 +237,7 @@ const CreateFilter = () => {
             <Input theme='search' value={inputValue} className='h-9' onChange={handleOnChange} onKeyDown={onKeyDown} />
             <div
               tabIndex={0}
+              role='button'
               className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
             >
               <SvgIcon
