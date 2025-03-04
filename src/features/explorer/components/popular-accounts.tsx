@@ -1,5 +1,5 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -71,6 +71,22 @@ const AccountsCarousel = () => {
   const { data: suggestions, isFetching } = useSuggestions();
   const [isOpen, setIsOpen] = useState(true);
 
+  const handleClick = () => {
+    setIsOpen((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('soapbox:explorer:accounts:status', JSON.stringify(newValue));
+      return newValue;
+    });
+  };
+
+  useEffect(
+    () => {
+      const isOpenStatus = localStorage.getItem('soapbox:explorer:accounts:status');
+      if (isOpenStatus) {
+        setIsOpen(JSON.parse(isOpenStatus));
+      }
+    }
+    , []);
 
   if (!isFetching && !suggestions.length) {
     return null;
@@ -86,7 +102,7 @@ const AccountsCarousel = () => {
           src={arrowIcon}
           theme='transparent'
           className={`transition-transform duration-300 ${ isOpen ? 'rotate-180' : 'rotate-0'}`}
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleClick}
         />
       </HStack>
 
