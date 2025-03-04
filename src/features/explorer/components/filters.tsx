@@ -305,7 +305,8 @@ const CreateFilter = () => {
 const MediaFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const filters = useAppSelector((state) => state.search_filter).slice(4, 8);
+  const filters = useAppSelector((state) => state.search_filter.filter(filter => ['all', 'image only', 'video only', 'no media'].includes(filter.name.toLowerCase())));
+    
 
   const mediaFilters = useMemo(() => ({
     all: intl.formatMessage(messages.all),
