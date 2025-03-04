@@ -2,7 +2,7 @@ import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, IntlShape, defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
@@ -175,17 +175,43 @@ const CreateFilter = () => {
   const [include, setInclude] = useState(true);
   const hasValue = inputValue.length > 0;
 
+  const handleReset = () => {
+    dispatch(resetFilters());
+    localStorage.removeItem('soapbox:explorer:filters');
+  };
+
+  const handleClearValue = () => {
+    setInputValue('');
+  };
+
   const handleAddFilter = () => {
     if (inputValue.length > 0) {
       dispatch(createFilter({ name: inputValue, status: include }));
+      handleClearValue();
     } else {
       toast.error('Hey there... you forget to write the filter!');
     }
   };
 
-  const handleReset = () => {
-    dispatch(resetFilters());
-    localStorage.removeItem('soapbox:explorer:filters');
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const key = e.key;
+
+    switch (key) {
+      case 'Enter':
+        e.stopPropagation();
+        e.preventDefault();
+        handleAddFilter();
+        break;
+      case 'Escape':
+        e.stopPropagation();
+        e.preventDefault();
+        handleClearValue();
+        break;
+    }
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
   };
 
   return (
@@ -207,7 +233,7 @@ const CreateFilter = () => {
 
 
           <div className='relative w-full items-center p-0.5'>
-            <Input theme='search' value={inputValue} className='h-9' onChange={(e) => setInputValue(e.target.value)} />
+            <Input theme='search' value={inputValue} className='h-9' onChange={handleOnChange} onKeyDown={onKeyDown} />
             <div
               tabIndex={0}
               className='absolute inset-y-0 right-0 flex cursor-pointer items-center px-3 rtl:left-0 rtl:right-auto'
@@ -259,11 +285,7 @@ const CreateFilter = () => {
 
       <HStack className='w-full p-0.5' space={2}>
         <Button
-          className='w-1/2' theme='muted' onClick={() => {
-            setInclude(false);
-            setInputValue('');
-          }
-          }
+          className='w-1/2' theme='muted' onClick={handleClearValue}
         >
           {intl.formatMessage(messages.cancel)}
         </Button>
