@@ -8,6 +8,7 @@ import { InstanceFavicon } from 'soapbox/components/account.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
@@ -88,7 +89,10 @@ const AccountsCarousel = () => {
     }
     , []);
 
-  if (!isFetching && !suggestions.length) {
+  if (isFetching) {
+    return <Stack><Spinner /></Stack>;
+  }
+  if (!suggestions || !suggestions.length) {
     return null;
   }
 
