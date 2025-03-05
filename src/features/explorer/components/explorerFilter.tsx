@@ -1,5 +1,6 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
-import { useEffect, useState } from 'react';
+import { debounce } from 'es-toolkit';
+import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeSearch, submitSearch } from 'soapbox/actions/search.ts';
@@ -53,14 +54,26 @@ const ExplorerFilter = () => {
     });
   };
 
+  const debouncedSearch = useMemo(
+    () => debounce((value: string) => {
+      dispatch(changeSearch(value));
+      dispatch(submitSearch(undefined, value));
+    }, 300),
+    [dispatch],
+  );
+
   useEffect(
     () => {
       const value = formatFilters(filters);
 
       localStorage.setItem('soapbox:explorer:filters', JSON.stringify(filters));
 
-      dispatch(changeSearch(value));
-      dispatch(submitSearch(undefined, value));
+      debouncedSearch(value);
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
     }, [filters, dispatch],
   );
 
