@@ -8,7 +8,6 @@ export const LandingTimeline = lazy(() => import('soapbox/features/landing-timel
 export const HomeTimeline = lazy(() => import('soapbox/features/home-timeline/index.tsx'));
 export const PublicTimeline = lazy(() => import('soapbox/features/public-timeline/index.tsx'));
 export const RemoteTimeline = lazy(() => import('soapbox/features/remote-timeline/index.tsx'));
-export const CommunityTimeline = lazy(() => import('soapbox/features/community-timeline/index.tsx'));
 export const HashtagTimeline = lazy(() => import('soapbox/features/hashtag-timeline/index.tsx'));
 export const DirectTimeline = lazy(() => import('soapbox/features/direct-timeline/index.tsx'));
 export const Conversations = lazy(() => import('soapbox/features/conversations/index.tsx'));
@@ -185,3 +184,5 @@ export const MyWallet = lazy(() => import('soapbox/features/my-wallet/index.tsx'
 export const MyWalletRelays = lazy(() => import('soapbox/features/my-wallet/components/wallet-relays.tsx'));
 export const MyWalletMints = lazy(() => import('soapbox/features/my-wallet/components/wallet-mints.tsx'));
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
+export const FollowsTimeline = lazy(() => import('soapbox/features/home-timeline/follows-timeline.tsx'));
+export const CommunityTimeline = lazy(() => import('soapbox/features/home-timeline/community-timeline.tsx'));

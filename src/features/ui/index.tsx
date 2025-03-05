@@ -10,7 +10,7 @@ import { expandNotifications } from 'soapbox/actions/notifications.ts';
 import { registerPushNotifications } from 'soapbox/actions/push-notifications/registerer.ts';
 import { fetchScheduledStatuses } from 'soapbox/actions/scheduled-statuses.ts';
 import { fetchSuggestionsForTimeline } from 'soapbox/actions/suggestions.ts';
-import { expandHomeTimeline } from 'soapbox/actions/timelines.ts';
+import { expandFollowsTimeline } from 'soapbox/actions/timelines.ts';
 import { useUserStream } from 'soapbox/api/hooks/index.ts';
 import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
 import SidebarNavigation from 'soapbox/components/sidebar-navigation.tsx';
@@ -47,7 +47,6 @@ import FloatingActionButton from './components/floating-action-button.tsx';
 import Navbar from './components/navbar.tsx';
 import {
   Status,
-  CommunityTimeline,
   PublicTimeline,
   RemoteTimeline,
   AccountTimeline,
@@ -196,7 +195,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         NOTE: we cannot nest routes in a fragment
         https://stackoverflow.com/a/68637108
       */}
-      {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
+      {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={HomeTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/global' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
       {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} publicRoute />}
 
@@ -426,7 +425,7 @@ const UI: React.FC<IUI> = ({ children }) => {
   const loadAccountData = () => {
     if (!account) return;
 
-    dispatch(expandHomeTimeline({}, () => {
+    dispatch(expandFollowsTimeline({}, () => {
       dispatch(fetchSuggestionsForTimeline());
     }));
 

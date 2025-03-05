@@ -4,6 +4,7 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { revokeName, setBadges as saveBadges } from 'soapbox/actions/admin.ts';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation.tsx';
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useSuggest, useVerify } from 'soapbox/api/hooks/admin/index.ts';
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import Account from 'soapbox/components/account.tsx';
@@ -100,7 +101,11 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
   const handleRevokeName = () => {
     dispatch(revokeName(account.id))
       .then(() => toast.success(intl.formatMessage(messages.revokedName)))
-      .catch(() => {});
+      .catch((error) => {
+        if (error instanceof HTTPError) {
+          toast.showAlertForError(error);
+        }
+      });
   };
 
   const handleDelete = () => {
