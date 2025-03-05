@@ -261,7 +261,9 @@ const CreateFilter = () => {
               name='include'
               checked={include}
               onChange={() => {
-                setInclude(true);
+                if (!include) {
+                  setInclude(true);
+                }
               }}
             />
             <Text size='md'>
@@ -275,7 +277,9 @@ const CreateFilter = () => {
               name='exclude'
               checked={!include}
               onChange={() => {
-                setInclude(false);
+                if (include) {
+                  setInclude(false);
+                }
               }}
             />
             <Text size='md'>
@@ -306,7 +310,7 @@ const MediaFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.search_filter.filter(filter => ['all', 'image only', 'video only', 'no media'].includes(filter.name.toLowerCase())));
-    
+
 
   const mediaFilters = useMemo(() => ({
     all: intl.formatMessage(messages.all),
