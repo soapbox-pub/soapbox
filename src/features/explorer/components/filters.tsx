@@ -355,7 +355,7 @@ const MediaFilter = () => {
 const LanguageFilter = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const languageFilter = useAppSelector((state) => state.search_filter)[0];
+  const filter = useAppSelector((state) => state.search_filter)[0];
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
@@ -369,10 +369,10 @@ const LanguageFilter = () => {
       </Text>
 
       <SelectDropdown
-        key={languageFilter?.name}
+        key={filter?.name}
         className='max-w-[130px]'
         items={languages}
-        defaultValue={languageFilter.name.toLowerCase()}
+        defaultValue={filter.name.toLowerCase()}
         onChange={handleSelectChange}
       />
     </HStack>
