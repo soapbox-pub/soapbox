@@ -25,7 +25,7 @@ import 'swiper/css/pagination';
 import 'swiper/css';
 
 const PopularAccounts = ({ id }: { id: string }) => {
-  const account = useAccount(id).account;
+  const { account } = useAccount(id);
   const { logo } = useSoapboxConfig();
 
   return (
