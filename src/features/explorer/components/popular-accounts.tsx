@@ -20,6 +20,8 @@ import {
   useSuggestions,
 } from 'soapbox/queries/suggestions.ts';
 
+import 'swiper/css';
+
 const PopularAccounts = ({ id }: { id: string }) => {
   const { account } = useAccount(id);
   const { logo } = useSoapboxConfig();
