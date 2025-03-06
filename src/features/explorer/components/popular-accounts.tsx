@@ -2,7 +2,6 @@ import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { Navigation, Pagination, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useAccount } from 'soapbox/api/hooks/index.ts';
@@ -20,7 +19,7 @@ import {
   useSuggestions,
 } from 'soapbox/queries/suggestions.ts';
 
-import 'swiper/css';
+import 'swiper/swiper-bundle.css';
 
 const PopularAccounts = ({ id }: { id: string }) => {
   const { account } = useAccount(id);
@@ -116,14 +115,6 @@ const AccountsCarousel = () => {
 
       <HStack className={`transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'hidden max-h-0 opacity-0'}`}>
         <Swiper
-          pagination={{ clickable: true }}
-          navigation
-          a11y={{
-            enabled: true,
-            prevSlideMessage: 'Previous slide',
-            nextSlideMessage: 'Next slide',
-          }}
-          modules={[Navigation, Pagination, A11y]}
           spaceBetween={10}
           slidesPerView={isMobile ? 2 : 3}
           grabCursor
