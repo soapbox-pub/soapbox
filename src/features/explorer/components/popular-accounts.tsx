@@ -1,6 +1,6 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -20,6 +20,13 @@ import {
 } from 'soapbox/queries/suggestions.ts';
 
 import 'swiper/swiper-bundle.css';
+
+const messages = defineMessages({
+  title: { id: 'column.explorer.popular_accounts', defaultMessage: 'Popular Accounts' },
+  collapse: { id: 'column.explorer.popular_accounts.collapse', defaultMessage: 'Collapse popular accounts' },
+  expand: { id: 'column.explorer.popular_accounts.expand', defaultMessage: 'Expand popular accounts' },
+  error: { id: 'column.explorer.popular_accounts.error', defaultMessage: 'Could not load popular accounts. Please try again later.' },
+});
 
 const PopularAccounts = ({ id }: { id: string }) => {
   const { account } = useAccount(id);
@@ -71,8 +78,9 @@ const PopularAccounts = ({ id }: { id: string }) => {
 
 
 const AccountsCarousel = () => {
+  const intl = useIntl();
   const isMobile = useIsMobile();
-  const { data: suggestions, isFetching } = useSuggestions();
+  const { data: suggestions, isFetching, error } = useSuggestions();
   const [isOpen, setIsOpen] = useState(true);
 
   const handleClick = () => {
@@ -95,6 +103,15 @@ const AccountsCarousel = () => {
   if (isFetching) {
     return <Stack><Spinner /></Stack>;
   }
+
+  if (error) {
+    return (
+      <Stack space={4} className='px-4'>
+        <Text theme='muted'>{intl.formatMessage(messages.error)}</Text>
+      </Stack>
+    );
+  }
+
   if (!suggestions || !suggestions.length) {
     return null;
   }
@@ -103,13 +120,14 @@ const AccountsCarousel = () => {
     <Stack space={4} className={`px-4 ${isOpen && 'pb-4'}`}>
       <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
-          <FormattedMessage id='column.explorer.popular_accounts' defaultMessage={'Popular Accounts'} />
+          {intl.formatMessage(messages.title)}
         </Text>
         <IconButton
           src={arrowIcon}
           theme='transparent'
           className={`transition-transform duration-300 ${ isOpen ? 'rotate-180' : 'rotate-0'}`}
           onClick={handleClick}
+          aria-label={isOpen ? intl.formatMessage(messages.collapse) : intl.formatMessage(messages.expand)}
         />
       </HStack>
 
