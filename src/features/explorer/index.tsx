@@ -27,6 +27,7 @@ const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'Accounts' },
   statuses: { id: 'search_results.posts', defaultMessage: 'Posts' },
   trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
+  filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
 });
 
 const checkFilters = (filters: IFilters[]) => {
@@ -40,6 +41,7 @@ const checkFilters = (filters: IFilters[]) => {
 
 const PostsTab = () => {
   const path = useLocation().pathname;
+  const intl = useIntl();
   const inPosts = path === '/explorer';
   const filters = useAppSelector((state) => state.search_filter);
 
@@ -55,7 +57,7 @@ const PostsTab = () => {
 
         <ExplorerCards />
 
-        <Divider text='Filters' />
+        <Divider text={intl.formatMessage(messages.filters)} />
 
         <ExplorerFilter />
 

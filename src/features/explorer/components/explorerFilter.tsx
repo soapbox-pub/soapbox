@@ -1,14 +1,13 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import { debounce } from 'es-toolkit';
 import { useEffect, useMemo, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { changeSearch, submitSearch } from 'soapbox/actions/search.ts';
 import Divider from 'soapbox/components/ui/divider.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
 import {
   CreateFilter,
   LanguageFilter,
@@ -20,10 +19,6 @@ import {
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { IFilters } from 'soapbox/reducers/search-filter.ts';
-
-const messages = defineMessages({
-  filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
-});
 
 interface IGenerateFilter {
   name: string;
@@ -91,11 +86,7 @@ const ExplorerFilter = () => {
 
       {/* Filters */}
       <HStack alignItems='start' justifyContent='between' space={1}>
-        <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
-          <Text size='lg' weight='bold'>
-            {intl.formatMessage(messages.filters)}
-          </Text>
-
+        <HStack className='flex-wrap whitespace-normal' alignItems='center'>
           {filters.length > 0 && [...filters.slice(0, 8).filter((value) => value.status).map((value) => generateFilter(dispatch, intl, value)), ...filters.slice(8).map((value) => generateFilter(dispatch, intl, value))]}
 
         </HStack>
