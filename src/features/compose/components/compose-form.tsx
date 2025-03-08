@@ -29,6 +29,7 @@ import { useCompose } from 'soapbox/hooks/useCompose.ts';
 import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
 
 import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
@@ -73,10 +74,12 @@ interface IComposeForm<ID extends string> {
   event?: string;
   group?: string;
   extra?: React.ReactNode;
-  streak?: number;
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra, streak }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
+  const { account } = useOwnAccount();
+  const userStreak = account?.ditto.streak.days;
+
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -158,7 +161,7 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
     dispatch(changeCompose(id, text));
     dispatch(submitCompose(id, { history }));
 
-    if (streak === 0 && features.streak) {
+    if (userStreak === 0 && features.streak) {
       dispatch(openModal('STREAK'));
     }
 
