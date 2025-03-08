@@ -74,12 +74,11 @@ interface IComposeForm<ID extends string> {
   event?: string;
   group?: string;
   extra?: React.ReactNode;
-  streak?: number;
 }
 
 const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra, streak }: IComposeForm<ID>) => {
   const { account } = useOwnAccount();
-  const userStreak = streak ?? account?.ditto.streak.days;
+  const userStreak = account?.ditto.streak.days;
 
   const history = useHistory();
   const intl = useIntl();
