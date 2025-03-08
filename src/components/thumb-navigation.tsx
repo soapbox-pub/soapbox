@@ -83,13 +83,6 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         />
       )}
 
-      <ThumbNavigationLink
-        src={compassIcon}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Explorer' />}
-        to='/explorer'
-        exact
-      />
-
       {account && (
         <ThumbNavigationLink
           src={bellIcon}
@@ -100,6 +93,13 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
           count={notificationCount}
         />
       )}
+
+      <ThumbNavigationLink
+        src={compassIcon}
+        text={<FormattedMessage id='navigation.search' defaultMessage='Explorer' />}
+        to='/explorer'
+        exact
+      />
 
       {account && renderMessagesLink()}
 
