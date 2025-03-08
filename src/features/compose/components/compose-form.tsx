@@ -76,7 +76,7 @@ interface IComposeForm<ID extends string> {
   extra?: React.ReactNode;
 }
 
-const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra, streak }: IComposeForm<ID>) => {
+const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
   const { account } = useOwnAccount();
   const userStreak = account?.ditto.streak.days;
 
