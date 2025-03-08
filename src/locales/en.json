@@ -372,6 +372,7 @@
   "column.explorer.bridge": "Bridges",
   "column.explorer.filters": "Filters:",
   "column.explorer.filters.add_filter": "Add Filter",
+  "column.explorer.filters.atLeast": "At least one platform must remain selected.",
   "column.explorer.filters.bluesky": "Bluesky",
   "column.explorer.filters.cancel": "Cancel",
   "column.explorer.filters.clear_input": "Clear filter input",

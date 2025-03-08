@@ -27,6 +27,7 @@ const messages = defineMessages({
   media: { id: 'column.explorer.filters.media', defaultMessage: 'Media:' },
   language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
+  atLeast: { id: 'column.explorer.filters.atLeast', defaultMessage: 'At least one platform must remain selected.' },
   createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
   resetFilter: { id: 'column.explorer.filters.reset', defaultMessage: 'Reset Filters' },
   filterByWords: { id: 'column.explorer.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
@@ -113,15 +114,23 @@ const PlatformFilters = () => {
 
   const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     const protocol = e.target.name.toLowerCase();
+    const isChecked = e.target.checked;
+
+    const checkedCount = filterList.slice(1, 4).filter((filter) => filter.status === true).length === 1;
+
+    if (!isChecked && checkedCount) {
+      toast.error(messages.atLeast);
+      return;
+    }
 
     dispatch(selectProtocol(protocol));
   };
 
-  const CheckBox = ({ protocolN } : { protocolN: string }) => {
+  const CustomCheckBox = ({ protocolN } : { protocolN: string }) => {
     const filter = filterList.find((filter) => filter.name.toLowerCase() === protocolN);
     const checked = filter?.status;
-
     let message;
+
     switch (protocolN) {
       case 'nostr':
         message = messages.nostr;
@@ -133,13 +142,13 @@ const PlatformFilters = () => {
         message = messages.fediverse;
     }
 
-
     return (
       <HStack alignItems='center' space={2}>
         <Checkbox
           name={protocolN}
           checked={checked}
           onChange={handleProtocolFilter}
+          aria-label={intl.formatMessage(message)}
         />
         <Text size='md'>
           {intl.formatMessage(message)}
@@ -155,13 +164,13 @@ const PlatformFilters = () => {
       </Text>
 
       {/* Nostr */}
-      <CheckBox protocolN={'nostr'} />
+      <CustomCheckBox protocolN={'nostr'} />
 
       {/* Bluesky */}
-      <CheckBox protocolN={'bluesky'} />
+      <CustomCheckBox protocolN={'bluesky'} />
 
       {/* Fediverse */}
-      <CheckBox protocolN={'fediverse'} />
+      <CustomCheckBox protocolN={'fediverse'} />
 
     </HStack>
   );
