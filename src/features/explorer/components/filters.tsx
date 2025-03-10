@@ -451,7 +451,9 @@ const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, status }
     }
   }
 
-  const handleChangeFilters = () => {
+  const handleChangeFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
     if (['nostr', 'bluesky', 'fediverse'].includes(nameLowCase)) {
       dispatch(selectProtocol(nameLowCase));
     } else if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
