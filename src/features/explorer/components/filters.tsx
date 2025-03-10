@@ -336,7 +336,7 @@ const MediaFilter = () => {
       || mediaFilters.all;
 
     setSelectedMedia(newMediaValue);
-  }, [filters, mediaFilters]);
+  }, [mediaFilters]);
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const filter = e.target.value;
