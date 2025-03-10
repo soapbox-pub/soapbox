@@ -7,7 +7,7 @@ interface IFilters {
 }
 
 interface IToggle {
-  type: string;
+  value: string;
   status: boolean;
 }
 
@@ -17,7 +17,7 @@ interface INewFilter {
 }
 
 const initialState: IFilters[] = [
-  { name: 'Default', status: false, value: 'language:default' },
+  { name: 'default', status: false, value: 'language:default' },
   { name: 'Nostr', status: true, value: 'protocol:nostr' },
   { name: 'Bluesky', status: true, value: 'protocol:atproto' },
   { name: 'Fediverse', status: true, value: 'protocol:activitypub' },
@@ -37,8 +37,8 @@ const search_filter = createSlice({
     changeStatus: (state, action: PayloadAction<IToggle>) => {
       return state.map((currentState) => {
         const status = action.payload.status;
-        const type = action.payload.type;
-        return currentState.name.toLowerCase().includes(type)
+        const value = action.payload.value;
+        return currentState.value === value
           ? {
             ...currentState,
             status: status,
@@ -90,11 +90,12 @@ const search_filter = createSlice({
      */
     changeLanguage: (state, action: PayloadAction<string>) => {
       const selected = action.payload.toLowerCase();
+      const isDefault = selected === 'default';
       return state.map((currentState) =>
         currentState.value.includes('language:')
           ? {
-            name: selected.toUpperCase(),
-            status: selected !== 'default',
+            name: isDefault ? selected : selected.toUpperCase(),
+            status: !isDefault,
             value: `language:${selected}`,
           }
           : currentState,
@@ -108,7 +109,7 @@ const search_filter = createSlice({
       const protocol = action.payload;
       return state.map((currentState) => {
         const newStatus = !currentState.status;
-        if (currentState.name.toLowerCase() !== protocol) return currentState;
+        if (currentState.value.toLowerCase() !== protocol) return currentState;
         return {
           ...currentState,
           status: newStatus,

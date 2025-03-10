@@ -113,7 +113,8 @@ const PlatformFilters = () => {
   const filterList = useAppSelector((state: RootState) => state.search_filter);
 
   const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const protocol = e.target.name.toLowerCase();
+    const protocol = filterList.slice(1, 4).find((filter) => (filter.name.toLowerCase() === e.target.name.toLowerCase()),
+    )?.value;
     const isChecked = e.target.checked;
 
     const checkedCount = filterList.slice(1, 4).filter((filter) => filter.status === true).length === 1;
@@ -123,7 +124,9 @@ const PlatformFilters = () => {
       return;
     }
 
-    dispatch(selectProtocol(protocol));
+    if (protocol) {
+      dispatch(selectProtocol(protocol));
+    }
   };
 
   const CustomCheckBox = ({ protocolN } : { protocolN: string }) => {
@@ -399,7 +402,7 @@ const ToggleRepliesFilter = () => {
   const checked = repliesFilter?.status;
 
   const handleToggle = () => {
-    dispatch(changeStatus({ type: 'no replies', status: !checked }));
+    dispatch(changeStatus({ value: 'reply:false', status: !checked }));
   };
 
   return (
@@ -415,33 +418,33 @@ const ToggleRepliesFilter = () => {
   );
 };
 
-const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, status }: IGenerateFilter) => {
+const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, status }: IGenerateFilter) => {
   const nameLowCase = name.toLowerCase();
 
   let borderColor = '';
   let textColor = '';
 
-  if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
+  if (Object.keys(languages).some((lang) => value.includes('language:'))) {
     borderColor = 'border-gray-500';
     textColor = 'text-gray-500';
   } else {
-    switch (nameLowCase) {
-      case 'no replies':
-      case 'image only':
-      case 'video only':
-      case 'no media':
+    switch (value) {
+      case 'reply:false':
+      case 'media:true -video:true':
+      case 'video:true':
+      case '-media:true':
         borderColor = 'border-gray-500';
         textColor = 'text-gray-500';
         break;
-      case 'nostr':
+      case 'protocol:nostr':
         borderColor = 'border-purple-500';
         textColor = 'text-purple-500';
         break;
-      case 'bluesky':
+      case 'protocol:atproto':
         borderColor = 'border-blue-500';
         textColor = 'text-blue-500';
         break;
-      case 'fediverse':
+      case 'protocol:activitypub':
         borderColor = 'border-indigo-500';
         textColor = 'text-indigo-500';
         break;
@@ -454,12 +457,12 @@ const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, status }
   const handleChangeFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    if (['nostr', 'bluesky', 'fediverse'].includes(nameLowCase)) {
-      dispatch(selectProtocol(nameLowCase));
-    } else if (Object.keys(languages).some((lang) => lang.toLowerCase() === nameLowCase)) {
+    if (['protocol:nostr', 'protocol:atproto', 'protocol:activitypub'].includes(value)) {
+      dispatch(selectProtocol(value));
+    } else if (['reply:false', 'media:true -video:true', 'video:true', '-media:true'].includes(value)) {
+      dispatch(changeStatus({ value: value, status: false }));
+    } else if (Object.keys(languages).some((lang) => value.includes(lang))) {
       dispatch(changeLanguage('default'));
-    } else if (['no replies', 'image only', 'video only', 'no media'].includes(nameLowCase)) {
-      dispatch(changeStatus({ type: nameLowCase, status: false }));
     } else {
       dispatch(removeFilter(nameLowCase));
     }
