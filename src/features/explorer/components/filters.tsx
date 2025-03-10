@@ -164,13 +164,13 @@ const PlatformFilters = () => {
       </Text>
 
       {/* Nostr */}
-      <CustomCheckBox protocolN={'nostr'} />
+      <CustomCheckBox protocolN='nostr' />
 
       {/* Bluesky */}
-      <CustomCheckBox protocolN={'bluesky'} />
+      <CustomCheckBox protocolN='bluesky' />
 
       {/* Fediverse */}
-      <CustomCheckBox protocolN={'fediverse'} />
+      <CustomCheckBox protocolN='fediverse' />
 
     </HStack>
   );
