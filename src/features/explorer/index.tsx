@@ -19,6 +19,7 @@ import AccountsCarousel from 'soapbox/features/explorer/components/popular-accou
 import { PublicTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { IFilters, initialState as filterInitialState } from 'soapbox/reducers/search-filter.ts';
 import { SearchFilter } from 'soapbox/reducers/search.ts';
 
@@ -44,6 +45,7 @@ const PostsTab = () => {
   const intl = useIntl();
   const inPosts = path === '/explorer';
   const filters = useAppSelector((state) => state.search_filter);
+  const isNostr = useFeatures().nostr;
 
   const [withFilter, setWithFilter] = useState(checkFilters(filters));
 
@@ -55,13 +57,15 @@ const PostsTab = () => {
     <Stack space={4}>
       {inPosts && <>
 
-        <ExplorerCards />
+        {isNostr && <>
+          <ExplorerCards />
 
-        <Divider text={intl.formatMessage(messages.filters)} />
+          <Divider text={intl.formatMessage(messages.filters)} />
 
-        <ExplorerFilter />
+          <ExplorerFilter />
 
-        <Divider />
+          <Divider />
+        </> }
 
         {!withFilter ? <PublicTimeline /> : <SearchResults /> }
       </>
@@ -99,6 +103,7 @@ const AccountsTab = () => {
 
 
 const SearchPage = () => {
+  const features = useFeatures();
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -121,7 +126,26 @@ const SearchPage = () => {
   const [selectedFilter, setSelectedFilter] = useState(selectedValue);
 
   const renderFilterBar = () => {
-    const items = [];
+    const items = [
+      {
+        text: intl.formatMessage(messages.statuses),
+        action: () =>  handleTabs(''),
+        name: 'posts',
+        icon: globeIcon,
+      },
+      ...(features.nostr ? [{
+        text: intl.formatMessage(messages.trends),
+        action: () => handleTabs('/trends', 'statuses'),
+        name: 'statuses',
+        icon: trendIcon,
+      }] : []),
+      {
+        text: intl.formatMessage(messages.accounts),
+        action: () => handleTabs('/accounts', 'accounts'),
+        name: 'accounts',
+        icon: userIcon,
+      },
+    ];
 
     const handleTabs = (path: string, filter?: SearchFilter) => {
       if (filter) {
@@ -133,27 +157,6 @@ const SearchPage = () => {
       setSelectedFilter(filter ?? 'posts');
       navigate(`/explorer${path}`);
     };
-
-    items.push(
-      {
-        text: intl.formatMessage(messages.statuses),
-        action: () =>  handleTabs(''),
-        name: 'posts',
-        icon: globeIcon,
-      },
-      {
-        text: intl.formatMessage(messages.trends),
-        action: () => handleTabs('/trends', 'statuses'),
-        name: 'statuses',
-        icon: trendIcon,
-      },
-      {
-        text: intl.formatMessage(messages.accounts),
-        action: () => handleTabs('/accounts', 'accounts'),
-        name: 'accounts',
-        icon: userIcon,
-      },
-    );
 
     return <Tabs items={items} activeItem={selectedFilter} />;
   };
@@ -169,7 +172,7 @@ const SearchPage = () => {
 
         <Switch>
           <Route exact path={'/explorer'} component={PostsTab} />
-          <Route path={'/explorer/trends'} component={TrendsTab} />
+          {features.nostr && <Route path={'/explorer/trends'} component={TrendsTab} />}
           <Route path={'/explorer/accounts'} component={AccountsTab} />
         </Switch>
 
