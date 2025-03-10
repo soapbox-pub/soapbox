@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { useAccount } from 'soapbox/api/hooks/index.ts';
-import { InstanceFavicon } from 'soapbox/components/account.tsx';
+import { InstanceFavicon } from 'soapbox/components/instance-favicon.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';

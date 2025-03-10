@@ -1,9 +1,10 @@
 import pencilIcon from '@tabler/icons/outline/pencil.svg';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
+import { InstanceFavicon } from 'soapbox/components/instance-favicon.tsx';
 import Markup from 'soapbox/components/markup.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import Emoji from 'soapbox/components/ui/emoji.tsx';
@@ -25,54 +26,9 @@ import RelativeTimestamp from './relative-timestamp.tsx';
 import type { StatusApprovalStatus } from 'soapbox/normalizers/status.ts';
 import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';
 
-interface IInstanceFavicon {
-  account: AccountSchema;
-  disabled?: boolean;
-}
-
 const messages = defineMessages({
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
-
-export const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account, disabled }) => {
-  const history = useHistory();
-  const [missing, setMissing] = useState<boolean>(false);
-
-  const handleError = () => setMissing(true);
-
-  const handleClick: React.MouseEventHandler = (e) => {
-    e.stopPropagation();
-
-    if (disabled) return;
-
-    const timelineUrl = `/timeline/${account.domain}`;
-    if (!(e.ctrlKey || e.metaKey)) {
-      history.push(timelineUrl);
-    } else {
-      window.open(timelineUrl, '_blank');
-    }
-  };
-
-  if (missing || !account.pleroma?.favicon) {
-    return null;
-  }
-
-  return (
-    <button
-      className='size-4 flex-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2'
-      onClick={handleClick}
-      disabled={disabled}
-    >
-      <img
-        src={account.pleroma.favicon}
-        alt=''
-        title={account.domain}
-        className='max-h-full w-full'
-        onError={handleError}
-      />
-    </button>
-  );
-};
 
 interface IProfilePopper {
   condition: boolean;
