@@ -117,9 +117,6 @@ const ExploreFilter = () => {
         {/* Create your filter */}
         <CreateFilter />
 
-        <Divider />
-        {/* Reset your filters */}
-
       </Stack>
 
     </Stack>
