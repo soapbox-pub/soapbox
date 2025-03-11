@@ -388,6 +388,7 @@
   "column.explore.filters.no_replies": "No Replies:",
   "column.explore.filters.nostr": "Nostr",
   "column.explore.filters.platforms": "Platforms:",
+  "column.explore.filters.platforms.error": "Protocol not found for: {name}",
   "column.explore.filters.remove_filter": "Remove filter: {name}",
   "column.explore.filters.reset": "Reset Filters",
   "column.explore.media_filters.all": "All",

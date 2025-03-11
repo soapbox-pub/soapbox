@@ -27,6 +27,7 @@ const messages = defineMessages({
   media: { id: 'column.explore.filters.media', defaultMessage: 'Media:' },
   language: { id: 'column.explore.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explore.filters.platforms', defaultMessage: 'Platforms:' },
+  platformsError: { id: 'column.explore.filters.platforms.error', defaultMessage: 'Protocol not found for: {name}' },
   atLeast: { id: 'column.explore.filters.atLeast', defaultMessage: 'At least one platform must remain selected.' },
   createYourFilter: { id: 'column.explore.filters.create_your_filter', defaultMessage: 'Create your filter' },
   resetFilter: { id: 'column.explore.filters.reset', defaultMessage: 'Reset Filters' },
@@ -112,20 +113,25 @@ const PlatformFilters = () => {
   const filterList = useAppSelector((state: RootState) => state.search_filter);
 
   const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const protocol = filterList.slice(1, 4).find((filter) => (filter.name.toLowerCase() === e.target.name.toLowerCase()),
-    )?.value;
     const isChecked = e.target.checked;
+    const matchingFilter = filterList.slice(1, 4).find(
+      (filter) => filter.name.toLowerCase() === e.target.name.toLowerCase(),
+    );
 
-    const checkedCount = filterList.slice(1, 4).filter((filter) => filter.status === true).length === 1;
+    const protocol = matchingFilter?.value;
+    const isLastChecked = filterList.slice(1, 4).filter((filter) => filter.status).length === 1;
 
-    if (!isChecked && checkedCount) {
+    if (!isChecked && isLastChecked) {
       toast.error(messages.atLeast);
       return;
     }
 
-    if (protocol) {
-      dispatch(selectProtocol(protocol));
+    if (!protocol) {
+      console.error(intl.formatMessage(messages.platformsError, { name: e.target.name }));
+      return;
     }
+
+    dispatch(selectProtocol(protocol));
   };
 
   const CustomCheckBox = ({ protocolN } : { protocolN: string }) => {
