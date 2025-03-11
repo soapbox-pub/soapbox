@@ -419,8 +419,6 @@ const ToggleRepliesFilter = () => {
 };
 
 const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, status }: IGenerateFilter) => {
-  const nameLowCase = name.toLowerCase();
-
   let borderColor = '';
   let textColor = '';
 
@@ -461,10 +459,10 @@ const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, s
       dispatch(selectProtocol(value));
     } else if (['reply:false', 'media:true -video:true', 'video:true', '-media:true'].includes(value)) {
       dispatch(changeStatus({ value: value, status: false }));
-    } else if (Object.keys(languages).some((lang) => value.includes(lang))) {
+    } else if (value.includes('language:')) {
       dispatch(changeLanguage('default'));
     } else {
-      dispatch(removeFilter(nameLowCase));
+      dispatch(removeFilter(value));
     }
   };
 
