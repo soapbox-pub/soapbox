@@ -259,7 +259,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onSearch = () => {
     dispatch(setSearchAccount(account.id));
-    history.push('/explorer');
+    history.push('/explore');
   };
 
   const onAvatarClick = () => {

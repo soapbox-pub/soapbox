@@ -166,9 +166,9 @@ const SidebarNavigation = () => {
           )}
 
           <SidebarNavigationLink
-            to='/explorer'
+            to='/explore'
             icon={compassIcon}
-            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explorer' />}
+            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explore' />}
           />
 
           {account && (

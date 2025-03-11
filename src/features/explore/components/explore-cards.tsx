@@ -10,27 +10,27 @@ import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 
 const messages = defineMessages({
-  welcomeTitle: { id: 'column.explorer.welcome_card.title', defaultMessage: 'Welcome to Explorer' },
-  welcomeText: { id: 'column.explorer.welcome_card.text', defaultMessage: 'Explore the world of decentralized social media, dive into {nostrLink} or cross {bridgeLink} to other networks, and connect with a global community. All in one place.' },
-  nostrTitle: { id: 'column.explorer.nostr', defaultMessage: 'Nostr' },
-  bridgeTitle: { id: 'column.explorer.bridge', defaultMessage: 'Bridges' },
+  welcomeTitle: { id: 'column.explore.welcome_card.title', defaultMessage: 'Welcome to Explore' },
+  welcomeText: { id: 'column.explore.welcome_card.text', defaultMessage: 'Explore the world of decentralized social media, dive into {nostrLink} or cross {bridgeLink} to other networks, and connect with a global community. All in one place.' },
+  nostrTitle: { id: 'column.explore.nostr', defaultMessage: 'Nostr' },
+  bridgeTitle: { id: 'column.explore.bridge', defaultMessage: 'Bridges' },
 });
 
-const ExplorerCards = () => {
+const ExploreCards = () => {
   const [isOpen, setIsOpen] = useState(true);
   const intl = useIntl();
 
   const handleClick = () => {
     setIsOpen((prev) => {
       const newValue = !prev;
-      localStorage.setItem('soapbox:explorer:card:status', JSON.stringify(!isOpen));
+      localStorage.setItem('soapbox:explore:card:status', JSON.stringify(!isOpen));
       return newValue;
     });
   };
 
   useEffect(
     () => {
-      const value = localStorage.getItem('soapbox:explorer:card:status');
+      const value = localStorage.getItem('soapbox:explore:card:status');
       if (value !== null) {
         setIsOpen(JSON.parse(value));
       }
@@ -71,4 +71,4 @@ const ExplorerCards = () => {
 };
 
 
-export default ExplorerCards;
+export default ExploreCards;

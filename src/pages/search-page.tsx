@@ -13,14 +13,14 @@ import {
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 
-interface ISearchPage {
+interface IExplorePage {
   children: React.ReactNode;
 }
 
-const SearchPage: React.FC<ISearchPage> = ({ children }) => {
+const ExplorePage: React.FC<IExplorePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
-  const accountsPath = useLocation().pathname === '/explorer/accounts';
+  const accountsPath = useLocation().pathname === '/explore/accounts';
 
   return (
     <>
@@ -56,4 +56,4 @@ const SearchPage: React.FC<ISearchPage> = ({ children }) => {
   );
 };
 
-export default SearchPage;
+export default ExplorePage;

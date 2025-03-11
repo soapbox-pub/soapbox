@@ -96,8 +96,8 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
 
       <ThumbNavigationLink
         src={compassIcon}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Explorer' />}
-        to='/explorer'
+        text={<FormattedMessage id='navigation.search' defaultMessage='Explore' />}
+        to='/explore'
         exact
       />
 

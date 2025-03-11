@@ -13,9 +13,9 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Tabs from 'soapbox/components/ui/tabs.tsx';
 import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
 import Search from 'soapbox/features/compose/components/search.tsx';
-import ExplorerCards from 'soapbox/features/explorer/components/explorer-cards.tsx';
-import ExplorerFilter from 'soapbox/features/explorer/components/explorerFilter.tsx';
-import AccountsCarousel from 'soapbox/features/explorer/components/popular-accounts.tsx';
+import ExploreCards from 'soapbox/features/explore/components/explore-cards.tsx';
+import ExploreFilter from 'soapbox/features/explore/components/exploreFilter.tsx';
+import AccountsCarousel from 'soapbox/features/explore/components/popular-accounts.tsx';
 import { PublicTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -24,11 +24,11 @@ import { IFilters, initialState as filterInitialState } from 'soapbox/reducers/s
 import { SearchFilter } from 'soapbox/reducers/search.ts';
 
 const messages = defineMessages({
-  heading: { id: 'column.explorer', defaultMessage: 'Explorer' },
+  heading: { id: 'column.explore', defaultMessage: 'Explore' },
   accounts: { id: 'search_results.accounts', defaultMessage: 'Accounts' },
   statuses: { id: 'search_results.posts', defaultMessage: 'Posts' },
   trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
-  filters: { id: 'column.explorer.filters', defaultMessage: 'Filters:' },
+  filters: { id: 'column.explore.filters', defaultMessage: 'Filters:' },
 });
 
 const checkFilters = (filters: IFilters[]) => {
@@ -43,7 +43,7 @@ const checkFilters = (filters: IFilters[]) => {
 const PostsTab = () => {
   const path = useLocation().pathname;
   const intl = useIntl();
-  const inPosts = path === '/explorer';
+  const inPosts = path === '/explore';
   const filters = useAppSelector((state) => state.search_filter);
   const isNostr = useFeatures().nostr;
 
@@ -58,11 +58,11 @@ const PostsTab = () => {
       {inPosts && <>
 
         {isNostr && <>
-          <ExplorerCards />
+          <ExploreCards />
 
           <Divider text={intl.formatMessage(messages.filters)} />
 
-          <ExplorerFilter />
+          <ExploreFilter />
 
           <Divider />
         </> }
@@ -102,7 +102,7 @@ const AccountsTab = () => {
 };
 
 
-const SearchPage = () => {
+const ExplorePage = () => {
   const features = useFeatures();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -112,8 +112,8 @@ const SearchPage = () => {
   const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
 
   const selectedValue = useMemo(() => {
-    if (path === '/explorer') return 'posts';
-    if (path === '/explorer/trends') return 'statuses';
+    if (path === '/explore') return 'posts';
+    if (path === '/explore/trends') return 'statuses';
     return 'accounts';
   }, [path]);
 
@@ -155,7 +155,7 @@ const SearchPage = () => {
         selectFilter('statuses');
       }
       setSelectedFilter(filter ?? 'posts');
-      navigate(`/explorer${path}`);
+      navigate(`/explore${path}`);
     };
 
     return <Tabs items={items} activeItem={selectedFilter} />;
@@ -171,9 +171,9 @@ const SearchPage = () => {
         </div>
 
         <Switch>
-          <Route exact path={'/explorer'} component={PostsTab} />
-          {features.nostr && <Route path={'/explorer/trends'} component={TrendsTab} />}
-          <Route path={'/explorer/accounts'} component={AccountsTab} />
+          <Route exact path={'/explore'} component={PostsTab} />
+          {features.nostr && <Route path={'/explore/trends'} component={TrendsTab} />}
+          <Route path={'/explore/accounts'} component={AccountsTab} />
         </Switch>
 
       </Stack>
@@ -182,4 +182,4 @@ const SearchPage = () => {
   );
 };
 
-export default SearchPage;
+export default ExplorePage;

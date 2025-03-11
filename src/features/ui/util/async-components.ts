@@ -57,7 +57,7 @@ export const BirthdaysModal = lazy(() => import('soapbox/features/ui/components/
 export const BirthdayPanel = lazy(() => import('soapbox/components/birthday-panel.tsx'));
 export const ListEditor = lazy(() => import('soapbox/features/list-editor/index.tsx'));
 export const ListAdder = lazy(() => import('soapbox/features/list-adder/index.tsx'));
-export const Search = lazy(() => import('soapbox/features/explorer/index.tsx'));
+export const Explore = lazy(() => import('soapbox/features/explore/index.tsx'));
 export const LoginPage = lazy(() => import('soapbox/features/auth-login/components/login-page.tsx'));
 export const ExternalLogin = lazy(() => import('soapbox/features/external-login/index.tsx'));
 export const LogoutPage = lazy(() => import('soapbox/features/auth-login/components/logout.tsx'));

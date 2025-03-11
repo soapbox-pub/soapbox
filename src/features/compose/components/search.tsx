@@ -17,7 +17,7 @@ import {
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { formatFilters } from 'soapbox/features/explorer/components/explorerFilter.tsx';
+import { formatFilters } from 'soapbox/features/explore/components/exploreFilter.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
@@ -71,7 +71,7 @@ const Search = (props: ISearch) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
-    if (formatFiltersString.length > 0 && path === '/explorer') {
+    if (formatFiltersString.length > 0 && path === '/explore') {
       dispatch(changeSearch(`${formatFiltersString} ${value}`));
     } else {
       dispatch(changeSearch(value));
@@ -96,7 +96,7 @@ const Search = (props: ISearch) => {
       dispatch(setSearchAccount(null));
       dispatch(submitSearch());
 
-      history.push('/explorer');
+      history.push('/explore');
     } else {
       dispatch(submitSearch());
     }

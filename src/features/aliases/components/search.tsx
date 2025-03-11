@@ -10,7 +10,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explorer' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explore' },
 });
 
 const Search: React.FC = () => {

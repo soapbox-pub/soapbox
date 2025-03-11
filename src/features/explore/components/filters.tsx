@@ -14,7 +14,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { IGenerateFilter } from 'soapbox/features/explorer/components/explorerFilter.tsx';
+import { IGenerateFilter } from 'soapbox/features/explore/components/exploreFilter.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -23,28 +23,28 @@ import { AppDispatch, RootState } from 'soapbox/store.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  noReplies: { id: 'column.explorer.filters.no_replies', defaultMessage: 'No Replies:' },
-  media: { id: 'column.explorer.filters.media', defaultMessage: 'Media:' },
-  language: { id: 'column.explorer.filters.language', defaultMessage: 'Language:' },
-  platforms: { id: 'column.explorer.filters.platforms', defaultMessage: 'Platforms:' },
-  atLeast: { id: 'column.explorer.filters.atLeast', defaultMessage: 'At least one platform must remain selected.' },
-  createYourFilter: { id: 'column.explorer.filters.create_your_filter', defaultMessage: 'Create your filter' },
-  resetFilter: { id: 'column.explorer.filters.reset', defaultMessage: 'Reset Filters' },
-  filterByWords: { id: 'column.explorer.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
-  include: { id: 'column.explorer.filters.include', defaultMessage: 'Include' },
-  exclude: { id: 'column.explorer.filters.exclude', defaultMessage: 'Exclude' },
-  nostr: { id: 'column.explorer.filters.nostr', defaultMessage: 'Nostr' },
-  bluesky: { id: 'column.explorer.filters.bluesky', defaultMessage: 'Bluesky' },
-  fediverse: { id: 'column.explorer.filters.fediverse', defaultMessage: 'Fediverse' },
-  cancel: { id: 'column.explorer.filters.cancel', defaultMessage: 'Cancel' },
-  addFilter: { id: 'column.explorer.filters.add_filter', defaultMessage: 'Add Filter' },
-  all: { id: 'column.explorer.media_filters.all', defaultMessage: 'All' },
-  imageOnly: { id: 'column.explorer.media_filters.image', defaultMessage: 'Image only' },
-  videoOnly: { id: 'column.explorer.media_filters.video', defaultMessage: 'Video only' },
-  none: { id: 'column.explorer.media_filters.none', defaultMessage: 'No media' },
-  clearSearch: { id: 'column.explorer.filters.clear_input', defaultMessage: 'Clear filter input' },
-  removeFilter: { id: 'column.explorer.filters.remove_filter', defaultMessage: 'Remove filter: {name}' },
-  empty: { id: 'column.explorer.filters.empty', defaultMessage: 'Hey there... You forget to write the filter!' },
+  noReplies: { id: 'column.explore.filters.no_replies', defaultMessage: 'No Replies:' },
+  media: { id: 'column.explore.filters.media', defaultMessage: 'Media:' },
+  language: { id: 'column.explore.filters.language', defaultMessage: 'Language:' },
+  platforms: { id: 'column.explore.filters.platforms', defaultMessage: 'Platforms:' },
+  atLeast: { id: 'column.explore.filters.atLeast', defaultMessage: 'At least one platform must remain selected.' },
+  createYourFilter: { id: 'column.explore.filters.create_your_filter', defaultMessage: 'Create your filter' },
+  resetFilter: { id: 'column.explore.filters.reset', defaultMessage: 'Reset Filters' },
+  filterByWords: { id: 'column.explore.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
+  include: { id: 'column.explore.filters.include', defaultMessage: 'Include' },
+  exclude: { id: 'column.explore.filters.exclude', defaultMessage: 'Exclude' },
+  nostr: { id: 'column.explore.filters.nostr', defaultMessage: 'Nostr' },
+  bluesky: { id: 'column.explore.filters.bluesky', defaultMessage: 'Bluesky' },
+  fediverse: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
+  cancel: { id: 'column.explore.filters.cancel', defaultMessage: 'Cancel' },
+  addFilter: { id: 'column.explore.filters.add_filter', defaultMessage: 'Add Filter' },
+  all: { id: 'column.explore.media_filters.all', defaultMessage: 'All' },
+  imageOnly: { id: 'column.explore.media_filters.image', defaultMessage: 'Image only' },
+  videoOnly: { id: 'column.explore.media_filters.video', defaultMessage: 'Video only' },
+  none: { id: 'column.explore.media_filters.none', defaultMessage: 'No media' },
+  clearSearch: { id: 'column.explore.filters.clear_input', defaultMessage: 'Clear filter input' },
+  removeFilter: { id: 'column.explore.filters.remove_filter', defaultMessage: 'Remove filter: {name}' },
+  empty: { id: 'column.explore.filters.empty', defaultMessage: 'Hey there... You forget to write the filter!' },
 });
 
 const languages = {
@@ -190,7 +190,7 @@ const CreateFilter = () => {
 
   const handleReset = () => {
     dispatch(resetFilters());
-    localStorage.removeItem('soapbox:explorer:filters');
+    localStorage.removeItem('soapbox:explore:filters');
   };
 
   const handleClearValue = () => {
@@ -471,7 +471,7 @@ const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, s
       key={name}
       className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor} `}
     >
-      {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explorer.filters.language.default' defaultMessage='Global' />}
+      {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explore.filters.language.default' defaultMessage='Global' />}
       <IconButton
         iconClassName='!w-4' className={` !py-0 group-hover:block ${textColor}`} src={xIcon}
         onClick={handleChangeFilters}

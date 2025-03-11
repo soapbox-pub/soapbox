@@ -76,7 +76,7 @@ const SearchZapSplit = (props: ISearchZapSplit) => {
       dispatch(setSearchAccount(null));
       dispatch(submitSearch());
 
-      history.push('/explorer');
+      history.push('/explore');
     } else {
       dispatch(submitSearch());
     }

@@ -13,7 +13,7 @@ import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explorer' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explore' },
 });
 
 const Search = () => {

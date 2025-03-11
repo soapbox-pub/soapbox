@@ -15,7 +15,7 @@ import {
   PlatformFilters,
   ToggleRepliesFilter,
   generateFilter,
-} from 'soapbox/features/explorer/components/filters.tsx';
+} from 'soapbox/features/explore/components/filters.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { IFilters } from 'soapbox/reducers/search-filter.ts';
@@ -35,7 +35,7 @@ export const formatFilters = (filters: IFilters[]): string => {
   return [language, protocols, defaultFilters, newFilters].join(' ').trim();
 };
 
-const ExplorerFilter = () => {
+const ExploreFilter = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.search_filter);
   const intl = useIntl();
@@ -44,7 +44,7 @@ const ExplorerFilter = () => {
   const handleClick = () => {
     setIsOpen((prev) => {
       const newValue = !prev;
-      localStorage.setItem('soapbox:explorer:filter:status', JSON.stringify(newValue));
+      localStorage.setItem('soapbox:explore:filter:status', JSON.stringify(newValue));
       return newValue;
     });
   };
@@ -61,7 +61,7 @@ const ExplorerFilter = () => {
     () => {
       const value = formatFilters(filters);
 
-      localStorage.setItem('soapbox:explorer:filters', JSON.stringify(filters));
+      localStorage.setItem('soapbox:explore:filters', JSON.stringify(filters));
 
       debouncedSearch(value);
 
@@ -74,7 +74,7 @@ const ExplorerFilter = () => {
 
   useEffect(
     () => {
-      const isOpenStatus = localStorage.getItem('soapbox:explorer:filter:status');
+      const isOpenStatus = localStorage.getItem('soapbox:explore:filter:status');
       if (isOpenStatus !== null) {
         setIsOpen(JSON.parse(isOpenStatus));
       }
@@ -127,5 +127,5 @@ const ExplorerFilter = () => {
 };
 
 
-export default ExplorerFilter;
+export default ExploreFilter;
 export type { IGenerateFilter };

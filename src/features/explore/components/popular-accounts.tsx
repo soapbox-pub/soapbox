@@ -22,10 +22,10 @@ import {
 import 'swiper/swiper-bundle.css';
 
 const messages = defineMessages({
-  title: { id: 'column.explorer.popular_accounts', defaultMessage: 'Popular Accounts' },
-  collapse: { id: 'column.explorer.popular_accounts.collapse', defaultMessage: 'Collapse popular accounts' },
-  expand: { id: 'column.explorer.popular_accounts.expand', defaultMessage: 'Expand popular accounts' },
-  error: { id: 'column.explorer.popular_accounts.error', defaultMessage: 'Could not load popular accounts. Please try again later.' },
+  title: { id: 'column.explore.popular_accounts', defaultMessage: 'Popular Accounts' },
+  collapse: { id: 'column.explore.popular_accounts.collapse', defaultMessage: 'Collapse popular accounts' },
+  expand: { id: 'column.explore.popular_accounts.expand', defaultMessage: 'Expand popular accounts' },
+  error: { id: 'column.explore.popular_accounts.error', defaultMessage: 'Could not load popular accounts. Please try again later.' },
 });
 
 const PopularAccounts = ({ id }: { id: string }) => {
@@ -86,14 +86,14 @@ const AccountsCarousel = () => {
   const handleClick = () => {
     setIsOpen((prev) => {
       const newValue = !prev;
-      localStorage.setItem('soapbox:explorer:accounts:status', JSON.stringify(newValue));
+      localStorage.setItem('soapbox:explore:accounts:status', JSON.stringify(newValue));
       return newValue;
     });
   };
 
   useEffect(
     () => {
-      const isOpenStatus = localStorage.getItem('soapbox:explorer:accounts:status');
+      const isOpenStatus = localStorage.getItem('soapbox:explore:accounts:status');
       if (isOpenStatus) {
         setIsOpen(JSON.parse(isOpenStatus));
       }

@@ -9,9 +9,9 @@ import type { AnyAction } from 'redux';
 
 const loadState = (pathname: string) => {
   try {
-    if (pathname !== '/explorer') return undefined;
+    if (pathname !== '/explore') return undefined;
 
-    const savedState = localStorage.getItem('soapbox:explorer:filters');
+    const savedState = localStorage.getItem('soapbox:explore:filters');
     return savedState ? JSON.parse(savedState) : undefined;
   } catch (error) {
     console.error('Failed to load state:', error);
