@@ -380,7 +380,7 @@ const LanguageFilter = () => {
       </Text>
 
       <SelectDropdown
-        key={filter?.name}
+        key={filter?.value}
         className='max-w-[130px]'
         items={languages}
         defaultValue={filter.name.toLowerCase()}
@@ -467,7 +467,7 @@ const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, s
 
   return (
     <div
-      key={name}
+      key={value}
       className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor} `}
     >
       {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explore.filters.language.default' defaultMessage='Global' />}

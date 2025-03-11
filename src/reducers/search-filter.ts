@@ -125,9 +125,10 @@ const search_filter = createSlice({
       const filterWords = action.payload.name.trim();
       const status = action.payload.status;
       const value = status ? filterWords : `-${filterWords.split(' ').join(' -')}`;
-      return state.some((currentState) => currentState.name === filterWords)
-        ? state
-        : [...state, { name: filterWords, status: status, value: value }];
+      if (state.slice(7).some((currentState) => currentState.name === filterWords)) {
+        return state;
+      }
+      return [...state, { name: filterWords, status, value }];
     },
 
     /**
