@@ -51,7 +51,6 @@ const languages = {
   default: 'Global',
   en: 'English',
   ar: 'العربية',
-  ast: 'Asturianu',
   bg: 'Български',
   bn: 'বাংলা',
   ca: 'Català',
