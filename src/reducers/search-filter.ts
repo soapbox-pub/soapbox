@@ -108,12 +108,25 @@ const search_filter = createSlice({
     selectProtocol: (state, action: PayloadAction<string>) => {
       const protocol = action.payload;
       return state.map((currentState) => {
-        const newStatus = !currentState.status;
         if (currentState.value.toLowerCase() !== protocol) return currentState;
+
+        const newStatus = !currentState.status;
+        let newValue = currentState.value;
+
+        if (newStatus) {
+          newValue = currentState.value.startsWith('-')
+            ? currentState.value.slice(1)
+            : currentState.value;
+        } else {
+          newValue = currentState.value.startsWith('-')
+            ? currentState.value
+            : `-${currentState.value}`;
+        }
+
         return {
           ...currentState,
           status: newStatus,
-          value: newStatus ? currentState.value.slice(1) : `-${currentState.value}`,
+          value: newValue,
         };
       });
     },
