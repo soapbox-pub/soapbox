@@ -8,6 +8,16 @@ const baseWalletSchema = z.object({
   balance: z.number(),
 });
 
+const quoteShema = z.object({
+  expiry: z.number(),
+  paid: z.boolean(),
+  quote: z.string(),
+  request: z.string(),
+  state: z.enum(['UNPAID', 'PAID', 'ISSUED']),
+});
+
+type Quote = z.infer<typeof quoteShema>
+
 type WalletData = z.infer<typeof baseWalletSchema>;
 
-export { baseWalletSchema, type WalletData };
+export { baseWalletSchema, quoteShema, type WalletData, type Quote };

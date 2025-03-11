@@ -72,7 +72,7 @@ const MyWallet = () => {
               {walletData ? (
                 <>
                   <CardBody>
-                    <Balance balance={walletData.balance} />
+                    <Balance wallet={walletData} />
                   </CardBody>
 
                   <CardHeader>
