@@ -226,9 +226,9 @@ const submitEvent = () =>
     const method = id === null ? 'POST' : 'PUT';
     const path = id === null ? '/api/v1/pleroma/events' : `/api/v1/pleroma/events/${id}`;
 
-    return api(getState).request(method, path, params).then((response) => response.json()).then((data) => {
+    return api(getState).request(method, path, params).then((response) => response.json()).then(async (data) => {
       dispatch(closeModal('COMPOSE_EVENT'));
-      dispatch(importFetchedStatus(data));
+      await dispatch(importFetchedStatus(data));
       dispatch(submitEventSuccess(data));
       toast.success(
         id ? messages.editSuccess : messages.success,
@@ -268,8 +268,8 @@ const joinEvent = (id: string, participationMessage?: string) =>
 
     return api(getState).post(`/api/v1/pleroma/events/${id}/join`, {
       participation_message: participationMessage,
-    }).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
+    }).then((response) => response.json()).then(async (data) => {
+      await dispatch(importFetchedStatus(data));
       dispatch(joinEventSuccess(data));
       toast.success(
         data.pleroma.event?.join_state === 'pending' ? messages.joinRequestSuccess : messages.joinSuccess,
@@ -310,8 +310,8 @@ const leaveEvent = (id: string) =>
 
     dispatch(leaveEventRequest(status));
 
-    return api(getState).post(`/api/v1/pleroma/events/${id}/leave`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
+    return api(getState).post(`/api/v1/pleroma/events/${id}/leave`).then((response) => response.json()).then(async (data) => {
+      await dispatch(importFetchedStatus(data));
       dispatch(leaveEventSuccess(data));
     }).catch(function(error) {
       dispatch(leaveEventFail(error, status));
@@ -584,7 +584,7 @@ const fetchRecentEvents = () =>
       const next = response.next();
       const data = await response.json();
 
-      dispatch(importFetchedStatuses(data));
+      await dispatch(importFetchedStatuses(data));
       dispatch({
         type: RECENT_EVENTS_FETCH_SUCCESS,
         statuses: data,
@@ -607,7 +607,7 @@ const fetchJoinedEvents = () =>
       const next = response.next();
       const data = await response.json();
 
-      dispatch(importFetchedStatuses(data));
+      await dispatch(importFetchedStatuses(data));
       dispatch({
         type: JOINED_EVENTS_FETCH_SUCCESS,
         statuses: data,

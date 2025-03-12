@@ -31,7 +31,7 @@ const TIMELINE_INSERT = 'TIMELINE_INSERT' as const;
 const MAX_QUEUED_ITEMS = 40;
 
 const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((status: APIEntity) => boolean) | null) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const me = getState().me;
     const ownStatus = status.account?.id === me;
     const hasPendingStatuses = !getState().pending_statuses.isEmpty();
@@ -46,7 +46,7 @@ const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((st
       return;
     }
 
-    dispatch(importFetchedStatus(status));
+    await dispatch(importFetchedStatus(status));
 
     if (shouldSkipQueue) {
       dispatch(updateTimeline(timeline, status.id, accept));

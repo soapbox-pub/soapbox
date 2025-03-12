@@ -96,10 +96,10 @@ const reblog = (status: StatusEntity, effects?: ReblogEffects) =>
     dispatch(reblogRequest(status));
     effects?.reblogEffect(status.id);
 
-    api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then((response) => response.json()).then((data) => {
+    api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then((response) => response.json()).then(async (data) => {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
       // interested in how the original is modified, hence passing it skipping the wrapper
-      dispatch(importFetchedStatus(data.reblog));
+      await dispatch(importFetchedStatus(data.reblog));
       dispatch(reblogSuccess(status));
     }).catch(error => {
       dispatch(reblogFail(status, error));
@@ -626,8 +626,8 @@ const pin = (status: StatusEntity) =>
 
     dispatch(pinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/pin`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
+    api(getState).post(`/api/v1/statuses/${status.id}/pin`).then((response) => response.json()).then(async (data) => {
+      await dispatch(importFetchedStatus(data));
       dispatch(pinSuccess(status));
     }).catch(error => {
       dispatch(pinFail(status, error));
@@ -673,8 +673,8 @@ const unpin = (status: StatusEntity) =>
 
     dispatch(unpinRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.id}/unpin`).then((response) => response.json()).then((data) => {
-      dispatch(importFetchedStatus(data));
+    api(getState).post(`/api/v1/statuses/${status.id}/unpin`).then((response) => response.json()).then(async (data) => {
+      await dispatch(importFetchedStatus(data));
       dispatch(unpinSuccess(status));
     }).catch(error => {
       dispatch(unpinFail(status, error));

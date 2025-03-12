@@ -112,11 +112,11 @@ function fetchReports(params: Record<string, any> = {}) {
     try {
       const response = await api(getState).get('/api/v1/admin/reports', { searchParams: params });
       const reports  = await response.json();
-      reports.forEach((report: APIEntity) => {
+      await Promise.all(reports.map(async (report: APIEntity) => {
         dispatch(importFetchedAccount(report.account?.account));
         dispatch(importFetchedAccount(report.target_account?.account));
-        dispatch(importFetchedStatuses(report.statuses));
-      });
+        await dispatch(importFetchedStatuses(report.statuses));
+      }));
       dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
     } catch (error) {
       dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });

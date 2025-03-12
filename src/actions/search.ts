@@ -82,7 +82,7 @@ const submitSearch = (filter?: SearchFilter) =>
       }
 
       if (data.statuses) {
-        dispatch(importFetchedStatuses(data.statuses));
+        await dispatch(importFetchedStatuses(data.statuses));
       }
 
       dispatch(fetchSearchSuccess(data, value, type, next));
@@ -154,7 +154,7 @@ const expandSearch = (type: SearchFilter) => (dispatch: AppDispatch, getState: (
     }
 
     if (data.statuses) {
-      dispatch(importFetchedStatuses(data.statuses));
+      await dispatch(importFetchedStatuses(data.statuses));
     }
 
     dispatch(expandSearchSuccess(data, value, type, next));

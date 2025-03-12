@@ -29,7 +29,7 @@ const fetchTrendingStatuses = () =>
 
       const statuses = data;
 
-      dispatch(importFetchedStatuses(statuses));
+      await dispatch(importFetchedStatuses(statuses));
       dispatch(fetchTrendingStatusesSuccess(statuses, next));
       return statuses;
     }).catch(error => {
@@ -57,7 +57,7 @@ const expandTrendingStatuses = (path: string) =>
 
       const statuses = data;
 
-      dispatch(importFetchedStatuses(statuses));
+      await dispatch(importFetchedStatuses(statuses));
       dispatch(expandTrendingStatusesSuccess(statuses, next));
     }).catch(error => {
       dispatch(expandTrendingStatusesFail(error));

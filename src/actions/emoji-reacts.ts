@@ -77,8 +77,8 @@ const emojiReact = (status: Status, emoji: string, custom?: string) =>
 
     return api(getState)
       .put(`/api/v1/pleroma/statuses/${status.id}/reactions/${emoji}`)
-      .then((response) => response.json()).then((data) => {
-        dispatch(importFetchedStatus(data));
+      .then((response) => response.json()).then(async (data) => {
+        await dispatch(importFetchedStatus(data));
         dispatch(emojiReactSuccess(status, emoji));
       }).catch((error) => {
         dispatch(emojiReactFail(status, emoji, error));
@@ -93,8 +93,8 @@ const unEmojiReact = (status: Status, emoji: string) =>
 
     return api(getState)
       .delete(`/api/v1/pleroma/statuses/${status.id}/reactions/${emoji}`)
-      .then((response) => response.json()).then((data) => {
-        dispatch(importFetchedStatus(data));
+      .then((response) => response.json()).then(async (data) => {
+        await dispatch(importFetchedStatus(data));
         dispatch(unEmojiReactSuccess(status, emoji));
       }).catch(error => {
         dispatch(unEmojiReactFail(status, emoji, error));

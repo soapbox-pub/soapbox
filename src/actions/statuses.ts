@@ -72,7 +72,7 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
         status.expectsCard = true;
       }
 
-      dispatch(importFetchedStatus(status, idempotencyKey));
+      await dispatch(importFetchedStatus(status, idempotencyKey));
       dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey, editing: !!statusId });
 
       // Poll the backend for the updated card
@@ -80,9 +80,9 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
         const delay = 1000;
 
         const poll = (retries = 5) => {
-          api(getState).get(`/api/v1/statuses/${status.id}`).then((response) => response.json()).then((data) => {
+          api(getState).get(`/api/v1/statuses/${status.id}`).then((response) => response.json()).then(async (data) => {
             if (data?.card) {
-              dispatch(importFetchedStatus(data));
+              await dispatch(importFetchedStatus(data));
             } else if (retries > 0 && response.status === 200) {
               setTimeout(() => poll(retries - 1), delay);
             }
@@ -125,8 +125,8 @@ const fetchStatus = (id: string) => {
 
     dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
 
-    return api(getState).get(`/api/v1/statuses/${id}`).then((response) => response.json()).then((status) => {
-      dispatch(importFetchedStatus(status));
+    return api(getState).get(`/api/v1/statuses/${id}`).then((response) => response.json()).then(async (status) => {
+      await dispatch(importFetchedStatus(status));
       if (status.group) {
         dispatch(fetchGroupRelationships([status.group.id]));
       }
@@ -174,15 +174,15 @@ const fetchContext = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
-    return api(getState).get(`/api/v1/statuses/${id}/context`).then((response) => response.json()).then((context) => {
+    return api(getState).get(`/api/v1/statuses/${id}/context`).then((response) => response.json()).then(async (context) => {
       if (Array.isArray(context)) {
         // Mitra: returns a list of statuses
-        dispatch(importFetchedStatuses(context));
+        await dispatch(importFetchedStatuses(context));
       } else if (typeof context === 'object') {
         // Standard Mastodon API returns a map with `ancestors` and `descendants`
         const { ancestors, descendants } = context;
         const statuses = ancestors.concat(descendants);
-        dispatch(importFetchedStatuses(statuses));
+        await dispatch(importFetchedStatuses(statuses));
         dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
       } else {
         throw context;
@@ -198,11 +198,11 @@ const fetchContext = (id: string) =>
   };
 
 const fetchNext = (statusId: string, next: string) =>
-  async(dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(next);
     const data = await response.json();
 
-    dispatch(importFetchedStatuses(data));
+    await dispatch(importFetchedStatuses(data));
 
     dispatch({
       type: CONTEXT_FETCH_SUCCESS,
@@ -215,18 +215,18 @@ const fetchNext = (statusId: string, next: string) =>
   };
 
 const fetchAncestors = (id: string) =>
-  async(dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/ancestors`);
     const data = await response.json();
-    dispatch(importFetchedStatuses(data));
+    await dispatch(importFetchedStatuses(data));
     return response;
   };
 
 const fetchDescendants = (id: string) =>
-  async(dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const response = await api(getState).get(`/api/v1/statuses/${id}/context/descendants`);
     const data = await response.json();
-    dispatch(importFetchedStatuses(data));
+    await dispatch(importFetchedStatuses(data));
     return response;
   };
 

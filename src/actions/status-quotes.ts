@@ -28,7 +28,7 @@ export const fetchStatusQuotes = (statusId: string) =>
     return api(getState).get(`/api/v1/pleroma/statuses/${statusId}/quotes`).then(async (response) => {
       const next = response.next();
       const data = await response.json();
-      dispatch(importFetchedStatuses(data));
+      await dispatch(importFetchedStatuses(data));
       return dispatch({
         type: STATUS_QUOTES_FETCH_SUCCESS,
         statusId,
@@ -59,7 +59,7 @@ export const expandStatusQuotes = (statusId: string) =>
 
     return api(getState).get(url).then(async (response)  => {
       const data = await response.json();
-      dispatch(importFetchedStatuses(data));
+      await dispatch(importFetchedStatuses(data));
       dispatch({
         type: STATUS_QUOTES_EXPAND_SUCCESS,
         statusId,

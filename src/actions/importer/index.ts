@@ -1,7 +1,7 @@
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
 import { Group, accountSchema, groupSchema, statusSchema } from 'soapbox/schemas/index.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { filteredArray, filteredArrayAsync } from 'soapbox/schemas/utils.ts';
 
 import { getSettings } from '../settings.ts';
 
@@ -103,27 +103,27 @@ const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
     status = result.data;
 
     if (status.reblog?.id) {
-      dispatch(importFetchedStatus(status.reblog));
+      await dispatch(importFetchedStatus(status.reblog));
     }
 
     // Fedibird quotes
     if (status.quote?.id) {
-      dispatch(importFetchedStatus(status.quote));
+      await dispatch(importFetchedStatus(status.quote));
     }
 
     // Pleroma quotes
     if (status.pleroma?.quote?.id) {
-      dispatch(importFetchedStatus(status.pleroma.quote));
+      await dispatch(importFetchedStatus(status.pleroma.quote));
     }
 
     // Fedibird quote from reblog
     if (status.reblog?.quote?.id) {
-      dispatch(importFetchedStatus(status.reblog.quote));
+      await dispatch(importFetchedStatus(status.reblog.quote));
     }
 
     // Pleroma quote from reblog
     if (status.reblog?.pleroma?.quote?.id) {
-      dispatch(importFetchedStatus(status.reblog.pleroma.quote));
+      await dispatch(importFetchedStatus(status.reblog.pleroma.quote));
     }
 
     if (status.poll?.id) {
@@ -144,13 +144,9 @@ const importFetchedStatuses = (statuses: APIEntity[]) =>
     const normalStatuses: APIEntity[] = [];
     const polls: APIEntity[] = [];
 
+    statuses = await filteredArrayAsync(statusSchema).parseAsync(statuses);
+
     async function processStatus(status: APIEntity) {
-      const result = await statusSchema.safeParseAsync(status);
-
-      // Skip broken statuses
-      if (!result.success) return;
-      status = result.data;
-
       normalStatuses.push(status);
       accounts.push(status.account);
 

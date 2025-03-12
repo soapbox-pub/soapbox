@@ -59,7 +59,7 @@ const expandConversations = ({ maxId }: Record<string, any> = {}) => (dispatch: 
       const data = await response.json();
 
       dispatch(importFetchedAccounts(data.reduce((aggr: Array<APIEntity>, item: APIEntity) => aggr.concat(item.accounts), [])));
-      dispatch(importFetchedStatuses(data.map((item: Record<string, any>) => item.last_status).filter((x?: APIEntity) => !!x)));
+      await dispatch(importFetchedStatuses(data.map((item: Record<string, any>) => item.last_status).filter((x?: APIEntity) => !!x)));
       dispatch(expandConversationsSuccess(data, next, isLoadingRecent));
     })
     .catch(err => dispatch(expandConversationsFail(err)));
@@ -81,11 +81,11 @@ const expandConversationsFail = (error: unknown) => ({
   error,
 });
 
-const updateConversations = (conversation: APIEntity) => (dispatch: AppDispatch) => {
+const updateConversations = (conversation: APIEntity) => async (dispatch: AppDispatch) => {
   dispatch(importFetchedAccounts(conversation.accounts));
 
   if (conversation.last_status) {
-    dispatch(importFetchedStatus(conversation.last_status));
+    await dispatch(importFetchedStatus(conversation.last_status));
   }
 
   return dispatch({

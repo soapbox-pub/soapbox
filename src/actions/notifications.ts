@@ -58,7 +58,7 @@ const fetchRelatedRelationships = (dispatch: AppDispatch, notifications: APIEnti
 };
 
 const updateNotifications = (notification: APIEntity) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
 
     if (notification.account) {
@@ -71,7 +71,7 @@ const updateNotifications = (notification: APIEntity) =>
     }
 
     if (notification.status) {
-      dispatch(importFetchedStatus(notification.status));
+      await dispatch(importFetchedStatus(notification.status));
     }
 
     if (showInColumn) {
@@ -235,7 +235,7 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       }, { accounts: {}, statuses: {} });
 
       dispatch(importFetchedAccounts(Object.values(entries.accounts)));
-      dispatch(importFetchedStatuses(Object.values(entries.statuses)));
+      await dispatch(importFetchedStatuses(Object.values(entries.statuses)));
 
       const statusesFromGroups = (Object.values(entries.statuses) as Status[]).filter((status) => !!status.group);
       dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));
