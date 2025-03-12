@@ -173,7 +173,7 @@ const expandTimeline = (timelineId: string, path: string, params: Record<string,
       const { next, prev } = response.pagination();
       const data: APIEntity[] = await response.json();
 
-      dispatch(importFetchedStatuses(data));
+      await dispatch(importFetchedStatuses(data));
 
       const statusesFromGroups = (data as Status[]).filter((status) => !!status.group);
       dispatch(fetchGroupRelationships(statusesFromGroups.map((status: any) => status.group?.id)));

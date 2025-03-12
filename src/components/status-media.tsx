@@ -73,8 +73,9 @@ const StatusMedia: React.FC<IStatusMedia> = ({
             blurhash={video.blurhash ?? undefined}
             src={video.url}
             alt={video.description}
-            aspectRatio={Number(video.meta?.original?.aspect)}
-            height={285}
+            aspectRatio={video.meta?.original?.aspect}
+            height={video?.meta?.original?.height}
+            width={video?.meta?.original?.width}
             visible={showMedia}
             inline
           />

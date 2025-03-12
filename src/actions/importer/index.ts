@@ -1,6 +1,6 @@
 import { importEntities } from 'soapbox/entity-store/actions.ts';
 import { Entities } from 'soapbox/entity-store/entities.ts';
-import { Group, accountSchema, groupSchema } from 'soapbox/schemas/index.ts';
+import { Group, accountSchema, groupSchema, statusSchema } from 'soapbox/schemas/index.ts';
 import { filteredArray } from 'soapbox/schemas/utils.ts';
 
 import { getSettings } from '../settings.ts';
@@ -95,9 +95,12 @@ const importFetchedGroups = (groups: APIEntity[]) => {
 };
 
 const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
-  (dispatch: AppDispatch) => {
+  async (dispatch: AppDispatch) => {
+    const result = await statusSchema.safeParseAsync(status);
+
     // Skip broken statuses
-    if (isBroken(status)) return;
+    if (!result.success) return;
+    status = result.data;
 
     if (status.reblog?.id) {
       dispatch(importFetchedStatus(status.reblog));
@@ -135,31 +138,18 @@ const importFetchedStatus = (status: APIEntity, idempotencyKey?: string) =>
     dispatch(importStatus(status, idempotencyKey));
   };
 
-// Sometimes Pleroma can return an empty account,
-// or a repost can appear of a deleted account. Skip these statuses.
-const isBroken = (status: APIEntity) => {
-  try {
-    // Skip empty accounts
-    // https://gitlab.com/soapbox-pub/soapbox/-/issues/424
-    if (!status.account.id) return true;
-    // Skip broken reposts
-    // https://gitlab.com/soapbox-pub/rebased/-/issues/28
-    if (status.reblog && !status.reblog.account.id) return true;
-    return false;
-  } catch (e) {
-    return true;
-  }
-};
-
 const importFetchedStatuses = (statuses: APIEntity[]) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     const accounts: APIEntity[] = [];
     const normalStatuses: APIEntity[] = [];
     const polls: APIEntity[] = [];
 
-    function processStatus(status: APIEntity) {
+    async function processStatus(status: APIEntity) {
+      const result = await statusSchema.safeParseAsync(status);
+
       // Skip broken statuses
-      if (isBroken(status)) return;
+      if (!result.success) return;
+      status = result.data;
 
       normalStatuses.push(status);
       accounts.push(status.account);
@@ -186,7 +176,7 @@ const importFetchedStatuses = (statuses: APIEntity[]) =>
       }
     }
 
-    statuses.forEach(processStatus);
+    await Promise.all((statuses.map(processStatus)));
 
     dispatch(importPolls(polls));
     dispatch(importFetchedAccounts(accounts));

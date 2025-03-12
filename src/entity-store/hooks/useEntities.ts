@@ -6,7 +6,7 @@ import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { filteredArrayAsync } from 'soapbox/schemas/utils.ts';
 import { realNumberSchema } from 'soapbox/utils/numbers.tsx';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions.ts';
@@ -58,7 +58,7 @@ function useEntities<TEntity extends Entity>(
   const next = useListState(path, 'next');
   const prev = useListState(path, 'prev');
 
-  const fetchPage = async(req: EntityFn<void>, pos: 'start' | 'end', overwrite = false): Promise<void> => {
+  const fetchPage = async (req: EntityFn<void>, pos: 'start' | 'end', overwrite = false): Promise<void> => {
     // Get `isFetching` state from the store again to prevent race conditions.
     const isFetching = selectListState(getState(), path, 'fetching');
     if (isFetching) return;
@@ -67,7 +67,7 @@ function useEntities<TEntity extends Entity>(
     try {
       const response = await req();
       const json = await response.json();
-      const entities = filteredArray(schema).parse(json);
+      const entities = await filteredArrayAsync(schema).parseAsync(json);
       const parsedCount = realNumberSchema.safeParse(response.headers.get('x-total-count'));
       const totalCount = parsedCount.success ? parsedCount.data : undefined;
       const linkHeader = response.headers.get('link');

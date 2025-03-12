@@ -67,7 +67,7 @@ export function useReaction() {
 
     try {
       const response = await api.put(`/api/v1/pleroma/statuses/${status.id}/reactions/${emoji}`);
-      const result = statusSchema.parse(await response.json());
+      const result = await statusSchema.parseAsync(await response.json());
       if (result) {
         dispatch(importEntities([result], Entities.STATUSES));
       }
@@ -82,7 +82,7 @@ export function useReaction() {
 
     try {
       const response = await api.delete(`/api/v1/pleroma/statuses/${status.id}/reactions/${emoji}`);
-      const result = statusSchema.parse(await response.json());
+      const result = await statusSchema.parseAsync(await response.json());
       if (result) {
         dispatch(importEntities([result], Entities.STATUSES));
       }

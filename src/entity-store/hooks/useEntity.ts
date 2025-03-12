@@ -47,7 +47,7 @@ function useEntity<TEntity extends Entity>(
     try {
       const response = await setPromise(entityFn());
       const json = await response.json();
-      const entity = schema.parse(json);
+      const entity = await schema.parseAsync(json);
       dispatch(importEntities([entity], entityType));
     } catch (e) {
       setError(e);

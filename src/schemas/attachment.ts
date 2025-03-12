@@ -83,13 +83,74 @@ const attachmentSchema = z.discriminatedUnion('type', [
   gifvAttachmentSchema,
   audioAttachmentSchema,
   unknownAttachmentSchema,
-]).transform((attachment) => {
+]).transform(async (attachment) => {
   if (!attachment.preview_url) {
     attachment.preview_url = attachment.url;
   }
 
+  if (attachment.type === 'image') {
+    if (!attachment.meta.original) {
+      try {
+        const { width, height } = await getImageDimensions(attachment.url);
+        attachment.meta.original = { width, height, aspect: width / height };
+      } catch {
+        // Image metadata is not available
+      }
+    }
+  }
+
+  if (attachment.type === 'video') {
+    if (!attachment.meta.original) {
+      try {
+        const { width, height } = await getVideoDimensions(attachment.url);
+        attachment.meta.original = { width, height, aspect: width / height };
+      } catch {
+        // Video metadata is not available
+      }
+    }
+  }
+
   return attachment;
 });
+
+async function getImageDimensions(url: string): Promise<{ width: number; height: number }> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  return await new Promise((resolve, reject) => {
+    const img = new Image();
+
+    img.onload = () => {
+      resolve({ width: img.width, height: img.height });
+      URL.revokeObjectURL(img.src); // Cleanup
+    };
+
+    img.onerror = reject;
+    img.src = URL.createObjectURL(blob);
+  });
+}
+
+async function getVideoDimensions(url: string): Promise<{ width: number; height: number }> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  return await new Promise((resolve, reject) => {
+    const video = document.createElement('video');
+    video.preload = 'metadata';
+
+    video.onloadedmetadata = () => {
+      video.currentTime = 0.1; // Force processing of video frames
+    };
+
+    video.onseeked = () => {
+      resolve({ width: video.videoWidth, height: video.videoHeight });
+      URL.revokeObjectURL(video.src);
+    };
+
+    video.onerror = reject;
+    video.src = URL.createObjectURL(blob);
+  });
+}
 
 type Attachment = z.infer<typeof attachmentSchema>;
 

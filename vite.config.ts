@@ -131,13 +131,13 @@ function buildCSP(env: string | undefined): string {
     csp.push(
       "connect-src 'self' blob: https: wss: http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:*",
       "img-src 'self' data: blob: https: http://localhost:* http://127.0.0.1:*",
-      "media-src 'self' https: http://localhost:* http://127.0.0.1:*",
+      "media-src 'self' blob: https: http://localhost:* http://127.0.0.1:*",
     );
   } else {
     csp.push(
       "connect-src 'self' blob: https: wss:",
       "img-src 'self' data: blob: https:",
-      "media-src 'self' https:",
+      "media-src 'self' blob: https:",
     );
   }
 

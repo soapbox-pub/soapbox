@@ -13,7 +13,7 @@ import { groupSchema } from './group.ts';
 import { mentionSchema } from './mention.ts';
 import { pollSchema } from './poll.ts';
 import { tagSchema } from './tag.ts';
-import { contentSchema, dateSchema, filteredArray } from './utils.ts';
+import { contentSchema, dateSchema, filteredArray, filteredArrayAsync } from './utils.ts';
 
 import type { Resolve } from 'soapbox/utils/types.ts';
 
@@ -48,7 +48,7 @@ const baseStatusSchema = z.object({
   in_reply_to_id: z.string().nullable().catch(null),
   id: z.string(),
   language: z.string().nullable().catch(null),
-  media_attachments: filteredArray(attachmentSchema),
+  media_attachments: filteredArrayAsync(attachmentSchema),
   mentions: filteredArray(mentionSchema),
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),

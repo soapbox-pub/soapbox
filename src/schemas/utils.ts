@@ -17,6 +17,19 @@ function filteredArray<T extends z.ZodTypeAny>(schema: T) {
     ));
 }
 
+/** Validates individual items in an async array schema, dropping any that aren't valid. */
+function filteredArrayAsync<T extends z.ZodTypeAny>(schema: T) {
+  return z.any().array().catch([])
+    .transform(async (arr) => {
+      const results = await Promise.all(arr.map(async (item) => {
+        const parsed = await schema.safeParseAsync(item);
+        return parsed.success ? parsed.data : undefined;
+      }));
+
+      return results.filter((item): item is z.infer<T> => Boolean(item));
+    });
+}
+
 /** Validates the string as an emoji. */
 const emojiSchema = z.string().refine((v) => /\p{Extended_Pictographic}|[\u{1F1E6}-\u{1F1FF}]{2}/u.test(v));
 
@@ -42,4 +55,4 @@ function coerceObject<T extends z.ZodRawShape>(shape: T) {
 /** Validates a hex color code. */
 const hexColorSchema = z.string().regex(/^#([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i);
 
-export { filteredArray, hexColorSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
+export { filteredArray, filteredArrayAsync, hexColorSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
