@@ -1,11 +1,13 @@
 // import IconButton from 'soapbox/components/ui/icon-button.tsx';
+import arrowBackIcon from '@tabler/icons/outline/arrow-back-up.svg';
 import cancelIcon from '@tabler/icons/outline/cancel.svg';
 import withdrawIcon from '@tabler/icons/outline/cash.svg';
 import mIcon from '@tabler/icons/outline/circle-dotted-letter-m.svg';
+import creditCardPayIcon from '@tabler/icons/outline/credit-card-pay.svg';
 import libraryPlusIcon from '@tabler/icons/outline/library-plus.svg';
 import exchangeIcon from '@tabler/icons/outline/transfer.svg';
 import QRCode from 'qrcode.react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
@@ -20,7 +22,7 @@ import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { Quote, WalletData, quoteShema } from 'soapbox/schemas/wallet.ts';
+import { WalletData, baseWalletSchema, quoteShema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 
@@ -30,6 +32,8 @@ const messages = defineMessages({
   withdraw: { id: 'my_wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
   exchange: { id: 'my_wallet.balance.exchange_button', defaultMessage: 'Exchange' },
   mint: { id: 'my_wallet.balance.mint_button', defaultMessage: 'Mint' },
+  paidMessage: { id: 'my_wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your cashus are now in your balance. Enjoy!' },
+  unpaidMessage: { id: 'my_wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your cashus.' },
 });
 
 interface AmountProps {
@@ -39,9 +43,19 @@ interface AmountProps {
 
 interface NewMintProps {
   list: string[];
-  onCancel: () => void;
+  onBack: () => void;
+  onChange: () => void;
 }
 
+const openExtension = async (invoice: string) => {
+  try {
+    await window.webln?.enable();
+    await window.webln?.sendPayment(invoice);
+    return undefined;
+  } catch (e) {
+    return invoice;
+  }
+};
 
 const Amount = ({ amount, onMintClick }: AmountProps) => {
   const intl = useIntl();
@@ -65,62 +79,102 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
   );
 };
 
-const NewMint = ({ onCancel, list }: NewMintProps) => {
+const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const [mintAmount, setMintAmount] = useState('');
-  const [quote, setQuote] = useState<Quote>();
+  const [quote, setQuote] = useState(() => {
+    const storedQuote = localStorage.getItem('soapbox:my_wallet:quote');
+    return storedQuote ? JSON.parse(storedQuote) : undefined;
+  });
   const [mintName, setMintName] = useState(list[0]);
+  const [hasProcessedQuote, setHasProcessedQuote] = useState(false);
+  const [currentState, setCurrentState] = useState<'loading' | 'paid' | 'default'>('default');
   const api = useApi();
+  const intl = useIntl();
+
+  const handleClean = useCallback(() => {
+    setQuote(undefined);
+    setMintAmount('');
+    localStorage.removeItem('soapbox:my_wallet:quote');
+  }, []);
+
+  const checkQuoteStatus = async (quoteId: string): Promise<void> => {
+    try {
+      const response = await api.post(`/api/v1/ditto/cashu/mint/${quoteId}`);
+      const data = await response.json();
+      if (data.state !== 'ISSUED') {
+        toast.error(intl.formatMessage(messages.unpaidMessage));
+        setCurrentState('paid');
+      } else {
+        toast.success(intl.formatMessage(messages.paidMessage));
+        onChange();
+        onBack();
+        handleClean();
+        setCurrentState('default');
+      }
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setCurrentState('loading');
     if (!quote) {
-      const amountFormatted = Number(mintAmount);
-
-      const mintQuote = {
-        mint: mintName,
-        amount: amountFormatted,
-      };
-
       try {
-        const response = await api.post('/api/v1/ditto/cashu/quote', mintQuote);
-
-        const data = await response.json();
-
-        const quote = quoteShema.parse(data);
-
-        setQuote(quote);
-
-      } catch (error) {
-        toast.error('An error had occured'); // TO DO : create translated text
+        const response = await api.post('/api/v1/ditto/cashu/quote', { mint: mintName, amount: Number(mintAmount) });
+        const newQuote = quoteShema.parse(await response.json());
+        localStorage.setItem('soapbox:my_wallet:quote', JSON.stringify(newQuote));
+        setQuote(newQuote);
+        setHasProcessedQuote(true);
+        if (!(await openExtension(newQuote.request))) checkQuoteStatus(newQuote.quote);
+      } catch {
+        toast.error('An error occurred');
       }
-      // } else {
-      //   try {
-      //     const response = await api.post(`/api/v1/ditto/cashu/mint/${quote.quote}`);
-
-      //     // const data = await response.json();
-
-    //   } catch (error) {
-    //     toast.error('An error had occured'); // TO DO : create translated text
-    //   }
+      setCurrentState('paid');
+    } else {
+      checkQuoteStatus(quote.quote);
     }
+    // setHasProcessedQuote(true);
   };
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
     const index = Number(e.target.value);
     const item = list[index];
-
     setMintName(item);
   };
 
-  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (!value || /^[0-9]+$/.test(value)) {
-      setMintAmount(value);
-    }
-  };
+  useEffect(() => {
+    const processQuote = async () => {
+      if (quote && !hasProcessedQuote) {
+        const invoice = await openExtension(quote.request);
+        if (invoice === undefined) {
+          await checkQuoteStatus(quote.quote);
+        }
+        setHasProcessedQuote(true);
+      }
+    };
+
+    processQuote();
+  }, [quote, hasProcessedQuote]);
 
   const mintList: Record<string, string> = Object.fromEntries(list.map((item, index) => [`${index}`, item]));
 
+  const buttonState = {
+    loading: {
+      textButton: 'Loading...',
+      iconButton: '',
+    },
+    paid: {
+      textButton: 'Mint paid',
+      iconButton: creditCardPayIcon,
+    },
+    default: {
+      textButton: 'Mint',
+      iconButton: mIcon,
+    },
+  };
+
+  const { textButton, iconButton } = buttonState[currentState];
   return (
     <Form onSubmit={handleSubmit}>
       <Stack space={6}>
@@ -135,7 +189,7 @@ const NewMint = ({ onCancel, list }: NewMintProps) => {
               type='number'
               // name='amount'
               value={mintAmount}
-              onChange={handleAmountChange}
+              onChange={(e) => /^[0-9]*$/.test(e.target.value) && setMintAmount(e.target.value)}
               autoCapitalize='off'
               required
             />
@@ -144,39 +198,60 @@ const NewMint = ({ onCancel, list }: NewMintProps) => {
           : <Stack space={3} justifyContent='center' alignItems='center'>
             {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text>
-              Paga garai:
+              Solta a carta garai tigr...
             </Text>
 
-            <CopyableInput value={quote.request} />
-
             <QRCode className='rounded-lg' value={quote.request} includeMargin />
+
+            <CopyableInput value={quote.request} />
 
           </Stack>
         }
 
         <HStack grow space={2} justifyContent='center'>
-          <Button icon={cancelIcon} theme='secondary' text='Cancel' onClick={onCancel} />
-          <Button icon={mIcon} type='submit' theme='primary' text='Mint' />
+          <Button icon={arrowBackIcon} theme='secondary' text='Back' onClick={onBack} />
+          <Button icon={cancelIcon} theme='danger' text='Cancel' onClick={handleClean} />
+          <Button icon={iconButton} type='submit' theme='primary' text={textButton} />
         </HStack>
       </Stack>
     </Form>
   );
 };
 
-const Balance = ({ wallet }: { wallet: WalletData}) => {
-
-  const amount = wallet.balance;
+const Balance = () => {
+  const [amount, setAmount] = useState(0);
+  const [mints, setMints] = useState<string[]>([]);
   const { account } = useOwnAccount();
   const [current, setCurrent] = useState<keyof typeof items>('balance');
+  const api = useApi();
+
+  const fetchWallet = async () => {
+    try {
+      const response = await api.get('/api/v1/ditto/cashu/wallet');
+      const data: WalletData = await response.json();
+      if (data) {
+        const normalizedData = baseWalletSchema.parse(data);
+        setMints([...normalizedData.mints]);
+        setAmount(normalizedData.balance);
+      }
+
+    } catch (error) {
+      toast.error('Wallet not found');
+    }
+  };
+
+  const items = {
+    balance: <Amount amount={amount} onMintClick={() => setCurrent('newMint')} />,
+    newMint: <NewMint onBack={() => setCurrent('balance')} list={mints} onChange={fetchWallet} />,
+  };
+
+  useEffect(() => {
+    fetchWallet();
+  }, []);
 
   if (!account) {
     return null;
   }
-
-  const items = {
-    balance: <Amount amount={amount} onMintClick={() => setCurrent('newMint')} />,
-    newMint: <NewMint onCancel={() => setCurrent('balance')} list={wallet.mints} />,
-  };
 
   return (
     <Stack className='rounded-lg border p-6' alignItems='center' space={4}>

@@ -1115,6 +1115,8 @@
   "my_wallet.balance.exchange_button": "Exchange",
   "my_wallet.balance.sats": "{amount} sats",
   "my_wallet.balance.withdraw_button": "Withdraw",
+  "my_wallet.balance.mint.paid_message": "Your mint was successful, and your cashus are now in your balance. Enjoy!",
+  "my_wallet.balance.mint.unpaid_message": "Your mint is still unpaid. Complete the payment to receive your cashus.",
   "my_wallet.create_wallet.button": "Create wallet",
   "my_wallet.create_wallet.question": "Do you want create one?",
   "my_wallet.create_wallet.title": "You don't have a wallet",
