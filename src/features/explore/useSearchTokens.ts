@@ -17,18 +17,22 @@ export const useSearchTokens = create<SearchTokensState>()(
     tokens: new Set(),
 
     addToken(token: string): void {
-      setState((state) => {
-        return produce(state, (draft) => {
-          draft.tokens.add(token);
+      if (token) {
+        setState((state) => {
+          return produce(state, (draft) => {
+            draft.tokens.add(token);
+          });
         });
-      });
+      }
     },
 
     addTokens(tokens: string[]): void {
       setState((state) => {
         return produce(state, (draft) => {
           for (const token of tokens) {
-            draft.tokens.add(token);
+            if (token) {
+              draft.tokens.add(token);
+            }
           }
         });
       });

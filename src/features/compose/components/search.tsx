@@ -17,6 +17,7 @@ import {
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
@@ -56,6 +57,7 @@ const Search = (props: ISearch) => {
   const history = useHistory();
   const intl = useIntl();
   const [inputValue, setInputValue] = useState('');
+  const { addToken } = useSearchTokens();
 
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
@@ -85,11 +87,12 @@ const Search = (props: ISearch) => {
 
   const handleSubmit = () => {
     if (openInRoute) {
+      addToken(value);
       dispatch(setSearchAccount(null));
       dispatch(submitSearch());
-
       history.push('/explore');
     } else {
+      addToken(value);
       dispatch(submitSearch());
     }
   };
