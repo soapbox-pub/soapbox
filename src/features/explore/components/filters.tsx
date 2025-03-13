@@ -324,17 +324,10 @@ const MediaFilter = () => {
 
 const LanguageFilter = () => {
   const intl = useIntl();
-  const { tokens, addToken, removeToken } = useSearchTokens();
+  const { tokens, addToken } = useSearchTokens();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
-
-    for (const token in tokens) {
-      if (token.startsWith('language:')) {
-        removeToken(token);
-      }
-    }
-
     addToken(`language:${language}`);
   };
 
