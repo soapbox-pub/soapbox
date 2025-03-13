@@ -20,24 +20,23 @@ import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   showReplies: { id: 'home.column_settings.show_replies', defaultMessage: 'Show replies' },
-  media: { id: 'column.explore.filters.media', defaultMessage: 'Media:' },
-  language: { id: 'column.explore.filters.language', defaultMessage: 'Language:' },
-  platforms: { id: 'column.explore.filters.platforms', defaultMessage: 'Platforms:' },
+  media: { id: 'column.explore.filters.media', defaultMessage: 'Media' },
+  language: { id: 'column.explore.filters.language', defaultMessage: 'Language' },
+  platforms: { id: 'column.explore.filters.platforms', defaultMessage: 'Platforms' },
   createYourFilter: { id: 'column.explore.filters.create_your_filter', defaultMessage: 'Create your filter' },
   resetFilter: { id: 'column.explore.filters.reset', defaultMessage: 'Reset Filters' },
-  filterByWords: { id: 'column.explore.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
+  filterByWords: { id: 'column.explore.filters.filter_by_words', defaultMessage: 'Filter word' },
   negative: { id: 'column.explore.filters.invert', defaultMessage: 'Invert' },
   nostr: { id: 'column.explore.filters.nostr', defaultMessage: 'Nostr' },
   atproto: { id: 'column.explore.filters.bluesky', defaultMessage: 'Bluesky' },
   activitypub: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
   cancel: { id: 'column.explore.filters.cancel', defaultMessage: 'Cancel' },
   addFilter: { id: 'column.explore.filters.add_filter', defaultMessage: 'Add Filter' },
-  all: { id: 'column.explore.media_filters.all', defaultMessage: 'All' },
+  allMedia: { id: 'column.explore.media_filters.all_media', defaultMessage: 'All media' },
   imageOnly: { id: 'column.explore.media_filters.image', defaultMessage: 'Image only' },
   videoOnly: { id: 'column.explore.media_filters.video', defaultMessage: 'Video only' },
-  none: { id: 'column.explore.media_filters.none', defaultMessage: 'No media' },
+  noMedia: { id: 'column.explore.media_filters.no_media', defaultMessage: 'No media' },
   clearSearch: { id: 'column.explore.filters.clear_input', defaultMessage: 'Clear filter input' },
-  removeFilter: { id: 'column.explore.filters.remove_filter', defaultMessage: 'Remove filter: {name}' },
   empty: { id: 'column.explore.filters.empty', defaultMessage: 'Hey there... You forget to write the filter!' },
 });
 
@@ -235,7 +234,6 @@ const WordFilter = () => {
             </div>
           </div>
 
-          {/* Include */}
           <HStack alignItems='center' space={2}>
             <Checkbox
               name='negative'
@@ -273,7 +271,7 @@ const MediaFilter = () => {
   const mediaFilters = {
     all: {
       tokens: [],
-      label: intl.formatMessage(messages.all),
+      label: intl.formatMessage(messages.allMedia),
     },
     image: {
       tokens: ['media:true', '-video:true'],
@@ -285,7 +283,7 @@ const MediaFilter = () => {
     },
     none: {
       tokens: ['-media:true'],
-      label: intl.formatMessage(messages.none),
+      label: intl.formatMessage(messages.noMedia),
     },
   };
 

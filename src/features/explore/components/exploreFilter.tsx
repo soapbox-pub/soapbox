@@ -1,7 +1,8 @@
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
+import xIcon from '@tabler/icons/outline/x.svg';
 import { debounce } from 'es-toolkit';
 import { useEffect, useMemo, useState } from 'react';
-// import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { changeSearch, submitSearch } from 'soapbox/actions/search.ts';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -18,16 +19,22 @@ import {
 import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 
-interface IGenerateFilter {
-  name: string;
-  status: boolean | null;
-  value: string;
-}
+const messages = defineMessages({
+  allMedia: { id: 'column.explore.media_filters.all_media', defaultMessage: 'All media' },
+  imageOnly: { id: 'column.explore.media_filters.image', defaultMessage: 'Image only' },
+  videoOnly: { id: 'column.explore.media_filters.video', defaultMessage: 'Video only' },
+  noMedia: { id: 'column.explore.media_filters.no_media', defaultMessage: 'No media' },
+  showReplies: { id: 'home.column_settings.show_replies', defaultMessage: 'Show replies' },
+  nostr: { id: 'column.explore.filters.nostr', defaultMessage: 'Nostr' },
+  atproto: { id: 'column.explore.filters.bluesky', defaultMessage: 'Bluesky' },
+  activitypub: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
+  removeFilter: { id: 'column.explore.filters.remove_filter', defaultMessage: 'Remove filter' },
+});
 
 const ExploreFilter = () => {
-  // const intl = useIntl();
+  const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { tokens } = useSearchTokens();
+  const { tokens, addToken, removeToken, removeTokens } = useSearchTokens();
   const [isOpen, setIsOpen] = useState(false);
 
   const handleClick = () => {
@@ -66,14 +73,106 @@ const ExploreFilter = () => {
     }
     , []);
 
+  const filters = new Set<string>(['protocol:nostr', 'protocol:atproto', 'protocol:activitypub']);
+
+  for (const token of tokens) {
+    if (token.startsWith('-protocol:')) {
+      filters.delete(token.replace(/^-/, ''));
+    }
+    filters.add(token);
+  }
+
+  function renderMediaFilter(): JSX.Element | null {
+    const clearMediaFilters = () => removeTokens(['media:true', '-video:true', 'video:true', '-media:true']);
+
+    if (tokens.has('media:true') && tokens.has('-video:true')) {
+      return (
+        <FilterToken
+          label={intl.formatMessage(messages.imageOnly)}
+          textColor='text-blue-500'
+          borderColor='border-blue-500'
+          onRemove={clearMediaFilters}
+        />
+      );
+    }
+
+    if (tokens.has('video:true')) {
+      return (
+        <FilterToken
+          label={intl.formatMessage(messages.videoOnly)}
+          textColor='text-blue-500'
+          borderColor='border-blue-500'
+          onRemove={clearMediaFilters}
+        />
+      );
+    }
+
+    if (tokens.has('-media:true')) {
+      return (
+        <FilterToken
+          label={intl.formatMessage(messages.noMedia)}
+          textColor='text-blue-500'
+          borderColor='border-blue-500'
+          onRemove={clearMediaFilters}
+        />
+      );
+    }
+
+    return null;
+  }
+
   return (
     <Stack className='px-4' space={3}>
-
-      {/* Filters */}
       <HStack alignItems='start' justifyContent='between' space={1}>
         <HStack className='flex-wrap whitespace-normal' alignItems='center'>
-          {/* {tokens.size > 0 && [...filters.slice(0, 8).filter((value) => value.status).map((value) => generateFilter(dispatch, intl, value)), ...filters.slice(8).map((value) => generateFilter(dispatch, intl, value))]} */}
+          {!tokens.has('-protocol:nostr') ? (
+            <FilterToken
+              label={intl.formatMessage(messages.nostr)}
+              textColor='text-purple-500'
+              borderColor='border-purple-500'
+              onRemove={() => addToken('-protocol:nostr')}
+            />
+          ) : null}
 
+          {!tokens.has('-protocol:atproto') ? (
+            <FilterToken
+              label={intl.formatMessage(messages.atproto)}
+              textColor='text-blue-500'
+              borderColor='border-blue-500'
+              onRemove={() => addToken('-protocol:atproto')}
+            />
+          ) : null}
+
+          {!tokens.has('-protocol:activitypub') ? (
+            <FilterToken
+              label={intl.formatMessage(messages.activitypub)}
+              textColor='text-indigo-500'
+              borderColor='border-indigo-500'
+              onRemove={() => addToken('-protocol:activitypub')}
+            />
+          ) : null}
+
+          {renderMediaFilter()}
+
+          {[...filters].filter((token) => token.startsWith('language:')).map((token) => (
+            <FilterToken
+              key={token}
+              label={token.replace('language:', '')}
+              textColor='text-gray-500'
+              borderColor='border-gray-500'
+              onRemove={() => removeToken(token)}
+            />
+          ))}
+
+          {[...filters].filter((token) => !token.includes(':')).map((token) => (
+            <FilterToken
+              key={token}
+              label={token}
+              textColor='text-green-500'
+              borderColor='border-green-600'
+              onRemove={() => removeToken(token)}
+            />
+          ))}
         </HStack>
         <IconButton
           src={arrowIcon}
@@ -84,93 +183,44 @@ const ExploreFilter = () => {
       </HStack>
 
       <Stack className={`overflow-hidden transition-all duration-500 ease-in-out  ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={3}>
-
-        {/* Show Reply toggle */}
         <ToggleRepliesFilter />
-
-        {/* Media toggle */}
         <MediaFilter />
-
-        {/* Language */}
         <LanguageFilter />
-
-        {/* Platforms */}
         <PlatformFilters />
 
         <Divider />
 
-        {/* Create your filter */}
         <WordFilter />
-
       </Stack>
-
     </Stack>
   );
 };
 
-// const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, status }: IGenerateFilter) => {
-//   let borderColor = '';
-//   let textColor = '';
+interface IFilterToken {
+  label: string;
+  textColor: string;
+  borderColor: string;
+  onRemove: () => void;
+}
 
-//   if (Object.keys(languages).some((lang) => value.includes('language:'))) {
-//     borderColor = 'border-gray-500';
-//     textColor = 'text-gray-500';
-//   } else {
-//     switch (value) {
-//       case 'reply:false':
-//       case 'media:true -video:true':
-//       case 'video:true':
-//       case '-media:true':
-//         borderColor = 'border-gray-500';
-//         textColor = 'text-gray-500';
-//         break;
-//       case 'protocol:nostr':
-//         borderColor = 'border-purple-500';
-//         textColor = 'text-purple-500';
-//         break;
-//       case 'protocol:atproto':
-//         borderColor = 'border-blue-500';
-//         textColor = 'text-blue-500';
-//         break;
-//       case 'protocol:activitypub':
-//         borderColor = 'border-indigo-500';
-//         textColor = 'text-indigo-500';
-//         break;
-//       default:
-//         borderColor = status ? 'border-green-500' : 'border-red-500';
-//         textColor = status ? 'text-green-500' : 'text-red-500';
-//     }
-//   }
+const FilterToken: React.FC<IFilterToken> = ({ label, textColor, borderColor, onRemove }) => {
+  const intl = useIntl();
 
-//   const handleChangeFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
-//     e.stopPropagation();
+  const handleChangeFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    onRemove();
+  };
 
-//     if (['protocol:nostr', 'protocol:atproto', 'protocol:activitypub'].includes(value)) {
-//       dispatch(selectProtocol(value));
-//     } else if (['reply:false', 'media:true -video:true', 'video:true', '-media:true'].includes(value)) {
-//       dispatch(changeStatus({ value: value, status: false }));
-//     } else if (value.includes('language:')) {
-//       dispatch(changeLanguage('default'));
-//     } else {
-//       dispatch(removeFilter(value));
-//     }
-//   };
-
-//   return (
-//     <div
-//       key={value}
-//       className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor} `}
-//     >
-//       {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explore.filters.language.default' defaultMessage='Global' />}
-//       <IconButton
-//         iconClassName='!w-4' className={` !py-0 group-hover:block ${textColor}`} src={xIcon}
-//         onClick={handleChangeFilters}
-//         aria-label={intl.formatMessage(messages.removeFilter, { name })}
-//       />
-//     </div>
-//   );
-// };
-
+  return (
+    <div className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor}`}>
+      {label}
+      <IconButton
+        iconClassName='!w-4' className={`!py-0 group-hover:block ${textColor}`} src={xIcon}
+        onClick={handleChangeFilters}
+        aria-label={intl.formatMessage(messages.removeFilter)}
+      />
+    </div>
+  );
+};
 
 export default ExploreFilter;
-export type { IGenerateFilter };
