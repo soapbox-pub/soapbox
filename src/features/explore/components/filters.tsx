@@ -2,8 +2,8 @@ import refreshIcon from '@tabler/icons/outline/refresh.svg';
 import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import React, { useEffect, useMemo, useState } from 'react';
-import { FormattedMessage, IntlShape, defineMessages, useIntl } from 'react-intl';
+import React, { useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import Checkbox from 'soapbox/components/ui/checkbox.tsx';
@@ -14,29 +14,22 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { IGenerateFilter } from 'soapbox/features/explore/components/exploreFilter.tsx';
+import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { changeStatus, changeLanguage, changeMedia, createFilter, removeFilter, selectProtocol, resetFilters } from 'soapbox/reducers/search-filter.ts';
-import { AppDispatch, RootState } from 'soapbox/store.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  noReplies: { id: 'column.explore.filters.no_replies', defaultMessage: 'No Replies:' },
+  showReplies: { id: 'home.column_settings.show_replies', defaultMessage: 'Show replies' },
   media: { id: 'column.explore.filters.media', defaultMessage: 'Media:' },
   language: { id: 'column.explore.filters.language', defaultMessage: 'Language:' },
   platforms: { id: 'column.explore.filters.platforms', defaultMessage: 'Platforms:' },
-  platformsError: { id: 'column.explore.filters.platforms.error', defaultMessage: 'Protocol not found for: {name}' },
-  atLeast: { id: 'column.explore.filters.atLeast', defaultMessage: 'At least one platform must remain selected.' },
   createYourFilter: { id: 'column.explore.filters.create_your_filter', defaultMessage: 'Create your filter' },
   resetFilter: { id: 'column.explore.filters.reset', defaultMessage: 'Reset Filters' },
   filterByWords: { id: 'column.explore.filters.filter_by_words', defaultMessage: 'Filter by this/these words' },
-  include: { id: 'column.explore.filters.include', defaultMessage: 'Include' },
-  exclude: { id: 'column.explore.filters.exclude', defaultMessage: 'Exclude' },
+  negative: { id: 'column.explore.filters.invert', defaultMessage: 'Invert' },
   nostr: { id: 'column.explore.filters.nostr', defaultMessage: 'Nostr' },
-  bluesky: { id: 'column.explore.filters.bluesky', defaultMessage: 'Bluesky' },
-  fediverse: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
+  atproto: { id: 'column.explore.filters.bluesky', defaultMessage: 'Bluesky' },
+  activitypub: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
   cancel: { id: 'column.explore.filters.cancel', defaultMessage: 'Cancel' },
   addFilter: { id: 'column.explore.filters.add_filter', defaultMessage: 'Add Filter' },
   all: { id: 'column.explore.media_filters.all', defaultMessage: 'All' },
@@ -107,63 +100,43 @@ const languages = {
   zh: '中文',
 };
 
-const PlatformFilters = () => {
+const ProtocolCheckBox: React.FC<{ protocol: 'nostr' | 'atproto' | 'activitypub' }> = ({ protocol }) => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const filterList = useAppSelector((state: RootState) => state.search_filter);
+  const { tokens, addToken, removeToken } = useSearchTokens();
+
+  const token = `-protocol:${protocol}`;
+  const checked = !tokens.has(token);
+  const message = messages[protocol];
 
   const handleProtocolFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = e.target.checked;
-    const matchingFilter = filterList.slice(1, 4).find(
-      (filter) => filter.name.toLowerCase() === e.target.name.toLowerCase(),
-    );
+    const { checked, name } = e.target;
 
-    const protocol = matchingFilter?.value;
-    const isLastChecked = filterList.slice(1, 4).filter((filter) => filter.status).length === 1;
+    const token = `-protocol:${name}`;
 
-    if (!isChecked && isLastChecked) {
-      toast.error(messages.atLeast);
-      return;
+    if (checked) {
+      removeToken(token);
+    } else {
+      addToken(token);
     }
-
-    if (!protocol) {
-      console.error(intl.formatMessage(messages.platformsError, { name: e.target.name }));
-      return;
-    }
-
-    dispatch(selectProtocol(protocol));
   };
 
-  const CustomCheckBox = ({ protocolN } : { protocolN: string }) => {
-    const filter = filterList.find((filter) => filter.name.toLowerCase() === protocolN);
-    const checked = filter?.status;
-    let message;
+  return (
+    <HStack alignItems='center' space={2}>
+      <Checkbox
+        name={protocol}
+        checked={checked}
+        onChange={handleProtocolFilter}
+        aria-label={intl.formatMessage(message)}
+      />
+      <Text size='md'>
+        {intl.formatMessage(message)}
+      </Text>
+    </HStack>
+  );
+};
 
-    switch (protocolN) {
-      case 'nostr':
-        message = messages.nostr;
-        break;
-      case 'bluesky':
-        message = messages.bluesky;
-        break;
-      default:
-        message = messages.fediverse;
-    }
-
-    return (
-      <HStack alignItems='center' space={2}>
-        <Checkbox
-          name={protocolN}
-          checked={checked}
-          onChange={handleProtocolFilter}
-          aria-label={intl.formatMessage(message)}
-        />
-        <Text size='md'>
-          {intl.formatMessage(message)}
-        </Text>
-      </HStack>
-    );
-  };
+const PlatformFilters = () => {
+  const intl = useIntl();
 
   return (
     <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
@@ -171,39 +144,33 @@ const PlatformFilters = () => {
         {intl.formatMessage(messages.platforms)}
       </Text>
 
-      {/* Nostr */}
-      <CustomCheckBox protocolN='nostr' />
-
-      {/* Bluesky */}
-      <CustomCheckBox protocolN='bluesky' />
-
-      {/* Fediverse */}
-      <CustomCheckBox protocolN='fediverse' />
-
+      <ProtocolCheckBox protocol='nostr' />
+      <ProtocolCheckBox protocol='atproto' />
+      <ProtocolCheckBox protocol='activitypub' />
     </HStack>
   );
 
 };
 
-const CreateFilter = () => {
+const WordFilter = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
+  const { addToken, clearTokens } = useSearchTokens();
 
-  const [inputValue, setInputValue] = useState('');
-  const [include, setInclude] = useState(true);
-  const hasValue = inputValue.length > 0;
+  const [word, setWord] = useState('');
+  const [negative, setNegative] = useState(false);
+  const hasValue = !!word;
 
   const handleReset = () => {
-    dispatch(resetFilters());
+    clearTokens();
   };
 
   const handleClearValue = () => {
-    setInputValue('');
+    setWord('');
   };
 
   const handleAddFilter = () => {
-    if (inputValue.length > 0) {
-      dispatch(createFilter({ name: inputValue, status: include }));
+    if (word) {
+      addToken(`${negative ? '-' : ''}${word}`);
       handleClearValue();
     } else {
       toast.error(intl.formatMessage(messages.empty));
@@ -228,7 +195,7 @@ const CreateFilter = () => {
   };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setWord(e.target.value);
   };
 
   return (
@@ -247,10 +214,8 @@ const CreateFilter = () => {
         </Text>
 
         <HStack space={6}>
-
-
           <div className='relative w-full items-center p-0.5'>
-            <Input theme='search' value={inputValue} className='h-9' onChange={handleOnChange} onKeyDown={onKeyDown} />
+            <Input theme='search' value={word} className='h-9' onChange={handleOnChange} onKeyDown={onKeyDown} />
             <div
               tabIndex={0}
               role='button'
@@ -263,43 +228,22 @@ const CreateFilter = () => {
 
               <SvgIcon
                 src={xIcon}
-                onClick={() => setInputValue('')}
+                onClick={() => setWord('')}
                 aria-label={intl.formatMessage(messages.clearSearch)}
                 className={clsx('size-4 text-gray-600', { hidden: !hasValue })}
               />
             </div>
-
           </div>
 
           {/* Include */}
           <HStack alignItems='center' space={2}>
             <Checkbox
-              name='include'
-              checked={include}
-              onChange={() => {
-                if (!include) {
-                  setInclude(true);
-                }
-              }}
+              name='negative'
+              checked={negative}
+              onChange={() => setNegative(!negative)}
             />
             <Text size='md'>
-              {intl.formatMessage(messages.include)}
-            </Text>
-          </HStack>
-
-          {/* Exclude */}
-          <HStack alignItems='center' space={2}>
-            <Checkbox
-              name='exclude'
-              checked={!include}
-              onChange={() => {
-                if (include) {
-                  setInclude(false);
-                }
-              }}
-            />
-            <Text size='md'>
-              {intl.formatMessage(messages.exclude)}
+              {intl.formatMessage(messages.negative)}
             </Text>
           </HStack>
         </HStack>
@@ -324,31 +268,44 @@ const CreateFilter = () => {
 
 const MediaFilter = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const filters = useAppSelector((state) => state.search_filter.filter(filter => ['all', 'image only', 'video only', 'no media'].includes(filter.name.toLowerCase())));
+  const { tokens, addTokens, removeTokens } = useSearchTokens();
 
-
-  const mediaFilters = useMemo(() => ({
-    all: intl.formatMessage(messages.all),
-    image: intl.formatMessage(messages.imageOnly),
-    video: intl.formatMessage(messages.videoOnly),
-    none: intl.formatMessage(messages.none),
-  }), [intl]);
-
-  const [selectedMedia, setSelectedMedia] = useState<string>(mediaFilters.all);
-
-  useEffect(() => {
-    const newMediaValue = (Object.keys(mediaFilters) as Array<keyof typeof mediaFilters>)
-      .find((key) => mediaFilters[key] === filters.find((filter) => filter.status === true)?.name)
-      || mediaFilters.all;
-
-    setSelectedMedia(newMediaValue);
-  }, [mediaFilters]);
+  const mediaFilters = {
+    all: {
+      tokens: [],
+      label: intl.formatMessage(messages.all),
+    },
+    image: {
+      tokens: ['media:true', '-video:true'],
+      label: intl.formatMessage(messages.imageOnly),
+    },
+    video: {
+      tokens: ['video:true'],
+      label: intl.formatMessage(messages.videoOnly),
+    },
+    none: {
+      tokens: ['-media:true'],
+      label: intl.formatMessage(messages.none),
+    },
+  };
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
-    const filter = e.target.value;
-    dispatch(changeMedia(filter));
+    const filter = e.target.value as keyof typeof mediaFilters;
+    removeTokens(['media:true', '-video:true', 'video:true', '-media:true']);
+    addTokens(mediaFilters[filter].tokens);
   };
+
+  // FIXME: The `items` prop of `SelectDropdown` should become an array of objects.
+  const items = Object
+    .entries(mediaFilters)
+    .reduce((acc, [key, value]) => {
+      acc[key] = value.label;
+      return acc;
+    }, {} as Record<string, string>);
+
+  const currentFilter = Object
+    .entries(mediaFilters)
+    .find(([, f]) => f.tokens.every(token => tokens.has(token)))?.[0] || 'all';
 
   return (
     <HStack alignItems='center' space={2}>
@@ -357,10 +314,9 @@ const MediaFilter = () => {
       </Text>
 
       <SelectDropdown
-        key={selectedMedia}
         className='max-w-[130px]'
-        items={mediaFilters}
-        defaultValue={selectedMedia}
+        items={items}
+        defaultValue={currentFilter}
         onChange={handleSelectChange}
       />
     </HStack>
@@ -370,13 +326,22 @@ const MediaFilter = () => {
 
 const LanguageFilter = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const filter = useAppSelector((state) => state.search_filter)[0];
+  const { tokens, addToken, removeToken } = useSearchTokens();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
-    dispatch(changeLanguage(language));
+
+    for (const token in tokens) {
+      if (token.startsWith('language:')) {
+        removeToken(token);
+      }
+    }
+
+    addToken(`language:${language}`);
   };
+
+  const token = [...tokens].find((token) => token.startsWith('language:'));
+  const [, language = 'default'] = token?.split(':') ?? [];
 
   return (
     <HStack alignItems='center' space={2}>
@@ -385,10 +350,9 @@ const LanguageFilter = () => {
       </Text>
 
       <SelectDropdown
-        key={filter?.value}
         className='max-w-[130px]'
         items={languages}
-        defaultValue={filter.name.toLowerCase()}
+        defaultValue={language}
         onChange={handleSelectChange}
       />
     </HStack>
@@ -398,91 +362,28 @@ const LanguageFilter = () => {
 
 const ToggleRepliesFilter = () => {
   const intl = useIntl();
-  const dispatch = useAppDispatch();
-  const label = intl.formatMessage(messages.noReplies);
 
-  const filters = useAppSelector((state) => state.search_filter);
-  const repliesFilter = filters.find((filter) => filter.value.toLowerCase().includes('reply'));
-  const checked = repliesFilter?.status;
+  const { tokens, addToken, removeToken } = useSearchTokens();
 
   const handleToggle = () => {
-    dispatch(changeStatus({ value: 'reply:false', status: !checked }));
+    if (tokens.has('reply:false')) {
+      removeToken('reply:false');
+    } else {
+      addToken('reply:false');
+    }
   };
 
   return (
     <HStack className='flex-wrap whitespace-normal' alignItems='center' space={2}>
       <Text size='md' weight='bold'>
-        {label}
+        {intl.formatMessage(messages.showReplies)}
       </Text>
       <Toggle
-        checked={checked}
+        checked={!tokens.has('reply:false')}
         onChange={handleToggle}
       />
     </HStack>
   );
 };
 
-const generateFilter = (dispatch: AppDispatch, intl: IntlShape, { name, value, status }: IGenerateFilter) => {
-  let borderColor = '';
-  let textColor = '';
-
-  if (Object.keys(languages).some((lang) => value.includes('language:'))) {
-    borderColor = 'border-gray-500';
-    textColor = 'text-gray-500';
-  } else {
-    switch (value) {
-      case 'reply:false':
-      case 'media:true -video:true':
-      case 'video:true':
-      case '-media:true':
-        borderColor = 'border-gray-500';
-        textColor = 'text-gray-500';
-        break;
-      case 'protocol:nostr':
-        borderColor = 'border-purple-500';
-        textColor = 'text-purple-500';
-        break;
-      case 'protocol:atproto':
-        borderColor = 'border-blue-500';
-        textColor = 'text-blue-500';
-        break;
-      case 'protocol:activitypub':
-        borderColor = 'border-indigo-500';
-        textColor = 'text-indigo-500';
-        break;
-      default:
-        borderColor = status ? 'border-green-500' : 'border-red-500';
-        textColor = status ? 'text-green-500' : 'text-red-500';
-    }
-  }
-
-  const handleChangeFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-
-    if (['protocol:nostr', 'protocol:atproto', 'protocol:activitypub'].includes(value)) {
-      dispatch(selectProtocol(value));
-    } else if (['reply:false', 'media:true -video:true', 'video:true', '-media:true'].includes(value)) {
-      dispatch(changeStatus({ value: value, status: false }));
-    } else if (value.includes('language:')) {
-      dispatch(changeLanguage('default'));
-    } else {
-      dispatch(removeFilter(value));
-    }
-  };
-
-  return (
-    <div
-      key={value}
-      className={`group m-1 flex items-center whitespace-normal break-words rounded-full border-2 bg-transparent px-3 pr-1 text-base font-medium shadow-sm hover:cursor-pointer ${borderColor} ${textColor} `}
-    >
-      {name.toLowerCase() !== 'default' ? name : <FormattedMessage id='column.explore.filters.language.default' defaultMessage='Global' />}
-      <IconButton
-        iconClassName='!w-4' className={` !py-0 group-hover:block ${textColor}`} src={xIcon}
-        onClick={handleChangeFilters}
-        aria-label={intl.formatMessage(messages.removeFilter, { name })}
-      />
-    </div>
-  );
-};
-
-export { CreateFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter, generateFilter };
+export { WordFilter, PlatformFilters, MediaFilter, LanguageFilter, ToggleRepliesFilter };

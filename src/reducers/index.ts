@@ -41,7 +41,6 @@ import profile_hover_card from './profile-hover-card.ts';
 import relationships from './relationships.ts';
 import reports from './reports.ts';
 import scheduled_statuses from './scheduled-statuses.ts';
-import search_filter from './search-filter.ts';
 import search from './search.ts';
 import security from './security.ts';
 import settings from './settings.ts';
@@ -99,7 +98,6 @@ export default combineReducers({
   reports,
   scheduled_statuses,
   search,
-  search_filter,
   security,
   settings,
   sidebar,

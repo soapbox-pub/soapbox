@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { debounce } from 'es-toolkit';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
   changeSearch,
@@ -17,7 +17,6 @@ import {
 import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { formatFilters } from 'soapbox/features/explore/components/exploreFilter.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { selectAccount } from 'soapbox/selectors/index.ts';
@@ -57,12 +56,9 @@ const Search = (props: ISearch) => {
   const history = useHistory();
   const intl = useIntl();
   const [inputValue, setInputValue] = useState('');
-  const path = useLocation().pathname;
 
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
-  const filters = useAppSelector((state) => state.search_filter);
-  const formatFiltersString = formatFilters(filters);
 
   const debouncedSubmit = useCallback(debounce(() => {
     dispatch(submitSearch());
@@ -71,11 +67,7 @@ const Search = (props: ISearch) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
 
-    if (formatFiltersString.length > 0 && path === '/explore') {
-      dispatch(changeSearch(`${formatFiltersString} ${value}`));
-    } else {
-      dispatch(changeSearch(value));
-    }
+    dispatch(changeSearch(value));
     setInputValue(value);
 
     if (autoSubmit) {

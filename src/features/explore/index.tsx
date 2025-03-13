@@ -16,11 +16,10 @@ import Search from 'soapbox/features/compose/components/search.tsx';
 import ExploreCards from 'soapbox/features/explore/components/explore-cards.tsx';
 import ExploreFilter from 'soapbox/features/explore/components/exploreFilter.tsx';
 import AccountsCarousel from 'soapbox/features/explore/components/popular-accounts.tsx';
+import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
 import { PublicTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { IFilters, initialState as filterInitialState } from 'soapbox/reducers/search-filter.ts';
 import { SearchFilter } from 'soapbox/reducers/search.ts';
 
 const messages = defineMessages({
@@ -31,45 +30,28 @@ const messages = defineMessages({
   filters: { id: 'column.explore.filters', defaultMessage: 'Filters:' },
 });
 
-const checkFilters = (filters: IFilters[]) => {
-  return filters.length !== filterInitialState.length ||
-    !filters.every((filter, index) =>
-      filter.name === filterInitialState[index].name &&
-      filter.status === filterInitialState[index].status &&
-      filter.value === filterInitialState[index].value,
-    );
-};
-
 const PostsTab = () => {
-  const path = useLocation().pathname;
   const intl = useIntl();
-  const inPosts = path === '/explore';
-  const filters = useAppSelector((state) => state.search_filter);
-  const isNostr = useFeatures().nostr;
-
-  const [withFilter, setWithFilter] = useState(checkFilters(filters));
-
-  useEffect(() => {
-    setWithFilter(checkFilters(filters));
-  }, [filters]);
+  const features = useFeatures();
+  const { tokens } = useSearchTokens();
+  const { pathname } = useLocation();
 
   return (
     <Stack space={4}>
-      {inPosts && <>
+      {pathname === '/explore' && (
+        <>
+          {features.nostr && (
+            <>
+              <ExploreCards />
+              <Divider text={intl.formatMessage(messages.filters)} />
+              <ExploreFilter />
+              <Divider />
+            </>
+          )}
 
-        {isNostr && <>
-          <ExploreCards />
-
-          <Divider text={intl.formatMessage(messages.filters)} />
-
-          <ExploreFilter />
-
-          <Divider />
-        </> }
-
-        {!withFilter ? <PublicTimeline /> : <SearchResults /> }
-      </>
-      }
+          {tokens.size ? <PublicTimeline /> : <SearchResults /> }
+        </>
+      )}
 
     </Stack>
   );
