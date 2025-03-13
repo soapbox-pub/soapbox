@@ -49,7 +49,7 @@ const PostsTab = () => {
             </>
           )}
 
-          {tokens.size ? <PublicTimeline /> : <SearchResults /> }
+          {tokens.size ? <SearchResults /> : <PublicTimeline />}
         </>
       )}
 
@@ -153,9 +153,9 @@ const ExplorePage = () => {
         </div>
 
         <Switch>
-          <Route exact path={'/explore'} component={PostsTab} />
-          {features.nostr && <Route path={'/explore/trends'} component={TrendsTab} />}
-          <Route path={'/explore/accounts'} component={AccountsTab} />
+          <Route exact path='/explore' component={PostsTab} />
+          {features.nostr && <Route path='/explore/trends' component={TrendsTab} />}
+          <Route path='/explore/accounts' component={AccountsTab} />
         </Switch>
 
       </Stack>
