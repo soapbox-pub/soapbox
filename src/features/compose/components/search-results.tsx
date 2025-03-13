@@ -1,9 +1,14 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useEffect, useRef } from 'react';
-import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import {
+  FormattedMessage,
+} from 'react-intl';
 
-import { expandSearch, setFilter, setSearchAccount } from 'soapbox/actions/search.ts';
+import {
+  expandSearch,
+  setSearchAccount,
+} from 'soapbox/actions/search.ts';
 import { expandTrendingStatuses, fetchTrendingStatuses } from 'soapbox/actions/trending-statuses.ts';
 import { useAccount } from 'soapbox/api/hooks/index.ts';
 import Hashtag from 'soapbox/components/hashtag.tsx';
@@ -11,7 +16,6 @@ import IconButton from 'soapbox/components/icon-button.tsx';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
 import StatusContainer from 'soapbox/containers/status-container.tsx';
@@ -24,18 +28,10 @@ import { useSuggestions } from 'soapbox/queries/suggestions.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { SearchFilter } from 'soapbox/reducers/search.ts';
-
-const messages = defineMessages({
-  accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
-  statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
-  hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
-});
 
 const SearchResults = () => {
   const node = useRef<VirtuosoHandle>(null);
 
-  const intl = useIntl();
   const dispatch = useAppDispatch();
 
   const { data: suggestions } = useSuggestions();
@@ -59,34 +55,6 @@ const SearchResults = () => {
   };
 
   const handleUnsetAccount = () => dispatch(setSearchAccount(null));
-
-  const selectFilter = (newActiveFilter: SearchFilter) => dispatch(setFilter(newActiveFilter));
-
-  const renderFilterBar = () => {
-    const items = [];
-    items.push(
-      {
-        text: intl.formatMessage(messages.statuses),
-        action: () => selectFilter('statuses'),
-        name: 'statuses',
-      },
-      {
-        text: intl.formatMessage(messages.accounts),
-        action: () => selectFilter('accounts'),
-        name: 'accounts',
-      },
-    );
-
-    items.push(
-      {
-        text: intl.formatMessage(messages.hashtags),
-        action: () => selectFilter('hashtags'),
-        name: 'hashtags',
-      },
-    );
-
-    return <Tabs items={items} activeItem={selectedFilter} />;
-  };
 
   const getCurrentIndex = (id: string): number => {
     return resultsIds?.keySeq().findIndex(key => key === id);
@@ -215,7 +183,7 @@ const SearchResults = () => {
 
   return (
     <>
-      {filterByAccount ? (
+      {filterByAccount && (
         <HStack className='mb-4 border-b border-solid border-gray-200 px-2 pb-4 dark:border-gray-800' space={2}>
           <IconButton iconClassName='h-5 w-5' src={xIcon} onClick={handleUnsetAccount} />
           <Text truncate>
@@ -226,8 +194,6 @@ const SearchResults = () => {
             />
           </Text>
         </HStack>
-      ) : (
-        <div className='px-4'>{renderFilterBar()}</div>
       )}
 
       {noResultsMessage || (
