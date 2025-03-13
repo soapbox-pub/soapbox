@@ -60,9 +60,6 @@ const ExploreFilter = () => {
   useEffect(
     () => {
       const value = formatFilters(filters);
-
-      localStorage.setItem('soapbox:explore:filters', JSON.stringify(filters));
-
       debouncedSearch(value);
 
       return () => {

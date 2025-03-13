@@ -195,7 +195,6 @@ const CreateFilter = () => {
 
   const handleReset = () => {
     dispatch(resetFilters());
-    localStorage.removeItem('soapbox:explore:filters');
   };
 
   const handleClearValue = () => {
