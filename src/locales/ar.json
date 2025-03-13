@@ -1522,5 +1522,5 @@
   "who_to_follow.title": "حسابات مقترحة",
   "zap.comment_input.placeholder": "تعليق إختياري",
   "zap.open_wallet": "فتح المحفظة",
-  "zap.send_to": "أرسل zaps إلى {target}"
+  "nutzap.send_to": "أرسل cashus إلى {target}"
 }

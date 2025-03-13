@@ -1685,7 +1685,7 @@
   "zap.finish": "Críochnaigh",
   "zap.next": "Ar Aghaidh",
   "zap.open_wallet": "Oscail Sparán",
-  "zap.send_to": "Seol zaps chuig {target}",
+  "nutzap.send_to": "Seol cashus chuig {target}",
   "zap.split_message.deducted": "Asbhainfear {amountDeducted} sats*",
   "zap.split_message.receiver": "Gheobhaidh {receiver} {amountReceiver} sats*",
   "zap_split.question": "Cén fáth a bhfuil mé ag íoc seo?",

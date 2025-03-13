@@ -99,7 +99,7 @@ const messages = defineMessages({
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
-  zap: { id: 'zap.send_to', defaultMessage: 'Send zaps to {target}' },
+  zap: { id: 'nutzap.send_to', defaultMessage: 'Send cashus to {target}' },
 });
 
 interface IHeader {

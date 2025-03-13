@@ -115,8 +115,8 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
 
         <Text weight='semibold'>
           <FormattedMessage
-            id='zap.send_to'
-            defaultMessage='Send zaps to {target}'
+            id='nutzap.send_to'
+            defaultMessage='Send cashus to {target}'
             values={{ target: emojifyText(account.display_name, account.emojis) }}
           />
         </Text>

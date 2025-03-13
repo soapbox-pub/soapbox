@@ -1618,5 +1618,5 @@
   "who_to_follow.title": "Quem Seguir",
   "zap.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
-  "zap.send_to": "Enviar zaps para {target}"
+  "nutzap.send_to": "Enviar cashus para {target}"
 }

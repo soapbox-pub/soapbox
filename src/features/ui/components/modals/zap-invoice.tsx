@@ -51,8 +51,8 @@ const ZapInvoiceModal: React.FC<IZapInvoice> = ({ account, invoice, splitData, o
   const renderTitle = () => {
     return (
       <FormattedMessage
-        id='zap.send_to'
-        defaultMessage='Send zaps to {target}'
+        id='nutzap.send_to'
+        defaultMessage='Send cashus to {target}'
         values={{ target: emojifyText(account.display_name, account.emojis) }}
       />
     );
