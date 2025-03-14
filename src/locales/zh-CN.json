@@ -1620,8 +1620,9 @@
   "video.play": "播放",
   "video.unmute": "解除静音声音",
   "who_to_follow.title": "推荐关注",
-  "zap.button.text.raw": "打闪 {amount} 聪",
-  "zap.comment_input.placeholder": "可选评论",
+  "payment_method.button.text.raw": "打闪 {amount} 聪",
+  "payment_method.comment_input.placeholder": "可选评论",
   "zap.open_wallet": "打开钱包",
+  "payment_method.send_to": "发送打闪给 {target}",
   "zap.send_to": "发送打闪给 {target}"
 }

@@ -1616,8 +1616,8 @@
   "video.play": "Reproduzir",
   "video.unmute": "Retirar do silêncio",
   "who_to_follow.title": "Quem Seguir",
-  "zap.comment_input.placeholder": "Comentário opcional",
+  "payment_method.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
-  "nutzap.send_to": "Enviar cashus para {target}",
+  "payment_method.send_to": "Enviar {method} para {target}",
   "zap.send_to": "Enviar zaps para {target}"
 }

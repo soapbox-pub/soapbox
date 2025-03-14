@@ -1626,9 +1626,9 @@
   "video.play": "Reproducir",
   "video.unmute": "Dejar de silenciar sonido",
   "who_to_follow.title": "Personas a seguir",
-  "zap.button.text.raw": "Zap {amount} sats",
-  "zap.comment_input.placeholder": "Comentario opcional",
+  "payment_method.button.text.raw": "Zap {amount} sats",
+  "payment_method.comment_input.placeholder": "Comentario opcional",
   "zap.open_wallet": "Abrir Wallet",
-  "nutzap.send_to": "Enviar cachus a {target}",
-  "zap.send_to": "Enviar zaps a {target}"
+  "zap.send_to": "Enviar zaps a {target}",
+  "payment_method.send_to": "Enviar {method} a {target}"
 }

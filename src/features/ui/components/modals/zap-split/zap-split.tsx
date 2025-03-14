@@ -33,8 +33,8 @@ const ZapSplit = ({ zapData, zapAmount, invoice, onNext, isLastStep, onFinish }:
     return (
       <div className='max-w-[280px] truncate'>
         <FormattedMessage
-          id='nutzap.send_to'
-          defaultMessage='Send cashus to {target}'
+          id='zap.send_to'
+          defaultMessage='Send zaps to {target}'
           values={{ target: emojifyText(account.display_name, account.emojis) }}
         />
       </div>

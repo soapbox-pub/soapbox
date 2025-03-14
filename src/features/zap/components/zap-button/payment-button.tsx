@@ -30,7 +30,7 @@ interface IButton {
 }
 
 /** Customizable button element. */
-const ZapButton = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
+const PaymentButton = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element => {
   const {
     disabled = false,
     icon,
@@ -75,6 +75,6 @@ const ZapButton = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Eleme
 });
 
 export {
-  ZapButton as default,
-  ZapButton,
+  PaymentButton as default,
+  PaymentButton,
 };

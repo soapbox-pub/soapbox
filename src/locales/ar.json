@@ -1520,8 +1520,8 @@
   "video.play": "تشغيل",
   "video.unmute": "تفعيل الصوت",
   "who_to_follow.title": "حسابات مقترحة",
-  "zap.comment_input.placeholder": "تعليق إختياري",
+  "payment_method.comment_input.placeholder": "تعليق إختياري",
   "zap.open_wallet": "فتح المحفظة",
-  "nutzap.send_to": "أرسل cashus إلى {target}",
-  "zap.send_to": "أرسل zaps إلى {target}"
+  "zap.send_to": "أرسل zaps إلى {target}",
+  "payment_method.send_to": "أرسل {method} إلى {target}"
 }
