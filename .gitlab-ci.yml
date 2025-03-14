@@ -9,14 +9,12 @@ stages:
 
 build:
   stage: build
-  timeout: 3 minutes
+  timeout: 2 minutes
   before_script:
     - bun i
     - apt-get update -y && apt-get install -y git zip
   script:
-    - bun lint
-    - bun i18n && git diff --quiet || (echo "Locale files are out of date. Please run `bun i18n`" && exit 1)
-    - NODE_ENV=production bun run build
+    - NODE_ENV=production bun ci
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
   artifacts:
