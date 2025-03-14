@@ -31,6 +31,7 @@
     "test": "vitest",
     "lint": "npm run lint:js",
     "lint:js": "eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx . --cache",
+    "ci": "concurrently --kill-others-on-fail yarn:lint yarn:i18n:check yarn:check yarn:build",
     "prepare": "husky install"
   },
   "license": "AGPL-3.0-or-later",
@@ -165,6 +166,7 @@
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react-swc": "^3.7.2",
+    "concurrently": "^9.1.2",
     "eslint": "^8.49.0",
     "eslint-import-resolver-typescript": "^3.6.0",
     "eslint-plugin-compat": "^4.2.0",

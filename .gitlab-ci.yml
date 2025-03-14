@@ -14,12 +14,7 @@ build:
     - yarn install --ignore-scripts
     - apt-get update -y && apt-get install -y zip
   script:
-    - PIDS=() # run in parallel
-    - yarn lint & PIDS+=($!)
-    - yarn i18n:check  & PIDS+=($!)
-    - yarn run check & PIDS+=($!)
-    - NODE_ENV=production yarn build & PIDS+=($!)
-    - for pid in "${PIDS[@]}"; do wait "$pid"; done
+    - NODE_ENV=production yarn ci
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
   artifacts:
