@@ -68,7 +68,6 @@ const Input = forwardRef<HTMLInputElement, IInput>(
           clsx('relative', {
             'rounded-md': theme !== 'search',
             'rounded-full': theme === 'search',
-            'mt-1': !String(outerClassName).includes('mt-'),
             [String(outerClassName)]: typeof outerClassName !== 'undefined',
           })
         }

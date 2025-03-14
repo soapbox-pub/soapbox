@@ -49,9 +49,9 @@ const clearSearchResults = () => ({
   type: SEARCH_RESULTS_CLEAR,
 });
 
-const submitSearch = (filter?: SearchFilter) =>
+const submitSearch = (filter?: SearchFilter, newValue?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const value = getState().search.value;
+    const value = newValue ?? getState().search.value;
     const type = filter || getState().search.filter || 'statuses';
     const accountId = getState().search.accountId;
 

@@ -5,6 +5,7 @@ import settingsFilledIcon from '@tabler/icons/filled/settings.svg';
 import userFilledIcon from '@tabler/icons/filled/user.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import compassIcon from '@tabler/icons/outline/brand-safari.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import codeIcon from '@tabler/icons/outline/code.svg';
@@ -14,12 +15,10 @@ import homeIcon from '@tabler/icons/outline/home.svg';
 import listIcon from '@tabler/icons/outline/list.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
-import searchIcon from '@tabler/icons/outline/search.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import walletIcon from '@tabler/icons/outline/wallet.svg';
-import worldIcon from '@tabler/icons/outline/world.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -32,7 +31,6 @@ import ComposeButton from 'soapbox/features/ui/components/compose-button.tsx';
 import ProfileDropdown from 'soapbox/features/ui/components/profile-dropdown.tsx';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { useSettings } from 'soapbox/hooks/useSettings.ts';
 import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
@@ -53,7 +51,6 @@ const SidebarNavigation = () => {
   const intl = useIntl();
   const { unreadChatsCount } = useStatContext();
 
-  const { instance } = useInstance();
   const features = useFeatures();
   const { isDeveloper } = useSettings();
   const { account } = useOwnAccount();
@@ -62,8 +59,6 @@ const SidebarNavigation = () => {
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
   const settingsNotifications = useSettingsNotifications();
-
-  const restrictUnauth = instance.pleroma.metadata.restrict_unauthenticated;
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -172,9 +167,9 @@ const SidebarNavigation = () => {
           )}
 
           <SidebarNavigationLink
-            to='/search'
-            icon={searchIcon}
-            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Discover' />}
+            to='/explore'
+            icon={compassIcon}
+            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explore' />}
           />
 
           {account && (
@@ -226,16 +221,6 @@ const SidebarNavigation = () => {
                 />
               )}
             </>
-          )}
-
-          {(features.publicTimeline) && (
-            features.federating && (account || !restrictUnauth.timelines.federated)) && (
-            <SidebarNavigationLink
-              to='/timeline/global'
-              icon={worldIcon}
-              text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
-            />
-
           )}
 
           {menu.length > 0 && (

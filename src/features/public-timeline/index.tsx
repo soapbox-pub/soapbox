@@ -70,6 +70,7 @@ const PublicTimeline = () => {
 
   return (
     <Column
+      withHeader={false}
       label={intl.formatMessage(messages.title)}
       action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
       slim
@@ -77,7 +78,7 @@ const PublicTimeline = () => {
       <PinnedHostsPicker />
 
       {showExplanationBox && (
-        <div className='mb-4 black:mx-4'>
+        <div className='mb-4 p-2 black:mx-4'>
           <Accordion
             headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
             action={dismissExplanationBox}

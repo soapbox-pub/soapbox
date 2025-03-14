@@ -1,5 +1,8 @@
 import type { NostrSigner } from '@nostrify/nostrify';
 
+declare module '*.css';
+declare module 'swiper/css';
+
 declare global {
   interface Window {
     nostr?: NostrSigner;

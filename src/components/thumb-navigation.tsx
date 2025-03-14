@@ -3,12 +3,12 @@ import circlesFilledIcon from '@tabler/icons/filled/circles.svg';
 import homeFilledIcon from '@tabler/icons/filled/home.svg';
 import mailFilledIcon from '@tabler/icons/filled/mail.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
+import compassIcon from '@tabler/icons/outline/brand-safari.svg';
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
 import homeIcon from '@tabler/icons/outline/home.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
-import searchIcon from '@tabler/icons/outline/search.svg';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link.tsx';
@@ -83,13 +83,6 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         />
       )}
 
-      <ThumbNavigationLink
-        src={searchIcon}
-        text={<FormattedMessage id='navigation.search' defaultMessage='Discover' />}
-        to='/search'
-        exact
-      />
-
       {account && (
         <ThumbNavigationLink
           src={bellIcon}
@@ -100,6 +93,13 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
           count={notificationCount}
         />
       )}
+
+      <ThumbNavigationLink
+        src={compassIcon}
+        text={<FormattedMessage id='navigation.search' defaultMessage='Explore' />}
+        to='/explore'
+        exact
+      />
 
       {account && renderMessagesLink()}
 

@@ -27,7 +27,16 @@ const SidebarNavigationLink = forwardRef((props: ISidebarNavigationLink, ref: Re
   const { icon, activeIcon, text, to = '', count, countMax, onClick } = props;
   const { pathname } = useLocation();
 
-  const isActive = pathname === to;
+  const isDefault = to === '' || to === '/';
+
+  let isActive;
+
+  if (isDefault) {
+    isActive = pathname === to;
+  } else {
+    isActive = pathname.includes(to);
+  }
+
 
   const handleClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (onClick) {

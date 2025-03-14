@@ -13,7 +13,6 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
-import worldIcon from '@tabler/icons/outline/world.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -264,15 +263,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                       to='/developers'
                       icon={codeIcon}
                       text={intl.formatMessage(messages.developers)}
-                      onClick={onClose}
-                    />
-                  )}
-
-                  {features.publicTimeline && features.federating && (
-                    <SidebarLink
-                      to='/timeline/global'
-                      icon={worldIcon}
-                      text={<FormattedMessage id='tabs_bar.global' defaultMessage='Global' />}
                       onClick={onClose}
                     />
                   )}
