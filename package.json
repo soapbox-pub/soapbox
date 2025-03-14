@@ -21,10 +21,10 @@
     "url": "lightning:alex@alexgleason.me"
   },
   "scripts": {
-    "start": "vite serve",
-    "dev": "vite serve",
-    "build": "vite build --emptyOutDir",
-    "preview": "vite preview",
+    "start": "bunx --bun vite serve",
+    "dev": "bunx --bun vite serve",
+    "build": "bunx --bun vite build --emptyOutDir",
+    "preview": "bunx --bun vite preview",
     "i18n": "formatjs extract 'src/**/*.{ts,tsx}' --ignore '**/*.d.ts' --out-file build/messages.json && formatjs compile build/messages.json --out-file src/locales/en.json",
     "test": "vitest",
     "lint": "npm run lint:js",

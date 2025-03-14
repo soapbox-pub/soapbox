@@ -59,7 +59,7 @@ const cardSchema = z.object({
     ALLOWED_TAGS: ['iframe'],
     ALLOWED_ATTR: ['src', 'width', 'height', 'frameborder', 'allowfullscreen'],
     RETURN_DOM: true,
-  });
+  }) as HTMLElement;
 
   html.querySelectorAll('iframe').forEach((frame) => {
     try {

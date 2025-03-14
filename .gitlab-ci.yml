@@ -1,4 +1,4 @@
-image: node:22
+image: oven/bun:1.2.5
 
 default:
   interruptible: true
@@ -10,12 +10,12 @@ stages:
 build:
   stage: build
   before_script:
-    - yarn install --ignore-scripts
+    - bun i
     - apt-get update -y && apt-get install -y zip
   script:
-    - yarn lint
-    - yarn i18n && git diff --quiet || (echo "Locale files are out of date. Please run `yarn i18n`" && exit 1)
-    - NODE_ENV=production yarn build
+    - bun lint
+    - bun i18n && git diff --quiet || (echo "Locale files are out of date. Please run `bun i18n`" && exit 1)
+    - NODE_ENV=production bun run build
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
   artifacts:
@@ -31,7 +31,7 @@ review:
     - apt-get update -y && apt-get install -y unzip
   script:
     - unzip soapbox.zip -d dist
-    - npx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
+    - bunx -y surge dist $CI_COMMIT_REF_SLUG.git.soapbox.pub
   allow_failure: true
   when: manual
 
