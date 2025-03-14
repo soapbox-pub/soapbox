@@ -40,7 +40,7 @@ const ExploreCards = () => {
     <Stack className='mx-4 mt-4' space={2}>
       <Stack
         space={4}
-        className={`rounded-xl bg-gradient-to-r from-primary-500 to-primary-700 ${isOpen ? 'mt-0 px-5 pb-8 pt-4' : 'p-4'}`}
+        className={`rounded-xl bg-gradient-to-r from-primary-400 to-secondary-400 ${isOpen ? 'mt-0 px-5 pb-8 pt-4' : 'p-4'}`}
       >
         <HStack justifyContent='between' className='text-white'>
           <HStack space={2}>
@@ -61,8 +61,8 @@ const ExploreCards = () => {
 
         <Text className={`text-white ${isOpen ? 'max-h-96 opacity-100' : 'hidden max-h-0 opacity-0'}`}>
           {intl.formatMessage(messages.welcomeText, {
-            nostrLink: <a className='font-medium text-secondary-400 underline' href='https://soapbox.pub/blog/nostr101/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.nostrTitle)}</a>,
-            bridgeLink: <a className='font-medium text-secondary-400 underline' href='https://soapbox.pub/blog/mostr-fediverse-nostr-bridge/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.bridgeTitle)}</a>,
+            nostrLink: <a className='font-medium text-secondary-200 underline' href='https://soapbox.pub/blog/nostr101/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.nostrTitle)}</a>,
+            bridgeLink: <a className='font-medium text-secondary-200 underline' href='https://soapbox.pub/blog/mostr-fediverse-nostr-bridge/' target='_blank' rel='noopener noreferrer'>{intl.formatMessage(messages.bridgeTitle)}</a>,
           })}
         </Text>
       </Stack>
