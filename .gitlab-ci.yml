@@ -9,6 +9,7 @@ stages:
 
 build:
   stage: build
+  timeout: 3 minutes
   before_script:
     - yarn install --ignore-scripts
     - apt-get update -y && apt-get install -y zip
@@ -24,6 +25,7 @@ build:
 
 review:
   stage: deploy
+  timeout: 5 minutes
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_COMMIT_REF_SLUG.git.soapbox.pub
@@ -37,6 +39,7 @@ review:
 
 pages:
   stage: deploy
+  timeout: 30 seconds
   before_script:
     - apt-get update -y && apt-get install -y unzip
   script:
