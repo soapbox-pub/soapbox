@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "vite serve",
-    "dev": "vite serve",
+    "dev": "yarn && yarn start",
     "build": "vite build --emptyOutDir",
     "check": "tsc --noEmit",
     "preview": "vite preview",
