@@ -1623,5 +1623,5 @@
   "zap.button.text.raw": "打闪 {amount} 聪",
   "zap.comment_input.placeholder": "可选评论",
   "zap.open_wallet": "打开钱包",
-  "nutzap.send_to": "发送打闪给 {target}"
+  "zap.send_to": "发送打闪给 {target}"
 }

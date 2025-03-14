@@ -70,7 +70,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
     // In this case, we simply close the modal
 
     if (!invoice) {
-      dispatch(closeModal('ZAP_PAY_REQUEST'));
+      dispatch(closeModal('PAY_REQUEST'));
       // Dispatch the adm account
       if (zapSplitAccounts.length > 0) {
         dispatch(openModal('ZAP_SPLIT', { zapSplitAccounts, splitValues }));
@@ -78,7 +78,7 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
       return;
     }
     // open QR code modal
-    dispatch(closeModal('ZAP_PAY_REQUEST'));
+    dispatch(closeModal('PAY_REQUEST'));
     dispatch(openModal('ZAP_INVOICE', { account, invoice, splitData }));
   };
 
@@ -115,8 +115,8 @@ const ZapPayRequestForm = ({ account, status, onClose }: IZapPayRequestForm) => 
 
         <Text weight='semibold'>
           <FormattedMessage
-            id='nutzap.send_to'
-            defaultMessage='Send cashus to {target}'
+            id='zap.send_to'
+            defaultMessage='Send zaps to {target}'
             values={{ target: emojifyText(account.display_name, account.emojis) }}
           />
         </Text>

@@ -43,7 +43,7 @@ import {
   UnauthorizedModal,
   VideoModal,
   EditRuleModal,
-  ZapPayRequestModal,
+  PayRequestModal,
   ZapSplitModal,
   ZapInvoiceModal,
   ZapsModal,
@@ -89,6 +89,7 @@ const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
   'NOSTR_LOGIN': NostrLoginModal,
   'NOSTR_SIGNUP': NostrSignupModal,
   'ONBOARDING': OnboardingModal,
+  'PAY_REQUEST': PayRequestModal,
   'REACTIONS': ReactionsModal,
   'REBLOGS': ReblogsModal,
   'REPLY_MENTIONS': ReplyMentionsModal,
@@ -98,7 +99,6 @@ const MODAL_COMPONENTS: Record<string, React.ExoticComponent<any>> = {
   'VIDEO': VideoModal,
   'ZAPS': ZapsModal,
   'ZAP_INVOICE': ZapInvoiceModal,
-  'ZAP_PAY_REQUEST': ZapPayRequestModal,
   'ZAP_SPLIT': ZapSplitModal,
 };
 

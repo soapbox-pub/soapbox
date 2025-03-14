@@ -1629,5 +1629,6 @@
   "zap.button.text.raw": "Zap {amount} sats",
   "zap.comment_input.placeholder": "Comentario opcional",
   "zap.open_wallet": "Abrir Wallet",
-  "nutzap.send_to": "Enviar cachus a {target}"
+  "nutzap.send_to": "Enviar cachus a {target}",
+  "zap.send_to": "Enviar zaps a {target}"
 }

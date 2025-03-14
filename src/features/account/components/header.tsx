@@ -310,7 +310,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const handleZapAccount: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(openModal('ZAP_PAY_REQUEST', { account }));
+    dispatch(openModal('PAY_REQUEST', { account }));
   };
 
   const makeMenu = () => {

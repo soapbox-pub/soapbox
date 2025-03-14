@@ -227,9 +227,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleZapClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(openModal('ZAP_PAY_REQUEST', { status, account: status.account }));
+      dispatch(openModal('PAY_REQUEST', { status, account: status.account }));
     } else {
-      onOpenUnauthorizedModal('ZAP_PAY_REQUEST');
+      onOpenUnauthorizedModal('PAY_REQUEST');
     }
   };
 
