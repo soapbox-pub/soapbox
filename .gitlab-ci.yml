@@ -14,9 +14,12 @@ build:
     - yarn install --ignore-scripts
     - apt-get update -y && apt-get install -y zip
   script:
-    - yarn lint
-    - yarn i18n && git diff --quiet || (echo "Locale files are out of date. Please run `yarn i18n`" && exit 1)
-    - NODE_ENV=production yarn build
+    - PIDS=() # run in parallel
+    - yarn lint & PIDS+=($!)
+    - yarn i18n:check  & PIDS+=($!)
+    - yarn run check & PIDS+=($!)
+    - NODE_ENV=production yarn build & PIDS+=($!)
+    - for pid in "${PIDS[@]}"; do wait "$pid"; done
     - cp dist/index.html dist/404.html
     - cd dist && zip -r ../soapbox.zip . && cd ..
   artifacts:
