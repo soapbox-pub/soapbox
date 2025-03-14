@@ -9,7 +9,7 @@ stages:
 
 build:
   stage: build
-  timeout: 3 minutes
+  timeout: 2 minutes
   before_script:
     - yarn install --ignore-scripts
     - apt-get update -y && apt-get install -y zip
