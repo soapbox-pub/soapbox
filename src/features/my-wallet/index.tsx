@@ -6,9 +6,11 @@ import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/car
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/my-wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/my-wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/my-wallet/components/transactions.tsx';
+import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
@@ -16,12 +18,18 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
+  payment: { id: 'my_wallet.payment', defaultMessage: 'Payment Method' },
   relays: { id: 'my_wallet.relays', defaultMessage: 'Relays' },
   transactions: { id: 'my_wallet.transactions', defaultMessage: 'Transactions' },
   myWallet: { id: 'my_wallet', defaultMessage: 'My Wallet' },
   management: { id: 'my_wallet.management', defaultMessage: 'Wallet Management' },
   mints: { id: 'my_wallet.mints', defaultMessage: 'Mints' },
 });
+
+const paymentMethods = {
+  zap: 'zap',
+  cashu: 'cashu',
+};
 
 /** User Wallet page. */
 const MyWallet = () => {
@@ -31,6 +39,7 @@ const MyWallet = () => {
   const { account } = useOwnAccount();
   const [walletData, setWalletData] = useState<WalletData | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { method, changeMethod } = usePaymentMethod();
 
   const fetchWallet = async () => {
 
@@ -91,6 +100,16 @@ const MyWallet = () => {
                     <List>
                       <ListItem label={intl.formatMessage(messages.mints)} to='/my-wallet-mints' />
                       <ListItem label={intl.formatMessage(messages.relays)} to='/my-wallet-relays' />
+                      <ListItem label={intl.formatMessage(messages.payment)} >
+                        <SelectDropdown
+                          className='max-w-[200px]'
+                          items={paymentMethods}
+                          defaultValue={method}
+                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                            changeMethod((event.target.value as 'cashu' | 'zap'));
+                          }}
+                        />
+                      </ListItem>
                     </List>
                   </CardBody>
 
