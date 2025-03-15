@@ -7,6 +7,7 @@ import bellIcon from '@tabler/icons/outline/bell.svg';
 import boltIcon from '@tabler/icons/outline/bolt.svg';
 import bookmarkOffIcon from '@tabler/icons/outline/bookmark-off.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
+import brandPeanutIcon from '@tabler/icons/outline/brand-peanut.svg';
 import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
@@ -48,6 +49,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import PureStatusReactionWrapper from 'soapbox/components/pure-status-reaction-wrapper.tsx';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
+import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useDislike } from 'soapbox/hooks/useDislike.ts';
@@ -178,6 +180,8 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
+
+  const isCashu = usePaymentMethod().method === 'cashu';
 
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -845,11 +849,12 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
         {(acceptsZaps) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
-            icon={boltIcon}
+            icon={isCashu ? brandPeanutIcon : boltIcon}
             color='accent'
+            iconClassName={isCashu ? 'rotate-45' : ''}
             filled
             onClick={handleZapClick}
-            active={status.zapped}
+            active={isCashu ? status.nutzapped : status.zapped}
             theme={statusActionButtonTheme}
             count={status?.zaps_amount ? status.zaps_amount / 1000 : 0}
           />
