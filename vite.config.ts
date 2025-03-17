@@ -5,7 +5,6 @@ import { fileURLToPath, URL } from 'node:url';
 import react from '@vitejs/plugin-react-swc';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { Connect, defineConfig, Plugin, UserConfig } from 'vite';
-import checker from 'vite-plugin-checker';
 import compileTime from 'vite-plugin-compile-time';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -32,7 +31,6 @@ export default defineConfig(() => {
       port: Number(PORT ?? 3036),
     },
     plugins: [
-      checker({ typescript: true }),
       compileTime(),
       createHtmlPlugin({
         template: 'index.html',
