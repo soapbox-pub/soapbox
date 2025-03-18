@@ -13,6 +13,7 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
+import walletIcon from '@tabler/icons/outline/wallet.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -210,6 +211,13 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     to={`/@${account.acct}`}
                     icon={userIcon}
                     text={intl.formatMessage(messages.profile)}
+                    onClick={onClose}
+                  />
+
+                  <SidebarLink
+                    to={'/wallet'}
+                    icon={walletIcon}
+                    text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
                     onClick={onClose}
                   />
 
