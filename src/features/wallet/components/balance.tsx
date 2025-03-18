@@ -28,12 +28,12 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
-  balance: { id: 'wallet.balance.cashu', defaultMessage: '{amount} cashus' },
+  balance: { id: 'wallet.balance.cashu', defaultMessage: '{amount} sats' },
   withdraw: { id: 'wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
   exchange: { id: 'wallet.balance.exchange_button', defaultMessage: 'Exchange' },
   mint: { id: 'wallet.balance.mint_button', defaultMessage: 'Mint' },
-  paidMessage: { id: 'wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your cashus are now in your balance. Enjoy!' },
-  unpaidMessage: { id: 'wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your cashus.' },
+  paidMessage: { id: 'wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your sats are now in your balance. Enjoy!' },
+  unpaidMessage: { id: 'wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your sats.' },
 });
 
 interface AmountProps {
