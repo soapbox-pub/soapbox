@@ -4,22 +4,22 @@ import { defineMessages, useIntl } from 'react-intl';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { RelayEditor } from 'soapbox/features/my-wallet/components/editable-lists.tsx';
+import { RelayEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  title: { id: 'my_wallet.mints', defaultMessage: 'Mints' },
-  error: { id: 'my_wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
+  title: { id: 'wallet.relays', defaultMessage: 'Wallet Relays' },
+  error: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
   send: { id: 'common.send', defaultMessage: 'Send' },
 });
 
-const MyWalletMints = () => {
+const WalletRelays = () => {
   const intl = useIntl();
   const api = useApi();
 
-  const [mints, setMints] = useState<string[]>([]);
+  const [relays, setRelays] = useState<string[]>(['teste.com']);
 
   const fetchWallet = async () => {
     try {
@@ -27,7 +27,7 @@ const MyWalletMints = () => {
       const data: WalletData = await response.json();
       if (data) {
         const normalizedData = baseWalletSchema.parse(data);
-        setMints(normalizedData.mints);
+        setRelays(normalizedData.relays);
       }
 
     } catch (error) {
@@ -41,7 +41,7 @@ const MyWalletMints = () => {
       const data: WalletData = await response.json();
       if (data) {
         const normalizedData = baseWalletSchema.parse(data);
-        setMints(normalizedData.mints);
+        setRelays(normalizedData.relays);
       }
 
     } catch (error) {
@@ -56,7 +56,7 @@ const MyWalletMints = () => {
   return (
     <Column label={intl.formatMessage(messages.title)} >
       <Stack space={2}>
-        <RelayEditor items={mints} setItems={setMints} />
+        <RelayEditor items={relays} setItems={setRelays} />
         <Button className='w-full' theme='primary' onClick={handleClick}>
           {intl.formatMessage(messages.send)}
         </Button>
@@ -66,4 +66,4 @@ const MyWalletMints = () => {
   );
 };
 
-export default MyWalletMints;
+export default WalletRelays;

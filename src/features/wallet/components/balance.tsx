@@ -28,12 +28,12 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
-  balance: { id: 'my_wallet.balance.cashu', defaultMessage: '{amount} cashus' },
-  withdraw: { id: 'my_wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
-  exchange: { id: 'my_wallet.balance.exchange_button', defaultMessage: 'Exchange' },
-  mint: { id: 'my_wallet.balance.mint_button', defaultMessage: 'Mint' },
-  paidMessage: { id: 'my_wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your cashus are now in your balance. Enjoy!' },
-  unpaidMessage: { id: 'my_wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your cashus.' },
+  balance: { id: 'wallet.balance.cashu', defaultMessage: '{amount} cashus' },
+  withdraw: { id: 'wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
+  exchange: { id: 'wallet.balance.exchange_button', defaultMessage: 'Exchange' },
+  mint: { id: 'wallet.balance.mint_button', defaultMessage: 'Mint' },
+  paidMessage: { id: 'wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your cashus are now in your balance. Enjoy!' },
+  unpaidMessage: { id: 'wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your cashus.' },
 });
 
 interface AmountProps {
@@ -82,7 +82,7 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
 const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const [mintAmount, setMintAmount] = useState('');
   const [quote, setQuote] = useState(() => {
-    const storedQuote = localStorage.getItem('soapbox:my_wallet:quote');
+    const storedQuote = localStorage.getItem('soapbox:wallet:quote');
     return storedQuote ? JSON.parse(storedQuote) : undefined;
   });
   const [mintName, setMintName] = useState(list[0]);
@@ -94,7 +94,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const handleClean = useCallback(() => {
     setQuote(undefined);
     setMintAmount('');
-    localStorage.removeItem('soapbox:my_wallet:quote');
+    localStorage.removeItem('soapbox:wallet:quote');
   }, []);
 
   const checkQuoteStatus = async (quoteId: string): Promise<void> => {
@@ -123,7 +123,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
       try {
         const response = await api.post('/api/v1/ditto/cashu/quote', { mint: mintName, amount: Number(mintAmount) });
         const newQuote = quoteShema.parse(await response.json());
-        localStorage.setItem('soapbox:my_wallet:quote', JSON.stringify(newQuote));
+        localStorage.setItem('soapbox:wallet:quote', JSON.stringify(newQuote));
         setQuote(newQuote);
         setHasProcessedQuote(true);
         if (!(await openExtension(newQuote.request))) checkQuoteStatus(newQuote.quote);

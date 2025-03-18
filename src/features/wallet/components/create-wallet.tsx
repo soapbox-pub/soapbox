@@ -10,17 +10,17 @@ import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { MintEditor } from 'soapbox/features/my-wallet/components/editable-lists.tsx';
+import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
-  title: { id: 'my_wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
-  question: { id: 'my_wallet.create_wallet.question', defaultMessage: 'Do you want create one?' },
-  button: { id: 'my_wallet.create_wallet.button', defaultMessage: 'Create wallet' },
-  mints: { id: 'my_wallet.mints', defaultMessage: 'Mints' },
+  title: { id: 'wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
+  question: { id: 'wallet.create_wallet.question', defaultMessage: 'Do you want create one?' },
+  button: { id: 'wallet.create_wallet.button', defaultMessage: 'Create wallet' },
+  mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
 
 const CreateWallet: React.FC<{ setWalletData: React.Dispatch<React.SetStateAction<WalletData | undefined>> }> = ({ setWalletData }) => {
@@ -91,7 +91,7 @@ const CreateWallet: React.FC<{ setWalletData: React.Dispatch<React.SetStateActio
                 </Stack>
 
                 <FormActions>
-                  <Button to='/my-wallet' onClick={()=> setFormActive(false)} theme='tertiary'>
+                  <Button to='/wallet' onClick={()=> setFormActive(false)} theme='tertiary'>
                     <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
                   </Button>
 

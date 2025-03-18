@@ -180,9 +180,9 @@ export const ZapsModal = lazy(() => import('soapbox/features/ui/components/modal
 export const ZapSplitModal = lazy(() => import('soapbox/features/ui/components/modals/zap-split/zap-split-modal.tsx'));
 export const CaptchaModal = lazy(() => import('soapbox/features/ui/components/modals/captcha-modal/captcha-modal.tsx'));
 export const NostrBunkerLogin = lazy(() => import('soapbox/features/nostr/nostr-bunker-login.tsx'));
-export const MyWallet = lazy(() => import('soapbox/features/my-wallet/index.tsx'));
-export const MyWalletRelays = lazy(() => import('soapbox/features/my-wallet/components/wallet-relays.tsx'));
-export const MyWalletMints = lazy(() => import('soapbox/features/my-wallet/components/wallet-mints.tsx'));
+export const Wallet = lazy(() => import('soapbox/features/wallet/index.tsx'));
+export const WalletRelays = lazy(() => import('soapbox/features/wallet/components/wallet-relays.tsx'));
+export const WalletMints = lazy(() => import('soapbox/features/wallet/components/wallet-mints.tsx'));
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
 export const FollowsTimeline = lazy(() => import('soapbox/features/home-timeline/follows-timeline.tsx'));
 export const CommunityTimeline = lazy(() => import('soapbox/features/home-timeline/community-timeline.tsx'));

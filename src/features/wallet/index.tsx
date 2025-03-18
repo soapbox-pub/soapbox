@@ -7,9 +7,9 @@ import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import Balance from 'soapbox/features/my-wallet/components/balance.tsx';
-import CreateWallet from 'soapbox/features/my-wallet/components/create-wallet.tsx';
-import Transactions from 'soapbox/features/my-wallet/components/transactions.tsx';
+import Balance from 'soapbox/features/wallet/components/balance.tsx';
+import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
+import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
@@ -18,12 +18,12 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
-  payment: { id: 'my_wallet.payment', defaultMessage: 'Payment Method' },
-  relays: { id: 'my_wallet.relays', defaultMessage: 'Relays' },
-  transactions: { id: 'my_wallet.transactions', defaultMessage: 'Transactions' },
-  myWallet: { id: 'my_wallet', defaultMessage: 'My Wallet' },
-  management: { id: 'my_wallet.management', defaultMessage: 'Wallet Management' },
-  mints: { id: 'my_wallet.mints', defaultMessage: 'Mints' },
+  payment: { id: 'wallet.payment', defaultMessage: 'Payment Method' },
+  relays: { id: 'wallet.relays', defaultMessage: 'Relays' },
+  transactions: { id: 'wallet.transactions', defaultMessage: 'Transactions' },
+  wallet: { id: 'wallet', defaultMessage: 'Wallet' },
+  management: { id: 'wallet.management', defaultMessage: 'Wallet Management' },
+  mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
 
 const paymentMethods = {
@@ -32,7 +32,7 @@ const paymentMethods = {
 };
 
 /** User Wallet page. */
-const MyWallet = () => {
+const Wallet = () => {
   const api = useApi();
   const intl = useIntl();
 
@@ -72,10 +72,10 @@ const MyWallet = () => {
         </Stack>
         :
         (
-          <Column label={intl.formatMessage(messages.myWallet)} transparent withHeader={false} slim>
+          <Column label={intl.formatMessage(messages.wallet)} transparent withHeader={false} slim>
             <Card className='space-y-4'>
               <CardHeader>
-                <CardTitle title={intl.formatMessage(messages.myWallet)} />
+                <CardTitle title={intl.formatMessage(messages.wallet)} />
               </CardHeader>
 
               {walletData ? (
@@ -131,4 +131,4 @@ const MyWallet = () => {
   );
 };
 
-export default MyWallet;
+export default Wallet;

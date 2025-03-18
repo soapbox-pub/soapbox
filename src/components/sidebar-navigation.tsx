@@ -198,10 +198,10 @@ const SidebarNavigation = () => {
               />
 
               <SidebarNavigationLink
-                to={'/my-wallet'}
+                to={'/wallet'}
                 icon={walletIcon}
                 activeIcon={walletIcon}
-                text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='My Wallet' />}
+                text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
               />
 
               <SidebarNavigationLink
