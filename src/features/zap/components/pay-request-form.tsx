@@ -1,5 +1,4 @@
 import boltIcon from '@tabler/icons/outline/bolt.svg';
-import brandPeanutIcon from '@tabler/icons/outline/brand-peanut.svg';
 import infoSquareRoundedIcon from '@tabler/icons/outline/info-square-rounded.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { useEffect, useState } from 'react';
@@ -192,7 +191,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
           </Link>
 
         </div>
-      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={isCashu ? brandPeanutIcon : boltIcon} iconClassName={isCashu ? 'rotate-45' : ''} text={renderPaymentButtonText()} disabled={amount < 1 ? true : false} />}
+      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={renderPaymentButtonText()} disabled={amount < 1 ? true : false} />}
 
     </Stack>
   );

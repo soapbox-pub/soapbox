@@ -7,7 +7,6 @@ import bellIcon from '@tabler/icons/outline/bell.svg';
 import boltIcon from '@tabler/icons/outline/bolt.svg';
 import bookmarkOffIcon from '@tabler/icons/outline/bookmark-off.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
-import brandPeanutIcon from '@tabler/icons/outline/brand-peanut.svg';
 import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
@@ -849,7 +848,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
         {(acceptsZaps) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
-            icon={isCashu ? brandPeanutIcon : boltIcon}
+            icon={boltIcon}
             color='accent'
             iconClassName={isCashu ? 'rotate-45' : ''}
             filled

@@ -1,7 +1,6 @@
 import atIcon from '@tabler/icons/outline/at.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
 import boltIcon from '@tabler/icons/outline/bolt.svg';
-import brandPeanutIcon from '@tabler/icons/outline/brand-peanut.svg';
 import circleXIcon from '@tabler/icons/outline/circle-x.svg';
 import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
 import dotsIcon from '@tabler/icons/outline/dots.svg';
@@ -20,7 +19,6 @@ import userCheckIcon from '@tabler/icons/outline/user-check.svg';
 import userXIcon from '@tabler/icons/outline/user-x.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
-import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 import { nip19 } from 'nostr-tools';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
@@ -102,7 +100,7 @@ const messages = defineMessages({
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
-  paymentMethod: { id: 'payment_method.send_to', defaultMessage: 'Send {method} to {target}' },
+  method: { id: 'payment_method.send_to', defaultMessage: 'Send {method} to {target}' },
 });
 
 interface IHeader {
@@ -119,7 +117,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const { follow } = useFollow();
 
   const { method: paymentMethod } = usePaymentMethod();
-  const isCashu = paymentMethod === 'cashu';
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
@@ -670,12 +667,12 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const renderZapAccount = () => {
     return (
       <IconButton
-        src={isCashu ? brandPeanutIcon : boltIcon}
+        src={boltIcon}
         onClick={handleZapAccount}
-        title={intl.formatMessage(messages.paymentMethod, { target: account.display_name, method: paymentMethod })}
+        title={intl.formatMessage(messages.method, { target: account.display_name, method: paymentMethod })}
         theme='outlined'
         className='px-2'
-        iconClassName={clsx('size-4', { 'rotate-45': isCashu })}
+        iconClassName='size-4'
       />
     );
   };
