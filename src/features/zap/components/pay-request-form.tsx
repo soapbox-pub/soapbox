@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { nutzap, zap } from 'soapbox/actions/interactions.ts';
+import { zap } from 'soapbox/actions/interactions.ts';
 import { openModal, closeModal } from 'soapbox/actions/modals.ts';
 import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
 import chestIcon from 'soapbox/assets/icons/chest.png';
@@ -21,7 +21,9 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import { useNutzap } from 'soapbox/features/zap/hooks/useNutzap.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { capitalize } from 'soapbox/utils/strings.ts';
@@ -55,6 +57,7 @@ const messages = defineMessages({
 const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   const intl = useIntl();
+  const api = useApi();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
   const [amount, setAmount] = useState(50); // amount in millisatoshi
@@ -63,6 +66,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   const { method: paymentMethod } = usePaymentMethod();
   const isCashu = paymentMethod === 'cashu';
   const hasZapSplit = zapArrays.length > 0 && !isCashu;
+  const { nutzapRequest } = useNutzap();
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -70,7 +74,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     if (isCashu) {
-      await dispatch(nutzap(account, status, amount, zapComment));
+      await nutzapRequest(api, account, amount, zapComment, status);
       dispatch(closeModal('PAY_REQUEST'));
       return;
     }

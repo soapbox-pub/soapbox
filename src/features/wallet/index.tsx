@@ -98,8 +98,8 @@ const Wallet = () => {
 
                   <CardBody>
                     <List>
-                      <ListItem label={intl.formatMessage(messages.mints)} to='/my-wallet-mints' />
-                      <ListItem label={intl.formatMessage(messages.relays)} to='/my-wallet-relays' />
+                      <ListItem label={intl.formatMessage(messages.mints)} to='/wallet-mints' />
+                      <ListItem label={intl.formatMessage(messages.relays)} to='/wallet-relays' />
                       <ListItem label={intl.formatMessage(messages.payment)} >
                         <SelectDropdown
                           className='max-w-[200px]'
