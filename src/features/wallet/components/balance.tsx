@@ -5,7 +5,6 @@ import withdrawIcon from '@tabler/icons/outline/cash.svg';
 import mIcon from '@tabler/icons/outline/circle-dotted-letter-m.svg';
 import creditCardPayIcon from '@tabler/icons/outline/credit-card-pay.svg';
 import libraryPlusIcon from '@tabler/icons/outline/library-plus.svg';
-import exchangeIcon from '@tabler/icons/outline/transfer.svg';
 import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -61,8 +60,8 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
   const intl = useIntl();
 
   return (
-    <Stack alignItems='center' space={4}>
-      <Text theme='default' size='3xl'>
+    <Stack alignItems='center' space={4} className='w-4/5'>
+      <Text theme='default' weight='semibold' size='3xl'>
         {intl.formatMessage(messages.balance, { amount })}
       </Text>
 
@@ -72,7 +71,6 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
 
       <HStack space={2}>
         <Button icon={withdrawIcon} theme='secondary' text={intl.formatMessage(messages.withdraw)} />
-        <Button icon={exchangeIcon} theme='secondary' text={intl.formatMessage(messages.exchange)} />
         <Button icon={libraryPlusIcon} theme='primary' onClick={onMintClick} text={intl.formatMessage(messages.mint)} />
       </HStack>
     </Stack>
@@ -134,7 +132,6 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
     } else {
       checkQuoteStatus(quote.quote);
     }
-    // setHasProcessedQuote(true);
   };
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
@@ -254,7 +251,7 @@ const Balance = () => {
   }
 
   return (
-    <Stack className='rounded-lg border p-6' alignItems='center' space={4}>
+    <Stack className='rounded-lg border p-6 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
       {items[current]}
     </Stack>
   );
