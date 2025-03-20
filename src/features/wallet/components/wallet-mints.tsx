@@ -4,14 +4,19 @@ import { defineMessages, useIntl } from 'react-intl';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import { RelayEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
+import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
+import { isURL } from 'soapbox/utils/auth.ts';
 
 const messages = defineMessages({
   title: { id: 'wallet.mints', defaultMessage: 'Mints' },
-  error: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
+  loadingError: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
+  error: { id: 'wallet.mints.error', defaultMessage: 'Failed to update mints.' },
+  empty: { id: 'wallet.mints.empty', defaultMessage: 'At least one mint is required.' },
+  url: { id: 'wallet.invalid_url', defaultMessage: 'All strings must be valid URLs.' },
+  sucess: { id: 'wallet.mints.sucess', defaultMessage: 'Mints updated with success!' },
   send: { id: 'common.send', defaultMessage: 'Send' },
 });
 
@@ -19,6 +24,8 @@ const WalletMints = () => {
   const intl = useIntl();
   const api = useApi();
 
+  const [relays, setRelays] = useState<string[]>([]);
+  const [initialMints, setInitialMints] = useState<string[]>([]);
   const [mints, setMints] = useState<string[]>([]);
 
   const fetchWallet = async () => {
@@ -28,24 +35,37 @@ const WalletMints = () => {
       if (data) {
         const normalizedData = baseWalletSchema.parse(data);
         setMints(normalizedData.mints);
+        setInitialMints(normalizedData.mints);
+        setRelays(normalizedData.relays);
       }
 
     } catch (error) {
-      toast.error(intl.formatMessage(messages.error));
+      toast.error(intl.formatMessage(messages.loadingError));
     }
   };
 
   const handleClick = async () =>{
-    try {
-      const response = await api.post('/api/v1/ditto/cashu/wallet');
-      const data: WalletData = await response.json();
-      if (data) {
-        const normalizedData = baseWalletSchema.parse(data);
-        setMints(normalizedData.mints);
-      }
+    if (mints.length <= 0) {
+      toast.error(intl.formatMessage(messages.empty));
+      return;
+    }
 
+    if (mints.some((mint) => !isURL(mint))) {
+      toast.error(intl.formatMessage(messages.url));
+      return;
+    }
+
+    if (JSON.stringify(initialMints) === JSON.stringify(mints)) {
+      return;
+    }
+    try {
+      await api.put('/api/v1/ditto/cashu/wallet', { mints: mints, relays: relays });
+
+      toast.success(intl.formatMessage(messages.sucess));
     } catch (error) {
-      toast.error('Wallet not found');
+      const errorMessage = error instanceof Error ? error.message : intl.formatMessage(messages.error);
+      toast.error(errorMessage);
+      console.error(error);
     }
   };
 
@@ -56,7 +76,7 @@ const WalletMints = () => {
   return (
     <Column label={intl.formatMessage(messages.title)} >
       <Stack space={2}>
-        <RelayEditor items={mints} setItems={setMints} />
+        <MintEditor items={mints} setItems={setMints} />
         <Button className='w-full' theme='primary' onClick={handleClick}>
           {intl.formatMessage(messages.send)}
         </Button>

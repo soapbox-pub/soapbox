@@ -36,6 +36,7 @@ const CreateWallet: React.FC<{ setWalletData: React.Dispatch<React.SetStateActio
 
     const wallet = {
       mints: mints,
+      relays: [],
     };
 
     try {
