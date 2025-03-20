@@ -19,9 +19,10 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { Quote, WalletData, baseWalletSchema, quoteShema } from 'soapbox/schemas/wallet.ts';
+import { Quote, quoteShema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 
@@ -45,7 +46,6 @@ interface AmountProps {
 interface NewMintProps {
   list: string[];
   onBack: () => void;
-  onChange: () => void;
 }
 
 const openExtension = async (invoice: string) => {
@@ -79,7 +79,7 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
   );
 };
 
-const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
+const NewMint = ({ onBack, list }: NewMintProps) => {
   const [mintAmount, setMintAmount] = useState('');
   const [quote, setQuote] = useState<Quote | undefined>(() => {
     const storedQuote = localStorage.getItem('soapbox:wallet:quote');
@@ -90,6 +90,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const [currentState, setCurrentState] = useState<'loading' | 'paid' | 'default'>('default');
   const api = useApi();
   const intl = useIntl();
+  const { getWallet } = useCashu();
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -109,8 +110,9 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
         setCurrentState('paid');
       } else {
         toast.success(intl.formatMessage(messages.paidMessage));
-        onChange();
         onBack();
+        // onChange();
+        getWallet(api);
         handleClean();
         setCurrentState('default');
       }
@@ -139,8 +141,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
     } else {
       if (now > quote.expiry) {
         toast.error(intl.formatMessage(messages.expired));
-        setQuote(undefined);
-        setCurrentState('default');
+        handleClean();
       } else {
         checkQuoteStatus(quote.quote);
       }
@@ -157,11 +158,16 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
     const processQuote = async () => {
       if (quote && !hasProcessedQuote) {
         const invoice = await openExtension(quote.request);
-        if (invoice === undefined) {
+        if (invoice === undefined && now < quote.expiry) {
           await checkQuoteStatus(quote.quote);
         }
-        setCurrentState('paid');
-        setHasProcessedQuote(true);
+        if (now > quote.expiry) {
+          handleClean();
+          toast.error(intl.formatMessage(messages.expired));
+        } else {
+          setCurrentState('paid');
+          setHasProcessedQuote(true);
+        }
       }
     };
 
@@ -230,35 +236,30 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
 };
 
 const Balance = () => {
+  const api = useApi();
+  const { wallet, getWallet } = useCashu();
   const [amount, setAmount] = useState(0);
   const [mints, setMints] = useState<string[]>([]);
   const { account } = useOwnAccount();
   const [current, setCurrent] = useState<keyof typeof items>('balance');
-  const api = useApi();
-
-  const fetchWallet = async () => {
-    try {
-      const response = await api.get('/api/v1/ditto/cashu/wallet');
-      const data: WalletData = await response.json();
-      if (data) {
-        const normalizedData = baseWalletSchema.parse(data);
-        setMints([...normalizedData.mints]);
-        setAmount(normalizedData.balance);
-      }
-
-    } catch (error) {
-      toast.error('Wallet not found');
-    }
-  };
 
   const items = {
     balance: <Amount amount={amount} onMintClick={() => setCurrent('newMint')} />,
-    newMint: <NewMint onBack={() => setCurrent('balance')} list={mints} onChange={fetchWallet} />,
+    newMint: <NewMint onBack={() => setCurrent('balance')} list={mints} />,
   };
 
   useEffect(() => {
-    fetchWallet();
+    getWallet(api);
   }, []);
+
+  useEffect(
+    () => {
+      if (wallet){
+        setMints([...wallet.mints]);
+        setAmount(wallet.balance);
+      }
+    }, [wallet],
+  );
 
   if (!account) {
     return null;
