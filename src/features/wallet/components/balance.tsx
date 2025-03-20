@@ -21,7 +21,7 @@ import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { WalletData, baseWalletSchema, quoteShema } from 'soapbox/schemas/wallet.ts';
+import { Quote, WalletData, baseWalletSchema, quoteShema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 
@@ -31,8 +31,10 @@ const messages = defineMessages({
   withdraw: { id: 'wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
   exchange: { id: 'wallet.balance.exchange_button', defaultMessage: 'Exchange' },
   mint: { id: 'wallet.balance.mint_button', defaultMessage: 'Mint' },
+  payment: { id: 'wallet.balance.mint.payment', defaultMessage: 'Make the payment to complete:' },
   paidMessage: { id: 'wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your sats are now in your balance. Enjoy!' },
   unpaidMessage: { id: 'wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your sats.' },
+  expired: { id: 'wallet.balance.expired', defaultMessage: 'Expired' },
 });
 
 interface AmountProps {
@@ -79,7 +81,7 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
 
 const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const [mintAmount, setMintAmount] = useState('');
-  const [quote, setQuote] = useState(() => {
+  const [quote, setQuote] = useState<Quote | undefined>(() => {
     const storedQuote = localStorage.getItem('soapbox:wallet:quote');
     return storedQuote ? JSON.parse(storedQuote) : undefined;
   });
@@ -89,9 +91,12 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
   const api = useApi();
   const intl = useIntl();
 
+  const now = Math.floor(Date.now() / 1000);
+
   const handleClean = useCallback(() => {
     setQuote(undefined);
     setMintAmount('');
+    setCurrentState('default');
     localStorage.removeItem('soapbox:wallet:quote');
   }, []);
 
@@ -109,8 +114,9 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
         handleClean();
         setCurrentState('default');
       }
-    } catch {
-      toast.error('Something went wrong. Please try again.');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
+      toast.error(errorMessage);
     }
   };
 
@@ -125,12 +131,19 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
         setQuote(newQuote);
         setHasProcessedQuote(true);
         if (!(await openExtension(newQuote.request))) checkQuoteStatus(newQuote.quote);
-      } catch {
-        toast.error('An error occurred');
+      } catch (error) {
+        console.error('Mint Error:', error);
+        toast.error('An error occurred while processing the mint.');
       }
       setCurrentState('paid');
     } else {
-      checkQuoteStatus(quote.quote);
+      if (now > quote.expiry) {
+        toast.error(intl.formatMessage(messages.expired));
+        setQuote(undefined);
+        setCurrentState('default');
+      } else {
+        checkQuoteStatus(quote.quote);
+      }
     }
   };
 
@@ -147,6 +160,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
         if (invoice === undefined) {
           await checkQuoteStatus(quote.quote);
         }
+        setCurrentState('paid');
         setHasProcessedQuote(true);
       }
     };
@@ -195,7 +209,7 @@ const NewMint = ({ onBack, list, onChange }: NewMintProps) => {
           : <Stack space={3} justifyContent='center' alignItems='center'>
             {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text>
-              Solta a carta garai tigr...
+              {intl.formatMessage(messages.payment)}
             </Text>
 
             <QRCode className='rounded-lg' value={quote.request} includeMargin />
