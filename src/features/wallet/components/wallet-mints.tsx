@@ -5,8 +5,8 @@ import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
-import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 import { isURL } from 'soapbox/utils/auth.ts';
 
@@ -23,26 +23,11 @@ const messages = defineMessages({
 const WalletMints = () => {
   const intl = useIntl();
   const api = useApi();
+  const { wallet, getWallet } = useCashu();
 
   const [relays, setRelays] = useState<string[]>([]);
   const [initialMints, setInitialMints] = useState<string[]>([]);
   const [mints, setMints] = useState<string[]>([]);
-
-  const fetchWallet = async () => {
-    try {
-      const response = await api.get('/api/v1/ditto/cashu/wallet');
-      const data: WalletData = await response.json();
-      if (data) {
-        const normalizedData = baseWalletSchema.parse(data);
-        setMints(normalizedData.mints);
-        setInitialMints(normalizedData.mints);
-        setRelays(normalizedData.relays);
-      }
-
-    } catch (error) {
-      toast.error(intl.formatMessage(messages.loadingError));
-    }
-  };
 
   const handleClick = async () =>{
     if (mints.length <= 0) {
@@ -70,8 +55,19 @@ const WalletMints = () => {
   };
 
   useEffect(() => {
-    fetchWallet();
+    getWallet(api, false);
+    toast.error(intl.formatMessage(messages.loadingError));
   }, []);
+
+  useEffect(
+    () => {
+      if (wallet) {
+        setMints(wallet.mints ?? []);
+        setInitialMints(wallet.mints ?? []);
+        setRelays(wallet.relays ?? []);
+      }
+    }, [wallet],
+  );
 
   return (
     <Column label={intl.formatMessage(messages.title)} >

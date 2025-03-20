@@ -11,10 +11,9 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
-import toast from 'soapbox/toast.tsx';
 
 const messages = defineMessages({
   title: { id: 'wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
@@ -23,35 +22,24 @@ const messages = defineMessages({
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
 
-const CreateWallet: React.FC<{ setWalletData: React.Dispatch<React.SetStateAction<WalletData | undefined>> }> = ({ setWalletData }) => {
+const CreateWallet = () => {
   const api = useApi();
   const intl = useIntl();
   const { account } = useOwnAccount();
   const [formActive, setFormActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [mints, setMints] = useState<string[]>([]);
+  const { createWallet } = useCashu();
 
   const handleSubmit = async () => {
     setIsLoading(true);
 
-    const wallet = {
+    const walletInfo = {
       mints: mints,
       relays: [],
     };
 
-    try {
-      const response = await api.put('/api/v1/ditto/cashu/wallet', wallet);
-      const data = await response.json();
-      if (data) {
-        // toast.success('Deu certo garai')
-        const normalizedData = baseWalletSchema.parse(data);
-        toast.success('Walllet Created with success'); // TO DO : create translated text
-        setWalletData(normalizedData);
-      }
-    } catch (e) {
-      toast.error('An error had occured'); // TO DO : create translated text
-    }
-
+    await createWallet(api, walletInfo);
     setIsLoading(false);
   };
 

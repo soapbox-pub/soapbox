@@ -10,11 +10,10 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
-import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
@@ -37,29 +36,13 @@ const Wallet = () => {
   const intl = useIntl();
 
   const { account } = useOwnAccount();
-  const [walletData, setWalletData] = useState<WalletData | undefined>(undefined);
+  const { wallet: walletData, getWallet } = useCashu();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { method, changeMethod } = usePaymentMethod();
 
-  const fetchWallet = async () => {
-
-    try {
-      const response = await api.get('/api/v1/ditto/cashu/wallet');
-      const data: WalletData = await response.json();
-      if (data) {
-        const normalizedData = baseWalletSchema.parse(data);
-        setWalletData(normalizedData);
-      }
-
-    } catch (error) {
-      toast.error('Wallet not found');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchWallet();
+    getWallet(api);
+    setIsLoading(false);
   }, []);
 
   if (!account) return null;
@@ -118,7 +101,7 @@ const Wallet = () => {
                 :
                 <>
                   <CardBody>
-                    <CreateWallet setWalletData={setWalletData} />
+                    <CreateWallet />
                   </CardBody>
 
                 </>
