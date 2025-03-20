@@ -29,6 +29,7 @@ import thumbUpIcon from '@tabler/icons/outline/thumb-up.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import uploadIcon from '@tabler/icons/outline/upload.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
@@ -48,7 +49,8 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import PureStatusReactionWrapper from 'soapbox/components/pure-status-reaction-wrapper.tsx';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useNutzap } from 'soapbox/features/zap/hooks/useNutzap.ts';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useDislike } from 'soapbox/hooks/useDislike.ts';
@@ -164,6 +166,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   statusActionButtonTheme = 'default',
 }) => {
   const intl = useIntl();
+  const api = useApi(); // TODO: Remove this part after patrick implement in backend
   const history = useHistory();
   const dispatch = useAppDispatch();
   const match = useRouteMatch<{ groupSlug: string }>('/group/:groupSlug');
@@ -180,8 +183,8 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
 
-  const { nutzapsList } = useNutzap();
-  const isNutzapped = Object.keys(nutzapsList).some((nutzap)=> nutzap === status.id);
+  const { wallet, getWallet, nutzapsList } = useCashu();
+  const isNutzapped = Object.keys(nutzapsList).some((nutzap)=> nutzap === status.id); // TODO: Remove "getWallet" to
 
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -196,6 +199,12 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   const { togglePin } = usePin();
   const { unpinFromGroup, pinToGroup } = usePinGroup();
   const { initReport } = useInitReport();
+
+  useEffect(
+    () => {
+      getWallet(api, false);
+    } // TODO: Remove
+    , []);
 
   if (!status) {
     return null;
@@ -763,6 +772,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
   const acceptsZaps = status.account.ditto.accepts_zaps === true;
+  const hasWallet = wallet !== null;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
@@ -846,7 +856,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
           />
         )}
 
-        {(acceptsZaps) && (
+        {(acceptsZaps || hasWallet) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
             icon={boltIcon}

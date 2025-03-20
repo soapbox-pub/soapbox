@@ -21,6 +21,7 @@ import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
 import { List as ImmutableList } from 'immutable';
 import { nip19 } from 'nostr-tools';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -44,7 +45,9 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button.tsx';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -110,6 +113,7 @@ interface IHeader {
 const Header: React.FC<IHeader> = ({ account }) => {
   const intl = useIntl();
   const history = useHistory();
+  const api = useApi(); // TODO: Remove this part after patrick implement in backend
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
@@ -119,6 +123,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const { method: paymentMethod } = usePaymentMethod();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
+
+  const { wallet, getWallet } = useCashu();
+
 
   const { getOrCreateChatByAccountId } = useChats();
 
@@ -137,6 +144,13 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     },
   });
+
+
+  useEffect(
+    () => {
+      getWallet(api, false);
+    } // TODO: remove
+    , []);
 
   if (!account) {
     return (
@@ -680,6 +694,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const info = makeInfo();
   const menu = makeMenu();
   const acceptsZaps = account.ditto.accepts_zaps === true;
+  const hasWallet = wallet !== null;
 
   return (
     <div>
@@ -721,7 +736,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <SubscriptionButton account={account} />
               {renderMessageButton()}
               {renderShareButton()}
-              {acceptsZaps && renderZapAccount()}
+              {(acceptsZaps || hasWallet) && renderZapAccount()}
 
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>

@@ -29,6 +29,7 @@ import thumbUpIcon from '@tabler/icons/outline/thumb-up.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import uploadIcon from '@tabler/icons/outline/upload.svg';
 import volume3Icon from '@tabler/icons/outline/volume-3.svg';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
@@ -49,7 +50,8 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useNutzap } from 'soapbox/features/zap/hooks/useNutzap.ts';
+import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -160,6 +162,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 }) => {
   const intl = useIntl();
   const history = useHistory();
+  const api = useApi(); // TODO: Remove this part after patrick implement in backend
   const dispatch = useAppDispatch();
   const match = useRouteMatch<{ groupSlug: string }>('/group/:groupSlug');
 
@@ -175,7 +178,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
 
-  const { nutzapsList } = useNutzap();
+  const { wallet, getWallet, nutzapsList } = useCashu();
   const isNutzapped = Object.keys(nutzapsList).some((nutzap)=> nutzap === status.id);
 
   const { account } = useOwnAccount();
@@ -184,6 +187,12 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const { toggleReblog } = useReblog();
   const { bookmark, unbookmark } = useBookmark();
+
+  useEffect(
+    () => {
+      getWallet(api, false);
+    } // TODO: remove
+    , []);
 
   if (!status) {
     return null;
@@ -753,6 +762,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
   const acceptsZaps = status.account.ditto.accepts_zaps === true;
+  const hasWallet = wallet !== null;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
@@ -836,7 +846,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        {(acceptsZaps) && (
+        {(acceptsZaps || hasWallet) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
             icon={boltIcon}
