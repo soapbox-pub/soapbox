@@ -8,7 +8,7 @@ const baseWalletSchema = z.object({
   balance: z.number(),
 });
 
-const quoteShema = z.object({
+const quoteSchema = z.object({
   expiry: z.number(),
   paid: z.boolean(),
   quote: z.string(),
@@ -16,8 +16,8 @@ const quoteShema = z.object({
   state: z.enum(['UNPAID', 'PAID', 'ISSUED']),
 });
 
-type Quote = z.infer<typeof quoteShema>
+type Quote = z.infer<typeof quoteSchema>
 
 type WalletData = z.infer<typeof baseWalletSchema>;
 
-export { baseWalletSchema, quoteShema, type WalletData, type Quote };
+export { baseWalletSchema, quoteSchema, type WalletData, type Quote };

@@ -22,7 +22,7 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { Quote, quoteShema } from 'soapbox/schemas/wallet.ts';
+import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 
@@ -128,7 +128,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
     if (!quote) {
       try {
         const response = await api.post('/api/v1/ditto/cashu/quote', { mint: mintName, amount: Number(mintAmount) });
-        const newQuote = quoteShema.parse(await response.json());
+        const newQuote = quoteSchema.parse(await response.json());
         localStorage.setItem('soapbox:wallet:quote', JSON.stringify(newQuote));
         setQuote(newQuote);
         setHasProcessedQuote(true);
