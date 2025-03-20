@@ -60,7 +60,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   const api = useApi();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
-  const [amount, setAmount] = useState(50); // amount in millisatoshi
+  const [amount, setAmount] = useState(50);
   const { zapArrays, zapSplitData, receiveAmount } = useZapSplit(status, account);
   const splitValues = zapSplitData.splitValues;
   const { method: paymentMethod } = usePaymentMethod();
@@ -74,7 +74,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     if (isCashu) {
-      await nutzapRequest(api, account, amount, zapComment, status);
+      nutzapRequest(api, account, amount, zapComment, status);
       dispatch(closeModal('PAY_REQUEST'));
       return;
     }
@@ -85,13 +85,13 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
     if (!invoice) {
       dispatch(closeModal('PAY_REQUEST'));
-      // Dispatch the adm account
+
       if (zapSplitAccounts.length > 0) {
         dispatch(openModal('ZAP_SPLIT', { zapSplitAccounts, splitValues }));
       }
       return;
     }
-    // open QR code modal
+
     dispatch(closeModal('PAY_REQUEST'));
     dispatch(openModal('ZAP_INVOICE', { account, invoice, splitData }));
   };
@@ -101,7 +101,6 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const inputAmount = e.target.value.replace(/[^0-9]/g, '');
     const maxSendable = 250000000;
 
-    // multiply by 1000 to convert from satoshi to millisatoshi
     if (maxSendable * 1000 > Number(inputAmount) && !isCashu) {
       setAmount(Number(inputAmount));
     } else if (maxSendable > Number(inputAmount)) {
