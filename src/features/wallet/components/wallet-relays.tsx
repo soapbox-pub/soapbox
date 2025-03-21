@@ -30,7 +30,7 @@ const WalletRelays = () => {
   const [mints, setMints] = useState<string[]>([]);
 
   const handleClick = async () =>{
-    if (relays.length <= 0) {
+    if (relays.length === 0) {
       toast.error(intl.formatMessage(messages.empty));
       return;
     }
@@ -46,6 +46,7 @@ const WalletRelays = () => {
 
     try {
       await api.put('/api/v1/ditto/cashu/wallet', { mints: mints, relays: relays });
+      setInitialRelays(relays);
       toast.success(intl.formatMessage(messages.sucess));
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : intl.formatMessage(messages.error);
