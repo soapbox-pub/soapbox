@@ -3,8 +3,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses.ts';
 import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -56,7 +56,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     return (
       <Stack alignItems='start'>
         <HStack onClick={handleTranslate} space={0.5} alignItems='center' justifyContent='start' className='text-primary-500 hover:cursor-pointer'>
-          <SvgIcon src={languageIcon} size={14} />
+          <Icon src={languageIcon} size={14} />
           <Text className='!text-primary-500'>
             <FormattedMessage id='status.show_original' defaultMessage='Show original' />
           </Text>
@@ -71,8 +71,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   return (
     <Stack alignItems='start'>
       <HStack onClick={handleTranslate} space={0.5} alignItems='center' justifyContent='start' className='text-primary-500 hover:cursor-pointer'>
-        <SvgIcon src={languageIcon} size={14} />
-
+        <Icon src={languageIcon} size={14} />
         <Text className='!text-primary-500'>
           <FormattedMessage id='status.translate' defaultMessage='Translate' />
         </Text>
