@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { create } from 'zustand';
 
 import { MastodonClient } from 'soapbox/api/MastodonClient.ts';
-import { WalletData, baseWalletSchema } from 'soapbox/schemas/wallet.ts';
+import { Transactions, WalletData, baseWalletSchema, transactionsSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
@@ -17,17 +17,21 @@ interface ICashuState {
   isLoading: boolean;
   error: string | null;
   wallet: WalletData | null;
+  transactions: Transactions | null;
 
   createWallet: (api: MastodonClient, walletInfo: IWalletInfo) => Promise<void>;
+  getTransactions: (api: MastodonClient) => Promise<void>;
   getWallet: (api: MastodonClient, hasMessage?: boolean) => Promise<void>;
   nutzapRequest: (api: MastodonClient, account: AccountEntity, amount: number, comment: string, status?: StatusEntity) => void;
 }
 
+// TODO: Convert it into a custom hook after the backend is finished
 export const useCashu = create<ICashuState>((set) => ({
   nutzapsList: {},
   isLoading: false,
   error: null,
   wallet: null,
+  transactions: null,
 
   createWallet: async (api, walletInfo) => {
     try {
@@ -53,6 +57,19 @@ export const useCashu = create<ICashuState>((set) => ({
       }
     } catch (error) {
       if (hasMessage) toast.error('Wallet not found');
+    }
+  },
+
+  getTransactions: async (api) => {
+    try {
+      const response = await api.get('/api/v1/ditto/cashu/transactions');
+      const data: WalletData = await response.json();
+      if (data) {
+        const normalizedData = transactionsSchema.parse(data);
+        set({ transactions: normalizedData });
+      }
+    } catch (error) {
+      toast.error('Transactions not found');
     }
   },
 

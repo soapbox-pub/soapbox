@@ -28,7 +28,7 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
-  balance: { id: 'wallet.balance.cashu', defaultMessage: '{amount} sats' },
+  balance: { id: 'wallet.sats', defaultMessage: '{amount} sats' },
   withdraw: { id: 'wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
   exchange: { id: 'wallet.balance.exchange_button', defaultMessage: 'Exchange' },
   mint: { id: 'wallet.balance.mint_button', defaultMessage: 'Mint' },
