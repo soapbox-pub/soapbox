@@ -56,7 +56,6 @@ const WalletMints = () => {
 
   useEffect(() => {
     getWallet(api, false);
-    toast.error(intl.formatMessage(messages.loadingError));
   }, []);
 
   useEffect(
