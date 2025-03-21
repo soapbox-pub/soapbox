@@ -5,7 +5,7 @@ import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { RelayEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import toast from 'soapbox/toast.tsx';
 import { isURL } from 'soapbox/utils/auth.ts';
@@ -23,7 +23,7 @@ const messages = defineMessages({
 const WalletRelays = () => {
   const intl = useIntl();
   const api = useApi();
-  const { wallet, getWallet } = useCashu();
+  const { wallet } = useWallet();
 
   const [relays, setRelays] = useState<string[]>([]);
   const [initialRelays, setInitialRelays] = useState<string[]>([]);
@@ -54,10 +54,6 @@ const WalletRelays = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    getWallet(api, false);
-  }, []);
 
   useEffect(
     () => {

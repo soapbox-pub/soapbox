@@ -21,7 +21,6 @@ import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
 import { List as ImmutableList } from 'immutable';
 import { nip19 } from 'nostr-tools';
-import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -45,9 +44,8 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -113,7 +111,6 @@ interface IHeader {
 const Header: React.FC<IHeader> = ({ account }) => {
   const intl = useIntl();
   const history = useHistory();
-  const api = useApi(); // TODO: Remove this part after patrick implement in backend
   const dispatch = useAppDispatch();
 
   const features = useFeatures();
@@ -124,7 +121,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
-  const { wallet, getWallet } = useCashu();
+  const { wallet } = useWallet();
 
 
   const { getOrCreateChatByAccountId } = useChats();
@@ -144,13 +141,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     },
   });
-
-
-  useEffect(
-    () => {
-      getWallet(api, false);
-    } // TODO: remove
-    , []);
 
   if (!account) {
     return (

@@ -2,7 +2,6 @@ import arrowBarDownIcon from '@tabler/icons/outline/arrow-bar-down.svg';
 import arrowBarUpIcon from '@tabler/icons/outline/arrow-bar-up.svg';
 import moreIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
 import questionIcon from '@tabler/icons/outline/question-mark.svg';
-import { useEffect } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
@@ -12,8 +11,7 @@ import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useTransactions } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const themes = {
@@ -95,15 +93,8 @@ const TransactionItem = (e:  { amount: number; created_at: number ; direction: '
 
 const Transactions = () => {
   const intl = useIntl();
-  const api = useApi();
   const { account } = useOwnAccount();
-  const { transactions, getTransactions } = useCashu();
-
-  useEffect(
-    () => {
-      getTransactions(api);
-    }
-    , []);
+  const { transactions } = useTransactions();
 
   if (!account) {
     return null;

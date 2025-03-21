@@ -11,8 +11,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
@@ -23,13 +22,12 @@ const messages = defineMessages({
 });
 
 const CreateWallet = () => {
-  const api = useApi();
   const intl = useIntl();
   const { account } = useOwnAccount();
   const [formActive, setFormActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [mints, setMints] = useState<string[]>([]);
-  const { createWallet } = useCashu();
+  const { createWallet } = useWallet();
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -39,7 +37,7 @@ const CreateWallet = () => {
       relays: [],
     };
 
-    await createWallet(api, walletInfo);
+    await createWallet(walletInfo);
     setIsLoading(false);
   };
 

@@ -21,9 +21,8 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useNutzapRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import { capitalize } from 'soapbox/utils/strings.ts';
@@ -57,7 +56,6 @@ const messages = defineMessages({
 const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   const intl = useIntl();
-  const api = useApi();
   const dispatch = useAppDispatch();
   const [zapComment, setZapComment] = useState('');
   const [amount, setAmount] = useState(50);
@@ -66,7 +64,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   const { method: paymentMethod } = usePaymentMethod();
   const isCashu = paymentMethod === 'cashu';
   const hasZapSplit = zapArrays.length > 0 && !isCashu;
-  const { nutzapRequest } = useCashu();
+  const { nutzapRequest } = useNutzapRequest();
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -74,7 +72,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     if (isCashu) {
-      nutzapRequest(api, account, amount, zapComment, status);
+      nutzapRequest(account, amount, zapComment, status);
       dispatch(closeModal('PAY_REQUEST'));
       return;
     }

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list.tsx';
@@ -10,15 +9,14 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 
 const messages = defineMessages({
   payment: { id: 'wallet.payment', defaultMessage: 'Payment Method' },
-  relays: { id: 'wallet.relays', defaultMessage: 'Relays' },
+  relays: { id: 'wallet.relays', defaultMessage: 'Wallet Relays' },
   transactions: { id: 'wallet.transactions', defaultMessage: 'Transactions' },
   wallet: { id: 'wallet', defaultMessage: 'Wallet' },
   management: { id: 'wallet.management', defaultMessage: 'Wallet Management' },
@@ -32,18 +30,11 @@ const paymentMethods = {
 
 /** User Wallet page. */
 const Wallet = () => {
-  const api = useApi();
   const intl = useIntl();
 
   const { account } = useOwnAccount();
-  const { wallet: walletData, getWallet } = useCashu();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { wallet: walletData, isLoading } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
-
-  useEffect(() => {
-    getWallet(api);
-    setIsLoading(false);
-  }, []);
 
   if (!account) return null;
 

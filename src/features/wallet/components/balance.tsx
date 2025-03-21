@@ -19,7 +19,7 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useCashu } from 'soapbox/features/zap/hooks/useCashu.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
@@ -90,7 +90,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
   const [currentState, setCurrentState] = useState<'loading' | 'paid' | 'default'>('default');
   const api = useApi();
   const intl = useIntl();
-  const { getWallet } = useCashu();
+  const { getWallet } = useWallet();
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -112,7 +112,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
         toast.success(intl.formatMessage(messages.paidMessage));
         onBack();
         // onChange();
-        getWallet(api);
+        getWallet(); // TODO: Remove
         handleClean();
         setCurrentState('default');
       }
@@ -236,8 +236,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
 };
 
 const Balance = () => {
-  const api = useApi();
-  const { wallet, getWallet } = useCashu();
+  const { wallet } = useWallet();
   const [amount, setAmount] = useState(0);
   const [mints, setMints] = useState<string[]>([]);
   const { account } = useOwnAccount();
@@ -247,10 +246,6 @@ const Balance = () => {
     balance: <Amount amount={amount} onMintClick={() => setCurrent('newMint')} />,
     newMint: <NewMint onBack={() => setCurrent('balance')} list={mints} />,
   };
-
-  useEffect(() => {
-    getWallet(api);
-  }, []);
 
   useEffect(
     () => {
