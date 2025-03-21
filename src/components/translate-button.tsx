@@ -2,8 +2,9 @@ import languageIcon from '@tabler/icons/outline/language.svg';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import { translateStatus, undoStatusTranslation } from 'soapbox/actions/statuses.ts';
-import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -35,7 +36,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
 
   const supportsLanguages = (!sourceLanguages || sourceLanguages.includes(status.language!)) && (!targetLanguages || targetLanguages.includes(intl.locale));
 
-  const handleTranslate: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleTranslate: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation();
 
     if (status.translation) {
@@ -53,13 +54,13 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
     const provider     = status.translation.get('provider');
 
     return (
-      <Stack space={3} alignItems='start'>
-        <Button
-          theme='muted'
-          text={<FormattedMessage id='status.show_original' defaultMessage='Show original' />}
-          icon={languageIcon}
-          onClick={handleTranslate}
-        />
+      <Stack alignItems='start'>
+        <HStack onClick={handleTranslate} space={0.5} alignItems='center' justifyContent='start' className='text-primary-500 hover:cursor-pointer'>
+          <SvgIcon src={languageIcon} size={14} />
+          <Text className='!text-primary-500'>
+            <FormattedMessage id='status.show_original' defaultMessage='Show original' />
+          </Text>
+        </HStack>
         <Text theme='muted'>
           <FormattedMessage id='status.translated_from_with' defaultMessage='Translated from {lang} using {provider}' values={{ lang: languageName, provider }} />
         </Text>
@@ -68,14 +69,15 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   }
 
   return (
-    <div>
-      <Button
-        theme='muted'
-        text={<FormattedMessage id='status.translate' defaultMessage='Translate' />}
-        icon={languageIcon}
-        onClick={handleTranslate}
-      />
-    </div>
+    <Stack alignItems='start'>
+      <HStack onClick={handleTranslate} space={0.5} alignItems='center' justifyContent='start' className='text-primary-500 hover:cursor-pointer'>
+        <SvgIcon src={languageIcon} size={14} />
+
+        <Text className='!text-primary-500'>
+          <FormattedMessage id='status.translate' defaultMessage='Translate' />
+        </Text>
+      </HStack>
+    </Stack>
 
   );
 };
