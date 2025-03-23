@@ -11,7 +11,7 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
@@ -37,6 +37,7 @@ const Wallet = () => {
   const { account } = useOwnAccount();
   const { wallet: walletData, isLoading } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
+  const { transactions } = useTransactions();
 
   if (!account) return null;
 
@@ -66,11 +67,11 @@ const Wallet = () => {
 
                   <CardBody>
                     <Transactions />
-                    <div className='flex w-full justify-center'>
+                    {!transactions && <div className='flex w-full justify-center'>
                       <Button icon={moreIcon} theme='primary' to='/wallet/transactions'>
                         {intl.formatMessage(messages.more)}
                       </Button>
-                    </div>
+                    </div>}
                   </CardBody>
 
                   <CardHeader>

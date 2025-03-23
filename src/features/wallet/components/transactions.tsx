@@ -1,7 +1,7 @@
 import arrowBarDownIcon from '@tabler/icons/outline/arrow-bar-down.svg';
 import arrowBarUpIcon from '@tabler/icons/outline/arrow-bar-up.svg';
 import questionIcon from '@tabler/icons/outline/question-mark.svg';
-import { FormattedDate, defineMessages, useIntl } from 'react-intl';
+import { FormattedDate, FormattedMessage } from 'react-intl';
 
 import Divider from 'soapbox/components/ui/divider.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -24,10 +24,6 @@ const themes = {
   withdraw: '!text-orange-600 dark:!text-orange-300',
 };
 
-const messages = defineMessages({
-  amount: { id: 'wallet.sats', defaultMessage: '{amount} sats' },
-});
-
 const groupByDate = (transactions: { amount: number; created_at: number; direction: 'in' | 'out' }[]) => {
   return transactions.reduce((acc, transaction) => {
     const dateKey = new Date(transaction.created_at * 1000).toDateString(); // Agrupa pelo dia
@@ -40,7 +36,6 @@ const groupByDate = (transactions: { amount: number; created_at: number; directi
 };
 
 const TransactionItem = ({ transaction, hasDivider = true }: { transaction: { amount: number; created_at: number; direction: 'in' | 'out' }; hasDivider?: boolean}) => {
-  const intl = useIntl();
   let icon, type, messageColor;
   const { direction, amount, created_at } = transaction;
 
@@ -80,7 +75,7 @@ const TransactionItem = ({ transaction, hasDivider = true }: { transaction: { am
 
         <HStack space={2} alignItems='center'>
           <Stack alignItems='end' justifyContent='center'>
-            <Text size='lg'>{intl.formatMessage(messages.amount, { amount })}</Text>
+            <Text size='lg'><FormattedMessage id='wallet.sats' defaultMessage='{amount} sats' values={{ amount }} /></Text>
             <Text theme='muted' size='xs'>{formattedTime}</Text>
           </Stack>
         </HStack>
@@ -104,6 +99,12 @@ const Transactions = ({ limit = 6 }: ITransactions) => {
 
   if (!transactions) {
     return <Spinner withText={false} />;
+  }
+
+  if (transactions.length === 0) {
+    return (<Stack  alignItems='center'>
+      <FormattedMessage id='wallet.transactions.no_transactions' defaultMessage='No transactions available yet.' />
+    </Stack>);
   }
 
   const groupedTransactions = groupByDate(transactions.slice(0, limit));
