@@ -819,6 +819,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see GET /api/v1/notifications
      */
     notificationsIncludeTypes: any([
+      v.software === DITTO,
       v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
       v.software === PLEROMA && gte(v.version, parse('2.4.50')),
