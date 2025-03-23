@@ -1738,6 +1738,7 @@
   "wallet.sats": "{amount} sats",
   "wallet.transactions": "Transactions",
   "wallet.transactions.more": "More",
+  "wallet.transactions.show_more": "Show More",
   "who_to_follow.title": "People To Follow",
   "zap.button.text.rounded": "{method} {amount}K sats",
   "zap.finish": "Finish",

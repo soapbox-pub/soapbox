@@ -1,6 +1,8 @@
+import moreIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list.tsx';
+import Button from 'soapbox/components/ui/button.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
@@ -13,7 +15,6 @@ import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
-
 const messages = defineMessages({
   payment: { id: 'wallet.payment', defaultMessage: 'Payment Method' },
   relays: { id: 'wallet.relays', defaultMessage: 'Wallet Relays' },
@@ -21,6 +22,7 @@ const messages = defineMessages({
   wallet: { id: 'wallet', defaultMessage: 'Wallet' },
   management: { id: 'wallet.management', defaultMessage: 'Wallet Management' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
+  more: { id: 'wallet.transactions.more', defaultMessage: 'More' },
 });
 
 const paymentMethods = {
@@ -64,6 +66,11 @@ const Wallet = () => {
 
                   <CardBody>
                     <Transactions />
+                    <div className='flex w-full justify-center'>
+                      <Button icon={moreIcon} theme='primary' to='/wallet/transactions'>
+                        {intl.formatMessage(messages.more)}
+                      </Button>
+                    </div>
                   </CardBody>
 
                   <CardHeader>
@@ -72,8 +79,8 @@ const Wallet = () => {
 
                   <CardBody>
                     <List>
-                      <ListItem label={intl.formatMessage(messages.mints)} to='/wallet-mints' />
-                      <ListItem label={intl.formatMessage(messages.relays)} to='/wallet-relays' />
+                      <ListItem label={intl.formatMessage(messages.mints)} to='/wallet/mints' />
+                      <ListItem label={intl.formatMessage(messages.relays)} to='/wallet/relays' />
                       <ListItem label={intl.formatMessage(messages.payment)} >
                         <SelectDropdown
                           className='max-w-[200px]'

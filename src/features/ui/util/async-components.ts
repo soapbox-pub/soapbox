@@ -183,6 +183,7 @@ export const NostrBunkerLogin = lazy(() => import('soapbox/features/nostr/nostr-
 export const Wallet = lazy(() => import('soapbox/features/wallet/index.tsx'));
 export const WalletRelays = lazy(() => import('soapbox/features/wallet/components/wallet-relays.tsx'));
 export const WalletMints = lazy(() => import('soapbox/features/wallet/components/wallet-mints.tsx'));
+export const WalletTransactions = lazy(() => import('soapbox/features/wallet/components/wallet-transactions.tsx'));
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
 export const FollowsTimeline = lazy(() => import('soapbox/features/home-timeline/follows-timeline.tsx'));
 export const CommunityTimeline = lazy(() => import('soapbox/features/home-timeline/community-timeline.tsx'));
