@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { create } from 'zustand';
 
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { Transactions, WalletData, baseWalletSchema, transactionsSchema } from 'soapbox/schemas/wallet.ts';
@@ -6,14 +7,40 @@ import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
+interface WalletState {
+  wallet: WalletData | null;
+  transactions: Transactions | null;
+  nutzapsList: Record<string, { status: StatusEntity; amount: number; comment: string }>; // TODO: remove
+
+  setWallet: (wallet: WalletData | null) => void;
+  setTransactions: (transactions: Transactions | null) => void;
+  addNutzap: (statusId: string, data: { status: StatusEntity; amount: number; comment: string }) => void;
+}
+
 interface IWalletInfo {
   mints: string[];
   relays: string[];
 }
 
+const useWalletStore = create<WalletState>((set) => ({
+  wallet: null,
+  transactions: null,
+  nutzapsList: {},
+
+  setWallet: (wallet) => set({ wallet }),
+  setTransactions: (transactions) => set({ transactions }),
+  addNutzap: (statusId, data) =>
+    set((state) => ({
+      nutzapsList: {
+        ...state.nutzapsList,
+        [statusId]: data,
+      },
+    })),
+}));
+
 const useWallet = () => {
   const api = useApi();
-  const [wallet, setWallet] = useState<WalletData | null>(null);
+  const { wallet, setWallet } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +67,7 @@ const useWallet = () => {
     setIsLoading(true);
     try {
       const response = await api.get('/api/v1/ditto/cashu/wallet');
-      const data: WalletData = await response.json();
+      const data = await response.json();
       if (data) {
         const normalizedData = baseWalletSchema.parse(data);
         setWallet(normalizedData);
@@ -58,14 +85,14 @@ const useWallet = () => {
     if (!wallet) {
       getWallet(false);
     }
-  }, [wallet]);
+  }, []);
 
   return { wallet, isLoading, error, createWallet, getWallet };
 };
 
 const useTransactions = () => {
   const api = useApi();
-  const [transactions, setTransactions] = useState<Transactions | null>(null);
+  const { transactions, setTransactions } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,7 +100,7 @@ const useTransactions = () => {
     setIsLoading(true);
     try {
       const response = await api.get('/api/v1/ditto/cashu/transactions');
-      const data: Transactions = await response.json();
+      const data = await response.json();
       if (data) {
         const normalizedData = transactionsSchema.parse(data);
         setTransactions(normalizedData);
@@ -91,16 +118,16 @@ const useTransactions = () => {
     if (!transactions) {
       getTransactions();
     }
-  }, [transactions]);
+  }, []);
 
   return { transactions, isLoading, error, getTransactions };
 };
 
 const useNutzapRequest = () => {
   const api = useApi();
+  const { nutzapsList, addNutzap } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [nutzapsList, setNutzapsList] = useState<Record<string, { status: StatusEntity; amount: number; comment: string }>>({});
 
   const nutzapRequest = async (account: AccountEntity, amount: number, comment: string, status?: StatusEntity) => {
     setIsLoading(true);
@@ -116,10 +143,7 @@ const useNutzapRequest = () => {
       const data = await response.json();
 
       if (status) {
-        setNutzapsList((prevState) => ({
-          ...prevState,
-          [status.id]: { status, amount, comment },
-        }));
+        addNutzap(status.id, { status, amount, comment });
       }
 
       toast.success(data.message || 'Nutzap sent successfully!');
