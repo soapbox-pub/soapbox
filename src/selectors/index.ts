@@ -143,6 +143,9 @@ export const makeGetStatus = () => {
     (statusBase, statusReblog, username, filters, me, features) => {
       if (!statusBase) return null;
       const { account } = statusBase;
+
+      if (!account) return null;
+
       const accountUsername = account.acct;
 
       // Must be owner of status if username exists.

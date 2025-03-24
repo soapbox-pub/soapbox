@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
+import { Entities } from 'soapbox/entity-store/entities.ts';
+import { selectEntity } from 'soapbox/entity-store/selectors.ts';
 import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
 import { makeGetStatus } from 'soapbox/selectors/index.ts';
 
@@ -17,8 +19,11 @@ const makeMapStateToProps = () => {
     const statusId = state.compose.get(composeId)?.in_reply_to!;
     const editing = !!state.compose.get(composeId)?.id;
 
+    const legacyStatus = getStatus(state, { id: statusId }) as LegacyStatus;
+    const statusEntity = selectEntity<StatusEntity>(state, Entities.STATUSES, statusId);
+
     return {
-      status: (getStatus(state, { id: statusId }) as LegacyStatus)?.toJS() as StatusEntity,
+      status: (legacyStatus?.toJS() ?? statusEntity) as StatusEntity,
       hideActions: editing,
     };
   };
