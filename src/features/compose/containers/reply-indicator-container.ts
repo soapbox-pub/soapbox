@@ -12,7 +12,6 @@ import type { AppDispatch, RootState } from 'soapbox/store.ts';
 import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
 
 
-
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
