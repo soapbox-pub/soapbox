@@ -19,8 +19,11 @@ const makeMapStateToProps = () => {
     const statusId = state.compose.get(composeId)?.in_reply_to!;
     const editing = !!state.compose.get(composeId)?.id;
 
+    const legacyStatus = getStatus(state, { id: statusId }) as LegacyStatus;
+    const statusEntity = selectEntity<StatusEntity>(state, Entities.STATUSES, statusId);
+
     return {
-      status: ((getStatus(state, { id: statusId }) as LegacyStatus)?.toJS() ?? selectEntity<StatusEntity>(state, Entities.STATUSES, statusId)) as StatusEntity,
+      status: (legacyStatus?.toJS() ?? statusEntity) as StatusEntity,
       hideActions: editing,
     };
   };
