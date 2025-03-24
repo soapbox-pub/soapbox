@@ -72,7 +72,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     if (isCashu) {
-      nutzapRequest(account, amount, zapComment, status);
+      await nutzapRequest(account, amount, zapComment, status);
       dispatch(closeModal('PAY_REQUEST'));
       return;
     }

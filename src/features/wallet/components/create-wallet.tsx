@@ -17,7 +17,7 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 const messages = defineMessages({
   title: { id: 'wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
   question: { id: 'wallet.create_wallet.question', defaultMessage: 'Do you want create one?' },
-  button: { id: 'wallet.create_wallet.button', defaultMessage: 'Create wallet' },
+  button: { id: 'wallet.button.create_wallet', defaultMessage: 'Create wallet' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
 

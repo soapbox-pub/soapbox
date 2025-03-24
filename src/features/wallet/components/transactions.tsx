@@ -89,7 +89,7 @@ interface ITransactions {
   limit?: number;
 }
 
-const Transactions = ({ limit = 6 }: ITransactions) => {
+const Transactions = ({ limit = 4 }: ITransactions) => {
   const { account } = useOwnAccount();
   const { transactions } = useTransactions();
 
@@ -103,7 +103,7 @@ const Transactions = ({ limit = 6 }: ITransactions) => {
 
   if (transactions.length === 0) {
     return (<Stack  alignItems='center'>
-      <FormattedMessage id='wallet.transactions.no_transactions' defaultMessage='No transactions available yet.' />
+      <FormattedMessage id='wallet.transactions.no_transactions' defaultMessage={'You don\'t have transactions yet.'} />
     </Stack>);
   }
 

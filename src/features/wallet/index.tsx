@@ -19,7 +19,7 @@ const messages = defineMessages({
   payment: { id: 'wallet.payment', defaultMessage: 'Payment Method' },
   relays: { id: 'wallet.relays', defaultMessage: 'Wallet Relays' },
   transactions: { id: 'wallet.transactions', defaultMessage: 'Transactions' },
-  wallet: { id: 'wallet', defaultMessage: 'Wallet' },
+  wallet: { id: 'wallet.title', defaultMessage: 'Wallet' },
   management: { id: 'wallet.management', defaultMessage: 'Wallet Management' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
   more: { id: 'wallet.transactions.more', defaultMessage: 'More' },
@@ -38,6 +38,7 @@ const Wallet = () => {
   const { wallet: walletData, isLoading } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
   const { transactions } = useTransactions();
+  const hasTransactions = transactions && transactions.length > 0;
 
   if (!account) return null;
 
@@ -58,7 +59,9 @@ const Wallet = () => {
               {walletData ? (
                 <>
                   <CardBody>
-                    <Balance />
+                    <Stack className='rounded-lg border p-6 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
+                      <Balance />
+                    </Stack>
                   </CardBody>
 
                   <CardHeader>
@@ -67,7 +70,7 @@ const Wallet = () => {
 
                   <CardBody>
                     <Transactions />
-                    {!transactions && <div className='flex w-full justify-center'>
+                    {hasTransactions && <div className='flex w-full justify-center'>
                       <Button icon={moreIcon} theme='primary' to='/wallet/transactions'>
                         {intl.formatMessage(messages.more)}
                       </Button>

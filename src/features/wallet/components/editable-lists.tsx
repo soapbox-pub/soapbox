@@ -12,6 +12,7 @@ const MintField: StreamfieldComponent<string> = ({ value, onChange }) => {
     <HStack space={2} grow>
       <Input
         type='text'
+        placeholder='https://mint.example.com'
         outerClassName='w-full grow'
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}
@@ -36,6 +37,7 @@ const RelayField: StreamfieldComponent<string> = ({ value, onChange }) => {
     <HStack space={2} grow>
       <Input
         type='text'
+        placeholder='wss://example.com/relay'
         outerClassName='w-full grow'
         value={value}
         onChange={(e) => onChange(e.currentTarget.value)}

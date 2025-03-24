@@ -1,5 +1,3 @@
-// import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import arrowBackIcon from '@tabler/icons/outline/arrow-back-up.svg';
 import cancelIcon from '@tabler/icons/outline/cancel.svg';
 import withdrawIcon from '@tabler/icons/outline/cash.svg';
 import mIcon from '@tabler/icons/outline/circle-dotted-letter-m.svg';
@@ -19,7 +17,7 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
@@ -28,10 +26,11 @@ import toast from 'soapbox/toast.tsx';
 
 
 const messages = defineMessages({
+  amount: { id: 'wallet.balance.mint.amount', defaultMessage: 'Amount in sats' },
+  cancel: { id: 'wallet.button.cancel', defaultMessage: 'Cancel' },
   balance: { id: 'wallet.sats', defaultMessage: '{amount} sats' },
-  withdraw: { id: 'wallet.balance.withdraw_button', defaultMessage: 'Withdraw' },
-  exchange: { id: 'wallet.balance.exchange_button', defaultMessage: 'Exchange' },
-  mint: { id: 'wallet.balance.mint_button', defaultMessage: 'Mint' },
+  withdraw: { id: 'wallet.button.withdraw', defaultMessage: 'Withdraw' },
+  mint: { id: 'wallet.button.mint', defaultMessage: 'Mint' },
   payment: { id: 'wallet.balance.mint.payment', defaultMessage: 'Make the payment to complete:' },
   paidMessage: { id: 'wallet.balance.mint.paid_message', defaultMessage: 'Your mint was successful, and your sats are now in your balance. Enjoy!' },
   unpaidMessage: { id: 'wallet.balance.mint.unpaid_message', defaultMessage: 'Your mint is still unpaid. Complete the payment to receive your sats.' },
@@ -91,10 +90,12 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
   const api = useApi();
   const intl = useIntl();
   const { getWallet } = useWallet();
+  const { getTransactions } = useTransactions();
 
   const now = Math.floor(Date.now() / 1000);
 
   const handleClean = useCallback(() => {
+    onBack();
     setQuote(undefined);
     setMintAmount('');
     setCurrentState('default');
@@ -111,8 +112,8 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
       } else {
         toast.success(intl.formatMessage(messages.paidMessage));
         onBack();
-        // onChange();
-        getWallet(); // TODO: Remove
+        getWallet();
+        getTransactions();
         handleClean();
         setCurrentState('default');
       }
@@ -196,15 +197,13 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
     <Form onSubmit={handleSubmit}>
       <Stack space={6}>
         {!quote ? <Stack space={2}>
-          <FormGroup labelText='Mint'>
+          <FormGroup labelText='Mint URL'>
             <SelectDropdown items={mintList} defaultValue={mintList[0]} onChange={handleSelectChange} />
           </FormGroup>
-          <FormGroup labelText='Amount in sats'>
+          <FormGroup labelText={intl.formatMessage(messages.amount)}>
             <Input
-              // aria-label='Amount in sats'
               placeholder='Amount'
               type='number'
-              // name='amount'
               value={mintAmount}
               onChange={(e) => /^[0-9]*$/.test(e.target.value) && setMintAmount(e.target.value)}
               autoCapitalize='off'
@@ -213,7 +212,6 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
           </FormGroup>
         </Stack>
           : <Stack space={3} justifyContent='center' alignItems='center'>
-            {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
             <Text>
               {intl.formatMessage(messages.payment)}
             </Text>
@@ -226,8 +224,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
         }
 
         <HStack grow space={2} justifyContent='center'>
-          <Button icon={arrowBackIcon} theme='secondary' text='Back' onClick={onBack} />
-          <Button icon={cancelIcon} theme='danger' text='Cancel' onClick={handleClean} />
+          <Button icon={cancelIcon} theme='danger' text={intl.formatMessage(messages.cancel)} onClick={handleClean} />
           <Button icon={iconButton} type='submit' theme='primary' text={textButton} />
         </HStack>
       </Stack>
@@ -260,10 +257,9 @@ const Balance = () => {
     return null;
   }
 
-  return (
-    <Stack className='rounded-lg border p-6 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
-      {items[current]}
-    </Stack>
+  return (<>
+    {items[current]}
+  </>
   );
 };
 
