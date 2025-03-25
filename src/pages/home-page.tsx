@@ -20,7 +20,9 @@ import {
   CtaBanner,
   AnnouncementsPanel,
   LatestAccountsPanel,
+  PocketWallet,
 } from 'soapbox/features/ui/util/async-components.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
@@ -39,6 +41,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
+  const { wallet } = useWallet();
 
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
@@ -111,6 +114,9 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
       <Layout.Aside>
         {!me && (
           <SignUpPanel />
+        )}
+        {wallet && (
+          <PocketWallet />
         )}
         {me && features.announcements && (
           <AnnouncementsPanel />

@@ -187,3 +187,4 @@ export const WalletTransactions = lazy(() => import('soapbox/features/wallet/com
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
 export const FollowsTimeline = lazy(() => import('soapbox/features/home-timeline/follows-timeline.tsx'));
 export const CommunityTimeline = lazy(() => import('soapbox/features/home-timeline/community-timeline.tsx'));
+export const PocketWallet = lazy(() => import('soapbox/features/ui/components/pocket-wallet.tsx'));

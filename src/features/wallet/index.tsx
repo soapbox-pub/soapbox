@@ -69,7 +69,7 @@ const Wallet = () => {
                   </CardHeader>
 
                   <CardBody>
-                    <Transactions />
+                    <Transactions limit={4} />
                     {hasTransactions && <div className='flex w-full justify-center'>
                       <Button icon={moreIcon} theme='primary' to='/wallet/transactions'>
                         {intl.formatMessage(messages.more)}
