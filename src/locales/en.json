@@ -1724,6 +1724,7 @@
   "wallet.create_wallet.question": "Do you want create one?",
   "wallet.create_wallet.title": "You don't have a wallet",
   "wallet.invalid_url": "All strings must be valid URLs.",
+  "wallet.loading": "Loading…",
   "wallet.loading_error": "An unexpected error occurred while loading your wallet data.",
   "wallet.management": "Wallet Management",
   "wallet.mints": "Mints",

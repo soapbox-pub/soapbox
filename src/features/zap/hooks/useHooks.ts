@@ -11,9 +11,11 @@ interface WalletState {
   wallet: WalletData | null;
   transactions: Transactions | null;
   nutzapsList: Record<string, { status: StatusEntity; amount: number; comment: string }>; // TODO: remove
+  prevTransaction?: string | null;
+  nextTransaction?: string | null;
 
   setWallet: (wallet: WalletData | null) => void;
-  setTransactions: (transactions: Transactions | null) => void;
+  setTransactions: (transactions: Transactions | null, prevTransaction?: string | null, nextTransaction?: string | null) => void;
   addNutzap: (statusId: string, data: { status: StatusEntity; amount: number; comment: string }) => void;
 }
 
@@ -25,10 +27,12 @@ interface IWalletInfo {
 const useWalletStore = create<WalletState>((set) => ({
   wallet: null,
   transactions: null,
+  prevTransaction: null,
+  nextTransaction: null,
   nutzapsList: {},
 
   setWallet: (wallet) => set({ wallet }),
-  setTransactions: (transactions) => set({ transactions }),
+  setTransactions: (transactions, prevTransaction, nextTransaction) => set({ transactions, prevTransaction, nextTransaction }),
   addNutzap: (statusId, data) =>
     set((state) => ({
       nutzapsList: {
@@ -92,7 +96,7 @@ const useWallet = () => {
 
 const useTransactions = () => {
   const api = useApi();
-  const { transactions, setTransactions } = useWalletStore();
+  const { transactions, nextTransaction, setTransactions } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -100,13 +104,38 @@ const useTransactions = () => {
     setIsLoading(true);
     try {
       const response = await api.get('/api/v1/ditto/cashu/transactions');
+      const { prev, next } = response.pagination();
       const data = await response.json();
       if (data) {
         const normalizedData = transactionsSchema.parse(data);
-        setTransactions(normalizedData);
+        setTransactions(normalizedData, prev, next);
       }
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'Transactions not found';
+      toast.error(messageError);
+      setError(messageError);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const expandTransactions = async () => {
+    if (!nextTransaction || !transactions) {
+      toast.info('You reached the end of transactions');
+      return;
+    }
+    try {
+      setIsLoading(true);
+      const response = await api.get(nextTransaction);
+      const { prev, next } = response.pagination();
+      const data = await response.json();
+
+      const normalizedData = transactionsSchema.parse(data);
+      const newTransactions = [...(transactions ?? []), ...normalizedData ];
+
+      setTransactions(newTransactions, prev, next);
+    } catch (err) {
+      const messageError = err instanceof Error ? err.message : 'Error expanding transactions';
       toast.error(messageError);
       setError(messageError);
     } finally {
@@ -120,7 +149,7 @@ const useTransactions = () => {
     }
   }, []);
 
-  return { transactions, isLoading, error, getTransactions };
+  return { transactions, isLoading, error, getTransactions, expandTransactions };
 };
 
 const useNutzapRequest = () => {
@@ -128,6 +157,8 @@ const useNutzapRequest = () => {
   const { nutzapsList, addNutzap } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { getWallet } = useWallet();
+  const { getTransactions } = useTransactions();
 
   const nutzapRequest = async (account: AccountEntity, amount: number, comment: string, status?: StatusEntity) => {
     setIsLoading(true);
@@ -147,6 +178,8 @@ const useNutzapRequest = () => {
       }
 
       toast.success(data.message || 'Nutzap sent successfully!');
+      getWallet();
+      getTransactions();
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'An unexpected error occurred';
       setError(messageError);

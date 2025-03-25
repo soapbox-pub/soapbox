@@ -89,7 +89,7 @@ interface ITransactions {
   limit?: number;
 }
 
-const Transactions = ({ limit = 4 }: ITransactions) => {
+const Transactions = ({ limit }: ITransactions) => {
   const { account } = useOwnAccount();
   const { transactions } = useTransactions();
 
