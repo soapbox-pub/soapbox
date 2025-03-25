@@ -177,7 +177,7 @@ const useNutzapRequest = () => {
         addNutzap(status.id, { status, amount, comment });
       }
 
-      toast.success(data.message || 'Nutzap sent successfully!');
+      toast.success(data.message || 'Zap sent successfully!');
       getWallet();
       getTransactions();
     } catch (err) {

@@ -25,7 +25,6 @@ import { useNutzapRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { capitalize } from 'soapbox/utils/strings.ts';
 
 import PaymentButton from './zap-button/payment-button.tsx';
 
@@ -48,8 +47,8 @@ interface IPayRequestForm {
 const closeIcon = xIcon;
 
 const messages = defineMessages({
-  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: '{method} {amount}K sats' },
-  zap_button: { id: 'payment_method.button.text.raw', defaultMessage: '{method} {amount} sats' },
+  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
+  zap_button: { id: 'payment_method.button.text.raw', defaultMessage: 'Zap {amount} sats' },
   zap_commentPlaceholder: { id: 'payment_method.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
 
@@ -108,9 +107,9 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   const renderPaymentButtonText = () => {
     if (amount >= 1000) {
-      return intl.formatMessage(messages.zap_button_rounded, { amount: Math.round((amount / 1000) * 10) / 10, method: isCashu ? 'Nutzap' : capitalize(paymentMethod) });
+      return intl.formatMessage(messages.zap_button_rounded, { amount: Math.round((amount / 1000) * 10) / 10 });
     }
-    return intl.formatMessage(messages.zap_button, { amount: amount, method: isCashu ? 'Nutzap' : capitalize(paymentMethod) });
+    return intl.formatMessage(messages.zap_button, { amount: amount });
   };
 
   useEffect(() => {

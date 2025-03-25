@@ -28,8 +28,6 @@ import {
   DISLIKE_REQUEST,
   UNDISLIKE_REQUEST,
   DISLIKE_FAIL,
-  NUTZAP_FAIL,
-  NUTZAP_SUCCESS,
   ZAP_REQUEST,
   ZAP_FAIL,
 } from '../actions/interactions.ts';
@@ -239,7 +237,6 @@ const simulatePayment = (state: State, statusId: string, paid: boolean, method: 
     });
   }
 
-
   return state.set(statusId, updatedStatus);
 };
 
@@ -301,10 +298,6 @@ export default function statuses(state = initialState, action: AnyAction): State
       return simulatePayment(state, action.status.id, true, 'zap');
     case ZAP_FAIL:
       return simulatePayment(state, action.status.id, false, 'zap');
-    case NUTZAP_SUCCESS:
-      return simulatePayment(state, action.status.id, true, 'cashu');
-    case NUTZAP_FAIL:
-      return simulatePayment(state, action.status.id, false, 'cashu');
     case REBLOG_REQUEST:
       return state.setIn([action.status.id, 'reblogged'], true);
     case REBLOG_FAIL:

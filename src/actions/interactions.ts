@@ -1,4 +1,3 @@
-import toast from 'soapbox/toast.tsx';
 import { isLoggedIn } from 'soapbox/utils/auth.ts';
 
 import api from '../api/index.ts';
@@ -73,10 +72,6 @@ const FAVOURITES_EXPAND_FAIL = 'FAVOURITES_EXPAND_FAIL';
 
 const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
 const REBLOGS_EXPAND_FAIL = 'REBLOGS_EXPAND_FAIL';
-
-const NUTZAP_REQUEST = 'NUTZAP_REQUEST';
-const NUTZAP_SUCCESS = 'NUTZAP_SUCCESS';
-const NUTZAP_FAIL    = 'NUTZAP_FAIL';
 
 const ZAP_REQUEST = 'ZAP_REQUEST';
 const ZAP_SUCCESS = 'ZAP_SUCCESS';
@@ -357,57 +352,6 @@ const zapSuccess = (status: StatusEntity) => ({
 
 const zapFail = (status: StatusEntity, error: unknown) => ({
   type: ZAP_FAIL,
-  status: status,
-  error: error,
-  skipLoading: true,
-});
-
-const nutzap = (account: AccountEntity, status: StatusEntity | undefined, amount: number, comment: string) =>
-  async (dispatch: AppDispatch, getState: () => RootState) => {
-    if (!isLoggedIn(getState)) return;
-
-    try {
-      const response = await api(getState).post('/api/v1/ditto/cashu/nutzap', {
-        amount,
-        comment,
-        account_id: account.id,
-        status_id: status?.id,
-      });
-
-      const data = await response.json();
-
-      if (data) {
-        toast.success(data.message);
-      } else {
-        toast.success('Nutzap sent successfully!');
-      }
-
-      if (status) dispatch(nutzapSuccess(status));
-
-    } catch (e) {
-      if (e instanceof Error) {
-        toast.error(e.message);
-      } else {
-        toast.error('An unexpected error occurred');
-      }
-      if (status) dispatch(nutzapFail(status, e));
-    }
-  };
-
-const nutzapRequest = (status: StatusEntity) => ({
-  type: NUTZAP_REQUEST,
-  status: status,
-  skipLoading: true,
-});
-
-const nutzapSuccess = (status: StatusEntity) => ({
-  type: NUTZAP_SUCCESS,
-  status: status,
-  skipLoading: true,
-});
-
-const nutzapFail = (status: StatusEntity, error: unknown) => ({
-  type: NUTZAP_FAIL,
   status: status,
   error: error,
   skipLoading: true,
@@ -849,9 +793,6 @@ export {
   FAVOURITES_EXPAND_FAIL,
   REBLOGS_EXPAND_SUCCESS,
   REBLOGS_EXPAND_FAIL,
-  NUTZAP_REQUEST,
-  NUTZAP_SUCCESS,
-  NUTZAP_FAIL,
   ZAP_REQUEST,
   ZAP_FAIL,
   ZAPS_FETCH_REQUEST,
@@ -923,10 +864,6 @@ export {
   remoteInteractionRequest,
   remoteInteractionSuccess,
   remoteInteractionFail,
-  nutzapRequest,
-  nutzapSuccess,
-  nutzapFail,
-  nutzap,
   zap,
   fetchZaps,
   expandZaps,

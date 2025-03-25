@@ -1635,7 +1635,7 @@
   "video.play": "Reproduzir",
   "video.unmute": "Reativar som",
   "who_to_follow.title": "Quem seguir",
-  "payment_method.button.text.raw": "{method} {amount} sats",
+  "payment_method.button.text.raw": "Zap {amount} sats",
   "payment_method.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
   "zap.send_to": "Enviar zaps para {target}",
