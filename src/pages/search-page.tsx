@@ -23,7 +23,7 @@ const ExplorePage: React.FC<IExplorePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const accountsPath = useLocation().pathname === '/explore/accounts';
-  const wallet = useWallet();
+  const { wallet } = useWallet();
 
   return (
     <>

@@ -9,13 +9,19 @@ import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/t
 
 interface WalletState {
   wallet: WalletData | null;
+  acceptsZapsCashu: boolean;
   transactions: Transactions | null;
   zapCashuList: string[];
   prevTransaction?: string | null;
   nextTransaction?: string | null;
+  hasFetchedWallet: boolean;
+  hasFetchedTransactions: boolean;
 
+  setAcceptsZapsCashu: (acceptsZapsCashu: boolean) => void;
   setWallet: (wallet: WalletData | null) => void;
+  setHasFetchedWallet: (hasFetchedWallet: boolean) => void;
   setTransactions: (transactions: Transactions | null, prevTransaction?: string | null, nextTransaction?: string | null) => void;
+  setHasFetchedTransactions: (hasFetched: boolean) => void;
   addZapCashu: (statusId: string) => void;
 }
 
@@ -26,13 +32,19 @@ interface IWalletInfo {
 
 const useWalletStore = create<WalletState>((set) => ({
   wallet: null,
+  acceptsZapsCashu: false,
   transactions: null,
   prevTransaction: null,
   nextTransaction: null,
   zapCashuList: [],
+  hasFetchedWallet: false,
+  hasFetchedTransactions: false,
 
+  setAcceptsZapsCashu: (acceptsZapsCashu) => set({ acceptsZapsCashu }),
   setWallet: (wallet) => set({ wallet }),
+  setHasFetchedWallet: (hasFetchedWallet) => set({ hasFetchedWallet }),
   setTransactions: (transactions, prevTransaction, nextTransaction) => set({ transactions, prevTransaction, nextTransaction }),
+  setHasFetchedTransactions: (hasFetched) => set({ hasFetchedTransactions: hasFetched }),
   addZapCashu: (statusId) =>
     set((state) => ({
       zapCashuList: [
@@ -44,7 +56,7 @@ const useWalletStore = create<WalletState>((set) => ({
 
 const useWallet = () => {
   const api = useApi();
-  const { wallet, setWallet } = useWalletStore();
+  const { wallet, setWallet, setAcceptsZapsCashu, hasFetchedWallet, setHasFetchedWallet } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,6 +86,8 @@ const useWallet = () => {
       const data = await response.json();
       if (data) {
         const normalizedData = baseWalletSchema.parse(data);
+        setAcceptsZapsCashu(true);
+
         setWallet(normalizedData);
       }
     } catch (err) {
@@ -82,11 +96,13 @@ const useWallet = () => {
       setError(messageError);
     } finally {
       setIsLoading(false);
+      setHasFetchedWallet(true);
     }
   };
 
   useEffect(() => {
-    if (!wallet) {
+    if (!hasFetchedWallet) {
+      setHasFetchedWallet(true);
       getWallet(false);
     }
   }, []);
@@ -96,7 +112,7 @@ const useWallet = () => {
 
 const useTransactions = () => {
   const api = useApi();
-  const { transactions, nextTransaction, setTransactions } = useWalletStore();
+  const { transactions, nextTransaction, setTransactions, hasFetchedTransactions, setHasFetchedTransactions } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -144,7 +160,8 @@ const useTransactions = () => {
   };
 
   useEffect(() => {
-    if (!transactions) {
+    if (!hasFetchedTransactions) {
+      setHasFetchedTransactions(true);
       getTransactions();
     }
   }, []);
@@ -192,4 +209,4 @@ const useZapCashuRequest = () => {
   return { zapCashuList, isLoading, error, zapCashuRequest };
 };
 
-export { useWallet, useTransactions, useZapCashuRequest };
+export { useWalletStore, useWallet, useTransactions, useZapCashuRequest };

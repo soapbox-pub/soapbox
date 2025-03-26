@@ -48,7 +48,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import PureStatusReactionWrapper from 'soapbox/components/pure-status-reaction-wrapper.tsx';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useZapCashuRequest, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useZapCashuRequest, useWalletStore } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useDislike } from 'soapbox/hooks/useDislike.ts';
@@ -180,7 +180,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
 
-  const { wallet } = useWallet();
+  const { acceptsZapsCashu } = useWalletStore();
   const { zapCashuList } = useZapCashuRequest();
   const isZappedCashu = zapCashuList.some((zapCashu)=> zapCashu === status.id);
 
@@ -764,7 +764,6 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
   const acceptsZaps = status.account.ditto.accepts_zaps === true;
-  const hasWallet = wallet !== null;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
@@ -848,7 +847,7 @@ const PureStatusActionBar: React.FC<IPureStatusActionBar> = ({
           />
         )}
 
-        {(acceptsZaps || hasWallet) && (
+        {(acceptsZaps || acceptsZapsCashu) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
             icon={boltIcon}
