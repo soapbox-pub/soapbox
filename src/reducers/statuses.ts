@@ -222,20 +222,13 @@ const simulateDislike = (
 };
 
 /** Simulate zap of status for optimistic interactions */
-const simulatePayment = (state: State, statusId: string, paid: boolean, method: 'cashu' | 'zap'): State => {
+const simulatePayment = (state: State, statusId: string, zapped: boolean): State => {
   const status = state.get(statusId);
   if (!status) return state;
-  let updatedStatus;
 
-  if (method === 'zap') {
-    updatedStatus = status.merge({
-      zapped: paid,
-    });
-  } else {
-    updatedStatus = status.merge({
-      nutzapped: paid,
-    });
-  }
+  const updatedStatus = status.merge({
+    zapped,
+  });
 
   return state.set(statusId, updatedStatus);
 };
@@ -295,9 +288,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case DISLIKE_FAIL:
       return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'disliked'], false);
     case ZAP_REQUEST:
-      return simulatePayment(state, action.status.id, true, 'zap');
+      return simulatePayment(state, action.status.id, true);
     case ZAP_FAIL:
-      return simulatePayment(state, action.status.id, false, 'zap');
+      return simulatePayment(state, action.status.id, false);
     case REBLOG_REQUEST:
       return state.setIn([action.status.id, 'reblogged'], true);
     case REBLOG_FAIL:

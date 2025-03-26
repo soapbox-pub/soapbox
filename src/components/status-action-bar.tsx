@@ -49,7 +49,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useNutzapRequest, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useZapCashuRequest, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -176,8 +176,8 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const { boostModal, deleteModal } = useSettings();
 
   const { wallet } = useWallet();
-  const { nutzapsList } = useNutzapRequest();
-  const isNutzapped = Object.keys(nutzapsList).some((nutzap)=> nutzap === status.id);
+  const { zapCashuList } = useZapCashuRequest();
+  const isZappedCashu = zapCashuList.some((zapCashu)=> zapCashu === status.id);
 
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -845,9 +845,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             color='accent'
             filled
             onClick={handleZapClick}
-            active={status.nutzapped || status.zapped || isNutzapped}
+            active={status.zapped_cashu || status.zapped || isZappedCashu}
             theme={statusActionButtonTheme}
-            count={status?.zaps_amount ? status.zaps_amount / 1000 : 0}
+            count={(status?.zaps_amount ?? 0) / 1000 + (status?.zaps_amount_cashu ?? 0)}
           />
         )}
 

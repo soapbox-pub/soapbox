@@ -10,13 +10,13 @@ import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/t
 interface WalletState {
   wallet: WalletData | null;
   transactions: Transactions | null;
-  nutzapsList: Record<string, { status: StatusEntity; amount: number; comment: string }>; // TODO: remove
+  zapCashuList: string[];
   prevTransaction?: string | null;
   nextTransaction?: string | null;
 
   setWallet: (wallet: WalletData | null) => void;
   setTransactions: (transactions: Transactions | null, prevTransaction?: string | null, nextTransaction?: string | null) => void;
-  addNutzap: (statusId: string, data: { status: StatusEntity; amount: number; comment: string }) => void;
+  addZapCashu: (statusId: string) => void;
 }
 
 interface IWalletInfo {
@@ -29,16 +29,16 @@ const useWalletStore = create<WalletState>((set) => ({
   transactions: null,
   prevTransaction: null,
   nextTransaction: null,
-  nutzapsList: {},
+  zapCashuList: [],
 
   setWallet: (wallet) => set({ wallet }),
   setTransactions: (transactions, prevTransaction, nextTransaction) => set({ transactions, prevTransaction, nextTransaction }),
-  addNutzap: (statusId, data) =>
+  addZapCashu: (statusId) =>
     set((state) => ({
-      nutzapsList: {
-        ...state.nutzapsList,
-        [statusId]: data,
-      },
+      zapCashuList: [
+        ...state.zapCashuList,
+        statusId,
+      ],
     })),
 }));
 
@@ -152,15 +152,15 @@ const useTransactions = () => {
   return { transactions, isLoading, error, getTransactions, expandTransactions };
 };
 
-const useNutzapRequest = () => {
+const useZapCashuRequest = () => {
   const api = useApi();
-  const { nutzapsList, addNutzap } = useWalletStore();
+  const { zapCashuList, addZapCashu } = useWalletStore();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { getWallet } = useWallet();
   const { getTransactions } = useTransactions();
 
-  const nutzapRequest = async (account: AccountEntity, amount: number, comment: string, status?: StatusEntity) => {
+  const zapCashuRequest = async (account: AccountEntity, amount: number, comment: string, status?: StatusEntity) => {
     setIsLoading(true);
     setError(null);
     try {
@@ -174,7 +174,7 @@ const useNutzapRequest = () => {
       const data = await response.json();
 
       if (status) {
-        addNutzap(status.id, { status, amount, comment });
+        addZapCashu(status.id);
       }
 
       toast.success(data.message || 'Zap sent successfully!');
@@ -189,7 +189,7 @@ const useNutzapRequest = () => {
     }
   };
 
-  return { nutzapsList, isLoading, error, nutzapRequest };
+  return { zapCashuList, isLoading, error, zapCashuRequest };
 };
 
-export { useWallet, useTransactions, useNutzapRequest };
+export { useWallet, useTransactions, useZapCashuRequest };

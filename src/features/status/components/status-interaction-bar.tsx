@@ -206,13 +206,13 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   };
 
   const getZaps = () => {
-    if (status.zaps_amount) {
+    if (status.zaps_amount || status.zaps_amount_cashu) {
       return (
-        <InteractionCounter count={status.zaps_amount / 1000} onClick={handleOpenZapsModal}>
+        <InteractionCounter count={(status.zaps_amount ?? 0) / 1000 + (status.zaps_amount_cashu ?? 0)} onClick={handleOpenZapsModal}>
           <FormattedMessage
             id='status.interactions.zaps'
             defaultMessage='{count, plural, one {Zap} other {Zaps}}'
-            values={{ count: status.zaps_amount }}
+            values={{ count: (status.zaps_amount ?? 0) + (status.zaps_amount_cashu ?? 0) }}
           />
         </InteractionCounter>
       );

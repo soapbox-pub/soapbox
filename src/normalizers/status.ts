@@ -77,7 +77,7 @@ export const StatusRecord = ImmutableRecord({
   reblogs_count: 0,
   replies_count: 0,
   zaps_amount: 0,
-  nutzaps_amount: 0,
+  zaps_amount_cashu: 0,
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
@@ -86,7 +86,7 @@ export const StatusRecord = ImmutableRecord({
   url: '',
   visibility: 'public' as StatusVisibility,
   zapped: false,
-  nutzapped: false,
+  zapped_cashu: false,
   event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields
