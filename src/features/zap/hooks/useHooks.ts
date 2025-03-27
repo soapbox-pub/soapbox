@@ -1,3 +1,4 @@
+import { debounce } from 'es-toolkit';
 import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 
@@ -15,10 +16,12 @@ interface WalletState {
   nutzappedRecord: NutzappedRecord;
   prevTransaction?: string | null;
   nextTransaction?: string | null;
+  prevZaps?: string | null;
+  nextZaps?: string | null;
   hasFetchedWallet: boolean;
   hasFetchedTransactions: boolean;
 
-  setNutzappedRecord: (statusId: string, nutzappedEntry: NutzappedEntry) => void;
+  setNutzappedRecord: (statusId: string, nutzappedEntry: NutzappedEntry, prevZaps?: string | null, nextZaps?: string | null) => void;
   setAcceptsZapsCashu: (acceptsZapsCashu: boolean) => void;
   setWallet: (wallet: WalletData | null) => void;
   setHasFetchedWallet: (hasFetchedWallet: boolean) => void;
@@ -38,16 +41,20 @@ const useWalletStore = create<WalletState>((set) => ({
   transactions: null,
   prevTransaction: null,
   nextTransaction: null,
+  prevZaps: null,
+  nextZaps: null,
   zapCashuList: [],
   nutzappedRecord: {},
   hasFetchedWallet: false,
   hasFetchedTransactions: false,
 
-  setNutzappedRecord: (statusId, nutzappedEntry) => set((state)=> ({
+  setNutzappedRecord: (statusId, nutzappedEntry, prevZaps, nextZaps) => set((state)=> ({
     nutzappedRecord: {
       ...state.nutzappedRecord,
       [statusId]: nutzappedEntry,
     },
+    prevZaps,
+    nextZaps,
   })),
   setAcceptsZapsCashu: (acceptsZapsCashu) => set({ acceptsZapsCashu }),
   setWallet: (wallet) => set({ wallet }),
@@ -222,17 +229,17 @@ const useZappedByCashu = () => {
   const api = useApi();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { setNutzappedRecord } = useWalletStore();
+  const { nextZaps, nutzappedRecord, setNutzappedRecord } = useWalletStore();
 
   const getNutzappedBy = async (statusId: string) => {
     setIsLoading(true);
     try {
       const response = await api.get(`/api/v1/ditto/cashu/statuses/${statusId}/nutzapped_by`);
-      // const { prev, next } = response.pagination(); // TODO: pagination after Patrick finish
+      const { prev, next } = response.pagination();
       const data = await response.json();
       if (data) {
         const normalizedData = nutzappedEntry.parse(data);
-        setNutzappedRecord(statusId, normalizedData);
+        setNutzappedRecord(statusId, normalizedData, prev, next);
       }
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'Zaps not found';
@@ -243,7 +250,32 @@ const useZappedByCashu = () => {
     }
   };
 
-  return { error, isLoading, getNutzappedBy };
+  const expandNutzappedBy = debounce(async (id: string) => {
+    if (!nextZaps || !nutzappedRecord[id]) {
+      return;
+    }
+
+    try {
+      setIsLoading(true);
+      const response = await api.get(nextZaps);
+      const { prev, next } = response.pagination();
+      const data = await response.json();
+      if (data) {
+        const normalizedData = nutzappedEntry.parse(data);
+        const newNutzappedBy = [...(nutzappedRecord[id] ?? []), ...normalizedData ];
+
+        setNutzappedRecord(id, newNutzappedBy, prev, next);
+      }
+    } catch (err) {
+      const messageError = err instanceof Error ? err.message : 'Error expanding transactions';
+      toast.error(messageError);
+      setError(messageError);
+    } finally {
+      setIsLoading(false);
+    }
+  }, 700);
+
+  return { error, isLoading, getNutzappedBy, expandNutzappedBy };
 };
 
 export { useWalletStore, useWallet, useTransactions, useZapCashuRequest, useZappedByCashu };

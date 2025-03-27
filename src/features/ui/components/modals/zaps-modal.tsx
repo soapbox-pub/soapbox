@@ -31,7 +31,8 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
   const zaps = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.items);
   const next = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.next);
   const nutzaps = useWalletStore().nutzappedRecord[statusId];
-  const { getNutzappedBy } = useZappedByCashu();
+  const { nextZaps } = useWalletStore();
+  const { getNutzappedBy, expandNutzappedBy } = useZappedByCashu();
 
   const accounts = useMemo((): ImmutableList<IAccountWithZaps> | undefined => {
     if (!zaps && !nutzaps) return;
@@ -61,6 +62,9 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
     if (next) {
       dispatch(expandZaps(statusId, next));
     }
+    if (nextZaps) {
+      expandNutzappedBy(statusId);
+    }
   };
 
   let body;
@@ -79,7 +83,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
         style={{ height: '80vh' }}
         useWindowScroll={false}
         onLoadMore={handleLoadMore}
-        hasMore={!!next}
+        hasMore={!!next || !!nextZaps}
       >
         {accounts.map((account, index) => {
           return (
