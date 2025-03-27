@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { create } from 'zustand';
 
 import { useApi } from 'soapbox/hooks/useApi.ts';
-import { Transactions, WalletData, baseWalletSchema, transactionsSchema } from 'soapbox/schemas/wallet.ts';
+import { NutzappedEntry, NutzappedRecord, Transactions, WalletData, baseWalletSchema, nutzappedEntry, transactionsSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
@@ -12,11 +12,13 @@ interface WalletState {
   acceptsZapsCashu: boolean;
   transactions: Transactions | null;
   zapCashuList: string[];
+  nutzappedRecord: NutzappedRecord;
   prevTransaction?: string | null;
   nextTransaction?: string | null;
   hasFetchedWallet: boolean;
   hasFetchedTransactions: boolean;
 
+  setNutzappedRecord: (statusId: string, nutzappedEntry: NutzappedEntry) => void;
   setAcceptsZapsCashu: (acceptsZapsCashu: boolean) => void;
   setWallet: (wallet: WalletData | null) => void;
   setHasFetchedWallet: (hasFetchedWallet: boolean) => void;
@@ -37,9 +39,16 @@ const useWalletStore = create<WalletState>((set) => ({
   prevTransaction: null,
   nextTransaction: null,
   zapCashuList: [],
+  nutzappedRecord: {},
   hasFetchedWallet: false,
   hasFetchedTransactions: false,
 
+  setNutzappedRecord: (statusId, nutzappedEntry) => set((state)=> ({
+    nutzappedRecord: {
+      ...state.nutzappedRecord,
+      [statusId]: nutzappedEntry,
+    },
+  })),
   setAcceptsZapsCashu: (acceptsZapsCashu) => set({ acceptsZapsCashu }),
   setWallet: (wallet) => set({ wallet }),
   setHasFetchedWallet: (hasFetchedWallet) => set({ hasFetchedWallet }),
@@ -209,4 +218,32 @@ const useZapCashuRequest = () => {
   return { zapCashuList, isLoading, error, zapCashuRequest };
 };
 
-export { useWalletStore, useWallet, useTransactions, useZapCashuRequest };
+const useZappedByCashu = () => {
+  const api = useApi();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { setNutzappedRecord } = useWalletStore();
+
+  const getNutzappedBy = async (statusId: string) => {
+    setIsLoading(true);
+    try {
+      const response = await api.get(`/api/v1/ditto/cashu/statuses/${statusId}/nutzapped_by`);
+      // const { prev, next } = response.pagination(); // TODO: pagination after Patrick finish
+      const data = await response.json();
+      if (data) {
+        const normalizedData = nutzappedEntry.parse(data);
+        setNutzappedRecord(statusId, normalizedData);
+      }
+    } catch (err) {
+      const messageError = err instanceof Error ? err.message : 'Zaps not found';
+      toast.error('Zaps not foud');
+      setError(messageError);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { error, isLoading, getNutzappedBy };
+};
+
+export { useWalletStore, useWallet, useTransactions, useZapCashuRequest, useZappedByCashu };

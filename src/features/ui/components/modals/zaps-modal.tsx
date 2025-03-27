@@ -8,6 +8,7 @@ import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
+import { useWalletStore, useZappedByCashu } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
@@ -16,6 +17,7 @@ interface IAccountWithZaps {
   id: string;
   comment: string;
   amount: number;
+  type: string;
 }
 
 interface IZapsModal {
@@ -25,16 +27,22 @@ interface IZapsModal {
 
 const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
+
   const zaps = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.items);
   const next = useAppSelector((state) => state.user_lists.zapped_by.get(statusId)?.next);
+  const nutzaps = useWalletStore().nutzappedRecord[statusId];
+  const { getNutzappedBy } = useZappedByCashu();
 
   const accounts = useMemo((): ImmutableList<IAccountWithZaps> | undefined => {
-    if (!zaps) return;
+    if (!zaps && !nutzaps) return;
 
-    return zaps
-      .map(({ account, amount, comment }) => ({ id: account, amount, comment }))
-      .flatten() as ImmutableList<IAccountWithZaps>;
-  }, [zaps]);
+    const zappedAccounts = zaps?.map(({ account, amount, comment }) => ({ id: account, amount, comment, type: 'zap' })) || [];
+    const nutzappedAccounts = nutzaps?.map(({ account, amount, comment }) => ({ id: account.id, amount, comment, type: 'nutzap' })) || [];
+
+    const combinedAccounts = [...zappedAccounts, ...nutzappedAccounts];
+
+    return ImmutableList(combinedAccounts);
+  }, [zaps, nutzaps]);
 
   const fetchData = () => {
     dispatch(fetchZaps(statusId));
@@ -42,6 +50,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
 
   useEffect(() => {
     fetchData();
+    getNutzappedBy(statusId);
   }, []);
 
   const onClickClose = () => {
@@ -56,7 +65,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
 
   let body;
 
-  if (!zaps || !accounts) {
+  if (!zaps || !nutzaps || !accounts) {
     body = <Spinner />;
   } else {
     const emptyMessage = <FormattedMessage id='status.zaps.empty' defaultMessage='No one has zapped this post yet. When someone does, they will show up here.' />;
@@ -76,7 +85,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
           return (
             <div key={index}>
               <Text weight='bold'>
-                {shortNumberFormat(account.amount / 1000)}
+                {account.type === 'zap' ? shortNumberFormat(account.amount / 1000) : shortNumberFormat(account.amount)}
               </Text>
               <AccountContainer id={account.id} note={account.comment} emoji='⚡' />
             </div>
