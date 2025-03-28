@@ -1,4 +1,4 @@
-import exclamationIcon from '@tabler/icons/outline/exclamation-circle.svg';
+import helpIcon from '@tabler/icons/outline/help-circle.svg';
 import plusIcon from '@tabler/icons/outline/square-rounded-plus.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -7,9 +7,10 @@ import Button from 'soapbox/components/ui/button.tsx';
 import FormActions from 'soapbox/components/ui/form-actions.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
+import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
 import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
@@ -17,7 +18,7 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 const messages = defineMessages({
   title: { id: 'wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
   question: { id: 'wallet.create_wallet.question', defaultMessage: 'Do you want create one?' },
-  button: { id: 'wallet.button.create_wallet', defaultMessage: 'Create wallet' },
+  button: { id: 'wallet.button.create_wallet', defaultMessage: 'Create' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
 
@@ -72,7 +73,11 @@ const CreateWallet = () => {
                     <Text>
                       {intl.formatMessage(messages.mints)}
                     </Text>
-                    <SvgIcon src={exclamationIcon} />
+                    <Tooltip text={'Mint: A kind of digital bank that issues tokens backed by Bitcoin, like “Bitcoin gift cards” with built-in privacy.'}>
+                      <div>
+                        <Icon src={helpIcon} />
+                      </div>
+                    </Tooltip>
                   </HStack>
                   <MintEditor items={mints} setItems={setMints} />
                 </Stack>

@@ -78,7 +78,7 @@ const Tooltip: React.FC<ITooltip> = (props) => {
               left: x ?? 0,
               ...styles,
             }}
-            className='pointer-events-none z-[100] whitespace-nowrap rounded bg-gray-800 px-2.5 py-1.5 text-xs font-medium text-gray-100 shadow dark:bg-gray-100 dark:text-gray-900'
+            className='pointer-events-none z-[100] max-w-[200px] whitespace-normal rounded bg-gray-800 px-2.5 py-1.5 text-xs font-medium text-gray-100 shadow dark:bg-gray-100 dark:text-gray-900 sm:max-w-[300px]'
             {...getFloatingProps()}
           >
             {text}

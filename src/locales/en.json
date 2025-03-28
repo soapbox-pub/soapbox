@@ -1718,7 +1718,7 @@
   "wallet.balance.mint.payment": "Make the payment to complete:",
   "wallet.balance.mint.unpaid_message": "Your mint is still unpaid. Complete the payment to receive your sats.",
   "wallet.button.cancel": "Cancel",
-  "wallet.button.create_wallet": "Create wallet",
+  "wallet.button.create_wallet": "Create",
   "wallet.button.mint": "Mint",
   "wallet.button.withdraw": "Withdraw",
   "wallet.create_wallet.question": "Do you want create one?",
