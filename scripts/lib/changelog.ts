@@ -1,5 +1,5 @@
-import fs from 'fs';
-import { join } from 'path';
+import fs from 'node:fs';
+import { join } from 'node:path';
 
 /** Parse the changelog into an object. */
 function parseChangelog(changelog: string): Record<string, string> {

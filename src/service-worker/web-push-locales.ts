@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import path from 'path';
+import path from 'node:path';
 
 const filtered: Record<string, Record<string, string>> = {};
 const filenames = fs.readdirSync(path.resolve(__dirname, '../locales'));

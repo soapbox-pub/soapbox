@@ -23,7 +23,8 @@
     "promise",
     "react-hooks",
     "@typescript-eslint",
-    "formatjs"
+    "formatjs",
+    "n"
   ],
   "parserOptions": {
     "sourceType": "module",
@@ -299,7 +300,9 @@
 
     "formatjs/enforce-default-message": "error",
     "formatjs/enforce-id": "error",
-    "formatjs/no-literal-string-in-jsx": "error"
+    "formatjs/no-literal-string-in-jsx": "error",
+
+    "n/prefer-node-protocol": "error"
   },
   "overrides": [
     {
