@@ -38,6 +38,7 @@ const baseAccountSchema = z.object({
   display_name: z.string().catch(''),
   ditto: coerceObject({
     accepts_zaps: z.boolean().catch(false),
+    accepts_zaps_cashu: z.boolean().catch(false),
     external_url: z.string().optional().catch(undefined),
     streak: coerceObject({
       days: z.number().catch(0),

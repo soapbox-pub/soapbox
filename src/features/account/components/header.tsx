@@ -44,7 +44,6 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button.tsx';
-import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
@@ -120,9 +119,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const { method: paymentMethod } = usePaymentMethod();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
-
-  const { wallet } = useWallet();
-
 
   const { getOrCreateChatByAccountId } = useChats();
 
@@ -684,7 +680,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const info = makeInfo();
   const menu = makeMenu();
   const acceptsZaps = account.ditto.accepts_zaps === true;
-  const hasWallet = wallet !== null;
+  const acceptsZapsCashu = account.ditto.accepts_zaps_cashu === true;
 
   return (
     <div>
@@ -726,7 +722,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <SubscriptionButton account={account} />
               {renderMessageButton()}
               {renderShareButton()}
-              {(acceptsZaps || hasWallet) && renderZapAccount()}
+              {(acceptsZaps || acceptsZapsCashu) && renderZapAccount()}
 
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>

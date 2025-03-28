@@ -49,7 +49,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useZapCashuRequest, useWalletStore } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useZapCashuRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -175,7 +175,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
 
-  const { acceptsZapsCashu } = useWalletStore();
   const { zapCashuList } = useZapCashuRequest();
   const isZappedCashu = zapCashuList.some((zapCashu)=> zapCashu === status.id);
 
@@ -754,6 +753,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
   const acceptsZaps = status.account.ditto.accepts_zaps === true;
+  const acceptsZapsCashu = status.account.ditto.accepts_zaps_cashu === true;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
