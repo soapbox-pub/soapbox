@@ -19,14 +19,21 @@ export interface PolicyItem {
 }
 
 type ParamValue = string | number | boolean;
+export type PolicyParam = ParamValue | (string | number)[];
+export type PolicyParams = Record<string, PolicyParam>;
 
 export interface PolicySpecItem {
   name: string;
-  params?: Record<string, ParamValue | ParamValue[]>;
+  params?: PolicyParams;
 }
 
 export interface PolicySpec {
   policies: PolicySpecItem[];
+}
+
+interface PolicyResponse {
+  mode: 'script' | 'event';
+  spec: PolicySpec;
 }
 
 
@@ -47,7 +54,7 @@ const useModerationPolicies = () => {
     queryKey: ['admin', 'current_moderation_policy'],
     queryFn: async () => {
       const response = await api.get('/api/v1/admin/ditto/policies/current');
-      return response.json() as Promise<PolicySpec>;
+      return response.json() as Promise<PolicyResponse>;
     },
   });
 
