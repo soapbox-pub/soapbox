@@ -180,14 +180,18 @@ const PolicyManager: FC = () => {
   );
 
   const renderPolicies = () => {
-    if (currentPolicy?.mode === 'script') {
-      return (<Card size='lg'>
-        {intl.formatMessage(messages.policyModeError)}
-      </Card>);
-    } else if (currentPolicy?.spec.policies.length === 0) {
-      return (<Card size='lg'>
-        {intl.formatMessage(messages.noPolicyConfigured)}
-      </Card>);
+    if (storedPolicies?.mode === 'script') {
+      return (
+        <Card size='lg'>
+          {intl.formatMessage(messages.policyModeError)}
+        </Card>
+      );
+    } else if (state.policies.length === 0) {
+      return (
+        <Card size='lg'>
+          {intl.formatMessage(messages.noPolicyConfigured)}
+        </Card>
+      );
     }
 
     return (<Stack>
