@@ -18,10 +18,12 @@ const messages = defineMessages({
 });
 
 const Suggestion: FC<{ item: PolicyItem }> = ({ item }) => {
-  return (<Stack>
-    <div><strong className='text-lg'>{item.name}</strong></div>
-    <div>{item.description}</div>
-  </Stack>);
+  return (
+    <Stack>
+      <div><strong className='text-lg'>{item.name}</strong></div>
+      <div>{item.description}</div>
+    </Stack>
+  );
 };
 
 const getInputType = (type: FieldItem['type']) => {
