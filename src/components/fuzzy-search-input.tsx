@@ -188,7 +188,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
         <ul
           id={listboxId}
           role='listbox'
-          className='absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800'
+          className='absolute z-10 mt-1 max-h-96 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800'
         >
           {suggestions.map((item, index) => {
             const isActive = index === activeIndex;
