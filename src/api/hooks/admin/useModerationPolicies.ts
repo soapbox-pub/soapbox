@@ -11,7 +11,7 @@ export interface FieldItem {
   default?: any;
 }
 
-interface PolicyItem {
+export interface PolicyItem {
   internalName: string;
   name: string;
   description?: string;
@@ -20,12 +20,12 @@ interface PolicyItem {
 
 type ParamValue = string | number | boolean;
 
-interface PolicySpecItem {
+export interface PolicySpecItem {
   name: string;
   params?: Record<string, ParamValue | ParamValue[]>;
 }
 
-interface PolicySpec {
+export interface PolicySpec {
   policies: PolicySpecItem[];
 }
 
