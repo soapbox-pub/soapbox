@@ -18,6 +18,8 @@ interface PolicyItem {
   parameters: Record<string, FieldItem>;
 }
 
+type ParamValue = string | number | boolean;
+
 interface PolicySpecItem {
   name: string;
   params?: Record<string, ParamValue | ParamValue[]>;
@@ -56,7 +58,7 @@ const useModerationPolicies = () => {
       return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(['admin', 'current_moderation_policy']); // Refetch after update
+      queryClient.invalidateQueries({ queryKey: ['admin', 'current_moderation_policy'] }); // Refetch after update
     },
   });
 
