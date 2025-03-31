@@ -1,8 +1,8 @@
-/* eslint-disable tailwindcss/no-custom-classname */
 import FuzzySearch from 'fuzzy-search';
 import React, { useState, useRef, useCallback, useEffect, useId } from 'react';
 
-// (Keep the FuzzySearchInputProps interface and defaultSearch function as before)
+import Input from 'soapbox/components/ui/input.tsx';
+
 interface FuzzySearchInputProps<T> {
   /** The array of objects or strings to search through. */
   data: T[];
@@ -14,34 +14,33 @@ interface FuzzySearchInputProps<T> {
   displayKey?: keyof T;
   /** Optional: Placeholder text for the input field. */
   placeholder?: string;
-  /** Optional: Custom search function to override the default fuzzy search. */
-  searchFn?: (data: T[], query: string, keys: (keyof T)[]) => T[];
+  /**
+   * Optional: Custom search function to override the default fuzzy search. */
+  searchFn?: SearchImpl;
   /** Optional: Custom class name for the main container div */
   className?: string;
-  /** Optional: Custom class name for the input element */
-  inputClassName?: string;
-  /** Optional: Custom class name for the suggestions dropdown ul element */
-  suggestionsClassName?: string;
-  /** Optional: Custom class name for individual suggestion li elements */
-  suggestionItemClassName?: string;
-  /** Optional: Custom class name for the active suggestion li element */
-  activeSuggestionItemClassName?: string;
-  /** Optional: Base ID for accessibility attributes. A unique ID will be generated if not provided. */
   baseId?: string;
+  /** Component to use to optionally override suggestion rendering. */
+  renderSuggestion?: React.ComponentType<{ item: T }>;
 }
 
-// Default fuzzy search implementation
-const defaultSearch = <T,>(data: T[], query: string, keys: (keyof T)[]): T[] => {
-  if (!query) {
-    return [];
-  }
+interface SearchImpl {
+  /**
+   * @param data The data to search through. Should be an array of Records
+   * @param query The query to search for.
+   * @param keys The keys in the record to search through
+   * @returns A list of search results.
+   */
+  <T extends Record<string, any> | string>(data: T[], query: string, keys: (keyof T)[]): T[];
+}
+
+const defaultSearch: SearchImpl = (data, query, keys) => {
   const searcher = new FuzzySearch(data as any[], keys as string[], {
     caseSensitive: false,
     sort: true,
   });
-  return searcher.search(query);
+  return query ? searcher.search(query) : data;
 };
-
 
 function FuzzySearchInput<T extends Record<string, any> | string>({
   data,
@@ -51,11 +50,8 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   placeholder = 'Search...',
   searchFn = defaultSearch,
   className = '',
-  inputClassName = '',
-  suggestionsClassName = '',
-  suggestionItemClassName = '',
-  activeSuggestionItemClassName = 'active',
-  baseId, // Optional base ID from props
+  baseId,
+  renderSuggestion: FuzzySearchSuggestion,
 }: FuzzySearchInputProps<T>) {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<T[]>([]);
@@ -78,25 +74,15 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     return key ? String(item[key]) : 'Invalid displayKey';
   }, [displayKey, keys]);
 
-
-  // --- Event Handlers ---
-
   const handleInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
     setInputValue(query);
     setActiveIndex(-1);
 
-    if (query.trim()) {
-      const results = searchFn(data, query, keys);
-      setSuggestions(results);
-      // Only show suggestions if there are results
-      setShowSuggestions(results.length > 0);
-    } else {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      onSelection(null);
-    }
-  }, [searchFn, data, keys, onSelection]);
+    const results = searchFn(data, query, keys);
+    setSuggestions(results);
+    setShowSuggestions(results.length > 0 || query.trim() === '');
+  }, [searchFn, data, keys]);
 
   const handleSelectSuggestion = useCallback((suggestion: T) => {
     setInputValue(getDisplayText(suggestion));
@@ -108,21 +94,18 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     // containerRef.current?.querySelector('input')?.focus();
   }, [getDisplayText, onSelection]);
 
-  // This function now primarily handles keyboard navigation *within* the list
   const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
     const listIsVisible = showSuggestions && suggestions.length > 0;
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      if (!listIsVisible) {
+      if (!listIsVisible && inputValue.trim()) {
         // If list isn't visible but there's input, try searching/showing
-        if (inputValue.trim()) {
-          const results = searchFn(data, inputValue.trim(), keys);
-          if (results.length > 0) {
-            setSuggestions(results);
-            setShowSuggestions(true);
-            setActiveIndex(0); // Start at the first item
-          }
+        const results = searchFn(data, inputValue.trim(), keys);
+        if (results.length > 0) {
+          setSuggestions(results);
+          setShowSuggestions(true);
+          setActiveIndex(0); // Start at the first item
         }
       } else {
         setActiveIndex((prevIndex) =>
@@ -148,8 +131,17 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     }
   }, [showSuggestions, suggestions, activeIndex, handleSelectSuggestion, inputValue, searchFn, data, keys]);
 
+  const handleFocus = useCallback(() => {
+    if (inputValue.trim() === '') {
+      const results = searchFn(data, '', keys);
+      setSuggestions(results);
+      setShowSuggestions(results.length > 0);
+    }
+  }, [inputValue, searchFn, data, keys]);
+
   const handleBlur = useCallback(() => {
-    // Delay hiding to allow clicks on options
+
+    // Delay hiding to allow clicking on options
     setTimeout(() => {
       // Check if focus is still somehow within the container (e.g., clicked an option)
       // If focus moved outside, hide the list.
@@ -160,8 +152,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     }, 150);
   }, []);
 
-  // --- Click Outside Detection ---
-  // (Keep the useEffect for handleClickOutside as before)
+  // Check if user clicked outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
@@ -175,79 +166,46 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     };
   }, []);
 
-  // --- Rendering ---
-  const listIsVisible = showSuggestions && suggestions.length > 0;
-
   return (
-    <div
-      ref={containerRef}
-      className={`fuzzy-search-input-container ${className}`}
-      style={{ position: 'relative' }}
-    >
-      <input
-        id={inputId} // ID for input
+    <div ref={containerRef} className={`relative ${className}`}>
+      <Input
+        id={inputId}
         type='text'
         value={inputValue}
         onChange={handleInputChange}
-        onKeyDown={handleKeyDown} // Keyboard interactions handled here
+        onKeyDown={handleKeyDown}
+        onFocus={handleFocus}
         onBlur={handleBlur}
         placeholder={placeholder}
         autoComplete='off'
-        className={`fuzzy-search-input ${inputClassName}`}
-        style={{ width: '100%' }}
-        // ARIA attributes for Combobox pattern
-        role='combobox'
         aria-autocomplete='list'
-        aria-controls={listIsVisible ? listboxId : undefined} // Control listbox only when visible
-        aria-expanded={listIsVisible}
+        aria-controls={showSuggestions && suggestions.length > 0 ? listboxId : undefined}
+        aria-expanded={showSuggestions && suggestions.length > 0}
         aria-haspopup='listbox'
-        aria-activedescendant={activeIndex > -1 ? getOptionId(activeIndex) : undefined} // Point to active option
+        aria-activedescendant={activeIndex > -1 ? getOptionId(activeIndex) : undefined}
       />
-      {listIsVisible && (
+      {showSuggestions && suggestions.length > 0 && (
         <ul
-          id={listboxId} // ID for listbox
-          role='listbox' // Role for the suggestions container
-          className={`fuzzy-search-suggestions ${suggestionsClassName}`}
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            border: '1px solid #ccc',
-            background: 'white',
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
-            maxHeight: '200px',
-            overflowY: 'auto',
-            zIndex: 1000,
-            boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-          }}
-        // tabIndex={-1} // List itself shouldn't be directly tabbable usually
+          id={listboxId}
+          role='listbox'
+          className='absolute z-10 mt-1 max-h-60 w-full overflow-y-auto rounded-md border border-gray-300 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800'
         >
           {suggestions.map((item, index) => {
-            const displayText = getDisplayText(item);
             const isActive = index === activeIndex;
             const optionId = getOptionId(index);
 
             return (
               <li
                 key={optionId} // Use unique generated ID as key
-                id={optionId}  // ID for this option
-                role='option'  // Role for each suggestion item
-                aria-selected={isActive} // Indicate selection state for screen readers
-                // onClick IS appropriate here for mouse users selecting an option
+                id={optionId} // ID for this option
+                role='option' // Role for each suggestion item
+                aria-selected={isActive}
                 onClick={() => handleSelectSuggestion(item)}
                 // onMouseEnter helps sync visual hover with keyboard activeIndex for usability
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`${suggestionItemClassName} ${isActive ? activeSuggestionItemClassName : ''}`}
-                style={{
-                  padding: '8px 12px',
-                  cursor: 'pointer',
-                  backgroundColor: isActive ? '#eee' : 'transparent',
-                }}
+                className={`cursor-pointer p-2 ${isActive ? 'bg-gray-100 dark:bg-gray-700' : 'hover:bg-gray-100 dark:hover:bg-gray-700'}`}
               >
-                {displayText}
+                {FuzzySearchSuggestion ? <FuzzySearchSuggestion item={item} /> : getDisplayText(item)}
               </li>
             );
           })}
