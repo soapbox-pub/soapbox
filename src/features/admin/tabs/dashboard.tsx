@@ -108,6 +108,11 @@ const Dashboard: React.FC = () => {
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
 
+        <ListItem
+          to='/soapbox/admin/policies'
+          label={<FormattedMessage id='column.admin.policies' defaultMessage='Moderation Policies' />}
+        />
+
         {features.nostr && (
           <ListItem
             to='/soapbox/admin/zap-split'

@@ -183,3 +183,4 @@ export const NostrBunkerLogin = lazy(() => import('soapbox/features/nostr/nostr-
 export const StreakModal = lazy(() => import('soapbox/features/ui/components/modals/streak-modal.tsx'));
 export const FollowsTimeline = lazy(() => import('soapbox/features/home-timeline/follows-timeline.tsx'));
 export const CommunityTimeline = lazy(() => import('soapbox/features/home-timeline/community-timeline.tsx'));
+export const PolicyManager = lazy(() => import('soapbox/features/admin/policy-manager.tsx'));

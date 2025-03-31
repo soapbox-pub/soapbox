@@ -149,6 +149,7 @@ import {
   AdminNostrRelays,
   NostrBunkerLogin,
   ManageDittoServer,
+  PolicyManager,
 } from './util/async-components.ts';
 import GlobalHotkeys from './util/global-hotkeys.tsx';
 import { WrappedRoute } from './util/react-router-helpers.tsx';
@@ -337,6 +338,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.nostr && <WrappedRoute path='/soapbox/admin/ditto-server' adminOnly page={WidePage} component={ManageDittoServer} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+      <WrappedRoute path='/soapbox/admin/policies' staffOnly page={AdminPage} component={PolicyManager} content={children} exact />
       {features.nostr && <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={WidePage} component={ManageZapSplit} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
