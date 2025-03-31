@@ -115,7 +115,7 @@ const stringifyDefault = (value: any) => {
   if (Array.isArray(value)) {
     return `[${value.join(', ')}]`;
   }
-  if (typeof value in ['number', 'string', 'boolean']) return value.toString();
+  if (['number', 'string', 'boolean'].includes(typeof value)) return value.toString();
   return '';
 };
 
