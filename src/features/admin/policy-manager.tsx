@@ -34,7 +34,7 @@ const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
 
 const PolicyManager: FC = () => {
   const intl = useIntl();
-  const { allPolicies = [], isLoading, storedPolicies } = useModerationPolicies();
+  const { allPolicies = [], isLoading, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
   // get the current set of policies out of the API response
   const initialPolicies = storedPolicies?.spec?.policies ?? [];
 
@@ -149,9 +149,13 @@ const PolicyManager: FC = () => {
       policies: Object.entries(policies).map(([policyName, params]) => ({ params, name: policyName })),
     };
 
-    console.log({
-      generated: policySpec.policies,
-      actual: state.policies,
+    updatePolicy(policySpec, {
+      onError(error) {
+        toast.error(`Error updating policies: ${error.name}`);
+      },
+      onSuccess() {
+        toast.success('Saved successfully.');
+      },
     });
   };
 
@@ -169,8 +173,9 @@ const PolicyManager: FC = () => {
         />
       </div>
       {renderPolicies()}
-      <div className='m-2 flex w-full flex-row justify-end px-6'>
+      <div className='m-2 flex w-full flex-row items-center justify-end px-6'>
         <Button onClick={handleSave} text='Save' theme='primary' />
+        <div className={isUpdating ? 'ml-2' : ''}>{isUpdating && <Spinner size={20} withText={false} />}</div>
       </div>
     </Column>
   );
