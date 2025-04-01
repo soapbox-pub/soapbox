@@ -15,7 +15,7 @@ import toast from 'soapbox/toast.tsx';
 import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } from 'soapbox/utils/policies.ts';
 
 const messages = defineMessages({
-  heading: { id: 'column.admin.policies', defaultMessage: 'Manage Policies' },
+  heading: { id: 'admin.policies.heading', defaultMessage: 'Manage Policies' },
   searchPlaceholder: { id: 'admin.policies.search_placeholder', defaultMessage: 'What do you want to do?' },
   policyModeError: { id: 'admin.policies.policy_mode_error', defaultMessage: 'The Ditto custom policy is enabled. Unset the <code>DITTO_CUSTOM_POLICY</code> environment variable to use the Policy UI.' },
   noPolicyConfigured: { id: 'admin.policies.no_policies_configured', defaultMessage: 'No policies configured! Use the search bar above to get started.' },
