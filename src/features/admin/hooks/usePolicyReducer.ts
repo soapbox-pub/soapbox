@@ -61,11 +61,17 @@ export const createPolicyReducer = (allPolicies: PolicyItem[]) => (state: Policy
     case 'ADD_MULTI_VALUE': {
       const fieldKey = `${action.policyName}.${action.fieldName}`;
       const current = (state.fields[fieldKey] as (string | number)[]) || [];
+      const policyDef = allPolicies.find(p => p.internalName === action.policyName);
+      const paramSchema = policyDef?.parameters[action.fieldName];
+      const value = paramSchema?.type === 'multi_number' && typeof action.value === 'string'
+        ? Number(action.value)
+        : action.value;
+
       return {
         ...state,
         fields: {
           ...state.fields,
-          [fieldKey]: [...current, action.value],
+          [fieldKey]: [...current, value],
         },
       };
     }

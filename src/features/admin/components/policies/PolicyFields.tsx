@@ -96,7 +96,18 @@ export const PolicyFields: FC<{
         <div className='mt-2'>{schema.description}</div>
         {
           schema.type === 'boolean' ?
-            <input type='checkbox' checked={!!value} /> :
+            <input
+              type='checkbox'
+              checked={!!value}
+              onChange={(e) => {
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  policyName,
+                  fieldName: name,
+                  value: e.target.checked,
+                });
+              }}
+            /> :
             <Input
               type={getInputType(schema.type)}
               value={value as string | number}
