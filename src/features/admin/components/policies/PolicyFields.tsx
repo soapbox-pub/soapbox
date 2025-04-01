@@ -16,11 +16,12 @@ const messages = defineMessages({
 const MultiValueBadge: FC<{
   value: string | number;
   onRemove: () => void;
-}> = ({ value, onRemove }) => {
+  intl: ReturnType<typeof useIntl>;
+}> = ({ value, onRemove, intl }) => {
   return (
     <div className='mb-2 mr-2 inline-flex items-center rounded-full bg-gray-200 px-2 py-1 text-gray-800'>
       <span className='mr-1 max-w-28 overflow-hidden text-ellipsis' title={String(value)}>{value}</span>
-      <button onClick={onRemove} className='text-gray-600 hover:text-gray-800' aria-label={messages.removeValue.defaultMessage}>
+      <button onClick={onRemove} className='text-gray-600 hover:text-gray-800' aria-label={intl.formatMessage(messages.removeValue)}>
         <Icon src={CloseIcon} className='size-4' />
       </button>
     </div>
@@ -115,6 +116,7 @@ export const PolicyFields: FC<{
           {((value || []) as (string | number)[]).map((v) => (
             <MultiValueBadge
               key={v}
+              intl={intl}
               value={v}
               onRemove={() => handleRemoveMultiValue(v)}
             />

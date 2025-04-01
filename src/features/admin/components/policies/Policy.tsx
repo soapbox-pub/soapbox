@@ -1,12 +1,16 @@
 import CloseIcon from '@tabler/icons/outline/x.svg';
 import { FC } from 'react';
-import { useIntl } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 
 import { Card, CardHeader, CardBody } from 'soapbox/components/ui/card.tsx';
 import Icon from 'soapbox/components/ui/icon.tsx';
 import { PolicySpecItem, PolicyItem, PolicyState, PolicyAction } from 'soapbox/utils/policies.ts';
 
 import { PolicyFields } from './PolicyFields.tsx';
+
+const messages = defineMessages({
+  removePolicy: { id: 'admin.policies.remove_policy', defaultMessage: 'Remove policy' },
+});
 
 export const Policy: FC<{
   policy: PolicySpecItem;
@@ -30,6 +34,7 @@ export const Policy: FC<{
           <button
             onClick={handleRemovePolicy}
             className='ml-2 text-gray-500 hover:text-gray-100'
+            aria-label={intl.formatMessage(messages.removePolicy)}
           >
             <Icon src={CloseIcon} className='size-4' />
           </button>
