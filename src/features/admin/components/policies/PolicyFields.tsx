@@ -67,7 +67,18 @@ export const PolicyFields: FC<{
 
     const currentValue = Array.isArray(value) ? value : [];
 
-    if (!currentValue.includes(inputValue)) {
+    // Convert to number for multi_number fields
+    const processedValue = schema.type === 'multi_number'
+      ? Number(inputValue)
+      : inputValue;
+
+    // Check for NaN when converting to number
+    if (schema.type === 'multi_number' && isNaN(processedValue as number)) {
+      // Show error or return
+      return;
+    }
+
+    if (!currentValue.includes(processedValue)) {
       dispatch({ type: 'ADD_MULTI_VALUE', policyName, fieldName: name, value: inputValue });
     }
 
