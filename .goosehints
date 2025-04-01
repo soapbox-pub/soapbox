@@ -1,0 +1,54 @@
+# Soapbox
+
+## Project Overview
+- **Soapbox** is a customizable open-source frontend for Fediverse social media platforms
+- It can be used with multiple backends including Mastodon, Pleroma, and their recommended backend "Rebased"
+- The project is licensed under AGPL-3.0-or-later
+- Official site: https://soapbox.pub/
+
+## Technical Details
+- Modern React-based web application (React 18)
+- Written in TypeScript
+- Uses Redux for state management
+- Built with Vite and TailwindCSS
+- Uses React-Intl for internationalization
+
+## Project Structure
+- `/src`: Main source code directory
+  - `/actions`: Redux actions
+  - `/api`: API client code
+  - `/components`: Reusable React components
+  - `/features`: Feature modules organized by functionality
+  - `/hooks`: React hooks
+  - `/locales`: Translation files
+  - `/reducers`: Redux reducers
+  - `/styles`: CSS and styling files
+  - `/utils`: Utility functions
+- Uses Tailwind for styling
+- Has a wide range of features including timelines, notifications, chats, etc.
+
+## Key Features
+- Custom theming and branding capabilities
+- Support for multiple Fediverse backends
+- Responsive design for mobile and desktop
+- Internationalization and localization
+- Advanced media features (images, videos, audio)
+- Real-time updates via WebSockets
+- PWA support
+
+## Development
+- Use `yarn build` to build the application
+- Built with Vite for fast development experience
+- Tests are written with Vitest
+- Uses ESLint and StyleLint for code quality
+
+## Integration
+- Can be deployed alongside various Fediverse backends
+- Designed to be brandable for custom instances
+- Enables instance administrators to create a unique identity
+
+## Philosophy
+- Focuses on creating platforms with unique identity and brand
+- Prioritizes large server use cases
+- Aims to provide a user experience that rivals major social media platforms
+- Embraces customization and branding freedom for instance operators
