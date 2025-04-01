@@ -9,7 +9,7 @@ interface FuzzySearchInputProps<T> {
   /** An array of keys within the objects in `data` to search against. Ignored if `data` is string[]. */
   keys: (keyof T)[];
   /** Callback function invoked when an item is selected from the suggestions. */
-  onSelection: (selection: T | null) => void;
+  onSelection: (selection: T | null, clearField: () => void) => void;
   /** Optional: The key to display in the suggestion list. Defaults to the first key in the `keys` prop or the item itself if data is string[]. */
   displayKey?: keyof T;
   /** Optional: Placeholder text for the input field. */
@@ -89,7 +89,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     setSuggestions([]);
     setShowSuggestions(false);
     setActiveIndex(-1);
-    onSelection(suggestion);
+    onSelection(suggestion, () => setInputValue(''));
     // Optionally focus the input again if needed, though blur might occur naturally
     // containerRef.current?.querySelector('input')?.focus();
   }, [getDisplayText, onSelection]);
