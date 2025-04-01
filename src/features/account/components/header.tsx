@@ -100,7 +100,7 @@ const messages = defineMessages({
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
-  method: { id: 'payment_method.send_to', defaultMessage: 'Send {method} to {target}' },
+  method: { id: 'payment_method.send_to', defaultMessage: 'Send sats via {method} to {target}' },
 });
 
 interface IHeader {

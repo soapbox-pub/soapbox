@@ -1523,5 +1523,5 @@
   "payment_method.comment_input.placeholder": "تعليق إختياري",
   "zap.open_wallet": "فتح المحفظة",
   "zap.send_to": "أرسل zaps إلى {target}",
-  "payment_method.send_to": "أرسل {method} إلى {target}"
+  "payment_method.send_to": "أرسل sats عبر {method} إلى {target}"
 }

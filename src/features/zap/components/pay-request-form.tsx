@@ -128,8 +128,8 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
         <Text weight='semibold'>
           <FormattedMessage
             id='payment_method.send_to'
-            defaultMessage='Send {method} to {target}'
-            values={{ target: emojifyText(account.display_name, account.emojis), method: amount > 1 ? `${paymentMethod}s` : paymentMethod }}
+            defaultMessage='Send sats via {method} to {target}'
+            values={{ target: emojifyText(account.display_name, account.emojis), method: paymentMethod }}
           />
         </Text>
         <Avatar src={account.avatar} size={50} />

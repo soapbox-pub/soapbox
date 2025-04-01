@@ -1618,6 +1618,6 @@
   "who_to_follow.title": "Quem Seguir",
   "payment_method.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
-  "payment_method.send_to": "Enviar {method} para {target}",
+  "payment_method.send_to": "Enviar sats através de {method} para {target}",
   "zap.send_to": "Enviar zaps para {target}"
 }

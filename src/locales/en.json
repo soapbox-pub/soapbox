@@ -1297,7 +1297,7 @@
   "patron.title": "Funding Goal",
   "payment_method.button.text.raw": "Zap {amount} sats",
   "payment_method.comment_input.placeholder": "Optional comment",
-  "payment_method.send_to": "Send {method} to {target}",
+  "payment_method.send_to": "Send sats via {method} to {target}",
   "payment_method.split_message.deducted": "{amountDeducted} sats will deducted*",
   "pinned_accounts.title": "{name}’s choices",
   "pinned_statuses.none": "No pins to show.",

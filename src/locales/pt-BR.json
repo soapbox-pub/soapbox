@@ -1639,7 +1639,7 @@
   "payment_method.comment_input.placeholder": "Comentário opcional",
   "zap.open_wallet": "Abrir Carteira",
   "zap.send_to": "Enviar zaps para {target}",
-  "payment_method.send_to": "Enviar {method} para {target}",
+  "payment_method.send_to": "Enviar sats via {method} para {target}",
   "payment_method.split_message.deducted": "{amountDeducted} sats serão deduzidos*",
   "zap.split_message.receiver": "{receiver} receberá {amountReceiver} sats*",
   "zap_split.question": "Por que estou pagando isso?",

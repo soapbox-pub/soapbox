@@ -26,7 +26,7 @@ const messages = defineMessages({
 });
 
 const paymentMethods = {
-  zap: 'zap',
+  lightning: 'lightning',
   cashu: 'cashu',
 };
 
@@ -45,13 +45,15 @@ const Wallet = () => {
   return (
     <>
       {isLoading ?
-        <Stack className='h-screen justify-center'>
-          <Spinner size={40} withText={false} />
+        <Stack className='h-screen items-center justify-center'>
+          <div className='rounded-lg border border-gray-200 p-10 dark:border-gray-700'>
+            <Spinner size={50} withText={false} />
+          </div>
         </Stack>
         :
         (
           <Column label={intl.formatMessage(messages.wallet)} transparent withHeader={false} slim>
-            <Card className='space-y-4'>
+            <Card className='space-y-4 overflow-hidden'>
               <CardHeader>
                 <CardTitle title={intl.formatMessage(messages.wallet)} />
               </CardHeader>
@@ -59,7 +61,11 @@ const Wallet = () => {
               {walletData ? (
                 <>
                   <CardBody>
-                    <Stack className='rounded-lg border p-6 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
+                    <Stack
+                      className='rounded-lg border border-gray-200 p-8 dark:border-gray-700'
+                      alignItems='center'
+                      space={4}
+                    >
                       <Balance />
                     </Stack>
                   </CardBody>
@@ -70,8 +76,13 @@ const Wallet = () => {
 
                   <CardBody>
                     <Transactions limit={4} />
-                    {hasTransactions && <div className='flex w-full justify-center'>
-                      <Button icon={moreIcon} theme='primary' to='/wallet/transactions'>
+                    {hasTransactions && <div className='mt-4 flex w-full justify-center'>
+                      <Button
+                        icon={moreIcon}
+                        theme='primary'
+                        to='/wallet/transactions'
+                        className='px-6 font-medium'
+                      >
                         {intl.formatMessage(messages.more)}
                       </Button>
                     </div>}
@@ -91,7 +102,7 @@ const Wallet = () => {
                           items={paymentMethods}
                           defaultValue={method}
                           onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                            changeMethod((event.target.value as 'cashu' | 'zap'));
+                            changeMethod((event.target.value as 'cashu' | 'lightning'));
                           }}
                         />
                       </ListItem>

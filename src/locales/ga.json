@@ -1686,7 +1686,7 @@
   "zap.next": "Ar Aghaidh",
   "zap.open_wallet": "Oscail Sparán",
   "zap.send_to": "Seol zaps chuig {target}",
-  "payment_method.send_to": "Seol {method} chuig {target}",
+  "payment_method.send_to": "Seol sats trí {method} chuig {target}",
   "payment_method.split_message.deducted": "Asbhainfear {amountDeducted} sats*",
   "zap.split_message.receiver": "Gheobhaidh {receiver} {amountReceiver} sats*",
   "zap_split.question": "Cén fáth a bhfuil mé ag íoc seo?",

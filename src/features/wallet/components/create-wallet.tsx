@@ -47,54 +47,91 @@ const CreateWallet = () => {
   }
 
   return (
-    <Stack className='rounded-lg border p-6'  space={4}>
+    <Stack
+      className='rounded-lg border border-gray-200 p-8
+       dark:border-gray-700'
+      space={4}
+    >
       <Stack space={3} justifyContent='center' alignItems='center'>
-        {!formActive
-          ?
-          (
-            <>
-              <Text theme='default' size='2xl'>
-                {intl.formatMessage(messages.title)}
+        {!formActive ? (
+          <>
+            <div className='mb-2 flex size-16 items-center justify-center rounded-full bg-primary-100 dark:bg-primary-800'>
+              <Icon
+                className='size-8 text-primary-500 dark:text-primary-400'
+                src={plusIcon}
+              />
+            </div>
+            <Text
+              theme='default'
+              size='2xl'
+              weight='bold'
+              align='center'
+              className='mb-1 text-gray-900 dark:text-gray-100'
+            >
+              {intl.formatMessage(messages.title)}
+            </Text>
+            <HStack space={3} className='mt-2'>
+              <Text
+                theme='default'
+                size='lg'
+                align='center'
+                className='text-gray-800 dark:text-gray-200'
+              >
+                {intl.formatMessage(messages.question)}
               </Text>
-              <HStack space={2}>
-                <Text theme='default' size='lg'>
-                  {intl.formatMessage(messages.question)}
-                </Text>
-                <Button icon={plusIcon} theme='primary' text={intl.formatMessage(messages.button)} onClick={() => setFormActive(!formActive)} />
-              </HStack>
-            </>
-          )
-          :
-          (
-            <Stack space={4} className='w-full'>
-              <Form onSubmit={handleSubmit}>
-                <Stack>
-                  <HStack alignItems='center' space={1}>
-                    <Text>
-                      {intl.formatMessage(messages.mints)}
-                    </Text>
-                    <Tooltip text={'Mint: A kind of digital bank that issues tokens backed by Bitcoin, like “Bitcoin gift cards” with built-in privacy.'}>
-                      <div>
-                        <Icon src={helpIcon} />
-                      </div>
-                    </Tooltip>
-                  </HStack>
+              <Button
+                theme='primary'
+                text={intl.formatMessage(messages.button)}
+                onClick={() => setFormActive(!formActive)}
+                className='px-6 font-medium'
+              />
+            </HStack>
+          </>
+        ) : (
+          <Stack space={5} className='w-full'>
+            <Form onSubmit={handleSubmit}>
+              <Stack className='rounded-lg p-4'>
+                <HStack alignItems='center' space={2}>
+                  <Text
+                    size='lg'
+                    weight='medium'
+                    className='text-gray-900 dark:text-gray-100'
+                  >
+                    {intl.formatMessage(messages.mints)}
+                  </Text>
+                  <Tooltip text={'Mint: A kind of digital bank that issues tokens backed by Bitcoin, like \'Bitcoin gift cards\' with built-in privacy.'}>
+                    <div className='text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'>
+                      <Icon src={helpIcon} />
+                    </div>
+                  </Tooltip>
+                </HStack>
+                <div>
                   <MintEditor items={mints} setItems={setMints} />
-                </Stack>
+                </div>
+              </Stack>
 
-                <FormActions>
-                  <Button to='/wallet' onClick={()=> setFormActive(false)} theme='tertiary'>
-                    <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
-                  </Button>
+              <FormActions>
+                <Button
+                  to='/wallet'
+                  onClick={() => setFormActive(false)}
+                  theme='tertiary'
+                  className='px-6 text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                >
+                  <FormattedMessage id='common.cancel' defaultMessage='Cancel' />
+                </Button>
 
-                  <Button theme={isLoading ? 'secondary' : 'primary'} type='submit' disabled={isLoading}>
-                    <FormattedMessage id='common.save' defaultMessage='Save' />
-                  </Button>
-                </FormActions>
-              </Form>
-            </Stack>
-          )
-        }
+                <Button
+                  theme={isLoading ? 'secondary' : 'primary'}
+                  type='submit'
+                  disabled={isLoading}
+                  className='px-6 font-medium'
+                >
+                  <FormattedMessage id='common.save' defaultMessage='Save' />
+                </Button>
+              </FormActions>
+            </Form>
+          </Stack>
+        )}
       </Stack>
     </Stack>
   );
