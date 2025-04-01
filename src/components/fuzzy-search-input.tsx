@@ -17,8 +17,11 @@ interface FuzzySearchInputProps<T> {
   /**
    * Optional: Custom search function to override the default fuzzy search. */
   searchFn?: SearchImpl;
-  /** Optional: Custom class name for the main container div */
+  /** Optional: Additional classes for the main container div */
   className?: string;
+  /** Optional: Additional classes for the input field */
+  inputClassName?: string;
+  /** Base ID to use for input components. Will be generated if not specified */
   baseId?: string;
   /** Component to use to optionally override suggestion rendering. */
   renderSuggestion?: React.ComponentType<{ item: T }>;
@@ -51,6 +54,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   searchFn = defaultSearch,
   className = '',
   baseId,
+  inputClassName = '',
   renderSuggestion: FuzzySearchSuggestion,
 }: FuzzySearchInputProps<T>) {
   const [inputValue, setInputValue] = useState('');
@@ -183,6 +187,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
         aria-expanded={showSuggestions && suggestions.length > 0}
         aria-haspopup='listbox'
         aria-activedescendant={activeIndex > -1 ? getOptionId(activeIndex) : undefined}
+        className={`${inputClassName}`}
       />
       {showSuggestions && suggestions.length > 0 && (
         <ul

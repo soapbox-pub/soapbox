@@ -27,7 +27,7 @@ const useModerationPolicies = () => {
   // Update current policy
   const updatePolicyMutation = useMutation({
     mutationFn: async (spec: PolicySpec) => {
-      const response = await api.put('/api/v1/admin/ditto/policies/current', { json: spec });
+      const response = await api.put('/api/v1/admin/ditto/policies/current', spec);
       return response.json();
     },
     onSuccess: () => {
