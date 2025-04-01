@@ -71,7 +71,7 @@ const useModerationPolicies = () => {
 
   return {
     allPolicies: allPoliciesQuery.data,
-    currentPolicy: currentPolicyQuery.data,
+    storedPolicies: currentPolicyQuery.data,
     isLoading: allPoliciesQuery.isLoading || currentPolicyQuery.isLoading,
     updatePolicy: updatePolicyMutation.mutate,
     isUpdating: updatePolicyMutation.isPending,
