@@ -1,19 +1,18 @@
-import CloseIcon from '@tabler/icons/outline/x.svg';
 import { isEqual } from 'es-toolkit';
-import { FC, useEffect, useMemo, useReducer, useRef } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useModerationPolicies } from 'soapbox/api/hooks/admin/index.ts';
-import { FieldItem, PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } from 'soapbox/api/hooks/admin/useModerationPolicies.ts';
 import FuzzySearchInput from 'soapbox/components/fuzzy-search-input.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
-import { Card, CardBody, CardHeader } from 'soapbox/components/ui/card.tsx';
+import { Card } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import { Policy } from 'soapbox/features/admin/components/policies/Policy.tsx';
+import { usePolicyReducer } from 'soapbox/features/admin/hooks/usePolicyReducer.ts';
 import toast from 'soapbox/toast.tsx';
+import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } from 'soapbox/utils/policies.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.policies', defaultMessage: 'Manage Policies' },
@@ -24,262 +23,12 @@ const messages = defineMessages({
   removeValue: { id: 'admin.policies.remove_value', defaultMessage: 'Remove value' },
 });
 
-const Suggestion: FC<{ item: PolicyItem }> = ({ item }) => {
+const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
   return (
     <Stack className='p-2'>
       <div><strong>{item.name}</strong></div>
       <div>{item.description}</div>
     </Stack>
-  );
-};
-
-const getInputType = (type: FieldItem['type']) => {
-  switch (type) {
-    case 'multi_number':
-    case 'number':
-      return 'number';
-    case 'boolean':
-      return 'checkbox';
-  }
-  return 'text';
-};
-
-// Define the state type
-type PolicyState = {
-  policies: PolicySpecItem[];
-  fields: Record<string, PolicyParam>;
-};
-
-// Define action types
-type PolicyAction =
-  | { type: 'ADD_POLICY'; policy: PolicySpecItem }
-  | { type: 'REMOVE_POLICY'; name: string }
-  | { type: 'UPDATE_FIELD'; policyName: string; fieldName: string; value: PolicyParam }
-  | { type: 'ADD_MULTI_VALUE'; policyName: string; fieldName: string; value: string | number }
-  | { type: 'REMOVE_MULTI_VALUE'; policyName: string; fieldName: string; value: string | number }
-  | { type: 'INITIALIZE_FIELDS'; fields: Record<string, PolicyParam> };
-
-// Reducer function
-const createPolicyReducer = (allPolicies: PolicyItem[]) => (state: PolicyState, action: PolicyAction): PolicyState => {
-  switch (action.type) {
-    case 'ADD_POLICY': {
-      if (state.policies.some(p => p.name === action.policy.name)) {
-        return state; // Don't add duplicate
-      }
-
-      // Initialize fields for the new policy
-      const newFields = { ...state.fields };
-      const policyDef = allPolicies.find(p => p.internalName === action.policy.name);
-
-      if (policyDef) {
-        Object.entries(policyDef.parameters).forEach(([fieldName, schema]) => {
-          const fieldKey = `${action.policy.name}.${fieldName}`;
-          if (!newFields[fieldKey]) {
-            newFields[fieldKey] = schema.type.startsWith('multi_') ? [] : (schema.default ?? '');
-          }
-        });
-      }
-
-      return {
-        ...state,
-        policies: [action.policy, ...state.policies],
-        fields: newFields,
-      };
-    }
-    case 'REMOVE_POLICY':
-      return {
-        ...state,
-        policies: state.policies.filter(policy => policy.name !== action.name),
-      };
-    case 'UPDATE_FIELD':
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [`${action.policyName}.${action.fieldName}`]: action.value,
-        },
-      };
-    case 'ADD_MULTI_VALUE': {
-      const fieldKey = `${action.policyName}.${action.fieldName}`;
-      const current = (state.fields[fieldKey] as (string | number)[]) || [];
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [fieldKey]: [...current, action.value],
-        },
-      };
-    }
-    case 'REMOVE_MULTI_VALUE': {
-      const fieldKey = `${action.policyName}.${action.fieldName}`;
-      const current = (state.fields[fieldKey] as (string | number)[]) || [];
-      return {
-        ...state,
-        fields: {
-          ...state.fields,
-          [fieldKey]: current.filter(v => v !== action.value),
-        },
-      };
-    }
-    case 'INITIALIZE_FIELDS':
-      return {
-        ...state,
-        fields: action.fields,
-      };
-    default:
-      return state;
-  }
-};
-
-const stringifyDefault = (value: any) => {
-  if (Array.isArray(value)) {
-    return `[${value.join(', ')}]`;
-  }
-  if (['number', 'string', 'boolean'].includes(typeof value)) return value.toString();
-  return '';
-};
-
-const getInputPlaceholder = (schema: FieldItem) => {
-  if (schema.default) return `Default: ${stringifyDefault(schema.default)}`;
-  if (schema.optional) return '(Optional)';
-};
-
-const MultiValueBadge: FC<{
-  value: string | number;
-  onRemove: () => void;
-}> = ({ value, onRemove }) => {
-  return (
-    <div className='mb-2 mr-2 inline-flex items-center rounded-full bg-gray-200 px-2 py-1 text-gray-800'>
-      <span className='mr-1'>{value}</span>
-      <button onClick={onRemove} className='text-gray-500 hover:text-gray-700' aria-label={messages.removeValue.defaultMessage}>
-        <Icon src={CloseIcon} className='size-3' />
-      </button>
-    </div>
-  );
-};
-
-const PolicyFields: FC<{
-  schema: FieldItem;
-  name: string;
-  policyName: string;
-  state: PolicyState;
-  dispatch: React.Dispatch<PolicyAction>;
-  intl: ReturnType<typeof useIntl>;
-}> = ({ schema, name, policyName, state, dispatch, intl }) => {
-  const value = state.fields[`${policyName}.${name}`];
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = schema.type === 'number' ? Number(e.target.value) : e.target.value;
-    dispatch({ type: 'UPDATE_FIELD', policyName, fieldName: name, value: newValue });
-  };
-
-  const handleAddMultiValue = () => {
-    const inputValue = inputRef.current?.value;
-    if (!inputValue?.trim()) return;
-
-    const currentValue = Array.isArray(value) ? value : [];
-
-    if (!currentValue.includes(inputValue)) {
-      dispatch({ type: 'ADD_MULTI_VALUE', policyName, fieldName: name, value: inputValue });
-    }
-
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-  };
-  const handleRemoveMultiValue = (valueToRemove: string | number) => {
-    dispatch({ type: 'REMOVE_MULTI_VALUE', policyName, fieldName: name, value: valueToRemove });
-  };
-
-  if (!schema.type.startsWith('multi_')) {
-    return (
-      <Stack space={2}>
-        <div className='mt-2'>{schema.description}</div>
-        {
-          schema.type === 'boolean' ?
-            <input type='checkbox' checked={!!value} /> :
-            <Input
-              type={getInputType(schema.type)}
-              value={value as string | number}
-              onChange={handleChange}
-              placeholder={getInputPlaceholder(schema)}
-            />
-        }
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack space={2}>
-      <div className='mt-2'>{schema.description}</div>
-      <Stack space={2}>
-        <div className='flex items-center'>
-          <Input
-            type={getInputType(schema.type)}
-            placeholder={getInputPlaceholder(schema)}
-            className='mr-2 flex-1'
-            ref={inputRef}
-          />
-          <Button className='m-2' onClick={handleAddMultiValue}>
-            {intl.formatMessage(messages.addValue)}
-          </Button>
-        </div>
-        <div className='flex flex-wrap'>
-          {((value || []) as (string | number)[]).map((v) => (
-            <MultiValueBadge
-              key={v}
-              value={v}
-              onRemove={() => handleRemoveMultiValue(v)}
-            />
-          ))}
-        </div>
-      </Stack>
-    </Stack>
-  );
-};
-
-const Policy: FC<{
-  policy: PolicySpecItem;
-  registry: PolicyItem[];
-  state: PolicyState;
-  dispatch: React.Dispatch<PolicyAction>;
-  intl: ReturnType<typeof useIntl>;
-}> = ({ policy, registry, state, dispatch, intl }) => {
-  const def = registry.find(item => item.internalName === policy.name);
-  if (!def) return null;
-
-  const handleRemovePolicy = () => {
-    dispatch({ type: 'REMOVE_POLICY', name: policy.name });
-  };
-
-  return (
-    <Card rounded className='relative mx-4 my-1 border-2 border-solid border-gray-700'>
-      <CardHeader className={Object.keys(def.parameters).length ? 'mb-1' : ''}>
-        <div className='flex items-center justify-between'>
-          <strong>{def.name}</strong>
-          <button
-            onClick={handleRemovePolicy}
-            className='ml-2 text-gray-500 hover:text-gray-100'
-          >
-            <Icon src={CloseIcon} className='size-4' />
-          </button>
-        </div>
-      </CardHeader>
-      <CardBody>
-        {Object.entries(def.parameters).map(([fieldName, schema]) => (
-          <PolicyFields
-            intl={intl}
-            key={fieldName}
-            name={fieldName}
-            schema={schema}
-            policyName={policy.name}
-            state={state}
-            dispatch={dispatch}
-          />
-        ))}
-      </CardBody>
-    </Card>
   );
 };
 
@@ -319,8 +68,7 @@ const PolicyManager: FC = () => {
     return fields;
   }, [allPolicies, initialPolicies]); // Changed from storedPolicies to initialPolicies
 
-  const [state, dispatch] = useReducer(createPolicyReducer(allPolicies),
-    { policies: initialPolicies, fields: initialFields });
+  const [state, dispatch] = usePolicyReducer(allPolicies, initialPolicies, initialFields);
 
   // Initialize fields when storedPolicies loads
   const prevInitialFields = useRef<Record<string, PolicyParam>>();
@@ -417,7 +165,7 @@ const PolicyManager: FC = () => {
           displayKey='name'
           placeholder={intl.formatMessage(messages.searchPlaceholder)}
           className='w-full'
-          renderSuggestion={Suggestion}
+          renderSuggestion={PolicySuggestion}
         />
       </div>
       {renderPolicies()}
