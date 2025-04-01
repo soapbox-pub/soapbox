@@ -46,6 +46,9 @@
       "typescript": true,
       "node": true
     },
+    "import/no-extraneous-dependencies": {
+      "devDependencies": "true"
+    },
     "polyfills": [
       "es:all",
       "fetch",
