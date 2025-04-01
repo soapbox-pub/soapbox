@@ -44,85 +44,78 @@ const Wallet = () => {
 
   return (
     <>
-      {isLoading ?
+      {isLoading ? (
         <Stack className='h-screen items-center justify-center'>
-          <div className='rounded-lg border border-gray-200 p-10 dark:border-gray-700'>
-            <Spinner size={50} withText={false} />
-          </div>
+          <Spinner size={50} withText={false} />
         </Stack>
-        :
-        (
-          <Column label={intl.formatMessage(messages.wallet)} transparent withHeader={false} slim>
-            <Card className='space-y-4 overflow-hidden'>
-              <CardHeader>
-                <CardTitle title={intl.formatMessage(messages.wallet)} />
-              </CardHeader>
+      ) : (
+        <Column label={intl.formatMessage(messages.wallet)} transparent withHeader={false} slim>
+          <Card className='space-y-4 overflow-hidden'>
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.wallet)} />
+            </CardHeader>
 
-              {walletData ? (
-                <>
-                  <CardBody>
-                    <Stack
-                      className='rounded-lg border border-gray-200 p-8 dark:border-gray-700'
-                      alignItems='center'
-                      space={4}
+            {walletData ? (
+              <>
+                <CardBody>
+                  <Stack
+                    className='rounded-lg border border-gray-200 p-8 dark:border-gray-700'
+                    alignItems='center'
+                    space={4}
+                  >
+                    <Balance />
+                  </Stack>
+                </CardBody>
+
+                <CardHeader>
+                  <CardTitle title={intl.formatMessage(messages.transactions)} />
+                </CardHeader>
+
+                <CardBody>
+                  <Transactions limit={4} />
+                  {hasTransactions && <div className='mt-4 flex w-full justify-center'>
+                    <Button
+                      icon={moreIcon}
+                      theme='primary'
+                      to='/wallet/transactions'
+                      className='px-6 font-medium'
                     >
-                      <Balance />
-                    </Stack>
-                  </CardBody>
+                      {intl.formatMessage(messages.more)}
+                    </Button>
+                  </div>}
+                </CardBody>
 
-                  <CardHeader>
-                    <CardTitle title={intl.formatMessage(messages.transactions)} />
-                  </CardHeader>
+                <CardHeader>
+                  <CardTitle title={intl.formatMessage(messages.management)} />
+                </CardHeader>
 
-                  <CardBody>
-                    <Transactions limit={4} />
-                    {hasTransactions && <div className='mt-4 flex w-full justify-center'>
-                      <Button
-                        icon={moreIcon}
-                        theme='primary'
-                        to='/wallet/transactions'
-                        className='px-6 font-medium'
-                      >
-                        {intl.formatMessage(messages.more)}
-                      </Button>
-                    </div>}
-                  </CardBody>
-
-                  <CardHeader>
-                    <CardTitle title={intl.formatMessage(messages.management)} />
-                  </CardHeader>
-
-                  <CardBody>
-                    <List>
-                      <ListItem label={intl.formatMessage(messages.mints)} to='/wallet/mints' />
-                      <ListItem label={intl.formatMessage(messages.relays)} to='/wallet/relays' />
-                      <ListItem label={intl.formatMessage(messages.payment)} >
-                        <SelectDropdown
-                          className='max-w-[200px]'
-                          items={paymentMethods}
-                          defaultValue={method}
-                          onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                            changeMethod((event.target.value as 'cashu' | 'lightning'));
-                          }}
-                        />
-                      </ListItem>
-                    </List>
-                  </CardBody>
-
-                </>
-              )
-                :
-                <>
-                  <CardBody>
-                    <CreateWallet />
-                  </CardBody>
-
-                </>
-              }
-            </Card>
-          </Column>
-        )
-      }
+                <CardBody>
+                  <List>
+                    <ListItem label={intl.formatMessage(messages.mints)} to='/wallet/mints' />
+                    <ListItem label={intl.formatMessage(messages.relays)} to='/wallet/relays' />
+                    <ListItem label={intl.formatMessage(messages.payment)} >
+                      <SelectDropdown
+                        className='max-w-[200px]'
+                        items={paymentMethods}
+                        defaultValue={method}
+                        onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                          changeMethod((event.target.value as 'cashu' | 'lightning'));
+                        }}
+                      />
+                    </ListItem>
+                  </List>
+                </CardBody>
+              </>
+            ) : (
+              <>
+                <CardBody>
+                  <CreateWallet />
+                </CardBody>
+              </>
+            )}
+          </Card>
+        </Column>
+      )}
     </>
   );
 };

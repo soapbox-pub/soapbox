@@ -73,7 +73,7 @@ const useWalletStore = create<WalletState>((set) => ({
 const useWallet = () => {
   const api = useApi();
   const { wallet, setWallet, setAcceptsZapsCashu, hasFetchedWallet, setHasFetchedWallet } = useWalletStore();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(!hasFetchedWallet);
   const [error, setError] = useState<string | null>(null);
 
   const createWallet = async (walletInfo: IWalletInfo) => {
@@ -118,7 +118,6 @@ const useWallet = () => {
 
   useEffect(() => {
     if (!hasFetchedWallet) {
-      setHasFetchedWallet(true);
       getWallet(false);
     }
   }, []);
@@ -153,8 +152,7 @@ const useTransactions = () => {
 
   const expandTransactions = async () => {
     if (!nextTransaction || !transactions) {
-      toast.info('You reached the end of transactions');
-      return;
+      return false;
     }
     try {
       setIsLoading(true);
@@ -166,10 +164,12 @@ const useTransactions = () => {
       const newTransactions = [...(transactions ?? []), ...normalizedData ];
 
       setTransactions(newTransactions, prev, next);
+      return true; // Return true to indicate successful expansion
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'Error expanding transactions';
       toast.error(messageError);
       setError(messageError);
+      return false;
     } finally {
       setIsLoading(false);
     }

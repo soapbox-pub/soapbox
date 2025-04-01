@@ -1740,6 +1740,7 @@
   "wallet.title": "Wallet",
   "wallet.transactions": "Transactions",
   "wallet.transactions.more": "More",
+  "wallet.transactions.no_more": "You reached the end of transactions",
   "wallet.transactions.no_transactions": "You don't have transactions yet.",
   "wallet.transactions.show_more": "Show More",
   "who_to_follow.title": "People To Follow",
