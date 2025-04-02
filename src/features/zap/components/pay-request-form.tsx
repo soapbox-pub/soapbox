@@ -29,6 +29,7 @@ import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import PaymentButton from './zap-button/payment-button.tsx';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 
 const ZAP_PRESETS = [
   { buttonAmount: 50, icon: coinIcon },
@@ -44,8 +45,6 @@ interface IPayRequestForm {
   onClose?(): void;
 }
 
-const closeIcon = xIcon;
-
 const messages = defineMessages({
   zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
   zap_button: { id: 'payment_method.button.text.raw', defaultMessage: 'Zap {amount} sats' },
@@ -60,7 +59,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   const [amount, setAmount] = useState(50);
   const { zapArrays, zapSplitData, receiveAmount } = useZapSplit(status, account);
   const splitValues = zapSplitData.splitValues;
-  const { method: paymentMethod } = usePaymentMethod();
+  const { method: paymentMethod, changeMethod } = usePaymentMethod();
   const isCashu = paymentMethod === 'cashu';
   const hasZapSplit = zapArrays.length > 0 && !isCashu;
   const { zapCashuRequest } = useZapCashuRequest();
@@ -118,20 +117,60 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   return (
     <Stack space={4} element='form' onSubmit={handleSubmit} justifyContent='center' alignItems='center' className='relative'>
-      <Stack space={2} justifyContent='center' alignItems='center' >
-        <IconButton
-          src={closeIcon}
-          onClick={onClose}
-          className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
-        />
+      <Stack space={2} justifyContent='center' alignItems='center'>
+       <HStack className='absolute w-full right-[-1%] top-[-2%]'>
+        <div className="absolute left-[-1%] top-[-2%] flex items-center gap-2">
+            <button
+              type="button"
+              className={`flex h-8 w-8 items-center justify-center rounded-full transition ${
+                paymentMethod === 'lightning' 
+                  ? 'bg-primary-600 text-white' 
+                  : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+              onClick={() => changeMethod('lightning')}
+              title="Lightning"
+            >
+              <span className="text-lg">⚡</span>
+            </button>
+            <button
+              type="button"
+              className={`flex h-8 w-8 items-center justify-center rounded-full transition ${
+                paymentMethod === 'cashu' 
+                  ? 'bg-primary-600 text-white' 
+                  : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+              onClick={() => changeMethod('cashu')}
+              title="Cashu"
+            >
+              <span className="text-lg">💰</span>
+            </button>
+          </div>
+          
+          <IconButton
+            src={xIcon}
+            onClick={onClose}
+            className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
+          />
+       </HStack>
 
         <Text weight='semibold'>
           <FormattedMessage
             id='payment_method.send_to'
             defaultMessage='Send sats via {method} to {target}'
-            values={{ target: emojifyText(account.display_name, account.emojis), method: paymentMethod }}
+            values={{ 
+              target: emojifyText(account.display_name, account.emojis), 
+              method: paymentMethod
+            }}
           />
         </Text>
+        {zapArrays.length > 0 && isCashu && (
+          <Text size="xs" theme="muted" className="text-center">
+            <FormattedMessage 
+              id='payment_method.cashu.split_disabled' 
+              defaultMessage='Switch to ⚡ for splits' 
+            />
+          </Text>
+        )}
         <Avatar src={account.avatar} size={50} />
         <DisplayNameInline account={account} />
       </Stack>

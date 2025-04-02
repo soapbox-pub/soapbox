@@ -212,7 +212,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
           <FormattedMessage
             id='status.interactions.zaps'
             defaultMessage='{count, plural, one {Zap} other {Zaps}}'
-            values={{ count: (status.zaps_amount ?? 0) + (status.zaps_amount_cashu ?? 0) }}
+            values={{ count: (status.zaps_amount ?? 0) / 1000 + (status.zaps_amount_cashu ?? 0) }}
           />
         </InteractionCounter>
       );

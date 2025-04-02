@@ -3,7 +3,9 @@ import { defineMessages, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
 import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
@@ -16,7 +18,7 @@ const messages = defineMessages({
   error: { id: 'wallet.mints.error', defaultMessage: 'Failed to update mints.' },
   empty: { id: 'wallet.mints.empty', defaultMessage: 'At least one mint is required.' },
   url: { id: 'wallet.invalid_url', defaultMessage: 'All strings must be valid URLs.' },
-  sucess: { id: 'wallet.mints.sucess', defaultMessage: 'Mints updated with success!' },
+  success: { id: 'wallet.mints.success', defaultMessage: 'Mints updated with success!' },
   send: { id: 'common.send', defaultMessage: 'Send' },
 });
 
@@ -28,6 +30,8 @@ const WalletMints = () => {
   const [relays, setRelays] = useState<string[]>([]);
   const [initialMints, setInitialMints] = useState<string[]>([]);
   const [mints, setMints] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const handleClick = async () =>{
     if (mints.length === 0) {
@@ -48,7 +52,7 @@ const WalletMints = () => {
 
       setInitialMints(mints);
 
-      toast.success(intl.formatMessage(messages.sucess));
+      toast.success(intl.formatMessage(messages.success));
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : intl.formatMessage(messages.error);
       toast.error(errorMessage);
@@ -58,23 +62,53 @@ const WalletMints = () => {
 
   useEffect(
     () => {
+      setIsLoading(true);
+      setHasError(false);
+      
       if (wallet) {
-        setMints(wallet.mints ?? []);
-        setInitialMints(wallet.mints ?? []);
-        setRelays(wallet.relays ?? []);
+        try {
+          setMints(wallet.mints ?? []);
+          setInitialMints(wallet.mints ?? []);
+          setRelays(wallet.relays ?? []);
+        } catch (error) {
+          console.error('Error setting wallet data:', error);
+          setHasError(true);
+          toast.error(intl.formatMessage(messages.loadingError));
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        // Handle the case when wallet is null or undefined
+        setIsLoading(false);
+        if (wallet === undefined) { // wallet is still loading
+          // Keep loading state true
+          setIsLoading(true);
+        } else if (wallet === null) { // wallet failed to load
+          setHasError(true);
+          toast.error(intl.formatMessage(messages.loadingError));
+        }
       }
-    }, [wallet],
+    }, [wallet, intl],
   );
 
   return (
     <Column label={intl.formatMessage(messages.title)} >
-      <Stack space={2}>
-        <MintEditor items={mints} setItems={setMints} />
-        <Button className='w-full' theme='primary' onClick={handleClick}>
-          {intl.formatMessage(messages.send)}
-        </Button>
-      </Stack>
-
+      {isLoading ? (
+        <Stack space={2} className="flex h-32 items-center justify-center">
+          <Spinner />
+        </Stack>
+      ) : hasError ? (
+        <Stack space={2} className="flex h-32 items-center justify-center text-center">
+          <Text theme="danger">{intl.formatMessage(messages.loadingError)}</Text>
+        </Stack>
+      ) : (
+        <Stack space={2}>
+          <MintEditor items={mints} setItems={setMints} />
+          <Button className='w-full' theme='primary' onClick={handleClick}>
+            {intl.formatMessage(messages.send)}
+          </Button>
+        </Stack>
+      )}
     </Column>
   );
 };

@@ -39,7 +39,7 @@ const PocketWallet = () => {
     <Stack className='rounded-lg border p-2 px-4 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
       <HStack className='w-full' justifyContent='between' alignItems='center' >
         <HStack space={1} alignItems='center'>
-          <Icon src={walletIcon} size={20} />
+          <Icon src={walletIcon} size={20} className='text-gray-200' />
           <Text size='lg'>
             {intl.formatMessage(messages.wallet)}
           </Text>
@@ -47,16 +47,7 @@ const PocketWallet = () => {
 
         <HStack alignItems='center' space={2}>
           {!expanded && <>
-            { eyeClosed ? <HStack className='space-x-1'>
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-              <span className='size-1 rounded-full bg-gray-500 dark:bg-gray-400' />
-            </HStack> : <Text>
+            { eyeClosed ? <Text className='text-sm !text-gray-500'>••••••</Text> : <Text>
               {intl.formatMessage(messages.balance, { amount: wallet?.balance })}
             </Text>}
 

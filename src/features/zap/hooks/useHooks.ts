@@ -164,7 +164,7 @@ const useTransactions = () => {
       const newTransactions = [...(transactions ?? []), ...normalizedData ];
 
       setTransactions(newTransactions, prev, next);
-      return true; // Return true to indicate successful expansion
+      return true;
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'Error expanding transactions';
       toast.error(messageError);
@@ -197,26 +197,24 @@ const useZapCashuRequest = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await api.post('/api/v1/ditto/cashu/nutzap', {
+      await api.post('/api/v1/ditto/cashu/nutzap', {
         amount,
         comment,
         account_id: account.id,
         status_id: status?.id,
       });
 
-      const data = await response.json();
-
       if (status) {
         addZapCashu(status.id);
       }
 
-      toast.success(data.message || 'Zap sent successfully!');
+      toast.success('Sats sent successfully!');
       getWallet();
       getTransactions();
     } catch (err) {
       const messageError = err instanceof Error ? err.message : 'An unexpected error occurred';
       setError(messageError);
-      toast.error(messageError);
+      toast.error('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
