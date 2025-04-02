@@ -166,6 +166,12 @@ const Preferences = () => {
           </ListItem>
         )}
 
+        {features.nostr && (
+          <ListItem label={<FormattedMessage id='preferences.fields.disclose_client' defaultMessage='Disclose client' />}>
+            <SettingToggle settings={settings} settingPath={['discloseClient']} onChange={onToggleChange} />
+          </ListItem>
+        )}
+
         {features.richText && (
           <ListItem label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Default post format' />}>
             <SelectDropdown

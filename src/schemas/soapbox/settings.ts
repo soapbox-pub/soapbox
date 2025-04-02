@@ -9,6 +9,7 @@ const skinToneSchema = z.union([
 ]);
 
 const settingsSchema = z.object({
+  discloseClient: z.boolean().catch(true),
   onboarded: z.boolean().catch(false),
   skinTone: skinToneSchema.catch(1),
   reduceMotion: z.boolean().catch(false),
