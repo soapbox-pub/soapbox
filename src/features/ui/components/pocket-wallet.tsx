@@ -47,7 +47,7 @@ const PocketWallet = () => {
 
         <HStack alignItems='center' space={2}>
           {!expanded && <>
-            { eyeClosed ? <Text className='text-sm !text-gray-500'>••••••</Text> : <Text>
+            { eyeClosed ? <Text className='text-sm !text-gray-500'>{intl.formatMessage({ id: 'wallet.hidden.balance', defaultMessage: '••••••' })}</Text> : <Text>
               {intl.formatMessage(messages.balance, { amount: wallet?.balance })}
             </Text>}
 

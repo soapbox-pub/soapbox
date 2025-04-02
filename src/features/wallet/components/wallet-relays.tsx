@@ -63,7 +63,7 @@ const WalletRelays = () => {
     () => {
       setIsLoading(true);
       setHasError(false);
-      
+
       if (wallet) {
         try {
           setMints(wallet.mints ?? []);
@@ -90,22 +90,30 @@ const WalletRelays = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} >
-      {isLoading ? (
-        <Stack space={2} className="flex h-32 items-center justify-center">
-          <Spinner />
-        </Stack>
-      ) : hasError ? (
-        <Stack space={2} className="flex h-32 items-center justify-center text-center">
-          <Text theme="danger">{intl.formatMessage(messages.loadingError)}</Text>
-        </Stack>
-      ) : (
-        <Stack space={2}>
-          <RelayEditor items={relays} setItems={setRelays} />
-          <Button className='w-full' theme='primary' onClick={handleClick}>
-            {intl.formatMessage(messages.send)}
-          </Button>
-        </Stack>
-      )}
+      {(() => {
+        if (isLoading) {
+          return (
+            <Stack space={2} className='flex h-32 items-center justify-center'>
+              <Spinner />
+            </Stack>
+          );
+        } else if (hasError) {
+          return (
+            <Stack space={2} className='flex h-32 items-center justify-center text-center'>
+              <Text theme='danger'>{intl.formatMessage(messages.loadingError)}</Text>
+            </Stack>
+          );
+        } else {
+          return (
+            <Stack space={2}>
+              <RelayEditor items={relays} setItems={setRelays} />
+              <Button className='w-full' theme='primary' onClick={handleClick}>
+                {intl.formatMessage(messages.send)}
+              </Button>
+            </Stack>
+          );
+        }
+      })()}
     </Column>
   );
 };

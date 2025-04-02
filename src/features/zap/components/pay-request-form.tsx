@@ -16,6 +16,7 @@ import pileCoin from 'soapbox/assets/icons/pile-coin.png';
 import DisplayNameInline from 'soapbox/components/display-name-inline.tsx';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
+import HStack from 'soapbox/components/ui/hstack.tsx';
 import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
@@ -29,7 +30,6 @@ import { emojifyText } from 'soapbox/utils/emojify.tsx';
 import PaymentButton from './zap-button/payment-button.tsx';
 
 import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';
-import HStack from 'soapbox/components/ui/hstack.tsx';
 
 const ZAP_PRESETS = [
   { buttonAmount: 50, icon: coinIcon },
@@ -118,56 +118,56 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   return (
     <Stack space={4} element='form' onSubmit={handleSubmit} justifyContent='center' alignItems='center' className='relative'>
       <Stack space={2} justifyContent='center' alignItems='center'>
-       <HStack className='absolute w-full right-[-1%] top-[-2%]'>
-        <div className="absolute left-[-1%] top-[-2%] flex items-center gap-2">
+        <HStack className='absolute right-[-1%] top-[-2%] w-full'>
+          <div className='absolute left-[-1%] top-[-2%] flex items-center gap-2'>
             <button
-              type="button"
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition ${
-                paymentMethod === 'lightning' 
-                  ? 'bg-primary-600 text-white' 
-                  : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              type='button'
+              className={`flex size-8 items-center justify-center rounded-full transition ${
+                paymentMethod === 'lightning'
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800'
               }`}
               onClick={() => changeMethod('lightning')}
-              title="Lightning"
+              title={intl.formatMessage({ id: 'payment_method.lightning', defaultMessage: 'Lightning' })}
             >
-              <span className="text-lg">⚡</span>
+              <span role="img" aria-label={intl.formatMessage({ id: 'emoji.lightning', defaultMessage: 'Lightning' })} className='text-lg'>⚡</span>
             </button>
             <button
-              type="button"
-              className={`flex h-8 w-8 items-center justify-center rounded-full transition ${
-                paymentMethod === 'cashu' 
-                  ? 'bg-primary-600 text-white' 
-                  : 'text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'
+              type='button'
+              className={`flex size-8 items-center justify-center rounded-full transition ${
+                paymentMethod === 'cashu'
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-100 dark:text-gray-500 dark:hover:bg-gray-800'
               }`}
               onClick={() => changeMethod('cashu')}
-              title="Cashu"
+              title={intl.formatMessage({ id: 'payment_method.cashu', defaultMessage: 'Cashu' })}
             >
-              <span className="text-lg">💰</span>
+              <span role="img" aria-label={intl.formatMessage({ id: 'emoji.cashu', defaultMessage: 'Cashu' })} className='text-lg'>💰</span>
             </button>
           </div>
-          
+
           <IconButton
             src={xIcon}
             onClick={onClose}
             className='absolute right-[-1%] top-[-2%] text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-200 rtl:rotate-180'
           />
-       </HStack>
+        </HStack>
 
         <Text weight='semibold'>
           <FormattedMessage
             id='payment_method.send_to'
             defaultMessage='Send sats via {method} to {target}'
-            values={{ 
-              target: emojifyText(account.display_name, account.emojis), 
-              method: paymentMethod
+            values={{
+              target: emojifyText(account.display_name, account.emojis),
+              method: paymentMethod,
             }}
           />
         </Text>
         {zapArrays.length > 0 && isCashu && (
-          <Text size="xs" theme="muted" className="text-center">
-            <FormattedMessage 
-              id='payment_method.cashu.split_disabled' 
-              defaultMessage='Switch to ⚡ for splits' 
+          <Text size='xs' theme='muted' className='text-center'>
+            <FormattedMessage
+              id='payment_method.cashu.split_disabled'
+              defaultMessage='Switch to ⚡ for splits'
             />
           </Text>
         )}
@@ -194,7 +194,9 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
             className='max-w-20 rounded-none border-0 border-b-4 p-0 text-center !text-2xl font-bold shadow-none !ring-0 dark:bg-transparent sm:max-w-28 sm:p-0.5 sm:!text-4xl'
           />
           {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
-          {hasZapSplit && <p className='absolute right-0 font-bold sm:-right-6 sm:text-xl'>sats</p>}
+          {hasZapSplit && <p className='absolute right-0 font-bold sm:-right-6 sm:text-xl'>
+            {intl.formatMessage({ id: 'payment_method.unit', defaultMessage: 'sats' })}
+          </p>}
         </div>
 
         {hasZapSplit && (
@@ -215,7 +217,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
       {hasZapSplit ? <Stack space={2}>
 
-        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={'Zap sats'} disabled={amount < 1 ? true : false} />
+        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={intl.formatMessage({ id: 'payment_method.button.zap_sats', defaultMessage: 'Zap sats' })} disabled={amount < 1 ? true : false} />
 
         <div className='flex items-center justify-center gap-2 sm:gap-4'>
           <span className='text-[10px] sm:text-xs'>
