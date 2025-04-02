@@ -181,6 +181,24 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             {statusTypeIcon}
 
             <span>
+              {actualStatus.application && (
+                <>
+                  {actualStatus.application.get('website') ? (
+                    <a href={actualStatus.application.get('website')} target='_blank' rel='noopener' className='hover:underline'>
+                      <Text tag='span' theme='muted' size='sm'>
+                        {actualStatus.application.get('name')}
+                      </Text>
+                    </a>
+                  ) : (
+                    <Text tag='span' theme='muted' size='sm'>
+                      {actualStatus.application.get('name')}
+                    </Text>
+                  )}
+                  {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
+                  <Text tag='span' theme='muted' size='sm'>{' · '}</Text>
+                </>
+              )}
+
               <a href={actualStatus.url} target='_blank' rel='noopener' className='hover:underline'>
                 <Text tag='span' theme='muted' size='sm'>
                   <FormattedDate value={new Date(actualStatus.created_at)} hour12 year='numeric' month='short' day='2-digit' hour='numeric' minute='2-digit' />
@@ -189,7 +207,8 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
               {actualStatus.edited_at && (
                 <>
-                  {' · '}
+                  {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
+                  <Text tag='span' theme='muted' size='sm'>{' · '}</Text>
                   <div
                     className='inline hover:underline'
                     onClick={handleOpenCompareHistoryModal}
