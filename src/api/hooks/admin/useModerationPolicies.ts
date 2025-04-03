@@ -39,6 +39,7 @@ const useModerationPolicies = () => {
     allPolicies: allPoliciesQuery.data,
     storedPolicies: currentPolicyQuery.data,
     isLoading: allPoliciesQuery.isLoading || currentPolicyQuery.isLoading,
+    isFetched: currentPolicyQuery.isFetched,
     updatePolicy: updatePolicyMutation.mutate,
     isUpdating: updatePolicyMutation.isPending,
   };

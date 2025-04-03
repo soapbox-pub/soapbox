@@ -33,7 +33,7 @@ const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
 
 const PolicyManager: FC = () => {
   const intl = useIntl();
-  const { allPolicies = [], isLoading, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
+  const { allPolicies = [], isLoading, isFetched, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
   // get the current set of policies out of the API response
   const initialPolicies = storedPolicies?.spec?.policies ?? [];
 
@@ -68,6 +68,16 @@ const PolicyManager: FC = () => {
   }, [allPolicies, initialPolicies]); // Changed from storedPolicies to initialPolicies
 
   const [state, dispatch] = usePolicyReducer(allPolicies, initialPolicies, initialFields);
+
+  // Update policies when data is loaded
+  useEffect(() => {
+    if (isFetched && storedPolicies && initialPolicies.length > 0 && state.policies.length === 0) {
+      // If policies are loaded from the server but not in our state, update the state
+      initialPolicies.forEach(policy => {
+        dispatch({ type: 'ADD_POLICY', policy });
+      });
+    }
+  }, [isFetched, storedPolicies]);
 
   // Initialize fields when storedPolicies loads
   const prevInitialFields = useRef<Record<string, PolicyParam>>();
@@ -107,11 +117,21 @@ const PolicyManager: FC = () => {
         </Card>
       );
     } else if (state.policies.length === 0) {
-      return (
-        <Card size='lg'>
-          {intl.formatMessage(messages.noPolicyConfigured)}
-        </Card>
-      );
+      // Only show "no policies" message when we're certain data has loaded
+      if (!isLoading && isFetched) {
+        return (
+          <Card size='lg'>
+            {intl.formatMessage(messages.noPolicyConfigured)}
+          </Card>
+        );
+      } else {
+        // If we're not loading but data isn't fetched yet, this prevents flashing "no policies"
+        return (
+          <Column label={intl.formatMessage(messages.heading)}>
+            <Spinner size={40} />
+          </Column>
+        );
+      }
     }
 
     return (
