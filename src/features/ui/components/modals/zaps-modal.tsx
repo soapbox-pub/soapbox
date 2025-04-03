@@ -89,7 +89,7 @@ const ZapsModal: React.FC<IZapsModal> = ({ onClose, statusId }) => {
           return (
             <div key={index}>
               <Text weight='bold'>
-                {account.type === 'lightning' ? shortNumberFormat(account.amount / 1000) : shortNumberFormat(account.amount)}
+                {account.type === 'zap' ? shortNumberFormat(account.amount / 1000) : shortNumberFormat(account.amount)}
               </Text>
               <AccountContainer id={account.id} note={account.comment} emoji='⚡' />
             </div>

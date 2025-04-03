@@ -1,4 +1,5 @@
 import moreIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
+import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import List, { ListItem } from 'soapbox/components/list.tsx';
@@ -7,6 +8,7 @@ import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/car
 import { Column } from 'soapbox/components/ui/column.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
+import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
@@ -23,6 +25,10 @@ const messages = defineMessages({
   management: { id: 'wallet.management', defaultMessage: 'Wallet Management' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
   more: { id: 'wallet.transactions.more', defaultMessage: 'More' },
+  loading: { id: 'wallet.loading', defaultMessage: 'Loading…' },
+  error: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
+  retrying: { id: 'wallet.retrying', defaultMessage: 'Retrying in {seconds}s…' },
+  retry: { id: 'wallet.retry', defaultMessage: 'Retry Now' },
 });
 
 const paymentMethods = {
@@ -30,25 +36,92 @@ const paymentMethods = {
   cashu: 'cashu',
 };
 
+const RETRY_DELAY = 5000;
+
 /** User Wallet page. */
 const Wallet = () => {
   const intl = useIntl();
+  const [isRetrying, setIsRetrying] = useState(false);
+  const [retrySeconds, setRetrySeconds] = useState(RETRY_DELAY / 1000);
+  const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
 
   const { account } = useOwnAccount();
-  const { wallet: walletData, isLoading } = useWallet();
+  const { wallet: walletData, isLoading, error, getWallet } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
   const { transactions } = useTransactions();
   const hasTransactions = transactions && transactions.length > 0;
+
+  // Function to handle manual retry
+  const handleRetry = () => {
+    // Clear any existing timer
+    if (retryTimer) {
+      clearInterval(retryTimer);
+      setRetryTimer(null);
+    }
+
+    setIsRetrying(false);
+    getWallet(true); // Trigger wallet reload with error messages
+  };
+
+  // Setup automatic retry when there's an error
+  useEffect(() => {
+    if (error && !isLoading && !isRetrying) {
+      setIsRetrying(true);
+      setRetrySeconds(RETRY_DELAY / 1000);
+
+      // Start countdown timer
+      const timer = setInterval(() => {
+        setRetrySeconds(prevSeconds => {
+          if (prevSeconds <= 1) {
+            clearInterval(timer);
+            handleRetry();
+            return RETRY_DELAY / 1000;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+
+      setRetryTimer(timer);
+
+      // Cleanup timer on unmount
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [error, isLoading, isRetrying]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (retryTimer) {
+        clearInterval(retryTimer);
+      }
+    };
+  }, [retryTimer]);
 
   if (!account) return null;
 
   return (
     <>
-      {isLoading ? (
+      {isLoading && (
         <Stack className='h-screen items-center justify-center'>
           <Spinner size={50} withText={false} />
+          <Text>{intl.formatMessage(messages.loading)}</Text>
         </Stack>
-      ) : (
+      )}
+      {error && !isLoading && (
+        <Stack className='h-screen items-center justify-center space-y-4'>
+          <Text size='xl' weight='bold' theme='danger'>{intl.formatMessage(messages.error)}</Text>
+          <Text>{error}</Text>
+          {isRetrying && (
+            <Text>{intl.formatMessage(messages.retrying, { seconds: retrySeconds })}</Text>
+          )}
+          <Button onClick={handleRetry} theme='primary'>
+            {intl.formatMessage(messages.retry)}
+          </Button>
+        </Stack>
+      )}
+      {!isLoading && !error && (
         <Column label={intl.formatMessage(messages.wallet)} transparent withHeader={false} slim>
           <Card className='space-y-4 overflow-hidden'>
             <CardHeader>
