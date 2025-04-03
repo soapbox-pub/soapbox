@@ -130,7 +130,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
               onClick={() => changeMethod('lightning')}
               title={intl.formatMessage({ id: 'payment_method.lightning', defaultMessage: 'Lightning' })}
             >
-              <span role="img" aria-label={intl.formatMessage({ id: 'emoji.lightning', defaultMessage: 'Lightning' })} className='text-lg'>⚡</span>
+              <span role='img' aria-label={intl.formatMessage({ id: 'emoji.lightning', defaultMessage: 'Lightning' })} className='text-lg'>⚡</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             </button>
             <button
               type='button'
@@ -142,7 +142,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
               onClick={() => changeMethod('cashu')}
               title={intl.formatMessage({ id: 'payment_method.cashu', defaultMessage: 'Cashu' })}
             >
-              <span role="img" aria-label={intl.formatMessage({ id: 'emoji.cashu', defaultMessage: 'Cashu' })} className='text-lg'>💰</span>
+              <span role='img' aria-label={intl.formatMessage({ id: 'emoji.cashu', defaultMessage: 'Cashu' })} className='text-lg'>💰</span> {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
             </button>
           </div>
 
