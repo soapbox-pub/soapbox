@@ -14,7 +14,7 @@ const pollSchema = z.object({
   expires_at: z.string().datetime().nullable().catch(null),
   id: z.string(),
   multiple: z.boolean().catch(false),
-  options: z.array(pollOptionSchema).min(2),
+  options: z.array(pollOptionSchema).min(1),
   voters_count: z.number().catch(0),
   votes_count: z.number().catch(0),
   own_votes: z.array(z.number()).nonempty().nullable().catch(null),
