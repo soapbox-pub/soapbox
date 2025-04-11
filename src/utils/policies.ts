@@ -43,7 +43,6 @@ export interface PolicySpec {
 }
 
 export interface PolicyResponse {
-  mode: 'script' | 'event';
   spec: PolicySpec;
 }
 
