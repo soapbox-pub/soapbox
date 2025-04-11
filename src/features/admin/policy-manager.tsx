@@ -26,6 +26,7 @@ const messages = defineMessages({
   helpTitle: { id: 'admin.policies.help.title', defaultMessage: 'Help' },
   helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help' },
   okay: { id: 'admin.policies.help.okay', defaultMessage: 'Okay' },
+  policyExists: { id: 'admin.policies.policy_exists', defaultMessage: 'Policy already exists!' },
 });
 
 const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
@@ -41,7 +42,18 @@ const PolicyManager: FC = () => {
   const intl = useIntl();
   const [showHelpModal, setShowHelpModal] = useState<boolean>(false);
   const [isWelcomeDialog, setIsWelcomeDialog] = useState<boolean>(false);
-  const { allPolicies = [], isLoading, isFetched, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
+  const {
+    allPolicies = [],
+    isLoading,
+    isFetched,
+    storedPolicies,
+    updatePolicy,
+    isUpdating,
+    allPoliciesError,
+    storedPoliciesError,
+    allPoliciesIsError,
+    storedPoliciesIsError,
+  } = useModerationPolicies();
   // get the current set of policies out of the API response
   const initialPolicies = storedPolicies?.spec?.policies ?? [];
 
@@ -157,7 +169,7 @@ const PolicyManager: FC = () => {
         const newPolicy: PolicySpecItem = { name: policy.internalName, params: {} };
         dispatch({ type: 'ADD_POLICY', policy: newPolicy });
       } else {
-        toast.error('Policy already exists!');
+        toast.error(intl.formatMessage(messages.policyExists));
       }
     }
     clear(); // clear the text field
@@ -176,6 +188,18 @@ const PolicyManager: FC = () => {
         return (
           <Card size='lg'>
             {intl.formatMessage(messages.noPolicyConfigured)}
+          </Card>
+        );
+      } else if (allPoliciesIsError) {
+        return (
+          <Card size='lg'>
+            {allPoliciesError?.message}
+          </Card>
+        );
+      } else if (storedPoliciesIsError) {
+        return (
+          <Card size='lg'>
+            {storedPoliciesError?.message}
           </Card>
         );
       } else {
