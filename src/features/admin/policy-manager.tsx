@@ -1,5 +1,5 @@
 import { isEqual } from 'es-toolkit';
-import { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { useModerationPolicies } from 'soapbox/api/hooks/admin/index.ts';
@@ -7,6 +7,7 @@ import FuzzySearchInput from 'soapbox/components/fuzzy-search-input.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
+import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { Policy } from 'soapbox/features/admin/components/policies/Policy.tsx';
@@ -17,10 +18,53 @@ import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } fro
 const messages = defineMessages({
   heading: { id: 'admin.policies.heading', defaultMessage: 'Manage Policies' },
   searchPlaceholder: { id: 'admin.policies.search_placeholder', defaultMessage: 'What do you want to do?' },
-  policyModeError: { id: 'admin.policies.policy_mode_error', defaultMessage: 'The Ditto custom policy is enabled. Unset the DITTO_CUSTOM_POLICY environment variable to use the Policy UI.' },
   noPolicyConfigured: { id: 'admin.policies.no_policies_configured', defaultMessage: 'No policies configured! Use the search bar above to get started.' },
   removeValue: { id: 'admin.policies.remove_value', defaultMessage: 'Remove value' },
+  welcomeTitle: { id: 'admin.policies.welcome.title', defaultMessage: 'Welcome to Policy Manager' },
+  welcomeGetStarted: { id: 'admin.policies.welcome.get_started', defaultMessage: 'Get Started' },
+  welcomeDescription: { id: 'admin.policies.welcome.description', defaultMessage: 'Policy Manager allows you to configure moderation and content policies for your instance.' },
+  welcomeStep1: { id: 'admin.policies.welcome.step1', defaultMessage: '1. Use the search bar to find policies you want to add' },
+  welcomeStep2: { id: 'admin.policies.welcome.step2', defaultMessage: '2. Configure each policy with your desired settings' },
+  welcomeStep3: { id: 'admin.policies.welcome.step3', defaultMessage: '3. Click Save to apply the changes' },
+  welcomeTip: { id: 'admin.policies.welcome.tip', defaultMessage: 'Tip: You can add multiple policies to create a comprehensive moderation strategy' },
 });
+
+const WelcomeDialog: FC<{ onClose: () => void }> = ({ onClose }) => {
+  const intl = useIntl();
+
+  return (
+    <div className='fixed inset-0 z-50 flex items-center justify-center bg-gray-800/80'>
+      <Modal
+        title={intl.formatMessage(messages.welcomeTitle)}
+        confirmationAction={onClose}
+        confirmationText={intl.formatMessage(messages.welcomeGetStarted)}
+        width='md'
+      >
+        <div className='space-y-4'>
+          <p className='text-base'>
+            {intl.formatMessage(messages.welcomeDescription)}
+          </p>
+
+          <div className='space-y-2 rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
+            <p className='font-semibold'>
+              {intl.formatMessage(messages.welcomeStep1)}
+            </p>
+            <p className='font-semibold'>
+              {intl.formatMessage(messages.welcomeStep2)}
+            </p>
+            <p className='font-semibold'>
+              {intl.formatMessage(messages.welcomeStep3)}
+            </p>
+          </div>
+
+          <div className='rounded-lg bg-blue-50 p-4 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200'>
+            {intl.formatMessage(messages.welcomeTip)}
+          </div>
+        </div>
+      </Modal>
+    </div>
+  );
+};
 
 const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
   return (
@@ -33,6 +77,7 @@ const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
 
 const PolicyManager: FC = () => {
   const intl = useIntl();
+  const [showWelcomeDialog, setShowWelcomeDialog] = useState<boolean>(false);
   const { allPolicies = [], isLoading, isFetched, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
   // get the current set of policies out of the API response
   const initialPolicies = storedPolicies?.spec?.policies ?? [];
@@ -79,6 +124,35 @@ const PolicyManager: FC = () => {
     }
   }, [isFetched, storedPolicies]);
 
+  // Check if this is the first time loading using localStorage
+  useEffect(() => {
+    if (isFetched && !isLoading) {
+      try {
+        // Check if the user has seen the welcome dialog before
+        const hasSeenWelcome = localStorage.getItem('policy_manager_welcome_shown');
+
+        if (!hasSeenWelcome) {
+          setShowWelcomeDialog(true);
+        }
+      } catch (error) {
+        // localStorage is unavailable, default to showing welcome
+        setShowWelcomeDialog(true);
+      }
+    }
+  }, [isFetched, isLoading]);
+
+  // Function to handle welcome dialog close
+  const handleWelcomeClose = () => {
+    setShowWelcomeDialog(false);
+    // Store that the user has seen the welcome dialog
+    try {
+      localStorage.setItem('policy_manager_welcome_shown', 'true');
+    } catch (error) {
+      // Ignore localStorage errors
+      console.warn('Could not store welcome dialog state in localStorage', error);
+    }
+  };
+
   // Initialize fields when storedPolicies loads
   const prevInitialFields = useRef<Record<string, PolicyParam>>();
 
@@ -110,13 +184,7 @@ const PolicyManager: FC = () => {
   );
 
   const renderPolicies = () => {
-    if (storedPolicies?.mode === 'script') {
-      return (
-        <Card size='lg'>
-          {intl.formatMessage(messages.policyModeError)}
-        </Card>
-      );
-    } else if (state.policies.length === 0) {
+    if (state.policies.length === 0) {
       // Only show "no policies" message when we're certain data has loaded
       if (!isLoading && isFetched) {
         return (
@@ -170,7 +238,9 @@ const PolicyManager: FC = () => {
 
     updatePolicy(policySpec, {
       onError(error) {
-        toast.error(`Error updating policies: ${error.name}`);
+        toast.error(`Error updating policies: ${error.message}`, {
+          duration: Infinity,
+        });
       },
       onSuccess() {
         toast.success('Saved successfully.');
@@ -180,6 +250,9 @@ const PolicyManager: FC = () => {
 
   return (
     <Column className='mb-8' label={intl.formatMessage(messages.heading)}>
+      {showWelcomeDialog && (
+        <WelcomeDialog onClose={handleWelcomeClose} />
+      )}
       <div className='p-4'>
         <FuzzySearchInput<PolicyItem>
           data={allPolicies}
