@@ -18,7 +18,7 @@ import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } fro
 const messages = defineMessages({
   heading: { id: 'admin.policies.heading', defaultMessage: 'Manage Policies' },
   searchPlaceholder: { id: 'admin.policies.search_placeholder', defaultMessage: 'What do you want to do?' },
-  searchLabel: { id: 'admin.policies.search_label', defaultMessage: 'I want to...' },
+  searchHeading: { id: 'admin.policies.search_heading', defaultMessage: 'I want to...' },
   noPolicyConfigured: { id: 'admin.policies.no_policies_configured', defaultMessage: 'No policies configured! Use the search bar above to get started.' },
   removeValue: { id: 'admin.policies.remove_value', defaultMessage: 'Remove value' },
   welcomeTitle: { id: 'admin.policies.welcome.title', defaultMessage: 'Welcome to Policy Manager' },
@@ -28,6 +28,8 @@ const messages = defineMessages({
   okay: { id: 'admin.policies.help.okay', defaultMessage: 'Okay' },
   policyExists: { id: 'admin.policies.policy_exists', defaultMessage: 'Policy already exists!' },
   searchFieldLabel: { id: 'admin.policies.search_label', defaultMessage: 'Policy search field' },
+  policyUpdateError: { id: 'admin.policies.update_error', defaultMessage: 'Error updating policies: {error}' },
+  policySaveSuccess: { id: 'admin.policies.update_success', defaultMessage: 'Policies saved successfully.' },
 });
 
 const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
@@ -249,12 +251,12 @@ const PolicyManager: FC = () => {
 
     updatePolicy(policySpec, {
       onError(error) {
-        toast.error(`Error updating policies: ${error.message}`, {
+        toast.error(intl.formatMessage(messages.policyUpdateError, { error: error.message }), {
           duration: Infinity,
         });
       },
       onSuccess() {
-        toast.success('Saved successfully.');
+        toast.success(intl.formatMessage(messages.policySaveSuccess));
       },
     });
   };
@@ -277,7 +279,7 @@ const PolicyManager: FC = () => {
       <div className='p-4'>
         <div className='mb-2 flex w-full items-center justify-between'>
           <div className='text-lg font-medium'>
-            {intl.formatMessage(messages.searchLabel)}
+            {intl.formatMessage(messages.searchHeading)}
           </div>
           <button
             onClick={showHelp}
