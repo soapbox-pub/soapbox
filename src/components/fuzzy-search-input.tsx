@@ -1,7 +1,10 @@
 import FuzzySearch from 'fuzzy-search';
 import React, { useState, useRef, useCallback, useEffect, useId } from 'react';
+import { useIntl, MessageDescriptor } from 'react-intl';
 
 import Input from 'soapbox/components/ui/input.tsx';
+
+type PlaceholderText = string | MessageDescriptor;
 
 interface FuzzySearchInputProps<T> {
   /** The array of objects or strings to search through. */
@@ -12,8 +15,12 @@ interface FuzzySearchInputProps<T> {
   onSelection: (selection: T | null, clearField: () => void) => void;
   /** Optional: The key to display in the suggestion list. Defaults to the first key in the `keys` prop or the item itself if data is string[]. */
   displayKey?: keyof T;
-  /** Optional: Placeholder text for the input field. */
-  placeholder?: string;
+  /** Optional: Placeholder text for the input field. If a string is provided, it will be used as a static placeholder. */
+  placeholder?: PlaceholderText;
+  /** Optional: Array of placeholders to rotate through. Takes precedence over placeholder if both are provided. */
+  placeholders?: PlaceholderText[];
+  /** Optional: Interval in milliseconds to change placeholders. Defaults to 5000ms (5 seconds). */
+  placeholderChangeInterval?: number;
   /**
    * Optional: Custom search function to override the default fuzzy search. */
   searchFn?: SearchImpl;
@@ -51,16 +58,25 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   onSelection,
   displayKey,
   placeholder = 'Search...',
+  placeholders,
+  placeholderChangeInterval = 5000,
   searchFn = defaultSearch,
   className = '',
   baseId,
   inputClassName = '',
   renderSuggestion: FuzzySearchSuggestion,
 }: FuzzySearchInputProps<T>) {
+  const intl = useIntl();
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<T[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  // dynamic placeholder state
+  const [currentPlaceholder, setCurrentPlaceholder] = useState<string>(
+    typeof placeholder === 'string' ? placeholder : intl.formatMessage(placeholder),
+  );
+  const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   // Generate unique IDs for ARIA attributes if no baseId is provided
@@ -69,6 +85,49 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   const inputId = `${componentBaseId}-input`;
   const listboxId = `${componentBaseId}-listbox`;
   const getOptionId = (index: number) => `${componentBaseId}-option-${index}`;
+
+  // Helper function to format a placeholder (either string or MessageDescriptor)
+  const formatPlaceholder = useCallback((text: PlaceholderText): string => {
+    if (typeof text === 'string') {
+      return text;
+    }
+    return intl.formatMessage(text);
+  }, [intl]);
+
+  // Handle placeholder rotation if placeholders array is provided
+  useEffect(() => {
+    // Clear any existing interval
+    if (placeholderIntervalRef.current) {
+      clearInterval(placeholderIntervalRef.current);
+      placeholderIntervalRef.current = null;
+    }
+
+    // If we have multiple placeholders, set up rotation
+    if (placeholders && placeholders.length > 1) {
+      // Set initial placeholder
+      const randomIndex = Math.floor(Math.random() * placeholders.length);
+      setCurrentPlaceholder(formatPlaceholder(placeholders[randomIndex]));
+
+      // Set up interval to change placeholder
+      placeholderIntervalRef.current = setInterval(() => {
+        const randomIndex = Math.floor(Math.random() * placeholders.length);
+        setCurrentPlaceholder(formatPlaceholder(placeholders[randomIndex]));
+      }, placeholderChangeInterval);
+    } else if (placeholders && placeholders.length === 1) {
+      // If just one placeholder in the array, use it statically
+      setCurrentPlaceholder(formatPlaceholder(placeholders[0]));
+    } else if (placeholder) {
+      // Fall back to the single placeholder prop
+      setCurrentPlaceholder(formatPlaceholder(placeholder));
+    }
+
+    // Clean up interval on unmount
+    return () => {
+      if (placeholderIntervalRef.current) {
+        clearInterval(placeholderIntervalRef.current);
+      }
+    };
+  }, [placeholder, placeholders, placeholderChangeInterval, formatPlaceholder]);
 
   const getDisplayText = useCallback((item: T): string => {
     if (typeof item === 'string') {
@@ -180,7 +239,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
         onKeyDown={handleKeyDown}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        placeholder={placeholder}
+        placeholder={currentPlaceholder}
         autoComplete='off'
         aria-autocomplete='list'
         aria-controls={showSuggestions && suggestions.length > 0 ? listboxId : undefined}

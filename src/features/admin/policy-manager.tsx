@@ -24,7 +24,7 @@ const messages = defineMessages({
   welcomeTitle: { id: 'admin.policies.welcome.title', defaultMessage: 'Welcome to Policy Manager' },
   welcomeGetStarted: { id: 'admin.policies.welcome.get_started', defaultMessage: 'Get Started' },
   helpTitle: { id: 'admin.policies.help.title', defaultMessage: 'Help' },
-  helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help...' },
+  helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help' },
   okay: { id: 'admin.policies.help.okay', defaultMessage: 'Okay' },
 });
 
@@ -44,6 +44,17 @@ const PolicyManager: FC = () => {
   const { allPolicies = [], isLoading, isFetched, storedPolicies, updatePolicy, isUpdating } = useModerationPolicies();
   // get the current set of policies out of the API response
   const initialPolicies = storedPolicies?.spec?.policies ?? [];
+
+  // Generate dynamic placeholders from policy names
+  const dynamicPlaceholders = useMemo(() => {
+    if (allPolicies.length === 0) {
+      return [messages.searchPlaceholder];
+    }
+
+    return [
+      ...allPolicies.map(policy => policy.name.toLowerCase()),
+    ];
+  }, [allPolicies]);
 
   // initialFields is used to set up the reducer. stores the initial value of
   // all the fields from the current policy and falls back to the default if
@@ -256,7 +267,7 @@ const PolicyManager: FC = () => {
           keys={['name', 'description']}
           onSelection={handleSelection}
           displayKey='name'
-          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          placeholders={dynamicPlaceholders}
           className='w-full'
           renderSuggestion={PolicySuggestion}
         />
