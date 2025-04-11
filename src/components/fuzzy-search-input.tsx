@@ -236,6 +236,8 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
     };
   }, []);
 
+  const label = typeof ariaLabel === 'string' ? ariaLabel : intl.formatMessage(ariaLabel);
+
   return (
     <div ref={containerRef} className={`relative ${className}`}>
       <Input
@@ -248,7 +250,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
         onBlur={handleBlur}
         placeholder={currentPlaceholder}
         autoComplete='off'
-        aria-label={ariaLabel}
+        aria-label={label}
         aria-autocomplete='list'
         aria-controls={showSuggestions && suggestions.length > 0 ? listboxId : undefined}
         aria-expanded={showSuggestions && suggestions.length > 0}
