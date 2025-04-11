@@ -1,15 +1,8 @@
 import { isEqual } from 'es-toolkit';
 import { useReducer, useRef, useEffect, useMemo } from 'react';
 
-import { PolicyItem, PolicyParam, PolicySpecItem } from 'soapbox/utils/policies.ts';
+import { PolicyState, PolicySpecItem, PolicyParam, PolicyItem } from 'soapbox/utils/policies.ts';
 
-// Define the state type
-export type PolicyState = {
-  policies: PolicySpecItem[];
-  fields: Record<string, PolicyParam>;
-};
-
-// Define action types
 export type PolicyAction =
   | { type: 'ADD_POLICY'; policy: PolicySpecItem }
   | { type: 'REMOVE_POLICY'; name: string }
@@ -96,7 +89,6 @@ export const createPolicyReducer = (allPolicies: PolicyItem[]) => (state: Policy
   }
 };
 
-// Custom hook to initialize the reducer
 export const usePolicyReducer = (allPolicies: PolicyItem[], initialPolicies: PolicySpecItem[], initialFields: Record<string, PolicyParam>) => {
   const policyReducer = useMemo(() => createPolicyReducer(allPolicies), [allPolicies]);
   const [state, dispatch] = useReducer(policyReducer, { policies: initialPolicies, fields: initialFields });
