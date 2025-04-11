@@ -7,10 +7,10 @@ import FuzzySearchInput from 'soapbox/components/fuzzy-search-input.tsx';
 import { Button } from 'soapbox/components/ui/button.tsx';
 import { Card } from 'soapbox/components/ui/card.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import { Policy } from 'soapbox/features/admin/components/policies/Policy.tsx';
+import PolicyHelpModal from 'soapbox/features/admin/components/policies/PolicyHelpModal.tsx';
 import { usePolicyReducer } from 'soapbox/features/admin/hooks/usePolicyReducer.ts';
 import toast from 'soapbox/toast.tsx';
 import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } from 'soapbox/utils/policies.ts';
@@ -18,64 +18,15 @@ import { PolicyItem, PolicyParam, PolicyParams, PolicySpec, PolicySpecItem } fro
 const messages = defineMessages({
   heading: { id: 'admin.policies.heading', defaultMessage: 'Manage Policies' },
   searchPlaceholder: { id: 'admin.policies.search_placeholder', defaultMessage: 'What do you want to do?' },
+  searchLabel: { id: 'admin.policies.search_label', defaultMessage: 'I want to...' },
   noPolicyConfigured: { id: 'admin.policies.no_policies_configured', defaultMessage: 'No policies configured! Use the search bar above to get started.' },
   removeValue: { id: 'admin.policies.remove_value', defaultMessage: 'Remove value' },
   welcomeTitle: { id: 'admin.policies.welcome.title', defaultMessage: 'Welcome to Policy Manager' },
   welcomeGetStarted: { id: 'admin.policies.welcome.get_started', defaultMessage: 'Get Started' },
   helpTitle: { id: 'admin.policies.help.title', defaultMessage: 'Help' },
-  helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help' },
-  welcomeDescription: { id: 'admin.policies.help.description', defaultMessage: 'Policy Manager allows you to configure moderation and content policies for your instance.' },
-  welcomeStep1: { id: 'admin.policies.help.step1', defaultMessage: '1. Use the search bar to find policies you want to add' },
-  welcomeStep2: { id: 'admin.policies.help.step2', defaultMessage: '2. Configure each policy with your desired settings' },
-  welcomeStep3: { id: 'admin.policies.help.step3', defaultMessage: '3. Click Save to apply the changes' },
-  welcomeTip: { id: 'admin.policies.help.tip', defaultMessage: 'Tip: You can add multiple policies to create a comprehensive moderation strategy' },
+  helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help...' },
   okay: { id: 'admin.policies.help.okay', defaultMessage: 'Okay' },
 });
-
-interface PolicyHelpModalProps {
-  title: string;
-  onClose: () => void;
-  confirmText: string;
-}
-
-const PolicyHelpModal: FC<PolicyHelpModalProps> = ({ title, onClose, confirmText }) => {
-  const intl = useIntl();
-
-  return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center bg-gray-800/80'>
-      <div className='w-auto max-w-2xl'>
-        <Modal
-          title={title}
-          confirmationAction={onClose}
-          confirmationText={confirmText}
-          width='md'
-        >
-          <div className='space-y-4'>
-            <p className='text-base'>
-              {intl.formatMessage(messages.welcomeDescription)}
-            </p>
-
-            <div className='space-y-2 rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
-              <p className='font-semibold'>
-                {intl.formatMessage(messages.welcomeStep1)}
-              </p>
-              <p className='font-semibold'>
-                {intl.formatMessage(messages.welcomeStep2)}
-              </p>
-              <p className='font-semibold'>
-                {intl.formatMessage(messages.welcomeStep3)}
-              </p>
-            </div>
-
-            <div className='rounded-lg bg-blue-50 p-4 text-blue-700 dark:bg-blue-900/30 dark:text-blue-200'>
-              {intl.formatMessage(messages.welcomeTip)}
-            </div>
-          </div>
-        </Modal>
-      </div>
-    </div>
-  );
-};
 
 const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
   return (
@@ -163,7 +114,7 @@ const PolicyManager: FC = () => {
     if (isWelcomeDialog) {
       setIsWelcomeDialog(false);
       try {
-        localStorage.setItem('policy_manager_welcome_shown', 'true');
+        localStorage.setItem('soapbox:policies:welcome_shown', 'true');
       } catch (error) {
         // Ignore localStorage errors
         console.warn('Could not store welcome dialog state in localStorage', error);
@@ -288,25 +239,27 @@ const PolicyManager: FC = () => {
         />
       )}
       <div className='p-4'>
-        <div className='mb-2 flex w-full justify-between'>
-          <div className='grow'>
-            <FuzzySearchInput<PolicyItem>
-              data={allPolicies}
-              keys={['name', 'description']}
-              onSelection={handleSelection}
-              displayKey='name'
-              placeholder={intl.formatMessage(messages.searchPlaceholder)}
-              className='w-full'
-              renderSuggestion={PolicySuggestion}
-            />
+        <div className='mb-2 flex w-full items-center justify-between'>
+          <div className='text-lg font-medium'>
+            {intl.formatMessage(messages.searchLabel)}
           </div>
-          <Button
-            className='ml-2'
+          <button
             onClick={showHelp}
-            theme='secondary'
-            text={intl.formatMessage(messages.helpButton)}
-          />
+            className='text-primary-600 hover:underline dark:text-accent-blue'
+            aria-label={intl.formatMessage(messages.helpButton)}
+          >
+            {intl.formatMessage(messages.helpButton)}
+          </button>
         </div>
+        <FuzzySearchInput<PolicyItem>
+          data={allPolicies}
+          keys={['name', 'description']}
+          onSelection={handleSelection}
+          displayKey='name'
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          className='w-full'
+          renderSuggestion={PolicySuggestion}
+        />
       </div>
       {renderPolicies()}
       <div className='m-2 flex w-full flex-row items-center justify-end px-6'>
