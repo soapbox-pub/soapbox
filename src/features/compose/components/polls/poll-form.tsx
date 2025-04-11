@@ -61,7 +61,7 @@ const Option: React.FC<IOption> = ({
   const handleOptionTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => onChange(index, event.target.value);
 
   const handleOptionRemove = () => {
-    if (numOptions > 2) {
+    if (numOptions > 1) {
       onRemove(index);
     } else {
       onRemovePoll();
@@ -100,7 +100,7 @@ const Option: React.FC<IOption> = ({
         />
       </HStack>
 
-      {index > 1 && (
+      {index > 0 && (
         <div>
           <Button theme='danger' size='sm' onClick={handleOptionRemove}>
             <FormattedMessage id='compose_form.poll.remove_option' defaultMessage='Remove this answer' />
