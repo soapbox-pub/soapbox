@@ -19,7 +19,7 @@ export interface FieldItem {
   type: FieldType;
   description?: string;
   optional?: boolean;
-  default?: any;
+  default?: PolicyParam;
 }
 
 export interface PolicyItem {
@@ -46,7 +46,8 @@ export interface PolicyResponse {
   spec: PolicySpec;
 }
 
-export const stringifyDefault = (value: any) => {
+export const stringifyDefault = (value: PolicyParam | undefined) => {
+  if (typeof value === 'undefined') return '';
   if (Array.isArray(value)) {
     return `[${value.join(', ')}]`;
   }

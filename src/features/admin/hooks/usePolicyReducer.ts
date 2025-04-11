@@ -1,15 +1,7 @@
 import { isEqual } from 'es-toolkit';
 import { useReducer, useRef, useEffect, useMemo } from 'react';
 
-import { PolicyState, PolicySpecItem, PolicyParam, PolicyItem } from 'soapbox/utils/policies.ts';
-
-export type PolicyAction =
-  | { type: 'ADD_POLICY'; policy: PolicySpecItem }
-  | { type: 'REMOVE_POLICY'; name: string }
-  | { type: 'UPDATE_FIELD'; policyName: string; fieldName: string; value: PolicyParam }
-  | { type: 'ADD_MULTI_VALUE'; policyName: string; fieldName: string; value: string | number }
-  | { type: 'REMOVE_MULTI_VALUE'; policyName: string; fieldName: string; value: string | number }
-  | { type: 'INITIALIZE_FIELDS'; fields: Record<string, PolicyParam> };
+import { PolicyState, PolicySpecItem, PolicyParam, PolicyItem, PolicyAction } from 'soapbox/utils/policies.ts';
 
 // Reducer function
 export const createPolicyReducer = (allPolicies: PolicyItem[]) => (state: PolicyState, action: PolicyAction): PolicyState => {
@@ -38,11 +30,16 @@ export const createPolicyReducer = (allPolicies: PolicyItem[]) => (state: Policy
         fields: newFields,
       };
     }
-    case 'REMOVE_POLICY':
+    case 'REMOVE_POLICY': {
+      const fieldsToKeep = Object.entries({ ...state.fields })
+        .filter(([key]) => !key.startsWith(`${action.name}.`));
+
       return {
         ...state,
         policies: state.policies.filter(policy => policy.name !== action.name),
+        fields: Object.fromEntries(fieldsToKeep),
       };
+    }
     case 'UPDATE_FIELD':
       return {
         ...state,
