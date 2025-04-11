@@ -1,8 +1,12 @@
 import FuzzySearch from 'fuzzy-search';
 import React, { useState, useRef, useCallback, useEffect, useId } from 'react';
-import { useIntl, MessageDescriptor } from 'react-intl';
+import { useIntl, MessageDescriptor, defineMessages } from 'react-intl';
 
 import Input from 'soapbox/components/ui/input.tsx';
+
+const messages = defineMessages({
+  defaultAriaLabel: { id: 'soapbox.fuzzy_search_input.default_aria_label', defaultMessage: 'Fuzzy search input field.' },
+});
 
 type PlaceholderText = string | MessageDescriptor;
 
@@ -19,6 +23,8 @@ interface FuzzySearchInputProps<T> {
   placeholder?: PlaceholderText;
   /** Optional: Array of placeholders to rotate through. Takes precedence over placeholder if both are provided. */
   placeholders?: PlaceholderText[];
+  /** Optional, but strongly recommended: aria-label text for the element's placeholder. Use if no label for the field is given. */
+  ariaLabel?: PlaceholderText;
   /** Optional: Interval in milliseconds to change placeholders. Defaults to 5000ms (5 seconds). */
   placeholderChangeInterval?: number;
   /**
@@ -64,6 +70,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   className = '',
   baseId,
   inputClassName = '',
+  ariaLabel = messages.defaultAriaLabel,
   renderSuggestion: FuzzySearchSuggestion,
 }: FuzzySearchInputProps<T>) {
   const intl = useIntl();
@@ -76,7 +83,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
   const [currentPlaceholder, setCurrentPlaceholder] = useState<string>(
     typeof placeholder === 'string' ? placeholder : intl.formatMessage(placeholder),
   );
-  const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const placeholderIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   // Generate unique IDs for ARIA attributes if no baseId is provided
@@ -241,6 +248,7 @@ function FuzzySearchInput<T extends Record<string, any> | string>({
         onBlur={handleBlur}
         placeholder={currentPlaceholder}
         autoComplete='off'
+        aria-label={ariaLabel}
         aria-autocomplete='list'
         aria-controls={showSuggestions && suggestions.length > 0 ? listboxId : undefined}
         aria-expanded={showSuggestions && suggestions.length > 0}

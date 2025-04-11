@@ -27,6 +27,7 @@ const messages = defineMessages({
   helpButton: { id: 'admin.policies.help.button', defaultMessage: 'Help' },
   okay: { id: 'admin.policies.help.okay', defaultMessage: 'Okay' },
   policyExists: { id: 'admin.policies.policy_exists', defaultMessage: 'Policy already exists!' },
+  searchFieldLabel: { id: 'admin.policies.search_label', defaultMessage: 'Policy search field' },
 });
 
 const PolicySuggestion: FC<{ item: PolicyItem }> = ({ item }) => {
@@ -292,6 +293,7 @@ const PolicyManager: FC = () => {
           onSelection={handleSelection}
           displayKey='name'
           placeholders={dynamicPlaceholders}
+          ariaLabel={messages.searchFieldLabel}
           className='w-full'
           renderSuggestion={PolicySuggestion}
         />
