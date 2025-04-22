@@ -72,6 +72,10 @@ import {
   Lists,
   Bookmarks,
   Settings,
+  Wallet,
+  WalletRelays,
+  WalletMints,
+  WalletTransactions,
   EditProfile,
   EditEmail,
   EditPassword,
@@ -330,6 +334,10 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
+      <WrappedRoute path='/wallet' page={DefaultPage} component={Wallet} content={children} exact />
+      <WrappedRoute path='/wallet/relays' page={DefaultPage} component={WalletRelays} content={children} exact />
+      <WrappedRoute path='/wallet/mints' page={DefaultPage} component={WalletMints} content={children} exact />
+      <WrappedRoute path='/wallet/transactions' page={DefaultPage} component={WalletTransactions} content={children} exact />
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />

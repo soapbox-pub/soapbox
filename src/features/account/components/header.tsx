@@ -44,6 +44,7 @@ import VerificationBadge from 'soapbox/components/verification-badge.tsx';
 import MovedNote from 'soapbox/features/account-timeline/components/moved-note.tsx';
 import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription-button.tsx';
+import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -99,7 +100,7 @@ const messages = defineMessages({
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
-  zap: { id: 'zap.send_to', defaultMessage: 'Send zaps to {target}' },
+  method: { id: 'payment_method.send_to', defaultMessage: 'Send sats via {method} to {target}' },
 });
 
 interface IHeader {
@@ -114,6 +115,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const features = useFeatures();
   const { account: ownAccount } = useOwnAccount();
   const { follow } = useFollow();
+
+  const { method: paymentMethod } = usePaymentMethod();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
@@ -310,7 +313,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   };
 
   const handleZapAccount: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(openModal('ZAP_PAY_REQUEST', { account }));
+    dispatch(openModal('PAY_REQUEST', { account }));
   };
 
   const makeMenu = () => {
@@ -666,10 +669,10 @@ const Header: React.FC<IHeader> = ({ account }) => {
       <IconButton
         src={boltIcon}
         onClick={handleZapAccount}
-        title={intl.formatMessage(messages.zap, { target: account.display_name })}
+        title={intl.formatMessage(messages.method, { target: account.display_name, method: paymentMethod })}
         theme='outlined'
         className='px-2'
-        iconClassName='h-4 w-4'
+        iconClassName='size-4'
       />
     );
   };
@@ -677,6 +680,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const info = makeInfo();
   const menu = makeMenu();
   const acceptsZaps = account.ditto.accepts_zaps === true;
+  const acceptsZapsCashu = account.ditto.accepts_zaps_cashu === true;
 
   return (
     <div>
@@ -718,7 +722,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <SubscriptionButton account={account} />
               {renderMessageButton()}
               {renderShareButton()}
-              {acceptsZaps && renderZapAccount()}
+              {(acceptsZaps || acceptsZapsCashu) && renderZapAccount()}
 
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>

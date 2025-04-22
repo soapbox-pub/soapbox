@@ -49,6 +49,7 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
+import { useZapCashuRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -174,6 +175,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
 
+  const { zapCashuList } = useZapCashuRequest();
+  const isZappedCashu = zapCashuList.some((zapCashu)=> zapCashu === status.id);
+
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
@@ -227,9 +231,9 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleZapClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (me) {
-      dispatch(openModal('ZAP_PAY_REQUEST', { status, account: status.account }));
+      dispatch(openModal('PAY_REQUEST', { status, account: status.account }));
     } else {
-      onOpenUnauthorizedModal('ZAP_PAY_REQUEST');
+      onOpenUnauthorizedModal('PAY_REQUEST');
     }
   };
 
@@ -749,6 +753,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
   const acceptsZaps = status.account.ditto.accepts_zaps === true;
+  const acceptsZapsCashu = status.account.ditto.accepts_zaps_cashu === true;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
@@ -832,16 +837,16 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        {(acceptsZaps) && (
+        {(acceptsZaps || acceptsZapsCashu) && (
           <StatusActionButton
             title={intl.formatMessage(messages.zap)}
             icon={boltIcon}
             color='accent'
             filled
             onClick={handleZapClick}
-            active={status.zapped}
+            active={status.zapped_cashu || status.zapped || isZappedCashu}
             theme={statusActionButtonTheme}
-            count={status?.zaps_amount ? status.zaps_amount / 1000 : 0}
+            count={(status?.zaps_amount ?? 0) / 1000 + (status?.zaps_amount_cashu ?? 0)}
           />
         )}
 

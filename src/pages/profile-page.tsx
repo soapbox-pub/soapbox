@@ -17,7 +17,9 @@ import {
   CtaBanner,
   PinnedAccountsPanel,
   AccountNotePanel,
+  PocketWallet,
 } from 'soapbox/features/ui/util/async-components.ts';
+import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
@@ -40,6 +42,7 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
+  const { wallet } = useWallet();
 
   // Fix case of username
   if (account && account.acct !== username) {
@@ -116,6 +119,10 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       <Layout.Aside>
         {!me && (
           <SignUpPanel />
+        )}
+
+        {wallet && (
+          <PocketWallet />
         )}
 
         {features.notes && account && account?.id !== me && (

@@ -14,6 +14,8 @@ interface IButton {
   children?: React.ReactNode;
   /** Extra class names for the button. */
   className?: string;
+  /** Extra class names for the icon. */
+  iconClassName?: string;
   /** Prevent the button from being clicked. */
   disabled?: boolean;
   /** Specifies the icon element as 'svg' or 'img'. */
@@ -49,6 +51,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element 
     to,
     type = 'button',
     className,
+    iconClassName,
   } = props;
 
   const body = text || children;
@@ -65,7 +68,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.Element 
       return null;
     }
 
-    return <Icon src={icon} className='size-4' element={iconElement} />;
+    return <Icon src={icon} className={clsx('size-4', iconClassName)} element={iconElement} />;
   };
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = useCallback((event) => {

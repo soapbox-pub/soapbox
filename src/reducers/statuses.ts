@@ -222,7 +222,7 @@ const simulateDislike = (
 };
 
 /** Simulate zap of status for optimistic interactions */
-const simulateZap = (state: State, statusId: string, zapped: boolean): State => {
+const simulatePayment = (state: State, statusId: string, zapped: boolean): State => {
   const status = state.get(statusId);
   if (!status) return state;
 
@@ -288,9 +288,9 @@ export default function statuses(state = initialState, action: AnyAction): State
     case DISLIKE_FAIL:
       return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'disliked'], false);
     case ZAP_REQUEST:
-      return simulateZap(state, action.status.id, true);
+      return simulatePayment(state, action.status.id, true);
     case ZAP_FAIL:
-      return simulateZap(state, action.status.id, false);
+      return simulatePayment(state, action.status.id, false);
     case REBLOG_REQUEST:
       return state.setIn([action.status.id, 'reblogged'], true);
     case REBLOG_FAIL:
