@@ -214,12 +214,15 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
 
-                  <SidebarLink
-                    to={'/wallet'}
-                    icon={walletIcon}
-                    text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
-                    onClick={onClose}
-                  />
+                  {features.nostr && (
+                    <SidebarLink
+                      to={'/wallet'}
+                      icon={walletIcon}
+                      text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
+                      onClick={onClose}
+                    />
+                  )
+                  }
 
                   {(account.locked || followRequestsCount > 0) && (
                     <SidebarLink
