@@ -197,12 +197,15 @@ const SidebarNavigation = () => {
                 text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
               />
 
-              <SidebarNavigationLink
-                to={'/wallet'}
-                icon={walletIcon}
-                activeIcon={walletIcon}
-                text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
-              />
+              {features.nostr && (
+                <SidebarNavigationLink
+                  to={'/wallet'}
+                  icon={walletIcon}
+                  activeIcon={walletIcon}
+                  text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
+                />
+              )
+              }
 
               <SidebarNavigationLink
                 to='/settings'
