@@ -90,7 +90,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
   const api = useApi();
   const intl = useIntl();
   const { getWallet } = useWallet();
-  const { getTransactions } = useTransactions();
+  const { refetch } = useTransactions();
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -113,7 +113,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
         toast.success(intl.formatMessage(messages.paidMessage));
         onBack();
         getWallet();
-        getTransactions();
+        refetch();
         handleClean();
         setCurrentState('default');
       }
@@ -233,7 +233,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
 };
 
 const Balance = () => {
-  const { wallet } = useWallet();
+  const { walletData } = useWallet();
   const [amount, setAmount] = useState(0);
   const [mints, setMints] = useState<string[]>([]);
   const { account } = useOwnAccount();
@@ -246,11 +246,11 @@ const Balance = () => {
 
   useEffect(
     () => {
-      if (wallet){
-        setMints([...wallet.mints]);
-        setAmount(wallet.balance);
+      if (walletData){
+        setMints([...walletData.mints]);
+        setAmount(walletData.balance);
       }
-    }, [wallet],
+    }, [walletData],
   );
 
   if (!account) {

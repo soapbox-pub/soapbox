@@ -46,7 +46,7 @@ const Wallet = () => {
   const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
 
   const { account } = useOwnAccount();
-  const { wallet: walletData, isLoading, error, getWallet } = useWallet();
+  const { walletData, getWallet, isLoading, error } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
   const { transactions } = useTransactions();
   const hasTransactions = transactions && transactions.length > 0;
@@ -60,7 +60,7 @@ const Wallet = () => {
     }
 
     setIsRetrying(false);
-    getWallet(true); // Trigger wallet reload with error messages
+    getWallet(); // Trigger wallet reload with error messages
   };
 
   // Setup automatic retry when there's an error

@@ -5,6 +5,7 @@ import eyeIcon from '@tabler/icons/outline/eye.svg';
 import walletIcon from '@tabler/icons/outline/wallet.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
@@ -23,7 +24,7 @@ const messages = defineMessages({
 
 const PocketWallet = () => {
   const intl = useIntl();
-  const { wallet } = useWallet();
+  const { walletData } = useWallet();
 
   const [expanded, setExpanded] = useState(false);
   const [eyeClosed, setEyeClosed] = useState(() => {
@@ -35,24 +36,26 @@ const PocketWallet = () => {
     localStorage.setItem('soapbox:wallet:eye', JSON.stringify(eyeClosed));
   }, [eyeClosed]);
 
-  if (!wallet) {
+  if (!walletData) {
     return null;
   }
 
   return (
     <Stack className='rounded-lg border p-2 px-4 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
       <HStack className='w-full' justifyContent='between' alignItems='center' >
-        <HStack space={1} alignItems='center'>
-          <Icon src={walletIcon} size={20} className='text-gray-200' />
-          <Text size='lg'>
-            {intl.formatMessage(messages.wallet)}
-          </Text>
-        </HStack>
+        <Link to={'/wallet'}>
+          <HStack space={1} alignItems='center'>
+            <Icon src={walletIcon} size={20} className='text-gray-200' />
+            <Text size='lg'>
+              {intl.formatMessage(messages.wallet)}
+            </Text>
+          </HStack>
+        </Link>
 
         <HStack alignItems='center' space={2}>
           {!expanded && <>
             { eyeClosed ? <Text className='text-sm !text-gray-500'>{intl.formatMessage({ id: 'wallet.hidden.balance', defaultMessage: '••••••' })}</Text> : <Text>
-              {intl.formatMessage(messages.balance, { amount: wallet.balance })}
+              {intl.formatMessage(messages.balance, { amount: walletData?.balance })}
             </Text>}
 
             <Button className='!ml-1 space-x-2 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-transparent rtl:ml-0 rtl:mr-1 rtl:space-x-reverse' theme='transparent' onClick={() => setEyeClosed(!eyeClosed)}>

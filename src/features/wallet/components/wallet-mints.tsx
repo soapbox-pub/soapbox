@@ -25,7 +25,7 @@ const messages = defineMessages({
 const WalletMints = () => {
   const intl = useIntl();
   const api = useApi();
-  const { wallet } = useWallet();
+  const { walletData } = useWallet();
 
   const [relays, setRelays] = useState<string[]>([]);
   const [initialMints, setInitialMints] = useState<string[]>([]);
@@ -65,11 +65,11 @@ const WalletMints = () => {
       setIsLoading(true);
       setHasError(false);
 
-      if (wallet) {
+      if (walletData) {
         try {
-          setMints(wallet.mints ?? []);
-          setInitialMints(wallet.mints ?? []);
-          setRelays(wallet.relays ?? []);
+          setMints(walletData.mints ?? []);
+          setInitialMints(walletData.mints ?? []);
+          setRelays(walletData.relays ?? []);
         } catch (error) {
           console.error('Error setting wallet data:', error);
           setHasError(true);
@@ -80,15 +80,15 @@ const WalletMints = () => {
       } else {
         // Handle the case when wallet is null or undefined
         setIsLoading(false);
-        if (wallet === undefined) { // wallet is still loading
+        if (walletData === undefined) { // wallet is still loading
           // Keep loading state true
           setIsLoading(true);
-        } else if (wallet === null) { // wallet failed to load
+        } else if (walletData === null) { // wallet failed to load
           setHasError(true);
           toast.error(intl.formatMessage(messages.loadingError));
         }
       }
-    }, [wallet, intl],
+    }, [walletData, intl],
   );
 
   return (
