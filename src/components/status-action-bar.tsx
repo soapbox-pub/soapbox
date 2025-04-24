@@ -49,7 +49,6 @@ import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
 import StatusActionButton from 'soapbox/components/status-action-button.tsx';
 import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useZapCashuRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
@@ -174,9 +173,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const { groupRelationship } = useGroupRelationship(status.group?.id);
   const features = useFeatures();
   const { boostModal, deleteModal } = useSettings();
-
-  const { zapCashuList } = useZapCashuRequest();
-  const isZappedCashu = zapCashuList.some((zapCashu)=> zapCashu === status.id);
 
   const { account } = useOwnAccount();
   const isStaff = account ? account.staff : false;
@@ -844,7 +840,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             color='accent'
             filled
             onClick={handleZapClick}
-            active={status.zapped_cashu || status.zapped || isZappedCashu}
+            active={status.zapped_cashu || status.zapped}
             theme={statusActionButtonTheme}
             count={(status?.zaps_amount ?? 0) / 1000 + (status?.zaps_amount_cashu ?? 0)}
           />
