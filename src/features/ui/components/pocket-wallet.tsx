@@ -35,6 +35,10 @@ const PocketWallet = () => {
     localStorage.setItem('soapbox:wallet:eye', JSON.stringify(eyeClosed));
   }, [eyeClosed]);
 
+  if (!wallet) {
+    return null;
+  }
+
   return (
     <Stack className='rounded-lg border p-2 px-4 black:border-gray-500 dark:border-gray-500' alignItems='center' space={4}>
       <HStack className='w-full' justifyContent='between' alignItems='center' >
@@ -48,7 +52,7 @@ const PocketWallet = () => {
         <HStack alignItems='center' space={2}>
           {!expanded && <>
             { eyeClosed ? <Text className='text-sm !text-gray-500'>{intl.formatMessage({ id: 'wallet.hidden.balance', defaultMessage: '••••••' })}</Text> : <Text>
-              {intl.formatMessage(messages.balance, { amount: wallet?.balance })}
+              {intl.formatMessage(messages.balance, { amount: wallet.balance })}
             </Text>}
 
             <Button className='!ml-1 space-x-2 !border-none !p-0 !text-gray-500 focus:!ring-transparent focus:ring-offset-transparent rtl:ml-0 rtl:mr-1 rtl:space-x-reverse' theme='transparent' onClick={() => setEyeClosed(!eyeClosed)}>
@@ -63,11 +67,7 @@ const PocketWallet = () => {
         </HStack>
       </HStack>
 
-
-      {expanded &&
-      <Balance />
-      }
-
+      {expanded && <Balance />}
     </Stack>
   );
 
