@@ -46,9 +46,11 @@ interface IPayRequestForm {
 }
 
 const messages = defineMessages({
+  loading: { id: 'loading_indicator.label', defaultMessage: 'Loading…' },
   button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
   button: { id: 'payment_method.button.text.raw', defaultMessage: 'Zap {amount} sats' },
   commentPlaceholder: { id: 'payment_method.comment_input.placeholder', defaultMessage: 'Optional comment' },
+  zapSats: { id: 'payment_method.button.zap_sats', defaultMessage: 'Zap sats' },
 });
 
 const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
@@ -62,7 +64,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   const { method: paymentMethod, changeMethod } = usePaymentMethod();
   const isCashu = paymentMethod === 'cashu';
   const hasZapSplit = zapArrays.length > 0 && !isCashu;
-  const { zapCashu } = useZapCashuRequest();
+  const { zapCashu, isLoading } = useZapCashuRequest();
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -105,6 +107,8 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
   };
 
   const renderPaymentButtonText = () => {
+    if (isLoading) return intl.formatMessage(messages.loading);
+
     if (amount >= 1000) {
       return intl.formatMessage(messages.button_rounded, { amount: Math.round((amount / 1000) * 10) / 10 });
     }
@@ -217,7 +221,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
       {hasZapSplit ? <Stack space={2}>
 
-        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={intl.formatMessage({ id: 'payment_method.button.zap_sats', defaultMessage: 'Zap sats' })} disabled={amount < 1 ? true : false} />
+        <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={isLoading ? intl.formatMessage(messages.loading) : intl.formatMessage(messages.zapSats)} disabled={(amount < 1 ? true : false) || isLoading} />
 
         <div className='flex items-center justify-center gap-2 sm:gap-4'>
           <span className='text-[10px] sm:text-xs'>
@@ -233,7 +237,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
           </Link>
 
         </div>
-      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={boltIcon} text={renderPaymentButtonText()} disabled={amount < 1 ? true : false} />}
+      </Stack> : <Button className='m-auto w-auto' type='submit' theme='primary' icon={isLoading ? '' : boltIcon} text={renderPaymentButtonText()} disabled={(amount < 1 ? true : false) || isLoading} />}
 
     </Stack>
   );

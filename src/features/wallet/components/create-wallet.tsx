@@ -29,7 +29,7 @@ const CreateWallet = () => {
   const [formActive, setFormActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [mints, setMints] = useState<string[]>([]);
-  const { mutateAsync: createWallet } = useCreateWallet();
+  const { createWallet } = useCreateWallet();
 
   const handleSubmit = async () => {
     setIsLoading(true);

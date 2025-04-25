@@ -84,7 +84,7 @@ const useCreateWallet = () => {
   const queryClient = useQueryClient();
   const { setWallet } = useWalletStore();
 
-  return useMutation({
+  const createWallet = useMutation({
     mutationFn: async (walletInfo: IWalletInfo) => {
       const response = await api.put('/api/v1/ditto/cashu/wallet', walletInfo);
       const data = await response.json();
@@ -99,6 +99,8 @@ const useCreateWallet = () => {
       toast.error(error?.message || 'An error occurred while creating the wallet');
     },
   });
+
+  return { createWallet: createWallet.mutateAsync };
 };
 
 const useWallet = () => {
