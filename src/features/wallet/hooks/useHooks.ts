@@ -154,7 +154,7 @@ const useTransactions = () => {
   const expandTransactions = useMutation({
     mutationFn: async () => {
       if (!nextTransaction || !transactions) {
-        return false;
+        return;
       }
 
       const response = await api.get(nextTransaction);
@@ -165,7 +165,6 @@ const useTransactions = () => {
       const newTransactions = [...transactions, ...normalizedData];
 
       setTransactions(newTransactions, prev, next);
-      return true;
     },
     onError: (error: any) => {
       toast.error(error?.message || 'Error expanding transactions');
