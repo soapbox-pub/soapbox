@@ -3,6 +3,7 @@ import plusIcon from '@tabler/icons/outline/square-rounded-plus.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
+
 import Button from 'soapbox/components/ui/button.tsx';
 import FormActions from 'soapbox/components/ui/form-actions.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
@@ -12,7 +13,7 @@ import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import Tooltip from 'soapbox/components/ui/tooltip.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useCreateWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useCreateWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({

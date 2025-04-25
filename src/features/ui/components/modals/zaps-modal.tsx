@@ -2,13 +2,14 @@ import { List as ImmutableList } from 'immutable';
 import { useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
+
 import { fetchZaps, expandZaps } from 'soapbox/actions/interactions.ts';
 import ScrollableList from 'soapbox/components/scrollable-list.tsx';
 import Modal from 'soapbox/components/ui/modal.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useWalletStore, useZappedByCashu } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useWalletStore, useZappedByCashu } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';

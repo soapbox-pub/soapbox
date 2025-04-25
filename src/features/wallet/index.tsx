@@ -2,6 +2,7 @@ import moreIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
@@ -13,7 +14,7 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 

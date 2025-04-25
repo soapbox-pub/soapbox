@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { defineMessages, useIntl } from 'react-intl';
 import { create } from 'zustand';
 
 import { useApi } from 'soapbox/hooks/useApi.ts';
@@ -7,9 +8,13 @@ import toast from 'soapbox/toast.tsx';
 
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
+const messages = defineMessages({
+  success: { id: 'wallet.success', defaultMessage: 'Data updated with success!' },
+  error: { id: 'wallet.error', defaultMessage: 'Failed to update.' },
+});
+
 interface WalletState {
   wallet: WalletData | null;
-  // acceptsZapsCashu: boolean;
   transactions: Transactions | null;
   zapCashuList: string[];
   nutzappedRecord: NutzappedRecord;
@@ -37,7 +42,7 @@ interface IZapCashuPayload {
   account: AccountEntity;
   amount: number;
   comment: string;
-  status : StatusEntity;
+  status?: StatusEntity;
 }
 
 const useWalletStore = create<WalletState>((set) => ({
@@ -148,7 +153,6 @@ const useTransactions = () => {
     mutationFn: async () => {
       if (!nextTransaction || !transactions) {
         return false;
-        // throw new Error('No more transactions');
       }
 
       const response = await api.get(nextTransaction);
@@ -256,4 +260,33 @@ const useZappedByCashu = (statusId: string) => {
   };
 };
 
-export { useWalletStore, useWallet, useCreateWallet, useTransactions, useZapCashuRequest, useZappedByCashu };
+const useUpdateWallet = () => {
+  const api = useApi();
+  const queryClient = useQueryClient();
+  const intl = useIntl();
+
+  const updateWallet = useMutation({
+    mutationFn: async ({ mints, relays }: IWalletInfo) => {
+      await api.put('/api/v1/ditto/cashu/wallet', { mints: mints, relays: relays });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['wallet'] });
+      toast.success(intl.formatMessage(messages.success));
+    },
+    onError: (err: Error) => {
+      const errorMessage = err instanceof Error ? err.message : intl.formatMessage(messages.error);
+      toast.error(errorMessage);
+      console.error(err);
+    },
+  });
+
+  return {
+    updateWallet: updateWallet.mutateAsync,
+    isSuccess: updateWallet.isSuccess,
+    error: updateWallet.error,
+    isLoading: updateWallet.isPending,
+  };
+
+};
+
+export { useWalletStore, useWallet, useCreateWallet, useTransactions, useZapCashuRequest, useZappedByCashu, useUpdateWallet };

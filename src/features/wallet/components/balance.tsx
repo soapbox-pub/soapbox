@@ -7,6 +7,7 @@ import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -17,7 +18,7 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';

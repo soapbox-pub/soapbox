@@ -22,7 +22,7 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useZapCashuRequest } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useZapCashuRequest } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { emojifyText } from 'soapbox/utils/emojify.tsx';
@@ -46,23 +46,23 @@ interface IPayRequestForm {
 }
 
 const messages = defineMessages({
-  zap_button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
-  zap_button: { id: 'payment_method.button.text.raw', defaultMessage: 'Zap {amount} sats' },
-  zap_commentPlaceholder: { id: 'payment_method.comment_input.placeholder', defaultMessage: 'Optional comment' },
+  button_rounded: { id: 'zap.button.text.rounded', defaultMessage: 'Zap {amount}K sats' },
+  button: { id: 'payment_method.button.text.raw', defaultMessage: 'Zap {amount} sats' },
+  commentPlaceholder: { id: 'payment_method.comment_input.placeholder', defaultMessage: 'Optional comment' },
 });
 
 const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const [zapComment, setZapComment] = useState('');
+  const [comment, setComment] = useState('');
   const [amount, setAmount] = useState(50);
   const { zapArrays, zapSplitData, receiveAmount } = useZapSplit(status, account);
   const splitValues = zapSplitData.splitValues;
   const { method: paymentMethod, changeMethod } = usePaymentMethod();
   const isCashu = paymentMethod === 'cashu';
   const hasZapSplit = zapArrays.length > 0 && !isCashu;
-  const { zapCashuRequest } = useZapCashuRequest();
+  const { zapCashu } = useZapCashuRequest();
 
   const handleSubmit = async (e?: React.FormEvent<Element>) => {
     e?.preventDefault();
@@ -70,14 +70,14 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
     const splitData = { hasZapSplit, zapSplitAccounts, splitValues };
 
     if (isCashu) {
-      await zapCashuRequest(account, amount, zapComment, status);
+      await zapCashu({ account, amount, comment, status });
       dispatch(closeModal('PAY_REQUEST'));
       return;
     }
 
     const invoice = hasZapSplit
-      ? await dispatch(zap(account, status, zapSplitData.receiveAmount * 1000, zapComment))
-      : await dispatch(zap(account, status, amount * 1000, zapComment));
+      ? await dispatch(zap(account, status, zapSplitData.receiveAmount * 1000, comment))
+      : await dispatch(zap(account, status, amount * 1000, comment));
 
     if (!invoice) {
       dispatch(closeModal('PAY_REQUEST'));
@@ -106,9 +106,9 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
 
   const renderPaymentButtonText = () => {
     if (amount >= 1000) {
-      return intl.formatMessage(messages.zap_button_rounded, { amount: Math.round((amount / 1000) * 10) / 10 });
+      return intl.formatMessage(messages.button_rounded, { amount: Math.round((amount / 1000) * 10) / 10 });
     }
-    return intl.formatMessage(messages.zap_button, { amount: amount });
+    return intl.formatMessage(messages.button, { amount: amount });
   };
 
   useEffect(() => {
@@ -212,7 +212,7 @@ const PayRequestForm = ({ account, status, onClose }: IPayRequestForm) => {
       </Stack>
 
       <div className='w-full'>
-        <Input onChange={e => setZapComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.zap_commentPlaceholder)} />
+        <Input onChange={e => setComment(e.target.value)} type='text' placeholder={intl.formatMessage(messages.commentPlaceholder)} />
       </div>
 
       {hasZapSplit ? <Stack space={2}>
