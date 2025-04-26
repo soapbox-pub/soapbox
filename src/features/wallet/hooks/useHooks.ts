@@ -9,6 +9,7 @@ import toast from 'soapbox/toast.tsx';
 import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
 
 const messages = defineMessages({
+  createWallet: { id: 'wallet.create.success', defaultMessage: 'Wallet created successfully!' },
   success: { id: 'wallet.success', defaultMessage: 'Data updated with success!' },
   error: { id: 'wallet.error', defaultMessage: 'Failed to update.' },
 });
@@ -81,6 +82,7 @@ const useWalletStore = create<WalletState>((set) => ({
 
 const useCreateWallet = () => {
   const api = useApi();
+  const intl = useIntl();
   const queryClient = useQueryClient();
   const { setWallet } = useWalletStore();
 
@@ -91,7 +93,7 @@ const useCreateWallet = () => {
       return baseWalletSchema.parse(data);
     },
     onSuccess: (data) => {
-      toast.success('Wallet created successfully');
+      toast.success(intl.formatMessage(messages.createWallet));
       setWallet(data);
       queryClient.invalidateQueries({ queryKey: ['wallet'] });
     },
@@ -136,35 +138,37 @@ const useWallet = () => {
 
 const useTransactions = () => {
   const api = useApi();
-  const { transactions, nextTransaction, setTransactions } = useWalletStore();
+  const { setTransactions } = useWalletStore();
 
   const getTransactions = useQuery({
     queryKey: ['transactions'],
     queryFn: async () => {
       const response = await api.get('/api/v1/ditto/cashu/transactions');
-      const { prev, next } = response.pagination();
+      const { prev, next: nextPag } = response.pagination();
       const data = await response.json();
       const normalizedData = transactionsSchema.parse(data);
 
-      setTransactions(normalizedData, prev, next);
+      setTransactions(normalizedData, prev, nextPag);
       return normalizedData;
     },
   });
 
   const expandTransactions = useMutation({
     mutationFn: async () => {
+      const { transactions, nextTransaction } = useWalletStore.getState();
+
       if (!nextTransaction || !transactions) {
         return;
       }
 
       const response = await api.get(nextTransaction);
-      const { prev, next } = response.pagination();
+      const { prev, next: nextPag } = response.pagination();
       const data = await response.json();
 
       const normalizedData = transactionsSchema.parse(data);
       const newTransactions = [...transactions, ...normalizedData];
 
-      setTransactions(newTransactions, prev, next);
+      setTransactions(newTransactions, prev, nextPag);
     },
     onError: (error: any) => {
       toast.error(error?.message || 'Error expanding transactions');

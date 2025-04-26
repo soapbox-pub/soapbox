@@ -3,7 +3,6 @@ import plusIcon from '@tabler/icons/outline/square-rounded-plus.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-
 import Button from 'soapbox/components/ui/button.tsx';
 import FormActions from 'soapbox/components/ui/form-actions.tsx';
 import Form from 'soapbox/components/ui/form.tsx';
@@ -17,8 +16,8 @@ import { useCreateWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
-  title: { id: 'wallet.create_wallet.title', defaultMessage: 'You don\'t have a wallet' },
-  question: { id: 'wallet.create_wallet.question', defaultMessage: 'Do you want create one?' },
+  title: { id: 'wallet.create.title', defaultMessage: 'You don\'t have a wallet' },
+  question: { id: 'wallet.create.question', defaultMessage: 'Do you want create one?' },
   button: { id: 'wallet.button.create_wallet', defaultMessage: 'Create' },
   mints: { id: 'wallet.mints', defaultMessage: 'Mints' },
 });
