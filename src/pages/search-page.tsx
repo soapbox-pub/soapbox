@@ -11,9 +11,9 @@ import {
   SuggestedGroupsPanel,
   PocketWallet,
 } from 'soapbox/features/ui/util/async-components.ts';
-import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
 import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 interface IExplorePage {
   children: React.ReactNode;
@@ -23,7 +23,8 @@ const ExplorePage: React.FC<IExplorePage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const accountsPath = useLocation().pathname === '/explore/accounts';
-  const { wallet } = useWallet();
+  const { account } = useOwnAccount();
+  const hasWallet = account?.ditto.accepts_zaps_cashu ?? false;
 
   return (
     <>
@@ -40,7 +41,7 @@ const ExplorePage: React.FC<IExplorePage> = ({ children }) => {
           <SignUpPanel />
         )}
 
-        {wallet && (
+        {hasWallet && (
           <PocketWallet />
         )}
 

@@ -2,6 +2,7 @@ import moreIcon from '@tabler/icons/outline/dots-circle-horizontal.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+
 import List, { ListItem } from 'soapbox/components/list.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
@@ -13,7 +14,7 @@ import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
 import Balance from 'soapbox/features/wallet/components/balance.tsx';
 import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
 import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
@@ -46,7 +47,7 @@ const Wallet = () => {
   const [retryTimer, setRetryTimer] = useState<NodeJS.Timeout | null>(null);
 
   const { account } = useOwnAccount();
-  const { wallet: walletData, isLoading, error, getWallet } = useWallet();
+  const { walletData, getWallet, isLoading, error } = useWallet();
   const { method, changeMethod } = usePaymentMethod();
   const { transactions } = useTransactions();
   const hasTransactions = transactions && transactions.length > 0;
@@ -60,7 +61,7 @@ const Wallet = () => {
     }
 
     setIsRetrying(false);
-    getWallet(true); // Trigger wallet reload with error messages
+    getWallet(); // Trigger wallet reload with error messages
   };
 
   // Setup automatic retry when there's an error

@@ -7,6 +7,7 @@ import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
+
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -17,7 +18,7 @@ import Input from 'soapbox/components/ui/input.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import { useTransactions, useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useTransactions, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
@@ -90,7 +91,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
   const api = useApi();
   const intl = useIntl();
   const { getWallet } = useWallet();
-  const { getTransactions } = useTransactions();
+  const { refetch } = useTransactions();
 
   const now = Math.floor(Date.now() / 1000);
 
@@ -113,7 +114,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
         toast.success(intl.formatMessage(messages.paidMessage));
         onBack();
         getWallet();
-        getTransactions();
+        refetch();
         handleClean();
         setCurrentState('default');
       }
@@ -233,7 +234,7 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
 };
 
 const Balance = () => {
-  const { wallet } = useWallet();
+  const { walletData } = useWallet();
   const [amount, setAmount] = useState(0);
   const [mints, setMints] = useState<string[]>([]);
   const { account } = useOwnAccount();
@@ -246,11 +247,11 @@ const Balance = () => {
 
   useEffect(
     () => {
-      if (wallet){
-        setMints([...wallet.mints]);
-        setAmount(wallet.balance);
+      if (walletData){
+        setMints([...walletData.mints]);
+        setAmount(walletData.balance);
       }
-    }, [wallet],
+    }, [walletData],
   );
 
   if (!account) {

@@ -7,30 +7,27 @@ import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useWallet } from 'soapbox/features/zap/hooks/useHooks.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useUpdateWallet, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import toast from 'soapbox/toast.tsx';
 import { isURL } from 'soapbox/utils/auth.ts';
 
 const messages = defineMessages({
   title: { id: 'wallet.mints', defaultMessage: 'Mints' },
   loadingError: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
-  error: { id: 'wallet.mints.error', defaultMessage: 'Failed to update mints.' },
   empty: { id: 'wallet.mints.empty', defaultMessage: 'At least one mint is required.' },
   url: { id: 'wallet.invalid_url', defaultMessage: 'All strings must be valid URLs.' },
-  success: { id: 'wallet.mints.success', defaultMessage: 'Mints updated with success!' },
   send: { id: 'common.send', defaultMessage: 'Send' },
 });
 
 const WalletMints = () => {
   const intl = useIntl();
-  const api = useApi();
-  const { wallet } = useWallet();
+  const { walletData } = useWallet();
 
   const [relays, setRelays] = useState<string[]>([]);
   const [initialMints, setInitialMints] = useState<string[]>([]);
   const [mints, setMints] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const { updateWallet, isLoading } = useUpdateWallet();
+  const [isInitialLoading, setIsInitialLoading] = useState<boolean>(isLoading);
   const [hasError, setHasError] = useState<boolean>(false);
 
   const handleClick = async () =>{
@@ -48,53 +45,46 @@ const WalletMints = () => {
       return;
     }
     try {
-      await api.put('/api/v1/ditto/cashu/wallet', { mints: mints, relays: relays });
-
+      await updateWallet({ mints, relays });
       setInitialMints(mints);
-
-      toast.success(intl.formatMessage(messages.success));
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : intl.formatMessage(messages.error);
-      toast.error(errorMessage);
       console.error(error);
     }
   };
 
   useEffect(
     () => {
-      setIsLoading(true);
+      setIsInitialLoading(true);
       setHasError(false);
 
-      if (wallet) {
+      if (walletData) {
         try {
-          setMints(wallet.mints ?? []);
-          setInitialMints(wallet.mints ?? []);
-          setRelays(wallet.relays ?? []);
+          setMints(walletData.mints ?? []);
+          setInitialMints(walletData.mints ?? []);
+          setRelays(walletData.relays ?? []);
         } catch (error) {
           console.error('Error setting wallet data:', error);
           setHasError(true);
           toast.error(intl.formatMessage(messages.loadingError));
         } finally {
-          setIsLoading(false);
+          setIsInitialLoading(false);
         }
       } else {
-        // Handle the case when wallet is null or undefined
-        setIsLoading(false);
-        if (wallet === undefined) { // wallet is still loading
-          // Keep loading state true
-          setIsLoading(true);
-        } else if (wallet === null) { // wallet failed to load
+        setIsInitialLoading(false);
+        if (walletData === undefined) {
+          setIsInitialLoading(true);
+        } else if (walletData === null) {
           setHasError(true);
           toast.error(intl.formatMessage(messages.loadingError));
         }
       }
-    }, [wallet, intl],
+    }, [walletData, intl],
   );
 
   return (
     <Column label={intl.formatMessage(messages.title)} >
       {(() => {
-        if (isLoading) {
+        if (isInitialLoading) {
           return (
             <Stack space={2} className='flex h-32 items-center justify-center'>
               <Spinner />
@@ -110,7 +100,7 @@ const WalletMints = () => {
           return (
             <Stack space={2}>
               <MintEditor items={mints} setItems={setMints} />
-              <Button className='w-full' theme='primary' onClick={handleClick}>
+              <Button className='w-full' theme='primary' onClick={handleClick} disabled={isLoading}>
                 {intl.formatMessage(messages.send)}
               </Button>
             </Stack>

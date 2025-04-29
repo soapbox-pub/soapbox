@@ -9,7 +9,7 @@ import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
-import { useTransactions } from 'soapbox/features/zap/hooks/useHooks.ts';
+import { useWalletStore } from 'soapbox/features/wallet/hooks/useHooks.ts';
 import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 
 const themes = {
@@ -91,7 +91,7 @@ interface ITransactions {
 
 const Transactions = ({ limit }: ITransactions) => {
   const { account } = useOwnAccount();
-  const { transactions } = useTransactions();
+  const { transactions } = useWalletStore();
 
   if (!account) {
     return null;

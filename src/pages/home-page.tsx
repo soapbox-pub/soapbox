@@ -59,8 +59,9 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
     dispatch(uploadCompose(composeId, files, intl));
   });
 
-  const acct = account ? account.acct : '';
-  const avatar = account ? account.avatar : '';
+  const acct = account?.acct ?? '';
+  const avatar = account?.avatar ?? '';
+  const hasWallet = account?.ditto.accepts_zaps_cashu ??  false;
 
   const renderSuggestions = () => {
     if (features.suggestionsLocal && !isGlobalPage) {
@@ -113,7 +114,7 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {!me && (
           <SignUpPanel />
         )}
-        {me && features.nostr && (
+        {me && features.nostr && hasWallet && (
           <PocketWallet />
         )}
         {me && features.announcements && (
