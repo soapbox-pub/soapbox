@@ -1,31 +1,26 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useAppSelector } from 'soapbox/hooks/useAppSelector';
 
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { NBunker } from 'soapbox/features/nostr/NBunker.ts';
-import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
+export const useRelays = (): string[] => {
+  // Default relays if nothing is configured
+  const defaultRelays = [
+    'wss://relay.damus.io',
+    'wss://relay.nostr.band', 
+    'wss://nos.lol'
+  ];
+  
+  // In a real implementation, we'd fetch this from app state/config
+  // For now we're just returning default relays
+  return defaultRelays;
+};
 
-function useBunker() {
-  const { relay } = useNostr();
-  const { signer: userSigner, bunkerSigner, authorizedPubkey } = useSigner();
+export const useBunker = () => {
+  // Placeholder for future Nostr bunker implementation
+  return {
+    isConnected: false,
+    connect: () => Promise.resolve(false),
+    disconnect: () => {},
+  };
+};
 
-  useEffect(() => {
-    if (!relay || !userSigner || !bunkerSigner || !authorizedPubkey) return;
-
-    const bunker = new NBunker({
-      relay,
-      userSigner,
-      bunkerSigner,
-      onError(error, event) {
-        console.warn('Bunker error:', error, event);
-      },
-    });
-
-    bunker.authorize(authorizedPubkey);
-
-    return () => {
-      bunker.close();
-    };
-  }, [relay, userSigner, bunkerSigner, authorizedPubkey]);
-}
-
-export { useBunker };
+export default useBunker;

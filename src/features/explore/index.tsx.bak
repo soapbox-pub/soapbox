@@ -68,7 +68,7 @@ const TrendsTab = () => {
 const AccountsTab = () => {
   return (
     <Stack space={4} className='pt-1'>
-      <FollowPacks />
+      <AccountsCarousel />
 
       <Divider />
 
