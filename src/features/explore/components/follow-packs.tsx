@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+//import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
@@ -13,97 +14,13 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 import groupIcon from '@tabler/icons/outline/users.svg';
 
-// Updated mock data with reliable images and following.space URLs
-const MOCK_FOLLOW_PACKS = [
-  {
-    id: '1',
-    pubkey: 'pubkey1',
-    title: 'Bitcoin Developers',
-    description: 'Top Bitcoin developers and contributors',
-    image: 'https://i.imgur.com/yoI8GmQ.png',
-    created_at: Date.now() / 1000,
-    url: 'https://following.space/d/acc8bfac-7b00-4c07-b607-d38b8e53bf0f',
-    users: [
-      { pubkey: 'p1', displayName: 'Adam Back', picture: 'https://i.imgur.com/JH9tJ3e.jpg' },
-      { pubkey: 'p2', displayName: 'Jameson Lopp', picture: 'https://i.imgur.com/6GjQoRY.jpg' },
-      { pubkey: 'p3', displayName: 'Andreas M. Antonopoulos', picture: 'https://i.imgur.com/nbDkVXA.jpg' },
-      { pubkey: 'p4', displayName: 'Peter Todd', picture: 'https://i.imgur.com/TFhfpe4.jpg' },
-      { pubkey: 'p5', displayName: 'Elizabeth Stark', picture: 'https://i.imgur.com/dYwHj8l.jpg' },
-    ]
-  },
-  {
-    id: '2',
-    pubkey: 'pubkey2',
-    title: 'Nostr Core Devs',
-    description: 'Nostr protocol developers and implementers',
-    image: 'https://i.imgur.com/o1uoEu5.jpg',
-    created_at: Date.now() / 1000 - 3600,
-    url: 'https://following.space/d/7209107c-3c8e-457e-b7a1-631hosdf8458',
-    users: [
-      { pubkey: 'p6', displayName: 'fiatjaf', picture: 'https://i.imgur.com/gslnOQx.jpg' },
-      { pubkey: 'p7', displayName: 'jb55', picture: 'https://i.imgur.com/1HFhNsu.jpg' },
-      { pubkey: 'p8', displayName: 'jack', picture: 'https://i.imgur.com/3w5JJdT.jpg' },
-      { pubkey: 'p9', displayName: 'hodlbod', picture: 'https://i.imgur.com/N6YLPK0.jpg' },
-    ]
-  },
-  {
-    id: '3',
-    pubkey: 'pubkey3',
-    title: 'Bitcoin & Lightning Developers',
-    description: 'People working on Bitcoin and Lightning',
-    image: 'https://i.imgur.com/wjVuAGa.jpg',
-    created_at: Date.now() / 1000 - 7200,
-    url: 'https://following.space/d/964a52c8-f1c3-4eb9-a432-5a9e15as12af',
-    users: [
-      { pubkey: 'p10', displayName: 'roasbeef', picture: 'https://i.imgur.com/ZlJiWXB.jpg' },
-      { pubkey: 'p11', displayName: 'ajtowns', picture: 'https://i.imgur.com/K3q3Xrm.jpg' },
-      { pubkey: 'p12', displayName: 'suheb', picture: 'https://i.imgur.com/gYNLtmM.jpg' },
-    ]
-  },
-  {
-    id: '4',
-    pubkey: 'pubkey4',
-    title: 'Privacy Tech Advocates',
-    description: 'Developers and advocates for privacy technologies',
-    image: 'https://i.imgur.com/O3wHoYV.jpg',
-    created_at: Date.now() / 1000 - 10800,
-    url: 'https://following.space/d/6721453a-9db1-441b-88af-6d209ac458a1',
-    users: [
-      { pubkey: 'p13', displayName: 'snowden', picture: 'https://i.imgur.com/KXhZG3Z.jpg' },
-      { pubkey: 'p14', displayName: 'samourai', picture: 'https://i.imgur.com/pWEsUgA.jpg' },
-      { pubkey: 'p15', displayName: 'justanothergeek', picture: 'https://i.imgur.com/ENAsAWb.jpg' },
-      { pubkey: 'p16', displayName: 'privacydev', picture: 'https://i.imgur.com/Q5QFPK0.jpg' },
-    ]
-  },
-  {
-    id: '5',
-    pubkey: 'pubkey5',
-    title: 'Cryptography Experts',
-    description: 'Mathematicians and cryptography researchers',
-    image: 'https://i.imgur.com/eSJzDVl.jpg',
-    created_at: Date.now() / 1000 - 14400,
-    url: 'https://following.space/d/8720a64b-34a1-42b1-9321-51dc6sdf9845',
-    users: [
-      { pubkey: 'p17', displayName: 'cryptograper1', picture: 'https://i.imgur.com/VHH2IHL.jpg' },
-      { pubkey: 'p18', displayName: 'mathgeek', picture: 'https://i.imgur.com/zjl75cN.jpg' },
-      { pubkey: 'p19', displayName: 'cryptolover', picture: 'https://i.imgur.com/RfkRGGZ.jpg' },
-    ]
-  },
-  {
-    id: '6',
-    pubkey: 'pubkey6',
-    title: 'FOSS Developers',
-    description: 'Open source software contributors',
-    image: 'https://i.imgur.com/8mRzUVR.jpg',
-    created_at: Date.now() / 1000 - 18000,
-    url: 'https://following.space/d/3d7a18c5-f1c3-489d-91a4-6fa9sdf8484',
-    users: [
-      { pubkey: 'p20', displayName: 'linuxdev', picture: 'https://i.imgur.com/Ua0AYtx.jpg' },
-      { pubkey: 'p21', displayName: 'freecodedude', picture: 'https://i.imgur.com/pKgNH4m.jpg' },
-      { pubkey: 'p22', displayName: 'opendoor', picture: 'https://i.imgur.com/gy2v0BC.jpg' },
-      { pubkey: 'p23', displayName: 'freeas', picture: 'https://i.imgur.com/TkEUKZC.jpg' },
-    ]
-  },
+// Define standard relays for production
+const STANDARD_RELAYS = [
+  'wss://relay.damus.io',
+  'wss://relay.nostr.band',
+  'wss://nos.lol',
+  'wss://nostr.wine',
+  'wss://relay.nostr.org'
 ];
 
 interface FollowPackUser {
@@ -257,10 +174,10 @@ const FollowPackCard: React.FC<{ pack: FollowPack }> = ({ pack }) => {
 };
 
 const FollowPacks: React.FC = () => {
-  // Start with mock data for immediate display
-  const [followPacks, setFollowPacks] = useState<FollowPack[]>(MOCK_FOLLOW_PACKS);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [followPacks, setFollowPacks] = useState<FollowPack[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState(true);
+  const activeConnections = useRef<WebSocket[]>([]);
   
   // Load isOpen state from localStorage on mount
   useEffect(() => {
@@ -278,21 +195,179 @@ const FollowPacks: React.FC = () => {
     });
   };
 
-  // Simplified fetch - in practice you would uncomment this to fetch real data
-  /*
+  // Production implementation for fetching from Nostr relays
   useEffect(() => {
     const fetchFollowPacks = async () => {
       try {
-        // Fetch from a Nostr API or relay
-        // For now, we're using the mocked data
+        setIsLoading(true);
+        
+        // Cleanup any existing connections
+        activeConnections.current.forEach(socket => {
+          try { socket.close(); } catch (e) {}
+        });
+        activeConnections.current = [];
+        
+        const events: any[] = [];
+
+        // Connect to relays and send subscription requests
+        const subscriptions = STANDARD_RELAYS.map(relay => {
+          return new Promise<void>((resolve) => {
+            try {
+              const socket = new WebSocket(relay);
+              activeConnections.current.push(socket);
+              
+              let timeout = setTimeout(() => {
+                try { socket.close(); } catch (e) {}
+                resolve();
+              }, 8000); // Longer timeout for production
+              
+              socket.onopen = () => {
+                // Subscribe to follow pack events (kind 39089)
+                const requestId = `req-${Math.random().toString(36).substring(2, 10)}`;
+                socket.send(JSON.stringify([
+                  'REQ', 
+                  requestId,
+                  {
+                    kinds: [39089],
+                    limit: 30
+                  }
+                ]));
+              };
+              
+              socket.onmessage = (message) => {
+                try {
+                  const data = JSON.parse(message.data);
+                  if (data[0] === 'EVENT' && data[2]) {
+                    events.push(data[2]);
+                    
+                    // Process and update events in batches as they come in
+                    if (events.length % 5 === 0) {
+                      processAndUpdatePacks(events);
+                    }
+                  } else if (data[0] === 'EOSE') {
+                    clearTimeout(timeout);
+                    try { socket.close(); } catch (e) {}
+                    resolve();
+                  }
+                } catch (error) {
+                  // Ignore parsing errors
+                }
+              };
+              
+              socket.onerror = () => {
+                clearTimeout(timeout);
+                resolve();
+              };
+              
+              socket.onclose = () => {
+                clearTimeout(timeout);
+                resolve();
+              };
+            } catch (error) {
+              resolve();
+            }
+          });
+        });
+        
+        // Helper function to process and update packs
+        const processAndUpdatePacks = (eventsToProcess: any[]) => {
+          // Deduplicate events
+          const uniqueEvents: any[] = [];
+          const eventIds = new Set();
+          
+          for (const event of eventsToProcess) {
+            if (!eventIds.has(event.id)) {
+              eventIds.add(event.id);
+              uniqueEvents.push(event);
+            }
+          }
+          
+          // Transform events into follow packs
+          const packs = uniqueEvents
+            .filter(event => {
+              // Filter valid follow packs (must have title and at least 1 user)
+              const hasTitle = event.tags.some((tag: string[]) => tag[0] === 'title');
+              const hasUsers = event.tags.some((tag: string[]) => tag[0] === 'p');
+              return hasTitle && hasUsers;
+            })
+            .map((event: any) => {
+              // Extract data from tags according to the event format
+              const title = event.tags.find((tag: string[]) => tag[0] === 'title')?.[1] || 'Untitled Pack';
+              const description = event.tags.find((tag: string[]) => tag[0] === 'description')?.[1];
+              const image = event.tags.find((tag: string[]) => tag[0] === 'image')?.[1];
+              const dTag = event.tags.find((tag: string[]) => tag[0] === 'd')?.[1];
+              
+              // Generate following.space URL if d tag exists
+              const url = dTag ? `https://following.space/d/${dTag}` : undefined;
+              
+              // Extract user public keys from p tags
+              const userPubkeys = event.tags
+                .filter((tag: string[]) => tag[0] === 'p')
+                .map((tag: string[]) => tag[1]);
+              
+              const users = userPubkeys.map((pubkey: string) => ({
+                pubkey,
+                // Extract nickname from the tag if available (NIP-02)
+                displayName: event.tags.find((tag: string[]) => 
+                  tag[0] === 'p' && 
+                  tag[1] === pubkey && 
+                  tag[3] === 'nick' && 
+                  tag[2]
+                )?.[2] || pubkey.substring(0, 8),
+              }));
+              
+              return {
+                id: event.id,
+                pubkey: event.pubkey,
+                title,
+                description,
+                image,
+                created_at: event.created_at,
+                url,
+                users,
+              };
+            });
+          
+          // Sort by created_at (newest first)
+          packs.sort((a, b) => b.created_at - a.created_at);
+          
+          if (packs.length > 0) {
+            // Take max 20 packs to display
+            setFollowPacks(packs.slice(0, 20));
+          }
+        };
+        
+        // Wait for all relay subscriptions to complete
+        await Promise.all(subscriptions);
+        
+        // Final processing of all events
+        if (events.length > 0) {
+          processAndUpdatePacks(events);
+        }
+        
+        setIsLoading(false);
+        
+        // Cleanup connections
+        activeConnections.current.forEach(socket => {
+          try { socket.close(); } catch (e) {}
+        });
+        activeConnections.current = [];
       } catch (error) {
         console.error('Error fetching follow packs:', error);
+        setIsLoading(false);
       }
     };
 
+    // Fetch data on component mount
     fetchFollowPacks();
+    
+    // Clean up on unmount
+    return () => {
+      activeConnections.current.forEach(socket => {
+        try { socket.close(); } catch (e) {}
+      });
+    };
   }, []);
-  */
 
   return (
     <Stack space={4} className='px-4'>
@@ -317,11 +392,29 @@ const FollowPacks: React.FC = () => {
           <div className='flex justify-center py-8'>
             <Spinner size={40} />
           </div>
-        ) : (
+        ) : followPacks.length > 0 ? (
           <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
             {followPacks.map((pack) => (
               <FollowPackCard key={pack.id} pack={pack} />
             ))}
+          </div>
+        ) : (
+          <div className='flex flex-col items-center justify-center py-12 px-4 text-center'>
+            <SvgIcon src={groupIcon} className='h-12 w-12 text-gray-400 mb-4' />
+            <Text size='xl' weight='medium' className='mb-2'>No Follow Packs Found</Text>
+            <Text theme='muted'>
+              Follow Packs will appear here as they become available
+            </Text>
+            <a 
+              href="https://following.space" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="mt-4 text-primary-600 hover:underline"
+            >
+              <Text size='sm'>
+                Create a Follow Pack at following.space
+              </Text>
+            </a>
           </div>
         )}
       </div>
