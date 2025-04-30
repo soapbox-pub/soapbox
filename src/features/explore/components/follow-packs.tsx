@@ -1,5 +1,5 @@
 //import React, { useEffect, useState, useRef } from 'react';
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
@@ -27,6 +27,9 @@ interface FollowPackUser {
   pubkey: string;
   picture?: string;
   displayName?: string;
+  name?: string;
+  nip05?: string;
+  loaded?: boolean;
 }
 
 interface FollowPack {
@@ -91,7 +94,87 @@ const ImageWithFallback: React.FC<{ src?: string; alt: string; className?: strin
   );
 };
 
-const FollowPackCard: React.FC<{ pack: FollowPack }> = ({ pack }) => {
+const FollowPackUserDisplay: React.FC<{ user: FollowPackUser; socket?: WebSocket }> = ({ user, socket }) => {
+  const [profileData, setProfileData] = useState(user);
+  const [isLoading, setIsLoading] = useState(!user.loaded);
+
+  useEffect(() => {
+    // Only fetch if we don't have profile data and have a socket
+    if (!user.loaded && socket && socket.readyState === WebSocket.OPEN) {
+      // Request metadata for this user
+      const requestId = `req-user-${user.pubkey.substring(0, 6)}`;
+      socket.send(JSON.stringify([
+        'REQ',
+        requestId,
+        {
+          kinds: [0], // Metadata events
+          authors: [user.pubkey],
+          limit: 1
+        }
+      ]));
+
+      // Listen for the response
+      const handleMessage = (event: MessageEvent) => {
+        try {
+          const data = JSON.parse(event.data);
+          
+          if (data[0] === 'EVENT' && data[2]?.kind === 0 && data[2]?.pubkey === user.pubkey) {
+            // We got a metadata event
+            try {
+              const content = JSON.parse(data[2].content);
+              setProfileData(prev => ({
+                ...prev,
+                name: content.name,
+                displayName: content.display_name || content.name,
+                picture: content.picture,
+                nip05: content.nip05,
+                loaded: true
+              }));
+              setIsLoading(false);
+            } catch (e) {
+              // Invalid JSON in content
+              setIsLoading(false);
+            }
+          } else if (data[0] === 'EOSE' && data[1] === requestId) {
+            // End of stored events - if we didn't get metadata, stop loading
+            setIsLoading(false);
+          }
+        } catch (e) {
+          // Parsing error
+          setIsLoading(false);
+        }
+      };
+
+      socket.addEventListener('message', handleMessage);
+      
+      return () => {
+        socket.removeEventListener('message', handleMessage);
+      };
+    }
+
+    return undefined;
+  }, [user, socket]);
+
+  return (
+    <div className='flex items-center gap-1'>
+      {isLoading ? (
+        <>
+          <div className="w-5 h-5 rounded-full bg-gray-100 flex items-center justify-center">
+            <Spinner size={12} />
+          </div>
+          <Text size='sm' theme='muted'>{user.pubkey.substring(0, 8)}</Text>
+        </>
+      ) : (
+        <>
+          <Avatar src={profileData.picture} size={20} />
+          <Text size='sm'>{profileData.displayName || profileData.name || user.pubkey.substring(0, 8)}</Text>
+        </>
+      )}
+    </div>
+  );
+};
+
+const FollowPackCard: React.FC<{ pack: FollowPack; metadataSocket?: WebSocket }> = ({ pack, metadataSocket }) => {
   const MAX_DISPLAYED_USERS = 3;
 
   // If the pack has a URL, render the card as a link to following.space
@@ -139,10 +222,11 @@ const FollowPackCard: React.FC<{ pack: FollowPack }> = ({ pack }) => {
                   </Text>
                   <div className='flex flex-wrap gap-2'>
                     {pack.users.slice(0, MAX_DISPLAYED_USERS).map((user) => (
-                      <div key={user.pubkey} className='flex items-center gap-1'>
-                        <Avatar src={user.picture} size={20} />
-                        <Text size='sm'>{user.displayName || user.pubkey.substring(0, 8)}</Text>
-                      </div>
+                      <FollowPackUserDisplay 
+                        key={user.pubkey} 
+                        user={user} 
+                        socket={metadataSocket}
+                      />
                     ))}
                     {pack.users.length > MAX_DISPLAYED_USERS && (
                       <Text size='sm' theme='muted'>
@@ -178,6 +262,7 @@ const FollowPacks: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isOpen, setIsOpen] = useState(true);
   const activeConnections = useRef<WebSocket[]>([]);
+  const metadataSocket = useRef<WebSocket | null>(null);
   
   // Load isOpen state from localStorage on mount
   useEffect(() => {
@@ -194,6 +279,26 @@ const FollowPacks: React.FC = () => {
       return newValue;
     });
   };
+  
+  // Set up a dedicated socket for metadata
+  useEffect(() => {
+    // Clean up before creating a new one
+    if (metadataSocket.current) {
+      try { metadataSocket.current.close(); } catch (e) {}
+      metadataSocket.current = null;
+    }
+    
+    // Create a new metadata socket
+    const socket = new WebSocket('wss://relay.damus.io'); // Use a reliable relay for metadata
+    metadataSocket.current = socket;
+    
+    return () => {
+      if (metadataSocket.current) {
+        try { metadataSocket.current.close(); } catch (e) {}
+        metadataSocket.current = null;
+      }
+    };
+  }, []);
 
   // Production implementation for fetching from Nostr relays
   useEffect(() => {
@@ -395,7 +500,11 @@ const FollowPacks: React.FC = () => {
         ) : followPacks.length > 0 ? (
           <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
             {followPacks.map((pack) => (
-              <FollowPackCard key={pack.id} pack={pack} />
+              <FollowPackCard 
+                key={pack.id} 
+                pack={pack} 
+                metadataSocket={metadataSocket.current || undefined} 
+              />
             ))}
           </div>
         ) : (
