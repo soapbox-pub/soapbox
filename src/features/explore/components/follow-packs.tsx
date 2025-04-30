@@ -437,8 +437,8 @@ const FollowPacks: React.FC = () => {
           packs.sort((a, b) => b.created_at - a.created_at);
           
           if (packs.length > 0) {
-            // Take max 20 packs to display
-            setFollowPacks(packs.slice(0, 20));
+            // Take max 4 packs to display as requested
+            setFollowPacks(packs.slice(0, 4));
           }
         };
         
@@ -498,15 +498,29 @@ const FollowPacks: React.FC = () => {
             <Spinner size={40} />
           </div>
         ) : followPacks.length > 0 ? (
-          <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
-            {followPacks.map((pack) => (
-              <FollowPackCard 
-                key={pack.id} 
-                pack={pack} 
-                metadataSocket={metadataSocket.current || undefined} 
-              />
-            ))}
-          </div>
+          <Stack space={4}>
+            <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
+              {followPacks.map((pack) => (
+                <FollowPackCard 
+                  key={pack.id} 
+                  pack={pack} 
+                  metadataSocket={metadataSocket.current || undefined} 
+                />
+              ))}
+            </div>
+            
+            <div className="flex justify-center mt-2 mb-4">
+              <a 
+                href="https://following.space/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-full hover:bg-primary-700 transition-colors font-medium"
+              >
+                <FormattedMessage id="follow_packs.explore_more" defaultMessage="Explore more Follow Packs" />
+                <SvgIcon src={arrowIcon} className="h-4 w-4 -rotate-90" />
+              </a>
+            </div>
+          </Stack>
         ) : (
           <div className='flex flex-col items-center justify-center py-12 px-4 text-center'>
             <SvgIcon src={groupIcon} className='h-12 w-12 text-gray-400 mb-4' />
