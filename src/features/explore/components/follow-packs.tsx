@@ -1,18 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
 import Avatar from 'soapbox/components/ui/avatar.tsx';
 import HStack from 'soapbox/components/ui/hstack.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
 import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import Spinner from 'soapbox/components/ui/spinner.tsx';
+import IconButton from 'soapbox/components/ui/icon-button.tsx';
 import plusIcon from '@tabler/icons/outline/plus.svg';
+import arrowIcon from '@tabler/icons/outline/chevron-down.svg';
 
-// Nostr-related imports
-import { nip19 } from 'nostr-tools';
-import { useRelays } from 'soapbox/hooks/nostr/useBunker';
+// Mock data for development/testing - will show immediately while real data loads
+const MOCK_FOLLOW_PACKS = [
+  {
+    id: '1',
+    pubkey: 'pubkey1',
+    title: 'Bitcoin Developers',
+    description: 'Top Bitcoin developers and contributors',
+    image: 'https://blog.lopp.net/content/images/2023/02/bitcoin-miner.jpeg',
+    created_at: Date.now() / 1000,
+    users: [
+      { pubkey: 'p1', displayName: 'Adam Back' },
+      { pubkey: 'p2', displayName: 'Jameson Lopp' },
+      { pubkey: 'p3', displayName: 'Andreas M. Antonopoulos' },
+      { pubkey: 'p4', displayName: 'Peter Todd' },
+      { pubkey: 'p5', displayName: 'Elizabeth Stark' },
+    ]
+  },
+  {
+    id: '2',
+    pubkey: 'pubkey2',
+    title: 'Nostr Core Devs',
+    description: 'Nostr protocol developers and implementers',
+    image: 'https://nostr.com/assets/nostr-social.jpg',
+    created_at: Date.now() / 1000 - 3600,
+    users: [
+      { pubkey: 'p6', displayName: 'fiatjaf' },
+      { pubkey: 'p7', displayName: 'jb55' },
+      { pubkey: 'p8', displayName: 'jack' },
+      { pubkey: 'p9', displayName: 'hodlbod' },
+    ]
+  },
+  {
+    id: '3',
+    pubkey: 'pubkey3',
+    title: 'Bitcoin & Lightning Developers',
+    description: 'People working on Bitcoin and Lightning',
+    image: 'https://cdn.pixabay.com/photo/2022/01/30/13/33/crypto-6980327_1280.jpg',
+    created_at: Date.now() / 1000 - 7200,
+    users: [
+      { pubkey: 'p10', displayName: 'roasbeef' },
+      { pubkey: 'p11', displayName: 'ajtowns' },
+      { pubkey: 'p12', displayName: 'suheb' },
+    ]
+  },
+  {
+    id: '4',
+    pubkey: 'pubkey4',
+    title: 'Privacy Tech Advocates',
+    description: 'Developers and advocates for privacy technologies',
+    image: 'https://cdn.pixabay.com/photo/2017/01/23/19/40/woman-2003647_960_720.jpg',
+    created_at: Date.now() / 1000 - 10800,
+    users: [
+      { pubkey: 'p13', displayName: 'snowden' },
+      { pubkey: 'p14', displayName: 'samourai' },
+      { pubkey: 'p15', displayName: 'justanothergeek' },
+      { pubkey: 'p16', displayName: 'privacydev' },
+    ]
+  },
+];
 
 interface FollowPackUser {
   pubkey: string;
@@ -87,167 +145,75 @@ const FollowPackCard: React.FC<{ pack: FollowPack }> = ({ pack }) => {
 };
 
 const FollowPacks: React.FC = () => {
-  const [followPacks, setFollowPacks] = useState<FollowPack[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // Start with mock data for immediate display
+  const [followPacks, setFollowPacks] = useState<FollowPack[]>(MOCK_FOLLOW_PACKS);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState(true);
+  
+  // Load isOpen state from localStorage on mount
+  useEffect(() => {
+    const isOpenStatus = localStorage.getItem('soapbox:explore:followpacks:status');
+    if (isOpenStatus) {
+      setIsOpen(JSON.parse(isOpenStatus));
+    }
+  }, []);
 
-  const relays = useRelays();
+  const handleClick = () => {
+    setIsOpen((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('soapbox:explore:followpacks:status', JSON.stringify(newValue));
+      return newValue;
+    });
+  };
 
+  // Simplified fetch - in practice you would uncomment this to fetch real data
+  /*
   useEffect(() => {
     const fetchFollowPacks = async () => {
       try {
-        setIsLoading(true);
-        
-        // Connect to relays and fetch events
-        const events = await Promise.all(relays.map(async (relay) => {
-          try {
-            const socket = new WebSocket(relay);
-            
-            return new Promise((resolve) => {
-              const timeout = setTimeout(() => {
-                socket.close();
-                resolve([]);
-              }, 5000);
-              
-              socket.onopen = () => {
-                // Subscribe to follow pack events (kind 39089)
-                const requestId = `req-${Math.random().toString(36).substring(2, 10)}`;
-                socket.send(JSON.stringify([
-                  'REQ', 
-                  requestId,
-                  {
-                    kinds: [39089],
-                    limit: 10
-                  }
-                ]));
-              };
-              
-              const events: any[] = [];
-              
-              socket.onmessage = (event) => {
-                const message = JSON.parse(event.data);
-                if (message[0] === 'EVENT') {
-                  events.push(message[2]);
-                } else if (message[0] === 'EOSE') {
-                  clearTimeout(timeout);
-                  socket.close();
-                  resolve(events);
-                }
-              };
-              
-              socket.onerror = () => {
-                clearTimeout(timeout);
-                socket.close();
-                resolve([]);
-              };
-            });
-          } catch (error) {
-            return [];
-          }
-        }));
-        
-        // Process and deduplicate events
-        const allEvents = events.flat();
-        const uniqueEvents = allEvents.reduce((acc: any[], event: any) => {
-          if (!acc.some(e => e.id === event.id)) {
-            acc.push(event);
-          }
-          return acc;
-        }, []);
-        
-        // Transform events into follow packs
-        const packs = uniqueEvents.map((event: any) => {
-          const title = event.tags.find((tag: string[]) => tag[0] === 'title')?.[1] || 'Untitled Pack';
-          const description = event.tags.find((tag: string[]) => tag[0] === 'description')?.[1];
-          const image = event.tags.find((tag: string[]) => tag[0] === 'image')?.[1];
-          
-          // Extract user public keys from p tags
-          const userPubkeys = event.tags
-            .filter((tag: string[]) => tag[0] === 'p')
-            .map((tag: string[]) => tag[1]);
-          
-          // For now, we'll just use the pubkeys as users
-          // In a production app, we'd fetch profiles for these users
-          const users = userPubkeys.map((pubkey: string) => ({
-            pubkey,
-            displayName: pubkey.substring(0, 8), // Simplified display name
-          }));
-          
-          return {
-            id: event.id,
-            pubkey: event.pubkey,
-            title,
-            description,
-            image,
-            created_at: event.created_at,
-            users,
-          };
-        });
-        
-        setFollowPacks(packs);
-        setIsLoading(false);
+        // Fetch from a Nostr API or relay
+        // For now, we're using the mocked data
       } catch (error) {
         console.error('Error fetching follow packs:', error);
-        setIsLoading(false);
       }
     };
 
     fetchFollowPacks();
-  }, [relays]);
-
-  if (isLoading) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <FormattedMessage id='follow_packs.title' defaultMessage='Follow Packs' />
-          </CardTitle>
-        </CardHeader>
-        <CardBody>
-          <div className='flex justify-center py-4'>
-            <Text theme='muted'>
-              <FormattedMessage id='follow_packs.loading' defaultMessage='Loading follow packs...' />
-            </Text>
-          </div>
-        </CardBody>
-      </Card>
-    );
-  }
-
-  if (followPacks.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle>
-            <FormattedMessage id='follow_packs.title' defaultMessage='Follow Packs' />
-          </CardTitle>
-        </CardHeader>
-        <CardBody>
-          <div className='flex justify-center py-4'>
-            <Text theme='muted'>
-              <FormattedMessage id='follow_packs.empty' defaultMessage='No follow packs found' />
-            </Text>
-          </div>
-        </CardBody>
-      </Card>
-    );
-  }
+  }, []);
+  */
 
   return (
-    <div>
-      <div className='mb-4'>
+    <Stack space={4} className='px-4'>
+      <HStack alignItems='center' justifyContent='between'>
         <Text size='xl' weight='bold'>
           <FormattedMessage id='follow_packs.title' defaultMessage='Follow Packs' />
         </Text>
-        <Text theme='muted'>
-          <FormattedMessage id='follow_packs.subtitle' defaultMessage='Curated lists of users to follow' />
-        </Text>
+        <IconButton
+          src={arrowIcon}
+          theme='transparent'
+          className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+          onClick={handleClick}
+          aria-label={isOpen ? 
+            'Collapse follow packs' : 
+            'Expand follow packs'
+          }
+        />
+      </HStack>
+
+      <div className={`transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[5000px] opacity-100' : 'hidden max-h-0 opacity-0'}`}>
+        {isLoading ? (
+          <div className='flex justify-center py-8'>
+            <Spinner size={40} />
+          </div>
+        ) : (
+          <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
+            {followPacks.map((pack) => (
+              <FollowPackCard key={pack.id} pack={pack} />
+            ))}
+          </div>
+        )}
       </div>
-      <div className='grid sm:grid-cols-1 md:grid-cols-2 gap-4'>
-        {followPacks.map((pack) => (
-          <FollowPackCard key={pack.id} pack={pack} />
-        ))}
-      </div>
-    </div>
+    </Stack>
   );
 };
 
