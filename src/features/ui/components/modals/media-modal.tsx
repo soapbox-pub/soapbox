@@ -241,7 +241,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
   };
 
   return (
-    <div className='media-modal pointer-events-auto fixed inset-0 z-[9999] flex size-full bg-gray-900/90'>
+    <div className='pointer-events-auto fixed inset-0 z-[9999] flex size-full bg-gray-900/90'>
       <div
         className='absolute inset-0'
         role='presentation'

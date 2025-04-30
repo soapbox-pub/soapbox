@@ -15,12 +15,13 @@ import SearchResults from 'soapbox/features/compose/components/search-results.ts
 import Search from 'soapbox/features/compose/components/search.tsx';
 import ExploreCards from 'soapbox/features/explore/components/explore-cards.tsx';
 import ExploreFilter from 'soapbox/features/explore/components/exploreFilter.tsx';
-import FollowPacks from './components/follow-packs';
 import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
 import { PublicTimeline } from 'soapbox/features/ui/util/async-components.ts';
 import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
 import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
 import { SearchFilter } from 'soapbox/reducers/search.ts';
+
+import FollowPacks from './components/follow-packs.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.explore', defaultMessage: 'Explore' },

@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector';
-
 export const useRelays = (): string[] => {
   // Default relays if nothing is configured
   const defaultRelays = [
     'wss://relay.damus.io',
     'wss://relay.nostr.band', 
-    'wss://nos.lol'
+    'wss://nos.lol',
+    'wss://nostr.wine',
+    'wss://relay.nostr.org',
   ];
   
   // In a real implementation, we'd fetch this from app state/config
