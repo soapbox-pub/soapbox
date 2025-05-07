@@ -9,14 +9,18 @@ const useModerationPolicies = () => {
   const queryClient = useQueryClient();
 
   const handleResponse = async (response: MastodonResponse, message: string) => {
-    const details = await response.error()
-      .then(v => v?.error || 'Unknown error');
-    if (!response.ok) throw new Error(`${message}: ${details}`);
+    if (!response.ok) {
+      const details = await response.error()
+        .then(v => v?.error || 'Unknown error');
+      throw new Error(`${message}: ${details}`);
+    }
+
     const data = await response.json();
     // Check if the response contains an error
     if (data && 'error' in data) throw new Error(data.error);
     return data;
   };
+
 
   const allPoliciesQuery = useQuery({
     queryKey: ['admin', 'moderation_policies'],
