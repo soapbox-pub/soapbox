@@ -9,7 +9,7 @@ interface IEditableList<T> {
   setItems: (items: T[]) => void;
 }
 
-const DEFAULT_MINT = 'https://mint.cubabitcoin.org';
+const DEFAULT_MINT = '';
 
 const MintField: StreamfieldComponent<string> = ({ value, onChange, index = 0, values = [] }) => {
   const isFirst = index === 0;
