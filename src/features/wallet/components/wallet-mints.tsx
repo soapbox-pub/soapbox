@@ -16,7 +16,7 @@ const messages = defineMessages({
   loadingError: { id: 'wallet.loading_error', defaultMessage: 'An unexpected error occurred while loading your wallet data.' },
   empty: { id: 'wallet.mints.empty', defaultMessage: 'At least one mint is required.' },
   url: { id: 'wallet.invalid_url', defaultMessage: 'All strings must be valid URLs.' },
-  send: { id: 'common.send', defaultMessage: 'Send' },
+  save: { id: 'common.save', defaultMessage: 'Save' },
 });
 
 const WalletMints = () => {
@@ -101,7 +101,7 @@ const WalletMints = () => {
             <Stack space={2}>
               <MintEditor items={mints} setItems={setMints} />
               <Button className='w-full' theme='primary' onClick={handleClick} disabled={isLoading}>
-                {intl.formatMessage(messages.send)}
+                {intl.formatMessage(messages.save)}
               </Button>
             </Stack>
           );
