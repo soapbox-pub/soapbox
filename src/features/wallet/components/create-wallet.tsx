@@ -1,4 +1,5 @@
 import helpIcon from '@tabler/icons/outline/help-circle.svg';
+import IconSquareArrowRight from '@tabler/icons/outline/square-arrow-right.svg';
 import plusIcon from '@tabler/icons/outline/square-rounded-plus.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
@@ -95,19 +96,30 @@ const CreateWallet = () => {
           <Stack space={5} className='w-full'>
             <Form onSubmit={handleSubmit}>
               <Stack className='rounded-lg p-4'>
-                <HStack alignItems='center' space={2}>
-                  <Text
-                    size='lg'
-                    weight='medium'
-                    className='text-gray-900 dark:text-gray-100'
+                <HStack alignItems='center' justifyContent='between' space={2}>
+                  <HStack alignItems='center' space={2}>
+                    <Text
+                      size='lg'
+                      weight='medium'
+                      className='text-gray-900 dark:text-gray-100'
+                    >
+                      {intl.formatMessage(messages.mints)}
+                    </Text>
+                    <Tooltip text={'Mint: A kind of digital bank that issues tokens backed by Bitcoin, like \'Bitcoin gift cards\' with built-in privacy.'}>
+                      <div className='text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'>
+                        <Icon src={helpIcon} />
+                      </div>
+                    </Tooltip>
+                  </HStack>
+                  <a
+                    href='https://bitcoinmints.com/?tab=mints'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='flex items-center space-x-1 text-primary-500 hover:underline dark:text-primary-400'
                   >
-                    {intl.formatMessage(messages.mints)}
-                  </Text>
-                  <Tooltip text={'Mint: A kind of digital bank that issues tokens backed by Bitcoin, like \'Bitcoin gift cards\' with built-in privacy.'}>
-                    <div className='text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'>
-                      <Icon src={helpIcon} />
-                    </div>
-                  </Tooltip>
+                    <FormattedMessage id='wallet.discover_mints' defaultMessage='Discover Mints' />
+                    <Icon src={IconSquareArrowRight} className='ml-2 size-4 text-primary-500 dark:text-primary-400' />
+                  </a>
                 </HStack>
                 <div>
                   <MintEditor items={mints} setItems={setMints} />

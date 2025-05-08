@@ -1732,6 +1732,7 @@
   "wallet.create.question": "Do you want create one?",
   "wallet.create.success": "Wallet created successfully!",
   "wallet.create.title": "You don't have a wallet",
+  "wallet.discover_mints": "Discover Mints",
   "wallet.error": "Failed to update.",
   "wallet.hidden.balance": "••••••",
   "wallet.invalid_url": "All strings must be valid URLs.",
