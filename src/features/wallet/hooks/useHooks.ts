@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { defineMessages, useIntl } from 'react-intl';
 import { create } from 'zustand';
 
+import { HTTPError } from 'soapbox/api/HTTPError.ts';
 import { useApi } from 'soapbox/hooks/useApi.ts';
 import { NutzappedEntry, NutzappedRecord, Transactions, WalletData, baseWalletSchema, nutzappedEntry, transactionsSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
@@ -210,8 +211,11 @@ const useZapCashuRequest = () => {
       await refetch();
     },
     onError: (err: unknown) => {
-      const messageError = err instanceof Error ? err.message : 'An unexpected error occurred';
-      toast.error(messageError);
+      if (err instanceof HTTPError) {
+        toast.showAlertForError(err);
+      } else {
+        toast.error('An unexpected error occurred');
+      }
     },
   });
 
