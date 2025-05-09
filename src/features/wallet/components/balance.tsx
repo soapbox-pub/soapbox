@@ -250,6 +250,19 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
           <Button icon={cancelIcon} theme='danger' text={intl.formatMessage(messages.cancel)} onClick={handleClean} />
           <Button icon={iconButton} type='submit' theme='primary' text={textButton} />
         </HStack>
+        <Text size='sm' theme='muted' align='center'>
+          {intl.formatMessage({
+            id: 'wallet.balance.mint.help',
+            defaultMessage: 'Minting converts sats from your existing Lightning wallet into Cashu. {learnMore}',
+          }, {
+            learnMore: (
+              // eslint-disable-next-line formatjs/no-literal-string-in-jsx
+              <a href='https://cashu.space/#howitworks' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>
+                Learn more
+              </a>
+            ),
+          })}
+        </Text>
       </Stack>
     </Form>
   );
