@@ -86,6 +86,7 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
           theme='secondary'
           text={intl.formatMessage(messages.withdraw)}
           onClick={handleWithdrawClick}
+          className='withdraw-button'
         />
         <Button
           icon={libraryPlusIcon}

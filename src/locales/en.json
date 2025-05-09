@@ -1755,6 +1755,8 @@
   "wallet.transactions.no_transactions": "You don't have transactions yet.",
   "wallet.transactions.show_more": "Show More",
   "who_to_follow.title": "People To Follow",
+  "withdraw_modal.message": "The withdraw feature is not yet available, but it's coming soon! Stay tuned.",
+  "withdraw_modal.title": "Feature Coming Soon!",
   "zap.button.text.rounded": "Zap {amount}K sats",
   "zap.finish": "Finish",
   "zap.next": "Next",
