@@ -1,8 +1,10 @@
+import IconSquareArrowRight from '@tabler/icons/outline/square-arrow-right.svg';
 import { useEffect, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import Button from 'soapbox/components/ui/button.tsx';
 import { Column } from 'soapbox/components/ui/column.tsx';
+import Icon from 'soapbox/components/ui/icon.tsx';
 import Spinner from 'soapbox/components/ui/spinner.tsx';
 import Stack from 'soapbox/components/ui/stack.tsx';
 import Text from 'soapbox/components/ui/text.tsx';
@@ -83,6 +85,19 @@ const WalletMints = () => {
 
   return (
     <Column label={intl.formatMessage(messages.title)} >
+      <Stack space={2} className=''>
+        <div className='mx-2 flex justify-end'>
+          <a
+            href='https://bitcoinmints.com/?tab=mints'
+            target='_blank'
+            rel='noopener noreferrer'
+            className='flex items-center space-x-1 text-primary-500 hover:underline dark:text-primary-400'
+          >
+            <FormattedMessage id='wallet.discover_mints' defaultMessage='Discover Mints' />
+            <Icon src={IconSquareArrowRight} className='ml-2 size-4 text-primary-500 dark:text-primary-400' />
+          </a>
+        </div>
+      </Stack>
       {(() => {
         if (isInitialLoading) {
           return (

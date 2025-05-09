@@ -7,7 +7,6 @@ import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -24,6 +23,7 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
+import WithdrawModal from './withdraw-modal.tsx';
 
 
 const messages = defineMessages({
@@ -60,6 +60,15 @@ const openExtension = async (invoice: string) => {
 
 const Amount = ({ amount, onMintClick }: AmountProps) => {
   const intl = useIntl();
+  const [isWithdrawModalOpen, setWithdrawModalOpen] = useState(false);
+
+  const handleWithdrawClick = () => {
+    setWithdrawModalOpen(true);
+  };
+
+  const handleCloseWithdrawModal = () => {
+    setWithdrawModalOpen(false);
+  };
 
   return (
     <Stack alignItems='center' space={4} className='w-4/5'>
@@ -72,9 +81,22 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
       </div>
 
       <HStack space={2}>
-        <Button icon={withdrawIcon} theme='secondary' text={intl.formatMessage(messages.withdraw)} />
-        <Button icon={libraryPlusIcon} theme='primary' onClick={onMintClick} text={intl.formatMessage(messages.mint)} />
+        <Button
+          icon={withdrawIcon}
+          theme='secondary'
+          text={intl.formatMessage(messages.withdraw)}
+          onClick={handleWithdrawClick}
+          className='withdraw-button'
+        />
+        <Button
+          icon={libraryPlusIcon}
+          theme='primary'
+          onClick={onMintClick}
+          text={intl.formatMessage(messages.mint)}
+        />
       </HStack>
+
+      {isWithdrawModalOpen && <WithdrawModal onClose={handleCloseWithdrawModal} />}
     </Stack>
   );
 };
@@ -228,6 +250,19 @@ const NewMint = ({ onBack, list }: NewMintProps) => {
           <Button icon={cancelIcon} theme='danger' text={intl.formatMessage(messages.cancel)} onClick={handleClean} />
           <Button icon={iconButton} type='submit' theme='primary' text={textButton} />
         </HStack>
+        <Text size='sm' theme='muted' align='center'>
+          {intl.formatMessage({
+            id: 'wallet.balance.mint.help',
+            defaultMessage: 'Minting converts sats from your existing Lightning wallet into Cashu. {learnMore}',
+          }, {
+            learnMore: (
+              // eslint-disable-next-line formatjs/no-literal-string-in-jsx
+              <a href='https://cashu.space/#howitworks' target='_blank' rel='noopener noreferrer' className='text-blue-500 underline'>
+                Learn more
+              </a>
+            ),
+          })}
+        </Text>
       </Stack>
     </Form>
   );
