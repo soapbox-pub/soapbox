@@ -7,7 +7,6 @@ import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-
 import CopyableInput from 'soapbox/components/copyable-input.tsx';
 import Button from 'soapbox/components/ui/button.tsx';
 import Divider from 'soapbox/components/ui/divider.tsx';
@@ -24,6 +23,7 @@ import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
 import { Quote, quoteSchema } from 'soapbox/schemas/wallet.ts';
 import toast from 'soapbox/toast.tsx';
 
+import WithdrawModal from './withdraw-modal.tsx';
 
 
 const messages = defineMessages({
@@ -60,6 +60,15 @@ const openExtension = async (invoice: string) => {
 
 const Amount = ({ amount, onMintClick }: AmountProps) => {
   const intl = useIntl();
+  const [isWithdrawModalOpen, setWithdrawModalOpen] = useState(false);
+
+  const handleWithdrawClick = () => {
+    setWithdrawModalOpen(true);
+  };
+
+  const handleCloseWithdrawModal = () => {
+    setWithdrawModalOpen(false);
+  };
 
   return (
     <Stack alignItems='center' space={4} className='w-4/5'>
@@ -72,9 +81,21 @@ const Amount = ({ amount, onMintClick }: AmountProps) => {
       </div>
 
       <HStack space={2}>
-        <Button icon={withdrawIcon} theme='secondary' text={intl.formatMessage(messages.withdraw)} />
-        <Button icon={libraryPlusIcon} theme='primary' onClick={onMintClick} text={intl.formatMessage(messages.mint)} />
+        <Button
+          icon={withdrawIcon}
+          theme='secondary'
+          text={intl.formatMessage(messages.withdraw)}
+          onClick={handleWithdrawClick}
+        />
+        <Button
+          icon={libraryPlusIcon}
+          theme='primary'
+          onClick={onMintClick}
+          text={intl.formatMessage(messages.mint)}
+        />
       </HStack>
+
+      {isWithdrawModalOpen && <WithdrawModal onClose={handleCloseWithdrawModal} />}
     </Stack>
   );
 };
