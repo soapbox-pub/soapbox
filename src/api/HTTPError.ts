@@ -6,7 +6,7 @@ export class HTTPError extends Error {
   request: Request;
 
   constructor(response: MastodonResponse, request: Request) {
-    super(response.statusText);
+    super(`HTTP Error: ${response.status} ${response.statusText}`);
     this.response = response;
     this.request = request;
   }
