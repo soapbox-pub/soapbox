@@ -2,16 +2,16 @@ import { useEffect, useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { expandFollowsTimeline } from 'soapbox/actions/timelines.ts';
-import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { expandFollowsTimeline } from '@/actions/timelines.ts';
+import PullToRefresh from '@/components/pull-to-refresh.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Timeline from '@/features/ui/components/timeline.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },

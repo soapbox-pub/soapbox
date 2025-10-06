@@ -5,18 +5,18 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import Checkbox from 'soapbox/components/ui/checkbox.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
-import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import toast from 'soapbox/toast.tsx';
+import Button from '@/components/ui/button.tsx';
+import Checkbox from '@/components/ui/checkbox.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
+import { SelectDropdown } from '@/features/forms/index.tsx';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   showReplies: { id: 'home.column_settings.show_replies', defaultMessage: 'Show replies' },

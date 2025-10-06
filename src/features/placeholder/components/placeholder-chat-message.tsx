@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
 
 import { randomIntFromInterval } from '../utils.ts';
 

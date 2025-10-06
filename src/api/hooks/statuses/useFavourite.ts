@@ -1,12 +1,12 @@
-import { favourite as favouriteAction, unfavourite as unfavouriteAction, toggleFavourite as toggleFavouriteAction } from 'soapbox/actions/interactions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { selectEntity } from 'soapbox/entity-store/selectors.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import { favourite as favouriteAction, unfavourite as unfavouriteAction, toggleFavourite as toggleFavouriteAction } from '@/actions/interactions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { selectEntity } from '@/entity-store/selectors.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { normalizeStatus } from '@/normalizers/index.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
 
-import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from '@/types/entities.ts';
 
 export function useFavourite() {
   const getState = useGetState();

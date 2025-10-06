@@ -1,8 +1,8 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import { Card, CardBody } from '@/components/ui/card.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
 
 interface MissingIndicatorProps {
   nested?: boolean;

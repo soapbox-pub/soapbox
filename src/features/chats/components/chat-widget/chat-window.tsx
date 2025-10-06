@@ -5,15 +5,15 @@ import { useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { secondsToDays } from 'soapbox/utils/numbers.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
+import { secondsToDays } from '@/utils/numbers.tsx';
 
 import Chat from '../chat.tsx';
 

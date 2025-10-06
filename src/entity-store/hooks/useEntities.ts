@@ -2,12 +2,12 @@ import LinkHeader from 'http-link-header';
 import { useEffect } from 'react';
 import z from 'zod';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
-import { realNumberSchema } from 'soapbox/utils/numbers.tsx';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { filteredArray } from '@/schemas/utils.ts';
+import { realNumberSchema } from '@/utils/numbers.tsx';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess, invalidateEntityList } from '../actions.ts';
 import { selectEntities, selectListState, useListState } from '../selectors.ts';

@@ -2,19 +2,19 @@ import { useEffect, useState } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchBackups, createBackup } from 'soapbox/actions/backups.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Card } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchBackups, createBackup } from '@/actions/backups.ts';
+import Button from '@/components/ui/button.tsx';
+import { Card } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
-import type { Backup as BackupEntity } from 'soapbox/reducers/backups.ts';
+import type { Backup as BackupEntity } from '@/reducers/backups.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },

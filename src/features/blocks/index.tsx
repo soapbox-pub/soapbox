@@ -1,10 +1,10 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useBlocks } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useBlocks } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.blocks', defaultMessage: 'Blocks' },

@@ -1,7 +1,7 @@
-import { isIntegerId } from 'soapbox/utils/numbers.tsx';
+import { isIntegerId } from '@/utils/numbers.tsx';
 
 import type { IntlShape } from 'react-intl';
-import type { Status } from 'soapbox/schemas/index.ts';
+import type { Status } from '@/schemas/index.ts';
 
 /** Get the initial visibility of media attachments from user settings. */
 export const defaultMediaVisibility = <T extends { reblog: T | string | null } & Pick<Status, 'visibility' | 'sensitive'>>(

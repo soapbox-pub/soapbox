@@ -1,4 +1,4 @@
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useApi } from '@/hooks/useApi.ts';
 
 import { useCreateEntity } from './useCreateEntity.ts';
 import { useDeleteEntity } from './useDeleteEntity.ts';

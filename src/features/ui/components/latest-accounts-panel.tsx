@@ -2,14 +2,14 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Text from 'soapbox/components/ui/text.tsx';
-import Widget from 'soapbox/components/ui/widget.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import PlaceholderSidebarSuggestions from 'soapbox/features/placeholder/components/placeholder-sidebar-suggestions.tsx';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useDismissSuggestion, useSuggestions } from 'soapbox/queries/suggestions.ts';
+import Text from '@/components/ui/text.tsx';
+import Widget from '@/components/ui/widget.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import PlaceholderSidebarSuggestions from '@/features/placeholder/components/placeholder-sidebar-suggestions.tsx';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useDismissSuggestion, useSuggestions } from '@/queries/suggestions.ts';
 
-import type { Account as AccountEntity } from 'soapbox/types/entities.ts';
+import type { Account as AccountEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   dismissSuggestion: { id: 'suggestions.dismiss', defaultMessage: 'Dismiss suggestion' },

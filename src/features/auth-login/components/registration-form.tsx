@@ -6,23 +6,23 @@ import { useState, useRef, useCallback } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { accountLookup } from 'soapbox/actions/accounts.ts';
-import { register, verifyCredentials } from 'soapbox/actions/auth.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import BirthdayInput from 'soapbox/components/birthday-input.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Checkbox from 'soapbox/components/ui/checkbox.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Select from 'soapbox/components/ui/select.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import CaptchaField from 'soapbox/features/auth-login/components/captcha.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { accountLookup } from '@/actions/accounts.ts';
+import { register, verifyCredentials } from '@/actions/auth.ts';
+import { openModal } from '@/actions/modals.ts';
+import BirthdayInput from '@/components/birthday-input.tsx';
+import Button from '@/components/ui/button.tsx';
+import Checkbox from '@/components/ui/checkbox.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import Select from '@/components/ui/select.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import CaptchaField from '@/features/auth-login/components/captcha.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },

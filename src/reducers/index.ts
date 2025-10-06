@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import entities from 'soapbox/entity-store/reducer.ts';
+import entities from '@/entity-store/reducer.ts';
 
 import accounts_meta from './accounts-meta.ts';
 import admin from './admin.ts';

@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { domainSchema, type Domain } from 'soapbox/schemas/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { queryClient } from '@/queries/client.ts';
+import { domainSchema, type Domain } from '@/schemas/index.ts';
 
 interface CreateDomainParams {
   domain: string;

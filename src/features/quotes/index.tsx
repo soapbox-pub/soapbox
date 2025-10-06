@@ -4,12 +4,12 @@ import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { expandStatusQuotes, fetchStatusQuotes } from 'soapbox/actions/status-quotes.ts';
-import StatusList from 'soapbox/components/status-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
+import { expandStatusQuotes, fetchStatusQuotes } from '@/actions/status-quotes.ts';
+import StatusList from '@/components/status-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useIsMobile } from '@/hooks/useIsMobile.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },

@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { fetchGroupBlocks, groupUnblock } from 'soapbox/actions/groups.ts';
-import { useAccount, useGroup } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import toast from 'soapbox/toast.tsx';
+import { fetchGroupBlocks, groupUnblock } from '@/actions/groups.ts';
+import { useAccount, useGroup } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import toast from '@/toast.tsx';
 
 import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 

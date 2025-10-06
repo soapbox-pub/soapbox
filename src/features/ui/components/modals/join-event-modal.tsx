@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { joinEvent } from 'soapbox/actions/events.ts';
-import { closeModal } from 'soapbox/actions/modals.ts';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { joinEvent } from '@/actions/events.ts';
+import { closeModal } from '@/actions/modals.ts';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   hint: { id: 'join_event.hint', defaultMessage: 'You can tell the organizer why do you want to participate in this event:' },

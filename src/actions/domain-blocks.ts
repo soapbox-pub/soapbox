@@ -1,11 +1,11 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
 
-import type { EntityStore } from 'soapbox/entity-store/types.ts';
-import type { Account } from 'soapbox/schemas/index.ts';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { EntityStore } from '@/entity-store/types.ts';
+import type { Account } from '@/schemas/index.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 const DOMAIN_BLOCK_REQUEST = 'DOMAIN_BLOCK_REQUEST';
 const DOMAIN_BLOCK_SUCCESS = 'DOMAIN_BLOCK_SUCCESS';

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { vote } from 'soapbox/actions/polls.ts';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { openModal } from '@/actions/modals.ts';
+import { vote } from '@/actions/polls.ts';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import PollFooter from './poll-footer.tsx';
 import PollOption from './poll-option.tsx';

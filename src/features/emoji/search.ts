@@ -1,8 +1,8 @@
 // @ts-ignore
 import Index from '@akryum/flexsearch-es';
 
-import { EmojiData, Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
-import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
+import { EmojiData, Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from '@/features/emoji/data.ts';
+import { CustomEmoji } from '@/schemas/custom-emoji.ts';
 
 import { buildCustomEmojis, type Emoji } from './index.ts';
 
@@ -20,7 +20,7 @@ let data: EmojiData = {
   sheet: { cols: 0, rows: 0 },
 };
 
-import('soapbox/features/emoji/data.ts').then((mod) => {
+import('@/features/emoji/data.ts').then((mod) => {
   data = mod.default;
 
   const sortedEmojis = Object.entries(data.emojis).sort((a, b) => a[0].localeCompare(b[0]));

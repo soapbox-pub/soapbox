@@ -1,7 +1,7 @@
 
-import Layout from 'soapbox/components/ui/layout.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
-import { NewGroupPanel, SuggestedGroupsPanel } from 'soapbox/features/ui/util/async-components.ts';
+import Layout from '@/components/ui/layout.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
+import { NewGroupPanel, SuggestedGroupsPanel } from '@/features/ui/util/async-components.ts';
 
 interface IGroupsPage {
   children: React.ReactNode;

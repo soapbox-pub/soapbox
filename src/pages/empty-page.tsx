@@ -1,4 +1,4 @@
-import Layout from 'soapbox/components/ui/layout.tsx';
+import Layout from '@/components/ui/layout.tsx';
 
 interface IEmptyPage {
   children: React.ReactNode;

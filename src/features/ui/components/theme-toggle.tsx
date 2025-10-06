@@ -1,6 +1,6 @@
-import { changeSetting } from 'soapbox/actions/settings.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { changeSetting } from '@/actions/settings.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 import ThemeSelector from './theme-selector.tsx';
 

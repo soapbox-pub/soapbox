@@ -2,15 +2,15 @@ import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Account from 'soapbox/features/reply-mentions/account.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import Modal from '@/components/ui/modal.tsx';
+import Account from '@/features/reply-mentions/account.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { statusToMentionsAccountIdsArray } from '@/reducers/compose.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Account as AccountEntity, Status as StatusEntity } from '@/types/entities.ts';
 
 interface IReplyMentionsModal {
   composeId: string;

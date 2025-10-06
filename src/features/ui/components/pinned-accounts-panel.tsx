@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 
-import { fetchPinnedAccounts } from 'soapbox/actions/accounts.ts';
-import Widget from 'soapbox/components/ui/widget.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchPinnedAccounts } from '@/actions/accounts.ts';
+import Widget from '@/components/ui/widget.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { WhoToFollowPanel } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 interface IPinnedAccountsPanel {
   account: Account;

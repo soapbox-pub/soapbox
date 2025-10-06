@@ -1,7 +1,7 @@
 import { InfiniteData } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { queryClient } from 'soapbox/queries/client.ts';
+import { queryClient } from '@/queries/client.ts';
 
 import { PaginatedResult, sortQueryData, updatePageItem } from './queries.ts';
 

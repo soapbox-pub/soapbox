@@ -1,7 +1,7 @@
-import PollOption from 'soapbox/components/polls/poll-option.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { Poll as PollEntity } from 'soapbox/types/entities.ts';
+import PollOption from '@/components/polls/poll-option.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { Poll as PollEntity } from '@/types/entities.ts';
 
 interface IPollPreview {
   pollId: string;

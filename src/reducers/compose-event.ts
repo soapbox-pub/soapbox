@@ -19,13 +19,13 @@ import {
   EVENT_SUBMIT_FAIL,
   EVENT_COMPOSE_CANCEL,
   EVENT_FORM_SET,
-} from 'soapbox/actions/events.ts';
-import { normalizeAttachment, normalizeLocation } from 'soapbox/normalizers/index.ts';
+} from '@/actions/events.ts';
+import { normalizeAttachment, normalizeLocation } from '@/normalizers/index.ts';
 
 import type {
   Attachment as AttachmentEntity,
   Location as LocationEntity,
-} from 'soapbox/types/entities';
+} from '@/types/entities';
 
 export const ReducerRecord = ImmutableRecord({
   name: '',

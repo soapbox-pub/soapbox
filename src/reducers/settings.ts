@@ -1,7 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import { AnyAction } from 'redux';
 
-import { ME_FETCH_SUCCESS } from 'soapbox/actions/me.ts';
+import { ME_FETCH_SUCCESS } from '@/actions/me.ts';
 
 import { EMOJI_CHOOSE } from '../actions/emojis.ts';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications.ts';
@@ -13,8 +13,8 @@ import {
   FE_NAME,
 } from '../actions/settings.ts';
 
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { Emoji } from '@/features/emoji/index.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 type State = ImmutableMap<string, any>;
 

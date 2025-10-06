@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { BigCard } from 'soapbox/components/big-card.tsx';
-import RegistrationForm from 'soapbox/features/auth-login/components/registration-form.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { BigCard } from '@/components/big-card.tsx';
+import RegistrationForm from '@/features/auth-login/components/registration-form.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 interface RegisterInviteParams {
   token: string;

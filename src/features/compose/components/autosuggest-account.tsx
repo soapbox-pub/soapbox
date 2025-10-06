@@ -1,5 +1,5 @@
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
+import { useAccount } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
 
 interface IAutosuggestAccount {
   id: string;

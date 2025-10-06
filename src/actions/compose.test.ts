@@ -1,9 +1,9 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { buildInstance } from 'soapbox/jest/factory.ts';
-import { mockStore, rootState } from 'soapbox/jest/test-helpers.tsx';
-import { ReducerCompose } from 'soapbox/reducers/compose.ts';
+import { buildInstance } from '@/jest/factory.ts';
+import { mockStore, rootState } from '@/jest/test-helpers.tsx';
+import { ReducerCompose } from '@/reducers/compose.ts';
 
 import { uploadCompose, submitCompose } from './compose.ts';
 import { STATUS_CREATE_REQUEST } from './statuses.ts';

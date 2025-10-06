@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { updateMrf } from 'soapbox/actions/mrf.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { updateMrf } from '@/actions/mrf.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetRemoteInstance } from '@/selectors/index.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   mediaRemoval: { id: 'edit_federation.media_removal', defaultMessage: 'Strip media' },

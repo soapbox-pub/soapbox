@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
-import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
+import { instanceV1Schema } from '@/schemas/instance.ts';
 
 import LoginPage from './login-page.tsx';
 

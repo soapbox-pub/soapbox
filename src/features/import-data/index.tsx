@@ -4,8 +4,8 @@ import {
   importFollows,
   importBlocks,
   importMutes,
-} from 'soapbox/actions/import-data.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
+} from '@/actions/import-data.ts';
+import { Column } from '@/components/ui/column.tsx';
 
 import CSVImporter from './components/csv-importer.tsx';
 

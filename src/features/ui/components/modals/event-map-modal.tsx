@@ -6,14 +6,14 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
 import { useCallback, useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import Button from '@/components/ui/button.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as StatusEntity } from '@/types/entities.ts';
 
 import 'leaflet/dist/leaflet.css';
 

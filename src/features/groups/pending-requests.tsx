@@ -1,12 +1,12 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { usePendingGroups } from 'soapbox/api/hooks/index.ts';
-import GroupCard from 'soapbox/components/group-card.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import { usePendingGroups } from '@/api/hooks/index.ts';
+import GroupCard from '@/components/group-card.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card.tsx';
 

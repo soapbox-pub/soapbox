@@ -1,4 +1,4 @@
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
 
@@ -6,8 +6,8 @@ import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts';
 import { expandGroupFeaturedTimeline } from './timelines.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from '@/types/entities.ts';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';

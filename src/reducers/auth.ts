@@ -1,14 +1,14 @@
 import { produce } from 'immer';
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { keyring } from 'soapbox/features/nostr/keyring.ts';
-import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
-import { Application, applicationSchema } from 'soapbox/schemas/application.ts';
-import { Account, accountSchema } from 'soapbox/schemas/index.ts';
-import { AuthUser, SoapboxAuth, soapboxAuthSchema } from 'soapbox/schemas/soapbox/soapbox-auth.ts';
-import { Token, tokenSchema } from 'soapbox/schemas/token.ts';
-import { jsonSchema } from 'soapbox/schemas/utils.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { keyring } from '@/features/nostr/keyring.ts';
+import { useBunkerStore } from '@/hooks/nostr/useBunkerStore.ts';
+import { Application, applicationSchema } from '@/schemas/application.ts';
+import { Account, accountSchema } from '@/schemas/index.ts';
+import { AuthUser, SoapboxAuth, soapboxAuthSchema } from '@/schemas/soapbox/soapbox-auth.ts';
+import { Token, tokenSchema } from '@/schemas/token.ts';
+import { jsonSchema } from '@/schemas/utils.ts';
 
 import {
   AUTH_APP_CREATED,

@@ -1,12 +1,12 @@
 import { debounce } from 'es-toolkit';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useSuggestions } from 'soapbox/queries/suggestions.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useSuggestions } from '@/queries/suggestions.ts';
 
 const messages = defineMessages({
   heading: { id: 'follow_recommendations.heading', defaultMessage: 'Suggested Profiles' },

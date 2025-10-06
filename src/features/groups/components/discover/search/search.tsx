@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { useGroupSearch } from 'soapbox/api/hooks/index.ts';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import PlaceholderGroupSearch from 'soapbox/features/placeholder/components/placeholder-group-search.tsx';
-import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { saveGroupSearch } from 'soapbox/utils/groups.ts';
+import { useGroupSearch } from '@/api/hooks/index.ts';
+import Stack from '@/components/ui/stack.tsx';
+import PlaceholderGroupSearch from '@/features/placeholder/components/placeholder-group-search.tsx';
+import { useDebounce } from '@/hooks/useDebounce.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { saveGroupSearch } from '@/utils/groups.ts';
 
 import Blankslate from './blankslate.tsx';
 import RecentSearches from './recent-searches.tsx';

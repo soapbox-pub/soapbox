@@ -1,7 +1,7 @@
-import { initReport as initReportAction, ReportableEntities } from 'soapbox/actions/reports.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { Account } from 'soapbox/schemas/index.ts';
+import { initReport as initReportAction, ReportableEntities } from '@/actions/reports.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { Account } from '@/schemas/index.ts';
 
 type SemiReportedEntity = {
   statusId?: string;

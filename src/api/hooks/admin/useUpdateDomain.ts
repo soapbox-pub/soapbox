@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useCreateEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { domainSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useCreateEntity } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { domainSchema } from '@/schemas/index.ts';
 
 import type { CreateDomainParams } from './useCreateDomain.ts';
 

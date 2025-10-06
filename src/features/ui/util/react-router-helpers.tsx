@@ -2,9 +2,9 @@ import { Suspense, useEffect, useRef } from 'react';
 import { ErrorBoundary, type FallbackProps } from 'react-error-boundary';
 import { Redirect, Route, useHistory, RouteProps, RouteComponentProps, match as MatchType, useLocation } from 'react-router-dom';
 
-import Layout from 'soapbox/components/ui/layout.tsx';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import Layout from '@/components/ui/layout.tsx';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 import ColumnForbidden from '../components/column-forbidden.tsx';
 import ColumnLoading from '../components/column-loading.tsx';

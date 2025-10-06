@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { useApi } from '@/hooks/useApi.ts';
 
 type Embed = {
   type: string;

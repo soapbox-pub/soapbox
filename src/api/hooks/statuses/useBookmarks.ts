@@ -1,8 +1,8 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { Status as StatusEntity, statusSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntities } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { Status as StatusEntity, statusSchema } from '@/schemas/index.ts';
 
 /**
  * Get all the statuses the user has bookmarked.

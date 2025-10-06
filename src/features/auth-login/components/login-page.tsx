@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { logIn, verifyCredentials, switchAccount, MfaRequiredError } from 'soapbox/actions/auth.ts';
-import { fetchInstance } from 'soapbox/actions/instance.ts';
-import { closeModal, openModal } from 'soapbox/actions/modals.ts';
-import { BigCard } from 'soapbox/components/big-card.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { getRedirectUrl } from 'soapbox/utils/redirect.ts';
+import { logIn, verifyCredentials, switchAccount, MfaRequiredError } from '@/actions/auth.ts';
+import { fetchInstance } from '@/actions/instance.ts';
+import { closeModal, openModal } from '@/actions/modals.ts';
+import { BigCard } from '@/components/big-card.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { getRedirectUrl } from '@/utils/redirect.ts';
 
 import ConsumersList from './consumers-list.tsx';
 import LoginForm from './login-form.tsx';

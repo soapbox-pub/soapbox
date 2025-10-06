@@ -2,13 +2,13 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { debounce } from 'es-toolkit';
 import { FormattedMessage } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useOnboardingSuggestions } from 'soapbox/queries/suggestions.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Button from '@/components/ui/button.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useOnboardingSuggestions } from '@/queries/suggestions.ts';
 
 const closeIcon = xIcon;
 

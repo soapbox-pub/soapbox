@@ -3,11 +3,11 @@ import rocketIcon from '@tabler/icons/outline/rocket.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
 
 const messages = defineMessages({
   welcomeTitle: { id: 'column.explore.welcome_card.title', defaultMessage: 'Welcome to Explore' },

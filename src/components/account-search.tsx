@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
+import AutosuggestAccountInput from '@/components/autosuggest-account-input.tsx';
 
 import SvgIcon from './ui/svg-icon.tsx';
 

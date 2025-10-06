@@ -2,11 +2,11 @@ import { Map as ImmutableMap } from 'immutable';
 import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
-import { fetchCaptcha } from 'soapbox/actions/auth.ts';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { fetchCaptcha } from '@/actions/auth.ts';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const noOp = () => {};
 

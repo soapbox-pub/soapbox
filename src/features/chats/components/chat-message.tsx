@@ -10,28 +10,28 @@ import { escape } from 'es-toolkit';
 import { useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { ChatKeys, IChat, useChatActions } from 'soapbox/queries/chats.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
-import { htmlToPlaintext } from 'soapbox/utils/html.ts';
-import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
+import { openModal } from '@/actions/modals.ts';
+import { initReport, ReportableEntities } from '@/actions/reports.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { MediaGallery } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { ChatKeys, IChat, useChatActions } from '@/queries/chats.ts';
+import { queryClient } from '@/queries/client.ts';
+import { Attachment } from '@/schemas/index.ts';
+import { htmlToPlaintext } from '@/utils/html.ts';
+import { isOnlyEmoji as _isOnlyEmoji } from '@/utils/only-emoji.ts';
 
 import ChatMessageReactionWrapper from './chat-message-reaction-wrapper/chat-message-reaction-wrapper.tsx';
 import ChatMessageReaction from './chat-message-reaction.tsx';
 
-import type { Menu as IMenu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities.ts';
+import type { Menu as IMenu } from '@/components/dropdown-menu/index.ts';
+import type { ChatMessage as ChatMessageEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   copy: { id: 'chats.actions.copy', defaultMessage: 'Copy' },

@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import IconWithCounter from 'soapbox/components/icon-with-counter.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import IconWithCounter from '@/components/icon-with-counter.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
 
 interface IThumbNavigationLink {
   count?: number;

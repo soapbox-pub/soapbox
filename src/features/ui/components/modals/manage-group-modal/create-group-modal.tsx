@@ -2,13 +2,13 @@ import { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useCreateGroup, useGroupValidation, type CreateGroupParams } from 'soapbox/api/hooks/index.ts';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
-import { type Group } from 'soapbox/schemas/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useCreateGroup, useGroupValidation, type CreateGroupParams } from '@/api/hooks/index.ts';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useDebounce } from '@/hooks/useDebounce.ts';
+import { type Group } from '@/schemas/index.ts';
+import toast from '@/toast.tsx';
 
 import ConfirmationStep from './steps/confirmation-step.tsx';
 import DetailsStep from './steps/details-step.tsx';

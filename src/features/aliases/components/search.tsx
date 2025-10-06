@@ -2,11 +2,11 @@ import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from 'soapbox/actions/aliases.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from '@/actions/aliases.ts';
+import Button from '@/components/ui/button.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },

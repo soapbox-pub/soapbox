@@ -4,12 +4,12 @@ import { MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import StatusMedia from 'soapbox/components/status-media.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
+import StatusMedia from '@/components/status-media.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { defaultMediaVisibility } from '@/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
 import OutlineBox from './outline-box.tsx';
@@ -18,7 +18,7 @@ import StatusContent from './status-content.tsx';
 import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 
-import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from '@/types/entities.ts';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },

@@ -1,5 +1,5 @@
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import { CustomEmoji } from '@/schemas/custom-emoji.ts';
 
 /** Given text and a list of custom emojis, return JSX with the emojis rendered as `<img>` elements. */
 export function emojifyText(text: string, emojis: CustomEmoji[]): JSX.Element {

@@ -2,18 +2,18 @@ import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import { useEffect } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { Token } from 'soapbox/reducers/security.ts';
+import { openModal } from '@/actions/modals.ts';
+import { fetchOAuthTokens, revokeOAuthTokenById } from '@/actions/security.ts';
+import Button from '@/components/ui/button.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { Token } from '@/reducers/security.ts';
 
 const messages = defineMessages({
   header: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },

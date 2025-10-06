@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { forwardRef } from 'react';
 
-import Emoji from 'soapbox/components/ui/emoji.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import Emoji from '@/components/ui/emoji.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
-import type { EmojiReaction } from 'soapbox/schemas/index.ts';
+import type { EmojiReaction } from '@/schemas/index.ts';
 
 const COLORS = {
   accent: 'accent',

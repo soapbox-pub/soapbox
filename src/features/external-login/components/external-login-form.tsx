@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { externalLogin, loginWithCode } from 'soapbox/actions/external-auth.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import toast from 'soapbox/toast.tsx';
+import { externalLogin, loginWithCode } from '@/actions/external-auth.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import Button from '@/components/ui/button.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   instanceLabel: { id: 'login.fields.instance_label', defaultMessage: 'Instance' },

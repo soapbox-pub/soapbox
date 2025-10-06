@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { groupSearchHistory } from 'soapbox/settings.ts';
-import { clearRecentGroupSearches } from 'soapbox/utils/groups.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { groupSearchHistory } from '@/settings.ts';
+import { clearRecentGroupSearches } from '@/utils/groups.ts';
 
 interface Props {
   onSelect(value: string): void;

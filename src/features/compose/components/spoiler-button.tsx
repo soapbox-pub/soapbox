@@ -1,9 +1,9 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeComposeSpoilerness } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { changeComposeSpoilerness } from '@/actions/compose.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 import ComposeFormButton from './compose-form-button.tsx';
 

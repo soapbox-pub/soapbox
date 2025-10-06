@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory.ts';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
-import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
+import { buildAccount } from '@/jest/factory.ts';
+import { render, screen, waitFor } from '@/jest/test-helpers.tsx';
+import { instanceV1Schema } from '@/schemas/instance.ts';
 
 import Discover from './discover.tsx';
 

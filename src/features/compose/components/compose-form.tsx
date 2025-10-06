@@ -14,23 +14,23 @@ import {
   fetchComposeSuggestions,
   selectComposeSuggestion,
   uploadCompose,
-} from 'soapbox/actions/compose.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
+} from '@/actions/compose.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useCustomEmojis } from '@/api/hooks/useCustomEmojis.ts';
+import AutosuggestInput, { AutoSuggestion } from '@/components/autosuggest-input.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import EmojiPickerDropdown from '@/features/emoji/containers/emoji-picker-dropdown-container.tsx';
+import { ComposeEditor } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { usePrevious } from '@/hooks/usePrevious.ts';
 
 import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
 import ReplyIndicatorContainer from '../containers/reply-indicator-container.ts';
@@ -53,7 +53,7 @@ import TextCharacterCounter from './text-character-counter.tsx';
 import UploadForm from './upload-form.tsx';
 import VisualCharacterCounter from './visual-character-counter.tsx';
 
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { Emoji } from '@/features/emoji/index.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },

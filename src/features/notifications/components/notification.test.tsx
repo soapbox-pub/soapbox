@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { updateNotifications } from 'soapbox/actions/notifications.ts';
-import { render, screen, rootState, createTestStore } from 'soapbox/jest/test-helpers.tsx';
+import { updateNotifications } from '@/actions/notifications.ts';
+import { render, screen, rootState, createTestStore } from '@/jest/test-helpers.tsx';
 
 import Notification from './notification.tsx';
 
@@ -20,7 +20,7 @@ const normalize = (notification: any) => {
 
 describe('<Notification />', () => {
   it('renders a follow notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-follow.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-follow.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -32,7 +32,7 @@ describe('<Notification />', () => {
   describe('grouped notifications', () => {
     it('renders a grouped follow notification for more than 2', async () => {
       const { notification, state } = normalize({
-        ...await import('soapbox/__fixtures__/notification-follow.json'),
+        ...await import('@/__fixtures__/notification-follow.json'),
         total_count: 5,
       });
 
@@ -45,7 +45,7 @@ describe('<Notification />', () => {
 
     it('renders a grouped follow notification for 1', async () => {
       const { notification, state } = normalize({
-        ...await import('soapbox/__fixtures__/notification-follow.json'),
+        ...await import('@/__fixtures__/notification-follow.json'),
         total_count: 2,
       });
 
@@ -58,7 +58,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a favourite notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-favourite.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-favourite.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -67,7 +67,7 @@ describe('<Notification />', () => {
   });
 
   // it('renders a follow_request notification', async () => {
-  //   const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-follow_request.json'));
+  //   const { notification, state } = normalize(await import('@/__fixtures__/notification-follow_request.json'));
 
   //   render(<Notification notification={notification} />, undefined, state);
 
@@ -76,7 +76,7 @@ describe('<Notification />', () => {
   // });
 
   it('renders a mention notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-mention.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-mention.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -85,7 +85,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a move notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-move.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-move.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -94,7 +94,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a pleroma:emoji_reaction notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-pleroma-emoji_reaction.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-pleroma-emoji_reaction.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -103,7 +103,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a pleroma:chat_mention notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-pleroma-chat_mention.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-pleroma-chat_mention.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -111,7 +111,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a poll notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-poll.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-poll.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 
@@ -120,7 +120,7 @@ describe('<Notification />', () => {
   });
 
   it('renders a reblog notification', async () => {
-    const { notification, state } = normalize(await import('soapbox/__fixtures__/notification-reblog.json'));
+    const { notification, state } = normalize(await import('@/__fixtures__/notification-reblog.json'));
 
     render(<Notification notification={notification} />, undefined, state);
 

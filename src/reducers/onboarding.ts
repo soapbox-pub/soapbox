@@ -1,6 +1,6 @@
-import { ONBOARDING_START, ONBOARDING_END } from 'soapbox/actions/onboarding.ts';
+import { ONBOARDING_START, ONBOARDING_END } from '@/actions/onboarding.ts';
 
-import type { OnboardingActions } from 'soapbox/actions/onboarding.ts';
+import type { OnboardingActions } from '@/actions/onboarding.ts';
 
 type OnboardingState = {
   needsOnboarding: boolean;

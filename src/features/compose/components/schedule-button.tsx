@@ -1,9 +1,9 @@
 import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { addSchedule, removeSchedule } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { addSchedule, removeSchedule } from '@/actions/compose.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 import ComposeFormButton from './compose-form-button.tsx';
 

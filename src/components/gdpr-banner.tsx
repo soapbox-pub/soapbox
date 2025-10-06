@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Banner from 'soapbox/components/ui/banner.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import Banner from '@/components/ui/banner.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 const acceptedGdpr = !!localStorage.getItem('soapbox:gdpr');
 

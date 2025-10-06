@@ -5,24 +5,24 @@ import { useEffect, useRef, useState } from 'react';
 import { FormattedDate, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Account from 'soapbox/components/account.tsx';
-import StatusContent from 'soapbox/components/status-content.tsx';
-import StatusMedia from 'soapbox/components/status-media.tsx';
-import StatusReplyMentions from 'soapbox/components/status-reply-mentions.tsx';
-import SensitiveContentOverlay from 'soapbox/components/statuses/sensitive-content-overlay.tsx';
-import StatusInfo from 'soapbox/components/statuses/status-info.tsx';
-import TranslateButton from 'soapbox/components/translate-button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { getActualStatus } from 'soapbox/utils/status.ts';
+import Account from '@/components/account.tsx';
+import StatusContent from '@/components/status-content.tsx';
+import StatusMedia from '@/components/status-media.tsx';
+import StatusReplyMentions from '@/components/status-reply-mentions.tsx';
+import SensitiveContentOverlay from '@/components/statuses/sensitive-content-overlay.tsx';
+import StatusInfo from '@/components/statuses/status-info.tsx';
+import TranslateButton from '@/components/translate-button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import QuotedStatus from '@/features/status/containers/quoted-status-container.tsx';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { getActualStatus } from '@/utils/status.ts';
 
 import StatusInteractionBar from './status-interaction-bar.tsx';
 
-import type { Group, Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Group, Status as LegacyStatus } from '@/types/entities.ts';
 
 interface IDetailedStatus {
   status: LegacyStatus;

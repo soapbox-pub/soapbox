@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Virtuoso } from 'react-virtuoso';
 
-import { usePopularTags } from 'soapbox/api/hooks/index.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import { usePopularTags } from '@/api/hooks/index.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Text from '@/components/ui/text.tsx';
 
 import TagListItem from './components/discover/tag-list-item.tsx';
 
-import type { GroupTag } from 'soapbox/schemas/index.ts';
+import type { GroupTag } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   title: { id: 'groups.tags.title', defaultMessage: 'Browse Topics' },

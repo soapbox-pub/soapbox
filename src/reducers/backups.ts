@@ -6,7 +6,7 @@ import {
 } from '../actions/backups.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 export const BackupRecord = ImmutableRecord({
   id: null as number | null,

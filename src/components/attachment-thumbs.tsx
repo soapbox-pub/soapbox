@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
+import { openModal } from '@/actions/modals.ts';
+import { MediaGallery } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { Attachment } from '@/schemas/index.ts';
 
 interface IAttachmentThumbs {
   media: readonly Attachment[];

@@ -2,18 +2,18 @@ import { List as ImmutableList } from 'immutable';
 import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { expandGroupMediaTimeline } from 'soapbox/actions/timelines.ts';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { getGroupGallery } from 'soapbox/selectors/index.ts';
+import { openModal } from '@/actions/modals.ts';
+import { expandGroupMediaTimeline } from '@/actions/timelines.ts';
+import Spinner from '@/components/ui/spinner.tsx';
+import Text from '@/components/ui/text.tsx';
+import Widget from '@/components/ui/widget.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { getGroupGallery } from '@/selectors/index.ts';
 
 import MediaItem from '../../account-gallery/components/media-item.tsx';
 
-import type { Attachment, Group } from 'soapbox/types/entities.ts';
+import type { Attachment, Group } from '@/types/entities.ts';
 
 interface IGroupMediaPanel {
   group?: Group;

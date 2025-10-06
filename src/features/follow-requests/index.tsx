@@ -2,12 +2,12 @@ import { debounce } from 'es-toolkit';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { fetchFollowRequests, expandFollowRequests } from 'soapbox/actions/accounts.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchFollowRequests, expandFollowRequests } from '@/actions/accounts.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import AccountAuthorize from './components/account-authorize.tsx';
 

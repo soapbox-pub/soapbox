@@ -1,18 +1,18 @@
 import { defineMessages, useIntl } from 'react-intl';
 import { Link, matchPath, useHistory } from 'react-router-dom';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Popover from 'soapbox/components/ui/popover.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
-import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
+import Button from '@/components/ui/button.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Popover from '@/components/ui/popover.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import GroupMemberCount from '@/features/group/components/group-member-count.tsx';
+import GroupPrivacy from '@/features/group/components/group-privacy.tsx';
 
 import GroupAvatar from '../group-avatar.tsx';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 interface IGroupPopoverContainer {
   children: React.ReactElement<any, string | React.JSXElementConstructor<any>>;

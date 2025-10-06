@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Select from 'soapbox/components/ui/select.tsx';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Select from '@/components/ui/select.tsx';
+import Streamfield, { StreamfieldComponent } from '@/components/ui/streamfield.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 interface IRelayEditor {
   relays: RelayData[];

@@ -3,19 +3,19 @@ import React from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import StillImage from 'soapbox/components/still-image.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import StillImage from '@/components/still-image.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import { Card, CardBody } from '@/components/ui/card.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import ActionButton from '@/features/ui/components/action-button.tsx';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
 const messages = defineMessages({
   streak: { id: 'account.streak', defaultMessage: 'Day Streak' },

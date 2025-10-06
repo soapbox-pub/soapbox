@@ -1,11 +1,11 @@
 import { List as ImmutableList } from 'immutable';
 
-import { normalizeFilter } from 'soapbox/normalizers/index.ts';
+import { normalizeFilter } from '@/normalizers/index.ts';
 
 import { FILTERS_FETCH_SUCCESS } from '../actions/filters.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Filter as FilterEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity, Filter as FilterEntity } from '@/types/entities.ts';
 
 type State = ImmutableList<FilterEntity>;
 

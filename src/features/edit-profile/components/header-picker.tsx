@@ -4,11 +4,11 @@ import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
 
 const messages = defineMessages({
   title: { id: 'group.upload_banner.title', defaultMessage: 'Upload background picture' },

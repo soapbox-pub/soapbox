@@ -1,11 +1,11 @@
 import parse, { HTMLReactParserOptions, Text as DOMText, DOMNode, Element, domToReact } from 'html-react-parser';
 import { forwardRef } from 'react';
 
-import HashtagLink from 'soapbox/components/hashtag-link.tsx';
-import Mention from 'soapbox/components/mention.tsx';
-import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
-import { Mention as MentionEntity } from 'soapbox/schemas/mention.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import HashtagLink from '@/components/hashtag-link.tsx';
+import Mention from '@/components/mention.tsx';
+import { CustomEmoji } from '@/schemas/custom-emoji.ts';
+import { Mention as MentionEntity } from '@/schemas/mention.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
 
 import Text, { IText } from './ui/text.tsx';
 import './markup.css';

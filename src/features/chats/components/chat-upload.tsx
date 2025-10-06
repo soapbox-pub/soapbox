@@ -2,14 +2,14 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { List as ImmutableList } from 'immutable';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import Blurhash from 'soapbox/components/blurhash.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { openModal } from '@/actions/modals.ts';
+import Blurhash from '@/components/blurhash.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 import ChatUploadPreview from './chat-upload-preview.tsx';
 
-import type { Attachment } from 'soapbox/types/entities.ts';
+import type { Attachment } from '@/types/entities.ts';
 
 interface IChatUpload {
   attachment: Attachment;

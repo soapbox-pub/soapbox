@@ -1,17 +1,17 @@
 import { useEffect, useState, useLayoutEffect, Suspense } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { chooseEmoji } from 'soapbox/actions/emojis.ts';
-import { changeSetting } from 'soapbox/actions/settings.ts';
-import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
-import { buildCustomEmojis } from 'soapbox/features/emoji/index.ts';
-import { EmojiPicker } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFrequentlyUsedEmojis } from 'soapbox/hooks/useFrequentlyUsedEmojis.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
+import { chooseEmoji } from '@/actions/emojis.ts';
+import { changeSetting } from '@/actions/settings.ts';
+import { useCustomEmojis } from '@/api/hooks/useCustomEmojis.ts';
+import { buildCustomEmojis } from '@/features/emoji/index.ts';
+import { EmojiPicker } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFrequentlyUsedEmojis } from '@/hooks/useFrequentlyUsedEmojis.ts';
+import { useTheme } from '@/hooks/useTheme.ts';
 
-import type { Emoji, CustomEmoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
-import type { CustomEmoji as MastodonCustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
+import type { Emoji, CustomEmoji, NativeEmoji } from '@/features/emoji/index.ts';
+import type { CustomEmoji as MastodonCustomEmoji } from '@/schemas/custom-emoji.ts';
 
 export const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },

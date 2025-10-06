@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
-import { cancelReplyCompose } from 'soapbox/actions/compose.ts';
-import { cancelEventCompose } from 'soapbox/actions/events.ts';
-import { closeModal } from 'soapbox/actions/modals.ts';
-import { cancelReport } from 'soapbox/actions/reports.ts';
+import { cancelReplyCompose } from '@/actions/compose.ts';
+import { cancelEventCompose } from '@/actions/events.ts';
+import { closeModal } from '@/actions/modals.ts';
+import { cancelReport } from '@/actions/reports.ts';
 
 import ModalRoot, { ModalType } from '../components/modal-root.tsx';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 const mapStateToProps = (state: RootState) => {
   const modal = state.modals.last({

@@ -1,9 +1,9 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 
-import { NostrProvider } from 'soapbox/contexts/nostr-context.tsx';
-import { StatProvider } from 'soapbox/contexts/stat-context.tsx';
-import { queryClient } from 'soapbox/queries/client.ts';
+import { NostrProvider } from '@/contexts/nostr-context.tsx';
+import { StatProvider } from '@/contexts/stat-context.tsx';
+import { queryClient } from '@/queries/client.ts';
 
 import { checkOnboardingStatus } from '../actions/onboarding.ts';
 import { preload } from '../actions/preload.ts';

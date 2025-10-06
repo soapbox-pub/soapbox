@@ -6,17 +6,17 @@ import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
-import { useLeaveGroup, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
-import DropdownMenu, { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
+import { openModal } from '@/actions/modals.ts';
+import { initReport, ReportableEntities } from '@/actions/reports.ts';
+import { useLeaveGroup, useMuteGroup, useUnmuteGroup } from '@/api/hooks/index.ts';
+import DropdownMenu, { Menu } from '@/components/dropdown-menu/index.ts';
+import IconButton from '@/components/ui/icon-button.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
 
-import type { Account, Group } from 'soapbox/types/entities.ts';
+import type { Account, Group } from '@/types/entities.ts';
 
 const messages = defineMessages({
   confirmationConfirm: { id: 'confirmations.leave_group.confirm', defaultMessage: 'Leave' },

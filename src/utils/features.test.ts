@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildInstance } from 'soapbox/jest/factory.ts';
+import { buildInstance } from '@/jest/factory.ts';
 
 import {
   parseVersion,

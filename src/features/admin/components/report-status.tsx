@@ -3,16 +3,16 @@ import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import { useIntl, defineMessages } from 'react-intl';
 
-import { deleteStatusModal } from 'soapbox/actions/moderation.tsx';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import StatusContent from 'soapbox/components/status-content.tsx';
-import StatusMedia from 'soapbox/components/status-media.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import { deleteStatusModal } from '@/actions/moderation.tsx';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import StatusContent from '@/components/status-content.tsx';
+import StatusMedia from '@/components/status-media.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
 
-import type { AdminReport, Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { AdminReport, Status as LegacyStatus } from '@/types/entities.ts';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },

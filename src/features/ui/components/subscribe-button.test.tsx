@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount, buildRelationship } from 'soapbox/jest/factory.ts';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { buildAccount, buildRelationship } from '@/jest/factory.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import SubscribeButton from './subscription-button.tsx';
 

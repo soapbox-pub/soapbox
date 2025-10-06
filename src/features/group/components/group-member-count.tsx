@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Text from 'soapbox/components/ui/text.tsx';
-import { Group } from 'soapbox/types/entities.ts';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import Text from '@/components/ui/text.tsx';
+import { Group } from '@/types/entities.ts';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
 interface IGroupMemberCount {
   group: Group;

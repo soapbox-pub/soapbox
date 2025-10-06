@@ -1,11 +1,11 @@
-import 'soapbox/polyfill/Promise.withResolvers.ts';
+import '@/polyfill/Promise.withResolvers.ts';
 
 import { enableMapSet } from 'immer';
 import { createRoot } from 'react-dom/client';
 
-import * as BuildConfig from 'soapbox/build-config.ts';
-import Soapbox from 'soapbox/init/soapbox.tsx';
-import { printConsoleWarning } from 'soapbox/utils/console.ts';
+import * as BuildConfig from '@/build-config.ts';
+import Soapbox from '@/init/soapbox.tsx';
+import { printConsoleWarning } from '@/utils/console.ts';
 
 import '@fontsource/inter/200.css';
 import '@fontsource/inter/300.css';
@@ -18,7 +18,7 @@ import '@fontsource/vazirmatn/arabic.css';
 import '@fontsource/noto-sans-javanese/javanese.css';
 import '@fontsource/roboto-mono/400.css';
 import 'line-awesome/dist/font-awesome-line-awesome/css/all.css';
-import 'soapbox/features/nostr/keyring.ts';
+import '@/features/nostr/keyring.ts';
 
 import './iframe.ts';
 import './styles/tailwind.css';

@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { queryAllByRole, render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { queryAllByRole, render, screen } from '@/jest/test-helpers.tsx';
 
 import Datepicker from './datepicker.tsx';
 

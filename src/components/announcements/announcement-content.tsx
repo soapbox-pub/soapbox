@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
-import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from 'soapbox/schemas/index.ts';
+import type { Announcement as AnnouncementEntity, Mention as MentionEntity } from '@/schemas/index.ts';
 
 interface IAnnouncementContent {
   announcement: AnnouncementEntity;

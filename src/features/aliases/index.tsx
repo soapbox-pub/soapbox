@@ -2,17 +2,17 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases.ts';
-import Icon from 'soapbox/components/icon.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import { fetchAliases, removeFromAliases } from '@/actions/aliases.ts';
+import Icon from '@/components/icon.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 import Account from './components/account.tsx';
 import Search from './components/search.tsx';

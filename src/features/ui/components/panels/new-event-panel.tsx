@@ -1,11 +1,11 @@
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { openModal } from '@/actions/modals.ts';
+import Button from '@/components/ui/button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const NewEventPanel = () => {
   const dispatch = useAppDispatch();

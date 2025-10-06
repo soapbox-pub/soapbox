@@ -1,11 +1,11 @@
-import { AppDispatch, RootState } from 'soapbox/store.ts';
+import { AppDispatch, RootState } from '@/store.ts';
 
 import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts } from './importer/index.ts';
 
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 export const FAMILIAR_FOLLOWERS_FETCH_REQUEST = 'FAMILIAR_FOLLOWERS_FETCH_REQUEST';
 export const FAMILIAR_FOLLOWERS_FETCH_SUCCESS = 'FAMILIAR_FOLLOWERS_FETCH_SUCCESS';

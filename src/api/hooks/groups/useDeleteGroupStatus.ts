@@ -1,8 +1,8 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useDeleteEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useDeleteEntity } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 function useDeleteGroupStatus(group: Group, statusId: string) {
   const api = useApi();

@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeComposeSpoilerness, changeComposeSpoilerText } from 'soapbox/actions/compose.ts';
-import AutosuggestInput, { IAutosuggestInput } from 'soapbox/components/autosuggest-input.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { changeComposeSpoilerness, changeComposeSpoilerText } from '@/actions/compose.ts';
+import AutosuggestInput, { IAutosuggestInput } from '@/components/autosuggest-input.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 const messages = defineMessages({
   title: { id: 'compose_form.spoiler_title', defaultMessage: 'Sensitive content' },

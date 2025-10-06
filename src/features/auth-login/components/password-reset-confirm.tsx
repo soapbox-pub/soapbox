@@ -2,14 +2,14 @@ import { useCallback, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { resetPasswordConfirm } from 'soapbox/actions/security.ts';
-import { BigCard } from 'soapbox/components/big-card.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { resetPasswordConfirm } from '@/actions/security.ts';
+import { BigCard } from '@/components/big-card.tsx';
+import Button from '@/components/ui/button.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const token = new URLSearchParams(window.location.search).get('reset_password_token');
 

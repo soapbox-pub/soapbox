@@ -1,14 +1,14 @@
 import { List as ImmutableList } from 'immutable';
 
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
 
 import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts';
 import { favourite, unfavourite } from './interactions.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, EmojiReaction, Status } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, EmojiReaction, Status } from '@/types/entities.ts';
 
 const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';

@@ -1,7 +1,7 @@
 import { NSchema as n } from '@nostrify/nostrify';
 import { z } from 'zod';
 
-import { accountSchema } from 'soapbox/schemas/account.ts';
+import { accountSchema } from '@/schemas/account.ts';
 
 const baseWalletSchema = z.object({
   pubkey_p2pk: n.id(),

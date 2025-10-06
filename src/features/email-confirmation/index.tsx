@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Redirect } from 'react-router-dom';
 
-import { confirmChangedEmail } from 'soapbox/actions/security.ts';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import toast from 'soapbox/toast.tsx';
-import { buildErrorMessage } from 'soapbox/utils/errors.ts';
+import { confirmChangedEmail } from '@/actions/security.ts';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import toast from '@/toast.tsx';
+import { buildErrorMessage } from '@/utils/errors.ts';
 
 const Statuses = {
   IDLE: 'IDLE',

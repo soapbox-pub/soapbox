@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Slider from 'soapbox/components/ui/slider.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { usePrevious } from 'soapbox/hooks/usePrevious.ts';
-import { compareId } from 'soapbox/utils/comparators.ts';
-import { hueShift } from 'soapbox/utils/theme.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Slider from '@/components/ui/slider.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { usePrevious } from '@/hooks/usePrevious.ts';
+import { compareId } from '@/utils/comparators.ts';
+import { hueShift } from '@/utils/theme.ts';
 
 import Color from './color.tsx';
 

@@ -5,13 +5,13 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import { cloneElement, useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
-import { closeModal, openModal } from 'soapbox/actions/modals.ts';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Portal from 'soapbox/components/ui/portal.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { userTouching } from 'soapbox/is-mobile.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import { closeDropdownMenu as closeDropdownMenuRedux, openDropdownMenu } from '@/actions/dropdown-menu.ts';
+import { closeModal, openModal } from '@/actions/modals.ts';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Portal from '@/components/ui/portal.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { userTouching } from '@/is-mobile.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
 
 import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
 

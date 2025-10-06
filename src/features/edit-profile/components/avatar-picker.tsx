@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { forwardRef, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
 
 interface IMediaInput {
   className?: string;

@@ -5,31 +5,31 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { zap } from 'soapbox/actions/interactions.ts';
-import { openModal, closeModal } from 'soapbox/actions/modals.ts';
-import useZapSplit from 'soapbox/api/hooks/zap-split/useZapSplit.ts';
-import chestIcon from 'soapbox/assets/icons/chest.png';
-import coinStack from 'soapbox/assets/icons/coin-stack.png';
-import coinIcon from 'soapbox/assets/icons/coin.png';
-import moneyBag from 'soapbox/assets/icons/money-bag.png';
-import pileCoin from 'soapbox/assets/icons/pile-coin.png';
-import DisplayNameInline from 'soapbox/components/display-name-inline.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useZapCashuRequest } from 'soapbox/features/wallet/hooks/useHooks.ts';
-import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import { zap } from '@/actions/interactions.ts';
+import { openModal, closeModal } from '@/actions/modals.ts';
+import useZapSplit from '@/api/hooks/zap-split/useZapSplit.ts';
+import chestIcon from '@/assets/icons/chest.png';
+import coinStack from '@/assets/icons/coin-stack.png';
+import coinIcon from '@/assets/icons/coin.png';
+import moneyBag from '@/assets/icons/money-bag.png';
+import pileCoin from '@/assets/icons/pile-coin.png';
+import DisplayNameInline from '@/components/display-name-inline.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useZapCashuRequest } from '@/features/wallet/hooks/useHooks.ts';
+import { usePaymentMethod } from '@/features/zap/usePaymentMethod.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
 
 import PaymentButton from './zap-button/payment-button.tsx';
 
-import type {  Account as AccountEntity, Status as StatusEntity   } from 'soapbox/types/entities.ts';
+import type {  Account as AccountEntity, Status as StatusEntity   } from '@/types/entities.ts';
 
 const ZAP_PRESETS = [
   { buttonAmount: 50, icon: coinIcon },

@@ -1,5 +1,5 @@
-import Layout from 'soapbox/components/ui/layout.tsx';
-import { LatestAdminAccountsPanel } from 'soapbox/features/ui/util/async-components.ts';
+import Layout from '@/components/ui/layout.tsx';
+import { LatestAdminAccountsPanel } from '@/features/ui/util/async-components.ts';
 
 import LinkFooter from '../features/ui/components/link-footer.tsx';
 

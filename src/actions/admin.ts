@@ -1,12 +1,12 @@
-import { fetchRelationships } from 'soapbox/actions/accounts.ts';
-import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
-import { accountIdsToAccts } from 'soapbox/selectors/index.ts';
-import { filterBadges, getTagDiff } from 'soapbox/utils/badges.ts';
+import { fetchRelationships } from '@/actions/accounts.ts';
+import { importFetchedAccount, importFetchedAccounts, importFetchedStatuses } from '@/actions/importer/index.ts';
+import { accountIdsToAccts } from '@/selectors/index.ts';
+import { filterBadges, getTagDiff } from '@/utils/badges.ts';
 
 import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';

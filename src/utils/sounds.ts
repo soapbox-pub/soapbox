@@ -1,7 +1,7 @@
-import boopMp3 from 'soapbox/assets/sounds/boop.mp3';
-import boopOgg from 'soapbox/assets/sounds/boop.ogg';
-import chatMp3 from 'soapbox/assets/sounds/chat.mp3';
-import chatOgg from 'soapbox/assets/sounds/chat.ogg';
+import boopMp3 from '@/assets/sounds/boop.mp3';
+import boopOgg from '@/assets/sounds/boop.ogg';
+import chatMp3 from '@/assets/sounds/chat.mp3';
+import chatOgg from '@/assets/sounds/chat.ogg';
 
 /** Soapbox audio clip. */
 interface Sound {

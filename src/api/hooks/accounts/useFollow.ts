@@ -1,10 +1,10 @@
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { relationshipSchema } from 'soapbox/schemas/index.ts';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useTransaction } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
+import { relationshipSchema } from '@/schemas/index.ts';
 
 interface FollowOpts {
   reblogs?: boolean;

@@ -2,8 +2,8 @@ import layoutGridIcon from '@tabler/icons/outline/layout-grid.svg';
 import layoutListIcon from '@tabler/icons/outline/layout-list.svg';
 import clsx from 'clsx';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
 
 enum GroupLayout {
   LIST = 'LIST',

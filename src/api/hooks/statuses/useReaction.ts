@@ -1,12 +1,12 @@
-import { useFavourite } from 'soapbox/api/hooks/index.ts';
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useTransaction } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { EmojiReaction, Status as StatusEntity, statusSchema } from 'soapbox/schemas/index.ts';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { useFavourite } from '@/api/hooks/index.ts';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useTransaction } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { EmojiReaction, Status as StatusEntity, statusSchema } from '@/schemas/index.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
 
 export function useReaction() {
   const api = useApi();

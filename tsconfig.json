@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "paths": {
-      "soapbox/*": ["./src/*"],
+      "@/*": ["./src/*"],
     },
     "types": [
       "vite/client",

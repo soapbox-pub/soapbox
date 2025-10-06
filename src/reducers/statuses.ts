@@ -1,10 +1,10 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji-reacts.ts';
-import { htmlToPlaintext, stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
-import { normalizeId } from 'soapbox/utils/normalizers.ts';
+import { normalizeStatus } from '@/normalizers/index.ts';
+import { simulateEmojiReact, simulateUnEmojiReact } from '@/utils/emoji-reacts.ts';
+import { htmlToPlaintext, stripCompatibilityFeatures } from '@/utils/html.ts';
+import { normalizeId } from '@/utils/normalizers.ts';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -47,7 +47,7 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const domParser = new DOMParser();
 

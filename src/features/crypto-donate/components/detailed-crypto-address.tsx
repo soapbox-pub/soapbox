@@ -1,8 +1,8 @@
 import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { QRCodeCanvas as QRCode } from 'qrcode.react';
 
-import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import CopyableInput from '@/components/copyable-input.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
 
 import { getExplorerUrl } from '../utils/block-explorer.ts';
 import { getTitle } from '../utils/coin-db.ts';

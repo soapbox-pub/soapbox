@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
-} from 'soapbox/actions/mutes.ts';
+} from '@/actions/mutes.ts';
 
 import reducer from './mutes.ts';
 

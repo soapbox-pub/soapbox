@@ -2,10 +2,10 @@ import { Suspense } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import { CommunityTimeline, FollowsTimeline } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import Tabs from '@/components/ui/tabs.tsx';
+import { CommunityTimeline, FollowsTimeline } from '@/features/ui/util/async-components.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 const HomeTimeline = () => {
   const { instance } = useInstance();

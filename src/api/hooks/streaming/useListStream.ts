@@ -1,4 +1,4 @@
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
 
 import { useTimelineStream } from './useTimelineStream.ts';
 

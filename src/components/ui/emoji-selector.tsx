@@ -3,21 +3,21 @@ import dotsIcon from '@tabler/icons/outline/dots.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
-import { chooseEmoji } from 'soapbox/actions/emojis.ts';
-import { closeModal, openModal } from 'soapbox/actions/modals.ts';
-import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
-import emojiData from 'soapbox/features/emoji/data.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useFrequentlyUsedEmojis } from 'soapbox/hooks/useFrequentlyUsedEmojis.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { userTouching } from 'soapbox/is-mobile.ts';
+import { chooseEmoji } from '@/actions/emojis.ts';
+import { closeModal, openModal } from '@/actions/modals.ts';
+import EmojiComponent from '@/components/ui/emoji.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import EmojiPickerDropdown from '@/features/emoji/components/emoji-picker-dropdown.tsx';
+import emojiData from '@/features/emoji/data.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useClickOutside } from '@/hooks/useClickOutside.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useFrequentlyUsedEmojis } from '@/hooks/useFrequentlyUsedEmojis.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { userTouching } from '@/is-mobile.ts';
 
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { Emoji } from '@/features/emoji/index.ts';
 
 interface IEmojiButton {
   /** Unicode emoji character. */

@@ -3,28 +3,28 @@ import { useRef } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
-import { InstanceFavicon } from 'soapbox/components/instance-favicon.tsx';
-import Markup from 'soapbox/components/markup.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Emoji from 'soapbox/components/ui/emoji.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { getAcct } from 'soapbox/utils/accounts.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { displayFqn } from 'soapbox/utils/state.ts';
+import HoverRefWrapper from '@/components/hover-ref-wrapper.tsx';
+import { InstanceFavicon } from '@/components/instance-favicon.tsx';
+import Markup from '@/components/markup.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import Emoji from '@/components/ui/emoji.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import ActionButton from '@/features/ui/components/action-button.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { getAcct } from '@/utils/accounts.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { displayFqn } from '@/utils/state.ts';
 
 import Badge from './badge.tsx';
 import RelativeTimestamp from './relative-timestamp.tsx';
 
-import type { StatusApprovalStatus } from 'soapbox/normalizers/status.ts';
-import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';
+import type { StatusApprovalStatus } from '@/normalizers/status.ts';
+import type { Account as AccountSchema } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },

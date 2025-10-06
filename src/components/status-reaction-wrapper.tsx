@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef, cloneElement } from 'react';
 
-import { simpleEmojiReact } from 'soapbox/actions/emoji-reacts.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import EmojiSelector from 'soapbox/components/ui/emoji-selector.tsx';
-import Portal from 'soapbox/components/ui/portal.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { userTouching } from 'soapbox/is-mobile.ts';
-import { getReactForStatus } from 'soapbox/utils/emoji-reacts.ts';
+import { simpleEmojiReact } from '@/actions/emoji-reacts.ts';
+import { openModal } from '@/actions/modals.ts';
+import EmojiSelector from '@/components/ui/emoji-selector.tsx';
+import Portal from '@/components/ui/portal.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { userTouching } from '@/is-mobile.ts';
+import { getReactForStatus } from '@/utils/emoji-reacts.ts';
 
 interface IStatusReactionWrapper {
   statusId: string;

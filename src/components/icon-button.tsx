@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import Icon from 'soapbox/components/icon.tsx';
+import Icon from '@/components/icon.tsx';
 
 interface IIconButton extends Pick<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'disabled' | 'onClick' | 'onKeyDown' | 'onKeyPress' | 'onKeyUp' | 'onMouseDown' | 'onMouseEnter' | 'onMouseLeave' | 'tabIndex' | 'title'> {
   active?: boolean;

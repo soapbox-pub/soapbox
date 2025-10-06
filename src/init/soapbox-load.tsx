@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 
 
-import { fetchMe } from 'soapbox/actions/me.ts';
-import { fetchSoapboxConfig } from 'soapbox/actions/soapbox.ts';
-import LoadingScreen from 'soapbox/components/loading-screen.tsx';
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { useBunker } from 'soapbox/hooks/nostr/useBunker.ts';
-import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useLocale } from 'soapbox/hooks/useLocale.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import MESSAGES from 'soapbox/messages.ts';
+import { fetchMe } from '@/actions/me.ts';
+import { fetchSoapboxConfig } from '@/actions/soapbox.ts';
+import LoadingScreen from '@/components/loading-screen.tsx';
+import { useNostr } from '@/contexts/nostr-context.tsx';
+import { useBunker } from '@/hooks/nostr/useBunker.ts';
+import { useSigner } from '@/hooks/nostr/useSigner.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useLocale } from '@/hooks/useLocale.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import MESSAGES from '@/messages.ts';
 
 /** Load initial data from the backend */
 const loadInitial = () => {

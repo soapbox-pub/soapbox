@@ -1,8 +1,8 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { Account } from 'soapbox/types/entities.ts';
-import { flattenPages, PaginatedResult } from 'soapbox/utils/queries.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { Account } from '@/types/entities.ts';
+import { flattenPages, PaginatedResult } from '@/utils/queries.ts';
 
 export default function useAccountSearch(q: string) {
   const api = useApi();

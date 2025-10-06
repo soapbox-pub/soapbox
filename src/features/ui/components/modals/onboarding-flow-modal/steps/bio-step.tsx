@@ -2,17 +2,17 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import toast from 'soapbox/toast.tsx';
+import { patchMe } from '@/actions/me.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import Button from '@/components/ui/button.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   bioPlaceholder: { id: 'onboarding.bio.placeholder', defaultMessage: 'Tell the world a little about yourself…' },

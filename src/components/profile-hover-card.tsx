@@ -6,34 +6,34 @@ import { useEffect, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { fetchRelationships } from 'soapbox/actions/accounts.ts';
+import { fetchRelationships } from '@/actions/accounts.ts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
-} from 'soapbox/actions/profile-hover-card.ts';
-import { useAccount, usePatronUser } from 'soapbox/api/hooks/index.ts';
-import Badge from 'soapbox/components/badge.tsx';
-import Markup from 'soapbox/components/markup.tsx';
-import StillImage from 'soapbox/components/still-image.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+} from '@/actions/profile-hover-card.ts';
+import { useAccount, usePatronUser } from '@/api/hooks/index.ts';
+import Badge from '@/components/badge.tsx';
+import Markup from '@/components/markup.tsx';
+import StillImage from '@/components/still-image.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import { Card, CardBody } from '@/components/ui/card.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import ActionButton from '@/features/ui/components/action-button.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
 import { showProfileHoverCard } from './hover-ref-wrapper.tsx';
 import { dateFormatOptions } from './relative-timestamp.tsx';
 
-import type { Account, PatronUser } from 'soapbox/schemas/index.ts';
-import type { AppDispatch } from 'soapbox/store.ts';
+import type { Account, PatronUser } from '@/schemas/index.ts';
+import type { AppDispatch } from '@/store.ts';
 
 const messages = defineMessages({
   streak: { id: 'account.streak', defaultMessage: 'Day Streak' },

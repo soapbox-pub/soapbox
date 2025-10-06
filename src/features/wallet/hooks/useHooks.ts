@@ -2,12 +2,12 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { defineMessages, useIntl } from 'react-intl';
 import { create } from 'zustand';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { NutzappedEntry, NutzappedRecord, Transactions, WalletData, baseWalletSchema, nutzappedEntry, transactionsSchema } from 'soapbox/schemas/wallet.ts';
-import toast from 'soapbox/toast.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { NutzappedEntry, NutzappedRecord, Transactions, WalletData, baseWalletSchema, nutzappedEntry, transactionsSchema } from '@/schemas/wallet.ts';
+import toast from '@/toast.tsx';
 
-import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Account as AccountEntity, Status as StatusEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   createWallet: { id: 'wallet.create.success', defaultMessage: 'Wallet created successfully!' },

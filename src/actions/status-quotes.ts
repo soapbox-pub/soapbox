@@ -2,7 +2,7 @@ import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 export const STATUS_QUOTES_FETCH_REQUEST = 'STATUS_QUOTES_FETCH_REQUEST';
 export const STATUS_QUOTES_FETCH_SUCCESS = 'STATUS_QUOTES_FETCH_SUCCESS';

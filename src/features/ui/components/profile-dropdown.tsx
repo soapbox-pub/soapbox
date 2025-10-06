@@ -7,18 +7,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchOwnAccounts, logOut, switchAccount } from 'soapbox/actions/auth.ts';
-import Account from 'soapbox/components/account.tsx';
-import { MenuDivider } from 'soapbox/components/ui/menu.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useClickOutside } from 'soapbox/hooks/useClickOutside.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { makeGetOtherAccounts } from 'soapbox/selectors/index.ts';
+import { fetchOwnAccounts, logOut, switchAccount } from '@/actions/auth.ts';
+import Account from '@/components/account.tsx';
+import { MenuDivider } from '@/components/ui/menu.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useClickOutside } from '@/hooks/useClickOutside.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { makeGetOtherAccounts } from '@/selectors/index.ts';
 
 import ThemeToggle from './theme-toggle.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
+import type { Account as AccountEntity } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },

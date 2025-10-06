@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
-import { IChat } from 'soapbox/queries/chats.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
+import { IChat } from '@/queries/chats.ts';
 
 import ChatListItem from './chat-list-item.tsx';
 

@@ -1,11 +1,11 @@
 import { FormattedMessage } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import { Card, CardTitle } from 'soapbox/components/ui/card.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import Button from '@/components/ui/button.tsx';
+import { Card, CardTitle } from '@/components/ui/card.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 /** Prompts logged-out users to log in when viewing a thread. */
 const ThreadLoginCta: React.FC = () => {

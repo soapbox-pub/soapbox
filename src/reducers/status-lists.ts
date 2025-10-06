@@ -11,8 +11,8 @@ import {
   STATUS_QUOTES_FETCH_FAIL,
   STATUS_QUOTES_FETCH_REQUEST,
   STATUS_QUOTES_FETCH_SUCCESS,
-} from 'soapbox/actions/status-quotes.ts';
-import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses.ts';
+} from '@/actions/status-quotes.ts';
+import { STATUS_CREATE_SUCCESS } from '@/actions/statuses.ts';
 
 import {
   RECENT_EVENTS_FETCH_REQUEST,
@@ -57,7 +57,7 @@ import {
 } from '../actions/scheduled-statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 export const StatusListRecord = ImmutableRecord({
   next: null as string | null,

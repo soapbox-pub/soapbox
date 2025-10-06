@@ -7,14 +7,14 @@ import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { setFilter } from 'soapbox/actions/notifications.ts';
-import Icon from 'soapbox/components/icon.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { setFilter } from '@/actions/notifications.ts';
+import Icon from '@/components/icon.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
-import type { Item } from 'soapbox/components/ui/tabs.tsx';
+import type { Item } from '@/components/ui/tabs.tsx';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },

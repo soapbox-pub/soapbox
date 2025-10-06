@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildGroup, buildGroupTag, buildGroupRelationship } from 'soapbox/jest/factory.ts';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import { buildGroup, buildGroupTag, buildGroupRelationship } from '@/jest/factory.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
+import { GroupRoles } from '@/schemas/group-member.ts';
 
 import GroupTagListItem from './group-tag-list-item.tsx';
 

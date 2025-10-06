@@ -1,9 +1,9 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
-import tintify from 'soapbox/utils/colors.ts';
-import { generateAccent, generateNeutral } from 'soapbox/utils/theme.ts';
+import tintify from '@/utils/colors.ts';
+import { generateAccent, generateNeutral } from '@/utils/theme.ts';
 
-import type { TailwindColorPalette } from 'soapbox/types/colors.ts';
+import type { TailwindColorPalette } from '@/types/colors.ts';
 
 type SoapboxConfig = ImmutableMap<string, any>;
 type SoapboxColors = ImmutableMap<string, any>;

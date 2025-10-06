@@ -2,13 +2,13 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
 
-import api from 'soapbox/api/index.ts';
-import { getFilters, regexFromFilters } from 'soapbox/selectors/index.ts';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
-import { compareId } from 'soapbox/utils/comparators.ts';
-import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
-import { htmlToPlaintext } from 'soapbox/utils/html.ts';
-import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from 'soapbox/utils/notification.ts';
+import api from '@/api/index.ts';
+import { getFilters, regexFromFilters } from '@/selectors/index.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
+import { compareId } from '@/utils/comparators.ts';
+import { getFeatures, parseVersion, PLEROMA } from '@/utils/features.ts';
+import { htmlToPlaintext } from '@/utils/html.ts';
+import { EXCLUDE_TYPES, NOTIFICATION_TYPES } from '@/utils/notification.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { fetchGroupRelationships } from './groups.ts';
@@ -21,8 +21,8 @@ import {
 import { saveMarker } from './markers.ts';
 import { getSettings, saveSettings } from './settings.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Status } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, Status } from '@/types/entities.ts';
 
 const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';

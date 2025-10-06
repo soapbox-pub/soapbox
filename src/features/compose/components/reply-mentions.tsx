@@ -2,17 +2,17 @@ import { useCallback } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
-import { shortenNostr } from 'soapbox/utils/nostr.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { statusToMentionsAccountIdsArray } from '@/reducers/compose.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
+import { shortenNostr } from '@/utils/nostr.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as StatusEntity } from '@/types/entities.ts';
 
 interface IReplyMentions {
   composeId: string;

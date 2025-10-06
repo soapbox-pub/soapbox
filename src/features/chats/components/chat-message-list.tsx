@@ -2,21 +2,21 @@ import { useState, useEffect, useRef, useCallback, useMemo, forwardRef } from 'r
 import { useIntl, defineMessages } from 'react-intl';
 import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso';
 
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import PlaceholderChatMessage from 'soapbox/features/placeholder/components/placeholder-chat-message.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { IChat, useChatActions, useChatMessages } from 'soapbox/queries/chats.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import PlaceholderChatMessage from '@/features/placeholder/components/placeholder-chat-message.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { IChat, useChatActions, useChatMessages } from '@/queries/chats.ts';
 
 import ChatMessageListIntro from './chat-message-list-intro.tsx';
 import ChatMessage from './chat-message.tsx';
 
-import type { ChatMessage as ChatMessageEntity } from 'soapbox/types/entities.ts';
+import type { ChatMessage as ChatMessageEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },

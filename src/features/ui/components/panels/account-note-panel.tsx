@@ -2,15 +2,15 @@ import { debounce } from 'es-toolkit';
 import { useEffect, useRef, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { submitAccountNote } from 'soapbox/actions/account-notes.ts';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import Widget from 'soapbox/components/ui/widget.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { submitAccountNote } from '@/actions/account-notes.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import Widget from '@/components/ui/widget.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
-import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
-import type { AppDispatch } from 'soapbox/store.ts';
+import type { Account as AccountEntity } from '@/schemas/index.ts';
+import type { AppDispatch } from '@/store.ts';
 
 const onSave = debounce(
   (dispatch: AppDispatch, id: string, value: string, callback: () => void) =>

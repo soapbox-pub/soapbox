@@ -1,15 +1,15 @@
 import clsx from 'clsx';
 import { lazy, useEffect } from 'react';
 
-import { useLocale } from 'soapbox/hooks/useLocale.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
-import { startSentry } from 'soapbox/sentry.ts';
-import { generateThemeCss } from 'soapbox/utils/theme.ts';
+import { useLocale } from '@/hooks/useLocale.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { useTheme } from '@/hooks/useTheme.ts';
+import { normalizeSoapboxConfig } from '@/normalizers/index.ts';
+import { startSentry } from '@/sentry.ts';
+import { generateThemeCss } from '@/utils/theme.ts';
 
-const Helmet = lazy(() => import('soapbox/components/helmet.tsx'));
+const Helmet = lazy(() => import('@/components/helmet.tsx'));
 
 interface ISoapboxHead {
   children: React.ReactNode;

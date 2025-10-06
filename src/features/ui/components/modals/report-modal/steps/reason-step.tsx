@@ -2,17 +2,17 @@ import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeReportComment, changeReportRule, ReportableEntities } from 'soapbox/actions/reports.ts';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { changeReportComment, changeReportRule, ReportableEntities } from '@/actions/reports.ts';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
-import type { Rule } from 'soapbox/schemas/rule.ts';
+import type { Account } from '@/schemas/index.ts';
+import type { Rule } from '@/schemas/rule.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'report.placeholder', defaultMessage: 'Additional comments' },

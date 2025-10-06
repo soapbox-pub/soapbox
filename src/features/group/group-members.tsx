@@ -1,18 +1,18 @@
 import clsx from 'clsx';
 import { useMemo } from 'react';
 
-import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
-import { PendingItemsRow } from 'soapbox/components/pending-items-row.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups.ts';
+import { useGroup, useGroupMembers, useGroupMembershipRequests } from '@/api/hooks/index.ts';
+import { PendingItemsRow } from '@/components/pending-items-row.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import { MAX_ADMIN_COUNT } from '@/utils/groups.ts';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account.tsx';
 
 import GroupMemberListItem from './components/group-member-list-item.tsx';
 
-import type { Group } from 'soapbox/types/entities.ts';
+import type { Group } from '@/types/entities.ts';
 
 
 interface IGroupMembers {

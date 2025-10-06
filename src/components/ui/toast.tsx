@@ -7,7 +7,7 @@ import toast, { Toast as RHToast } from 'react-hot-toast';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { ToastText, ToastType } from 'soapbox/toast.tsx';
+import { ToastText, ToastType } from '@/toast.tsx';
 
 import HStack from './hstack.tsx';
 import Icon from './icon.tsx';

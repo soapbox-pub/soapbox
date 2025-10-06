@@ -3,18 +3,18 @@ import userIcon from '@tabler/icons/outline/user.svg';
 import clsx from 'clsx';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import PureEventActionButton from 'soapbox/features/event/components/pure-event-action-button.tsx';
-import PureEventDate from 'soapbox/features/event/components/pure-event-date.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import PureEventActionButton from '@/features/event/components/pure-event-action-button.tsx';
+import PureEventDate from '@/features/event/components/pure-event-date.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import Icon from './icon.tsx';
 import VerificationBadge from './verification-badge.tsx';
 
-import type { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import type { Status as StatusEntity } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },

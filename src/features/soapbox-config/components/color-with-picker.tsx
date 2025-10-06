@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 // @ts-ignore: TODO: upgrade react-overlays. v3.1 and above have TS definitions
 import Overlay from 'react-overlays/lib/Overlay';
 
-import { isMobile } from 'soapbox/is-mobile.ts';
+import { isMobile } from '@/is-mobile.ts';
 
 import ColorPicker from './color-picker.tsx';
 

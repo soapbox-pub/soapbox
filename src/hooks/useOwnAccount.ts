@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { makeGetAccount } from 'soapbox/selectors/index.ts';
+import { makeGetAccount } from '@/selectors/index.ts';
 
 import { useAppSelector } from './useAppSelector.ts';
 

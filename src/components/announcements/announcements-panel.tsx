@@ -3,10 +3,10 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
-import { Card } from 'soapbox/components/ui/card.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Widget from 'soapbox/components/ui/widget.tsx';
+import { useAnnouncements } from '@/api/hooks/announcements/index.ts';
+import { Card } from '@/components/ui/card.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Widget from '@/components/ui/widget.tsx';
 
 import Announcement from './announcement.tsx';
 

@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { fetchBackupCodes } from 'soapbox/actions/mfa.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import toast from 'soapbox/toast.tsx';
+import { fetchBackupCodes } from '@/actions/mfa.ts';
+import Button from '@/components/ui/button.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   mfaCancelButton: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },

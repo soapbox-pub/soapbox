@@ -1,13 +1,13 @@
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { FormattedMessage } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetAccount } from 'soapbox/selectors/index.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetAccount } from '@/selectors/index.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
 
 const getAccount = makeGetAccount();
 

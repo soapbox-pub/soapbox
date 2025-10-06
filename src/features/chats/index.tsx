@@ -1,4 +1,4 @@
-import { ChatProvider } from 'soapbox/contexts/chat-context.tsx';
+import { ChatProvider } from '@/contexts/chat-context.tsx';
 
 import ChatPage from './components/chat-page/chat-page.tsx';
 

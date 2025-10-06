@@ -9,11 +9,11 @@ import {
   fromJS,
 } from 'immutable';
 
-import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
-import headerMissing from 'soapbox/assets/images/header-missing.png';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
+import avatarMissing from '@/assets/images/avatar-missing.png';
+import headerMissing from '@/assets/images/header-missing.png';
+import { normalizeEmoji } from '@/normalizers/emoji.ts';
 
-import type { Emoji, GroupRelationship } from 'soapbox/types/entities.ts';
+import type { Emoji, GroupRelationship } from '@/types/entities.ts';
 
 export const GroupRecord = ImmutableRecord({
   avatar: '',

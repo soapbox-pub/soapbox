@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchMe } from 'soapbox/actions/me.ts';
-import { closeModal } from 'soapbox/actions/modals.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { captchaSchema, type CaptchaData } from 'soapbox/schemas/captcha.ts';
-import toast from 'soapbox/toast.tsx';
+import { fetchMe } from '@/actions/me.ts';
+import { closeModal } from '@/actions/modals.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { captchaSchema, type CaptchaData } from '@/schemas/captcha.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   success: { id: 'nostr_signup.captcha_message.sucess', defaultMessage: 'Incredible! You\'ve successfully completed the captcha.' },

@@ -1,6 +1,6 @@
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 
-import { isNativeEmoji, type Emoji } from 'soapbox/features/emoji/index.ts';
+import { isNativeEmoji, type Emoji } from '@/features/emoji/index.ts';
 
 import type {
   EditorConfig,

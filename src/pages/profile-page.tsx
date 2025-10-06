@@ -1,13 +1,13 @@
 import { FormattedMessage } from 'react-intl';
 import { Redirect, useHistory } from 'react-router-dom';
 
-import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Layout from 'soapbox/components/ui/layout.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import Header from 'soapbox/features/account/components/header.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import { useAccountLookup } from '@/api/hooks/index.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Layout from '@/components/ui/layout.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import Header from '@/features/account/components/header.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,
   ProfileInfoPanel,
@@ -18,11 +18,11 @@ import {
   PinnedAccountsPanel,
   AccountNotePanel,
   PocketWallet,
-} from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { getAcct } from 'soapbox/utils/accounts.ts';
+} from '@/features/ui/util/async-components.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { getAcct } from '@/utils/accounts.ts';
 
 interface IProfilePage {
   params?: {

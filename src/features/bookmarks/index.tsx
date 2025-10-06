@@ -1,10 +1,10 @@
 import { debounce } from 'es-toolkit';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useBookmarks } from 'soapbox/api/hooks/index.ts';
-import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import PureStatusList from 'soapbox/components/pure-status-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
+import { useBookmarks } from '@/api/hooks/index.ts';
+import PullToRefresh from '@/components/pull-to-refresh.tsx';
+import PureStatusList from '@/components/pure-status-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },

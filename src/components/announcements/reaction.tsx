@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
-import AnimatedNumber from 'soapbox/components/animated-number.tsx';
-import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
+import { useAnnouncements } from '@/api/hooks/announcements/index.ts';
+import AnimatedNumber from '@/components/animated-number.tsx';
+import unicodeMapping from '@/features/emoji/mapping.ts';
 
 import Emoji from './emoji.tsx';
 
-import type { AnnouncementReaction } from 'soapbox/schemas/index.ts';
+import type { AnnouncementReaction } from '@/schemas/index.ts';
 
 interface IReaction {
   announcementId: string;

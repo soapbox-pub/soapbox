@@ -1,12 +1,12 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeListEditorTitle, submitListEditor } from 'soapbox/actions/lists.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { changeListEditorTitle, submitListEditor } from '@/actions/lists.ts';
+import Button from '@/components/ui/button.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   label: { id: 'lists.new.title_placeholder', defaultMessage: 'New list title' },

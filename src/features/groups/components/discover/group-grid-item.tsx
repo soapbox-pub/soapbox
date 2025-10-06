@@ -1,16 +1,16 @@
 import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 
-import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import GroupActionButton from 'soapbox/features/group/components/group-action-button.tsx';
-import GroupHeaderImage from 'soapbox/features/group/components/group-header-image.tsx';
-import GroupMemberCount from 'soapbox/features/group/components/group-member-count.tsx';
-import GroupPrivacy from 'soapbox/features/group/components/group-privacy.tsx';
+import GroupAvatar from '@/components/groups/group-avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import GroupActionButton from '@/features/group/components/group-action-button.tsx';
+import GroupHeaderImage from '@/features/group/components/group-header-image.tsx';
+import GroupMemberCount from '@/features/group/components/group-member-count.tsx';
+import GroupPrivacy from '@/features/group/components/group-privacy.tsx';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 interface IGroup {
   group: Group;

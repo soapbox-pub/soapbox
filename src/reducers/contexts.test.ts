@@ -6,10 +6,10 @@ import {
 } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { STATUS_IMPORT } from 'soapbox/actions/importer/index.ts';
-import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses.ts';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines.ts';
-import { applyActions } from 'soapbox/jest/test-helpers.tsx';
+import { STATUS_IMPORT } from '@/actions/importer/index.ts';
+import { CONTEXT_FETCH_SUCCESS } from '@/actions/statuses.ts';
+import { TIMELINE_DELETE } from '@/actions/timelines.ts';
+import { applyActions } from '@/jest/test-helpers.tsx';
 
 import reducer, { ReducerRecord } from './contexts.ts';
 

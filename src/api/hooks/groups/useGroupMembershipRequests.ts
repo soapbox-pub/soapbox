@@ -1,12 +1,12 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useDismissEntity, useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import { accountSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useDismissEntity, useEntities } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import { accountSchema } from '@/schemas/index.ts';
 
 import { useGroupRelationship } from './useGroupRelationship.ts';
 
-import type { ExpandedEntitiesPath } from 'soapbox/entity-store/hooks/types.ts';
+import type { ExpandedEntitiesPath } from '@/entity-store/hooks/types.ts';
 
 function useGroupMembershipRequests(groupId: string) {
   const api = useApi();

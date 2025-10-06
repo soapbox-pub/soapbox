@@ -1,15 +1,15 @@
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import { setSentryAccount } from 'soapbox/sentry.ts';
-import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import { setSentryAccount } from '@/sentry.ts';
+import { getAuthUserId, getAuthUserUrl } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
 
 import { verifyCredentials } from './auth.ts';
 import { importFetchedAccount } from './importer/index.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { Account } from '@/schemas/index.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST' as const;
 const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS' as const;

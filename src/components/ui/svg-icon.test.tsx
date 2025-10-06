@@ -1,7 +1,7 @@
 import IconCode from '@tabler/icons/outline/code.svg';
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import SvgIcon from './svg-icon.tsx';
 

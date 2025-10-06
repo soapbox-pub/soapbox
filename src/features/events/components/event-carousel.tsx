@@ -4,11 +4,11 @@ import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
-import EventPreview from 'soapbox/components/event-preview.tsx';
-import { Card } from 'soapbox/components/ui/card.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import EventPreview from '@/components/event-preview.tsx';
+import { Card } from '@/components/ui/card.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview.tsx';
 

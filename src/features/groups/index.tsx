@@ -3,19 +3,19 @@ import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useGroups } from 'soapbox/api/hooks/index.ts';
-import GroupCard from 'soapbox/components/group-card.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { PERMISSION_CREATE_GROUPS, hasPermission } from 'soapbox/utils/permissions.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useGroups } from '@/api/hooks/index.ts';
+import GroupCard from '@/components/group-card.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Button from '@/components/ui/button.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useDebounce } from '@/hooks/useDebounce.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { PERMISSION_CREATE_GROUPS, hasPermission } from '@/utils/permissions.ts';
 
 import PlaceholderGroupCard from '../placeholder/components/placeholder-group-card.tsx';
 

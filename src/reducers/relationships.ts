@@ -1,7 +1,7 @@
 import { get } from 'es-toolkit/compat';
 import { Map as ImmutableMap } from 'immutable';
 
-import { type Relationship, relationshipSchema } from 'soapbox/schemas/index.ts';
+import { type Relationship, relationshipSchema } from '@/schemas/index.ts';
 
 import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account-notes.ts';
 import {
@@ -26,7 +26,7 @@ import {
 } from '../actions/importer/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 type State = ImmutableMap<string, Relationship>;
 type APIEntities = Array<APIEntity>;

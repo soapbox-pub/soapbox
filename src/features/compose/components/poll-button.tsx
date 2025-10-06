@@ -1,9 +1,9 @@
 import chartBarIcon from '@tabler/icons/outline/chart-bar.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { addPoll, removePoll } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { addPoll, removePoll } from '@/actions/compose.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 import ComposeFormButton from './compose-form-button.tsx';
 

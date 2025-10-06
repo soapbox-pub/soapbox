@@ -1,16 +1,16 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchGroupRelationshipsSuccess } from 'soapbox/actions/groups.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup, usePendingGroups } from 'soapbox/api/hooks/index.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
+import { fetchGroupRelationshipsSuccess } from '@/actions/groups.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useCancelMembershipRequest, useJoinGroup, useLeaveGroup, usePendingGroups } from '@/api/hooks/index.ts';
+import Button from '@/components/ui/button.tsx';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
 
-import type { Group, GroupRelationship } from 'soapbox/types/entities.ts';
+import type { Group, GroupRelationship } from '@/types/entities.ts';
 
 interface IGroupActionButton {
   group: Group;

@@ -1,8 +1,8 @@
 import { List as ImmutableList } from 'immutable';
 
-import { selectAccount, selectOwnAccount } from 'soapbox/selectors/index.ts';
+import { selectAccount, selectOwnAccount } from '@/selectors/index.ts';
 
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 export const validId = (id: any) => typeof id === 'string' && id !== 'null' && id !== 'undefined';
 

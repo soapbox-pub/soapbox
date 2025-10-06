@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { CardBody, CardTitle } from '@/components/ui/card.tsx';
+import Form from '@/components/ui/form.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useUpdateCredentials } from '@/queries/accounts.ts';
 
 type FormData = {
   accepts_chat_messages?: boolean;

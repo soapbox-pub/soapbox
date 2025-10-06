@@ -1,34 +1,34 @@
 import { useState, useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { updateNotificationSettings } from 'soapbox/actions/accounts.ts';
-import { patchMe } from 'soapbox/actions/me.ts';
-import BirthdayInput from 'soapbox/components/birthday-input.tsx';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Button } from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Streamfield from 'soapbox/components/ui/streamfield.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useImageField } from 'soapbox/hooks/forms/index.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import toast from 'soapbox/toast.tsx';
-import { isDefaultAvatar, isDefaultHeader } from 'soapbox/utils/accounts.ts';
+import { updateNotificationSettings } from '@/actions/accounts.ts';
+import { patchMe } from '@/actions/me.ts';
+import BirthdayInput from '@/components/birthday-input.tsx';
+import List, { ListItem } from '@/components/list.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Streamfield from '@/components/ui/streamfield.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useImageField } from '@/hooks/forms/index.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import toast from '@/toast.tsx';
+import { isDefaultAvatar, isDefaultHeader } from '@/utils/accounts.ts';
 
 import AvatarPicker from './components/avatar-picker.tsx';
 import HeaderPicker from './components/header-picker.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { StreamfieldComponent } from '@/components/ui/streamfield.tsx';
+import type { Account } from '@/schemas/index.ts';
 
 const nonDefaultAvatar = (url: string | undefined) => url && isDefaultAvatar(url) ? undefined : url;
 const nonDefaultHeader = (url: string | undefined) => url && isDefaultHeader(url) ? undefined : url;

@@ -6,11 +6,11 @@ import { useHistory } from 'react-router-dom';
 import {
   closeStatusHoverCard,
   updateStatusHoverCard,
-} from 'soapbox/actions/status-hover-card.ts';
-import { fetchStatus } from 'soapbox/actions/statuses.ts';
-import StatusContainer from 'soapbox/containers/status-container.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+} from '@/actions/status-hover-card.ts';
+import { fetchStatus } from '@/actions/statuses.ts';
+import StatusContainer from '@/containers/status-container.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import { showStatusHoverCard } from './hover-status-wrapper.tsx';
 

@@ -1,8 +1,8 @@
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import type { EntitiesPath } from './hooks/types.ts';
 import type { Entity, EntityListState } from './types.ts';
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 /** Get cache at path from Redux. */
 const selectCache = (state: RootState, path: EntitiesPath) => state.entities[path[0]];

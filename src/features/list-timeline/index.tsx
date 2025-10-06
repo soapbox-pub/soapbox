@@ -2,16 +2,16 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { fetchList } from 'soapbox/actions/lists.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { expandListTimeline } from 'soapbox/actions/timelines.ts';
-import { useListStream } from 'soapbox/api/hooks/index.ts';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchList } from '@/actions/lists.ts';
+import { openModal } from '@/actions/modals.ts';
+import { expandListTimeline } from '@/actions/timelines.ts';
+import { useListStream } from '@/api/hooks/index.ts';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 

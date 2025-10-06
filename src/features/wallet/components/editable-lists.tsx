@@ -1,6 +1,6 @@
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Streamfield, { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Streamfield, { StreamfieldComponent } from '@/components/ui/streamfield.tsx';
 
 interface IEditableList<T> {
   items: T[];

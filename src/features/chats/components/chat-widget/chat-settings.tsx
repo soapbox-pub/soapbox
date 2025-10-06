@@ -3,21 +3,21 @@ import banIcon from '@tabler/icons/outline/ban.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { blockAccount, unblockAccount } from 'soapbox/actions/accounts.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Select from 'soapbox/components/ui/select.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { messageExpirationOptions, MessageExpirationValues, useChatActions } from 'soapbox/queries/chats.ts';
-import { secondsToDays } from 'soapbox/utils/numbers.tsx';
+import { blockAccount, unblockAccount } from '@/actions/accounts.ts';
+import { openModal } from '@/actions/modals.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Select from '@/components/ui/select.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { messageExpirationOptions, MessageExpirationValues, useChatActions } from '@/queries/chats.ts';
+import { secondsToDays } from '@/utils/numbers.tsx';
 
 import ChatPaneHeader from './chat-pane-header.tsx';
 

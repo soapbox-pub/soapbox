@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
-import { render, screen, within } from 'soapbox/jest/test-helpers.tsx';
+import { render, screen, within } from '@/jest/test-helpers.tsx';
 
 import LayoutButtons, { GroupLayout } from './layout-buttons.tsx';
 

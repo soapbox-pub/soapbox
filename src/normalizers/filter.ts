@@ -5,7 +5,7 @@
  */
 import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { FilterKeyword, FilterStatus } from 'soapbox/types/entities.ts';
+import { FilterKeyword, FilterStatus } from '@/types/entities.ts';
 
 import { normalizeFilterKeyword } from './filter-keyword.ts';
 import { normalizeFilterStatus } from './filter-status.ts';

@@ -1,11 +1,11 @@
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useDismissEntity, useTransaction } from 'soapbox/entity-store/hooks/index.ts';
-import { ExpandedEntitiesPath } from 'soapbox/entity-store/hooks/types.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { statusSchema } from 'soapbox/schemas/index.ts';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useDismissEntity, useTransaction } from '@/entity-store/hooks/index.ts';
+import { ExpandedEntitiesPath } from '@/entity-store/hooks/types.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
+import { statusSchema } from '@/schemas/index.ts';
 
 /**
  * Bookmark and undo a bookmark, with optimistic update.

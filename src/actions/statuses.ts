@@ -1,8 +1,8 @@
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { settingsSchema } from 'soapbox/schemas/soapbox/settings.ts';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
-import { getFeatures } from 'soapbox/utils/features.ts';
-import { shouldHaveCard } from 'soapbox/utils/status.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { settingsSchema } from '@/schemas/soapbox/settings.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
+import { getFeatures } from '@/utils/features.ts';
+import { shouldHaveCard } from '@/utils/status.ts';
 
 import api from '../api/index.ts';
 
@@ -13,8 +13,8 @@ import { openModal } from './modals.ts';
 import { getSettings } from './settings.ts';
 import { deleteFromTimelines } from './timelines.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Status } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, Status } from '@/types/entities.ts';
 
 const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';

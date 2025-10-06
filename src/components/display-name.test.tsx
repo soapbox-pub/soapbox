@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory.ts';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { buildAccount } from '@/jest/factory.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import DisplayName from './display-name.tsx';
 

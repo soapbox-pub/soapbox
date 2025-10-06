@@ -2,12 +2,12 @@ import { throttle } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useState, useRef, useCallback, useEffect } from 'react';
 
-import { accountSearch } from 'soapbox/actions/accounts.ts';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { accountSearch } from '@/actions/accounts.ts';
+import AutosuggestInput, { AutoSuggestion } from '@/components/autosuggest-input.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
-import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { InputThemes } from 'soapbox/components/ui/input.tsx';
+import type { Menu } from '@/components/dropdown-menu/index.ts';
+import type { InputThemes } from '@/components/ui/input.tsx';
 
 const noOp = () => { };
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin.ts';
+import { ADMIN_CONFIG_UPDATE_REQUEST } from '@/actions/admin.ts';
 
 import reducer from './instance.ts';
 
@@ -33,7 +33,7 @@ describe('instance reducer', () => {
   });
 
   describe('ADMIN_CONFIG_UPDATE_REQUEST', async () => {
-    const { configs } = await import('soapbox/__fixtures__/pleroma-admin-config.json');
+    const { configs } = await import('@/__fixtures__/pleroma-admin-config.json');
 
     it('imports the configs', () => {
       const action = {

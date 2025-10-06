@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { autosuggestPopulate } from 'soapbox/features/emoji/search.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { CustomEmoji, customEmojiSchema } from 'soapbox/schemas/custom-emoji.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { autosuggestPopulate } from '@/features/emoji/search.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { CustomEmoji, customEmojiSchema } from '@/schemas/custom-emoji.ts';
+import { filteredArray } from '@/schemas/utils.ts';
 
 /** Get the Instance for the current backend. */
 export function useCustomEmojis() {

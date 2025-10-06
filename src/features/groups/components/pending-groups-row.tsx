@@ -1,7 +1,7 @@
-import { usePendingGroups } from 'soapbox/api/hooks/index.ts';
-import { PendingItemsRow } from 'soapbox/components/pending-items-row.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { usePendingGroups } from '@/api/hooks/index.ts';
+import { PendingItemsRow } from '@/components/pending-items-row.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import { useFeatures } from '@/hooks/useFeatures.ts';
 
 export default () => {
   const features = useFeatures();

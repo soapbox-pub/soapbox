@@ -5,25 +5,25 @@ import { useMemo } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useRouteMatch } from 'react-router-dom';
 
-import { useGroup, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Layout from 'soapbox/components/ui/layout.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import GroupHeader from 'soapbox/features/group/components/group-header.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import { useGroup, useGroupMembershipRequests } from '@/api/hooks/index.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Layout from '@/components/ui/layout.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import Text from '@/components/ui/text.tsx';
+import GroupHeader from '@/features/group/components/group-header.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   CtaBanner,
   GroupMediaPanel,
   SignUpPanel,
   SuggestedGroupsPanel,
-} from 'soapbox/features/ui/util/async-components.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+} from '@/features/ui/util/async-components.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   all: { id: 'group.tabs.all', defaultMessage: 'All' },

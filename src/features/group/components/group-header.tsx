@@ -3,16 +3,16 @@ import { List as ImmutableList } from 'immutable';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import GroupAvatar from 'soapbox/components/groups/group-avatar.tsx';
-import StillImage from 'soapbox/components/still-image.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
-import { isDefaultHeader } from 'soapbox/utils/accounts.ts';
+import { openModal } from '@/actions/modals.ts';
+import GroupAvatar from '@/components/groups/group-avatar.tsx';
+import StillImage from '@/components/still-image.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { normalizeAttachment } from '@/normalizers/index.ts';
+import { isDefaultHeader } from '@/utils/accounts.ts';
 
 import GroupActionButton from './group-action-button.tsx';
 import GroupMemberCount from './group-member-count.tsx';
@@ -20,7 +20,7 @@ import GroupOptionsButton from './group-options-button.tsx';
 import GroupPrivacy from './group-privacy.tsx';
 import GroupRelationship from './group-relationship.tsx';
 
-import type { Group } from 'soapbox/types/entities.ts';
+import type { Group } from '@/types/entities.ts';
 
 const messages = defineMessages({
   header: { id: 'group.header.alt', defaultMessage: 'Group header' },

@@ -2,9 +2,9 @@ import checkIcon from '@tabler/icons/outline/check.svg';
 import pointIcon from '@tabler/icons/outline/point.svg';
 import clsx from 'clsx';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
 
 interface IValidationCheckmark {
   isValid: boolean;

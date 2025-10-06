@@ -4,11 +4,11 @@ import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import roadIcon from '@tabler/icons/outline/road.svg';
 
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 export const ADDRESS_ICONS: Record<string, string> = {
   house: homeIcon,

@@ -1,9 +1,9 @@
 import { FormattedMessage } from 'react-intl';
 
-import { Card } from 'soapbox/components/ui/card.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { Card } from '@/components/ui/card.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 import ConsumerButton from './consumer-button.tsx';
 

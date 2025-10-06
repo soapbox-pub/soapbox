@@ -1,8 +1,8 @@
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
-import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
-import headerMissing from 'soapbox/assets/images/header-missing.png';
+import avatarMissing from '@/assets/images/avatar-missing.png';
+import headerMissing from '@/assets/images/header-missing.png';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { groupRelationshipSchema } from './group-relationship.ts';

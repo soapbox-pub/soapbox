@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeEmail } from 'soapbox/actions/security.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import toast from 'soapbox/toast.tsx';
+import { changeEmail } from '@/actions/security.ts';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   header: { id: 'edit_email.header', defaultMessage: 'Change Email' },

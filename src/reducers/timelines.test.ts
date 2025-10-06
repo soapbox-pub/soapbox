@@ -5,7 +5,7 @@ import {
   TIMELINE_EXPAND_REQUEST,
   TIMELINE_EXPAND_FAIL,
   TIMELINE_EXPAND_SUCCESS,
-} from 'soapbox/actions/timelines.ts';
+} from '@/actions/timelines.ts';
 
 import reducer from './timelines.ts';
 

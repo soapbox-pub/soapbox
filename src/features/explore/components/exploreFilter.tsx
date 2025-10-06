@@ -4,20 +4,20 @@ import { debounce } from 'es-toolkit';
 import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeSearch, submitSearch } from 'soapbox/actions/search.ts';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
+import { changeSearch, submitSearch } from '@/actions/search.ts';
+import Divider from '@/components/ui/divider.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
 import {
   WordFilter,
   LanguageFilter,
   MediaFilter,
   PlatformFilters,
   ToggleRepliesFilter,
-} from 'soapbox/features/explore/components/filters.tsx';
-import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+} from '@/features/explore/components/filters.tsx';
+import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   allMedia: { id: 'column.explore.media_filters.all_media', defaultMessage: 'All media' },

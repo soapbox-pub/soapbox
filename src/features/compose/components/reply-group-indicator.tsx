@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Link from 'soapbox/components/link.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { Group } from 'soapbox/schemas/index.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import Link from '@/components/link.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { Group } from '@/schemas/index.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 interface IReplyGroupIndicator {
   composeId: string;

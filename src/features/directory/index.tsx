@@ -3,16 +3,16 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 
-import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory.ts';
-import LoadMore from 'soapbox/components/load-more.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import RadioButton from 'soapbox/components/ui/radio-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { fetchDirectory, expandDirectory } from '@/actions/directory.ts';
+import LoadMore from '@/components/load-more.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import RadioButton from '@/components/ui/radio-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 import AccountCard from './components/account-card.tsx';
 

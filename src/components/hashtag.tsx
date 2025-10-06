@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { Sparklines, SparklinesCurve } from 'react-sparklines';
 
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
 
 import { shortNumberFormat } from '../utils/numbers.tsx';
 
-import type { Tag } from 'soapbox/types/entities.ts';
+import type { Tag } from '@/types/entities.ts';
 
 interface IHashtag {
   hashtag: Tag;

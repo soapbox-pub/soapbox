@@ -1,4 +1,4 @@
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 /** Fullscreen loading indicator. */
 const LoadingScreen: React.FC = () => {

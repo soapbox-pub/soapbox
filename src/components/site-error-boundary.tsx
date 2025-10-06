@@ -2,14 +2,14 @@ import { type ErrorInfo, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { FormattedMessage } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { captureSentryException } from 'soapbox/sentry.ts';
-import sourceCode from 'soapbox/utils/code.ts';
-import { unregisterSW } from 'soapbox/utils/sw.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { captureSentryException } from '@/sentry.ts';
+import sourceCode from '@/utils/code.ts';
+import { unregisterSW } from '@/utils/sw.ts';
 
 import SiteLogo from './site-logo.tsx';
 

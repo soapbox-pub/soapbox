@@ -5,8 +5,8 @@ import { parse } from '@std/semver/parse';
 import { SemVer } from '@std/semver/types';
 import { createSelector } from 'reselect';
 
-import { custom } from 'soapbox/custom.ts';
-import { InstanceV1, InstanceV2 } from 'soapbox/schemas/instance.ts';
+import { custom } from '@/custom.ts';
+import { InstanceV1, InstanceV2 } from '@/schemas/instance.ts';
 
 /** Import custom overrides, if exists */
 const overrides = custom('features');

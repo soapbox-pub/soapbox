@@ -1,15 +1,15 @@
-import { getLocale, getSettings } from 'soapbox/actions/settings.ts';
-import { updateReactions } from 'soapbox/api/hooks/announcements/useAnnouncements.ts';
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { selectEntity } from 'soapbox/entity-store/selectors.ts';
-import messages from 'soapbox/messages.ts';
-import { ChatKeys, IChat, isLastMessage } from 'soapbox/queries/chats.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { announcementSchema, type Announcement, type Relationship } from 'soapbox/schemas/index.ts';
-import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from 'soapbox/utils/chats.ts';
-import { removePageItem } from 'soapbox/utils/queries.ts';
-import { play, soundCache } from 'soapbox/utils/sounds.ts';
+import { getLocale, getSettings } from '@/actions/settings.ts';
+import { updateReactions } from '@/api/hooks/announcements/useAnnouncements.ts';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { selectEntity } from '@/entity-store/selectors.ts';
+import messages from '@/messages.ts';
+import { ChatKeys, IChat, isLastMessage } from '@/queries/chats.ts';
+import { queryClient } from '@/queries/client.ts';
+import { announcementSchema, type Announcement, type Relationship } from '@/schemas/index.ts';
+import { getUnreadChatsCount, updateChatListItem, updateChatMessage } from '@/utils/chats.ts';
+import { removePageItem } from '@/utils/queries.ts';
+import { play, soundCache } from '@/utils/sounds.ts';
 
 import { connectStream } from '../stream.ts';
 
@@ -25,9 +25,9 @@ import {
   processTimelineUpdate,
 } from './timelines.ts';
 
-import type { IStatContext } from 'soapbox/contexts/stat-context.tsx';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Chat } from 'soapbox/types/entities.ts';
+import type { IStatContext } from '@/contexts/stat-context.tsx';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, Chat } from '@/types/entities.ts';
 
 const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 

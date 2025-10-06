@@ -1,9 +1,9 @@
 import { Map as ImmutableMap } from 'immutable';
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { fireEvent, render, rootState, screen } from 'soapbox/jest/test-helpers.tsx';
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { ReducerStatus } from 'soapbox/reducers/statuses.ts';
+import { fireEvent, render, rootState, screen } from '@/jest/test-helpers.tsx';
+import { normalizeStatus } from '@/normalizers/index.ts';
+import { ReducerStatus } from '@/reducers/statuses.ts';
 
 import SensitiveContentOverlay from './sensitive-content-overlay.tsx';
 

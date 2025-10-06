@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { z } from 'zod';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useLoading } from 'soapbox/hooks/useLoading.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useLoading } from '@/hooks/useLoading.ts';
 
 import { importEntities } from '../actions.ts';
 import { findEntity } from '../selectors.ts';

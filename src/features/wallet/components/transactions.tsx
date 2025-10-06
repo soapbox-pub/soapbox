@@ -3,14 +3,14 @@ import arrowBarUpIcon from '@tabler/icons/outline/arrow-bar-up.svg';
 import questionIcon from '@tabler/icons/outline/question-mark.svg';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
-import Divider from 'soapbox/components/ui/divider.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useWalletStore } from 'soapbox/features/wallet/hooks/useHooks.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import Divider from '@/components/ui/divider.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useWalletStore } from '@/features/wallet/hooks/useHooks.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 const themes = {
   default: '!text-gray-900 dark:!text-gray-100',

@@ -5,21 +5,21 @@ import pinIcon from '@tabler/icons/outline/pin.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { useUpdateGroupTag } from 'soapbox/api/hooks/index.ts';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import { useUpdateGroupTag } from '@/api/hooks/index.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
-import type { Group, GroupTag } from 'soapbox/schemas/index.ts';
+import type { Group, GroupTag } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   hideTag: { id: 'group.tags.hide', defaultMessage: 'Hide topic' },

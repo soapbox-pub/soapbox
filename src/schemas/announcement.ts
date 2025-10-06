@@ -6,7 +6,7 @@ import { mentionSchema } from './mention.ts';
 import { tagSchema } from './tag.ts';
 import { dateSchema, filteredArray } from './utils.ts';
 
-import type { Resolve } from 'soapbox/utils/types.ts';
+import type { Resolve } from '@/utils/types.ts';
 
 // https://docs.joinmastodon.org/entities/announcement/
 const announcementSchema = z.object({

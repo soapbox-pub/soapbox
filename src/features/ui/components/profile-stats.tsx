@@ -2,13 +2,13 @@ import flameIcon from '@tabler/icons/filled/flame.svg';
 import { useIntl, defineMessages } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },

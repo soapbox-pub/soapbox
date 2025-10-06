@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchDislikes } from 'soapbox/actions/interactions.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchDislikes } from '@/actions/interactions.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 interface IDislikesModal {
   onClose: (type: string) => void;

@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me.ts';
-import { FE_NAME, SETTINGS_UPDATE, changeSetting } from 'soapbox/actions/settings.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Button } from 'soapbox/components/ui/button.tsx';
-import { CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import toast from 'soapbox/toast.tsx';
+import { patchMe } from '@/actions/me.ts';
+import { FE_NAME, SETTINGS_UPDATE, changeSetting } from '@/actions/settings.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import SettingToggle from '@/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import toast from '@/toast.tsx';
 
 const isJSONValid = (text: any): boolean => {
   try {

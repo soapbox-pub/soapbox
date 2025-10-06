@@ -4,21 +4,21 @@ import { useEffect, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { groupCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose.ts';
-import { expandGroupFeaturedTimeline, expandGroupTimeline } from 'soapbox/actions/timelines.ts';
-import { useGroup, useGroupStream } from 'soapbox/api/hooks/index.ts';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import ComposeForm from 'soapbox/features/compose/components/compose-form.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
+import { groupCompose, setGroupTimelineVisible, uploadCompose } from '@/actions/compose.ts';
+import { expandGroupFeaturedTimeline, expandGroupTimeline } from '@/actions/timelines.ts';
+import { useGroup, useGroupStream } from '@/api/hooks/index.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import ComposeForm from '@/features/compose/components/compose-form.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { makeGetStatusIds } from '@/selectors/index.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 

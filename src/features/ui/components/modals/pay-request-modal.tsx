@@ -1,9 +1,9 @@
 import React  from 'react';
 
-import Modal from 'soapbox/components/ui/modal.tsx';
-import PayRequestForm from 'soapbox/features/zap/components/pay-request-form.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import PayRequestForm from '@/features/zap/components/pay-request-form.tsx';
 
-import type { Status as StatusEntity, Account as AccountEntity   } from 'soapbox/types/entities.ts';
+import type { Status as StatusEntity, Account as AccountEntity   } from '@/types/entities.ts';
 
 interface IPayRequestModal {
   account: AccountEntity;

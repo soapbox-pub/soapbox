@@ -2,13 +2,13 @@ import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { logOut } from 'soapbox/actions/auth.ts';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import sourceCode from 'soapbox/utils/code.ts';
+import { logOut } from '@/actions/auth.ts';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import sourceCode from '@/utils/code.ts';
 
 interface IFooterLink {
   to: string;

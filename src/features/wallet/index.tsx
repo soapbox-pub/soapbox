@@ -3,20 +3,20 @@ import { useEffect, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { SelectDropdown } from 'soapbox/features/forms/index.tsx';
-import Balance from 'soapbox/features/wallet/components/balance.tsx';
-import CreateWallet from 'soapbox/features/wallet/components/create-wallet.tsx';
-import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useTransactions, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
-import { usePaymentMethod } from 'soapbox/features/zap/usePaymentMethod.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { SelectDropdown } from '@/features/forms/index.tsx';
+import Balance from '@/features/wallet/components/balance.tsx';
+import CreateWallet from '@/features/wallet/components/create-wallet.tsx';
+import Transactions from '@/features/wallet/components/transactions.tsx';
+import { useTransactions, useWallet } from '@/features/wallet/hooks/useHooks.ts';
+import { usePaymentMethod } from '@/features/zap/usePaymentMethod.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
   payment: { id: 'wallet.payment', defaultMessage: 'Payment Method' },

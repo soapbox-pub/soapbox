@@ -1,5 +1,5 @@
-import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
+import { useStatContext } from '@/contexts/stat-context.tsx';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
 
 import { useTimelineStream } from './useTimelineStream.ts';
 

@@ -10,13 +10,13 @@ import {
   fromJS,
 } from 'immutable';
 
-import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
-import headerMissing from 'soapbox/assets/images/header-missing.png';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
-import { mergeDefined } from 'soapbox/utils/normalizers.ts';
+import avatarMissing from '@/assets/images/avatar-missing.png';
+import headerMissing from '@/assets/images/header-missing.png';
+import { normalizeEmoji } from '@/normalizers/emoji.ts';
+import { mergeDefined } from '@/utils/normalizers.ts';
 
-import type { PatronAccount } from 'soapbox/reducers/patron.ts';
-import type { Emoji, Field, EmbeddedEntity, Relationship } from 'soapbox/types/entities.ts';
+import type { PatronAccount } from '@/reducers/patron.ts';
+import type { Emoji, Field, EmbeddedEntity, Relationship } from '@/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({

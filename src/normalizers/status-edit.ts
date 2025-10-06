@@ -9,12 +9,12 @@ import {
 } from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
-import { normalizeAttachment } from 'soapbox/normalizers/attachment.ts';
-import { normalizeEmoji } from 'soapbox/normalizers/emoji.ts';
-import { pollSchema } from 'soapbox/schemas/index.ts';
-import { stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
+import { normalizeAttachment } from '@/normalizers/attachment.ts';
+import { normalizeEmoji } from '@/normalizers/emoji.ts';
+import { pollSchema } from '@/schemas/index.ts';
+import { stripCompatibilityFeatures } from '@/utils/html.ts';
 
-import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from 'soapbox/types/entities.ts';
+import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from '@/types/entities.ts';
 
 export const StatusEditRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,

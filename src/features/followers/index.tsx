@@ -1,11 +1,11 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { useAccountLookup, useFollowers } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { useAccountLookup, useFollowers } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.followers', defaultMessage: 'Followers' },

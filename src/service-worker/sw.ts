@@ -11,7 +11,7 @@ import type {
   Account as AccountEntity,
   Notification as NotificationEntity,
   Status as StatusEntity,
-} from 'soapbox/types/entities';
+} from '@/types/entities';
 
 const locales = import.meta.compileTime<Record<string, Record<string, string>>>('./web-push-locales.ts');
 

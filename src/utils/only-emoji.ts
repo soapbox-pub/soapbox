@@ -1,7 +1,7 @@
 import graphemesplit from 'graphemesplit';
 
-import { CustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
-import { htmlToPlaintext } from 'soapbox/utils/html.ts';
+import { CustomEmoji } from '@/schemas/custom-emoji.ts';
+import { htmlToPlaintext } from '@/utils/html.ts';
 
 /** Given the HTML string, determine whether the plaintext contains only emojis (native or custom), not exceeding the max. */
 export function isOnlyEmoji(html: string, emojis: CustomEmoji[], max: number): boolean {

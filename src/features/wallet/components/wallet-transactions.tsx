@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Transactions from 'soapbox/features/wallet/components/transactions.tsx';
-import { useTransactions, useWalletStore } from 'soapbox/features/wallet/hooks/useHooks.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Transactions from '@/features/wallet/components/transactions.tsx';
+import { useTransactions, useWalletStore } from '@/features/wallet/hooks/useHooks.ts';
 
 const messages = defineMessages({
   title: { id: 'wallet.transactions', defaultMessage: 'Transactions' },

@@ -1,10 +1,10 @@
 import { NostrSigner, NRelay1, NSecSigner } from '@nostrify/nostrify';
 import { generateSecretKey } from 'nostr-tools';
 
-import { NBunker } from 'soapbox/features/nostr/NBunker.ts';
-import { keyring } from 'soapbox/features/nostr/keyring.ts';
-import { useBunkerStore } from 'soapbox/hooks/nostr/useBunkerStore.ts';
-import { type AppDispatch } from 'soapbox/store.ts';
+import { NBunker } from '@/features/nostr/NBunker.ts';
+import { keyring } from '@/features/nostr/keyring.ts';
+import { useBunkerStore } from '@/hooks/nostr/useBunkerStore.ts';
+import { type AppDispatch } from '@/store.ts';
 
 import { authLoggedIn, verifyCredentials } from './auth.ts';
 import { obtainOAuthToken } from './oauth.ts';

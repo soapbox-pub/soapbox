@@ -5,23 +5,23 @@ import clsx from 'clsx';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { groupKick } from 'soapbox/actions/groups.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import DropdownMenu from 'soapbox/components/dropdown-menu/dropdown-menu.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { deleteEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
-import { MAX_ADMIN_COUNT } from 'soapbox/utils/groups.ts';
+import { groupKick } from '@/actions/groups.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useAccount, useBlockGroupMember, useDemoteGroupMember, usePromoteGroupMember } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import DropdownMenu from '@/components/dropdown-menu/dropdown-menu.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { deleteEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import PlaceholderAccount from '@/features/placeholder/components/placeholder-account.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
+import { MAX_ADMIN_COUNT } from '@/utils/groups.ts';
 
-import type { Menu as IMenu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Group, GroupMember } from 'soapbox/types/entities.ts';
+import type { Menu as IMenu } from '@/components/dropdown-menu/index.ts';
+import type { Group, GroupMember } from '@/types/entities.ts';
 
 const messages = defineMessages({
   adminLimitTitle: { id: 'group.member.admin.limit.title', defaultMessage: 'Admin limit reached' },

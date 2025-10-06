@@ -1,13 +1,13 @@
-import Layout from 'soapbox/components/ui/layout.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import Layout from '@/components/ui/layout.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   TrendsPanel,
   SignUpPanel,
   CtaBanner,
   WhoToFollowPanel,
-} from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+} from '@/features/ui/util/async-components.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
 
 interface ILandingPage {
   children: React.ReactNode;

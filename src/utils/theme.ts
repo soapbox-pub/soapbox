@@ -1,7 +1,7 @@
 import { hexToRgb } from './colors.ts';
 
-import type { Rgb, Hsl, TailwindColorPalette, TailwindColorObject } from 'soapbox/types/colors.ts';
-import type { SoapboxConfig } from 'soapbox/types/soapbox.ts';
+import type { Rgb, Hsl, TailwindColorPalette, TailwindColorObject } from '@/types/colors.ts';
+import type { SoapboxConfig } from '@/types/soapbox.ts';
 
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js

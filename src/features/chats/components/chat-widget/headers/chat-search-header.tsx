@@ -1,10 +1,10 @@
 import arrowLeftIcon from '@tabler/icons/outline/arrow-left.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
 
 import ChatPaneHeader from '../chat-pane-header.tsx';
 

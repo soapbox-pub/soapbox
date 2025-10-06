@@ -11,11 +11,11 @@ import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
 import { FormattedMessage } from 'react-intl';
 
-import ThumbNavigationLink from 'soapbox/components/thumb-navigation-link.tsx';
-import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import ThumbNavigationLink from '@/components/thumb-navigation-link.tsx';
+import { useStatContext } from '@/contexts/stat-context.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 const ThumbNavigation: React.FC = (): JSX.Element => {
   const { account } = useOwnAccount();

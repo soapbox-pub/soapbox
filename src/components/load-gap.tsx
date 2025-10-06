@@ -1,7 +1,7 @@
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
 
 const messages = defineMessages({
   load_more: { id: 'status.load_more', defaultMessage: 'Load more' },

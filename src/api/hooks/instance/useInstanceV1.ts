@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { InstanceV1, instanceV1Schema } from 'soapbox/schemas/instance.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { InstanceV1, instanceV1Schema } from '@/schemas/instance.ts';
 
 interface Opts {
   /** The base URL of the instance. */

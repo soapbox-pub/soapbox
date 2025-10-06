@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import type { Account as AccountSchema } from 'soapbox/schemas/index.ts';
+import type { Account as AccountSchema } from '@/schemas/index.ts';
 
 interface IInstanceFavicon {
   account: AccountSchema;

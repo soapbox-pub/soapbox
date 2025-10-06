@@ -4,8 +4,8 @@ import {
   exportFollows,
   exportBlocks,
   exportMutes,
-} from 'soapbox/actions/export-data.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
+} from '@/actions/export-data.ts';
+import { Column } from '@/components/ui/column.tsx';
 
 import CSVExporter from './components/csv-exporter.tsx';
 

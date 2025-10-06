@@ -2,18 +2,18 @@ import trashIcon from '@tabler/icons/outline/trash.svg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useDeleteGroup, useGroup } from 'soapbox/api/hooks/index.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import { CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useBackend } from 'soapbox/hooks/useBackend.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
-import { TRUTHSOCIAL } from 'soapbox/utils/features.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useDeleteGroup, useGroup } from '@/api/hooks/index.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import { CardBody, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useBackend } from '@/hooks/useBackend.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
+import { TRUTHSOCIAL } from '@/utils/features.ts';
 
 import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 

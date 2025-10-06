@@ -1,9 +1,9 @@
 import markdownIcon from '@tabler/icons/outline/markdown.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { changeComposeContentType } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { changeComposeContentType } from '@/actions/compose.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 import ComposeFormButton from './compose-form-button.tsx';
 

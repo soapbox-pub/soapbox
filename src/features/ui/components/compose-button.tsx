@@ -1,13 +1,13 @@
 import { FormattedMessage } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
-import { groupComposeModal } from 'soapbox/actions/compose.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useGroupLookup } from 'soapbox/api/hooks/index.ts';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { groupComposeModal } from '@/actions/compose.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useGroupLookup } from '@/api/hooks/index.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const ComposeButton = () => {
   const location = useLocation();

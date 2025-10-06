@@ -2,12 +2,12 @@ import { debounce } from 'es-toolkit';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { dequeueTimeline, scrollTopTimeline } from 'soapbox/actions/timelines.ts';
-import StatusList, { IStatusList } from 'soapbox/components/status-list.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { setNotification } from 'soapbox/reducers/notificationsSlice.ts';
-import { makeGetStatusIds } from 'soapbox/selectors/index.ts';
+import { dequeueTimeline, scrollTopTimeline } from '@/actions/timelines.ts';
+import StatusList, { IStatusList } from '@/components/status-list.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { setNotification } from '@/reducers/notificationsSlice.ts';
+import { makeGetStatusIds } from '@/selectors/index.ts';
 
 interface ITimeline extends Omit<IStatusList, 'statusIds' | 'isLoading' | 'hasMore'> {
   /** ID of the timeline in Redux. */

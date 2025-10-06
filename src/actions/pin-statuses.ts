@@ -1,11 +1,11 @@
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
 
 import { importFetchedStatuses } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const PINNED_STATUSES_FETCH_REQUEST = 'PINNED_STATUSES_FETCH_REQUEST';
 const PINNED_STATUSES_FETCH_SUCCESS = 'PINNED_STATUSES_FETCH_SUCCESS';

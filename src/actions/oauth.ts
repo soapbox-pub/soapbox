@@ -6,11 +6,11 @@
  * @see module:soapbox/actions/auth
  */
 
-import { getBaseURL } from 'soapbox/utils/state.ts';
+import { getBaseURL } from '@/utils/state.ts';
 
 import { baseClient } from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 export const OAUTH_TOKEN_CREATE_REQUEST = 'OAUTH_TOKEN_CREATE_REQUEST';
 export const OAUTH_TOKEN_CREATE_SUCCESS = 'OAUTH_TOKEN_CREATE_SUCCESS';

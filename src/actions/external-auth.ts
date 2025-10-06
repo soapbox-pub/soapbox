@@ -6,17 +6,17 @@
  * @see module:soapbox/actions/oauth
  */
 
-import { createApp } from 'soapbox/actions/apps.ts';
-import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth.ts';
-import { obtainOAuthToken } from 'soapbox/actions/oauth.ts';
-import { InstanceV1, instanceV1Schema } from 'soapbox/schemas/instance.ts';
-import { parseBaseURL } from 'soapbox/utils/auth.ts';
-import sourceCode from 'soapbox/utils/code.ts';
-import { getInstanceScopes } from 'soapbox/utils/scopes.ts';
+import { createApp } from '@/actions/apps.ts';
+import { authLoggedIn, verifyCredentials, switchAccount } from '@/actions/auth.ts';
+import { obtainOAuthToken } from '@/actions/oauth.ts';
+import { InstanceV1, instanceV1Schema } from '@/schemas/instance.ts';
+import { parseBaseURL } from '@/utils/auth.ts';
+import sourceCode from '@/utils/code.ts';
+import { getInstanceScopes } from '@/utils/scopes.ts';
 
 import { baseClient } from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 const fetchExternalInstance = (baseURL?: string) => {
   return baseClient(null, baseURL)

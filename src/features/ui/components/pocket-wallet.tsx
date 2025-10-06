@@ -8,13 +8,13 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Balance from 'soapbox/features/wallet/components/balance.tsx';
-import { useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Balance from '@/features/wallet/components/balance.tsx';
+import { useWallet } from '@/features/wallet/hooks/useHooks.ts';
 
 const messages = defineMessages({
   wallet: { id: 'wallet.title', defaultMessage: 'Wallet' },

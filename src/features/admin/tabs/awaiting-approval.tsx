@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchUsers } from 'soapbox/actions/admin.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchUsers } from '@/actions/admin.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import UnapprovedAccount from '../components/unapproved-account.tsx';
 

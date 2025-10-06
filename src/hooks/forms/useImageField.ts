@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import resizeImage from 'soapbox/utils/resize-image.ts';
+import resizeImage from '@/utils/resize-image.ts';
 
 import { usePreview } from './usePreview.ts';
 

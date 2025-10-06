@@ -1,4 +1,4 @@
-import type * as Schemas from 'soapbox/schemas/index.ts';
+import type * as Schemas from '@/schemas/index.ts';
 
 enum Entities {
   ACCOUNTS = 'Accounts',

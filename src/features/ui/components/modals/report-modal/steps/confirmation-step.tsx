@@ -1,12 +1,12 @@
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { ReportableEntities } from 'soapbox/actions/reports.ts';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox.ts';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { ReportableEntities } from '@/actions/reports.ts';
+import { getSoapboxConfig } from '@/actions/soapbox.ts';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   accountEntity: { id: 'report.confirmation.entity.account', defaultMessage: 'account' },

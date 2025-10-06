@@ -1,21 +1,21 @@
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Layout from 'soapbox/components/ui/layout.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Layout from '@/components/ui/layout.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import PlaceholderStatus from '@/features/placeholder/components/placeholder-status.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   EventHeader,
   CtaBanner,
   SignUpPanel,
   TrendsPanel,
   WhoToFollowPanel,
-} from 'soapbox/features/ui/util/async-components.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+} from '@/features/ui/util/async-components.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 const getStatus = makeGetStatus();
 

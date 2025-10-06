@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { undoUploadCompose, changeUploadCompose } from 'soapbox/actions/compose.ts';
-import Upload from 'soapbox/components/upload.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { undoUploadCompose, changeUploadCompose } from '@/actions/compose.ts';
+import Upload from '@/components/upload.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 interface IUploadCompose {
   id: string;

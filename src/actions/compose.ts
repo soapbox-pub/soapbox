@@ -2,16 +2,16 @@ import { throttle } from 'es-toolkit';
 import { List as ImmutableList } from 'immutable';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import api from 'soapbox/api/index.ts';
-import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
-import emojiSearch from 'soapbox/features/emoji/search.ts';
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
-import { selectAccount, selectOwnAccount } from 'soapbox/selectors/index.ts';
-import { tagHistory } from 'soapbox/settings.ts';
-import toast from 'soapbox/toast.tsx';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
-import { getFeatures } from 'soapbox/utils/features.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import api from '@/api/index.ts';
+import { isNativeEmoji } from '@/features/emoji/index.ts';
+import emojiSearch from '@/features/emoji/search.ts';
+import { normalizeTag } from '@/normalizers/index.ts';
+import { selectAccount, selectOwnAccount } from '@/selectors/index.ts';
+import { tagHistory } from '@/settings.ts';
+import toast from '@/toast.tsx';
+import { isLoggedIn } from '@/utils/auth.ts';
+import { getFeatures } from '@/utils/features.ts';
 
 import { ComposeSetStatusAction } from './compose-status.ts';
 import { chooseEmoji } from './emojis.ts';
@@ -22,12 +22,12 @@ import { getSettings } from './settings.ts';
 import { createStatus } from './statuses.ts';
 
 import type { EditorState } from 'lexical';
-import type { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
-import type { Account, CustomEmoji, Group } from 'soapbox/schemas/index.ts';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Status, Tag } from 'soapbox/types/entities.ts';
-import type { History } from 'soapbox/types/history.ts';
+import type { AutoSuggestion } from '@/components/autosuggest-input.tsx';
+import type { Emoji } from '@/features/emoji/index.ts';
+import type { Account, CustomEmoji, Group } from '@/schemas/index.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, Status, Tag } from '@/types/entities.ts';
+import type { History } from '@/types/history.ts';
 
 let cancelFetchComposeSuggestions: AbortController | undefined;
 

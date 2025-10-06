@@ -7,7 +7,7 @@ import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, 
 
 import { normalizeFilter } from './filter.ts';
 
-import type { Filter } from 'soapbox/types/entities.ts';
+import type { Filter } from '@/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/FilterResult/
 export const FilterResultRecord = ImmutableRecord({

@@ -6,19 +6,19 @@ import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
-import { deleteList, fetchLists } from 'soapbox/actions/lists.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import Icon from 'soapbox/components/icon.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { deleteList, fetchLists } from '@/actions/lists.ts';
+import { openModal } from '@/actions/modals.ts';
+import Icon from '@/components/icon.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import NewListForm from './components/new-list-form.tsx';
 
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },

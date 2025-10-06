@@ -1,9 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { instanceV1Schema, instanceV2Schema } from 'soapbox/schemas/instance.ts';
-import { RootState } from 'soapbox/store.ts';
-import { getAuthUserUrl, getMeUrl } from 'soapbox/utils/auth.ts';
-import { getFeatures } from 'soapbox/utils/features.ts';
+import { instanceV1Schema, instanceV2Schema } from '@/schemas/instance.ts';
+import { RootState } from '@/store.ts';
+import { getAuthUserUrl, getMeUrl } from '@/utils/auth.ts';
+import { getFeatures } from '@/utils/features.ts';
 
 import api from '../api/index.ts';
 

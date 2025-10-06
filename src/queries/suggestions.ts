@@ -1,13 +1,13 @@
 import { useInfiniteQuery, useMutation, keepPreviousData } from '@tanstack/react-query';
 
-import { fetchRelationships } from 'soapbox/actions/accounts.ts';
-import { importFetchedAccounts } from 'soapbox/actions/importer/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { fetchRelationships } from '@/actions/accounts.ts';
+import { importFetchedAccounts } from '@/actions/importer/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 import { PaginatedResult, removePageItem } from '../utils/queries.ts';
 
-import type { Account } from 'soapbox/schemas/account.ts';
+import type { Account } from '@/schemas/account.ts';
 
 type Suggestion = {
   source: string;

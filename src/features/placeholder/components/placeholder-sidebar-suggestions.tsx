@@ -1,5 +1,5 @@
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
 
 import { randomIntFromInterval, generateText } from '../utils.ts';
 

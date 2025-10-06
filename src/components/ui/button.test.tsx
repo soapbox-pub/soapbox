@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { fireEvent, render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { fireEvent, render, screen } from '@/jest/test-helpers.tsx';
 
 import Button from './button.tsx';
 

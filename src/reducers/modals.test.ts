@@ -1,7 +1,7 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { MODAL_OPEN, MODAL_CLOSE } from 'soapbox/actions/modals.ts';
+import { MODAL_OPEN, MODAL_CLOSE } from '@/actions/modals.ts';
 
 import reducer from './modals.ts';
 

@@ -4,17 +4,17 @@ import plusIcon from '@tabler/icons/outline/square-rounded-plus.svg';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useCreateWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import Button from '@/components/ui/button.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import { MintEditor } from '@/features/wallet/components/editable-lists.tsx';
+import { useCreateWallet } from '@/features/wallet/hooks/useHooks.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 const messages = defineMessages({
   title: { id: 'wallet.create.title', defaultMessage: 'You don\'t have a wallet' },

@@ -1,6 +1,6 @@
-import { pinToGroup as pinToGroupAction, unpinFromGroup as unpinFromGroupAction } from 'soapbox/actions/interactions.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { pinToGroup as pinToGroupAction, unpinFromGroup as unpinFromGroupAction } from '@/actions/interactions.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
 
 export function usePinGroup() {
   const getState = useGetState();

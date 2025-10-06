@@ -1,6 +1,6 @@
 import api from '../api/index.ts';
 
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 const getSubscribersCsv = () =>
   (dispatch: any, getState: () => RootState) =>

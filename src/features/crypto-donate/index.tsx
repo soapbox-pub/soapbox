@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import Accordion from 'soapbox/components/ui/accordion.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import Accordion from '@/components/ui/accordion.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 import SiteWallet from './components/site-wallet.tsx';
 

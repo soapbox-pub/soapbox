@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { render, screen, rootState } from 'soapbox/jest/test-helpers.tsx';
-import { normalizeStatus, normalizeAccount } from 'soapbox/normalizers/index.ts';
+import { render, screen, rootState } from '@/jest/test-helpers.tsx';
+import { normalizeStatus, normalizeAccount } from '@/normalizers/index.ts';
 
 import QuotedStatus from './quoted-status.tsx';
 
-import type { ReducerStatus } from 'soapbox/reducers/statuses.ts';
+import type { ReducerStatus } from '@/reducers/statuses.ts';
 
 describe('<QuotedStatus />', () => {
   it('renders content', () => {

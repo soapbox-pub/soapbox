@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import status5 from 'soapbox/__fixtures__/pleroma-quote-of-quote-post.json';
-import status3 from 'soapbox/__fixtures__/pleroma-status-vertical-video-without-metadata.json';
-import status4 from 'soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json';
-import status2 from 'soapbox/__fixtures__/pleroma-status-with-poll.json';
-import status1 from 'soapbox/__fixtures__/pleroma-status.json';
-import status6 from 'soapbox/__fixtures__/truthsocial-status-in-moderation.json';
-import { importFetchedStatuses } from 'soapbox/actions/importer/index.ts';
-import { expandTimelineSuccess } from 'soapbox/actions/timelines.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Timeline from 'soapbox/features/ui/components/timeline.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import status5 from '@/__fixtures__/pleroma-quote-of-quote-post.json';
+import status3 from '@/__fixtures__/pleroma-status-vertical-video-without-metadata.json';
+import status4 from '@/__fixtures__/pleroma-status-with-poll-with-emojis.json';
+import status2 from '@/__fixtures__/pleroma-status-with-poll.json';
+import status1 from '@/__fixtures__/pleroma-status.json';
+import status6 from '@/__fixtures__/truthsocial-status-in-moderation.json';
+import { importFetchedStatuses } from '@/actions/importer/index.ts';
+import { expandTimelineSuccess } from '@/actions/timelines.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Timeline from '@/features/ui/components/timeline.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   title: { id: 'column.test', defaultMessage: 'Test timeline' },

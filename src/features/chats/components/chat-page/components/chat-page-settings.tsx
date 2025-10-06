@@ -3,20 +3,20 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { changeSetting } from 'soapbox/actions/settings.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { CardBody, CardTitle } from 'soapbox/components/ui/card.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import SettingToggle from 'soapbox/features/notifications/components/setting-toggle.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useUpdateCredentials } from 'soapbox/queries/accounts.ts';
+import { changeSetting } from '@/actions/settings.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { CardBody, CardTitle } from '@/components/ui/card.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import SettingToggle from '@/features/notifications/components/setting-toggle.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useUpdateCredentials } from '@/queries/accounts.ts';
 
 type FormData = {
   accepts_chat_messages?: boolean;

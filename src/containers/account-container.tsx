@@ -1,5 +1,5 @@
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import Account, { IAccount } from 'soapbox/components/account.tsx';
+import { useAccount } from '@/api/hooks/index.ts';
+import Account, { IAccount } from '@/components/account.tsx';
 
 interface IAccountContainer extends Omit<IAccount, 'account'> {
   id: string;

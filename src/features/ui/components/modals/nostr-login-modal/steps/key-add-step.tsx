@@ -3,18 +3,18 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 
-import { logInNostr } from 'soapbox/actions/nostr.ts';
-import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { keyring } from 'soapbox/features/nostr/keyring.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { logInNostr } from '@/actions/nostr.ts';
+import EmojiGraphic from '@/components/emoji-graphic.tsx';
+import Button from '@/components/ui/button.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useNostr } from '@/contexts/nostr-context.tsx';
+import { keyring } from '@/features/nostr/keyring.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 import NostrExtensionIndicator from '../components/nostr-extension-indicator.tsx';
 

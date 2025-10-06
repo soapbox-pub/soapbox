@@ -8,8 +8,8 @@ import { debounce, throttle } from 'es-toolkit';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { formatTime, getPointerPosition } from 'soapbox/features/video/index.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { formatTime, getPointerPosition } from '@/features/video/index.tsx';
 
 import Visualizer from './visualizer.ts';
 

@@ -1,7 +1,7 @@
 import { defineMessages } from 'react-intl';
 import { describe, expect, it } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import ScrollTopButton from './scroll-top-button.tsx';
 

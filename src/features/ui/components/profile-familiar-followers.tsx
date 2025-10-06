@@ -3,20 +3,20 @@ import { useEffect } from 'react';
 import { FormattedList, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { fetchAccountFamiliarFollowers } from 'soapbox/actions/familiar-followers.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import AvatarStack from 'soapbox/components/avatar-stack.tsx';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { makeGetAccount } from 'soapbox/selectors/index.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import { fetchAccountFamiliarFollowers } from '@/actions/familiar-followers.ts';
+import { openModal } from '@/actions/modals.ts';
+import AvatarStack from '@/components/avatar-stack.tsx';
+import HoverRefWrapper from '@/components/hover-ref-wrapper.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { makeGetAccount } from '@/selectors/index.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 const getAccount = makeGetAccount();
 

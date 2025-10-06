@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import { GroupRoles } from '@/schemas/group-member.ts';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 interface IGroupAvatar {
   group: Group;

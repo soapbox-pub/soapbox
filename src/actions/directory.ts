@@ -3,8 +3,8 @@ import api from '../api/index.ts';
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const DIRECTORY_FETCH_REQUEST = 'DIRECTORY_FETCH_REQUEST';
 const DIRECTORY_FETCH_SUCCESS = 'DIRECTORY_FETCH_SUCCESS';

@@ -1,16 +1,16 @@
 import { FormattedMessage } from 'react-intl';
 
-import { getSettings } from 'soapbox/actions/settings.ts';
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import Badge from 'soapbox/components/badge.tsx';
-import Markup from 'soapbox/components/markup.tsx';
-import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import { getSettings } from '@/actions/settings.ts';
+import { useAccount } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import Badge from '@/components/badge.tsx';
+import Markup from '@/components/markup.tsx';
+import RelativeTimestamp from '@/components/relative-timestamp.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import ActionButton from '@/features/ui/components/action-button.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
 interface IAccountCard {
   id: string;

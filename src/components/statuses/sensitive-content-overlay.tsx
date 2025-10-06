@@ -7,20 +7,20 @@ import clsx from 'clsx';
 import { forwardRef, useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { deleteStatus } from 'soapbox/actions/statuses.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
+import { openModal } from '@/actions/modals.ts';
+import { deleteStatus } from '@/actions/statuses.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { defaultMediaVisibility } from '@/utils/status.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as StatusEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },

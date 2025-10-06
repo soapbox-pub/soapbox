@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { type Account, accountSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntity } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
+import { type Account, accountSchema } from '@/schemas/index.ts';
 
 import { useRelationship } from './useRelationship.ts';
 

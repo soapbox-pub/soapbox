@@ -5,24 +5,24 @@ import lockIcon from '@tabler/icons/outline/lock.svg';
 import mapPinIcon from '@tabler/icons/outline/map-pin.svg';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { usePatronUser } from 'soapbox/api/hooks/index.ts';
-import Badge from 'soapbox/components/badge.tsx';
-import Markup from 'soapbox/components/markup.tsx';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { capitalize } from 'soapbox/utils/strings.ts';
+import { usePatronUser } from '@/api/hooks/index.ts';
+import Badge from '@/components/badge.tsx';
+import Markup from '@/components/markup.tsx';
+import { dateFormatOptions } from '@/components/relative-timestamp.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { capitalize } from '@/utils/strings.ts';
 
 import ProfileFamiliarFollowers from './profile-familiar-followers.tsx';
 import ProfileField from './profile-field.tsx';
 import ProfileStats from './profile-stats.tsx';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 /** Basically ensure the URL isn't `javascript:alert('hi')` or something like that */
 const isSafeUrl = (text: string): boolean => {

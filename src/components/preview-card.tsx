@@ -5,17 +5,17 @@ import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
 import { useState, useEffect, useRef } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
-import { addAutoPlay } from 'soapbox/utils/media.ts';
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import Blurhash from '@/components/blurhash.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { normalizeAttachment } from '@/normalizers/index.ts';
+import { Attachment } from '@/schemas/index.ts';
+import { addAutoPlay } from '@/utils/media.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
-import type { Card as CardEntity } from 'soapbox/types/entities.ts';
+import type { Card as CardEntity } from '@/types/entities.ts';
 
 /** Props for `PreviewCard`. */
 interface IPreviewCard {

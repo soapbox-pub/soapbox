@@ -6,16 +6,16 @@ import { Redirect } from 'react-router-dom';
 import {
   fetchStatusWithContext,
   fetchNext,
-} from 'soapbox/actions/statuses.ts';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+} from '@/actions/statuses.ts';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import PullToRefresh from '@/components/pull-to-refresh.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import PlaceholderStatus from '@/features/placeholder/components/placeholder-status.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 import ThreadLoginCta from './components/thread-login-cta.tsx';
 import Thread from './components/thread.tsx';

@@ -1,4 +1,4 @@
-import { shortNumberFormat } from 'soapbox/utils/numbers.tsx';
+import { shortNumberFormat } from '@/utils/numbers.tsx';
 
 interface ICounter {
   /** Number this counter should display. */

@@ -2,12 +2,12 @@ import editIcon from '@tabler/icons/outline/edit.svg';
 import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { IChat, useChats } from 'soapbox/queries/chats.ts';
+import Stack from '@/components/ui/stack.tsx';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
+import { useStatContext } from '@/contexts/stat-context.tsx';
+import { useDebounce } from '@/hooks/useDebounce.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { IChat, useChats } from '@/queries/chats.ts';
 
 import ChatList from '../chat-list.tsx';
 import ChatSearch from '../chat-search/chat-search.tsx';

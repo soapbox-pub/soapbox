@@ -1,4 +1,4 @@
-import { queryClient } from 'soapbox/queries/client.ts';
+import { queryClient } from '@/queries/client.ts';
 
 import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 

@@ -9,27 +9,27 @@
 
 import { defineMessages } from 'react-intl';
 
-import { createAccount } from 'soapbox/actions/accounts.ts';
-import { createApp } from 'soapbox/actions/apps.ts';
-import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me.ts';
-import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth.ts';
-import { startOnboarding } from 'soapbox/actions/onboarding.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { custom } from 'soapbox/custom.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import { unsetSentryAccount } from 'soapbox/sentry.ts';
-import toast from 'soapbox/toast.tsx';
-import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth.ts';
-import sourceCode from 'soapbox/utils/code.ts';
-import { normalizeUsername } from 'soapbox/utils/input.ts';
-import { getScopes } from 'soapbox/utils/scopes.ts';
+import { createAccount } from '@/actions/accounts.ts';
+import { createApp } from '@/actions/apps.ts';
+import { fetchMeSuccess, fetchMeFail } from '@/actions/me.ts';
+import { obtainOAuthToken, revokeOAuthToken } from '@/actions/oauth.ts';
+import { startOnboarding } from '@/actions/onboarding.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { custom } from '@/custom.ts';
+import { queryClient } from '@/queries/client.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import { unsetSentryAccount } from '@/sentry.ts';
+import toast from '@/toast.tsx';
+import { getLoggedInAccount, parseBaseURL } from '@/utils/auth.ts';
+import sourceCode from '@/utils/code.ts';
+import { normalizeUsername } from '@/utils/input.ts';
+import { getScopes } from '@/utils/scopes.ts';
 
 import api, { baseClient } from '../api/index.ts';
 
 import { importFetchedAccount } from './importer/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 

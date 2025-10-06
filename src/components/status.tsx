@@ -6,24 +6,24 @@ import { useEffect, useRef, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
-import { mentionCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { toggleFavourite } from 'soapbox/actions/interactions.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { toggleStatusHidden, unfilterStatus } from 'soapbox/actions/statuses.ts';
-import TranslateButton from 'soapbox/components/translate-button.tsx';
-import { Card } from 'soapbox/components/ui/card.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
-import { HotKeys } from 'soapbox/features/ui/components/hotkeys.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useReblog } from 'soapbox/hooks/useReblog.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
-import { defaultMediaVisibility, textForScreenReader, getActualStatus } from 'soapbox/utils/status.ts';
+import { mentionCompose, replyCompose } from '@/actions/compose.ts';
+import { toggleFavourite } from '@/actions/interactions.ts';
+import { openModal } from '@/actions/modals.ts';
+import { toggleStatusHidden, unfilterStatus } from '@/actions/statuses.ts';
+import TranslateButton from '@/components/translate-button.tsx';
+import { Card } from '@/components/ui/card.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import QuotedStatus from '@/features/status/containers/quoted-status-container.tsx';
+import { HotKeys } from '@/features/ui/components/hotkeys.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useReblog } from '@/hooks/useReblog.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
+import { defaultMediaVisibility, textForScreenReader, getActualStatus } from '@/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
 import StatusActionBar from './status-action-bar.tsx';
@@ -34,7 +34,7 @@ import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
 
-import type { Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Status as LegacyStatus } from '@/types/entities.ts';
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };

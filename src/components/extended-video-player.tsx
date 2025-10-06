@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-import { isIOS } from 'soapbox/is-mobile.ts';
+import { isIOS } from '@/is-mobile.ts';
 
 interface IExtendedVideoPlayer {
   src: string;

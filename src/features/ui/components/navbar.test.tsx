@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { storeOpen } from 'soapbox/jest/mock-stores.tsx';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { storeOpen } from '@/jest/mock-stores.tsx';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import Navbar from './navbar.tsx';
 

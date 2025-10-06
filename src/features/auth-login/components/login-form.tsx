@@ -1,12 +1,12 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import Button from '@/components/ui/button.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import { useFeatures } from '@/hooks/useFeatures.ts';
 
 const messages = defineMessages({
   username: {

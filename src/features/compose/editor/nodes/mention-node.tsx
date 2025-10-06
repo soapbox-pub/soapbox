@@ -6,7 +6,7 @@
 
 import { $applyNodeReplacement, DecoratorNode } from 'lexical';
 
-import Mention from 'soapbox/components/mention.tsx';
+import Mention from '@/components/mention.tsx';
 
 import type {
   EditorConfig,
@@ -15,7 +15,7 @@ import type {
   SerializedLexicalNode,
   Spread,
 } from 'lexical';
-import type { Mention as MentionEntity } from 'soapbox/schemas/index.ts';
+import type { Mention as MentionEntity } from '@/schemas/index.ts';
 
 type SerializedMentionNode = Spread<{
   mention: MentionEntity;

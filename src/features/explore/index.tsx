@@ -6,21 +6,21 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom-v5-compat';
 
-import { clearSearch, setFilter } from 'soapbox/actions/search.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import SearchResults from 'soapbox/features/compose/components/search-results.tsx';
-import Search from 'soapbox/features/compose/components/search.tsx';
-import ExploreCards from 'soapbox/features/explore/components/explore-cards.tsx';
-import ExploreFilter from 'soapbox/features/explore/components/exploreFilter.tsx';
-import AccountsCarousel from 'soapbox/features/explore/components/popular-accounts.tsx';
-import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
-import { PublicTimeline } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { SearchFilter } from 'soapbox/reducers/search.ts';
+import { clearSearch, setFilter } from '@/actions/search.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import SearchResults from '@/features/compose/components/search-results.tsx';
+import Search from '@/features/compose/components/search.tsx';
+import ExploreCards from '@/features/explore/components/explore-cards.tsx';
+import ExploreFilter from '@/features/explore/components/exploreFilter.tsx';
+import AccountsCarousel from '@/features/explore/components/popular-accounts.tsx';
+import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
+import { PublicTimeline } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { SearchFilter } from '@/reducers/search.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.explore', defaultMessage: 'Explore' },

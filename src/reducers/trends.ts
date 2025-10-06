@@ -1,6 +1,6 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 
-import { normalizeTag } from 'soapbox/normalizers/index.ts';
+import { normalizeTag } from '@/normalizers/index.ts';
 
 import {
   TRENDS_FETCH_REQUEST,
@@ -9,7 +9,7 @@ import {
 } from '../actions/trends.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity, Tag } from 'soapbox/types/entities.ts';
+import type { APIEntity, Tag } from '@/types/entities.ts';
 
 const ReducerRecord = ImmutableRecord({
   items: ImmutableList<Tag>(),

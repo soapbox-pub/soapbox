@@ -5,26 +5,26 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { fetchStatus } from 'soapbox/actions/statuses.ts';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import StatusContent from 'soapbox/components/status-content.tsx';
-import StatusMedia from 'soapbox/components/status-media.tsx';
-import TranslateButton from 'soapbox/components/translate-button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import QuotedStatus from 'soapbox/features/status/containers/quoted-status-container.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
-import { defaultMediaVisibility } from 'soapbox/utils/status.ts';
+import { openModal } from '@/actions/modals.ts';
+import { fetchStatus } from '@/actions/statuses.ts';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import StatusContent from '@/components/status-content.tsx';
+import StatusMedia from '@/components/status-media.tsx';
+import TranslateButton from '@/components/translate-button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import QuotedStatus from '@/features/status/containers/quoted-status-container.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
+import { defaultMediaVisibility } from '@/utils/status.ts';
 
-import type { Status as StatusLegacy } from 'soapbox/types/entities.ts';
+import type { Status as StatusLegacy } from '@/types/entities.ts';
 
 type RouteParams = { statusId: string };
 

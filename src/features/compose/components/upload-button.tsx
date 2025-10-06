@@ -3,8 +3,8 @@ import photoIcon from '@tabler/icons/outline/photo.svg';
 import { useRef } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import IconButton from '@/components/ui/icon-button.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },

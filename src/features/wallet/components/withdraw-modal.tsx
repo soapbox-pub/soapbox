@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { FormattedMessage } from 'react-intl';
 
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Text from '@/components/ui/text.tsx';
 
 interface IWithdrawModal {
   onClose: () => void;

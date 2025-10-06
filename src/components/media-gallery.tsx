@@ -3,13 +3,13 @@ import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import { useState, useRef, useLayoutEffect, CSSProperties } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash.tsx';
-import StillImage from 'soapbox/components/still-image.tsx';
-import { MIMETYPE_ICONS } from 'soapbox/components/upload.tsx';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
-import { truncateFilename } from 'soapbox/utils/media.ts';
+import Blurhash from '@/components/blurhash.tsx';
+import StillImage from '@/components/still-image.tsx';
+import { MIMETYPE_ICONS } from '@/components/upload.tsx';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { Attachment } from '@/schemas/index.ts';
+import { truncateFilename } from '@/utils/media.ts';
 
 import { isIOS } from '../is-mobile.ts';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio.ts';

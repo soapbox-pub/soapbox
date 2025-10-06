@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
-import Text from 'soapbox/components/ui/text.tsx';
-import { EmojiReaction } from 'soapbox/types/entities.ts';
+import Text from '@/components/ui/text.tsx';
+import { EmojiReaction } from '@/types/entities.ts';
 
 interface IChatMessageReaction {
   emojiReaction: EmojiReaction;

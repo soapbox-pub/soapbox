@@ -5,8 +5,8 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeNotification } from 'soapbox/normalizers/notification.ts';
-import { validType } from 'soapbox/utils/notification.ts';
+import { normalizeNotification } from '@/normalizers/notification.ts';
+import { validType } from '@/utils/notification.ts';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
@@ -35,7 +35,7 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const QueuedNotificationRecord = ImmutableRecord({
   notification: {} as APIEntity,

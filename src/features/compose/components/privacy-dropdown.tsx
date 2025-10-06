@@ -10,13 +10,13 @@ import { spring } from 'react-motion';
 // @ts-ignore
 import Overlay from 'react-overlays/lib/Overlay';
 
-import { changeComposeVisibility } from 'soapbox/actions/compose.ts';
-import { closeModal, openModal } from 'soapbox/actions/modals.ts';
-import Icon from 'soapbox/components/icon.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { userTouching } from 'soapbox/is-mobile.ts';
+import { changeComposeVisibility } from '@/actions/compose.ts';
+import { closeModal, openModal } from '@/actions/modals.ts';
+import Icon from '@/components/icon.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { userTouching } from '@/is-mobile.ts';
 
 import Motion from '../../ui/util/optional-motion.tsx';
 

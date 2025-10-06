@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useGroup, useGroupMembers, useGroupMembershipRequests } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import toast from 'soapbox/toast.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useGroup, useGroupMembers, useGroupMembershipRequests } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import { AuthorizeRejectButtons } from '@/components/authorize-reject-buttons.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import toast from '@/toast.tsx';
 
 import ColumnForbidden from '../ui/components/column-forbidden.tsx';
 
-import type { Account as AccountEntity } from 'soapbox/schemas/index.ts';
+import type { Account as AccountEntity } from '@/schemas/index.ts';
 
 type RouteParams = { groupId: string };
 

@@ -1,5 +1,5 @@
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 const ModalLoading = () => (
   <Modal>

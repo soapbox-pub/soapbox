@@ -19,13 +19,13 @@ import {
   ADMIN_USERS_APPROVE_SUCCESS,
   ADMIN_USERS_REJECT_REQUEST,
   ADMIN_USERS_REJECT_SUCCESS,
-} from 'soapbox/actions/admin.ts';
-import { normalizeAdminReport, normalizeAdminAccount } from 'soapbox/normalizers/index.ts';
-import { normalizeId } from 'soapbox/utils/normalizers.ts';
+} from '@/actions/admin.ts';
+import { normalizeAdminReport, normalizeAdminAccount } from '@/normalizers/index.ts';
+import { normalizeId } from '@/utils/normalizers.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
-import type { Config } from 'soapbox/utils/config-db.ts';
+import type { APIEntity } from '@/types/entities.ts';
+import type { Config } from '@/utils/config-db.ts';
 
 const ReducerRecord = ImmutableRecord({
   reports: ImmutableMap<string, ReducerAdminReport>(),

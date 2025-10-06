@@ -1,6 +1,6 @@
-import { pin as pinAction, unpin as unpinAction, togglePin as togglePinAction } from 'soapbox/actions/interactions.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { pin as pinAction, unpin as unpinAction, togglePin as togglePinAction } from '@/actions/interactions.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
 
 export function usePin() {
   const getState = useGetState();

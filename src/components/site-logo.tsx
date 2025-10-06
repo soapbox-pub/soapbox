@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 
-import soapboxLogoWhiteSrc from 'soapbox/assets/images/soapbox-logo-white.svg';
-import soapboxLogoSrc from 'soapbox/assets/images/soapbox-logo.svg';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { useTheme } from 'soapbox/hooks/useTheme.ts';
+import soapboxLogoWhiteSrc from '@/assets/images/soapbox-logo-white.svg';
+import soapboxLogoSrc from '@/assets/images/soapbox-logo.svg';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { useTheme } from '@/hooks/useTheme.ts';
 
 interface ISiteLogo extends React.ComponentProps<'img'> {
   /** Extra class names for the <img> element. */

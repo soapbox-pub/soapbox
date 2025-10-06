@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { locales } from 'soapbox/messages.ts';
+import { locales } from '@/messages.ts';
 
 import { coerceObject } from '../utils.ts';
 

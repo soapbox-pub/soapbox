@@ -1,6 +1,6 @@
-import { dislike as dislikeAction, undislike as undislikeAction, toggleDislike as toggleDislikeAction } from 'soapbox/actions/interactions.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { dislike as dislikeAction, undislike as undislikeAction, toggleDislike as toggleDislikeAction } from '@/actions/interactions.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
 
 export function useDislike() {
   const getState = useGetState();

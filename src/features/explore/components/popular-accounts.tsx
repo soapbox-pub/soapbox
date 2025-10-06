@@ -4,20 +4,20 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import { InstanceFavicon } from 'soapbox/components/instance-favicon.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import ActionButton from 'soapbox/features/ui/components/action-button.tsx';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { useAccount } from '@/api/hooks/index.ts';
+import { InstanceFavicon } from '@/components/instance-favicon.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import ActionButton from '@/features/ui/components/action-button.tsx';
+import { useIsMobile } from '@/hooks/useIsMobile.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 import {
   useSuggestions,
-} from 'soapbox/queries/suggestions.ts';
+} from '@/queries/suggestions.ts';
 
 import 'swiper/swiper-bundle.css';
 

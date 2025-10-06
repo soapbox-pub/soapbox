@@ -1,4 +1,4 @@
-import { getLocale } from 'soapbox/actions/settings.ts';
+import { getLocale } from '@/actions/settings.ts';
 
 import { useAppSelector } from './useAppSelector.ts';
 

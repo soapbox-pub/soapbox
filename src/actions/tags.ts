@@ -1,7 +1,7 @@
 import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const HASHTAG_FETCH_REQUEST = 'HASHTAG_FETCH_REQUEST';
 const HASHTAG_FETCH_SUCCESS = 'HASHTAG_FETCH_SUCCESS';

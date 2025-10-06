@@ -8,13 +8,13 @@ import {
   CHAT_FETCH_SUCCESS,
   CHAT_READ_SUCCESS,
   CHAT_READ_REQUEST,
-} from 'soapbox/actions/chats.ts';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming.ts';
-import { normalizeChat } from 'soapbox/normalizers/index.ts';
-import { normalizeId } from 'soapbox/utils/normalizers.ts';
+} from '@/actions/chats.ts';
+import { STREAMING_CHAT_UPDATE } from '@/actions/streaming.ts';
+import { normalizeChat } from '@/normalizers/index.ts';
+import { normalizeId } from '@/utils/normalizers.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 type ChatRecord = ReturnType<typeof normalizeChat>;
 type APIEntities = Array<APIEntity>;

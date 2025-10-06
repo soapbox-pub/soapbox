@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Accordion from 'soapbox/components/ui/accordion.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { makeGetHosts } from 'soapbox/selectors/index.ts';
-import { federationRestrictionsDisclosed } from 'soapbox/utils/state.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Accordion from '@/components/ui/accordion.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { makeGetHosts } from '@/selectors/index.ts';
+import { federationRestrictionsDisclosed } from '@/utils/state.ts';
 
 import RestrictedInstance from './components/restricted-instance.tsx';
 

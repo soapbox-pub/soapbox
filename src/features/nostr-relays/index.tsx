@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { useNostrReq } from 'soapbox/features/nostr/hooks/useNostrReq.ts';
-import { useSigner } from 'soapbox/hooks/nostr/useSigner.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import Form from '@/components/ui/form.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useNostr } from '@/contexts/nostr-context.tsx';
+import { useNostrReq } from '@/features/nostr/hooks/useNostrReq.ts';
+import { useSigner } from '@/hooks/nostr/useSigner.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 import RelayEditor, { RelayData } from './components/relay-editor.tsx';
 

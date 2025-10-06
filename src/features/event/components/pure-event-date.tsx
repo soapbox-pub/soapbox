@@ -1,9 +1,9 @@
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import { FormattedDate } from 'react-intl';
 
-import Icon from 'soapbox/components/icon.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import Icon from '@/components/icon.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { Status as StatusEntity } from '@/schemas/index.ts';
 
 interface IPureEventDate {
   status: StatusEntity;

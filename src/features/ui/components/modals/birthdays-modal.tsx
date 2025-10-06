@@ -1,10 +1,10 @@
 import { FormattedMessage } from 'react-intl';
 
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Account from 'soapbox/features/birthdays/account.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Account from '@/features/birthdays/account.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 interface IBirthdaysModal {
   onClose: (string: string) => void;

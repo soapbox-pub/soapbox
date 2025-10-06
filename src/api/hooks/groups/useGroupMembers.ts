@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import { GroupMember, groupMemberSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntities } from '@/entity-store/hooks/index.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import { GroupMember, groupMemberSchema } from '@/schemas/index.ts';
 
 import { useApi } from '../../../hooks/useApi.ts';
 

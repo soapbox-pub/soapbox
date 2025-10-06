@@ -1,23 +1,23 @@
 import { InfiniteData, keepPreviousData, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
-import { importFetchedAccount, importFetchedAccounts } from 'soapbox/actions/importer/index.ts';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
-import toast from 'soapbox/toast.tsx';
-import { ChatMessage } from 'soapbox/types/entities.ts';
-import { reOrderChatListItems, updateChatMessage } from 'soapbox/utils/chats.ts';
-import { flattenPages, PaginatedResult, updatePageItem } from 'soapbox/utils/queries.ts';
+import { importFetchedAccount, importFetchedAccounts } from '@/actions/importer/index.ts';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
+import { useStatContext } from '@/contexts/stat-context.tsx';
+import { useApi } from '@/hooks/useApi.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { normalizeChatMessage } from '@/normalizers/index.ts';
+import toast from '@/toast.tsx';
+import { ChatMessage } from '@/types/entities.ts';
+import { reOrderChatListItems, updateChatMessage } from '@/utils/chats.ts';
+import { flattenPages, PaginatedResult, updatePageItem } from '@/utils/queries.ts';
 
 import { queryClient } from './client.ts';
 import { useFetchRelationships } from './relationships.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 export const messageExpirationOptions = [604800, 1209600, 2592000, 7776000];
 

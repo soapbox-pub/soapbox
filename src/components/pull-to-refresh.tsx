@@ -1,6 +1,6 @@
 import PTRComponent from 'react-simple-pull-to-refresh';
 
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 import './pull-to-refresh.css';
 

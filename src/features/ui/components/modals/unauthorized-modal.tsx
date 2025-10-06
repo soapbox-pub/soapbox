@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { remoteInteraction } from 'soapbox/actions/interactions.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useRegistrationStatus } from 'soapbox/hooks/useRegistrationStatus.ts';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { remoteInteraction } from '@/actions/interactions.ts';
+import Button from '@/components/ui/button.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useRegistrationStatus } from '@/hooks/useRegistrationStatus.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import toast from '@/toast.tsx';
 
 const messages = defineMessages({
   accountPlaceholder: { id: 'remote_interaction.account_placeholder', defaultMessage: 'Enter your username@domain you want to act from' },

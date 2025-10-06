@@ -4,26 +4,26 @@ import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 
-import { fetchAccount } from 'soapbox/actions/accounts.ts';
-import { logInNostr } from 'soapbox/actions/nostr.ts';
-import { startOnboarding } from 'soapbox/actions/onboarding.ts';
-import { closeSidebar } from 'soapbox/actions/sidebar.ts';
-import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Tooltip from 'soapbox/components/ui/tooltip.tsx';
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { keyring } from 'soapbox/features/nostr/keyring.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { download } from 'soapbox/utils/download.ts';
-import { slugify } from 'soapbox/utils/input.ts';
+import { fetchAccount } from '@/actions/accounts.ts';
+import { logInNostr } from '@/actions/nostr.ts';
+import { startOnboarding } from '@/actions/onboarding.ts';
+import { closeSidebar } from '@/actions/sidebar.ts';
+import EmojiGraphic from '@/components/emoji-graphic.tsx';
+import Button from '@/components/ui/button.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Tooltip from '@/components/ui/tooltip.tsx';
+import { useNostr } from '@/contexts/nostr-context.tsx';
+import { keyring } from '@/features/nostr/keyring.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useIsMobile } from '@/hooks/useIsMobile.ts';
+import { download } from '@/utils/download.ts';
+import { slugify } from '@/utils/input.ts';
 
 interface IKeygenStep {
   onClose(): void;

@@ -3,10 +3,10 @@ import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, 
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
-} from 'soapbox/actions/statuses.ts';
+} from '@/actions/statuses.ts';
 
 import type { AnyAction } from 'redux';
-import type { StatusVisibility } from 'soapbox/normalizers/status.ts';
+import type { StatusVisibility } from '@/normalizers/status.ts';
 
 const PendingStatusRecord = ImmutableRecord({
   content_type: '',

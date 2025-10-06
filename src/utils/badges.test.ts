@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory.ts';
+import { buildAccount } from '@/jest/factory.ts';
 
 import {
   tagToBadge,

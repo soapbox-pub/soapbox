@@ -3,14 +3,14 @@ import { forwardRef, useCallback, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Components, Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 
-import { useSuggestedGroups } from 'soapbox/api/hooks/index.ts';
-import { Column } from 'soapbox/components/ui/column.tsx';
+import { useSuggestedGroups } from '@/api/hooks/index.ts';
+import { Column } from '@/components/ui/column.tsx';
 
 import GroupGridItem from './components/discover/group-grid-item.tsx';
 import GroupListItem from './components/discover/group-list-item.tsx';
 import LayoutButtons, { GroupLayout } from './components/discover/layout-buttons.tsx';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   label: { id: 'groups.suggested.label', defaultMessage: 'Suggested Groups' },

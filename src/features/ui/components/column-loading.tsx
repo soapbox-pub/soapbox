@@ -1,5 +1,5 @@
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
+import { Card, CardBody } from '@/components/ui/card.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
 
 const ColumnLoading = () => (
   <Card>

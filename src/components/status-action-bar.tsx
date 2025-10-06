@@ -32,38 +32,38 @@ import volume3Icon from '@tabler/icons/outline/volume-3.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
-import { blockAccount } from 'soapbox/actions/accounts.ts';
-import { launchChat } from 'soapbox/actions/chats.ts';
-import { directCompose, mentionCompose, quoteCompose, replyCompose } from 'soapbox/actions/compose.ts';
-import { editEvent } from 'soapbox/actions/events.ts';
-import { pinToGroup, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from 'soapbox/actions/interactions.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation.tsx';
-import { initMuteModal } from 'soapbox/actions/mutes.ts';
-import { initReport, ReportableEntities } from 'soapbox/actions/reports.ts';
-import { deleteStatus, editStatus, toggleMuteStatus } from 'soapbox/actions/statuses.ts';
-import { deleteFromTimelines } from 'soapbox/actions/timelines.ts';
-import { useDeleteGroupStatus } from 'soapbox/api/hooks/groups/useDeleteGroupStatus.ts';
-import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from 'soapbox/api/hooks/index.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import StatusActionButton from 'soapbox/components/status-action-button.tsx';
-import StatusReactionWrapper from 'soapbox/components/status-reaction-wrapper.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useReblog } from 'soapbox/hooks/useReblog.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import toast from 'soapbox/toast.tsx';
-import copy from 'soapbox/utils/copy.ts';
+import { blockAccount } from '@/actions/accounts.ts';
+import { launchChat } from '@/actions/chats.ts';
+import { directCompose, mentionCompose, quoteCompose, replyCompose } from '@/actions/compose.ts';
+import { editEvent } from '@/actions/events.ts';
+import { pinToGroup, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from '@/actions/interactions.ts';
+import { openModal } from '@/actions/modals.ts';
+import { deleteStatusModal, toggleStatusSensitivityModal } from '@/actions/moderation.tsx';
+import { initMuteModal } from '@/actions/mutes.ts';
+import { initReport, ReportableEntities } from '@/actions/reports.ts';
+import { deleteStatus, editStatus, toggleMuteStatus } from '@/actions/statuses.ts';
+import { deleteFromTimelines } from '@/actions/timelines.ts';
+import { useDeleteGroupStatus } from '@/api/hooks/groups/useDeleteGroupStatus.ts';
+import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from '@/api/hooks/index.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import StatusActionButton from '@/components/status-action-button.tsx';
+import StatusReactionWrapper from '@/components/status-reaction-wrapper.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useReblog } from '@/hooks/useReblog.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import toast from '@/toast.tsx';
+import copy from '@/utils/copy.ts';
 
 import GroupPopover from './groups/popover/group-popover.tsx';
 
-import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
-import type { Group, Status as LegacyStatus } from 'soapbox/types/entities.ts';
+import type { Menu } from '@/components/dropdown-menu/index.ts';
+import type { Group, Status as LegacyStatus } from '@/types/entities.ts';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },

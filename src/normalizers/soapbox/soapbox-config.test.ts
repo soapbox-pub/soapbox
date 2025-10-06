@@ -30,7 +30,7 @@ describe('normalizeSoapboxConfig()', () => {
   });
 
   it('normalizes promoPanel', async () => {
-    const soapboxConfig = await import('soapbox/__fixtures__/spinster-soapbox.json');
+    const soapboxConfig = await import('@/__fixtures__/spinster-soapbox.json');
     const result = normalizeSoapboxConfig(soapboxConfig);
     expect(ImmutableRecord.isRecord(result.promoPanel)).toBe(true);
     expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);

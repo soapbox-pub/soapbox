@@ -1,9 +1,9 @@
 import DOMPurify from 'isomorphic-dompurify';
 
-import Markup from 'soapbox/components/markup.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import Markup from '@/components/markup.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
 import { LogoText } from './logo-text.tsx';
 

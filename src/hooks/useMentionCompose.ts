@@ -1,6 +1,6 @@
-import { mentionCompose as mentionComposeAction } from 'soapbox/actions/compose.ts';
-import { EntityTypes, Entities } from 'soapbox/entity-store/entities.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { mentionCompose as mentionComposeAction } from '@/actions/compose.ts';
+import { EntityTypes, Entities } from '@/entity-store/entities.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 export function useMentionCompose() {
   const dispatch = useAppDispatch();

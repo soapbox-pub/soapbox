@@ -1,8 +1,8 @@
 import { FormattedNumber } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Text from 'soapbox/components/ui/text.tsx';
-import { isNumber } from 'soapbox/utils/numbers.tsx';
+import Text from '@/components/ui/text.tsx';
+import { isNumber } from '@/utils/numbers.tsx';
 
 interface IDashCounter {
   count: number | undefined;

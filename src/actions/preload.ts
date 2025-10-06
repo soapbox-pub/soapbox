@@ -3,7 +3,7 @@ import { mapValues } from 'es-toolkit';
 import { verifyCredentials } from './auth.ts';
 import { importFetchedAccounts } from './importer/index.ts';
 
-import type { AppDispatch } from 'soapbox/store.ts';
+import type { AppDispatch } from '@/store.ts';
 
 const PLEROMA_PRELOAD_IMPORT  = 'PLEROMA_PRELOAD_IMPORT';
 const MASTODON_PRELOAD_IMPORT = 'MASTODON_PRELOAD_IMPORT';

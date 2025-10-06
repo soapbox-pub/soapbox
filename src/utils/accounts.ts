@@ -1,7 +1,7 @@
-import avatarMissing from 'soapbox/assets/images/avatar-missing.png';
-import headerMissing from 'soapbox/assets/images/header-missing.png';
+import avatarMissing from '@/assets/images/avatar-missing.png';
+import headerMissing from '@/assets/images/header-missing.png';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 const getDomainFromURL = (account: Pick<Account, 'url'>): string => {
   try {

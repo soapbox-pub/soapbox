@@ -1,5 +1,5 @@
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import toast from 'soapbox/toast.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import toast from '@/toast.tsx';
 
 import type { AnyAction, Middleware } from 'redux';
 

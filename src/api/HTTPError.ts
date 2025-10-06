@@ -1,4 +1,4 @@
-import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
+import { MastodonResponse } from '@/api/MastodonResponse.ts';
 
 export class HTTPError extends Error {
 

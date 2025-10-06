@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { MastodonClient } from 'soapbox/api/MastodonClient.ts';
-import * as BuildConfig from 'soapbox/build-config.ts';
+import { MastodonClient } from '@/api/MastodonClient.ts';
+import * as BuildConfig from '@/build-config.ts';
 
 import { useAppSelector } from './useAppSelector.ts';
 import { useOwnAccount } from './useOwnAccount.ts';

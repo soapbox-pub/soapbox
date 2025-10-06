@@ -5,16 +5,16 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { ChatWidgetScreens, useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useDebounce } from 'soapbox/hooks/useDebounce.ts';
-import { useChats, ChatKeys } from 'soapbox/queries/chats.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import useAccountSearch from 'soapbox/queries/search.ts';
-import toast from 'soapbox/toast.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import Icon from '@/components/ui/icon.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { ChatWidgetScreens, useChatContext } from '@/contexts/chat-context.tsx';
+import { useDebounce } from '@/hooks/useDebounce.ts';
+import { useChats, ChatKeys } from '@/queries/chats.ts';
+import { queryClient } from '@/queries/client.ts';
+import useAccountSearch from '@/queries/search.ts';
+import toast from '@/toast.tsx';
 
 import Blankslate from './blankslate.tsx';
 import EmptyResultsBlankslate from './empty-results-blankslate.tsx';

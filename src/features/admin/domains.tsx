@@ -2,21 +2,21 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import { useEffect } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useDomains } from 'soapbox/api/hooks/admin/index.ts';
-import { dateFormatOptions } from 'soapbox/components/relative-timestamp.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import toast from 'soapbox/toast.tsx';
+import { openModal } from '@/actions/modals.ts';
+import { useDomains } from '@/api/hooks/admin/index.ts';
+import { dateFormatOptions } from '@/components/relative-timestamp.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import toast from '@/toast.tsx';
 
 import Indicator from '../developers/components/indicator.tsx';
 
-import type { Domain as DomainEntity } from 'soapbox/schemas/index.ts';
+import type { Domain as DomainEntity } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.domains', defaultMessage: 'Domains' },

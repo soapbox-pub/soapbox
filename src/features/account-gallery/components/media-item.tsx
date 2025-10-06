@@ -3,13 +3,13 @@ import volumeIcon from '@tabler/icons/outline/volume.svg';
 import clsx from 'clsx';
 import { useState } from 'react';
 
-import Blurhash from 'soapbox/components/blurhash.tsx';
-import StillImage from 'soapbox/components/still-image.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { isIOS } from 'soapbox/is-mobile.ts';
+import Blurhash from '@/components/blurhash.tsx';
+import StillImage from '@/components/still-image.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { isIOS } from '@/is-mobile.ts';
 
-import type { Attachment } from 'soapbox/types/entities.ts';
+import type { Attachment } from '@/types/entities.ts';
 
 interface IMediaItem {
   attachment: Attachment;

@@ -3,11 +3,11 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { removeFromListAdder, addToListAdder } from 'soapbox/actions/lists.ts';
-import IconButton from 'soapbox/components/icon-button.tsx';
-import Icon from 'soapbox/components/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { removeFromListAdder, addToListAdder } from '@/actions/lists.ts';
+import IconButton from '@/components/icon-button.tsx';
+import Icon from '@/components/icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

@@ -1,7 +1,7 @@
 import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
-import { htmlToPlaintext, stripCompatibilityFeatures } from 'soapbox/utils/html.ts';
+import { htmlToPlaintext, stripCompatibilityFeatures } from '@/utils/html.ts';
 
 import { accountSchema } from './account.ts';
 import { attachmentSchema } from './attachment.ts';
@@ -15,7 +15,7 @@ import { pollSchema } from './poll.ts';
 import { tagSchema } from './tag.ts';
 import { contentSchema, dateSchema, filteredArray } from './utils.ts';
 
-import type { Resolve } from 'soapbox/utils/types.ts';
+import type { Resolve } from '@/utils/types.ts';
 
 const statusPleromaSchema = z.object({
   event: eventSchema.nullish().catch(undefined),

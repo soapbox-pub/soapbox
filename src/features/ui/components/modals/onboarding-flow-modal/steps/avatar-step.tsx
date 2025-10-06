@@ -4,20 +4,20 @@ import clsx from 'clsx';
 import { useRef, useState } from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import { patchMe } from 'soapbox/actions/me.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import toast from 'soapbox/toast.tsx';
-import { isDefaultAvatar } from 'soapbox/utils/accounts.ts';
-import resizeImage from 'soapbox/utils/resize-image.ts';
+import { patchMe } from '@/actions/me.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import toast from '@/toast.tsx';
+import { isDefaultAvatar } from '@/utils/accounts.ts';
+import resizeImage from '@/utils/resize-image.ts';
 
 const closeIcon = xIcon;
 

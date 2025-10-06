@@ -1,13 +1,13 @@
-import { deleteEntities } from 'soapbox/entity-store/actions.ts';
+import { deleteEntities } from '@/entity-store/actions.ts';
 
 import api from '../api/index.ts';
 
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedGroups, importFetchedAccounts } from './importer/index.ts';
 
-import type { GroupRole } from 'soapbox/reducers/group-memberships.ts';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { GroupRole } from '@/reducers/group-memberships.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const GROUP_CREATE_REQUEST = 'GROUP_CREATE_REQUEST';
 const GROUP_CREATE_SUCCESS = 'GROUP_CREATE_SUCCESS';

@@ -6,10 +6,10 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { locationSearch } from 'soapbox/actions/events.ts';
-import AutosuggestInput, { AutoSuggestion } from 'soapbox/components/autosuggest-input.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { locationSearch } from '@/actions/events.ts';
+import AutosuggestInput, { AutoSuggestion } from '@/components/autosuggest-input.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 import AutosuggestLocation from './autosuggest-location.tsx';
 

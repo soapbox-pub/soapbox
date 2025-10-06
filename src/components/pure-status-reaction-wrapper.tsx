@@ -1,16 +1,16 @@
 import { useState, useEffect, useRef, cloneElement } from 'react';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useReaction } from 'soapbox/api/hooks/index.ts';
-import EmojiSelector from 'soapbox/components/ui/emoji-selector.tsx';
-import Portal from 'soapbox/components/ui/portal.tsx';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { selectEntity } from 'soapbox/entity-store/selectors.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { userTouching } from 'soapbox/is-mobile.ts';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useReaction } from '@/api/hooks/index.ts';
+import EmojiSelector from '@/components/ui/emoji-selector.tsx';
+import Portal from '@/components/ui/portal.tsx';
+import { Entities } from '@/entity-store/entities.ts';
+import { selectEntity } from '@/entity-store/selectors.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { userTouching } from '@/is-mobile.ts';
+import { Status as StatusEntity } from '@/schemas/index.ts';
 
 interface IPureStatusReactionWrapper {
   statusId: string;

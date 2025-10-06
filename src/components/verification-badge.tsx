@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { useIntl, defineMessages } from 'react-intl';
 
-import verifiedIcon from 'soapbox/assets/icons/verified.svg';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import verifiedIcon from '@/assets/icons/verified.svg';
+import Icon from '@/components/ui/icon.tsx';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 const messages = defineMessages({
   verified: { id: 'account.verified', defaultMessage: 'Verified Account' },

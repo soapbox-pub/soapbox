@@ -1,13 +1,13 @@
 import { List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { COMPOSE_SET_STATUS } from 'soapbox/actions/compose-status.ts';
-import * as actions from 'soapbox/actions/compose.ts';
-import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me.ts';
-import { SETTING_CHANGE } from 'soapbox/actions/settings.ts';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines.ts';
-import { TagRecord } from 'soapbox/normalizers/index.ts';
-import { normalizeStatus } from 'soapbox/normalizers/status.ts';
+import { COMPOSE_SET_STATUS } from '@/actions/compose-status.ts';
+import * as actions from '@/actions/compose.ts';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '@/actions/me.ts';
+import { SETTING_CHANGE } from '@/actions/settings.ts';
+import { TIMELINE_DELETE } from '@/actions/timelines.ts';
+import { TagRecord } from '@/normalizers/index.ts';
+import { normalizeStatus } from '@/normalizers/status.ts';
 
 import reducer, { initialState, ReducerCompose } from './compose.ts';
 
@@ -42,7 +42,7 @@ describe('compose reducer', () => {
 
   describe('COMPOSE_SET_STATUS', () => {
     it('strips Pleroma integer attachments', async () => {
-      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+      const status = await import('@/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
         type: COMPOSE_SET_STATUS,
@@ -57,7 +57,7 @@ describe('compose reducer', () => {
     });
 
     it('leaves non-Pleroma integer attachments alone', async () => {
-      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+      const status = await import('@/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
         type: COMPOSE_SET_STATUS,
@@ -70,7 +70,7 @@ describe('compose reducer', () => {
     });
 
     it('sets the id when editing a post', async () => {
-      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+      const status = await import('@/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
         id: 'compose-modal',
@@ -84,7 +84,7 @@ describe('compose reducer', () => {
     });
 
     it('does not set the id when redrafting a post', async () => {
-      const status = await import('soapbox/__fixtures__/pleroma-status-deleted.json');
+      const status = await import('@/__fixtures__/pleroma-status-deleted.json');
 
       const action = {
         id: 'compose-modal',

@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useInstanceV1 } from 'soapbox/api/hooks/instance/useInstanceV1.ts';
-import { useInstanceV2 } from 'soapbox/api/hooks/instance/useInstanceV2.ts';
-import { instanceV2Schema, upgradeInstance } from 'soapbox/schemas/instance.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useInstanceV1 } from '@/api/hooks/instance/useInstanceV1.ts';
+import { useInstanceV2 } from '@/api/hooks/instance/useInstanceV2.ts';
+import { instanceV2Schema, upgradeInstance } from '@/schemas/instance.ts';
 
 import { useAppDispatch } from './useAppDispatch.ts';
 

@@ -4,22 +4,22 @@ import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import RelativeTimestamp from 'soapbox/components/relative-timestamp.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import VerificationBadge from 'soapbox/components/verification-badge.tsx';
-import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { IChat, useChatActions } from 'soapbox/queries/chats.ts';
+import { openModal } from '@/actions/modals.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import RelativeTimestamp from '@/components/relative-timestamp.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import VerificationBadge from '@/components/verification-badge.tsx';
+import { useChatContext } from '@/contexts/chat-context.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { IChat, useChatActions } from '@/queries/chats.ts';
 
-import type { Menu } from 'soapbox/components/dropdown-menu/index.ts';
+import type { Menu } from '@/components/dropdown-menu/index.ts';
 
 const messages = defineMessages({
   blockedYou: { id: 'chat_list_item.blocked_you', defaultMessage: 'This user has blocked you' },

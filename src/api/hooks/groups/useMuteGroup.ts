@@ -1,6 +1,6 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
-import { type Group, groupRelationshipSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntityActions } from '@/entity-store/hooks/index.ts';
+import { type Group, groupRelationshipSchema } from '@/schemas/index.ts';
 
 function useMuteGroup(group?: Group) {
   const { createEntity, isSubmitting } = useEntityActions(

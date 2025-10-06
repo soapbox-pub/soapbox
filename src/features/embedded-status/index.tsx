@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { fetchStatus } from 'soapbox/actions/statuses.ts';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import SiteLogo from 'soapbox/components/site-logo.tsx';
-import Status from 'soapbox/components/status.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { iframeId } from 'soapbox/iframe.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { fetchStatus } from '@/actions/statuses.ts';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import SiteLogo from '@/components/site-logo.tsx';
+import Status from '@/components/status.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { iframeId } from '@/iframe.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 interface IEmbeddedStatus {
   params: {

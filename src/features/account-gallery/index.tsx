@@ -3,20 +3,20 @@ import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { expandAccountMediaTimeline } from 'soapbox/actions/timelines.ts';
-import { useAccountLookup } from 'soapbox/api/hooks/index.ts';
-import LoadMore from 'soapbox/components/load-more.tsx';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { getAccountGallery } from 'soapbox/selectors/index.ts';
+import { openModal } from '@/actions/modals.ts';
+import { expandAccountMediaTimeline } from '@/actions/timelines.ts';
+import { useAccountLookup } from '@/api/hooks/index.ts';
+import LoadMore from '@/components/load-more.tsx';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { getAccountGallery } from '@/selectors/index.ts';
 
 import MediaItem from './components/media-item.tsx';
 
-import type { Attachment, Status } from 'soapbox/types/entities.ts';
+import type { Attachment, Status } from '@/types/entities.ts';
 
 interface ILoadMoreMedia {
   maxId: string | null;

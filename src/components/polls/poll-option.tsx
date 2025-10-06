@@ -4,15 +4,15 @@ import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 import { Motion, presets, spring } from 'react-motion';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { emojifyText } from '@/utils/emojify.tsx';
 
 import type {
   Poll as PollEntity,
   PollOption as PollOptionEntity,
-} from 'soapbox/types/entities';
+} from '@/types/entities';
 
 const messages = defineMessages({
   voted: { id: 'poll.voted', defaultMessage: 'You voted for this answer' },

@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { Children, useState } from 'react';
 
-import Select from 'soapbox/components/ui/select.tsx';
+import Select from '@/components/ui/select.tsx';
 
 interface IInputContainer {
   label?: React.ReactNode;

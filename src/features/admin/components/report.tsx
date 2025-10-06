@@ -5,25 +5,25 @@ import { useCallback, useState } from 'react';
 import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { closeReports } from 'soapbox/actions/admin.ts';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation.tsx';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import HoverRefWrapper from 'soapbox/components/hover-ref-wrapper.tsx';
-import Accordion from 'soapbox/components/ui/accordion.tsx';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetReport } from 'soapbox/selectors/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { closeReports } from '@/actions/admin.ts';
+import { deactivateUserModal, deleteUserModal } from '@/actions/moderation.tsx';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import HoverRefWrapper from '@/components/hover-ref-wrapper.tsx';
+import Accordion from '@/components/ui/accordion.tsx';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetReport } from '@/selectors/index.ts';
+import toast from '@/toast.tsx';
 
 import ReportStatus from './report-status.tsx';
 
 import type { List as ImmutableList } from 'immutable';
-import type { Account, AdminReport, Status } from 'soapbox/types/entities.ts';
+import type { Account, AdminReport, Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },

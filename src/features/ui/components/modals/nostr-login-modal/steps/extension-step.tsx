@@ -3,19 +3,19 @@ import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { nostrExtensionLogIn } from 'soapbox/actions/nostr.ts';
-import EmojiGraphic from 'soapbox/components/emoji-graphic.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useNostr } from 'soapbox/contexts/nostr-context.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { openModal } from '@/actions/modals.ts';
+import { nostrExtensionLogIn } from '@/actions/nostr.ts';
+import EmojiGraphic from '@/components/emoji-graphic.tsx';
+import Button from '@/components/ui/button.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useNostr } from '@/contexts/nostr-context.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 interface IExtensionStep {
   isLogin?: boolean;

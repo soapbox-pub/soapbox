@@ -1,18 +1,18 @@
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { useRelays } from 'soapbox/api/hooks/admin/index.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useTextField } from 'soapbox/hooks/forms/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { useRelays } from '@/api/hooks/admin/index.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useTextField } from '@/hooks/forms/index.ts';
+import toast from '@/toast.tsx';
 
-import type { Relay as RelayEntity } from 'soapbox/schemas/index.ts';
+import type { Relay as RelayEntity } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.relays', defaultMessage: 'Instance relays' },

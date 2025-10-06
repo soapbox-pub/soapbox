@@ -1,17 +1,17 @@
 import hashIcon from '@tabler/icons/outline/hash.svg';
 import { FormattedMessage } from 'react-intl';
 
-import { useGroup, useGroupTags } from 'soapbox/api/hooks/index.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
+import { useGroup, useGroupTags } from '@/api/hooks/index.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
 
 import PlaceholderAccount from '../placeholder/components/placeholder-account.tsx';
 
 import GroupTagListItem from './components/group-tag-list-item.tsx';
 
-import type { Group } from 'soapbox/types/entities.ts';
+import type { Group } from '@/types/entities.ts';
 
 interface IGroupTopics {
   params: { groupId: string };

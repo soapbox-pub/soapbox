@@ -1,14 +1,14 @@
 import calendarStatsIcon from '@tabler/icons/outline/calendar-stats.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import { cancelScheduledStatus } from 'soapbox/actions/scheduled-statuses.ts';
-import { getSettings } from 'soapbox/actions/settings.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { openModal } from '@/actions/modals.ts';
+import { cancelScheduledStatus } from '@/actions/scheduled-statuses.ts';
+import { getSettings } from '@/actions/settings.ts';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
-import type { Status as StatusEntity } from 'soapbox/types/entities.ts';
+import type { Status as StatusEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   cancel: { id: 'scheduled_status.cancel', defaultMessage: 'Cancel' },

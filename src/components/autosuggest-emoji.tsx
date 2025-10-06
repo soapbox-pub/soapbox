@@ -1,9 +1,9 @@
-import EmojiComponent from 'soapbox/components/ui/emoji.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { isCustomEmoji } from 'soapbox/features/emoji/index.ts';
-import unicodeMapping from 'soapbox/features/emoji/mapping.ts';
+import EmojiComponent from '@/components/ui/emoji.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { isCustomEmoji } from '@/features/emoji/index.ts';
+import unicodeMapping from '@/features/emoji/mapping.ts';
 
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { Emoji } from '@/features/emoji/index.ts';
 
 interface IAutosuggestEmoji {
   emoji: Emoji;

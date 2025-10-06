@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { POLLS_IMPORT } from 'soapbox/actions/importer/index.ts';
+import { POLLS_IMPORT } from '@/actions/importer/index.ts';
 
 import reducer from './polls.ts';
 

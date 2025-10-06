@@ -3,9 +3,9 @@ import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
-import { act, screen } from 'soapbox/jest/test-helpers.tsx';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { MastodonResponse } from '@/api/MastodonResponse.ts';
+import { act, screen } from '@/jest/test-helpers.tsx';
 
 import toast from './toast.tsx';
 

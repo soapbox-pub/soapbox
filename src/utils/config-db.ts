@@ -5,7 +5,7 @@ import {
   fromJS,
 } from 'immutable';
 
-import { type MRFSimple, mrfSimpleSchema } from 'soapbox/schemas/pleroma.ts';
+import { type MRFSimple, mrfSimpleSchema } from '@/schemas/pleroma.ts';
 
 export type Config = ImmutableMap<string, any>;
 export type Policy = Record<string, any>;

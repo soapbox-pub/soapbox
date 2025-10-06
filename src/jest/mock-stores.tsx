@@ -1,5 +1,5 @@
-import alexJson from 'soapbox/__fixtures__/pleroma-account.json';
-import { instanceV1Schema } from 'soapbox/schemas/instance.ts';
+import alexJson from '@/__fixtures__/pleroma-account.json';
+import { instanceV1Schema } from '@/schemas/instance.ts';
 
 import { buildAccount } from './factory.ts';
 

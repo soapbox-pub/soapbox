@@ -2,8 +2,8 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Input from '@/components/ui/input.tsx';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },

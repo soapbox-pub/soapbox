@@ -1,7 +1,7 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { useState } from 'react';
 
-import type { Attachment as AttachmentEntity } from 'soapbox/types/entities.ts';
+import type { Attachment as AttachmentEntity } from '@/types/entities.ts';
 
 interface IPlaceholderMediaGallery {
   media: ImmutableList<AttachmentEntity>;

@@ -2,26 +2,26 @@ import sendIcon from '@tabler/icons/outline/send.svg';
 import { forwardRef, useState } from 'react';
 import { defineMessages, IntlShape, useIntl } from 'react-intl';
 
-import { unblockAccount } from 'soapbox/actions/accounts.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover } from 'soapbox/components/ui/combobox.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useChatContext } from 'soapbox/contexts/chat-context.tsx';
-import UploadButton from 'soapbox/features/compose/components/upload-button.tsx';
-import emojiSearch from 'soapbox/features/emoji/search.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { Attachment } from 'soapbox/types/entities.ts';
-import { textAtCursorMatchesToken } from 'soapbox/utils/suggestions.ts';
+import { unblockAccount } from '@/actions/accounts.ts';
+import { openModal } from '@/actions/modals.ts';
+import Button from '@/components/ui/button.tsx';
+import { Combobox, ComboboxInput, ComboboxList, ComboboxOption, ComboboxPopover } from '@/components/ui/combobox.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useChatContext } from '@/contexts/chat-context.tsx';
+import UploadButton from '@/features/compose/components/upload-button.tsx';
+import emojiSearch from '@/features/emoji/search.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { Attachment } from '@/types/entities.ts';
+import { textAtCursorMatchesToken } from '@/utils/suggestions.ts';
 
 import ChatTextarea from './chat-textarea.tsx';
 
-import type { Emoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
+import type { Emoji, NativeEmoji } from '@/features/emoji/index.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'chat.input.placeholder', defaultMessage: 'Type a message' },

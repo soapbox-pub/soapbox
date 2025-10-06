@@ -3,15 +3,15 @@ import clsx from 'clsx';
 import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon.tsx';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { isOnlyEmoji as _isOnlyEmoji } from 'soapbox/utils/only-emoji.ts';
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import Icon from '@/components/icon.tsx';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { isOnlyEmoji as _isOnlyEmoji } from '@/utils/only-emoji.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
 import Markup from './markup.tsx';
 import Poll from './polls/poll.tsx';
 
-import type { Sizes } from 'soapbox/components/ui/text.tsx';
+import type { Sizes } from '@/components/ui/text.tsx';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 

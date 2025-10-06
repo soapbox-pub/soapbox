@@ -2,13 +2,13 @@ import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import qrcodeIcon from '@tabler/icons/outline/qrcode.svg';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { openModal } from '@/actions/modals.ts';
+import CopyableInput from '@/components/copyable-input.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 import { getExplorerUrl } from '../utils/block-explorer.ts';
 import { getTitle } from '../utils/coin-db.ts';

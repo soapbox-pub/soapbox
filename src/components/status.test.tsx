@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory.ts';
-import { render, screen, rootState } from 'soapbox/jest/test-helpers.tsx';
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
+import { buildAccount } from '@/jest/factory.ts';
+import { render, screen, rootState } from '@/jest/test-helpers.tsx';
+import { normalizeStatus } from '@/normalizers/index.ts';
 
 import Status from './status.tsx';
 
-import type { ReducerStatus } from 'soapbox/reducers/statuses.ts';
+import type { ReducerStatus } from '@/reducers/statuses.ts';
 
 const account = buildAccount({
   id: '1',

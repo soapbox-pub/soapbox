@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildGroupTag } from 'soapbox/jest/factory.ts';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { buildGroupTag } from '@/jest/factory.ts';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import TagListItem from './tag-list-item.tsx';
 

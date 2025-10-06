@@ -3,15 +3,15 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { expandRemoteTimeline } from 'soapbox/actions/timelines.ts';
-import { useRemoteStream } from 'soapbox/api/hooks/index.ts';
-import IconButton from 'soapbox/components/icon-button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { expandRemoteTimeline } from '@/actions/timelines.ts';
+import { useRemoteStream } from '@/api/hooks/index.ts';
+import IconButton from '@/components/icon-button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 import Timeline from '../ui/components/timeline.tsx';
 

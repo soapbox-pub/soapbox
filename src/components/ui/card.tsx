@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
 
 import HStack from './hstack.tsx';
 import Text from './text.tsx';

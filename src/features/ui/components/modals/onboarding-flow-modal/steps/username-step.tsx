@@ -3,17 +3,17 @@ import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { UsernameInput } from 'soapbox/features/edit-identity/index.tsx';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import toast from 'soapbox/toast.tsx';
+import Button from '@/components/ui/button.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { UsernameInput } from '@/features/edit-identity/index.tsx';
+import { useApi } from '@/hooks/useApi.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { queryClient } from '@/queries/client.ts';
+import toast from '@/toast.tsx';
 
 const closeIcon = xIcon;
 

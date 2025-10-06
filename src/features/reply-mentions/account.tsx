@@ -3,14 +3,14 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchAccount } from 'soapbox/actions/accounts.ts';
-import { addToMentions, removeFromMentions } from 'soapbox/actions/compose.ts';
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import AccountComponent from 'soapbox/components/account.tsx';
-import IconButton from 'soapbox/components/icon-button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { fetchAccount } from '@/actions/accounts.ts';
+import { addToMentions, removeFromMentions } from '@/actions/compose.ts';
+import { useAccount } from '@/api/hooks/index.ts';
+import AccountComponent from '@/components/account.tsx';
+import IconButton from '@/components/icon-button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 const messages = defineMessages({
   remove: { id: 'reply_mentions.account.remove', defaultMessage: 'Remove from mentions' },

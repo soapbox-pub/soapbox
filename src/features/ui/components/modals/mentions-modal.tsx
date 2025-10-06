@@ -2,14 +2,14 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { fetchStatusWithContext } from 'soapbox/actions/statuses.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { fetchStatusWithContext } from '@/actions/statuses.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 interface IMentionsModal {
   onClose: (type: string) => void;

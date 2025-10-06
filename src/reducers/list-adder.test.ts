@@ -1,7 +1,7 @@
 import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import * as actions from 'soapbox/actions/lists.ts';
+import * as actions from '@/actions/lists.ts';
 
 import reducer from './list-adder.ts';
 

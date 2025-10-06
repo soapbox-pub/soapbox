@@ -13,15 +13,15 @@ import {
   setSearchAccount,
   showSearch,
   submitSearch,
-} from 'soapbox/actions/search.ts';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest-account-input.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useSearchTokens } from 'soapbox/features/explore/useSearchTokens.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import { AppDispatch, RootState } from 'soapbox/store.ts';
+} from '@/actions/search.ts';
+import AutosuggestAccountInput from '@/components/autosuggest-account-input.tsx';
+import Input from '@/components/ui/input.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import { AppDispatch, RootState } from '@/store.ts';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { storeClosed, storeLoggedIn, storeOpen } from 'soapbox/jest/mock-stores.tsx';
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { storeClosed, storeLoggedIn, storeOpen } from '@/jest/mock-stores.tsx';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import CtaBanner from './cta-banner.tsx';
 

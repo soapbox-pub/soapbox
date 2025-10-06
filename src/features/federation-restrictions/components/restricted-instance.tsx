@@ -4,9 +4,9 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetRemoteInstance } from '@/selectors/index.ts';
 
 import InstanceRestrictions from './instance-restrictions.tsx';
 

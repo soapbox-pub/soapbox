@@ -1,6 +1,6 @@
-import Modal from 'soapbox/components/ui/modal.tsx';
-import EmojiPickerDropdown from 'soapbox/features/emoji/components/emoji-picker-dropdown.tsx';
-import { Emoji } from 'soapbox/features/emoji/index.ts';
+import Modal from '@/components/ui/modal.tsx';
+import EmojiPickerDropdown from '@/features/emoji/components/emoji-picker-dropdown.tsx';
+import { Emoji } from '@/features/emoji/index.ts';
 
 interface IEmojiPickerModal {
   onPickEmoji?: (emoji: Emoji) => void;

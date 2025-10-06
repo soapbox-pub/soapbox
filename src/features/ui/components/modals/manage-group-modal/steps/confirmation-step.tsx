@@ -2,16 +2,16 @@ import linkIcon from '@tabler/icons/outline/link.svg';
 import shareIcon from '@tabler/icons/outline/share.svg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import toast from 'soapbox/toast.tsx';
-import copy from 'soapbox/utils/copy.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import Button from '@/components/ui/button.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import toast from '@/toast.tsx';
+import copy from '@/utils/copy.ts';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 interface IConfirmationStep {
   group: Group | null;

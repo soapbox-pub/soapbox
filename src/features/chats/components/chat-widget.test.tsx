@@ -1,8 +1,8 @@
 import { Route, Switch } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
-import { buildAccount } from 'soapbox/jest/factory.ts';
-import { render, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { buildAccount } from '@/jest/factory.ts';
+import { render, rootState } from '@/jest/test-helpers.tsx';
 
 import ChatWidget from './chat-widget/chat-widget.tsx';
 

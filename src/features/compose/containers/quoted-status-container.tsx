@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 
-import { cancelQuoteCompose } from 'soapbox/actions/compose.ts';
-import QuotedStatus from 'soapbox/components/quoted-status.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { makeGetStatus } from 'soapbox/selectors/index.ts';
+import { cancelQuoteCompose } from '@/actions/compose.ts';
+import QuotedStatus from '@/components/quoted-status.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { makeGetStatus } from '@/selectors/index.ts';
 
 interface IQuotedStatusContainer {
   composeId: string;

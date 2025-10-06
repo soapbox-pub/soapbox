@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import { defineMessages, useIntl, FormatDateOptions } from 'react-intl';
 
 
-import Markup from 'soapbox/components/markup.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { CryptoAddress, LightningAddress } from 'soapbox/features/ui/util/async-components.ts';
-import { htmlToPlaintext } from 'soapbox/utils/html.ts';
+import Markup from '@/components/markup.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import { CryptoAddress, LightningAddress } from '@/features/ui/util/async-components.ts';
+import { htmlToPlaintext } from '@/utils/html.ts';
 
-import type { Account } from 'soapbox/schemas/index.ts';
+import type { Account } from '@/schemas/index.ts';
 
 const getTicker = (value: string): string => (value.match(/\$([a-zA-Z]*)/i) || [])[1];
 const isTicker = (value: string): boolean => Boolean(getTicker(value));

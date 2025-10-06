@@ -1,4 +1,4 @@
-import { parseVersion } from 'soapbox/utils/features.ts';
+import { parseVersion } from '@/utils/features.ts';
 
 import { useInstance } from './useInstance.ts';
 

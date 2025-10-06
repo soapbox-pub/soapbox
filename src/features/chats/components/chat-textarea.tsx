@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Textarea from 'soapbox/components/ui/textarea.tsx';
-import { Attachment } from 'soapbox/types/entities.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Textarea from '@/components/ui/textarea.tsx';
+import { Attachment } from '@/types/entities.ts';
 
 import ChatPendingUpload from './chat-pending-upload.tsx';
 import ChatUpload from './chat-upload.tsx';

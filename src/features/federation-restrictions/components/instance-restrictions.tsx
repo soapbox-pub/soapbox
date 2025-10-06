@@ -7,13 +7,13 @@ import shieldLockIcon from '@tabler/icons/outline/shield-lock.svg';
 import shieldXIcon from '@tabler/icons/outline/shield-x.svg';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import Icon from '@/components/icon.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
-import type { RemoteInstance } from 'soapbox/selectors/index.ts';
+import type { RemoteInstance } from '@/selectors/index.ts';
 
 const hasRestrictions = (remoteInstance: RemoteInstance): boolean => {
   const { accept, reject_deletes, report_removal, ...federation } = remoteInstance.federation;

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
-import { useMutes, useGroupMutes } from 'soapbox/api/hooks/index.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
+import { useMutes, useGroupMutes } from '@/api/hooks/index.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { useFeatures } from '@/hooks/useFeatures.ts';
 
 import GroupListItem from './components/group-list-item.tsx';
 

@@ -12,7 +12,7 @@ import {
 import { compareDate } from '../utils/comparators.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const ConversationRecord = ImmutableRecord({
   id: '',

@@ -1,8 +1,8 @@
 import { List as ImmutableList, fromJS } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
-import { normalizeStatus } from 'soapbox/normalizers/index.ts';
-import { emojiReactionSchema } from 'soapbox/schemas/index.ts';
+import { normalizeStatus } from '@/normalizers/index.ts';
+import { emojiReactionSchema } from '@/schemas/index.ts';
 
 import {
   sortEmoji,

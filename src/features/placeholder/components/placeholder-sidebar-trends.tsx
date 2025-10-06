@@ -1,4 +1,4 @@
-import Stack from 'soapbox/components/ui/stack.tsx';
+import Stack from '@/components/ui/stack.tsx';
 
 import { randomIntFromInterval, generateText } from '../utils.ts';
 

@@ -4,22 +4,22 @@ import uploadIcon from '@tabler/icons/outline/upload.svg';
 import { useRef, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { updateSoapboxConfig } from 'soapbox/actions/admin.ts';
-import { getHost } from 'soapbox/actions/instance.ts';
-import { fetchSoapboxConfig } from 'soapbox/actions/soapbox.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import ColorWithPicker from 'soapbox/features/soapbox-config/components/color-with-picker.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
-import { normalizeSoapboxConfig } from 'soapbox/normalizers/index.ts';
-import toast from 'soapbox/toast.tsx';
-import { download } from 'soapbox/utils/download.ts';
+import { updateSoapboxConfig } from '@/actions/admin.ts';
+import { getHost } from '@/actions/instance.ts';
+import { fetchSoapboxConfig } from '@/actions/soapbox.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import Form from '@/components/ui/form.tsx';
+import ColorWithPicker from '@/features/soapbox-config/components/color-with-picker.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
+import { normalizeSoapboxConfig } from '@/normalizers/index.ts';
+import toast from '@/toast.tsx';
+import { download } from '@/utils/download.ts';
 
 import Palette, { ColorGroup } from './components/palette.tsx';
 

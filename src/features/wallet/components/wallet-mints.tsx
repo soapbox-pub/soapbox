@@ -2,16 +2,16 @@ import IconSquareArrowRight from '@tabler/icons/outline/square-arrow-right.svg';
 import { useEffect, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { MintEditor } from 'soapbox/features/wallet/components/editable-lists.tsx';
-import { useUpdateWallet, useWallet } from 'soapbox/features/wallet/hooks/useHooks.ts';
-import toast from 'soapbox/toast.tsx';
-import { isURL } from 'soapbox/utils/auth.ts';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { MintEditor } from '@/features/wallet/components/editable-lists.tsx';
+import { useUpdateWallet, useWallet } from '@/features/wallet/hooks/useHooks.ts';
+import toast from '@/toast.tsx';
+import { isURL } from '@/utils/auth.ts';
 
 const messages = defineMessages({
   title: { id: 'wallet.mints', defaultMessage: 'Mints' },

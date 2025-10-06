@@ -1,12 +1,12 @@
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
-import { getSettings, changeSetting } from 'soapbox/actions/settings.ts';
-import { getFeatures } from 'soapbox/utils/features.ts';
+import { getSettings, changeSetting } from '@/actions/settings.ts';
+import { getFeatures } from '@/utils/features.ts';
 
 import api from '../api/index.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { History } from 'soapbox/types/history.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { History } from '@/types/history.ts';
 
 const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';

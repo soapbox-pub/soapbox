@@ -1,4 +1,4 @@
-import { getFeatures, Features } from 'soapbox/utils/features.ts';
+import { getFeatures, Features } from '@/utils/features.ts';
 
 import { useInstance } from './useInstance.ts';
 

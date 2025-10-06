@@ -5,9 +5,9 @@ import { Children, cloneElement, isValidElement, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Select from 'soapbox/components/ui/select.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Select from '@/components/ui/select.tsx';
 
 import { SelectDropdown } from '../features/forms/index.tsx';
 

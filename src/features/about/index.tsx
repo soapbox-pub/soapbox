@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link, useParams } from 'react-router-dom';
 
-import { fetchAboutPage } from 'soapbox/actions/about.ts';
-import { Navlinks } from 'soapbox/components/navlinks.tsx';
-import { Card } from 'soapbox/components/ui/card.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import { fetchAboutPage } from '@/actions/about.ts';
+import { Navlinks } from '@/components/navlinks.tsx';
+import { Card } from '@/components/ui/card.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 import { languages } from '../preferences/index.tsx';
 

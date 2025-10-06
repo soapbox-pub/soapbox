@@ -1,15 +1,15 @@
 import clsx from 'clsx';
 import { useCallback, useRef } from 'react';
 
-import { changeMediaOrder } from 'soapbox/actions/compose.ts';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
+import { changeMediaOrder } from '@/actions/compose.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
 
 import UploadProgress from './upload-progress.tsx';
 import Upload from './upload.tsx';
 
-import type { Attachment as AttachmentEntity } from 'soapbox/types/entities.ts';
+import type { Attachment as AttachmentEntity } from '@/types/entities.ts';
 
 interface IUploadForm {
   composeId: string;

@@ -1,11 +1,11 @@
 import { defineMessages } from 'react-intl';
 
-import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
-import api from 'soapbox/api/index.ts';
-import { normalizeAccount } from 'soapbox/normalizers/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { MastodonResponse } from '@/api/MastodonResponse.ts';
+import api from '@/api/index.ts';
+import { normalizeAccount } from '@/normalizers/index.ts';
+import toast from '@/toast.tsx';
 
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 export const EXPORT_FOLLOWS_REQUEST = 'EXPORT_FOLLOWS_REQUEST';
 export const EXPORT_FOLLOWS_SUCCESS = 'EXPORT_FOLLOWS_SUCCESS';

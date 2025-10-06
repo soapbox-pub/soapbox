@@ -3,9 +3,9 @@ import api from '../api/index.ts';
 import { fetchRelationships } from './accounts.ts';
 import { importFetchedAccounts, importFetchedStatuses } from './importer/index.ts';
 
-import type { SearchFilter } from 'soapbox/reducers/search.ts';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { SearchFilter } from '@/reducers/search.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 const SEARCH_CHANGE        = 'SEARCH_CHANGE';
 const SEARCH_CLEAR         = 'SEARCH_CLEAR';

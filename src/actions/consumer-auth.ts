@@ -1,11 +1,11 @@
-import * as BuildConfig from 'soapbox/build-config.ts';
-import { isURL } from 'soapbox/utils/auth.ts';
-import sourceCode from 'soapbox/utils/code.ts';
-import { getScopes } from 'soapbox/utils/scopes.ts';
+import * as BuildConfig from '@/build-config.ts';
+import { isURL } from '@/utils/auth.ts';
+import sourceCode from '@/utils/code.ts';
+import { getScopes } from '@/utils/scopes.ts';
 
 import { createApp } from './apps.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 const createProviderApp = () => {
   return async(dispatch: AppDispatch, getState: () => RootState) => {

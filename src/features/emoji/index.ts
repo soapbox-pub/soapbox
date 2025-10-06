@@ -1,5 +1,5 @@
-import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from 'soapbox/features/emoji/data.ts';
-import type { CustomEmoji as MastodonCustomEmoji } from 'soapbox/schemas/custom-emoji.ts';
+import type { Emoji as EmojiMart, CustomEmoji as EmojiMartCustom } from '@/features/emoji/data.ts';
+import type { CustomEmoji as MastodonCustomEmoji } from '@/schemas/custom-emoji.ts';
 
 /*
  * TODO: Consolate emoji object types

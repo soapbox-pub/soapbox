@@ -1,14 +1,14 @@
 import { FormattedDate } from 'react-intl';
 
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
 import AnnouncementContent from './announcement-content.tsx';
 import ReactionsBar from './reactions-bar.tsx';
 
-import type { Announcement as AnnouncementEntity } from 'soapbox/schemas/index.ts';
+import type { Announcement as AnnouncementEntity } from '@/schemas/index.ts';
 
 interface IAnnouncement {
   announcement: AnnouncementEntity;

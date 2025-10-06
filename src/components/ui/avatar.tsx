@@ -2,7 +2,7 @@ import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
 import clsx from 'clsx';
 import { useMemo, useState } from 'react';
 
-import StillImage, { IStillImage } from 'soapbox/components/still-image.tsx';
+import StillImage, { IStillImage } from '@/components/still-image.tsx';
 
 import Icon from '../icon.tsx';
 

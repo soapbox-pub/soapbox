@@ -1,10 +1,10 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
 
-import { isNativeEmoji } from 'soapbox/features/emoji/index.ts';
-import { Account } from 'soapbox/schemas/index.ts';
-import { tagHistory } from 'soapbox/settings.ts';
-import { PLEROMA } from 'soapbox/utils/features.ts';
-import { hasIntegerMediaIds } from 'soapbox/utils/status.ts';
+import { isNativeEmoji } from '@/features/emoji/index.ts';
+import { Account } from '@/schemas/index.ts';
+import { tagHistory } from '@/settings.ts';
+import { PLEROMA } from '@/utils/features.ts';
+import { hasIntegerMediaIds } from '@/utils/status.ts';
 
 import { COMPOSE_SET_STATUS } from '../actions/compose-status.ts';
 import {
@@ -62,14 +62,14 @@ import { TIMELINE_DELETE, TimelineAction } from '../actions/timelines.ts';
 import { normalizeAttachment } from '../normalizers/attachment.ts';
 import { htmlToPlaintext } from '../utils/html.ts';
 
-import type { Emoji } from 'soapbox/features/emoji/index.ts';
+import type { Emoji } from '@/features/emoji/index.ts';
 import type {
   APIEntity,
   Attachment as AttachmentEntity,
   Status,
   Status as StatusEntity,
   Tag,
-} from 'soapbox/types/entities';
+} from '@/types/entities';
 
 const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
 

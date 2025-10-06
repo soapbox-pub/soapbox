@@ -4,17 +4,17 @@ import userMinusIcon from '@tabler/icons/outline/user-minus.svg';
 import userOffIcon from '@tabler/icons/outline/user-off.svg';
 import { defineMessages, IntlShape } from 'react-intl';
 
-import { fetchAccountByUsername } from 'soapbox/actions/accounts.ts';
-import { deactivateUsers, deleteUser, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import OutlineBox from 'soapbox/components/outline-box.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { fetchAccountByUsername } from '@/actions/accounts.ts';
+import { deactivateUsers, deleteUser, deleteStatus, toggleStatusSensitivity } from '@/actions/admin.ts';
+import { openModal } from '@/actions/modals.ts';
+import OutlineBox from '@/components/outline-box.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { selectAccount } from '@/selectors/index.ts';
+import toast from '@/toast.tsx';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 const messages = defineMessages({
   deactivateUserHeading: { id: 'confirmations.admin.deactivate_user.heading', defaultMessage: 'Deactivate @{acct}' },

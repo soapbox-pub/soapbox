@@ -1,12 +1,12 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
-import Markup from 'soapbox/components/markup.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { Status as StatusEntity } from 'soapbox/schemas/index.ts';
-import { getTextDirection } from 'soapbox/utils/rtl.ts';
+import AttachmentThumbs from '@/components/attachment-thumbs.tsx';
+import Markup from '@/components/markup.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { Status as StatusEntity } from '@/schemas/index.ts';
+import { getTextDirection } from '@/utils/rtl.ts';
 
 interface IReplyIndicator {
   className?: string;

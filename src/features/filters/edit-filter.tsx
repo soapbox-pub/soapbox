@@ -2,28 +2,28 @@ import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
-import { createFilter, fetchFilter, updateFilter } from 'soapbox/actions/filters.ts';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import MissingIndicator from 'soapbox/components/missing-indicator.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Streamfield from 'soapbox/components/ui/streamfield.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { normalizeFilter } from 'soapbox/normalizers/index.ts';
-import toast from 'soapbox/toast.tsx';
+import { createFilter, fetchFilter, updateFilter } from '@/actions/filters.ts';
+import List, { ListItem } from '@/components/list.tsx';
+import MissingIndicator from '@/components/missing-indicator.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Streamfield from '@/components/ui/streamfield.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { normalizeFilter } from '@/normalizers/index.ts';
+import toast from '@/toast.tsx';
 
 import { SelectDropdown } from '../forms/index.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
+import type { StreamfieldComponent } from '@/components/ui/streamfield.tsx';
 
 interface IFilterField {
   id?: string;

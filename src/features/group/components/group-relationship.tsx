@@ -2,11 +2,11 @@ import gavelIcon from '@tabler/icons/outline/gavel.svg';
 import usersIcon from '@tabler/icons/outline/users.svg';
 import { FormattedMessage } from 'react-intl';
 
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { GroupRoles } from 'soapbox/schemas/group-member.ts';
-import { Group } from 'soapbox/types/entities.ts';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { GroupRoles } from '@/schemas/group-member.ts';
+import { Group } from '@/types/entities.ts';
 
 interface IGroupRelationship {
   group: Group;

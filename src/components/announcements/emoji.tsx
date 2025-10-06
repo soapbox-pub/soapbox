@@ -1,6 +1,6 @@
-import { useCustomEmojis } from 'soapbox/api/hooks/useCustomEmojis.ts';
-import NativeEmoji from 'soapbox/components/ui/emoji.tsx';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useCustomEmojis } from '@/api/hooks/useCustomEmojis.ts';
+import NativeEmoji from '@/components/ui/emoji.tsx';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 interface IEmoji {
   emoji: string;

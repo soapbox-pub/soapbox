@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from 'soapbox/components/ui/icon.tsx';
+import Icon from '@/components/ui/icon.tsx';
 
-import type { Group } from 'soapbox/schemas/index.ts';
+import type { Group } from '@/schemas/index.ts';
 
 const messages = defineMessages({
   header: { id: 'group.header.alt', defaultMessage: 'Group header' },

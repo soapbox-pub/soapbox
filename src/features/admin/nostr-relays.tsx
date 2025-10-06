@@ -2,15 +2,15 @@ import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import RelayEditor, { RelayData } from 'soapbox/features/nostr-relays/components/relay-editor.tsx';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import toast from 'soapbox/toast.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import Form from '@/components/ui/form.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import RelayEditor, { RelayData } from '@/features/nostr-relays/components/relay-editor.tsx';
+import { useApi } from '@/hooks/useApi.ts';
+import { queryClient } from '@/queries/client.ts';
+import toast from '@/toast.tsx';
 
 import { useAdminNostrRelays } from './hooks/useAdminNostrRelays.ts';
 

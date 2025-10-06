@@ -3,19 +3,19 @@ import { List as ImmutableList } from 'immutable';
 import { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
-import { fetchHistory } from 'soapbox/actions/history.ts';
-import AttachmentThumbs from 'soapbox/components/attachment-thumbs.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { Attachment } from 'soapbox/schemas/index.ts';
-import { emojifyText } from 'soapbox/utils/emojify.tsx';
+import { fetchHistory } from '@/actions/history.ts';
+import AttachmentThumbs from '@/components/attachment-thumbs.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { Attachment } from '@/schemas/index.ts';
+import { emojifyText } from '@/utils/emojify.tsx';
 
-import type { StatusEdit as StatusEditEntity } from 'soapbox/types/entities.ts';
+import type { StatusEdit as StatusEditEntity } from '@/types/entities.ts';
 
 interface ICompareHistoryModal {
   onClose: (string: string) => void;

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { moderationLogEntrySchema, type ModerationLogEntry } from 'soapbox/schemas/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { moderationLogEntrySchema, type ModerationLogEntry } from '@/schemas/index.ts';
 
 interface ModerationLogResult {
   items: ModerationLogEntry[];

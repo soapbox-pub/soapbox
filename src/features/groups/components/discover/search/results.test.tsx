@@ -2,8 +2,8 @@ import userEvent from '@testing-library/user-event';
 import { VirtuosoGridMockContext, VirtuosoMockContext } from 'react-virtuoso';
 import { describe, expect, it, vi } from 'vitest';
 
-import { buildAccount, buildGroup } from 'soapbox/jest/factory.ts';
-import { render, screen, waitFor } from 'soapbox/jest/test-helpers.tsx';
+import { buildAccount, buildGroup } from '@/jest/factory.ts';
+import { render, screen, waitFor } from '@/jest/test-helpers.tsx';
 
 import Results from './results.tsx';
 

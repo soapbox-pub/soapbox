@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { adminAnnouncementSchema, type AdminAnnouncement } from 'soapbox/schemas/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { queryClient } from '@/queries/client.ts';
+import { adminAnnouncementSchema, type AdminAnnouncement } from '@/schemas/index.ts';
 
 import { useAnnouncements as useUserAnnouncements } from '../announcements/index.ts';
 

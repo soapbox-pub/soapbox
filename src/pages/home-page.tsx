@@ -3,12 +3,12 @@ import { useRef } from 'react';
 import { useIntl } from 'react-intl';
 import { Link, useLocation } from 'react-router-dom';
 
-import { uploadCompose } from 'soapbox/actions/compose.ts';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import { Card, CardBody } from 'soapbox/components/ui/card.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Layout from 'soapbox/components/ui/layout.tsx';
-import LinkFooter from 'soapbox/features/ui/components/link-footer.tsx';
+import { uploadCompose } from '@/actions/compose.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import { Card, CardBody } from '@/components/ui/card.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Layout from '@/components/ui/layout.tsx';
+import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   WhoToFollowPanel,
   TrendsPanel,
@@ -21,14 +21,14 @@ import {
   AnnouncementsPanel,
   LatestAccountsPanel,
   PocketWallet,
-} from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useIsMobile } from 'soapbox/hooks/useIsMobile.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+} from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useIsMobile } from '@/hooks/useIsMobile.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 import ComposeForm from '../features/compose/components/compose-form.tsx';
 

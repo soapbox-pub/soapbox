@@ -3,12 +3,12 @@
  * @module soapbox/utils/state
  */
 
-import { getSoapboxConfig } from 'soapbox/actions/soapbox.ts';
-import * as BuildConfig from 'soapbox/build-config.ts';
-import { selectOwnAccount } from 'soapbox/selectors/index.ts';
-import { isURL } from 'soapbox/utils/auth.ts';
+import { getSoapboxConfig } from '@/actions/soapbox.ts';
+import * as BuildConfig from '@/build-config.ts';
+import { selectOwnAccount } from '@/selectors/index.ts';
+import { isURL } from '@/utils/auth.ts';
 
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 /** Whether to display the fqn instead of the acct. */
 export const displayFqn = (state: RootState): boolean => {

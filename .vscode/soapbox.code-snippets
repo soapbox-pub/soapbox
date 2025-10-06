@@ -41,7 +41,7 @@
     "body": [
       "import React from 'react';",
       "",
-      "import { render, screen } from 'soapbox/jest/test-helpers';",
+      "import { render, screen } from '@/jest/test-helpers';",
       "",
       "import ${1:Component} from '${2:..}';",
       "",

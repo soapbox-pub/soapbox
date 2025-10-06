@@ -9,24 +9,24 @@ import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
-} from 'soapbox/actions/notifications.ts';
-import { getSettings } from 'soapbox/actions/settings.ts';
-import PullToRefresh from 'soapbox/components/pull-to-refresh.tsx';
-import ScrollTopButton from 'soapbox/components/scroll-top-button.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Portal from 'soapbox/components/ui/portal.tsx';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder-notification.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+} from '@/actions/notifications.ts';
+import { getSettings } from '@/actions/settings.ts';
+import PullToRefresh from '@/components/pull-to-refresh.tsx';
+import ScrollTopButton from '@/components/scroll-top-button.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Portal from '@/components/ui/portal.tsx';
+import PlaceholderNotification from '@/features/placeholder/components/placeholder-notification.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 import FilterBar from './components/filter-bar.tsx';
 import Notification from './components/notification.tsx';
 
 import type { VirtuosoHandle } from 'react-virtuoso';
-import type { RootState } from 'soapbox/store.ts';
-import type { Notification as NotificationEntity } from 'soapbox/types/entities.ts';
+import type { RootState } from '@/store.ts';
+import type { Notification as NotificationEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },

@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 
-import { DittoInstanceCredentials } from 'soapbox/features/admin/manage-ditto-server.tsx';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
+import { DittoInstanceCredentials } from '@/features/admin/manage-ditto-server.tsx';
+import { useApi } from '@/hooks/useApi.ts';
+import { queryClient } from '@/queries/client.ts';
 
 function useManageDittoServer() {
   const api = useApi();

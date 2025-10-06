@@ -98,7 +98,7 @@ export default defineConfig(() => {
     ],
     resolve: {
       alias: [
-        { find: 'soapbox', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+        { find: '@/', replacement: fileURLToPath(new URL('./src/', import.meta.url)) },
       ],
     },
     // @ts-ignore

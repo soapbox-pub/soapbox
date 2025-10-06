@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 /** Return a sorted list of most used emoji **shortcodes** from settings. */
 export function useFrequentlyUsedEmojis(): string[] {

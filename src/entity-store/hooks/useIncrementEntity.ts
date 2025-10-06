@@ -1,5 +1,5 @@
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useLoading } from 'soapbox/hooks/useLoading.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useLoading } from '@/hooks/useLoading.ts';
 
 import { incrementEntities } from '../actions.ts';
 

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntityLookup } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { groupSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntityLookup } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { groupSchema } from '@/schemas/index.ts';
 
 import { useGroupRelationship } from './useGroupRelationship.ts';
 

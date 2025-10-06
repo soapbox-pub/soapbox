@@ -3,13 +3,13 @@ import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 import { useLocation, useRouteMatch } from 'react-router-dom';
 
-import { groupComposeModal } from 'soapbox/actions/compose.ts';
-import { openModal } from 'soapbox/actions/modals.ts';
-import { useGroupLookup } from 'soapbox/api/hooks/index.ts';
-import Avatar from 'soapbox/components/ui/avatar.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { groupComposeModal } from '@/actions/compose.ts';
+import { openModal } from '@/actions/modals.ts';
+import { useGroupLookup } from '@/api/hooks/index.ts';
+import Avatar from '@/components/ui/avatar.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },

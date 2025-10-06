@@ -19,29 +19,29 @@ import {
   rejectEventParticipationRequest,
   authorizeEventParticipationRequest,
   cancelEventCompose,
-} from 'soapbox/actions/events.ts';
-import { closeModal, openModal } from 'soapbox/actions/modals.ts';
-import { ADDRESS_ICONS } from 'soapbox/components/autosuggest-location.tsx';
-import LocationSearch from 'soapbox/components/location-search.tsx';
-import { checkEventComposeContent } from 'soapbox/components/modal-root.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import { Datetime } from 'soapbox/components/ui/datetime.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import IconButton from 'soapbox/components/ui/icon-button.tsx';
-import Icon from 'soapbox/components/ui/icon.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Tabs from 'soapbox/components/ui/tabs.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import { ComposeEditor } from 'soapbox/features/ui/util/async-components.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+} from '@/actions/events.ts';
+import { closeModal, openModal } from '@/actions/modals.ts';
+import { ADDRESS_ICONS } from '@/components/autosuggest-location.tsx';
+import LocationSearch from '@/components/location-search.tsx';
+import { checkEventComposeContent } from '@/components/modal-root.tsx';
+import Button from '@/components/ui/button.tsx';
+import { Datetime } from '@/components/ui/datetime.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import IconButton from '@/components/ui/icon-button.tsx';
+import Icon from '@/components/ui/icon.tsx';
+import Input from '@/components/ui/input.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Tabs from '@/components/ui/tabs.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import { ComposeEditor } from '@/features/ui/util/async-components.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import UploadButton from './upload-button.tsx';
 

@@ -1,10 +1,10 @@
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { importEntities } from 'soapbox/entity-store/actions.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { relationshipSchema } from 'soapbox/schemas/relationship.ts';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import { isLoggedIn } from 'soapbox/utils/auth.ts';
-import { getFeatures, parseVersion, PLEROMA } from 'soapbox/utils/features.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { importEntities } from '@/entity-store/actions.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { relationshipSchema } from '@/schemas/relationship.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import { isLoggedIn } from '@/utils/auth.ts';
+import { getFeatures, parseVersion, PLEROMA } from '@/utils/features.ts';
 
 import api from '../api/index.ts';
 
@@ -15,9 +15,9 @@ import {
 } from './importer/index.ts';
 
 import type { Map as ImmutableMap } from 'immutable';
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
-import type { APIEntity, Relationship, Status } from 'soapbox/types/entities.ts';
-import type { History } from 'soapbox/types/history.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
+import type { APIEntity, Relationship, Status } from '@/types/entities.ts';
+import type { History } from '@/types/history.ts';
 
 const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';

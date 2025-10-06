@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
 
-import { MastodonClient } from 'soapbox/api/MastodonClient.ts';
-import * as BuildConfig from 'soapbox/build-config.ts';
-import { selectAccount } from 'soapbox/selectors/index.ts';
-import { RootState } from 'soapbox/store.ts';
-import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth.ts';
+import { MastodonClient } from '@/api/MastodonClient.ts';
+import * as BuildConfig from '@/build-config.ts';
+import { selectAccount } from '@/selectors/index.ts';
+import { RootState } from '@/store.ts';
+import { getAccessToken, getAppToken, parseBaseURL } from '@/utils/auth.ts';
 
 const getToken = (state: RootState, authType: string) => {
   return authType === 'app' ? getAppToken(state) : getAccessToken(state);

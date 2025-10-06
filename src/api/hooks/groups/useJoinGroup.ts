@@ -1,10 +1,10 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
-import { groupRelationshipSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntityActions } from '@/entity-store/hooks/index.ts';
+import { groupRelationshipSchema } from '@/schemas/index.ts';
 
 import { useGroups } from './useGroups.ts';
 
-import type { Group, GroupRelationship } from 'soapbox/schemas/index.ts';
+import type { Group, GroupRelationship } from '@/schemas/index.ts';
 
 function useJoinGroup(group: Group) {
   const { invalidate } = useGroups();

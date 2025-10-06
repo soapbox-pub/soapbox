@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntity } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { type GroupTag, groupTagSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntity } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { type GroupTag, groupTagSchema } from '@/schemas/index.ts';
 
 function useGroupTag(tagId: string) {
   const api = useApi();

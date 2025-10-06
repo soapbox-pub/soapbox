@@ -12,7 +12,7 @@ import {
 
 import { normalizeHistory } from './history.ts';
 
-import type { History } from 'soapbox/types/entities.ts';
+import type { History } from '@/types/entities.ts';
 
 // https://docs.joinmastodon.org/entities/tag/
 export const TagRecord = ImmutableRecord({

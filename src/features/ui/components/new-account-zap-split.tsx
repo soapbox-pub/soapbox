@@ -2,14 +2,14 @@ import xIcon from '@tabler/icons/outline/x.svg';
 import { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Account from 'soapbox/components/account.tsx';
-import { ListItem } from 'soapbox/components/list.tsx';
-import Button from 'soapbox/components/ui/button.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import Slider from 'soapbox/components/ui/slider.tsx';
-import SearchZapSplit from 'soapbox/features/compose/components/search-zap-split.tsx';
-import { type Account as AccountEntity } from 'soapbox/schemas/index.ts';
+import Account from '@/components/account.tsx';
+import { ListItem } from '@/components/list.tsx';
+import Button from '@/components/ui/button.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import Slider from '@/components/ui/slider.tsx';
+import SearchZapSplit from '@/features/compose/components/search-zap-split.tsx';
+import { type Account as AccountEntity } from '@/schemas/index.ts';
 
 const closeIcon = xIcon;
 

@@ -1,9 +1,9 @@
 import { InfiniteData } from '@tanstack/react-query';
 
-import { normalizeChatMessage } from 'soapbox/normalizers/index.ts';
-import { ChatKeys } from 'soapbox/queries/chats.ts';
-import { queryClient } from 'soapbox/queries/client.ts';
-import { Chat, ChatMessage } from 'soapbox/types/entities.ts';
+import { normalizeChatMessage } from '@/normalizers/index.ts';
+import { ChatKeys } from '@/queries/chats.ts';
+import { queryClient } from '@/queries/client.ts';
+import { Chat, ChatMessage } from '@/types/entities.ts';
 
 import { compareDate } from './comparators.ts';
 import { appendPageItem, flattenPages, PaginatedResult, sortQueryData, updatePageItem } from './queries.ts';

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { z } from 'zod';
 
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
-import { filteredArray } from 'soapbox/schemas/utils.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
+import { filteredArray } from '@/schemas/utils.ts';
 
 import { entitiesFetchFail, entitiesFetchRequest, entitiesFetchSuccess } from '../actions.ts';
 import { selectCache, selectListState, useListState } from '../selectors.ts';
@@ -13,7 +13,7 @@ import { parseEntitiesPath } from './utils.ts';
 
 import type { EntitiesPath, EntityFn, EntitySchema, ExpandedEntitiesPath } from './types.ts';
 import type { Entity } from '../types.ts';
-import type { RootState } from 'soapbox/store.ts';
+import type { RootState } from '@/store.ts';
 
 interface UseBatchedEntitiesOpts<TEntity extends Entity> {
   schema?: EntitySchema<TEntity>;

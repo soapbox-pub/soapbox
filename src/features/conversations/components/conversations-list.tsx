@@ -2,10 +2,10 @@ import { debounce } from 'es-toolkit';
 import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { expandConversations } from 'soapbox/actions/conversations.ts';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { expandConversations } from '@/actions/conversations.ts';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import Conversation from './conversation.tsx';
 

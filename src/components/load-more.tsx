@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import Button from 'soapbox/components/ui/button.tsx';
+import Button from '@/components/ui/button.tsx';
 
 interface ILoadMore {
   onClick: React.MouseEventHandler;

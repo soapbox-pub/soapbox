@@ -3,18 +3,18 @@ import clsx from 'clsx';
 import { useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from 'soapbox/actions/compose.ts';
-import { openModal, closeModal } from 'soapbox/actions/modals.ts';
-import { useGroup } from 'soapbox/api/hooks/index.ts';
-import { checkComposeContent } from 'soapbox/components/modal-root.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Modal from 'soapbox/components/ui/modal.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import Toggle from 'soapbox/components/ui/toggle.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useCompose } from 'soapbox/hooks/useCompose.ts';
-import { useDraggedFiles } from 'soapbox/hooks/useDraggedFiles.ts';
+import { cancelReplyCompose, setGroupTimelineVisible, uploadCompose } from '@/actions/compose.ts';
+import { openModal, closeModal } from '@/actions/modals.ts';
+import { useGroup } from '@/api/hooks/index.ts';
+import { checkComposeContent } from '@/components/modal-root.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Modal from '@/components/ui/modal.tsx';
+import Text from '@/components/ui/text.tsx';
+import Toggle from '@/components/ui/toggle.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useCompose } from '@/hooks/useCompose.ts';
+import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
 
 import ComposeForm from '../../../compose/components/compose-form.tsx';
 

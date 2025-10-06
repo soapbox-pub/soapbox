@@ -1,10 +1,10 @@
 import { defineMessages, useIntl } from 'react-intl';
 
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Divider from 'soapbox/components/ui/divider.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
+import { Column } from '@/components/ui/column.tsx';
+import Divider from '@/components/ui/divider.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useInstance } from '@/hooks/useInstance.ts';
 
 import LinkFooter from '../ui/components/link-footer.tsx';
 import PromoPanel from '../ui/components/promo-panel.tsx';

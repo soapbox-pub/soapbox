@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { render, screen } from 'soapbox/jest/test-helpers.tsx';
+import { render, screen } from '@/jest/test-helpers.tsx';
 
 import { isIntegerId, secondsToDays, shortNumberFormat } from './numbers.tsx';
 

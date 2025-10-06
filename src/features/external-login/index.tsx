@@ -1,6 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 
-import { BigCard } from 'soapbox/components/big-card.tsx';
+import { BigCard } from '@/components/big-card.tsx';
 
 import ExternalLoginForm from './components/external-login-form.tsx';
 

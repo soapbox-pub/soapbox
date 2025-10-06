@@ -25,7 +25,7 @@ describe('normalizePoll()', () => {
   });
 
   it('normalizes a Pleroma logged-out poll', async () => {
-    const { poll } = await import('soapbox/__fixtures__/pleroma-status-with-poll.json');
+    const { poll } = await import('@/__fixtures__/pleroma-status-with-poll.json');
     const result = pollSchema.parse(poll);
 
     // Adds logged-in fields

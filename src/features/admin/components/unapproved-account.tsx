@@ -1,9 +1,9 @@
-import { approveUser, rejectUser } from 'soapbox/actions/admin.ts';
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import Account from 'soapbox/components/account.tsx';
-import { AuthorizeRejectButtons } from 'soapbox/components/authorize-reject-buttons.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { approveUser, rejectUser } from '@/actions/admin.ts';
+import { useAccount } from '@/api/hooks/index.ts';
+import Account from '@/components/account.tsx';
+import { AuthorizeRejectButtons } from '@/components/authorize-reject-buttons.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 interface IUnapprovedAccount {
   accountId: string;

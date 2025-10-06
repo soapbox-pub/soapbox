@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { mockStore, mockWindowProperty, rootState } from 'soapbox/jest/test-helpers.tsx';
+import { mockStore, mockWindowProperty, rootState } from '@/jest/test-helpers.tsx';
 
 import { checkOnboardingStatus, startOnboarding, endOnboarding } from './onboarding.ts';
 

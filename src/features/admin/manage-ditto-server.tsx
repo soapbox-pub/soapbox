@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
-import { uploadMedia } from 'soapbox/actions/media.ts';
-import { HTTPError } from 'soapbox/api/HTTPError.ts';
-import { useInstanceV2 } from 'soapbox/api/hooks/instance/useInstanceV2.ts';
-import StillImage from 'soapbox/components/still-image.tsx';
-import { Button } from 'soapbox/components/ui/button.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import FileInput from 'soapbox/components/ui/file-input.tsx';
-import FormActions from 'soapbox/components/ui/form-actions.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import  Spinner from 'soapbox/components/ui/spinner.tsx';
-import Stack  from 'soapbox/components/ui/stack.tsx';
-import Streamfield from 'soapbox/components/ui/streamfield.tsx';
-import { useManageDittoServer } from 'soapbox/features/admin/hooks/useManageDittoServer.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { normalizeAttachment } from 'soapbox/normalizers/index.ts';
-import { thumbnailSchema } from 'soapbox/schemas/instance.ts';
-import { Screenshots } from 'soapbox/schemas/manifest.ts';
-import toast from 'soapbox/toast.tsx';
+import { uploadMedia } from '@/actions/media.ts';
+import { HTTPError } from '@/api/HTTPError.ts';
+import { useInstanceV2 } from '@/api/hooks/instance/useInstanceV2.ts';
+import StillImage from '@/components/still-image.tsx';
+import { Button } from '@/components/ui/button.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import FileInput from '@/components/ui/file-input.tsx';
+import FormActions from '@/components/ui/form-actions.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Form from '@/components/ui/form.tsx';
+import Input from '@/components/ui/input.tsx';
+import  Spinner from '@/components/ui/spinner.tsx';
+import Stack  from '@/components/ui/stack.tsx';
+import Streamfield from '@/components/ui/streamfield.tsx';
+import { useManageDittoServer } from '@/features/admin/hooks/useManageDittoServer.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { normalizeAttachment } from '@/normalizers/index.ts';
+import { thumbnailSchema } from '@/schemas/instance.ts';
+import { Screenshots } from '@/schemas/manifest.ts';
+import toast from '@/toast.tsx';
 
-import type { StreamfieldComponent } from 'soapbox/components/ui/streamfield.tsx';
+import type { StreamfieldComponent } from '@/components/ui/streamfield.tsx';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.ditto_server.manage', defaultMessage: 'Manage Ditto Server' },

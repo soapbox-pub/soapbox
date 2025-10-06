@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import Helmet from 'soapbox/components/helmet.tsx';
-import Stack from 'soapbox/components/ui/stack.tsx';
-import { useSoapboxConfig } from 'soapbox/hooks/useSoapboxConfig.ts';
+import Helmet from '@/components/helmet.tsx';
+import Stack from '@/components/ui/stack.tsx';
+import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 import { Card, CardBody, CardHeader, CardTitle } from './card.tsx';
 

@@ -1,14 +1,14 @@
 import clsx from 'clsx';
 import { TransitionMotion, spring } from 'react-motion';
 
-import { useAnnouncements } from 'soapbox/api/hooks/announcements/index.ts';
-import EmojiPickerDropdown from 'soapbox/features/emoji/containers/emoji-picker-dropdown-container.tsx';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
+import { useAnnouncements } from '@/api/hooks/announcements/index.ts';
+import EmojiPickerDropdown from '@/features/emoji/containers/emoji-picker-dropdown-container.tsx';
+import { useSettings } from '@/hooks/useSettings.ts';
 
 import Reaction from './reaction.tsx';
 
-import type { Emoji, NativeEmoji } from 'soapbox/features/emoji/index.ts';
-import type { AnnouncementReaction } from 'soapbox/schemas/index.ts';
+import type { Emoji, NativeEmoji } from '@/features/emoji/index.ts';
+import type { AnnouncementReaction } from '@/schemas/index.ts';
 
 interface IReactionsBar {
   announcementId: string;

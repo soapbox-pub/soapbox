@@ -1,6 +1,6 @@
-import { quoteCompose as quoteComposeAction } from 'soapbox/actions/compose.ts';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useGetState } from 'soapbox/hooks/useGetState.ts';
+import { quoteCompose as quoteComposeAction } from '@/actions/compose.ts';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useGetState } from '@/hooks/useGetState.ts';
 
 export function useQuoteCompose() {
   const getState = useGetState();

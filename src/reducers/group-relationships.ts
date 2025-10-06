@@ -5,11 +5,11 @@ import {
   GROUP_UPDATE_SUCCESS,
   GROUP_DELETE_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
-} from 'soapbox/actions/groups.ts';
-import { normalizeGroupRelationship } from 'soapbox/normalizers/index.ts';
+} from '@/actions/groups.ts';
+import { normalizeGroupRelationship } from '@/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
-import type { APIEntity } from 'soapbox/types/entities.ts';
+import type { APIEntity } from '@/types/entities.ts';
 
 type GroupRelationshipRecord = ReturnType<typeof normalizeGroupRelationship>;
 type APIEntities = Array<APIEntity>;

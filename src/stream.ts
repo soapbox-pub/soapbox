@@ -1,8 +1,8 @@
 import { ExponentialBackoff, Websocket, WebsocketBuilder } from 'websocket-ts';
 
-import { getAccessToken } from 'soapbox/utils/auth.ts';
+import { getAccessToken } from '@/utils/auth.ts';
 
-import type { AppDispatch, RootState } from 'soapbox/store.ts';
+import type { AppDispatch, RootState } from '@/store.ts';
 
 interface ConnectStreamCallbacks {
   onConnect(): void;

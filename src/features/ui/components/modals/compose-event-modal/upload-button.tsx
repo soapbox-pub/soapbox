@@ -2,10 +2,10 @@ import photoPlusIcon from '@tabler/icons/outline/photo-plus.svg';
 import { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Icon from 'soapbox/components/icon.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import Icon from '@/components/icon.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 interface IUploadButton {
   disabled?: boolean;

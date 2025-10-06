@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntityActions } from 'soapbox/entity-store/hooks/index.ts';
-import { groupMemberSchema } from 'soapbox/schemas/index.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntityActions } from '@/entity-store/hooks/index.ts';
+import { groupMemberSchema } from '@/schemas/index.ts';
 
-import type { Group, GroupMember } from 'soapbox/schemas/index.ts';
+import type { Group, GroupMember } from '@/schemas/index.ts';
 
 function useDemoteGroupMember(group: Group, groupMember: GroupMember) {
   const { createEntity } = useEntityActions<GroupMember>(

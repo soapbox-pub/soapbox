@@ -1,7 +1,7 @@
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useEntities } from 'soapbox/entity-store/hooks/index.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { adminAccountSchema } from 'soapbox/schemas/admin-account.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useEntities } from '@/entity-store/hooks/index.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { adminAccountSchema } from '@/schemas/admin-account.ts';
 
 interface MastodonAdminFilters {
   local?: boolean;

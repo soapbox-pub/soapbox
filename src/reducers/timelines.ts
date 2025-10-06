@@ -32,8 +32,8 @@ import {
 } from '../actions/timelines.ts';
 
 import type { AnyAction } from 'redux';
-import type { ImportPosition } from 'soapbox/entity-store/types.ts';
-import type { APIEntity, Status } from 'soapbox/types/entities.ts';
+import type { ImportPosition } from '@/entity-store/types.ts';
+import type { APIEntity, Status } from '@/types/entities.ts';
 
 const TRUNCATE_LIMIT = 40;
 const TRUNCATE_SIZE = 20;

@@ -1,6 +1,6 @@
 import { PureComponent, Suspense } from 'react';
 
-import Base from 'soapbox/components/modal-root.tsx';
+import Base from '@/components/modal-root.tsx';
 import {
   AccountModerationModal,
   ActionsModal,
@@ -48,7 +48,7 @@ import {
   ZapInvoiceModal,
   ZapsModal,
   CaptchaModal,
-} from 'soapbox/features/ui/util/async-components.ts';
+} from '@/features/ui/util/async-components.ts';
 
 import ModalLoading from './modal-loading.tsx';
 

@@ -5,15 +5,15 @@ import {
   fromJS,
 } from 'immutable';
 
-import { normalizeUsername } from 'soapbox/utils/input.ts';
-import { toTailwind } from 'soapbox/utils/tailwind.ts';
-import { generateAccent } from 'soapbox/utils/theme.ts';
+import { normalizeUsername } from '@/utils/input.ts';
+import { toTailwind } from '@/utils/tailwind.ts';
+import { generateAccent } from '@/utils/theme.ts';
 
 import type {
   PromoPanelItem,
   FooterItem,
   CryptoAddress,
-} from 'soapbox/types/soapbox';
+} from '@/types/soapbox';
 
 const DEFAULT_COLORS = ImmutableMap<string, any>({
   success: ImmutableMap({

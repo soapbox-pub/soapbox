@@ -2,14 +2,14 @@ import dotsVerticalIcon from '@tabler/icons/outline/dots-vertical.svg';
 import editIcon from '@tabler/icons/outline/edit.svg';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
-import { openModal } from 'soapbox/actions/modals.ts';
-import DropdownMenu from 'soapbox/components/dropdown-menu/index.ts';
-import Widget from 'soapbox/components/ui/widget.tsx';
-import InstanceRestrictions from 'soapbox/features/federation-restrictions/components/instance-restrictions.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { makeGetRemoteInstance } from 'soapbox/selectors/index.ts';
+import { openModal } from '@/actions/modals.ts';
+import DropdownMenu from '@/components/dropdown-menu/index.ts';
+import Widget from '@/components/ui/widget.tsx';
+import InstanceRestrictions from '@/features/federation-restrictions/components/instance-restrictions.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { makeGetRemoteInstance } from '@/selectors/index.ts';
 
 const getRemoteInstance = makeGetRemoteInstance();
 

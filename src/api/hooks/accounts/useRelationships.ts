@@ -1,9 +1,9 @@
-import { MastodonResponse } from 'soapbox/api/MastodonResponse.ts';
-import { Entities } from 'soapbox/entity-store/entities.ts';
-import { useBatchedEntities } from 'soapbox/entity-store/hooks/useBatchedEntities.ts';
-import { useApi } from 'soapbox/hooks/useApi.ts';
-import { useLoggedIn } from 'soapbox/hooks/useLoggedIn.ts';
-import { type Relationship, relationshipSchema } from 'soapbox/schemas/index.ts';
+import { MastodonResponse } from '@/api/MastodonResponse.ts';
+import { Entities } from '@/entity-store/entities.ts';
+import { useBatchedEntities } from '@/entity-store/hooks/useBatchedEntities.ts';
+import { useApi } from '@/hooks/useApi.ts';
+import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
+import { type Relationship, relationshipSchema } from '@/schemas/index.ts';
 
 function useRelationships(listKey: string[], ids: string[]) {
   const api = useApi();

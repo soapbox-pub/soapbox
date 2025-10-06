@@ -8,23 +8,23 @@ import {
 import {
   expandSearch,
   setSearchAccount,
-} from 'soapbox/actions/search.ts';
-import { expandTrendingStatuses, fetchTrendingStatuses } from 'soapbox/actions/trending-statuses.ts';
-import { useAccount } from 'soapbox/api/hooks/index.ts';
-import Hashtag from 'soapbox/components/hashtag.tsx';
-import IconButton from 'soapbox/components/icon-button.tsx';
-import ScrollableList from 'soapbox/components/scrollable-list.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Spinner from 'soapbox/components/ui/spinner.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import AccountContainer from 'soapbox/containers/account-container.tsx';
-import StatusContainer from 'soapbox/containers/status-container.tsx';
-import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder-account.tsx';
-import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder-hashtag.tsx';
-import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder-status.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useSuggestions } from 'soapbox/queries/suggestions.ts';
+} from '@/actions/search.ts';
+import { expandTrendingStatuses, fetchTrendingStatuses } from '@/actions/trending-statuses.ts';
+import { useAccount } from '@/api/hooks/index.ts';
+import Hashtag from '@/components/hashtag.tsx';
+import IconButton from '@/components/icon-button.tsx';
+import ScrollableList from '@/components/scrollable-list.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Spinner from '@/components/ui/spinner.tsx';
+import Text from '@/components/ui/text.tsx';
+import AccountContainer from '@/containers/account-container.tsx';
+import StatusContainer from '@/containers/status-container.tsx';
+import PlaceholderAccount from '@/features/placeholder/components/placeholder-account.tsx';
+import PlaceholderHashtag from '@/features/placeholder/components/placeholder-hashtag.tsx';
+import PlaceholderStatus from '@/features/placeholder/components/placeholder-status.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useSuggestions } from '@/queries/suggestions.ts';
 
 import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';

@@ -2,14 +2,14 @@ import backspaceIcon from '@tabler/icons/outline/backspace.svg';
 import clsx from 'clsx';
 import { defineMessages, useIntl } from 'react-intl';
 
-import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from 'soapbox/actions/lists.ts';
-import Button from 'soapbox/components/ui/button.tsx';
-import Form from 'soapbox/components/ui/form.tsx';
-import HStack from 'soapbox/components/ui/hstack.tsx';
-import Input from 'soapbox/components/ui/input.tsx';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
+import { fetchListSuggestions, clearListSuggestions, changeListSuggestions } from '@/actions/lists.ts';
+import Button from '@/components/ui/button.tsx';
+import Form from '@/components/ui/form.tsx';
+import HStack from '@/components/ui/hstack.tsx';
+import Input from '@/components/ui/input.tsx';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },

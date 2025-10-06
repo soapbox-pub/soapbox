@@ -1,10 +1,10 @@
 import worldIcon from '@tabler/icons/outline/world.svg';
 
-import { openDropdownMenu } from 'soapbox/actions/dropdown-menu.ts';
-import DropdownMenu, { MenuItem } from 'soapbox/components/dropdown-menu/index.ts';
-import SvgIcon from 'soapbox/components/ui/svg-icon.tsx';
-import { languages } from 'soapbox/features/preferences/index.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
+import { openDropdownMenu } from '@/actions/dropdown-menu.ts';
+import DropdownMenu, { MenuItem } from '@/components/dropdown-menu/index.ts';
+import SvgIcon from '@/components/ui/svg-icon.tsx';
+import { languages } from '@/features/preferences/index.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 function formatLanguages(languageMap: Record<string, string>) {
   const langCodes = Object.keys(languageMap).sort().map((sig) => {

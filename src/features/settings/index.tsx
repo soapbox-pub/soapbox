@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { fetchMfa } from 'soapbox/actions/mfa.ts';
-import CopyableInput from 'soapbox/components/copyable-input.tsx';
-import List, { ListItem } from 'soapbox/components/list.tsx';
-import { Card, CardBody, CardHeader, CardTitle } from 'soapbox/components/ui/card.tsx';
-import { Column } from 'soapbox/components/ui/column.tsx';
-import Counter from 'soapbox/components/ui/counter.tsx';
-import FormGroup from 'soapbox/components/ui/form-group.tsx';
-import Text from 'soapbox/components/ui/text.tsx';
-import { useAppDispatch } from 'soapbox/hooks/useAppDispatch.ts';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useFeatures } from 'soapbox/hooks/useFeatures.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useOwnAccount } from 'soapbox/hooks/useOwnAccount.ts';
-import { useSettingsNotifications } from 'soapbox/hooks/useSettingsNotifications.ts';
+import { fetchMfa } from '@/actions/mfa.ts';
+import CopyableInput from '@/components/copyable-input.tsx';
+import List, { ListItem } from '@/components/list.tsx';
+import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card.tsx';
+import { Column } from '@/components/ui/column.tsx';
+import Counter from '@/components/ui/counter.tsx';
+import FormGroup from '@/components/ui/form-group.tsx';
+import Text from '@/components/ui/text.tsx';
+import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
+import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 
 import Preferences from '../preferences/index.tsx';
 

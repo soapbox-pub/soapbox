@@ -1,12 +1,12 @@
 import { useMemo, useEffect } from 'react';
 import { Helmet as ReactHelmet } from 'react-helmet';
 
-import { useStatContext } from 'soapbox/contexts/stat-context.tsx';
-import { useAppSelector } from 'soapbox/hooks/useAppSelector.ts';
-import { useInstance } from 'soapbox/hooks/useInstance.ts';
-import { useSettings } from 'soapbox/hooks/useSettings.ts';
-import { RootState } from 'soapbox/store.ts';
-import FaviconService from 'soapbox/utils/favicon-service.ts';
+import { useStatContext } from '@/contexts/stat-context.tsx';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
+import { useSettings } from '@/hooks/useSettings.ts';
+import { RootState } from '@/store.ts';
+import FaviconService from '@/utils/favicon-service.ts';
 
 FaviconService.initFaviconService();
 
