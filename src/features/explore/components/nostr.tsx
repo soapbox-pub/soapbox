@@ -300,7 +300,7 @@ const ExploreNostr = () => {
     , []);
 
   return (
-    <Stack className='px-4'>
+    <Stack className='px-4 py-3'>
       <HStack
         alignItems='center'
         justifyContent='between'
