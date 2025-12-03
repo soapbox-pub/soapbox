@@ -181,7 +181,7 @@ const MediaFilter = () => {
       <Text size='md' weight='bold'>
         {intl.formatMessage(messages.withMediaType)}
       </Text>
-      <Stack space={2}>
+      <HStack className='flex-wrap pl-2' alignItems='center' space={4}>
         {Object.entries(mediaFilters).map(([key, value]) => (
           <RadioButton
             key={key}
@@ -192,7 +192,7 @@ const MediaFilter = () => {
             label={value.label}
           />
         ))}
-      </Stack>
+      </HStack>
     </Stack>
   );
 };
