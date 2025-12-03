@@ -27,7 +27,8 @@ const messages = defineMessages({
   activitypub: { id: 'column.explore.filters.fediverse', defaultMessage: 'Fediverse' },
   allMedia: { id: 'column.explore.media_filters.all_media', defaultMessage: 'All media' },
   imageOnly: { id: 'column.explore.media_filters.image', defaultMessage: 'Image only' },
-  videoOnly: { id: 'column.explore.media_filters.video', defaultMessage: 'Video only' },
+  regularVideos: { id: 'column.explore.media_filters.regular_videos', defaultMessage: 'Regular videos' },
+  shortVideos: { id: 'column.explore.media_filters.short_videos', defaultMessage: 'Short videos (divine)' },
   noMedia: { id: 'column.explore.media_filters.no_media', defaultMessage: 'No media' },
 });
 
@@ -139,6 +140,15 @@ const ProtocolToggles = () => {
 const MediaFilter = () => {
   const intl = useIntl();
   const { tokens, addTokens, removeTokens } = useSearchTokens();
+  const [selectedVideoType, setSelectedVideoType] = useState<'regularVideo' | 'shortVideos'>('regularVideo');
+
+  // Load the selected video type from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('soapbox:explore:video-type');
+    if (saved === 'shortVideos' || saved === 'regularVideo') {
+      setSelectedVideoType(saved);
+    }
+  }, []);
 
   const mediaFilters = {
     all: {
@@ -149,9 +159,13 @@ const MediaFilter = () => {
       tokens: ['media:true', '-video:true'],
       label: intl.formatMessage(messages.imageOnly),
     },
-    video: {
+    regularVideo: {
       tokens: ['video:true'],
-      label: intl.formatMessage(messages.videoOnly),
+      label: intl.formatMessage(messages.regularVideos),
+    },
+    shortVideos: {
+      tokens: ['video:true'],
+      label: intl.formatMessage(messages.shortVideos),
     },
     none: {
       tokens: ['-media:true'],
@@ -163,7 +177,7 @@ const MediaFilter = () => {
 
   const getCurrentFilter = () => {
     if (tokens.has('-media:true')) return 'none';
-    if (tokens.has('video:true')) return 'video';
+    if (tokens.has('video:true')) return selectedVideoType;
     if (tokens.has('media:true') && tokens.has('-video:true')) return 'image';
     return 'all';
   };
@@ -172,6 +186,13 @@ const MediaFilter = () => {
 
   const handleMediaChange = (value: string) => {
     const filter = value as keyof typeof mediaFilters;
+    
+    // Save video type preference
+    if (filter === 'regularVideo' || filter === 'shortVideos') {
+      setSelectedVideoType(filter);
+      localStorage.setItem('soapbox:explore:video-type', filter);
+    }
+    
     removeTokens(allMediaTokens);
     addTokens(mediaFilters[filter].tokens);
   };
@@ -181,7 +202,7 @@ const MediaFilter = () => {
       <Text size='md' weight='bold'>
         {intl.formatMessage(messages.withMediaType)}
       </Text>
-      <HStack className='flex-wrap pl-2' alignItems='center' space={4}>
+      <HStack className='flex-wrap gap-y-3 pl-2' alignItems='start' space={4}>
         {Object.entries(mediaFilters).map(([key, value]) => (
           <RadioButton
             key={key}
