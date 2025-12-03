@@ -159,13 +159,20 @@ const MediaFilter = () => {
     },
   };
 
-  const currentFilter = Object
-    .entries(mediaFilters)
-    .find(([, f]) => f.tokens.every(token => tokens.has(token)))?.[0] || 'all';
+  const allMediaTokens = ['media:true', '-video:true', 'video:true', '-media:true'];
+
+  const getCurrentFilter = () => {
+    if (tokens.has('-media:true')) return 'none';
+    if (tokens.has('video:true')) return 'video';
+    if (tokens.has('media:true') && tokens.has('-video:true')) return 'image';
+    return 'all';
+  };
+
+  const currentFilter = getCurrentFilter();
 
   const handleMediaChange = (value: string) => {
     const filter = value as keyof typeof mediaFilters;
-    removeTokens(['media:true', '-video:true', 'video:true', '-media:true']);
+    removeTokens(allMediaTokens);
     addTokens(mediaFilters[filter].tokens);
   };
 
