@@ -186,15 +186,26 @@ const MediaFilter = () => {
 
   const handleMediaChange = (value: string) => {
     const filter = value as keyof typeof mediaFilters;
-    
+
     // Save video type preference
     if (filter === 'regularVideo' || filter === 'shortVideos') {
       setSelectedVideoType(filter);
       localStorage.setItem('soapbox:explore:video-type', filter);
     }
-    
+
     removeTokens(allMediaTokens);
     addTokens(mediaFilters[filter].tokens);
+
+    // Clear all scroll position data to prevent restoration
+    // This ensures the page scrolls to top when switching media filters
+    Object.keys(sessionStorage).forEach(key => {
+      if (key.startsWith('soapbox:scrollData:')) {
+        sessionStorage.removeItem(key);
+      }
+    });
+
+    // Scroll to top when media filter changes
+    window.scrollTo(0, 0);
   };
 
   return (
