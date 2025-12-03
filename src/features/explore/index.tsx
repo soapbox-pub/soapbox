@@ -29,7 +29,6 @@ const messages = defineMessages({
 });
 
 const PostsTab = () => {
-  const features = useFeatures();
   const { tokens } = useSearchTokens();
   const { pathname } = useLocation();
 
@@ -37,13 +36,6 @@ const PostsTab = () => {
     <Stack space={4}>
       {pathname === '/explore' && (
         <>
-          {features.nostr && (
-            <>
-              <ExploreNostr />
-              <Divider />
-            </>
-          )}
-
           {tokens.size ? <SearchResults /> : <PublicTimeline />}
         </>
       )}
@@ -146,6 +138,13 @@ const ExplorePage = () => {
         <div className='relative px-4'>
           {renderFilterBar()}
         </div>
+
+        {features.nostr && path === '/explore' && (
+          <div className='sticky top-11 z-50 bg-white black:bg-black dark:bg-primary-900 lg:top-0'>
+            <ExploreNostr />
+            <Divider />
+          </div>
+        )}
 
         <Switch>
           <Route exact path='/explore' component={PostsTab} />
