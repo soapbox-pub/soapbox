@@ -377,7 +377,7 @@
   "column.explore.filters.i_want_to_explore": "I want to explore:",
   "column.explore.filters.in_language": "In the language:",
   "column.explore.filters.nostr": "Nostr",
-  "column.explore.filters.with_media_type": "With ONLY the media type",
+  "column.explore.filters.with_media_type": "With ONLY the media type:",
   "column.explore.media_filters.all_media": "All media",
   "column.explore.media_filters.image": "Images",
   "column.explore.media_filters.no_media": "No media",

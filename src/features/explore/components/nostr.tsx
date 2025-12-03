@@ -18,7 +18,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 const messages = defineMessages({
   explore: { id: 'column.explore.filters.explore', defaultMessage: 'Explore...' },
   includingReplies: { id: 'home.column_settings.including_replies', defaultMessage: 'Including replies' },
-  withMediaType: { id: 'column.explore.filters.with_media_type', defaultMessage: 'With ONLY the media type' },
+  withMediaType: { id: 'column.explore.filters.with_media_type', defaultMessage: 'With ONLY the media type:' },
   inLanguage: { id: 'column.explore.filters.in_language', defaultMessage: 'In the language:' },
   iWantToExplore: { id: 'column.explore.filters.i_want_to_explore', defaultMessage: 'I want to explore:' },
   iAmSearchingFor: { id: 'column.explore.filters.i_am_searching_for', defaultMessage: 'I am searching for:' },
