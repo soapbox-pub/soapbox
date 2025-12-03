@@ -231,11 +231,21 @@ const MediaFilter = () => {
 
 const LanguageFilter = () => {
   const intl = useIntl();
-  const { tokens, addToken } = useSearchTokens();
+  const { tokens, addToken, removeToken } = useSearchTokens();
 
   const handleSelectChange: React.ChangeEventHandler<HTMLSelectElement> = e => {
     const language = e.target.value;
-    addToken(`language:${language}`);
+
+    // Find and remove existing language token
+    const existingToken = [...tokens].find((token) => token.startsWith('language:'));
+    if (existingToken) {
+      removeToken(existingToken);
+    }
+
+    // Only add a new language token if not selecting 'default' (Global)
+    if (language !== 'default') {
+      addToken(`language:${language}`);
+    }
   };
 
   const token = [...tokens].find((token) => token.startsWith('language:'));
@@ -353,10 +363,6 @@ const ExploreNostr = () => {
           src={arrowIcon}
           theme='transparent'
           className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleClick();
-          }}
         />
       </HStack>
 
