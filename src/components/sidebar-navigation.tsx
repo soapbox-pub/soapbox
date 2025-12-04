@@ -18,6 +18,7 @@ import messagesIcon from '@tabler/icons/outline/messages.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
+import videoIcon from '@tabler/icons/outline/video.svg';
 import walletIcon from '@tabler/icons/outline/wallet.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -171,6 +172,14 @@ const SidebarNavigation = () => {
             icon={compassIcon}
             text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explore' />}
           />
+
+          {features.nostr && (
+            <SidebarNavigationLink
+              to='/divine'
+              icon={videoIcon}
+              text={<FormattedMessage id='tabs_bar.divine' defaultMessage='diVine' />}
+            />
+          )}
 
           {account && (
             <>

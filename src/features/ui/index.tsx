@@ -68,6 +68,7 @@ import {
   EditFilter,
   PinnedStatuses,
   Explore,
+  DivinePage,
   ListTimeline,
   Lists,
   Bookmarks,
@@ -265,6 +266,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
       <WrappedRoute path='/explore' page={ExplorePage} component={Explore} content={children} publicRoute />
+      {features.nostr && <WrappedRoute path='/divine' page={DefaultPage} component={DivinePage} content={children} publicRoute />}
       {features.suggestionsLocal && <WrappedRoute path='/suggestions/local' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} componentParams={{ local: true }} />}
       {features.suggestions && <WrappedRoute path='/suggestions' exact publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' exact publicRoute page={DefaultPage} component={Directory} content={children} />}
