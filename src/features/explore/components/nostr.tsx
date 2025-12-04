@@ -294,19 +294,6 @@ const ToggleRepliesFilter = () => {
   );
 };
 
-const SearchBar = () => {
-  const intl = useIntl();
-
-  return (
-    <Stack space={3}>
-      <Text size='md' weight='bold'>
-        {intl.formatMessage(messages.iAmSearchingFor)}
-      </Text>
-      <Search autoSubmit />
-    </Stack>
-  );
-};
-
 const ExploreNostr = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -350,7 +337,11 @@ const ExploreNostr = () => {
     , []);
 
   return (
-    <Stack className='px-4 py-3'>
+    <Stack className='px-4 py-3' space={3}>
+      {/* Search bar - always visible */}
+      <Search autoSubmit />
+
+      {/* Collapsible filters header */}
       <HStack
         alignItems='center'
         justifyContent='between'
@@ -367,12 +358,12 @@ const ExploreNostr = () => {
         />
       </HStack>
 
-      <Stack className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'mt-4 max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={4}>
+      {/* Collapsible filters section */}
+      <Stack className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={4}>
         <ProtocolToggles />
         <ToggleRepliesFilter />
         <MediaFilter />
         <LanguageFilter />
-        <SearchBar />
       </Stack>
     </Stack>
   );
