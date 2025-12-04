@@ -9,6 +9,7 @@ import dashboardIcon from '@tabler/icons/outline/dashboard.svg';
 import homeIcon from '@tabler/icons/outline/home.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
+import videoIcon from '@tabler/icons/outline/video.svg';
 import { FormattedMessage } from 'react-intl';
 
 import ThumbNavigationLink from '@/components/thumb-navigation-link.tsx';
@@ -100,6 +101,15 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         to='/explore'
         exact
       />
+
+      {features.nostr && (
+        <ThumbNavigationLink
+          src={videoIcon}
+          text={<FormattedMessage id='tabs_bar.divine' defaultMessage='diVine' />}
+          to='/divine'
+          exact
+        />
+      )}
 
       {account && renderMessagesLink()}
 
