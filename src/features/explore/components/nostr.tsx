@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeSearch, submitSearch } from '@/actions/search.ts';
+import Checkbox from '@/components/ui/checkbox.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 import IconButton from '@/components/ui/icon-button.tsx';
 import RadioButton from '@/components/ui/radio-button.tsx';
@@ -99,7 +100,7 @@ const ProtocolToggle: React.FC<{ protocol: 'nostr' | 'atproto' | 'activitypub' }
   const checked = !tokens.has(token);
   const message = messages[protocol];
 
-  const handleToggle = () => {
+  const handleChange = () => {
     if (checked) {
       addToken(token);
     } else {
@@ -108,15 +109,15 @@ const ProtocolToggle: React.FC<{ protocol: 'nostr' | 'atproto' | 'activitypub' }
   };
 
   return (
-    <HStack alignItems='center' space={2}>
+    <label className='flex cursor-pointer items-center gap-2'>
+      <Checkbox
+        checked={checked}
+        onChange={handleChange}
+      />
       <Text size='md'>
         {intl.formatMessage(message)}
       </Text>
-      <Toggle
-        checked={checked}
-        onChange={handleToggle}
-      />
-    </HStack>
+    </label>
   );
 };
 
