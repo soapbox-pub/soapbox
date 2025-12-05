@@ -17,7 +17,7 @@ import { SelectDropdown } from '@/features/forms/index.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
 const messages = defineMessages({
-  explore: { id: 'column.explore.filters.explore', defaultMessage: 'Explore...' },
+  explore: { id: 'column.explore.filters.explore', defaultMessage: 'Search filters' },
   includingReplies: { id: 'home.column_settings.including_replies', defaultMessage: 'Including replies' },
   withMediaType: { id: 'column.explore.filters.with_media_type', defaultMessage: 'With ONLY the media type:' },
   inLanguage: { id: 'column.explore.filters.in_language', defaultMessage: 'In the language:' },
