@@ -138,18 +138,12 @@ const ProtocolToggles = () => {
   );
 };
 
-const MediaFilter = () => {
+const MediaFilter: React.FC<{
+  onVideoTypeChange: (type: 'regularVideo' | 'shortVideos') => void;
+  selectedVideoType: 'regularVideo' | 'shortVideos';
+}> = ({ onVideoTypeChange, selectedVideoType }) => {
   const intl = useIntl();
   const { tokens, addTokens, removeTokens } = useSearchTokens();
-  const [selectedVideoType, setSelectedVideoType] = useState<'regularVideo' | 'shortVideos'>('regularVideo');
-
-  // Load the selected video type from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('soapbox:explore:video-type');
-    if (saved === 'shortVideos' || saved === 'regularVideo') {
-      setSelectedVideoType(saved);
-    }
-  }, []);
 
   const mediaFilters = {
     all: {
@@ -188,9 +182,9 @@ const MediaFilter = () => {
   const handleMediaChange = (value: string) => {
     const filter = value as keyof typeof mediaFilters;
 
-    // Save video type preference
+    // Save video type preference and notify parent
     if (filter === 'regularVideo' || filter === 'shortVideos') {
-      setSelectedVideoType(filter);
+      onVideoTypeChange(filter);
       localStorage.setItem('soapbox:explore:video-type', filter);
     }
 
@@ -299,6 +293,7 @@ const ExploreNostr = () => {
   const dispatch = useAppDispatch();
   const { tokens } = useSearchTokens();
   const [isOpen, setIsOpen] = useState(true); // Default to open
+  const [selectedVideoType, setSelectedVideoType] = useState<'regularVideo' | 'shortVideos'>('regularVideo');
 
   const handleClick = () => {
     setIsOpen((prev) => {
@@ -308,23 +303,32 @@ const ExploreNostr = () => {
     });
   };
 
+  // Load the selected video type from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('soapbox:explore:video-type');
+    if (saved === 'shortVideos' || saved === 'regularVideo') {
+      setSelectedVideoType(saved);
+    }
+  }, []);
+
   const debouncedSearch = useMemo(
-    () => debounce((value: string) => {
+    () => debounce((value: string, isShortVideos: boolean) => {
       dispatch(changeSearch(value));
-      dispatch(submitSearch(undefined, value));
+      dispatch(submitSearch(undefined, value, isShortVideos));
     }, 300),
     [dispatch],
   );
 
   useEffect(
     () => {
-      debouncedSearch([...tokens].join(' '));
+      const isShortVideos = tokens.has('video:true') && selectedVideoType === 'shortVideos';
+      debouncedSearch([...tokens].join(' '), isShortVideos);
 
       return () => {
         debouncedSearch.cancel();
       };
 
-    }, [tokens, dispatch],
+    }, [tokens, dispatch, selectedVideoType],
   );
 
   useEffect(
@@ -362,7 +366,7 @@ const ExploreNostr = () => {
       <Stack className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`} space={4}>
         <ProtocolToggles />
         <ToggleRepliesFilter />
-        <MediaFilter />
+        <MediaFilter onVideoTypeChange={setSelectedVideoType} selectedVideoType={selectedVideoType} />
         <LanguageFilter />
       </Stack>
     </Stack>

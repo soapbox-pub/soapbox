@@ -49,7 +49,7 @@ const clearSearchResults = () => ({
   type: SEARCH_RESULTS_CLEAR,
 });
 
-const submitSearch = (filter?: SearchFilter, newValue?: string) =>
+const submitSearch = (filter?: SearchFilter, newValue?: string, shortVideosOnly?: boolean) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const value = newValue ?? getState().search.value;
     const type = filter || getState().search.filter || 'statuses';
@@ -70,6 +70,7 @@ const submitSearch = (filter?: SearchFilter, newValue?: string) =>
     };
 
     if (accountId) params.account_id = accountId;
+    if (shortVideosOnly) params.short_videos_only = true;
 
     api(getState).get('/api/v2/search', {
       searchParams: params,

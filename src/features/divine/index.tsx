@@ -6,6 +6,7 @@ import { Column } from '@/components/ui/column.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import SearchResults from '@/features/compose/components/search-results.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useFeatures } from '@/hooks/useFeatures.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.divine', defaultMessage: 'diVine' },
@@ -14,19 +15,20 @@ const messages = defineMessages({
 const DivinePage = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
+  const features = useFeatures();
 
   // Set up the video filter when component mounts
   useEffect(() => {
     // Set the search value to "video:true"
     dispatch(changeSearch('video:true'));
-    // Submit the search
-    dispatch(submitSearch('statuses', 'video:true'));
+    // Submit the search with short_videos_only=true only if backend is Ditto (features.nostr)
+    dispatch(submitSearch('statuses', 'video:true', features.nostr));
 
     // Cleanup: clear the search when leaving the page
     return () => {
       dispatch(changeSearch(''));
     };
-  }, [dispatch]);
+  }, [dispatch, features.nostr]);
 
   return (
     <Column label={intl.formatMessage(messages.heading)} withHeader>
