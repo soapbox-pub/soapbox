@@ -57,12 +57,26 @@ const Search = (props: ISearch) => {
   const history = useHistory();
   const intl = useIntl();
   const [inputValue, setInputValue] = useState('');
-  const { addToken } = useSearchTokens();
+  const [lastSearchToken, setLastSearchToken] = useState('');
+  const { addToken, removeToken } = useSearchTokens();
 
   const value = useAppSelector((state) => state.search.value);
   const submitted = useAppSelector((state) => state.search.submitted);
 
-  const debouncedSubmit = useCallback(debounce(() => {
+  const debouncedSubmit = useCallback(debounce((searchValue: string, previousToken: string) => {
+    // Remove the previous search token if it exists
+    if (previousToken) {
+      removeToken(previousToken);
+    }
+    
+    // Add the new search token if not empty
+    if (searchValue.trim().length > 0) {
+      addToken(searchValue);
+      setLastSearchToken(searchValue);
+    } else {
+      setLastSearchToken('');
+    }
+    
     dispatch(submitSearch());
   }, 900), []);
 
@@ -73,7 +87,7 @@ const Search = (props: ISearch) => {
     setInputValue(value);
 
     if (autoSubmit) {
-      debouncedSubmit();
+      debouncedSubmit(value, lastSearchToken);
     }
   };
 
@@ -81,6 +95,11 @@ const Search = (props: ISearch) => {
     event.preventDefault();
 
     if (value.length > 0 || submitted) {
+      // Remove the last search token when clearing
+      if (lastSearchToken) {
+        removeToken(lastSearchToken);
+        setLastSearchToken('');
+      }
       dispatch(clearSearchResults());
     }
   };

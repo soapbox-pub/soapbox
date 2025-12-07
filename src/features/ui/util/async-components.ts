@@ -58,6 +58,7 @@ export const BirthdayPanel = lazy(() => import('@/components/birthday-panel.tsx'
 export const ListEditor = lazy(() => import('@/features/list-editor/index.tsx'));
 export const ListAdder = lazy(() => import('@/features/list-adder/index.tsx'));
 export const Explore = lazy(() => import('@/features/explore/index.tsx'));
+export const DivinePage = lazy(() => import('@/features/divine/index.tsx'));
 export const LoginPage = lazy(() => import('@/features/auth-login/components/login-page.tsx'));
 export const ExternalLogin = lazy(() => import('@/features/external-login/index.tsx'));
 export const LogoutPage = lazy(() => import('@/features/auth-login/components/logout.tsx'));

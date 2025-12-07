@@ -17,21 +17,23 @@ const RadioButton: React.FC<IRadioButton> = ({ name, value, checked, onChange, l
   const formFieldId: string = useMemo(() => `radio-${crypto.randomUUID()}`, []);
 
   return (
-    <HStack alignItems='center' space={3}>
-      <input
-        type='radio'
-        name={name}
-        id={formFieldId}
-        value={value}
-        checked={checked}
-        onChange={onChange}
-        className='size-4 border-gray-300 text-primary-600 focus:ring-primary-500'
-      />
+    <label htmlFor={formFieldId} className='cursor-pointer'>
+      <HStack alignItems='center' space={3}>
+        <input
+          type='radio'
+          name={name}
+          id={formFieldId}
+          value={value}
+          checked={checked}
+          onChange={onChange}
+          className='size-4 cursor-pointer border-gray-300 text-primary-600 focus:ring-primary-500'
+        />
 
-      <label htmlFor={formFieldId} className='block text-sm font-medium text-gray-700'>
-        {label}
-      </label>
-    </HStack>
+        <span className='block text-sm font-medium text-gray-700'>
+          {label}
+        </span>
+      </HStack>
+    </label>
   );
 };
 

@@ -13,7 +13,7 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'lists.search', defaultMessage: 'Search among people you follow' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explore' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Search' },
 });
 
 const Search = () => {

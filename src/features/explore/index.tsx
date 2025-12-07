@@ -13,8 +13,7 @@ import Stack from '@/components/ui/stack.tsx';
 import Tabs from '@/components/ui/tabs.tsx';
 import SearchResults from '@/features/compose/components/search-results.tsx';
 import Search from '@/features/compose/components/search.tsx';
-import ExploreCards from '@/features/explore/components/explore-cards.tsx';
-import ExploreFilter from '@/features/explore/components/exploreFilter.tsx';
+import ExploreNostr from '@/features/explore/components/nostr.tsx';
 import AccountsCarousel from '@/features/explore/components/popular-accounts.tsx';
 import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
 import { PublicTimeline } from '@/features/ui/util/async-components.ts';
@@ -27,12 +26,9 @@ const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'Accounts' },
   statuses: { id: 'search_results.posts', defaultMessage: 'Posts' },
   trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
-  filters: { id: 'column.explore.filters', defaultMessage: 'Filters:' },
 });
 
 const PostsTab = () => {
-  const intl = useIntl();
-  const features = useFeatures();
   const { tokens } = useSearchTokens();
   const { pathname } = useLocation();
 
@@ -40,15 +36,6 @@ const PostsTab = () => {
     <Stack space={4}>
       {pathname === '/explore' && (
         <>
-          {features.nostr && (
-            <>
-              <ExploreCards />
-              <Divider text={intl.formatMessage(messages.filters)} />
-              <ExploreFilter />
-              <Divider />
-            </>
-          )}
-
           {tokens.size ? <SearchResults /> : <PublicTimeline />}
         </>
       )}
@@ -151,6 +138,13 @@ const ExplorePage = () => {
         <div className='relative px-4'>
           {renderFilterBar()}
         </div>
+
+        {features.nostr && path === '/explore' && (
+          <div className='sticky top-11 z-50 bg-white black:bg-black dark:bg-primary-900 lg:top-0'>
+            <ExploreNostr />
+            <Divider />
+          </div>
+        )}
 
         <Switch>
           <Route exact path='/explore' component={PostsTab} />

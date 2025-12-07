@@ -5,7 +5,6 @@ import settingsFilledIcon from '@tabler/icons/filled/settings.svg';
 import userFilledIcon from '@tabler/icons/filled/user.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
-import compassIcon from '@tabler/icons/outline/brand-safari.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import circlesIcon from '@tabler/icons/outline/circles.svg';
 import codeIcon from '@tabler/icons/outline/code.svg';
@@ -15,9 +14,11 @@ import homeIcon from '@tabler/icons/outline/home.svg';
 import listIcon from '@tabler/icons/outline/list.svg';
 import mailIcon from '@tabler/icons/outline/mail.svg';
 import messagesIcon from '@tabler/icons/outline/messages.svg';
+import searchIcon from '@tabler/icons/outline/search.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
+import videoIcon from '@tabler/icons/outline/video.svg';
 import walletIcon from '@tabler/icons/outline/wallet.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -168,9 +169,17 @@ const SidebarNavigation = () => {
 
           <SidebarNavigationLink
             to='/explore'
-            icon={compassIcon}
-            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Explore' />}
+            icon={searchIcon}
+            text={<FormattedMessage id='tabs_bar.search' defaultMessage='Search' />}
           />
+
+          {features.nostr && (
+            <SidebarNavigationLink
+              to='/divine'
+              icon={videoIcon}
+              text={<FormattedMessage id='tabs_bar.divine' defaultMessage='diVine' />}
+            />
+          )}
 
           {account && (
             <>
