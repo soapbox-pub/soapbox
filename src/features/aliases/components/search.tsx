@@ -10,7 +10,7 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 const messages = defineMessages({
   search: { id: 'aliases.search', defaultMessage: 'Search your old account' },
-  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Explore' },
+  searchTitle: { id: 'tabs_bar.search', defaultMessage: 'Search' },
 });
 
 const Search: React.FC = () => {
