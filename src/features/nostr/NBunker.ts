@@ -88,6 +88,7 @@ export class NBunker {
         const [,, event] = msg;
 
         try {
+          await new Promise((resolve) => setTimeout(resolve, 500)); // HACK
           const decrypted = await this.decrypt(event.pubkey, event.content);
           const request = n.json().pipe(n.connectRequest()).parse(decrypted);
           await this.handleRequest(request, event);
