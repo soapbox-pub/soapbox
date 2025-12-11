@@ -177,7 +177,7 @@ const SidebarNavigation = () => {
             <SidebarNavigationLink
               to='/divine'
               icon={videoIcon}
-              text={<FormattedMessage id='tabs_bar.divine' defaultMessage='diVine' />}
+              text={<FormattedMessage id='tabs_bar.divine' defaultMessage='Vines' />}
             />
           )}
 
