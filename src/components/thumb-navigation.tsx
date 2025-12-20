@@ -105,7 +105,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
       {features.nostr && (
         <ThumbNavigationLink
           src={videoIcon}
-          text={<FormattedMessage id='tabs_bar.divine' defaultMessage='diVine' />}
+          text={<FormattedMessage id='tabs_bar.divine' defaultMessage='Vines' />}
           to='/divine'
           exact
         />

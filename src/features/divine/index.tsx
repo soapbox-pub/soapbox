@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 
 const messages = defineMessages({
-  heading: { id: 'column.divine', defaultMessage: 'diVine' },
+  heading: { id: 'column.divine', defaultMessage: 'Vines' },
 });
 
 const DivinePage = () => {
