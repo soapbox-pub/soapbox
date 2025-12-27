@@ -143,42 +143,54 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
     e?.preventDefault();
     if (!node.current) return;
 
-    // Find all focusable statuses in the feed
     const statuses = Array.from(node.current.querySelectorAll('.status.focusable')) as HTMLElement[];
     if (statuses.length === 0) return;
 
-    // Find the currently focused status
     const activeElement = document.activeElement;
     const currentIndex = statuses.findIndex(status => status === activeElement || status.contains(activeElement));
 
-    // If no status is focused, focus the first one
+    // If nothing focused, focus first status
     if (currentIndex === -1) {
       statuses[0]?.focus();
-    } else if (currentIndex < statuses.length - 1) {
-      // Focus the next status
-      statuses[currentIndex + 1]?.focus();
+      return;
     }
+
+    // Dispatch a 'j' keydown event to the currently focused status
+    // This will trigger the status's own moveDown handler which uses Virtuoso's scrollIntoView
+    const keyEvent = new KeyboardEvent('keydown', {
+      key: 'j',
+      code: 'KeyJ',
+      bubbles: true,
+      cancelable: true,
+    });
+    activeElement.dispatchEvent(keyEvent);
   };
 
   const handleHotkeyMoveUp = (e?: KeyboardEvent) => {
     e?.preventDefault();
     if (!node.current) return;
 
-    // Find all focusable statuses in the feed
     const statuses = Array.from(node.current.querySelectorAll('.status.focusable')) as HTMLElement[];
     if (statuses.length === 0) return;
 
-    // Find the currently focused status
     const activeElement = document.activeElement;
     const currentIndex = statuses.findIndex(status => status === activeElement || status.contains(activeElement));
 
-    // If no status is focused, focus the first one
+    // If nothing focused, focus first status
     if (currentIndex === -1) {
       statuses[0]?.focus();
-    } else if (currentIndex > 0) {
-      // Focus the previous status
-      statuses[currentIndex - 1]?.focus();
+      return;
     }
+
+    // Dispatch a 'k' keydown event to the currently focused status
+    // This will trigger the status's own moveUp handler which uses Virtuoso's scrollIntoView
+    const keyEvent = new KeyboardEvent('keydown', {
+      key: 'k',
+      code: 'KeyK',
+      bubbles: true,
+      cancelable: true,
+    });
+    activeElement.dispatchEvent(keyEvent);
   };
 
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
