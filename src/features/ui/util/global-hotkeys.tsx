@@ -139,6 +139,48 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
     history.push('/follow_requests');
   };
 
+  const handleHotkeyMoveDown = (e?: KeyboardEvent) => {
+    e?.preventDefault();
+    if (!node.current) return;
+
+    // Find all focusable statuses in the feed
+    const statuses = Array.from(node.current.querySelectorAll('.status.focusable')) as HTMLElement[];
+    if (statuses.length === 0) return;
+
+    // Find the currently focused status
+    const activeElement = document.activeElement;
+    const currentIndex = statuses.findIndex(status => status === activeElement || status.contains(activeElement));
+
+    // If no status is focused, focus the first one
+    if (currentIndex === -1) {
+      statuses[0]?.focus();
+    } else if (currentIndex < statuses.length - 1) {
+      // Focus the next status
+      statuses[currentIndex + 1]?.focus();
+    }
+  };
+
+  const handleHotkeyMoveUp = (e?: KeyboardEvent) => {
+    e?.preventDefault();
+    if (!node.current) return;
+
+    // Find all focusable statuses in the feed
+    const statuses = Array.from(node.current.querySelectorAll('.status.focusable')) as HTMLElement[];
+    if (statuses.length === 0) return;
+
+    // Find the currently focused status
+    const activeElement = document.activeElement;
+    const currentIndex = statuses.findIndex(status => status === activeElement || status.contains(activeElement));
+
+    // If no status is focused, focus the first one
+    if (currentIndex === -1) {
+      statuses[0]?.focus();
+    } else if (currentIndex > 0) {
+      // Focus the previous status
+      statuses[currentIndex - 1]?.focus();
+    }
+  };
+
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
 
   const handlers: HotkeyHandlers = {
@@ -155,6 +197,8 @@ const GlobalHotkeys: React.FC<IGlobalHotkeys> = ({ children, node }) => {
     goToBlocked: handleHotkeyGoToBlocked,
     goToMuted: handleHotkeyGoToMuted,
     goToRequests: handleHotkeyGoToRequests,
+    moveDown: handleHotkeyMoveDown,
+    moveUp: handleHotkeyMoveUp,
   };
 
   return (
