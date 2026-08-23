@@ -189,13 +189,6 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-/** If the status contains spoiler text, treat it as sensitive. */
-const fixSensitivity = (status: ImmutableMap<string, any>) => {
-  if (status.get('spoiler_text')) {
-    status.set('sensitive', true);
-  }
-};
-
 // Normalize event
 const normalizeEvent = (status: ImmutableMap<string, any>) => {
   if (status.getIn(['pleroma', 'event'])) {
@@ -288,7 +281,6 @@ export const normalizeStatus = (status: Record<string, any>) => {
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
-      fixSensitivity(status);
       normalizeEvent(status);
       normalizeReactions(status);
       fixContent(status);

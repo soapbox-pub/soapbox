@@ -111,11 +111,11 @@ const StatusMedia: React.FC<IStatusMedia> = ({
         </Suspense>
       );
     }
-  } else if (status.spoiler_text.length === 0 && !status.quote && status.card?.group) {
+  } else if (!status.sensitive && !status.quote && status.card?.group) {
     media = (
       <GroupLinkPreview card={status.card} />
     );
-  } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
+  } else if (!status.sensitive && !status.quote && status.card) {
     media = (
       <PreviewCard
         onOpenMedia={openMedia}

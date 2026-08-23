@@ -4,6 +4,8 @@ import { useState, useRef, useLayoutEffect, useMemo, memo } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Icon from '@/components/icon.tsx';
+import Text from '@/components/ui/text.tsx';
+import { emojifyText } from '@/utils/emojify.tsx';
 import { isOnlyEmoji as _isOnlyEmoji } from '@/utils/only-emoji.ts';
 import { getTextDirection } from '@/utils/rtl.ts';
 
@@ -66,11 +68,27 @@ const StatusContent: React.FC<IStatusContent> = ({
     return translatable && status.translation ? status.translation.get('content')! : status.content;
   }, [status.content, status.translation]);
 
-  if (status.content.length === 0) {
-    return null;
-  }
-
   const withSpoiler = status.spoiler_text.length > 0;
+
+  // Pleroma and friends let the author set a subject line without marking the
+  // post sensitive. That's a title, not a content warning, so render it inline
+  // instead of hiding the post behind an overlay.
+  const subject = (withSpoiler && !status.sensitive) ? (
+    <Text
+      key='subject'
+      className='mb-1 break-words'
+      size='md'
+      weight='bold'
+      direction={getTextDirection(status.spoiler_text)}
+      lang={status.language || undefined}
+    >
+      {emojifyText(status.spoiler_text, status.emojis.toJS())}
+    </Text>
+  ) : null;
+
+  if (status.content.length === 0) {
+    return subject;
+  }
 
   const baseClassName = 'text-gray-900 dark:text-gray-100 break-words text-ellipsis overflow-hidden relative focus:outline-none';
 
@@ -97,6 +115,10 @@ const StatusContent: React.FC<IStatusContent> = ({
         html={{ __html: parsedHtml }}
       />,
     ];
+
+    if (subject) {
+      output.unshift(subject);
+    }
 
     if (collapsed) {
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
@@ -125,6 +147,10 @@ const StatusContent: React.FC<IStatusContent> = ({
         html={{ __html: parsedHtml }}
       />,
     ];
+
+    if (subject) {
+      output.unshift(subject);
+    }
 
     if (status.poll && typeof status.poll === 'string') {
       output.push(<Poll id={status.poll} key='poll' status={status.url} />);

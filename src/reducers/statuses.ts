@@ -108,7 +108,9 @@ export const calculateStatus = (
   return status.merge({
     search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
     content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
-    hidden: expandSpoilers ? false : status.spoiler_text.length > 0 || status.sensitive,
+    // `spoiler_text` alone is a subject line; it only warrants hiding the post
+    // when the author also marked it sensitive.
+    hidden: expandSpoilers ? false : status.sensitive,
   });
 };
 
