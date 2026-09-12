@@ -31,7 +31,8 @@
     "test": "vitest",
     "lint": "npm run lint:js",
     "lint:js": "eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx . --cache",
-    "ci": "concurrently --kill-others-on-fail yarn:lint yarn:i18n:check yarn:check yarn:build",
+    "lint:ci": "eslint --ext .js,.jsx,.cjs,.mjs,.ts,.tsx .",
+    "ci": "concurrently --kill-others-on-fail yarn:lint:ci yarn:i18n:check yarn:check yarn:build",
     "prepare": "husky install"
   },
   "license": "AGPL-3.0-or-later",
