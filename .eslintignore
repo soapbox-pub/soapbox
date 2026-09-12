@@ -5,3 +5,10 @@
 /tmp/**
 /coverage/**
 /custom/**
+
+# Transient files that Vite and vite-plugin-compile-time write next to their
+# source and unlink milliseconds later. `yarn ci` runs lint and build
+# concurrently, so lint can enumerate one of these and then crash when it is
+# gone by the time the file is read. Mirrors the same two rules in .gitignore.
+*.timestamp-*
+*.bundled_*
