@@ -1,0 +1,20 @@
+{
+  "$schema": "https://nsyte.run/schemas/config.schema.json",
+  "id": "soapboxfe",
+  "title": "Soapbox FE",
+  "description": "The classic Soapbox frontend for Mastodon and Pleroma",
+  "relays": [
+    "wss://relay.ditto.pub",
+    "wss://relay.dreamith.to",
+    "wss://relay.primal.net"
+  ],
+  "servers": [
+    "https://blossom.primal.net",
+    "https://blossom.ditto.pub",
+    "https://blossom.dreamith.to"
+  ],
+  "fallback": "/index.html",
+  "publishProfile": false,
+  "publishRelayList": false,
+  "publishServerList": false
+}

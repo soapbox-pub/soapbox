@@ -35,6 +35,43 @@ review:
   allow_failure: true
   when: manual
 
+deploy-nsite:
+  stage: deploy
+  timeout: 10 minutes
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never
+    - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH
+  variables:
+    # 0.28.0 is the floor, not a preference. nsite is published by signing a
+    # site *manifest* (the list of every file in dist/) through a NIP-46
+    # bunker, which NIP-44-encrypts the whole sign_event request; every
+    # nostr-tools before the one in 0.28.0 refuses to encrypt a payload over
+    # 64 KiB, so the manifest for a normal code-split build fails to sign at
+    # all ("invalid plaintext size").
+    NSYTE_VERSION: "v0.28.0"
+  before_script:
+    - apt-get update -y && apt-get install -y unzip
+  script:
+    # artifacts are kept between jobs
+    - unzip soapbox.zip -d dist
+
+    # Download nsyte binary
+    - curl -fsSL "https://github.com/sandwichfarm/nsyte/releases/download/${NSYTE_VERSION}/nsyte-linux" -o /usr/local/bin/nsyte
+    - chmod +x /usr/local/bin/nsyte
+
+    # Deploy to nsite via nsyte using the nbunksec credential. The site
+    # identifier ("soapboxfe"), title, description, relays, servers and SPA
+    # fallback all live in .nsite/config.json -- nsyte has no CLI flags for
+    # title/description, so the config file is the source of truth.
+    - >-
+      nsyte deploy ./dist
+      -i
+      --sec "$NSITE_NBUNKSEC"
+      --skip-secrets-scan
+      --use-fallback-relays
+      --use-fallback-servers
+
 pages:
   stage: deploy
   timeout: 30 seconds
