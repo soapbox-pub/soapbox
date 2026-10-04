@@ -10,6 +10,7 @@ import SiteErrorBoundary from '@/components/site-error-boundary.tsx';
 import { ModalContainer } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { useInstance } from '@/hooks/useInstance.ts';
 import { useLoggedIn } from '@/hooks/useLoggedIn.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
@@ -17,6 +18,7 @@ import { useCachedLocationHandler } from '@/utils/redirect.ts';
 
 const GdprBanner = lazy(() => import('@/components/gdpr-banner.tsx'));
 const EmbeddedStatus = lazy(() => import('@/features/embedded-status/index.tsx'));
+const StandaloneLanding = lazy(() => import('@/features/standalone/index.tsx'));
 const UI = lazy(() => import('@/features/ui/index.tsx'));
 
 /** Highest level node with the Redux store. */
@@ -25,6 +27,7 @@ const SoapboxMount = () => {
 
   const { isLoggedIn } = useLoggedIn();
   const { account } = useOwnAccount();
+  const { isNotFound } = useInstance();
   const dispatch = useAppDispatch();
 
   const soapboxConfig = useSoapboxConfig();
@@ -46,6 +49,19 @@ const SoapboxMount = () => {
         <CompatRouter>
           <ScrollContext>
             <Switch>
+              {/* No backend behind us: let the user pick a server to sign in to. */}
+              {(isNotFound && !isLoggedIn) && (
+                <Route
+                  path={['/', '/login/external']}
+                  exact
+                  render={() => (
+                    <Suspense fallback={<LoadingScreen />}>
+                      <StandaloneLanding />
+                    </Suspense>
+                  )}
+                />
+              )}
+
               {(!isLoggedIn && redirectRootNoLogin) && (
                 <Redirect exact from='/' to={redirectRootNoLogin} />
               )}
