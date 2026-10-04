@@ -1,3 +1,3 @@
-# Soapbox Docs
+# Soapbox FE Docs
 
-Read the Soapbox documentation here: https://docs.soapbox.pub/soapbox/
+Read the Soapbox FE documentation here: https://docs.soapbox.pub/soapbox/

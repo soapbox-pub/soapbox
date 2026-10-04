@@ -59,8 +59,8 @@ export default defineConfig(() => {
           ],
         },
         manifest: {
-          name: 'Soapbox',
-          short_name: 'Soapbox',
+          name: 'Soapbox FE',
+          short_name: 'Soapbox FE',
           description: 'A social media frontend with a focus on custom branding and ease of use.',
           theme_color: '#0482d8',
           icons: [
@@ -84,7 +84,7 @@ export default defineConfig(() => {
       visualizer({
         emitFile: true,
         filename: 'report.html',
-        title: 'Soapbox Bundle',
+        title: 'Soapbox FE Bundle',
       }) as Plugin,
       {
         // Vite's default behavior is to serve index.html (HTTP 200) for unmatched routes, like a PWA.

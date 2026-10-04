@@ -1,60 +1,40 @@
-![Soapbox Screenshot](soapbox-screenshot.png)
+# Soapbox FE
 
-**Soapbox** is customizable open-source software that puts the power of social media in the hands of the people. Feature-rich and hyper-focused on providing a user experience to rival Big Tech, Soapbox is already home to some of the biggest alternative social platforms.
+![Soapbox FE Screenshot](soapbox-screenshot.png)
 
-For more info see: https://docs.soapbox.pub/soapbox/
+**Soapbox FE** is the original Soapbox: a social media frontend for the Fediverse with a focus on custom branding and ease of use.
 
-# On The Fediverse
+> ℹ️ Soapbox FE has been superseded by **[Ditto](https://soapbox.pub/ditto)**. New projects should look there first. Soapbox FE remains available for people who want a classic Fediverse frontend for their Mastodon or Pleroma server.
 
-You may have heard of **Mastodon**. Soapbox builds upon what Mastodon made great to make something even better.
+# History
 
-You can run **Mastodon+Soapbox**, **Rebased+Soapbox**, and more.
+Soapbox FE started out in 2020 as an alternative frontend for **Pleroma**, built on Gab Social's frontend, which was in turn built on Mastodon's. Pleroma servers could swap it in for the default pleroma-fe, and it was later adapted to run on top of Mastodon as well.
 
-Soapbox is the **frontend** (what users see) while Mastodon is the **backend** (data, APIs). You can mix-and-match in the Fediverse ecosystem.
+Over time it grew into a standalone client. It learned to talk to most Mastodon-compatible backends (Mastodon, Pleroma, Akkoma, Rebased, GoToSocial, Friendica, Firefish, and others), and could be pointed at any server from the browser. At that point it was renamed from "Soapbox FE" to just "Soapbox".
 
-> 💡 If you're starting a new server, we highly recommend **Rebased+Soapbox**. Rebased is our custom-built backend just for Soapbox, providing important new features such as **quote posting** and **chats**.
->
-> See: [Installing Rebased+Soapbox](https://soapbox.pub/install/)
+Later it gained Nostr support to serve as the frontend for Ditto. Ditto has since been rewritten as a pure Nostr client, so that support was removed again, and the project is back to being what it started as: a Fediverse frontend. It's called Soapbox FE once more to tell it apart from Soapbox the organization and its other projects.
 
 # Try It Out
 
-Want to give Soapbox a shot? Here are some suggested servers:
+- [fe.soapbox.pub](https://fe.soapbox.pub) - enter your server's domain name to use Soapbox FE on any Mastodon-compatible server.
 
-- [gleasonator.com](https://gleasonator.com/) - operated by the lead developer of Soapbox
-- [social.teci.world](https://social.teci.world/) - free speech server run by a Soapbox contributor
-- [spinster.xyz](https://spinster.xyz/) - one of the largest feminist communities on the internet
-- [poa.st](https://poa.st/) - the largest Soapbox server on the network
+# Installing
 
-Want to use Soapbox against **any existing Mastodon/Pleroma server?** Try:
-
-- [fe.soapbox.pub](https://fe.soapbox.pub) - enter your server's domain name to use Soapbox on any server!
-
-# 🚀 Starting Your Own Server
-
-Starting your own server is one of the best ways to have freedom online! We recommend installing **Rebased+Soapbox**.
-
-See here for a detailed setup guide: [Installing Rebased+Soapbox](https://soapbox.pub/install/)
-
-# Adding Soapbox to an Existing Server
-
-Already have a server? No problem — it is still possible to use Soapbox.
+Soapbox FE is a static single-page application. You can host it anywhere, or install it on top of an existing server so it replaces the default frontend:
 
 - [Deploying on Pleroma](https://docs.soapbox.pub/soapbox/install/pleroma/#install-soapbox)
 - [Deploying on Mastodon](https://docs.soapbox.pub/soapbox/install/mastodon/)
 
-> 💡 If using Pleroma, it's recommended to [upgrade it to Rebased](https://gitlab.com/-/snippets/2411739). This comes with better support and many new features, helping you get the most out of Soapbox.
-
-# Developing Soapbox
+# Developing
 
 tl;dr — `git clone`, `yarn`, and `yarn dev`.
 
 For detailed guides, see these pages:
 
-1. [Soapbox local development](https://docs.soapbox.pub/soapbox/development/local/)
+1. [Local development](https://docs.soapbox.pub/soapbox/development/local/)
 2. [yarn commands](https://docs.soapbox.pub/soapbox/development/yarn-commands/)
 3. [How it works](https://docs.soapbox.pub/soapbox/development/how-it-works/)
 4. [Build config](https://docs.soapbox.pub/soapbox/development/build-config/)
-5. [Developing a backend](https://docs.soapbox.pub/soapbox/development/backend/)
 
 ## Contributing
 
@@ -65,11 +45,9 @@ We welcome contributions to this project!
 
 # Project Philosophy
 
-Soapbox was born out of the need to build independent platforms with **a unique identity and brand**.
+Soapbox FE was born out of the need to build independent platforms with **a unique identity and brand**.
 
-This is in contrast to Mastodon's idea, where all servers are called "Mastodon" and use the Mastodon colors and logo. Users won't see the word "Soapbox" throughout the UI, they'll see the name of **your website** and your logo. To facilitate this, Soapbox has a robust customization UI and integrated moderation tools. Large servers are a priority.
-
-One disadvantage of this approach is that it does not help the software spread. Some of the biggest servers on the network and running Soapbox and people don't even know it!
+This is in contrast to Mastodon's idea, where all servers are called "Mastodon" and use the Mastodon colors and logo. Users won't see the word "Soapbox" throughout the UI, they'll see the name of **your website** and your logo. To facilitate this, Soapbox FE has a robust customization UI and integrated moderation tools.
 
 # License & Credits
 
@@ -78,15 +56,15 @@ One disadvantage of this approach is that it does not help the software spread. 
 © Trump Media & Technology Group  
 © Gab AI, Inc.
 
-Soapbox is free software: you can redistribute it and/or modify
+Soapbox FE is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-Soapbox is distributed in the hope that it will be useful,
+Soapbox FE is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public License
-along with Soapbox. If not, see <https://www.gnu.org/licenses/>.
+along with Soapbox FE. If not, see <https://www.gnu.org/licenses/>.
