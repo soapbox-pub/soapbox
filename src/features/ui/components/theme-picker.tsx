@@ -1,6 +1,6 @@
 import checkIcon from '@tabler/icons/outline/check.svg';
 import clsx from 'clsx';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import { changeSetting, SETTING_CHANGE } from '@/actions/settings.ts';
@@ -62,6 +62,27 @@ const ThemePicker: React.FC = () => {
     return [...server, ...presets];
   }, [soapboxConfig, intl.locale]);
 
+  // Let a regular mouse wheel scroll the row sideways. React's onWheel is passive and can't stop the page scrolling.
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 1;
+      // At either end, hand the wheel back to the page.
+      if ((e.deltaY < 0 && atStart) || (e.deltaY > 0 && atEnd)) return;
+      e.preventDefault();
+      el.scrollLeft += e.deltaY;
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, []);
+
   const select = (option: ThemeOption) => {
     // Change both settings before saving, so it's saved once.
     dispatch({ type: SETTING_CHANGE, path: ['themePreset'], value: option.preset });
@@ -70,11 +91,12 @@ const ThemePicker: React.FC = () => {
 
   return (
     <div
+      ref={scrollRef}
       role='radiogroup'
       aria-label={intl.formatMessage(messages.label)}
-      className='overflow-x-auto [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
+      className='overflow-x-auto [mask-image:linear-gradient(to_right,transparent,black_32px,black_calc(100%-32px),transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'
     >
-      <div className='mx-auto flex w-max gap-2 p-4'>
+      <div className='mx-auto flex w-max gap-2 px-8 py-4'>
         {options.map((option) => (
           <Swatch
             key={option.key}

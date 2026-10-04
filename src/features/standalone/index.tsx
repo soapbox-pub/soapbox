@@ -46,7 +46,7 @@ const StandaloneLanding: React.FC = () => {
                 <FormattedMessage id='standalone.heading' defaultMessage='The Fediverse, your way.' />
               </h1>
 
-              <div className='mt-6 w-screen max-w-5xl'>
+              <div className='mt-6 w-screen max-w-xl'>
                 <ThemePicker />
               </div>
 

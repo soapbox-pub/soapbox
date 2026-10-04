@@ -20,15 +20,16 @@ interface ThemePreset {
   mode: ThemeMode;
 }
 
+// Ordered so neighbors differ in both hue and mode.
 const themePresets: ThemePreset[] = [
   { id: 'pink', brandColor: '#db2777', mode: 'light' },
+  { id: 'teal', brandColor: '#0d9488', mode: 'dark' },
   { id: 'orange', brandColor: '#ea580c', mode: 'light' },
   { id: 'violet', brandColor: '#7c3aed', mode: 'dark' },
-  { id: 'indigo', brandColor: '#4f46e5', mode: 'dark' },
-  { id: 'teal', brandColor: '#0d9488', mode: 'dark' },
-  { id: 'green', brandColor: '#16a34a', mode: 'dark' },
-  { id: 'slate', brandColor: '#475569', mode: 'dark' },
+  { id: 'green', brandColor: '#16a34a', mode: 'light' },
   { id: 'red', brandColor: '#dc2626', mode: 'black' },
+  { id: 'indigo', brandColor: '#4f46e5', mode: 'light' },
+  { id: 'slate', brandColor: '#475569', mode: 'dark' },
 ];
 
 const presetMessages: Record<string, MessageDescriptor> = defineMessages({
