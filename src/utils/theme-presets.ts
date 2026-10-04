@@ -4,40 +4,42 @@ import { normalizeSoapboxConfig } from '@/normalizers/index.ts';
 
 import type { SoapboxConfig } from '@/types/soapbox.ts';
 
+type ThemeMode = 'light' | 'dark' | 'black';
+
 /**
  * A color theme the user can pick instead of the server's own.
  * It goes through the same pipeline as an admin-configured brand color,
- * so presets get the full generated palettes in every mode.
+ * so presets get the full generated palettes. Each preset is designed for
+ * one mode, and picking it switches to that mode too.
  */
 interface ThemePreset {
   id: string;
   brandColor: string;
   /** Generated from the brand color if omitted. */
   accentColor?: string;
+  mode: ThemeMode;
 }
 
 const themePresets: ThemePreset[] = [
-  { id: 'azure', brandColor: '#0482d8' },
-  { id: 'indigo', brandColor: '#4f46e5' },
-  { id: 'violet', brandColor: '#7c3aed' },
-  { id: 'pink', brandColor: '#db2777' },
-  { id: 'red', brandColor: '#dc2626' },
-  { id: 'orange', brandColor: '#ea580c' },
-  { id: 'green', brandColor: '#16a34a' },
-  { id: 'teal', brandColor: '#0d9488' },
-  { id: 'slate', brandColor: '#475569' },
+  { id: 'pink', brandColor: '#db2777', mode: 'light' },
+  { id: 'orange', brandColor: '#ea580c', mode: 'light' },
+  { id: 'violet', brandColor: '#7c3aed', mode: 'dark' },
+  { id: 'indigo', brandColor: '#4f46e5', mode: 'dark' },
+  { id: 'teal', brandColor: '#0d9488', mode: 'dark' },
+  { id: 'green', brandColor: '#16a34a', mode: 'dark' },
+  { id: 'slate', brandColor: '#475569', mode: 'dark' },
+  { id: 'red', brandColor: '#dc2626', mode: 'black' },
 ];
 
 const presetMessages: Record<string, MessageDescriptor> = defineMessages({
-  azure: { id: 'theme_preset.azure', defaultMessage: 'Azure' },
-  indigo: { id: 'theme_preset.indigo', defaultMessage: 'Indigo' },
-  violet: { id: 'theme_preset.violet', defaultMessage: 'Violet' },
   pink: { id: 'theme_preset.pink', defaultMessage: 'Pink' },
-  red: { id: 'theme_preset.red', defaultMessage: 'Red' },
   orange: { id: 'theme_preset.orange', defaultMessage: 'Orange' },
-  green: { id: 'theme_preset.green', defaultMessage: 'Green' },
+  violet: { id: 'theme_preset.violet', defaultMessage: 'Violet' },
+  indigo: { id: 'theme_preset.indigo', defaultMessage: 'Indigo' },
   teal: { id: 'theme_preset.teal', defaultMessage: 'Teal' },
+  green: { id: 'theme_preset.green', defaultMessage: 'Green' },
   slate: { id: 'theme_preset.slate', defaultMessage: 'Slate' },
+  red: { id: 'theme_preset.red', defaultMessage: 'Red' },
 });
 
 function getThemePreset(id: string | null | undefined): ThemePreset | undefined {
@@ -88,5 +90,6 @@ export {
   loadStoredTheme,
   saveStoredTheme,
   type ThemePreset,
+  type ThemeMode,
   type StoredTheme,
 };

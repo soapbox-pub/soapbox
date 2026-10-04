@@ -46,15 +46,11 @@ const StandaloneLanding: React.FC = () => {
                 <FormattedMessage id='standalone.heading' defaultMessage='The Fediverse, your way.' />
               </h1>
 
-              <Text size='lg' theme='muted' className='mt-4 max-w-xl text-balance'>
-                <FormattedMessage
-                  id='standalone.subheading'
-                  defaultMessage='{name} is a fast, friendly web client for the Fediverse. Sign in with the account you already have. Nothing to install, nothing to migrate.'
-                  values={{ name: sourceCode.displayName }}
-                />
-              </Text>
+              <div className='mt-6 w-screen max-w-5xl'>
+                <ThemePicker />
+              </div>
 
-              <div className='mt-10 w-full max-w-lg text-left'>
+              <div className='mt-6 w-full max-w-lg text-left'>
                 <ExternalLoginForm
                   label={<FormattedMessage id='standalone.server_label' defaultMessage='Which server is your account on?' />}
                 />
@@ -72,14 +68,6 @@ const StandaloneLanding: React.FC = () => {
                     }}
                   />
                 </Text>
-              </div>
-
-              <div className='mt-16 w-full max-w-lg text-left'>
-                <Text weight='medium' className='mb-3'>
-                  <FormattedMessage id='standalone.theme' defaultMessage='Theme' />
-                </Text>
-
-                <ThemePicker />
               </div>
             </>
           )}
