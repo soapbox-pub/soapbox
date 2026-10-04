@@ -27,6 +27,8 @@ export default defineConfig(() => {
       sourcemap: true,
     },
     assetsInclude: ['**/*.oga'],
+    // Not `public/`: it's gitignored, and CI unzips the build into it.
+    publicDir: 'src/public',
     server: {
       port: Number(PORT ?? 3036),
     },
@@ -61,6 +63,11 @@ export default defineConfig(() => {
           short_name: 'Soapbox',
           description: 'A social media frontend with a focus on custom branding and ease of use.',
           theme_color: '#0482d8',
+          icons: [
+            { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+            { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+            { src: '/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          ],
         },
         srcDir: 'src/service-worker',
         filename: 'sw.ts',
