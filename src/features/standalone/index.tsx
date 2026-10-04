@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import SiteLogo from '@/components/site-logo.tsx';
 import Text from '@/components/ui/text.tsx';
 import ExternalLoginForm from '@/features/external-login/components/external-login-form.tsx';
+import ThemePicker from '@/features/ui/components/theme-picker.tsx';
 import sourceCode from '@/utils/code.ts';
 
 /**
@@ -71,6 +72,14 @@ const StandaloneLanding: React.FC = () => {
                     }}
                   />
                 </Text>
+              </div>
+
+              <div className='mt-16 w-full max-w-lg text-left'>
+                <Text weight='medium' className='mb-3'>
+                  <FormattedMessage id='standalone.theme' defaultMessage='Theme' />
+                </Text>
+
+                <ThemePicker />
               </div>
             </>
           )}

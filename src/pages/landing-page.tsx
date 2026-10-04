@@ -3,6 +3,7 @@ import LinkFooter from '@/features/ui/components/link-footer.tsx';
 import {
   TrendsPanel,
   SignUpPanel,
+  ThemePanel,
   CtaBanner,
   WhoToFollowPanel,
 } from '@/features/ui/util/async-components.ts';
@@ -36,6 +37,9 @@ const LandingPage: React.FC<ILandingPage> = ({ children }) => {
         )}
         {features.suggestions && (
           <WhoToFollowPanel limit={3} />
+        )}
+        {!me && (
+          <ThemePanel />
         )}
         <LinkFooter />
       </Layout.Aside>

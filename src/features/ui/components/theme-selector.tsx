@@ -53,7 +53,7 @@ const ThemeSelector: React.FC<IThemeSelector> = ({ value, onChange }) => {
 
         <Select
           onChange={handleChange}
-          defaultValue={value}
+          value={value}
           className='!pl-10'
         >
           <option value='system'>{intl.formatMessage(messages.system)}</option>

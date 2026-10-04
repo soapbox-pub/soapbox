@@ -83,6 +83,7 @@ export const ModerationLog = lazy(() => import('@/features/admin/moderation-log.
 export const ThemeEditor = lazy(() => import('@/features/theme-editor/index.tsx'));
 export const PromoPanel = lazy(() => import('@/features/ui/components/promo-panel.tsx'));
 export const SignUpPanel = lazy(() => import('@/features/ui/components/panels/sign-up-panel.tsx'));
+export const ThemePanel = lazy(() => import('@/features/ui/components/panels/theme-panel.tsx'));
 export const CtaBanner = lazy(() => import('@/features/ui/components/cta-banner.tsx'));
 export const FundingPanel = lazy(() => import('@/features/ui/components/funding-panel.tsx'));
 export const TrendsPanel = lazy(() => import('@/features/ui/components/trends-panel.tsx'));

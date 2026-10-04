@@ -10,8 +10,6 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 
-import ThemeToggle from '../ui/components/theme-toggle.tsx';
-
 const languages = {
   en: 'English',
   ar: 'العربية',
@@ -133,10 +131,6 @@ const Preferences = () => {
       </List>
 
       <List>
-        <ListItem label={<FormattedMessage id='preferences.fields.theme' defaultMessage='Theme' />}>
-          <ThemeToggle />
-        </ListItem>
-
         <ListItem label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Display Language' />}>
           <SelectDropdown
             className='max-w-[200px]'

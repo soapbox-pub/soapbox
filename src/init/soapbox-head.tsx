@@ -1,12 +1,14 @@
 import clsx from 'clsx';
-import { lazy, useEffect } from 'react';
+import { lazy, useEffect, useMemo } from 'react';
 
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useLocale } from '@/hooks/useLocale.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 import { useTheme } from '@/hooks/useTheme.ts';
 import { normalizeSoapboxConfig } from '@/normalizers/index.ts';
 import { startSentry } from '@/sentry.ts';
+import { getThemePreset, presetToSoapboxConfig, saveStoredTheme } from '@/utils/theme-presets.ts';
 import { generateThemeCss } from '@/utils/theme.ts';
 
 const Helmet = lazy(() => import('@/components/helmet.tsx'));
@@ -18,11 +20,17 @@ interface ISoapboxHead {
 /** Injects metadata into site head with Helmet. */
 const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
   const { locale, direction } = useLocale();
-  const { demo, reduceMotion, underlineLinks, demetricator } = useSettings();
+  const { demo, reduceMotion, underlineLinks, demetricator, themePreset } = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const theme = useTheme();
 
-  const themeCss = generateThemeCss(demo ? normalizeSoapboxConfig({ brandColor: '#0482d8' }) : soapboxConfig);
+  const colorConfig = useMemo(() => {
+    if (demo) return normalizeSoapboxConfig({ brandColor: '#0482d8' });
+    const preset = getThemePreset(themePreset);
+    return preset ? presetToSoapboxConfig(preset) : soapboxConfig;
+  }, [demo, themePreset, soapboxConfig]);
+
+  const themeCss = generateThemeCss(colorConfig);
   const dsn = soapboxConfig.sentryDsn;
 
   const bodyClass = clsx('h-full bg-white text-base black:bg-black dark:bg-primary-900', {
@@ -34,8 +42,18 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
     '!font-javanese': locale === 'jv',
   });
 
-  useEffect(() => {
+  // Only the user's own choices are stored, not defaults from the server.
+  const storedThemeMode = useAppSelector((state) => state.settings.themeMode);
+  const storedThemePreset = useAppSelector((state) => state.settings.themePreset);
 
+  useEffect(() => {
+    saveStoredTheme({
+      themeMode: typeof storedThemeMode === 'string' ? storedThemeMode : undefined,
+      themePreset: typeof storedThemePreset === 'string' ? storedThemePreset : null,
+    });
+  }, [storedThemeMode, storedThemePreset]);
+
+  useEffect(() => {
     if (dsn) {
       startSentry(dsn).catch(console.error);
     }
@@ -50,7 +68,7 @@ const SoapboxHead: React.FC<ISoapboxHead> = ({ children }) => {
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}
         {['dark', 'black'].includes(theme) && <style type='text/css'>{':root { color-scheme: dark; }'}</style>}
-        <meta name='theme-color' content={soapboxConfig.brandColor} />
+        <meta name='theme-color' content={colorConfig.brandColor} />
       </Helmet>
 
       {children}

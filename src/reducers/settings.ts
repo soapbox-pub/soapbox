@@ -3,6 +3,7 @@ import { produce } from 'immer';
 import { AnyAction } from 'redux';
 
 import { ME_FETCH_SUCCESS } from '@/actions/me.ts';
+import { loadStoredTheme } from '@/utils/theme-presets.ts';
 
 import { EMOJI_CHOOSE } from '../actions/emojis.ts';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications.ts';
@@ -41,7 +42,10 @@ const importSettings = (state: State, account: APIEntity): State => {
 //
 // Settings should be accessed with `getSettings(getState())`
 // instead of directly from the state.
-export default function settings(state: State = { saved: true }, action: AnyAction): State {
+//
+// The theme is seeded from localStorage so it applies before login (or
+// without a backend at all). Settings from the account override it.
+export default function settings(state: State = { saved: true, ...loadStoredTheme() }, action: AnyAction): State {
   switch (action.type) {
     case ME_FETCH_SUCCESS:
       return importSettings(state, action.me);

@@ -12,6 +12,7 @@ import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 import Preferences from '../preferences/index.tsx';
+import ThemePicker from '../ui/components/theme-picker.tsx';
 
 import MessagesSettings from './components/messages-settings.tsx';
 
@@ -32,6 +33,7 @@ const messages = defineMessages({
   mutes: { id: 'settings.mutes', defaultMessage: 'Mutes' },
   other: { id: 'settings.other', defaultMessage: 'Other Options' },
   preferences: { id: 'settings.preferences', defaultMessage: 'Preferences' },
+  theme: { id: 'settings.theme', defaultMessage: 'Theme' },
   privacy: { id: 'settings.privacy', defaultMessage: 'Privacy' },
   profile: { id: 'settings.profile', defaultMessage: 'Profile' },
   security: { id: 'settings.security', defaultMessage: 'Security' },
@@ -124,6 +126,14 @@ const Settings = () => {
             </CardBody>
           </>
         ) : null}
+
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.theme)} />
+        </CardHeader>
+
+        <CardBody>
+          <ThemePicker />
+        </CardBody>
 
         <CardHeader>
           <CardTitle title={intl.formatMessage(messages.preferences)} />

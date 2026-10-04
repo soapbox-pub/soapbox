@@ -38,6 +38,7 @@ const defaultSettings = {
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
   themeMode: 'system',
+  themePreset: null as string | null,
   locale: navigator.language || 'en',
   showExplanationBox: true,
   explanationBox: true,

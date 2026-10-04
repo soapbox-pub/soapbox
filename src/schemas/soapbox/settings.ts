@@ -24,6 +24,8 @@ const settingsSchema = z.object({
   defaultPrivacy: z.enum(['public', 'unlisted', 'private', 'direct']).catch('public'),
   defaultContentType: z.enum(['text/plain', 'text/markdown']).catch('text/plain'),
   themeMode: z.enum(['system', 'light', 'dark', 'black']).catch('system'),
+  /** ID of a color preset, or `null` for the server's own colors. */
+  themePreset: z.string().nullable().catch(null),
   locale: z.string().catch(navigator.language).pipe(z.enum(locales)).catch('en'),
   showExplanationBox: z.boolean().catch(true),
   explanationBox: z.boolean().catch(true),
