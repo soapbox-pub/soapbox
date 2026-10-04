@@ -5,14 +5,15 @@ import { spring } from 'react-motion';
 import HStack from '@/components/ui/hstack.tsx';
 import SvgIcon from '@/components/ui/svg-icon.tsx';
 import ReplyIndicator from '@/features/compose/components/reply-indicator.tsx';
-import { Status as StatusEntity } from '@/schemas/index.ts';
+
 
 import Motion from '../../util/optional-motion.tsx';
 
 import type { Menu, MenuItem } from '@/components/dropdown-menu/index.ts';
+import type { Status } from '@/types/entities.ts';
 
 interface IActionsModal {
-  status: StatusEntity;
+  status: Status;
   actions: Menu;
   onClick: () => void;
   onClose: () => void;

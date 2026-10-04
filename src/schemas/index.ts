@@ -13,12 +13,10 @@ export { groupRelationshipSchema, type GroupRelationship } from './group-relatio
 export { groupTagSchema, type GroupTag } from './group-tag.ts';
 export { mentionSchema, type Mention } from './mention.ts';
 export { moderationLogEntrySchema, type ModerationLogEntry } from './moderation-log-entry.ts';
-export { notificationSchema, type Notification } from './notification.ts';
 export { patronUserSchema, type PatronUser } from './patron.ts';
 export { pollSchema, type Poll, type PollOption } from './poll.ts';
 export { relationshipSchema, type Relationship } from './relationship.ts';
 export { relaySchema, type Relay } from './relay.ts';
 export { ruleSchema, adminRuleSchema, type Rule, type AdminRule } from './rule.ts';
-export { statusSchema, type Status } from './status.ts';
 export { tagSchema, type Tag } from './tag.ts';
 export { tombstoneSchema, type Tombstone } from './tombstone.ts';

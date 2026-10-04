@@ -1,4 +1,3 @@
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { isLoggedIn } from '@/utils/auth.ts';
 import { getFeatures } from '@/utils/features.ts';
 import { shouldHaveCard } from '@/utils/status.ts';
@@ -137,6 +136,13 @@ const fetchStatus = (id: string) => {
     });
   };
 };
+
+/** Remove a status from a group, as a group admin or moderator. */
+const deleteGroupStatus = (groupId: string, statusId: string) =>
+  async (dispatch: AppDispatch, getState: () => RootState) => {
+    await api(getState).delete(`/api/v1/groups/${groupId}/statuses/${statusId}`);
+    dispatch(deleteFromTimelines(statusId));
+  };
 
 const deleteStatus = (id: string, withRedraft = false) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
@@ -283,7 +289,7 @@ const unmuteStatus = (id: string) =>
     });
   };
 
-const toggleMuteStatus = (status: StatusEntity) =>
+const toggleMuteStatus = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (status.muted) {
       dispatch(unmuteStatus(status.id));
@@ -386,6 +392,7 @@ export {
   editStatus,
   fetchStatus,
   deleteStatus,
+  deleteGroupStatus,
   updateStatus,
   fetchContext,
   fetchNext,

@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import type { ButtonThemes } from '@/components/ui/useButtonStyles.ts';
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   leaveConfirm: { id: 'confirmations.leave_event.confirm', defaultMessage: 'Leave event' },
@@ -17,7 +17,7 @@ const messages = defineMessages({
 });
 
 interface IEventAction {
-  status: StatusEntity;
+  status: Status;
   theme?: ButtonThemes;
 }
 

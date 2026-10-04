@@ -32,18 +32,17 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 
 import { blockAccount } from '@/actions/accounts.ts';
+import { bookmark, unbookmark } from '@/actions/bookmarks.ts';
 import { launchChat } from '@/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose, replyCompose } from '@/actions/compose.ts';
 import { editEvent } from '@/actions/events.ts';
-import { pinToGroup, toggleDislike, toggleFavourite, togglePin, unpinFromGroup } from '@/actions/interactions.ts';
+import { pinToGroup, toggleDislike, toggleFavourite, togglePin, toggleReblog, unpinFromGroup } from '@/actions/interactions.ts';
 import { openModal } from '@/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from '@/actions/moderation.tsx';
 import { initMuteModal } from '@/actions/mutes.ts';
 import { initReport, ReportableEntities } from '@/actions/reports.ts';
-import { deleteStatus, editStatus, toggleMuteStatus } from '@/actions/statuses.ts';
-import { deleteFromTimelines } from '@/actions/timelines.ts';
-import { useDeleteGroupStatus } from '@/api/hooks/groups/useDeleteGroupStatus.ts';
-import { useBlockGroupMember, useBookmark, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from '@/api/hooks/index.ts';
+import { deleteGroupStatus, deleteStatus, editStatus, toggleMuteStatus } from '@/actions/statuses.ts';
+import { useBlockGroupMember, useGroup, useGroupRelationship, useMuteGroup, useUnmuteGroup } from '@/api/hooks/index.ts';
 import DropdownMenu from '@/components/dropdown-menu/index.ts';
 import StatusActionButton from '@/components/status-action-button.tsx';
 import StatusReactionWrapper from '@/components/status-reaction-wrapper.tsx';
@@ -52,17 +51,15 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
-import { useReblog } from '@/hooks/useReblog.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 import { GroupRoles } from '@/schemas/group-member.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import toast from '@/toast.tsx';
 import copy from '@/utils/copy.ts';
 
 import GroupPopover from './groups/popover/group-popover.tsx';
 
 import type { Menu } from '@/components/dropdown-menu/index.ts';
-import type { Group, Status as LegacyStatus } from '@/types/entities.ts';
+import type { Group, Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   adminAccount: { id: 'status.admin_account', defaultMessage: 'Moderate @{name}' },
@@ -143,7 +140,7 @@ const messages = defineMessages({
 });
 
 interface IStatusActionBar {
-  status: LegacyStatus;
+  status: Status;
   expandable?: boolean;
   space?: 'sm' | 'md' | 'lg';
   statusActionButtonTheme?: 'default' | 'inverse';
@@ -164,7 +161,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const muteGroup = useMuteGroup(group as Group);
   const unmuteGroup = useUnmuteGroup(group as Group);
   const isMutingGroup = !!group?.relationship?.muting;
-  const deleteGroupStatus = useDeleteGroupStatus(group as Group, status.id);
   const blockGroupMember = useBlockGroupMember(group as Group, status.account);
 
   const me = useAppSelector(state => state.me);
@@ -176,8 +172,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   const isStaff = account ? account.staff : false;
   const isAdmin = account ? account.admin : false;
 
-  const { toggleReblog } = useReblog();
-  const { bookmark, unbookmark } = useBookmark();
 
   if (!status) {
     return null;
@@ -225,13 +219,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     if (status.bookmarked) {
-      unbookmark(status.id).then(({ success }) => {
+      dispatch(unbookmark(status)).then((success) => {
         if (success) {
           toast.success(messages.bookmarkRemoved);
         }
       }).catch(null);
     } else {
-      bookmark(status.id).then(({ success }) => {
+      dispatch(bookmark(status)).then((success) => {
         if (success) {
           toast.success(messages.bookmarkAdded, {
             actionLink: '/bookmarks/all', actionLabel: messages.view,
@@ -243,7 +237,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
 
   const handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     if (me) {
-      const modalReblog = () => toggleReblog(status.id);
+      const modalReblog = () => dispatch(toggleReblog(status));
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
@@ -374,7 +368,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(toggleMuteStatus(status as unknown as StatusEntity));
+    dispatch(toggleMuteStatus(status));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
@@ -404,11 +398,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       message: intl.formatMessage(messages.deleteFromGroupMessage, { name: <strong className='break-words'>{account.username}</strong> }),
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => {
-        deleteGroupStatus.mutate(status.id, {
-          onSuccess() {
-            dispatch(deleteFromTimelines(status.id));
-          },
-        });
+        dispatch(deleteGroupStatus(status.group!.id, status.id)).catch(() => {});
       },
     }));
   };
@@ -829,7 +819,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenu items={menu} status={status as unknown as StatusEntity}>
+        <DropdownMenu items={menu} status={status}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={dotsIcon}

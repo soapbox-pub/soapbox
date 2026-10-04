@@ -11,11 +11,11 @@ import Stack from '@/components/ui/stack.tsx';
 import SvgIcon from '@/components/ui/svg-icon.tsx';
 import Text from '@/components/ui/text.tsx';
 import { normalizeAttachment } from '@/normalizers/index.ts';
-import { Attachment } from '@/schemas/index.ts';
 import { addAutoPlay } from '@/utils/media.ts';
 import { getTextDirection } from '@/utils/rtl.ts';
 
-import type { Card as CardEntity } from '@/types/entities.ts';
+import type { Attachment, Card as CardEntity } from '@/types/entities.ts';
+
 
 /** Props for `PreviewCard`. */
 interface IPreviewCard {

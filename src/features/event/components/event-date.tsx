@@ -4,10 +4,10 @@ import { FormattedDate } from 'react-intl';
 import Icon from '@/components/icon.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 interface IEventDate {
-  status: StatusEntity;
+  status: Status;
 }
 
 const EventDate: React.FC<IEventDate> = ({ status }) => {

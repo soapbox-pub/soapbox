@@ -7,7 +7,7 @@ import Toggle from '@/components/ui/toggle.tsx';
 import { MediaGallery, Video, Audio } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { Attachment } from '@/schemas/index.ts';
+
 
 interface IStatusCheckBox {
   id: string;
@@ -63,7 +63,7 @@ const StatusCheckBox: React.FC<IStatusCheckBox> = ({ id, disabled }) => {
     } else {
       media = (
         <MediaGallery
-          media={status.media_attachments as unknown as Attachment[]}
+          media={status.media_attachments}
           sensitive={status.sensitive}
           height={110}
           onOpenMedia={() => {}}

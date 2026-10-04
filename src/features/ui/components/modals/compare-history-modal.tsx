@@ -11,8 +11,8 @@ import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { Attachment } from '@/schemas/index.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
+
 
 interface ICompareHistoryModal {
   onClose: (string: string) => void;
@@ -78,7 +78,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               )}
 
               {version.media_attachments.length > 0 && (
-                <AttachmentThumbs media={version.media_attachments as unknown as Attachment[]} />
+                <AttachmentThumbs media={version.media_attachments} />
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>

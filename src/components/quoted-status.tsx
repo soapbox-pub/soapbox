@@ -8,7 +8,6 @@ import StatusMedia from '@/components/status-media.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import AccountContainer from '@/containers/account-container.tsx';
 import { useSettings } from '@/hooks/useSettings.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { defaultMediaVisibility } from '@/utils/status.ts';
 
 import EventPreview from './event-preview.tsx';
@@ -18,7 +17,8 @@ import StatusContent from './status-content.tsx';
 import StatusReplyMentions from './status-reply-mentions.tsx';
 import SensitiveContentOverlay from './statuses/sensitive-content-overlay.tsx';
 
-import type { Status as LegacyStatus } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
+
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
@@ -26,7 +26,7 @@ const messages = defineMessages({
 
 interface IQuotedStatus {
   /** The quoted status entity. */
-  status?: LegacyStatus;
+  status?: Status;
   /** Callback when cancelled (during compose). */
   onCancel?: Function;
   /** Whether the status is shown in the post composer. */
@@ -139,7 +139,7 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
               {status.media_attachments.length > 0 && (
                 <StatusMedia
-                  status={status as unknown as StatusEntity}
+                  status={status}
                   muted={compose}
                   showMedia={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}

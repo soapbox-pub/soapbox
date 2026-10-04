@@ -41,10 +41,7 @@ interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   showGroup?: boolean;
 }
 
-/**
- * Legacy Feed of statuses, built atop ScrollableList.
- * @deprecated Use the PureStatusList component.
- */
+/** Feed of statuses, built atop ScrollableList. */
 const StatusList: React.FC<IStatusList> = ({
   statusIds,
   lastStatusId,

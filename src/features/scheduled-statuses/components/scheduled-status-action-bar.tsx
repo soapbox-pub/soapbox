@@ -8,7 +8,7 @@ import Button from '@/components/ui/button.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   cancel: { id: 'scheduled_status.cancel', defaultMessage: 'Cancel' },
@@ -18,7 +18,7 @@ const messages = defineMessages({
 });
 
 interface IScheduledStatusActionBar {
-  status: StatusEntity;
+  status: Status;
 }
 
 const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status }) => {

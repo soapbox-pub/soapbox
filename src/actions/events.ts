@@ -14,7 +14,7 @@ import {
 
 import type { ReducerStatus } from '@/reducers/statuses.ts';
 import type { AppDispatch, RootState } from '@/store.ts';
-import type { APIEntity, Status as StatusEntity } from '@/types/entities.ts';
+import type { APIEntity, Status } from '@/types/entities.ts';
 
 const LOCATION_SEARCH_REQUEST = 'LOCATION_SEARCH_REQUEST' as const;
 const LOCATION_SEARCH_SUCCESS = 'LOCATION_SEARCH_SUCCESS' as const;
@@ -283,7 +283,7 @@ const joinEvent = (id: string, participationMessage?: string) =>
     });
   };
 
-const joinEventRequest = (status: StatusEntity) => ({
+const joinEventRequest = (status: Status) => ({
   type: EVENT_JOIN_REQUEST,
   id: status.id,
 });
@@ -293,7 +293,7 @@ const joinEventSuccess = (status: APIEntity) => ({
   id: status.id,
 });
 
-const joinEventFail = (error: unknown, status: StatusEntity, previousState: string | null) => ({
+const joinEventFail = (error: unknown, status: Status, previousState: string | null) => ({
   type: EVENT_JOIN_FAIL,
   error,
   id: status.id,
@@ -318,7 +318,7 @@ const leaveEvent = (id: string) =>
     });
   };
 
-const leaveEventRequest = (status: StatusEntity) => ({
+const leaveEventRequest = (status: Status) => ({
   type: EVENT_LEAVE_REQUEST,
   id: status.id,
 });
@@ -328,7 +328,7 @@ const leaveEventSuccess = (status: APIEntity) => ({
   id: status.id,
 });
 
-const leaveEventFail = (error: unknown, status: StatusEntity) => ({
+const leaveEventFail = (error: unknown, status: Status) => ({
   type: EVENT_LEAVE_FAIL,
   id: status.id,
   error,

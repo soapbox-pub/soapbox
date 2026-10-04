@@ -1,6 +1,12 @@
 import { produce, type Draft } from 'immer';
 import DOMPurify from 'isomorphic-dompurify';
 
+import {
+  BOOKMARK_REQUEST,
+  BOOKMARK_FAIL,
+  UNBOOKMARK_REQUEST,
+  UNBOOKMARK_FAIL,
+} from '@/actions/bookmarks.ts';
 import { normalizeStatus } from '@/normalizers/index.ts';
 import { simulateEmojiReact, simulateUnEmojiReact } from '@/utils/emoji-reacts.ts';
 import { htmlToPlaintext, stripCompatibilityFeatures } from '@/utils/html.ts';
@@ -292,6 +298,16 @@ export default function statuses(state = initialState, action: AnyAction): State
     case UNREBLOG_REQUEST:
       return updateStatus(state, action.status.id, status => {
         status.reblogged = false;
+      });
+    case BOOKMARK_REQUEST:
+    case UNBOOKMARK_FAIL:
+      return updateStatus(state, action.status.id, status => {
+        status.bookmarked = true;
+      });
+    case BOOKMARK_FAIL:
+    case UNBOOKMARK_REQUEST:
+      return updateStatus(state, action.status.id, status => {
+        status.bookmarked = false;
       });
     case STATUS_MUTE_SUCCESS:
       return updateStatus(state, action.id, status => {

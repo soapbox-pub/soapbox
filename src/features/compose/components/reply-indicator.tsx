@@ -5,12 +5,13 @@ import AttachmentThumbs from '@/components/attachment-thumbs.tsx';
 import Markup from '@/components/markup.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import AccountContainer from '@/containers/account-container.tsx';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { getTextDirection } from '@/utils/rtl.ts';
+
+import type { Status } from '@/types/entities.ts';
 
 interface IReplyIndicator {
   className?: string;
-  status?: StatusEntity;
+  status?: Status;
   onCancel?: () => void;
   hideActions: boolean;
 }

@@ -19,7 +19,6 @@ export { useDeleteGroup } from './groups/useDeleteGroup.ts';
 export { useDemoteGroupMember } from './groups/useDemoteGroupMember.ts';
 export { useGroup } from './groups/useGroup.ts';
 export { useGroupLookup } from './groups/useGroupLookup.ts';
-export { useGroupMedia } from './groups/useGroupMedia.ts';
 export { useGroupMembers } from './groups/useGroupMembers.ts';
 export { useGroupMembershipRequests } from './groups/useGroupMembershipRequests.ts';
 export { useGroupMutes } from './groups/useGroupMutes.ts';
@@ -42,12 +41,6 @@ export { useSuggestedGroups } from './groups/useSuggestedGroups.ts';
 export { useUnmuteGroup } from './groups/useUnmuteGroup.ts';
 export { useUpdateGroup } from './groups/useUpdateGroup.ts';
 export { useUpdateGroupTag } from './groups/useUpdateGroupTag.ts';
-
-// Statuses
-export { useBookmarks } from './statuses/useBookmarks.ts';
-export { useBookmark } from './statuses/useBookmark.ts';
-export { useFavourite } from './statuses/useFavourite.ts';
-export { useReaction } from './statuses/useReaction.ts';
 
 // Streaming
 export { useUserStream } from './streaming/useUserStream.ts';

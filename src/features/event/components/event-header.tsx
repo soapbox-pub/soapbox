@@ -25,16 +25,16 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { blockAccount } from '@/actions/accounts.ts';
+import { bookmark, unbookmark } from '@/actions/bookmarks.ts';
 import { launchChat } from '@/actions/chats.ts';
 import { directCompose, mentionCompose, quoteCompose } from '@/actions/compose.ts';
 import { editEvent, fetchEventIcs } from '@/actions/events.ts';
-import { togglePin } from '@/actions/interactions.ts';
+import { togglePin, toggleReblog } from '@/actions/interactions.ts';
 import { openModal } from '@/actions/modals.ts';
 import { deleteStatusModal, toggleStatusSensitivityModal } from '@/actions/moderation.tsx';
 import { initMuteModal } from '@/actions/mutes.ts';
 import { initReport, ReportableEntities } from '@/actions/reports.ts';
 import { deleteStatus } from '@/actions/statuses.ts';
-import { useBookmark } from '@/api/hooks/index.ts';
 import StillImage from '@/components/still-image.tsx';
 import Button from '@/components/ui/button.tsx';
 import HStack from '@/components/ui/hstack.tsx';
@@ -47,7 +47,6 @@ import VerificationBadge from '@/components/verification-badge.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
-import { useReblog } from '@/hooks/useReblog.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 import copy from '@/utils/copy.ts';
 import { download } from '@/utils/download.ts';
@@ -59,7 +58,7 @@ import EventActionButton from '../components/event-action-button.tsx';
 import EventDate from '../components/event-date.tsx';
 
 import type { Menu as MenuType } from '@/components/dropdown-menu/index.ts';
-import type { Status as LegacyStatus } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   bannerHeader: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -93,7 +92,7 @@ const messages = defineMessages({
 });
 
 interface IEventHeader {
-  status?: LegacyStatus;
+  status?: Status;
 }
 
 const EventHeader: React.FC<IEventHeader> = ({ status }) => {
@@ -106,9 +105,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
   const { account: ownAccount } = useOwnAccount();
   const isStaff = ownAccount ? ownAccount.staff : false;
   const isAdmin = ownAccount ? ownAccount.admin : false;
-  const { bookmark, unbookmark } = useBookmark();
 
-  const { toggleReblog } = useReblog();
 
   if (!status || !status.event) {
     return (
@@ -149,14 +146,14 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
 
   const handleBookmarkClick = () => {
     if (status.bookmarked) {
-      unbookmark(status.id);
+      dispatch(unbookmark(status));
     } else {
-      bookmark(status.id);
+      dispatch(bookmark(status));
     }
   };
 
   const handleReblogClick = () => {
-    const modalReblog = () => toggleReblog(status.id);
+    const modalReblog = () => dispatch(toggleReblog(status));
     if (!boostModal) {
       modalReblog();
     } else {

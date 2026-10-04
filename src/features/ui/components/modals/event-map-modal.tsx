@@ -13,7 +13,7 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 import { makeGetStatus } from '@/selectors/index.ts';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 import 'leaflet/dist/leaflet.css';
 
@@ -32,7 +32,7 @@ const EventMapModal: React.FC<IEventMapModal> = ({ onClose, statusId }) => {
   const { tileServer, tileServerAttribution } = useSoapboxConfig();
 
   const getStatus = useCallback(makeGetStatus(), []);
-  const status = useAppSelector(state => getStatus(state, { id: statusId })) as StatusEntity;
+  const status = useAppSelector(state => getStatus(state, { id: statusId })) as Status;
   const location = status.event!.location!;
 
   const map = useRef<L.Map>();

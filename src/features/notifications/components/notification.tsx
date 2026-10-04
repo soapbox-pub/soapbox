@@ -15,7 +15,7 @@ import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage } 
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from '@/actions/compose.ts';
-import { favourite, unreblog, unfavourite } from '@/actions/interactions.ts';
+import { favourite, reblog, unreblog, unfavourite } from '@/actions/interactions.ts';
 import { openModal } from '@/actions/modals.ts';
 import { getSettings } from '@/actions/settings.ts';
 import { hideStatus, revealStatus } from '@/actions/statuses.ts';
@@ -30,7 +30,6 @@ import { HotKeys } from '@/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
-import { useReblog } from '@/hooks/useReblog.ts';
 import { makeGetNotification } from '@/selectors/index.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
 import { NotificationType, validType } from '@/utils/notification.ts';
@@ -199,7 +198,6 @@ const Notification: React.FC<INotification> = (props) => {
   const history = useHistory();
   const intl = useIntl();
   const { instance } = useInstance();
-  const { reblog } = useReblog();
 
   const type = notification.type;
   const { account, status } = notification;
@@ -256,10 +254,10 @@ const Notification: React.FC<INotification> = (props) => {
           dispatch(unreblog(status));
         } else {
           if (e?.shiftKey || !boostModal) {
-            reblog(status.id);
+            dispatch(reblog(status));
           } else {
             dispatch(openModal('BOOST', { status: status, onReblog: (status: StatusLegacy) => {
-              reblog(status.id);
+              dispatch(reblog(status));
             } }));
           }
         }

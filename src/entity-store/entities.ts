@@ -12,7 +12,6 @@ enum Entities {
   RELATIONSHIPS = 'Relationships',
   RELAYS = 'Relays',
   RULES = 'Rules',
-  STATUSES = 'Statuses',
 }
 
 interface EntityTypes {
@@ -26,7 +25,6 @@ interface EntityTypes {
   [Entities.RELATIONSHIPS]: Schemas.Relationship;
   [Entities.RELAYS]: Schemas.Relay;
   [Entities.RULES]: Schemas.AdminRule;
-  [Entities.STATUSES]: Schemas.Status;
 }
 
 export { Entities, type EntityTypes };

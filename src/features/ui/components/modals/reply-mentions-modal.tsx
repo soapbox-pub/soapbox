@@ -10,7 +10,7 @@ import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { statusToMentionsAccountIdsArray } from '@/reducers/compose.ts';
 import { makeGetStatus } from '@/selectors/index.ts';
 
-import type { Account as AccountEntity, Status as StatusEntity } from '@/types/entities.ts';
+import type { Account as AccountEntity, Status } from '@/types/entities.ts';
 
 interface IReplyMentionsModal {
   composeId: string;
@@ -21,7 +21,7 @@ const ReplyMentionsModal: React.FC<IReplyMentionsModal> = ({ composeId, onClose 
   const compose = useCompose(composeId);
 
   const getStatus = useCallback(makeGetStatus(), []);
-  const status = useAppSelector<StatusEntity | null>(state => getStatus(state, { id: compose.in_reply_to! }));
+  const status = useAppSelector<Status | null>(state => getStatus(state, { id: compose.in_reply_to! }));
   const { account } = useOwnAccount();
 
   const mentions = statusToMentionsAccountIdsArray(status!, account!);

@@ -7,7 +7,7 @@ import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts'
 import { expandGroupFeaturedTimeline } from './timelines.ts';
 
 import type { AppDispatch, RootState } from '@/store.ts';
-import type { APIEntity, Group, Status as StatusEntity } from '@/types/entities.ts';
+import type { APIEntity, Group, Status } from '@/types/entities.ts';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -57,12 +57,6 @@ const UNPIN_REQUEST = 'UNPIN_REQUEST';
 const UNPIN_SUCCESS = 'UNPIN_SUCCESS';
 const UNPIN_FAIL    = 'UNPIN_FAIL';
 
-const BOOKMARK_REQUEST = 'BOOKMARK_REQUEST';
-const BOOKMARK_FAIL    = 'BOOKMARKED_FAIL';
-
-const UNBOOKMARK_REQUEST = 'UNBOOKMARKED_REQUEST';
-const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
-
 const REMOTE_INTERACTION_REQUEST = 'REMOTE_INTERACTION_REQUEST';
 const REMOTE_INTERACTION_SUCCESS = 'REMOTE_INTERACTION_SUCCESS';
 const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
@@ -73,17 +67,11 @@ const FAVOURITES_EXPAND_FAIL = 'FAVOURITES_EXPAND_FAIL';
 const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
 const REBLOGS_EXPAND_FAIL = 'REBLOGS_EXPAND_FAIL';
 
-type ReblogEffects = {
-  reblogEffect: (statusId: string) => void;
-  unreblogEffect: (statusId: string) => void;
-}
-
-const reblog = (status: StatusEntity, effects?: ReblogEffects) =>
+const reblog = (status: Status) =>
   function(dispatch: AppDispatch, getState: () => RootState) {
     if (!isLoggedIn(getState)) return;
 
     dispatch(reblogRequest(status));
-    effects?.reblogEffect(status.id);
 
     api(getState).post(`/api/v1/statuses/${status.id}/reblog`).then((response) => response.json()).then((data) => {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
@@ -92,73 +80,70 @@ const reblog = (status: StatusEntity, effects?: ReblogEffects) =>
       dispatch(reblogSuccess(status));
     }).catch(error => {
       dispatch(reblogFail(status, error));
-      effects?.unreblogEffect(status.id);
     });
   };
 
-const unreblog = (status: StatusEntity, effects?: ReblogEffects) =>
+const unreblog = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
     dispatch(unreblogRequest(status));
-    effects?.unreblogEffect(status.id);
 
     api(getState).post(`/api/v1/statuses/${status.id}/unreblog`).then(() => {
       dispatch(unreblogSuccess(status));
     }).catch(error => {
       dispatch(unreblogFail(status, error));
-      effects?.reblogEffect(status.id);
     });
   };
 
-const toggleReblog = (status: StatusEntity, effects?: ReblogEffects) =>
+const toggleReblog = (status: Status) =>
   (dispatch: AppDispatch) => {
     if (status.reblogged) {
-      dispatch(unreblog(status, effects));
+      dispatch(unreblog(status));
     } else {
-      dispatch(reblog(status, effects));
+      dispatch(reblog(status));
     }
   };
 
-const reblogRequest = (status: StatusEntity) => ({
+const reblogRequest = (status: Status) => ({
   type: REBLOG_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const reblogSuccess = (status: StatusEntity) => ({
+const reblogSuccess = (status: Status) => ({
   type: REBLOG_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const reblogFail = (status: StatusEntity, error: unknown) => ({
+const reblogFail = (status: Status, error: unknown) => ({
   type: REBLOG_FAIL,
   status: status,
   error: error,
   skipLoading: true,
 });
 
-const unreblogRequest = (status: StatusEntity) => ({
+const unreblogRequest = (status: Status) => ({
   type: UNREBLOG_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const unreblogSuccess = (status: StatusEntity) => ({
+const unreblogSuccess = (status: Status) => ({
   type: UNREBLOG_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const unreblogFail = (status: StatusEntity, error: unknown) => ({
+const unreblogFail = (status: Status, error: unknown) => ({
   type: UNREBLOG_FAIL,
   status: status,
   error: error,
   skipLoading: true,
 });
 
-const favourite = (status: StatusEntity) =>
+const favourite = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -171,7 +156,7 @@ const favourite = (status: StatusEntity) =>
     });
   };
 
-const unfavourite = (status: StatusEntity) =>
+const unfavourite = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -184,7 +169,7 @@ const unfavourite = (status: StatusEntity) =>
     });
   };
 
-const toggleFavourite = (status: StatusEntity) =>
+const toggleFavourite = (status: Status) =>
   (dispatch: AppDispatch) => {
     if (status.favourited) {
       dispatch(unfavourite(status));
@@ -193,45 +178,45 @@ const toggleFavourite = (status: StatusEntity) =>
     }
   };
 
-const favouriteRequest = (status: StatusEntity) => ({
+const favouriteRequest = (status: Status) => ({
   type: FAVOURITE_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const favouriteSuccess = (status: StatusEntity) => ({
+const favouriteSuccess = (status: Status) => ({
   type: FAVOURITE_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const favouriteFail = (status: StatusEntity, error: unknown) => ({
+const favouriteFail = (status: Status, error: unknown) => ({
   type: FAVOURITE_FAIL,
   status: status,
   error: error,
   skipLoading: true,
 });
 
-const unfavouriteRequest = (status: StatusEntity) => ({
+const unfavouriteRequest = (status: Status) => ({
   type: UNFAVOURITE_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const unfavouriteSuccess = (status: StatusEntity) => ({
+const unfavouriteSuccess = (status: Status) => ({
   type: UNFAVOURITE_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const unfavouriteFail = (status: StatusEntity, error: unknown) => ({
+const unfavouriteFail = (status: Status, error: unknown) => ({
   type: UNFAVOURITE_FAIL,
   status: status,
   error: error,
   skipLoading: true,
 });
 
-const dislike = (status: StatusEntity) =>
+const dislike = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -244,7 +229,7 @@ const dislike = (status: StatusEntity) =>
     });
   };
 
-const undislike = (status: StatusEntity) =>
+const undislike = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -257,7 +242,7 @@ const undislike = (status: StatusEntity) =>
     });
   };
 
-const toggleDislike = (status: StatusEntity) =>
+const toggleDislike = (status: Status) =>
   (dispatch: AppDispatch) => {
     if (status.disliked) {
       dispatch(undislike(status));
@@ -266,64 +251,42 @@ const toggleDislike = (status: StatusEntity) =>
     }
   };
 
-const dislikeRequest = (status: StatusEntity) => ({
+const dislikeRequest = (status: Status) => ({
   type: DISLIKE_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const dislikeSuccess = (status: StatusEntity) => ({
+const dislikeSuccess = (status: Status) => ({
   type: DISLIKE_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const dislikeFail = (status: StatusEntity, error: unknown) => ({
+const dislikeFail = (status: Status, error: unknown) => ({
   type: DISLIKE_FAIL,
   status: status,
   error: error,
   skipLoading: true,
 });
 
-const undislikeRequest = (status: StatusEntity) => ({
+const undislikeRequest = (status: Status) => ({
   type: UNDISLIKE_REQUEST,
   status: status,
   skipLoading: true,
 });
 
-const undislikeSuccess = (status: StatusEntity) => ({
+const undislikeSuccess = (status: Status) => ({
   type: UNDISLIKE_SUCCESS,
   status: status,
   skipLoading: true,
 });
 
-const undislikeFail = (status: StatusEntity, error: unknown) => ({
+const undislikeFail = (status: Status, error: unknown) => ({
   type: UNDISLIKE_FAIL,
   status: status,
   error: error,
   skipLoading: true,
-});
-
-const bookmarkRequest = (status: StatusEntity) => ({
-  type: BOOKMARK_REQUEST,
-  status: status,
-});
-
-const bookmarkFail = (status: StatusEntity, error: unknown) => ({
-  type: BOOKMARK_FAIL,
-  status: status,
-  error: error,
-});
-
-const unbookmarkRequest = (status: StatusEntity) => ({
-  type: UNBOOKMARK_REQUEST,
-  status: status,
-});
-
-const unbookmarkFail = (status: StatusEntity, error: unknown) => ({
-  type: UNBOOKMARK_FAIL,
-  status: status,
-  error,
 });
 
 const fetchReblogs = (id: string) =>
@@ -509,7 +472,7 @@ const fetchReactionsFail = (id: string, error: unknown) => ({
   error,
 });
 
-const pin = (status: StatusEntity) =>
+const pin = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -523,40 +486,40 @@ const pin = (status: StatusEntity) =>
     });
   };
 
-const pinToGroup = (status: StatusEntity, group: Group) =>
+const pinToGroup = (status: Status, group: Group) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     return api(getState)
       .post(`/api/v1/groups/${group.id}/statuses/${status.id}/pin`)
       .then(() => dispatch(expandGroupFeaturedTimeline(group.id)));
   };
 
-const unpinFromGroup = (status: StatusEntity, group: Group) =>
+const unpinFromGroup = (status: Status, group: Group) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     return api(getState)
       .post(`/api/v1/groups/${group.id}/statuses/${status.id}/unpin`)
       .then(() => dispatch(expandGroupFeaturedTimeline(group.id)));
   };
 
-const pinRequest = (status: StatusEntity) => ({
+const pinRequest = (status: Status) => ({
   type: PIN_REQUEST,
   status,
   skipLoading: true,
 });
 
-const pinSuccess = (status: StatusEntity) => ({
+const pinSuccess = (status: Status) => ({
   type: PIN_SUCCESS,
   status,
   skipLoading: true,
 });
 
-const pinFail = (status: StatusEntity, error: unknown) => ({
+const pinFail = (status: Status, error: unknown) => ({
   type: PIN_FAIL,
   status,
   error,
   skipLoading: true,
 });
 
-const unpin = (status: StatusEntity) =>
+const unpin = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -570,7 +533,7 @@ const unpin = (status: StatusEntity) =>
     });
   };
 
-const togglePin = (status: StatusEntity) =>
+const togglePin = (status: Status) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (status.pinned) {
       dispatch(unpin(status));
@@ -579,19 +542,19 @@ const togglePin = (status: StatusEntity) =>
     }
   };
 
-const unpinRequest = (status: StatusEntity) => ({
+const unpinRequest = (status: Status) => ({
   type: UNPIN_REQUEST,
   status,
   skipLoading: true,
 });
 
-const unpinSuccess = (status: StatusEntity) => ({
+const unpinSuccess = (status: Status) => ({
   type: UNPIN_SUCCESS,
   status,
   skipLoading: true,
 });
 
-const unpinFail = (status: StatusEntity, error: unknown) => ({
+const unpinFail = (status: Status, error: unknown) => ({
   type: UNPIN_FAIL,
   status,
   error,
@@ -671,10 +634,6 @@ export {
   UNPIN_REQUEST,
   UNPIN_SUCCESS,
   UNPIN_FAIL,
-  BOOKMARK_REQUEST,
-  BOOKMARK_FAIL,
-  UNBOOKMARK_REQUEST,
-  UNBOOKMARK_FAIL,
   REMOTE_INTERACTION_REQUEST,
   REMOTE_INTERACTION_SUCCESS,
   REMOTE_INTERACTION_FAIL,
@@ -709,10 +668,6 @@ export {
   undislikeRequest,
   undislikeSuccess,
   undislikeFail,
-  bookmarkRequest,
-  bookmarkFail,
-  unbookmarkRequest,
-  unbookmarkFail,
   fetchReblogs,
   fetchReblogsRequest,
   fetchReblogsSuccess,

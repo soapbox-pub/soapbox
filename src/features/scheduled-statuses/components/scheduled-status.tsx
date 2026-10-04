@@ -8,13 +8,14 @@ import HStack from '@/components/ui/hstack.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import PollPreview from '@/features/ui/components/poll-preview.tsx';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { Attachment } from '@/schemas/index.ts';
+
 
 import { buildStatus } from '../builder.tsx';
 
 import ScheduledStatusActionBar from './scheduled-status-action-bar.tsx';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
+
 
 interface IScheduledStatus {
   statusId: string;
@@ -25,7 +26,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
     const scheduledStatus = state.scheduled_statuses[statusId];
     if (!scheduledStatus) return null;
     return buildStatus(state, scheduledStatus);
-  }) as StatusEntity | null;
+  }) as Status | null;
 
   if (!status) return null;
 
@@ -56,7 +57,7 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
 
           {status.media_attachments.length > 0 && (
             <AttachmentThumbs
-              media={status.media_attachments as unknown as Attachment[]}
+              media={status.media_attachments}
               sensitive={status.sensitive}
             />
           )}

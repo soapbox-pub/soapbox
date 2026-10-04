@@ -3,7 +3,8 @@ import { Suspense } from 'react';
 import { openModal } from '@/actions/modals.ts';
 import { MediaGallery } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { Attachment } from '@/schemas/index.ts';
+
+import type { Attachment } from '@/types/entities.ts';
 
 interface IAttachmentThumbs {
   media: readonly Attachment[];

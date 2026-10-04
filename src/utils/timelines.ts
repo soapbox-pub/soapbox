@@ -1,4 +1,4 @@
-import type { Status } from '@/schemas/index.ts';
+import type { Status } from '@/types/entities.ts';
 
 interface ColumnSettings {
   shows?: Partial<Record<'reblog' | 'reply' | 'direct', boolean>>;

@@ -23,7 +23,6 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { ChatKeys, IChat, useChatActions } from '@/queries/chats.ts';
 import { queryClient } from '@/queries/client.ts';
-import { Attachment } from '@/schemas/index.ts';
 import { htmlToPlaintext } from '@/utils/html.ts';
 import { isOnlyEmoji as _isOnlyEmoji } from '@/utils/only-emoji.ts';
 
@@ -113,7 +112,7 @@ const ChatMessage = (props: IChatMessage) => {
           'rounded-br-sm': isMyMessage && content,
           'rounded-bl-sm': !isMyMessage && content,
         })}
-        media={chatMessage.media_attachments as unknown as Attachment[]}
+        media={chatMessage.media_attachments}
         onOpenMedia={onOpenMedia}
         visible
       />

@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { type VirtuosoHandle } from 'react-virtuoso';
 
 import { mentionCompose, replyCompose } from '@/actions/compose.ts';
-import { favourite, unfavourite, unreblog } from '@/actions/interactions.ts';
+import { favourite, reblog, unfavourite, unreblog } from '@/actions/interactions.ts';
 import { openModal } from '@/actions/modals.ts';
 import { getSettings } from '@/actions/settings.ts';
 import { hideStatus, revealStatus } from '@/actions/statuses.ts';
@@ -19,7 +19,6 @@ import { HotKeys } from '@/features/ui/components/hotkeys.tsx';
 import PendingStatus from '@/features/ui/components/pending-status.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { useReblog } from '@/hooks/useReblog.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 import { RootState } from '@/store.ts';
 import { type Account, type Status } from '@/types/entities.ts';
@@ -100,7 +99,6 @@ const Thread = (props: IThread) => {
 
   const isUnderReview = status?.visibility === 'self';
 
-  const { reblog } = useReblog();
 
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {
     let ancestorsIds: string[] = [];
@@ -151,7 +149,7 @@ const Thread = (props: IThread) => {
 
   const handleReplyClick = (status: Status) => dispatch(replyCompose(status));
 
-  const handleModalReblog = (status: Status) => reblog(status.id);
+  const handleModalReblog = (status: Status) => dispatch(reblog(status));
 
   const handleReblogClick = (status: Status, e?: React.MouseEvent) => {
     dispatch((_, getState) => {

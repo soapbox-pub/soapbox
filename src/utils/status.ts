@@ -1,6 +1,6 @@
 import { isIntegerId } from '@/utils/numbers.tsx';
 
-import type { Status } from '@/schemas/index.ts';
+import type { Status } from '@/types/entities.ts';
 import type { IntlShape } from 'react-intl';
 
 /** Get the initial visibility of media attachments from user settings. */

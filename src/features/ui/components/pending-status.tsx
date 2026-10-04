@@ -15,9 +15,9 @@ import { buildStatus } from '../util/pending-status-builder.ts';
 
 import PollPreview from './poll-preview.tsx';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
-const shouldHaveCard = (pendingStatus: StatusEntity) => {
+const shouldHaveCard = (pendingStatus: Status) => {
   return Boolean(pendingStatus.content.match(/https?:\/\/\S*/));
 };
 
@@ -29,7 +29,7 @@ interface IPendingStatus {
 }
 
 interface IPendingStatusMedia {
-  status: StatusEntity;
+  status: Status;
 }
 
 const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
@@ -50,7 +50,7 @@ const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, mu
   const status = useAppSelector((state) => {
     const pendingStatus = state.pending_statuses[idempotencyKey];
     return pendingStatus ? buildStatus(state, pendingStatus, idempotencyKey) : null;
-  }) as StatusEntity | null;
+  }) as Status | null;
 
   if (!status) return null;
   if (!status.account) return null;

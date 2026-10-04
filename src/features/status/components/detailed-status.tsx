@@ -17,18 +17,18 @@ import Icon from '@/components/ui/icon.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
 import QuotedStatus from '@/features/status/containers/quoted-status-container.tsx';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { getActualStatus } from '@/utils/status.ts';
 
 import StatusInteractionBar from './status-interaction-bar.tsx';
 
-import type { Group, Status as LegacyStatus } from '@/types/entities.ts';
+import type { Group, Status } from '@/types/entities.ts';
+
 
 interface IDetailedStatus {
-  status: LegacyStatus;
+  status: Status;
   showMedia?: boolean;
   withMedia?: boolean;
-  onOpenCompareHistoryModal: (status: LegacyStatus) => void;
+  onOpenCompareHistoryModal: (status: Status) => void;
   onToggleMediaVisibility: () => void;
 }
 
@@ -163,7 +163,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.length > 0)) && (
               <Stack space={4}>
                 <StatusMedia
-                  status={actualStatus as unknown as StatusEntity}
+                  status={actualStatus}
                   showMedia={showMedia}
                   onToggleVisibility={onToggleMediaVisibility}
                 />

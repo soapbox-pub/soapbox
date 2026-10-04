@@ -11,6 +11,16 @@ import {
 import { STATUS_CREATE_SUCCESS } from '@/actions/statuses.ts';
 
 import {
+  BOOKMARKED_STATUSES_FETCH_REQUEST,
+  BOOKMARKED_STATUSES_FETCH_SUCCESS,
+  BOOKMARKED_STATUSES_FETCH_FAIL,
+  BOOKMARKED_STATUSES_EXPAND_REQUEST,
+  BOOKMARKED_STATUSES_EXPAND_SUCCESS,
+  BOOKMARKED_STATUSES_EXPAND_FAIL,
+  BOOKMARK_SUCCESS,
+  UNBOOKMARK_SUCCESS,
+} from '../actions/bookmarks.ts';
+import {
   RECENT_EVENTS_FETCH_REQUEST,
   RECENT_EVENTS_FETCH_SUCCESS,
   RECENT_EVENTS_FETCH_FAIL,
@@ -73,6 +83,7 @@ type State = Record<string, StatusList>;
 
 const initialState: State = {
   favourites: newStatusList(),
+  bookmarks: newStatusList(),
   pins: newStatusList(),
   scheduled_statuses: newStatusList(),
   recent_events: newStatusList(),
@@ -159,6 +170,20 @@ export default function statusLists(state: State = initialState, action: AnyActi
       return normalizeList(state, `favourites:${action.accountId}`, action.statuses, action.next);
     case ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS:
       return appendToList(state, `favourites:${action.accountId}`, action.statuses, action.next);
+    case BOOKMARKED_STATUSES_FETCH_REQUEST:
+    case BOOKMARKED_STATUSES_EXPAND_REQUEST:
+      return setLoading(state, 'bookmarks', true);
+    case BOOKMARKED_STATUSES_FETCH_FAIL:
+    case BOOKMARKED_STATUSES_EXPAND_FAIL:
+      return setLoading(state, 'bookmarks', false);
+    case BOOKMARKED_STATUSES_FETCH_SUCCESS:
+      return normalizeList(state, 'bookmarks', action.statuses, action.next);
+    case BOOKMARKED_STATUSES_EXPAND_SUCCESS:
+      return appendToList(state, 'bookmarks', action.statuses, action.next);
+    case BOOKMARK_SUCCESS:
+      return prependOneToList(state, 'bookmarks', action.status);
+    case UNBOOKMARK_SUCCESS:
+      return removeOneFromList(state, 'bookmarks', action.status);
     case FAVOURITE_SUCCESS:
       return prependOneToList(state, 'favourites', action.status);
     case UNFAVOURITE_SUCCESS:

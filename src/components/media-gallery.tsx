@@ -8,13 +8,14 @@ import StillImage from '@/components/still-image.tsx';
 import { MIMETYPE_ICONS } from '@/components/upload.tsx';
 import { useSettings } from '@/hooks/useSettings.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
-import { Attachment } from '@/schemas/index.ts';
 import { truncateFilename } from '@/utils/media.ts';
 
 import { isIOS } from '../is-mobile.ts';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media-aspect-ratio.ts';
 
 import SvgIcon from './ui/svg-icon.tsx';
+
+import type { Attachment } from '@/types/entities.ts';
 
 // const Gameboy = lazy(() => import('./gameboy'));
 

@@ -67,7 +67,6 @@ import type {
   APIEntity,
   Attachment as AttachmentEntity,
   Status,
-  Status as StatusEntity,
   Tag,
 } from '@/types/entities';
 
@@ -173,7 +172,7 @@ export const statusToMentionsArray = (status: Status, account: Account): string[
   return uniqueAccts([author, ...mentions], account.acct);
 };
 
-export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: Account): string[] => {
+export const statusToMentionsAccountIdsArray = (status: Status, account: Account): string[] => {
   const mentions = status.mentions.map((m) => m.id);
 
   return uniqueAccts([account.id, ...mentions], account.id);

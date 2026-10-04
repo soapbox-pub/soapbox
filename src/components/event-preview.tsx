@@ -14,7 +14,7 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import Icon from './icon.tsx';
 import VerificationBadge from './verification-badge.tsx';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   eventBanner: { id: 'event.banner', defaultMessage: 'Event banner' },
@@ -23,7 +23,7 @@ const messages = defineMessages({
 });
 
 interface IEventPreview {
-  status: StatusEntity;
+  status: Status;
   className?: string;
   hideAction?: boolean;
   floatingAction?: boolean;

@@ -20,7 +20,7 @@ import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
 import { defaultMediaVisibility } from '@/utils/status.ts';
 
-import type { Status as StatusEntity } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -37,7 +37,7 @@ const messages = defineMessages({
 });
 
 interface ISensitiveContentOverlay {
-  status: StatusEntity;
+  status: Status;
   onToggleVisibility?(): void;
   visible?: boolean;
 }

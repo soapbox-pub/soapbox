@@ -21,11 +21,12 @@ import AccountContainer from '@/containers/account-container.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
-import { Attachment } from '@/schemas/index.ts';
+
 
 import ConfirmationStep from './steps/confirmation-step.tsx';
 import OtherActionsStep from './steps/other-actions-step.tsx';
 import ReasonStep from './steps/reason-step.tsx';
+
 
 const messages = defineMessages({
   blankslate: { id: 'report.reason.blankslate', defaultMessage: 'You have removed all statuses from being selected.' },
@@ -92,7 +93,7 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
 
       {status.media_attachments.length > 0 && (
         <AttachmentThumbs
-          media={status.media_attachments as unknown as Attachment[]}
+          media={status.media_attachments}
           sensitive={status.sensitive}
         />
       )}

@@ -7,7 +7,7 @@ import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose, replyCompose } from '@/actions/compose.ts';
-import { toggleFavourite } from '@/actions/interactions.ts';
+import { toggleFavourite, toggleReblog } from '@/actions/interactions.ts';
 import { openModal } from '@/actions/modals.ts';
 import { toggleStatusHidden, unfilterStatus } from '@/actions/statuses.ts';
 import TranslateButton from '@/components/translate-button.tsx';
@@ -19,9 +19,7 @@ import AccountContainer from '@/containers/account-container.tsx';
 import QuotedStatus from '@/features/status/containers/quoted-status-container.tsx';
 import { HotKeys } from '@/features/ui/components/hotkeys.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { useReblog } from '@/hooks/useReblog.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
 import { defaultMediaVisibility, textForScreenReader, getActualStatus } from '@/utils/status.ts';
 
@@ -35,6 +33,7 @@ import StatusInfo from './statuses/status-info.tsx';
 import Tombstone from './tombstone.tsx';
 
 import type { Status as LegacyStatus } from '@/types/entities.ts';
+
 
 // Defined in components/scrollable-list
 export type ScrollPosition = { height: number; top: number };
@@ -62,10 +61,7 @@ export interface IStatus {
   slim?: boolean;
 }
 
-/**
- * Legacy Status accepting the full legacy status entity.
- * @deprecated Use the PureStatus component.
- */
+/** Renders a status in a feed. */
 const Status: React.FC<IStatus> = (props) => {
   const {
     status,
@@ -104,7 +100,6 @@ const Status: React.FC<IStatus> = (props) => {
 
   const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
-  const { toggleReblog } = useReblog();
 
   // Track height changes we know about to compensate scrolling.
   useEffect(() => {
@@ -169,7 +164,7 @@ const Status: React.FC<IStatus> = (props) => {
   };
 
   const handleHotkeyBoost = (e?: KeyboardEvent): void => {
-    const modalReblog = () => toggleReblog(actualStatus.id);
+    const modalReblog = () => dispatch(toggleReblog(actualStatus));
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
@@ -470,7 +465,7 @@ const Status: React.FC<IStatus> = (props) => {
                   {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={actualStatus as unknown as StatusEntity}
+                        status={actualStatus}
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}

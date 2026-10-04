@@ -1,3 +1,4 @@
+import { normalizeStatus, type Status } from '@/normalizers/status.ts';
 import { GroupRoles } from '@/schemas/group-member.ts';
 import {
   accountSchema,
@@ -7,7 +8,6 @@ import {
   groupSchema,
   groupTagSchema,
   relationshipSchema,
-  statusSchema,
   type Account,
   type Card,
   type Group,
@@ -15,7 +15,6 @@ import {
   type GroupRelationship,
   type GroupTag,
   type Relationship,
-  type Status,
 } from '@/schemas/index.ts';
 import { InstanceV2, instanceV2Schema } from '@/schemas/instance.ts';
 
@@ -80,8 +79,8 @@ function buildRelationship(props: PartialDeep<Relationship> = {}): Relationship 
   }, props));
 }
 
-function buildStatus(props: PartialDeep<Status> = {}) {
-  return statusSchema.parse(Object.assign({
+function buildStatus(props: PartialDeep<Status> = {}): Status {
+  return normalizeStatus(Object.assign({
     id: crypto.randomUUID(),
     account: buildAccount(),
   }, props));

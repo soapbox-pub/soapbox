@@ -1,12 +1,16 @@
+import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { openModal } from '@/actions/modals.ts';
-import { useGroup, useGroupMedia } from '@/api/hooks/index.ts';
+import { expandGroupMediaTimeline } from '@/actions/timelines.ts';
+import { useGroup } from '@/api/hooks/index.ts';
 import LoadMore from '@/components/load-more.tsx';
 import MissingIndicator from '@/components/missing-indicator.tsx';
 import { Column } from '@/components/ui/column.tsx';
 import Spinner from '@/components/ui/spinner.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
+import { useAppSelector } from '@/hooks/useAppSelector.ts';
+import { getGroupGallery } from '@/selectors/index.ts';
 
 import MediaItem from '../account-gallery/components/media-item.tsx';
 
@@ -23,18 +27,18 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
 
   const { group, isLoading: groupIsLoading } = useGroup(groupId);
 
-  const {
-    entities: statuses,
-    fetchNextPage,
-    isLoading,
-    isFetching,
-    hasNextPage,
-  } = useGroupMedia(groupId);
+  const attachments = useAppSelector((state) => getGroupGallery(state, groupId));
+  const isLoading = useAppSelector((state) => state.timelines[`group:${groupId}:media`]?.isLoading ?? true);
+  const hasNextPage = useAppSelector((state) => !!state.timelines[`group:${groupId}:media`]?.hasMore);
 
-  const attachments = statuses.reduce<Attachment[]>((result, status) => {
-    result.push(...status.media_attachments.map((a) => ({ ...a, status })));
-    return result;
-  }, []);
+  useEffect(() => {
+    dispatch(expandGroupMediaTimeline(groupId));
+  }, [groupId]);
+
+  const fetchNextPage = () => {
+    const lastStatusId = attachments[attachments.length - 1]?.status.id;
+    dispatch(expandGroupMediaTimeline(groupId, { maxId: lastStatusId }));
+  };
 
   const handleOpenMedia = (attachment: Attachment) => {
     if (attachment.type === 'video') {
@@ -47,7 +51,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
     }
   };
 
-  if (isLoading || groupIsLoading) {
+  if ((isLoading && attachments.length === 0) || groupIsLoading) {
     return (
       <Column transparent withHeader={false}>
         <div className='pt-6'>
@@ -84,7 +88,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
       </div>
 
       {hasNextPage && (
-        <LoadMore className='mt-4' disabled={isFetching} onClick={fetchNextPage} />
+        <LoadMore className='mt-4' disabled={isLoading} onClick={fetchNextPage} />
       )}
     </Column>
   );

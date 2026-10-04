@@ -6,7 +6,8 @@ import Modal from '@/components/ui/modal.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
 import ReplyIndicator from '@/features/compose/components/reply-indicator.tsx';
-import { Status as StatusEntity } from '@/schemas/index.ts';
+
+import type { Status } from '@/types/entities.ts';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
@@ -14,8 +15,8 @@ const messages = defineMessages({
 });
 
 interface IBoostModal {
-  status: StatusEntity;
-  onReblog: (status: StatusEntity) => void;
+  status: Status;
+  onReblog: (status: Status) => void;
   onClose: () => void;
 }
 

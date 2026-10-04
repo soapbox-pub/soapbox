@@ -20,11 +20,11 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 import { makeGetStatus } from '@/selectors/index.ts';
 import { defaultMediaVisibility } from '@/utils/status.ts';
 
-import type { Status as StatusLegacy } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
+
 
 type RouteParams = { statusId: string };
 
@@ -36,7 +36,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   const dispatch = useAppDispatch();
   const getStatus = useCallback(makeGetStatus(), []);
 
-  const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as StatusLegacy;
+  const status = useAppSelector(state => getStatus(state, { id: params.statusId })) as Status;
 
   const { tileServer } = useSoapboxConfig();
   const { displayMedia } = useSettings();
@@ -209,7 +209,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       )}
 
       <StatusMedia
-        status={status as unknown as StatusEntity}
+        status={status}
         showMedia={showMedia}
         onToggleVisibility={handleToggleMediaVisibility}
       />

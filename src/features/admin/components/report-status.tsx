@@ -10,9 +10,9 @@ import StatusMedia from '@/components/status-media.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 
-import type { Status as LegacyStatus } from '@/types/entities.ts';
+import type { Status } from '@/types/entities.ts';
+
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 interface IReportStatus {
-  status: LegacyStatus;
+  status: Status;
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
@@ -52,7 +52,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     <HStack space={2} alignItems='start'>
       <Stack space={2} className='overflow-hidden' grow>
         <StatusContent status={status} />
-        <StatusMedia status={status as unknown as StatusEntity}  />
+        <StatusMedia status={status}  />
       </Stack>
 
       <div className='flex-none'>

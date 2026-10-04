@@ -25,12 +25,12 @@ import Thread from '@/features/status/components/thread.tsx';
 import Video from '@/features/video/index.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { userTouching } from '@/is-mobile.ts';
-import { normalizeStatus } from '@/normalizers/index.ts';
-import { Status as StatusEntity, Attachment } from '@/schemas/index.ts';
-import { Status as LegacyStatus } from '@/types/entities.ts';
 import { getActualStatus } from '@/utils/status.ts';
 
 import ImageLoader from '../image-loader.tsx';
+
+import type { Attachment, Status } from '@/types/entities.ts';
+
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -55,7 +55,7 @@ const containerStyle: React.CSSProperties = {
 
 interface IMediaModal {
   media: readonly Attachment[];
-  status?: StatusEntity;
+  status?: Status;
   index: number;
   time?: number;
   onClose(): void;
@@ -342,7 +342,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
                 className={clsx('absolute bottom-2 flex w-full transition-opacity', navigationHiddenClassName)}
               >
                 <StatusActionBar
-                  status={normalizeStatus(actualStatus) as LegacyStatus}
+                  status={actualStatus}
                   space='md'
                   statusActionButtonTheme='inverse'
                 />
@@ -360,7 +360,7 @@ const MediaModal: React.FC<IMediaModal> = (props) => {
             }
           >
             <Thread
-              status={normalizeStatus(actualStatus) as LegacyStatus}
+              status={actualStatus}
               withMedia={false}
               useWindowScroll={false}
               itemClassName='px-4'

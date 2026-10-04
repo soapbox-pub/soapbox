@@ -8,11 +8,13 @@ import { GroupLinkPreview } from '@/features/groups/components/group-link-previe
 import PlaceholderCard from '@/features/placeholder/components/placeholder-card.tsx';
 import { MediaGallery, Video, Audio } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { Status as StatusEntity, Attachment } from '@/schemas/index.ts';
+
+import type { Attachment, Status } from '@/types/entities.ts';
+
 
 interface IStatusMedia {
   /** Status entity to render media for. */
-  status: StatusEntity;
+  status: Status;
   /** Whether to display compact media. */
   muted?: boolean;
   /** Callback when compact media is clicked. */

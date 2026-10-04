@@ -11,9 +11,11 @@ import IconButton from '@/components/ui/icon-button.tsx';
 import Portal from '@/components/ui/portal.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { userTouching } from '@/is-mobile.ts';
-import { Status as StatusEntity } from '@/schemas/index.ts';
 
 import DropdownMenuItem, { MenuItem } from './dropdown-menu-item.tsx';
+
+import type { Status } from '@/types/entities.ts';
+
 
 export type Menu = Array<MenuItem | null>;
 
@@ -27,7 +29,7 @@ interface IDropdownMenu {
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>;
   placement?: Placement;
   src?: string;
-  status?: StatusEntity;
+  status?: Status;
   title?: string;
 }
 
