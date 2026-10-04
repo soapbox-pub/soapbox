@@ -1,4 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import * as actions from '@/actions/conversations.ts';
@@ -8,7 +7,7 @@ import reducer from './conversations.ts';
 describe('conversations reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {} as any)).toMatchObject({
-      items: ImmutableList(),
+      items: [],
       isLoading: false,
       hasMore: true,
       mounted: 0,
@@ -16,21 +15,21 @@ describe('conversations reducer', () => {
   });
 
   it('should handle CONVERSATIONS_FETCH_REQUEST', () => {
-    const state = ImmutableRecord({ isLoading: false })();
+    const state = { items: [], isLoading: false, hasMore: true, mounted: 0 };
     const action = {
       type: actions.CONVERSATIONS_FETCH_REQUEST,
     };
-    expect(reducer(state as any, action).toJS()).toMatchObject({
+    expect(reducer(state, action)).toMatchObject({
       isLoading: true,
     });
   });
 
   it('should handle CONVERSATIONS_FETCH_FAIL', () => {
-    const state = ImmutableRecord({ isLoading: true })();
+    const state = { items: [], isLoading: true, hasMore: true, mounted: 0 };
     const action = {
       type: actions.CONVERSATIONS_FETCH_FAIL,
     };
-    expect(reducer(state as any, action).toJS()).toMatchObject({
+    expect(reducer(state, action)).toMatchObject({
       isLoading: false,
     });
   });

@@ -38,11 +38,11 @@ const FundingPanel: React.FC = () => {
     dispatch(fetchPatronInstance());
   }, []);
 
-  if (patron.funding.isEmpty() || patron.goals.isEmpty()) return null;
+  if (Object.keys(patron.funding).length === 0 || patron.goals.length === 0) return null;
 
-  const amount = patron.getIn(['funding', 'amount']) as number;
-  const goal = patron.getIn(['goals', '0', 'amount']) as number;
-  const goalText = patron.getIn(['goals', '0', 'text']) as string;
+  const amount = patron.funding.amount as number;
+  const goal = patron.goals[0]?.amount;
+  const goalText = patron.goals[0]?.text;
   const goalReached = amount >= goal;
   let ratioText;
 

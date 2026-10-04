@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { render, screen } from '@/jest/test-helpers.tsx';
@@ -15,12 +14,12 @@ describe('<CaptchaField />', () => {
 
 describe('<NativeCaptchaField />', () => {
   it('renders correctly', () => {
-    const captcha = ImmutableMap({
+    const captcha = {
       answer_data: 'QTEyOEdDTQ...',
       token: 'CcDExJcv6qqOVw',
       type: 'native',
       url: 'data:image/png;base64,...',
-    });
+    };
 
     render(
       <NativeCaptchaField

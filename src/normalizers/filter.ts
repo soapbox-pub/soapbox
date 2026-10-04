@@ -3,51 +3,50 @@
  * Converts API filters into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/filter/}
  */
-import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
-import { FilterKeyword, FilterStatus } from '@/types/entities.ts';
-
-import { normalizeFilterKeyword } from './filter-keyword.ts';
-import { normalizeFilterStatus } from './filter-status.ts';
+import { normalizeFilterKeyword, type FilterKeyword } from './filter-keyword.ts';
+import { normalizeFilterStatus, type FilterStatus } from './filter-status.ts';
 
 export type ContextType = 'home' | 'public' | 'notifications' | 'thread' | 'account';
 export type FilterActionType = 'warn' | 'hide';
 
 // https://docs.joinmastodon.org/entities/filter/
-export const FilterRecord = ImmutableRecord({
-  id: '',
-  title: '',
-  context: ImmutableList<ContextType>(),
-  expires_at: '',
-  filter_action: 'warn' as FilterActionType,
-  keywords: ImmutableList<FilterKeyword>(),
-  statuses: ImmutableList<FilterStatus>(),
+export interface Filter {
+  id: string;
+  title: string;
+  context: ContextType[];
+  expires_at: string;
+  filter_action: FilterActionType;
+  keywords: FilterKeyword[];
+  statuses: FilterStatus[];
+}
+
+const normalizeFilterV1 = (filter: Record<string, any>): Record<string, any> => ({
+  ...filter,
+  title: filter.phrase,
+  keywords: [{
+    keyword: filter.phrase,
+    whole_word: filter.whole_word,
+  }],
+  filter_action: filter.irreversible ? 'hide' : 'warn',
 });
 
-const normalizeFilterV1 = (filter: ImmutableMap<string, any>) =>
-  filter
-    .set('title', filter.get('phrase'))
-    .set('keywords', ImmutableList([ImmutableMap({
-      keyword: filter.get('phrase'),
-      whole_word: filter.get('whole_word'),
-    })]))
-    .set('filter_action', filter.get('irreversible') ? 'hide' : 'warn');
+export const normalizeFilter = (data: Record<string, any>): Filter => {
+  const filter = 'phrase' in data ? normalizeFilterV1(data) : data;
 
-const normalizeKeywords = (filter: ImmutableMap<string, any>) =>
-  filter.update('keywords', ImmutableList(), keywords =>
-    keywords.map(normalizeFilterKeyword),
-  );
+  const result = fromDefaults<Filter>({
+    id: '',
+    title: '',
+    context: [],
+    expires_at: '',
+    filter_action: 'warn',
+    keywords: [],
+    statuses: [],
+  }, filter);
 
-const normalizeStatuses = (filter: ImmutableMap<string, any>) =>
-  filter.update('statuses', ImmutableList(), statuses =>
-    statuses.map(normalizeFilterStatus),
-  );
+  result.keywords = (filter.keywords ?? []).map(normalizeFilterKeyword);
+  result.statuses = (filter.statuses ?? []).map(normalizeFilterStatus);
 
-export const normalizeFilter = (filter: Record<string, any>) =>
-  FilterRecord(
-    ImmutableMap(fromJS(filter)).withMutations(filter => {
-      if (filter.has('phrase')) normalizeFilterV1(filter);
-      normalizeKeywords(filter);
-      normalizeStatuses(filter);
-    }),
-  );
+  return result;
+};

@@ -1,5 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
-
 import {
   DROPDOWN_MENU_OPEN,
   DROPDOWN_MENU_CLOSE,
@@ -7,18 +5,16 @@ import {
 
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
-  isOpen: false,
-});
+interface State {
+  isOpen: boolean;
+}
 
-type State = ReturnType<typeof ReducerRecord>;
-
-export default function dropdownMenu(state: State = ReducerRecord(), action: AnyAction) {
+export default function dropdownMenu(state: State = { isOpen: false }, action: AnyAction): State {
   switch (action.type) {
     case DROPDOWN_MENU_OPEN:
-      return state.set('isOpen', true);
+      return { ...state, isOpen: true };
     case DROPDOWN_MENU_CLOSE:
-      return state.set('isOpen', false);
+      return { ...state, isOpen: false };
     default:
       return state;
   }

@@ -137,9 +137,9 @@ const QuotedStatus: React.FC<IQuotedStatus> = ({ status, onCancel, compose }) =>
 
               {status.quote && <QuotedStatusIndicator statusId={status.quote as string} />}
 
-              {status.media_attachments.size > 0 && (
+              {status.media_attachments.length > 0 && (
                 <StatusMedia
-                  status={status.toJS() as StatusEntity}
+                  status={status as unknown as StatusEntity}
                   muted={compose}
                   showMedia={showMedia}
                   onToggleVisibility={handleToggleMediaVisibility}

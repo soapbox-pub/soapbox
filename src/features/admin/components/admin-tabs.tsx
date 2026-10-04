@@ -14,8 +14,8 @@ const AdminTabs: React.FC = () => {
   const intl = useIntl();
   const match = useRouteMatch();
 
-  const approvalCount = useAppSelector(state => state.admin.awaitingApproval.count());
-  const reportsCount = useAppSelector(state => state.admin.openReports.count());
+  const approvalCount = useAppSelector(state => state.admin.awaitingApproval.length);
+  const reportsCount = useAppSelector(state => state.admin.openReports.length);
 
   const tabs = [{
     name: '/soapbox/admin',

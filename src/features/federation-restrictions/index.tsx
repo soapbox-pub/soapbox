@@ -11,7 +11,6 @@ import { federationRestrictionsDisclosed } from '@/utils/state.ts';
 
 import RestrictedInstance from './components/restricted-instance.tsx';
 
-import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const messages = defineMessages({
   heading: { id: 'column.federation_restrictions', defaultMessage: 'Federation Restrictions' },
@@ -27,7 +26,7 @@ const FederationRestrictions = () => {
 
   const getHosts = useCallback(makeGetHosts(), []);
 
-  const hosts = useAppSelector((state) => getHosts(state)) as ImmutableOrderedSet<string>;
+  const hosts = useAppSelector((state) => getHosts(state));
   const disclosed = useAppSelector((state) => federationRestrictionsDisclosed(state));
 
   const [explanationBoxExpanded, setExplanationBoxExpanded] = useState(true);

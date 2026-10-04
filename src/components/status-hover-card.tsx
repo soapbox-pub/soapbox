@@ -26,7 +26,7 @@ export const StatusHoverCard: React.FC<IStatusHoverCard> = ({ visible = true }) 
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
   const statusId: string | undefined = useAppSelector(state => state.status_hover_card.statusId || undefined);
-  const status = useAppSelector(state => state.statuses.get(statusId!));
+  const status = useAppSelector(state => state.statuses[statusId!]);
   const targetRef = useAppSelector(state => state.status_hover_card.ref?.current);
 
   useEffect(() => {

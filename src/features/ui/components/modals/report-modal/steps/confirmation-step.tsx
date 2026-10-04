@@ -36,7 +36,7 @@ const renderTermsOfServiceLink = (href: string) => (
 
 const ConfirmationStep: React.FC<IConfirmationStep> = () => {
   const intl = useIntl();
-  const links = useAppSelector((state) => getSoapboxConfig(state).get('links') as any);
+  const links = useAppSelector((state) => getSoapboxConfig(state).links);
   const entityType = useAppSelector((state) => state.reports.new.entityType);
 
   const entity = entityType === ReportableEntities.GROUP
@@ -52,8 +52,8 @@ const ConfirmationStep: React.FC<IConfirmationStep> = () => {
       <Text>
         {intl.formatMessage(messages.content, {
           entity,
-          link: links.get('termsOfService') ?
-            renderTermsOfServiceLink(links.get('termsOfService')) :
+          link: links.termsOfService ?
+            renderTermsOfServiceLink(links.termsOfService) :
             termsOfServiceText,
         })}
       </Text>

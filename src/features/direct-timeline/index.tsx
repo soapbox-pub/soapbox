@@ -19,7 +19,7 @@ const messages = defineMessages({
 const DirectTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const next = useAppSelector(state => state.timelines.get('direct')?.next);
+  const next = useAppSelector(state => state.timelines.direct?.next);
 
   useDirectStream();
 

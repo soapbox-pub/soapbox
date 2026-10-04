@@ -1,4 +1,3 @@
-import { fromJS, Record as ImmutableRecord } from 'immutable';
 import { AnyAction } from 'redux';
 
 import {
@@ -27,68 +26,80 @@ import type {
   Location as LocationEntity,
 } from '@/types/entities';
 
-export const ReducerRecord = ImmutableRecord({
+export interface ComposeEvent {
+  name: string;
+  status: string;
+  location: LocationEntity | null;
+  start_time: Date;
+  end_time: Date | null;
+  approval_required: boolean;
+  banner: AttachmentEntity | null;
+  progress: number;
+  is_uploading: boolean;
+  is_submitting: boolean;
+  id: string | null;
+}
+
+type State = ComposeEvent;
+
+export const initialState = (): State => ({
   name: '',
   status: '',
-  location: null as LocationEntity | null,
+  location: null,
   start_time: new Date(),
-  end_time: null as Date | null,
+  end_time: null,
   approval_required: false,
-  banner: null as AttachmentEntity | null,
+  banner: null,
   progress: 0,
   is_uploading: false,
   is_submitting: false,
-  id: null as string | null,
+  id: null,
 });
 
-type State = ReturnType<typeof ReducerRecord>;
-
-const setHasEndTime = (state: State) => {
+const setHasEndTime = (state: State): State => {
   const endTime = new Date(state.start_time);
 
   endTime.setHours(endTime.getHours() + 2);
 
-  return state.set('end_time', endTime);
+  return { ...state, end_time: endTime };
 };
 
-export default function compose_event(state = ReducerRecord(), action: AnyAction): State {
+export default function compose_event(state: State = initialState(), action: AnyAction): State {
   switch (action.type) {
     case EDIT_EVENT_NAME_CHANGE:
-      return state.set('name', action.value);
+      return { ...state, name: action.value };
     case EDIT_EVENT_DESCRIPTION_CHANGE:
-      return state.set('status', action.value);
+      return { ...state, status: action.value };
     case EDIT_EVENT_START_TIME_CHANGE:
-      return state.set('start_time', action.value);
+      return { ...state, start_time: action.value };
     case EDIT_EVENT_END_TIME_CHANGE:
-      return state.set('end_time', action.value);
+      return { ...state, end_time: action.value };
     case EDIT_EVENT_HAS_END_TIME_CHANGE:
       if (action.value) return setHasEndTime(state);
-      return state.set('end_time', null);
+      return { ...state, end_time: null };
     case EDIT_EVENT_APPROVAL_REQUIRED_CHANGE:
-      return state.set('approval_required', action.value);
+      return { ...state, approval_required: action.value };
     case EDIT_EVENT_LOCATION_CHANGE:
-      return state.set('location', action.value);
+      return { ...state, location: action.value };
     case EVENT_BANNER_UPLOAD_REQUEST:
-      return state.set('is_uploading', true);
+      return { ...state, is_uploading: true };
     case EVENT_BANNER_UPLOAD_SUCCESS:
-      return state
-        .set('banner', normalizeAttachment(fromJS(action.media)))
-        .set('is_uploading', false);
+      return { ...state, banner: normalizeAttachment(action.media), is_uploading: false };
     case EVENT_BANNER_UPLOAD_FAIL:
-      return state.set('is_uploading', false);
+      return { ...state, is_uploading: false };
     case EVENT_BANNER_UPLOAD_UNDO:
-      return state.set('banner', null);
+      return { ...state, banner: null };
     case EVENT_BANNER_UPLOAD_PROGRESS:
-      return state.set('progress', action.loaded * 100);
+      return { ...state, progress: action.loaded * 100 };
     case EVENT_SUBMIT_REQUEST:
-      return state.set('is_submitting', true);
+      return { ...state, is_submitting: true };
     case EVENT_SUBMIT_SUCCESS:
     case EVENT_SUBMIT_FAIL:
-      return state.set('is_submitting', false);
+      return { ...state, is_submitting: false };
     case EVENT_COMPOSE_CANCEL:
-      return ReducerRecord();
+      return initialState();
     case EVENT_FORM_SET:
-      return ReducerRecord({
+      return {
         name: action.status.event.name,
         status: action.text,
         start_time: new Date(action.status.event.start_time),
@@ -100,7 +111,7 @@ export default function compose_event(state = ReducerRecord(), action: AnyAction
         is_uploading: false,
         is_submitting: false,
         id: action.status.id,
-      });
+      };
     default:
       return state;
   }

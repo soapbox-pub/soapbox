@@ -18,7 +18,6 @@ import userCheckIcon from '@tabler/icons/outline/user-check.svg';
 import userXIcon from '@tabler/icons/outline/user-x.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
-import { List as ImmutableList } from 'immutable';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -241,7 +240,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
 
   const onRemoveFromFollowers = () => {
     dispatch((_, getState) => {
-      const unfollowModal = getSettings(getState()).get('unfollowModal');
+      const unfollowModal = getSettings(getState()).unfollowModal;
       if (unfollowModal) {
         dispatch(openModal('CONFIRM', {
           message: <FormattedMessage id='confirmations.remove_from_followers.message' defaultMessage='Are you sure you want to remove {name} from your followers?' values={{ name: <strong className='break-words'>@{account.acct}</strong> }} />, // eslint-disable-line formatjs/no-literal-string-in-jsx
@@ -264,7 +263,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       type: 'image',
       url: account.avatar,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [avatar], index: 0 }));
   };
 
   const handleAvatarClick: React.MouseEventHandler = (e) => {
@@ -279,7 +278,7 @@ const Header: React.FC<IHeader> = ({ account }) => {
       type: 'image',
       url: account.header,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(header).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [header], index: 0 }));
   };
 
   const handleHeaderClick: React.MouseEventHandler = (e) => {

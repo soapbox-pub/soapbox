@@ -1,5 +1,3 @@
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-
 import { getSettings, changeSetting } from '@/actions/settings.ts';
 import { getFeatures } from '@/utils/features.ts';
 
@@ -114,26 +112,26 @@ const sendChatMessage = (chatId: string, params: Record<string, any>) =>
 const openChat = (chatId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const panes = getSettings(state).getIn(['chats', 'panes']) as ImmutableList<ImmutableMap<string, any>>;
-    const idx = panes.findIndex(pane => pane.get('chat_id') === chatId);
+    const panes = getSettings(state).chats.panes;
+    const idx = panes.findIndex(pane => pane.chat_id === chatId);
 
     dispatch(markChatRead(chatId));
 
     if (idx > -1) {
       return dispatch(changeSetting(['chats', 'panes', idx as any, 'state'], 'open'));
     } else {
-      const newPane = ImmutableMap({ chat_id: chatId, state: 'open' });
-      return dispatch(changeSetting(['chats', 'panes'], panes.push(newPane)));
+      const newPane = { chat_id: chatId, state: 'open' };
+      return dispatch(changeSetting(['chats', 'panes'], [...panes, newPane]));
     }
   };
 
 const closeChat = (chatId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const panes = getSettings(getState()).getIn(['chats', 'panes']) as ImmutableList<ImmutableMap<string, any>>;
-    const idx = panes.findIndex(pane => pane.get('chat_id') === chatId);
+    const panes = getSettings(getState()).chats.panes;
+    const idx = panes.findIndex(pane => pane.chat_id === chatId);
 
     if (idx > -1) {
-      return dispatch(changeSetting(['chats', 'panes'], panes.delete(idx)));
+      return dispatch(changeSetting(['chats', 'panes'], panes.filter((_, i) => i !== idx)));
     } else {
       return false;
     }
@@ -141,11 +139,12 @@ const closeChat = (chatId: string) =>
 
 const toggleChat = (chatId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const panes = getSettings(getState()).getIn(['chats', 'panes']) as ImmutableList<ImmutableMap<string, any>>;
-    const [idx, pane] = panes.findEntry(pane => pane.get('chat_id') === chatId)!;
+    const panes = getSettings(getState()).chats.panes;
+    const idx = panes.findIndex(pane => pane.chat_id === chatId);
+    const pane = panes[idx];
 
     if (idx > -1) {
-      const state = pane.get('state') === 'minimized' ? 'open' : 'minimized';
+      const state = pane.state === 'minimized' ? 'open' : 'minimized';
       if (state === 'open') dispatch(markChatRead(chatId));
       return dispatch(changeSetting(['chats', 'panes', idx as any, 'state'], state));
     } else {
@@ -155,7 +154,7 @@ const toggleChat = (chatId: string) =>
 
 const toggleMainWindow = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const main = getSettings(getState()).getIn(['chats', 'mainWindow']) as 'minimized' | 'open';
+    const main = getSettings(getState()).chats.mainWindow as 'minimized' | 'open';
     const state = main === 'minimized' ? 'open' : 'minimized';
     return dispatch(changeSetting(['chats', 'mainWindow'], state));
   };
@@ -183,10 +182,10 @@ const startChat = (accountId: string) =>
 
 const markChatRead = (chatId: string, lastReadId?: string | null) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const chat = getState().chats.items.get(chatId)!;
+    const chat = getState().chats.items[chatId]!;
     if (!lastReadId) lastReadId = chat.last_message;
 
-    if (chat.get('unread') < 1) return;
+    if (chat.unread < 1) return;
     if (!lastReadId) return;
 
     dispatch({ type: CHAT_READ_REQUEST, chatId, lastReadId });

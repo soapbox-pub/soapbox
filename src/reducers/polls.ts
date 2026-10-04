@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { produce } from 'immer';
 
 import { POLLS_IMPORT } from '@/actions/importer/index.ts';
 import { normalizeStatus } from '@/normalizers/status.ts';
@@ -6,7 +6,7 @@ import { normalizeStatus } from '@/normalizers/status.ts';
 import type { Poll, APIEntity, EmbeddedEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-type State = ImmutableMap<string, Poll>;
+type State = Record<string, Poll>;
 
 // HOTFIX: Convert the poll into a fake status to normalize it...
 // TODO: get rid of POLLS_IMPORT and use STATUS_IMPORT here.
@@ -16,18 +16,18 @@ const normalizePoll = (poll: any): EmbeddedEntity<Poll> => {
 };
 
 const importPolls = (state: State, polls: Array<APIEntity>) => {
-  return state.withMutations(map => {
-    return polls.forEach(poll => {
+  return produce(state, draft => {
+    polls.forEach(poll => {
       const normalPoll = normalizePoll(poll);
 
       if (normalPoll && typeof normalPoll === 'object') {
-        map.set(normalPoll.id, normalPoll);
+        draft[normalPoll.id] = normalPoll;
       }
     });
   });
 };
 
-const initialState: State = ImmutableMap();
+const initialState: State = {};
 
 export default function polls(state: State = initialState, action: AnyAction): State {
   switch (action.type) {

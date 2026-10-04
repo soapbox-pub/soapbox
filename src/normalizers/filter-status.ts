@@ -3,15 +3,16 @@
  * Converts API filters into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/FilterStatus/}
  */
-import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
 // https://docs.joinmastodon.org/entities/FilterStatus/
-export const FilterStatusRecord = ImmutableRecord({
-  id: '',
-  status_id: '',
-});
+export interface FilterStatus {
+  id: string;
+  status_id: string;
+}
 
-export const normalizeFilterStatus = (filterStatus: Record<string, any>) =>
-  FilterStatusRecord(
-    ImmutableMap(fromJS(filterStatus)),
-  );
+export const normalizeFilterStatus = (filterStatus: Record<string, any>): FilterStatus =>
+  fromDefaults<FilterStatus>({
+    id: '',
+    status_id: '',
+  }, filterStatus);

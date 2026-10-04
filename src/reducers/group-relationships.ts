@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { produce } from 'immer';
 
 import {
   GROUP_CREATE_SUCCESS,
@@ -6,31 +6,34 @@ import {
   GROUP_DELETE_SUCCESS,
   GROUP_RELATIONSHIPS_FETCH_SUCCESS,
 } from '@/actions/groups.ts';
-import { normalizeGroupRelationship } from '@/normalizers/index.ts';
+import { normalizeGroupRelationship, type GroupRelationship } from '@/normalizers/group-relationship.ts';
 
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-type GroupRelationshipRecord = ReturnType<typeof normalizeGroupRelationship>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string, GroupRelationshipRecord>;
+type State = Record<string, GroupRelationship>;
 
 const normalizeRelationships = (state: State, relationships: APIEntities) => {
-  relationships.forEach(relationship => {
-    state = state.set(relationship.id, normalizeGroupRelationship(relationship));
+  return produce(state, draft => {
+    relationships.forEach(relationship => {
+      draft[relationship.id] = normalizeGroupRelationship(relationship);
+    });
   });
-
-  return state;
 };
 
-export default function groupRelationships(state: State = ImmutableMap(), action: AnyAction) {
+export default function groupRelationships(state: State = {}, action: AnyAction): State {
   switch (action.type) {
     case GROUP_CREATE_SUCCESS:
     case GROUP_UPDATE_SUCCESS:
-      return state.set(action.group.id, normalizeGroupRelationship({ id: action.group.id, member: true, requested: false, role: 'admin' }));
+      return produce(state, draft => {
+        draft[action.group.id] = normalizeGroupRelationship({ id: action.group.id, member: true, requested: false, role: 'admin' });
+      });
     case GROUP_DELETE_SUCCESS:
-      return state.delete(action.id);
+      return produce(state, draft => {
+        delete draft[action.id];
+      });
     case GROUP_RELATIONSHIPS_FETCH_SUCCESS:
       return normalizeRelationships(state, action.relationships);
     default:

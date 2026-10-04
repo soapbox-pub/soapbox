@@ -27,7 +27,7 @@ const fetchFavouritedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    if (getState().status_lists.get('favourites')?.isLoading) {
+    if (getState().status_lists.favourites?.isLoading) {
       return;
     }
 
@@ -65,9 +65,9 @@ const expandFavouritedStatuses = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().status_lists.get('favourites')?.next || null;
+    const url = getState().status_lists.favourites?.next || null;
 
-    if (url === null || getState().status_lists.get('favourites')?.isLoading) {
+    if (url === null || getState().status_lists.favourites?.isLoading) {
       return;
     }
 
@@ -102,7 +102,7 @@ const fetchAccountFavouritedStatuses = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    if (getState().status_lists.get(`favourites:${accountId}`)?.isLoading) {
+    if (getState().status_lists[`favourites:${accountId}`]?.isLoading) {
       return;
     }
 
@@ -143,9 +143,9 @@ const expandAccountFavouritedStatuses = (accountId: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
 
-    const url = getState().status_lists.get(`favourites:${accountId}`)?.next || null;
+    const url = getState().status_lists[`favourites:${accountId}`]?.next || null;
 
-    if (url === null || getState().status_lists.get(`favourites:${accountId}`)?.isLoading) {
+    if (url === null || getState().status_lists[`favourites:${accountId}`]?.isLoading) {
       return;
     }
 

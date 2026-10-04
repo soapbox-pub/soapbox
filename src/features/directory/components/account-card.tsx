@@ -19,7 +19,7 @@ interface IAccountCard {
 const AccountCard: React.FC<IAccountCard> = ({ id }) => {
   const me = useAppSelector((state) => state.me);
   const { account } = useAccount(id);
-  const autoPlayGif = useAppSelector((state) => getSettings(state).get('autoPlayGif'));
+  const autoPlayGif = useAppSelector((state) => getSettings(state).autoPlayGif);
 
   if (!account) return null;
 

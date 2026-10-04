@@ -139,9 +139,9 @@ const PureSensitiveContentOverlay = forwardRef<HTMLDivElement, IPureSensitiveCon
             <HStack alignItems='center' justifyContent='center' space={2}>
               {isUnderReview ? (
                 <>
-                  {links.get('support') && (
+                  {links.support && (
                     <a
-                      href={links.get('support')}
+                      href={links.support}
                       target='_blank'
                       onClick={(event) => event.stopPropagation()}
                     >

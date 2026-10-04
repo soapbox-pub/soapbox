@@ -33,7 +33,7 @@ interface IPendingStatusMedia {
 }
 
 const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
-  if (status.media_attachments && !status.media_attachments.isEmpty()) {
+  if (status.media_attachments && status.media_attachments.length > 0) {
     return (
       <PlaceholderMediaGallery
         media={status.media_attachments}
@@ -48,7 +48,7 @@ const PendingStatusMedia: React.FC<IPendingStatusMedia> = ({ status }) => {
 
 const PendingStatus: React.FC<IPendingStatus> = ({ idempotencyKey, className, muted, thread = false }) => {
   const status = useAppSelector((state) => {
-    const pendingStatus = state.pending_statuses.get(idempotencyKey);
+    const pendingStatus = state.pending_statuses[idempotencyKey];
     return pendingStatus ? buildStatus(state, pendingStatus, idempotencyKey) : null;
   }) as StatusEntity | null;
 

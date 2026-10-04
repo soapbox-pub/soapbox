@@ -109,7 +109,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const otherAccounts = useAppSelector((state) => getOtherAccounts(state));
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
-  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
+  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.length);
 
   const closeButtonRef = useRef(null);
 
@@ -256,7 +256,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     />
                   )}
 
-                  {settings.get('isDeveloper') && (
+                  {settings.isDeveloper && (
                     <SidebarLink
                       to='/developers'
                       icon={codeIcon}

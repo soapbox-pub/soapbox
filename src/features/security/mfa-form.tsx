@@ -36,11 +36,11 @@ const MfaForm: React.FC = () => {
     setDisplayOtpForm(true);
   };
 
-  const mfa = useAppSelector((state) => state.security.get('mfa'));
+  const mfa = useAppSelector((state) => state.security.mfa);
 
   return (
     <Column label={intl.formatMessage(messages.heading)}>
-      {mfa.getIn(['settings', 'totp']) ? (
+      {mfa.settings.totp ? (
         <DisableOtpForm />
       ) : (
         <Stack space={4}>

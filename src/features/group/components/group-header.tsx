@@ -1,5 +1,4 @@
 import photoOffIcon from '@tabler/icons/outline/photo-off.svg';
-import { List as ImmutableList } from 'immutable';
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
@@ -63,7 +62,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       type: 'image',
       url: group.avatar,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [avatar], index: 0 }));
   };
 
   const handleAvatarClick: React.MouseEventHandler = (e) => {
@@ -78,7 +77,7 @@ const GroupHeader: React.FC<IGroupHeader> = ({ group }) => {
       type: 'image',
       url: group.header,
     });
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(header).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [header], index: 0 }));
   };
 
   const handleHeaderClick: React.MouseEventHandler = (e) => {

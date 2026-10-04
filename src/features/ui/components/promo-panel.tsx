@@ -11,9 +11,9 @@ const PromoPanel: React.FC = () => {
   const { promoPanel } = useSoapboxConfig();
   const { locale } = useSettings();
 
-  const promoItems = promoPanel.get('items');
+  const promoItems = promoPanel.items;
 
-  if (!promoItems || promoItems.isEmpty()) return null;
+  if (!promoItems || promoItems.length === 0) return null;
 
   return (
     <Widget title={instance.title}>
@@ -22,7 +22,7 @@ const PromoPanel: React.FC = () => {
           <Text key={i}>
             <a className='flex items-center' href={item.url} target='_blank'>
               <ForkAwesomeIcon id={item.icon} className='mr-2 flex-none text-lg rtl:ml-2 rtl:mr-0' fixedWidth />
-              {item.textLocales.get(locale) || item.text}
+              {item.textLocales[locale] || item.text}
             </a>
           </Text>
         ))}

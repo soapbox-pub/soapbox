@@ -1,4 +1,3 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { defineMessage } from 'react-intl';
 import { createSelector } from 'reselect';
 
@@ -6,6 +5,7 @@ import { patchMe } from '@/actions/me.ts';
 import messages from '@/messages.ts';
 import toast from '@/toast.tsx';
 import { isLoggedIn } from '@/utils/auth.ts';
+import { mergeDeep } from '@/utils/merge-deep.ts';
 
 import type { AppDispatch, RootState } from '@/store.ts';
 
@@ -23,7 +23,7 @@ type SettingOpts = {
 
 const saveSuccessMessage = defineMessage({ id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' });
 
-const defaultSettings = ImmutableMap({
+const defaultSettings = {
   onboarded: false,
   skinTone: 1,
   reduceMotion: false,
@@ -50,26 +50,26 @@ const defaultSettings = ImmutableMap({
 
   isDeveloper: false,
 
-  chats: ImmutableMap({
-    panes: ImmutableList(),
+  chats: {
+    panes: [] as { chat_id: string; state: string }[],
     mainWindow: 'minimized',
     sound: true,
-  }),
+  },
 
-  home: ImmutableMap({
-    shows: ImmutableMap({
+  home: {
+    shows: {
       reblog: true,
       reply: true,
       direct: false,
-    }),
+    },
 
-    regex: ImmutableMap({
+    regex: {
       body: '',
-    }),
-  }),
+    },
+  },
 
-  notifications: ImmutableMap({
-    alerts: ImmutableMap({
+  notifications: {
+    alerts: {
       follow: true,
       follow_request: false,
       favourite: true,
@@ -78,15 +78,15 @@ const defaultSettings = ImmutableMap({
       poll: true,
       move: true,
       'pleroma:emoji_reaction': true,
-    }),
+    },
 
-    quickFilter: ImmutableMap({
+    quickFilter: {
       active: 'all',
       show: true,
       advanced: false,
-    }),
+    },
 
-    shows: ImmutableMap({
+    shows: {
       follow: true,
       follow_request: true,
       favourite: true,
@@ -95,9 +95,9 @@ const defaultSettings = ImmutableMap({
       poll: true,
       move: true,
       'pleroma:emoji_reaction': true,
-    }),
+    },
 
-    sounds: ImmutableMap({
+    sounds: {
       follow: false,
       follow_request: false,
       favourite: false,
@@ -106,79 +106,79 @@ const defaultSettings = ImmutableMap({
       poll: false,
       move: false,
       'pleroma:emoji_reaction': false,
-    }),
+    },
 
-    birthdays: ImmutableMap({
+    birthdays: {
       show: true,
-    }),
-  }),
+    },
+  },
 
-  community: ImmutableMap({
-    shows: ImmutableMap({
+  community: {
+    shows: {
       reblog: false,
       reply: true,
       direct: false,
-    }),
-    other: ImmutableMap({
+    },
+    other: {
       onlyMedia: false,
-    }),
-    regex: ImmutableMap({
+    },
+    regex: {
       body: '',
-    }),
-  }),
+    },
+  },
 
-  public: ImmutableMap({
-    shows: ImmutableMap({
+  public: {
+    shows: {
       reblog: true,
       reply: true,
       direct: false,
-    }),
-    other: ImmutableMap({
+    },
+    other: {
       onlyMedia: false,
-    }),
-    regex: ImmutableMap({
+    },
+    regex: {
       body: '',
-    }),
-  }),
+    },
+  },
 
-  direct: ImmutableMap({
-    regex: ImmutableMap({
+  direct: {
+    regex: {
       body: '',
-    }),
-  }),
+    },
+  },
 
-  account_timeline: ImmutableMap({
-    shows: ImmutableMap({
+  account_timeline: {
+    shows: {
       reblog: true,
       pinned: true,
       direct: false,
-    }),
-  }),
+    },
+  },
 
-  groups: ImmutableMap({}),
+  groups: {} as Record<string, unknown>,
 
-  trends: ImmutableMap({
+  trends: {
     show: true,
-  }),
+  },
 
-  columns: ImmutableList([
-    ImmutableMap({ id: 'COMPOSE', uuid: crypto.randomUUID(), params: {} }),
-    ImmutableMap({ id: 'HOME', uuid: crypto.randomUUID(), params: {} }),
-    ImmutableMap({ id: 'NOTIFICATIONS', uuid: crypto.randomUUID(), params: {} }),
-  ]),
+  columns: [
+    { id: 'COMPOSE', uuid: crypto.randomUUID(), params: {} },
+    { id: 'HOME', uuid: crypto.randomUUID(), params: {} },
+    { id: 'NOTIFICATIONS', uuid: crypto.randomUUID(), params: {} },
+  ],
 
-  remote_timeline: ImmutableMap({
-    pinnedHosts: ImmutableList(),
-  }),
-});
+  remote_timeline: {
+    pinnedHosts: [] as string[],
+  },
+};
+
+type Settings = typeof defaultSettings & { [key: string]: unknown };
 
 const getSettings = createSelector([
-  (state: RootState) => state.soapbox.get('defaultSettings'),
+  (state: RootState) => state.soapbox.defaultSettings,
   (state: RootState) => state.settings,
-], (soapboxSettings, settings) => {
-  return defaultSettings
-    .mergeDeep(soapboxSettings)
-    .mergeDeep(settings);
+], (soapboxSettings, settings): Settings => {
+  return mergeDeep(defaultSettings, soapboxSettings, settings);
 });
 
 interface SettingChangeAction {
@@ -216,9 +216,9 @@ const saveSettingsImmediate = (opts?: SettingOpts) =>
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    if (getSettings(state).getIn(['saved'])) return;
+    if (getSettings(state).saved) return;
 
-    const data = state.settings.delete('saved').toJS();
+    const { saved: _, ...data } = state.settings;
 
     dispatch(patchMe({
       pleroma_settings_store: {
@@ -239,7 +239,7 @@ const saveSettings = (opts?: SettingOpts) =>
   (dispatch: AppDispatch) => dispatch(saveSettingsImmediate(opts));
 
 const getLocale = (state: RootState, fallback = 'en') => {
-  const localeWithVariant = (getSettings(state).get('locale') as string).replace('_', '-');
+  const localeWithVariant = getSettings(state).locale.replace('_', '-');
   const locale = localeWithVariant.split('-')[0];
   const fallbackLocale = Object.keys(messages).includes(locale) ? locale : fallback;
   return Object.keys(messages).includes(localeWithVariant) ? localeWithVariant : fallbackLocale;
@@ -262,4 +262,5 @@ export {
   saveSettings,
   getLocale,
   type SettingsAction,
+  type Settings,
 };

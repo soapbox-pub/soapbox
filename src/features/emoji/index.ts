@@ -8,7 +8,7 @@ import type { CustomEmoji as MastodonCustomEmoji } from '@/schemas/custom-emoji.
  *  - emoji-mart's "onPickEmoji" handler
  *  - emoji-mart's custom emoji types
  *  - an Emoji type that is either NativeEmoji or CustomEmoji
- *  - a type inside redux's `store.custom_emoji` immutablejs
+ *  - a type inside redux's `store.custom_emoji`
  *
  * there needs to be one type for the picker handler callback
  * and one type for the emoji-mart data

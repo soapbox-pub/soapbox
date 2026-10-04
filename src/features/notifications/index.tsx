@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { debounce } from 'es-toolkit';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { useCallback, useEffect, useRef } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { createSelector } from 'reselect';
@@ -25,7 +24,6 @@ import FilterBar from './components/filter-bar.tsx';
 import Notification from './components/notification.tsx';
 
 import type { RootState } from '@/store.ts';
-import type { Notification as NotificationEntity } from '@/types/entities.ts';
 import type { VirtuosoHandle } from 'react-virtuoso';
 
 const messages = defineMessages({
@@ -34,18 +32,20 @@ const messages = defineMessages({
 });
 
 const getNotifications = createSelector([
-  state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
-  state => getSettings(state).getIn(['notifications', 'quickFilter', 'active']),
-  state => ImmutableList((getSettings(state).getIn(['notifications', 'shows']) as ImmutableMap<string, boolean>).filter(item => !item).keys()),
-  (state: RootState) => state.notifications.items.toList(),
-], (showFilterBar, allowedType, excludedTypes, notifications: ImmutableList<NotificationEntity>) => {
+  state => getSettings(state).notifications.quickFilter.show,
+  state => getSettings(state).notifications.quickFilter.active,
+  state => getSettings(state).notifications.shows,
+  (state: RootState) => state.notifications.items,
+], (showFilterBar, allowedType, shows: Record<string, boolean>, notifications) => {
+  const excludedTypes = Object.keys(shows).filter(type => !shows[type]);
+
   if (!showFilterBar || allowedType === 'all') {
     // used if user changed the notification settings after loading the notifications from the server
     // otherwise a list of notifications will come pre-filtered from the backend
     // we need to turn it off for FilterBar in order not to block ourselves from seeing a specific category
-    return notifications.filterNot(item => item !== null && excludedTypes.includes(item.get('type')));
+    return notifications.filter(item => !excludedTypes.includes(item.type));
   }
-  return notifications.filter(item => item !== null && allowedType === item.get('type'));
+  return notifications.filter(item => allowedType === item.type);
 });
 
 const Notifications = () => {
@@ -63,15 +63,15 @@ const Notifications = () => {
 
   const node = useRef<VirtuosoHandle>(null);
   const column = useRef<HTMLDivElement>(null);
-  const scrollableContentRef = useRef<ImmutableList<JSX.Element> | null>(null);
+  const scrollableContentRef = useRef<JSX.Element[] | null>(null);
 
   // const handleLoadGap = (maxId) => {
   //   dispatch(expandNotifications({ maxId }));
   // };
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const last = notifications.last();
-    dispatch(expandNotifications({ maxId: last && last.get('id') }));
+    const last = notifications[notifications.length - 1];
+    dispatch(expandNotifications({ maxId: last && last.id }));
   }, 300, { edges: ['leading'] }), [notifications]);
 
   const handleScrollToTop = useCallback(debounce(() => {
@@ -83,12 +83,12 @@ const Notifications = () => {
   }, 100), []);
 
   const handleMoveUp = (id: string) => {
-    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    const elementIndex = notifications.findIndex(item => item !== null && item.id === id) - 1;
     _selectChild(elementIndex);
   };
 
   const handleMoveDown = (id: string) => {
-    const elementIndex = notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    const elementIndex = notifications.findIndex(item => item !== null && item.id === id) + 1;
     _selectChild(elementIndex);
   };
 
@@ -131,7 +131,7 @@ const Notifications = () => {
     ? <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />
     : <FormattedMessage id='empty_column.notifications_filtered' defaultMessage="You don't have any notifications of this type yet." />;
 
-  let scrollableContent: ImmutableList<JSX.Element> | null = null;
+  let scrollableContent: JSX.Element[] | null = null;
 
   const filterBarContainer = showFilterBar
     ? (<FilterBar />)
@@ -139,7 +139,7 @@ const Notifications = () => {
 
   if (isLoading && scrollableContentRef.current) {
     scrollableContent = scrollableContentRef.current;
-  } else if (notifications.size > 0 || hasMore) {
+  } else if (notifications.length > 0 || hasMore) {
     scrollableContent = notifications.map((item) => (
       <Notification
         key={item.id}
@@ -159,7 +159,7 @@ const Notifications = () => {
       ref={node}
       scrollKey='notifications'
       isLoading={isLoading}
-      showLoading={isLoading && notifications.size === 0}
+      showLoading={isLoading && notifications.length === 0}
       hasMore={hasMore}
       emptyMessage={emptyMessage}
       placeholderComponent={PlaceholderNotification}
@@ -168,11 +168,11 @@ const Notifications = () => {
       onScrollToTop={handleScrollToTop}
       onScroll={handleScroll}
       listClassName={clsx({
-        'divide-y divide-gray-200 black:divide-gray-800 dark:divide-primary-800 divide-solid': notifications.size > 0,
-        'space-y-2': notifications.size === 0,
+        'divide-y divide-gray-200 black:divide-gray-800 dark:divide-primary-800 divide-solid': notifications.length > 0,
+        'space-y-2': notifications.length === 0,
       })}
     >
-      {scrollableContent as ImmutableList<JSX.Element>}
+      {scrollableContent ?? []}
     </ScrollableList>
   );
 

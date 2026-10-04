@@ -6,6 +6,7 @@ import { defaultSettings } from '@/actions/settings.ts';
 import SiteLogo from '@/components/site-logo.tsx';
 import { useSystemTheme } from '@/hooks/useSystemTheme.ts';
 import { normalizeSoapboxConfig } from '@/normalizers/index.ts';
+import { mergeDeep } from '@/utils/merge-deep.ts';
 import { generateThemeCss } from '@/utils/theme.ts';
 
 interface ISitePreview {
@@ -16,9 +17,9 @@ interface ISitePreview {
 /** Renders a preview of the website's style with the configuration applied. */
 const SitePreview: React.FC<ISitePreview> = ({ soapbox }) => {
   const soapboxConfig = useMemo(() => normalizeSoapboxConfig(soapbox), [soapbox]);
-  const settings = defaultSettings.mergeDeep(soapboxConfig.defaultSettings);
+  const settings = mergeDeep(defaultSettings, soapboxConfig.defaultSettings);
 
-  const userTheme = settings.get('themeMode');
+  const userTheme = settings.themeMode;
   const systemTheme = useSystemTheme();
 
   const dark = ['dark', 'black'].includes(userTheme as string) || (userTheme === 'system' && systemTheme === 'dark');

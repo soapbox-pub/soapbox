@@ -20,7 +20,7 @@ interface IStatusReactionWrapper {
 const StatusReactionWrapper: React.FC<IStatusReactionWrapper> = ({ statusId, children }): JSX.Element | null => {
   const dispatch = useAppDispatch();
   const { account: ownAccount } = useOwnAccount();
-  const status = useAppSelector(state => state.statuses.get(statusId));
+  const status = useAppSelector(state => state.statuses[statusId]);
   const soapboxConfig = useSoapboxConfig();
 
   const timeout = useRef<NodeJS.Timeout>();

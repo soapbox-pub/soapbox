@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-
 import { normalizeStatus } from '@/normalizers/status.ts';
 import { calculateStatus } from '@/reducers/statuses.ts';
 import { makeGetAccount } from '@/selectors/index.ts';
@@ -11,17 +9,18 @@ const getAccount = makeGetAccount();
 
 const buildMentions = (pendingStatus: PendingStatus) => {
   if (pendingStatus.in_reply_to_id) {
-    return ImmutableList(pendingStatus.to || []).map(acct => ImmutableMap({ acct }));
+    return (pendingStatus.to || []).map(acct => ({ acct }));
   } else {
-    return ImmutableList();
+    return [];
   }
 };
 
 const buildPoll = (pendingStatus: PendingStatus) => {
-  if (pendingStatus.hasIn(['poll', 'options'])) {
-    return pendingStatus.poll!.update('options', (options: ImmutableMap<string, any>) => {
-      return options.map((title: string) => ImmutableMap({ title }));
-    });
+  if (pendingStatus.poll?.options) {
+    return {
+      ...pendingStatus.poll,
+      options: pendingStatus.poll.options.map((title: string) => ({ title })),
+    };
   } else {
     return null;
   }
@@ -32,19 +31,19 @@ export const buildStatus = (state: RootState, pendingStatus: PendingStatus, idem
   const account = getAccount(state, me);
   const inReplyToId = pendingStatus.in_reply_to_id;
 
-  const status = ImmutableMap({
+  const status = {
     account,
     content: pendingStatus.status.replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
     id: `末pending-${idempotencyKey}`,
-    in_reply_to_account_id: state.statuses.getIn([inReplyToId, 'account'], null),
+    in_reply_to_account_id: inReplyToId ? state.statuses[inReplyToId]?.account?.id ?? null : null,
     in_reply_to_id: inReplyToId,
-    media_attachments: (pendingStatus.media_ids || ImmutableList()).map((id: string) => ImmutableMap({ id })),
+    media_attachments: (pendingStatus.media_ids || []).map((id: string) => ({ id })),
     mentions: buildMentions(pendingStatus),
     poll: buildPoll(pendingStatus),
     quote: pendingStatus.quote_id,
     sensitive: pendingStatus.sensitive,
     visibility: pendingStatus.visibility,
-  });
+  };
 
   return calculateStatus(normalizeStatus(status));
 };

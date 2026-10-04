@@ -36,9 +36,10 @@ import { emojifyText } from '@/utils/emojify.tsx';
 import { NotificationType, validType } from '@/utils/notification.ts';
 
 import type { ScrollPosition } from '@/components/status.tsx';
-import type { Account as AccountEntity, Status as StatusLegacy, Notification as NotificationEntity } from '@/types/entities.ts';
+import type { ReducerNotification } from '@/reducers/notifications.ts';
+import type { Account as AccountEntity, Status as StatusLegacy } from '@/types/entities.ts';
 
-const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date) => {
+const notificationForScreenReader = (intl: IntlShape, message: string, timestamp: Date | string) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
@@ -178,7 +179,7 @@ const avatarSize = 48;
 
 interface INotification {
   hidden?: boolean;
-  notification: NotificationEntity;
+  notification: ReducerNotification;
   onMoveUp?: (notificationId: string) => void;
   onMoveDown?: (notificationId: string) => void;
   onReblog?: (status: StatusLegacy, e?: KeyboardEvent) => void;
@@ -250,14 +251,14 @@ const Notification: React.FC<INotification> = (props) => {
   const handleHotkeyBoost = useCallback((e?: KeyboardEvent) => {
     if (status && typeof status === 'object') {
       dispatch((_, getState) => {
-        const boostModal = getSettings(getState()).get('boostModal');
+        const boostModal = getSettings(getState()).boostModal;
         if (status.reblogged) {
           dispatch(unreblog(status));
         } else {
           if (e?.shiftKey || !boostModal) {
             reblog(status.id);
           } else {
-            dispatch(openModal('BOOST', { status: status.toJS(), onReblog: (status: StatusLegacy) => {
+            dispatch(openModal('BOOST', { status: status, onReblog: (status: StatusLegacy) => {
               reblog(status.id);
             } }));
           }

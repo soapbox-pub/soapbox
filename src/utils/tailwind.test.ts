@@ -1,18 +1,17 @@
-import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { toTailwind, fromLegacyColors, expandPalette } from './tailwind.ts';
 
 describe('toTailwind()', () => {
   it('handles empty Soapbox config', () => {
-    const soapboxConfig = ImmutableMap<string, any>();
+    const soapboxConfig = {};
     const result = toTailwind(soapboxConfig);
-    const expected = ImmutableMap({ colors: ImmutableMap() });
+    const expected = { colors: {} };
     expect(result).toEqual(expected);
   });
 
   it('converts brandColor into a Tailwind color palette', () => {
-    const soapboxConfig = ImmutableMap({ brandColor: '#0482d8' });
+    const soapboxConfig = { brandColor: '#0482d8' };
 
     const expected = {
       brandColor: '#0482d8',
@@ -33,18 +32,18 @@ describe('toTailwind()', () => {
     };
 
     const result = toTailwind(soapboxConfig);
-    expect(result.toJS()).toMatchObject(expected);
+    expect(result).toMatchObject(expected);
   });
 
   it('prefers Tailwind colors object over legacy colors', () => {
-    const soapboxConfig = ImmutableMap({
+    const soapboxConfig = {
       brandColor: '#0482d8',
-      colors: ImmutableMap({
-        primary: ImmutableMap({
+      colors: {
+        primary: {
           300: '#ff0000',
-        }),
-      }),
-    });
+        },
+      },
+    };
 
     const expected = {
       brandColor: '#0482d8',
@@ -65,13 +64,13 @@ describe('toTailwind()', () => {
     };
 
     const result = toTailwind(soapboxConfig);
-    expect(result.toJS()).toMatchObject(expected);
+    expect(result).toMatchObject(expected);
   });
 });
 
 describe('fromLegacyColors()', () => {
   it('converts only brandColor', () => {
-    const soapboxConfig = ImmutableMap({ brandColor: '#0482d8' });
+    const soapboxConfig = { brandColor: '#0482d8' };
 
     const expected = {
       primary: {
@@ -130,10 +129,10 @@ describe('fromLegacyColors()', () => {
   });
 
   it('converts both legacy colors', () => {
-    const soapboxConfig = ImmutableMap({
+    const soapboxConfig = {
       brandColor: '#0482d8',
       accentColor: '#2bd110',
-    });
+    };
 
     const expected = {
       primary: {

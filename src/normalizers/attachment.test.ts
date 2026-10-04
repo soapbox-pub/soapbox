@@ -1,4 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { normalizeAttachment } from './attachment.ts';
@@ -8,7 +7,6 @@ describe('normalizeAttachment()', () => {
     const attachment = {};
     const result = normalizeAttachment(attachment);
 
-    expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.type).toEqual('unknown');
     expect(result.url).toEqual('');
   });

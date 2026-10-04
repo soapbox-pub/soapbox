@@ -1,5 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-
 import {
   FOLLOWED_HASHTAGS_FETCH_REQUEST,
   FOLLOWED_HASHTAGS_FETCH_SUCCESS,
@@ -13,34 +11,42 @@ import { normalizeTag } from '@/normalizers/index.ts';
 import type { APIEntity, Tag } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
-  items: ImmutableList<Tag>(),
+interface State {
+  items: Tag[];
+  isLoading: boolean;
+  next: string | null;
+}
+
+const initialState: State = {
+  items: [],
   isLoading: false,
   next: null,
-});
+};
 
-export default function followed_tags(state = ReducerRecord(), action: AnyAction) {
+export default function followed_tags(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case FOLLOWED_HASHTAGS_FETCH_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case FOLLOWED_HASHTAGS_FETCH_SUCCESS:
-      return state.withMutations(map => {
-        map.set('items', ImmutableList(action.followed_tags.map((item: APIEntity) => normalizeTag(item))));
-        map.set('isLoading', false);
-        map.set('next', action.next);
-      });
+      return {
+        ...state,
+        items: action.followed_tags.map((item: APIEntity) => normalizeTag(item)),
+        isLoading: false,
+        next: action.next,
+      };
     case FOLLOWED_HASHTAGS_FETCH_FAIL:
-      return state.set('isLoading', false);
+      return { ...state, isLoading: false };
     case FOLLOWED_HASHTAGS_EXPAND_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case FOLLOWED_HASHTAGS_EXPAND_SUCCESS:
-      return state.withMutations(map => {
-        map.update('items', list => list.concat(action.followed_tags.map((item: APIEntity) => normalizeTag(item))));
-        map.set('isLoading', false);
-        map.set('next', action.next);
-      });
+      return {
+        ...state,
+        items: [...state.items, ...action.followed_tags.map((item: APIEntity) => normalizeTag(item))],
+        isLoading: false,
+        next: action.next,
+      };
     case FOLLOWED_HASHTAGS_EXPAND_FAIL:
-      return state.set('isLoading', false);
+      return { ...state, isLoading: false };
     default:
       return state;
   }

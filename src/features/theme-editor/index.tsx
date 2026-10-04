@@ -56,7 +56,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   const host = useAppSelector(state => getHost(state));
   const rawConfig = useAppSelector(state => state.soapbox);
 
-  const [colors, setColors] = useState(soapbox.colors.toJS() as any);
+  const [colors, setColors] = useState<Record<string, any>>(soapbox.colors);
   const [submitting, setSubmitting] = useState(false);
   const [resetKey, setResetKey] = useState(crypto.randomUUID());
 
@@ -89,16 +89,16 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
   };
 
   const resetTheme = () => {
-    setTheme(soapbox.colors.toJS() as any);
+    setTheme(soapbox.colors);
   };
 
   const updateTheme = async () => {
-    const params = rawConfig.set('colors', colors).toJS();
+    const params = { ...rawConfig, colors };
     await dispatch(updateSoapboxConfig(params));
   };
 
   const restoreDefaultTheme = () => {
-    const colors = normalizeSoapboxConfig({ brandColor: '#0482d8' }).colors.toJS();
+    const colors = normalizeSoapboxConfig({ brandColor: '#0482d8' }).colors;
     setTheme(colors);
   };
 
@@ -117,7 +117,7 @@ const ThemeEditor: React.FC<IThemeEditor> = () => {
     if (file) {
       const text = await file.text();
       const json = JSON.parse(text);
-      const colors = normalizeSoapboxConfig({ colors: json }).colors.toJS();
+      const colors = normalizeSoapboxConfig({ colors: json }).colors;
 
       setTheme(colors);
       toast.success(intl.formatMessage(messages.importSuccess));

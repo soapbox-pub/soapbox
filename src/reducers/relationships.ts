@@ -1,5 +1,5 @@
 import { get } from 'es-toolkit/compat';
-import { Map as ImmutableMap } from 'immutable';
+import { produce } from 'immer';
 
 import { type Relationship, relationshipSchema } from '@/schemas/index.ts';
 
@@ -28,25 +28,27 @@ import {
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-type State = ImmutableMap<string, Relationship>;
+type State = Record<string, Relationship>;
 type APIEntities = Array<APIEntity>;
 
-const normalizeRelationships = (state: State, relationships: APIEntities) => {
-  relationships.forEach(relationship => {
-    try {
-      state = state.set(relationship.id, relationshipSchema.parse(relationship));
-    } catch (_e) {
-      // do nothing
-    }
+const normalizeRelationships = (state: State, relationships: APIEntities): State => {
+  return produce(state, draft => {
+    relationships.forEach(relationship => {
+      const result = relationshipSchema.safeParse(relationship);
+      if (result.success) {
+        draft[result.data.id] = result.data;
+      }
+    });
   });
-
-  return state;
 };
 
 const setDomainBlocking = (state: State, accounts: string[], blocking: boolean) => {
-  return state.withMutations(map => {
+  return produce(state, draft => {
     accounts.forEach(id => {
-      map.setIn([id, 'domain_blocking'], blocking);
+      const relationship = draft[id];
+      if (relationship) {
+        relationship.domain_blocking = blocking;
+      }
     });
   });
 };
@@ -66,7 +68,7 @@ const importPleromaAccounts = (state: State, accounts: APIEntities) => {
   return state;
 };
 
-export default function relationships(state: State = ImmutableMap<string, Relationship>(), action: AnyAction) {
+export default function relationships(state: State = {}, action: AnyAction): State {
   switch (action.type) {
     case ACCOUNT_IMPORT:
       return importPleromaAccount(state, action.account);

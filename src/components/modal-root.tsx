@@ -11,24 +11,24 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { usePrevious } from '@/hooks/usePrevious.ts';
 
 import type { ModalType } from '@/features/ui/components/modal-root.tsx';
-import type { ReducerRecord as ReducerComposeEvent } from '@/reducers/compose-event.ts';
-import type { ReducerCompose } from '@/reducers/compose.ts';
+import type { ComposeEvent } from '@/reducers/compose-event.ts';
+import type { Compose } from '@/reducers/compose.ts';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.cancel.confirm', defaultMessage: 'Discard' },
   cancelEditing: { id: 'confirmations.cancel_editing.confirm', defaultMessage: 'Cancel editing' },
 });
 
-export const checkComposeContent = (compose?: ReturnType<typeof ReducerCompose>) => {
+export const checkComposeContent = (compose?: Compose) => {
   return !!compose && [
     compose.editorState && compose.editorState.length > 0,
     compose.spoiler_text.length > 0,
-    compose.media_attachments.size > 0,
+    compose.media_attachments.length > 0,
     compose.poll !== null,
   ].some(check => check === true);
 };
 
-export const checkEventComposeContent = (compose?: ReturnType<typeof ReducerComposeEvent>) => {
+export const checkEventComposeContent = (compose?: ComposeEvent) => {
   return !!compose && [
     compose.name.length > 0,
     compose.status.length > 0,
@@ -69,7 +69,7 @@ const ModalRoot: React.FC<IModalRoot> = ({ children, onCancel, onClose, type }) 
 
   const handleOnClose = () => {
     dispatch((_, getState) => {
-      const compose = getState().compose.get('compose-modal');
+      const compose = getState().compose['compose-modal'];
       const hasComposeContent = checkComposeContent(compose);
       const hasEventComposeContent = checkEventComposeContent(getState().compose_event);
 

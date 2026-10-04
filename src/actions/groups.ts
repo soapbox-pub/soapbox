@@ -166,7 +166,7 @@ const fetchGroupRelationships = (groupIds: string[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
     const loadedRelationships = state.group_relationships;
-    const newGroupIds = groupIds.filter(id => loadedRelationships.get(id, null) === null);
+    const newGroupIds = groupIds.filter(id => !loadedRelationships[id]);
 
     if (!state.me || newGroupIds.length === 0) {
       return;
@@ -264,7 +264,7 @@ const fetchGroupBlocksFail = (id: string, error: unknown) => ({
 
 const expandGroupBlocks = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = getState().user_lists.group_blocks.get(id)?.next || null;
+    const url = getState().user_lists.group_blocks[id]?.next || null;
 
     if (url === null) {
       return;
@@ -457,7 +457,7 @@ const fetchGroupMembershipsFail = (id: string, role: GroupRole, error: unknown) 
 
 const expandGroupMemberships = (id: string, role: GroupRole) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = getState().group_memberships.get(role).get(id)?.next || null;
+    const url = getState().group_memberships[role][id]?.next || null;
 
     if (url === null) {
       return;
@@ -534,7 +534,7 @@ const fetchGroupMembershipRequestsFail = (id: string, error: unknown) => ({
 
 const expandGroupMembershipRequests = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = getState().user_lists.membership_requests.get(id)?.next || null;
+    const url = getState().user_lists.membership_requests[id]?.next || null;
 
     if (url === null) {
       return;

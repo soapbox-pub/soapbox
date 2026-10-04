@@ -1,68 +1,49 @@
 /**
  * Status edit normalizer
  */
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Record as ImmutableRecord,
-  fromJS,
-} from 'immutable';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { normalizeAttachment } from '@/normalizers/attachment.ts';
 import { normalizeEmoji } from '@/normalizers/emoji.ts';
 import { pollSchema } from '@/schemas/index.ts';
 import { stripCompatibilityFeatures } from '@/utils/html.ts';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
 import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from '@/types/entities.ts';
 
-export const StatusEditRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account>,
-  content: '',
-  created_at: new Date(),
-  emojis: ImmutableList<Emoji>(),
-  favourited: false,
-  media_attachments: ImmutableList<Attachment>(),
-  poll: null as EmbeddedEntity<Poll>,
-  sensitive: false,
-  spoiler_text: '',
-});
+export interface StatusEdit {
+  account: EmbeddedEntity<Account>;
+  content: string;
+  created_at: Date | string;
+  emojis: Emoji[];
+  favourited: boolean;
+  media_attachments: Attachment[];
+  poll: EmbeddedEntity<Poll>;
+  sensitive: boolean;
+  spoiler_text: string;
+}
 
-const normalizeAttachments = (statusEdit: ImmutableMap<string, any>) => {
-  return statusEdit.update('media_attachments', ImmutableList(), attachments => {
-    return attachments.map(normalizeAttachment);
-  });
-};
+export const normalizeStatusEdit = (statusEdit: Record<string, any>): StatusEdit => {
+  const result = fromDefaults<StatusEdit>({
+    account: null,
+    content: '',
+    created_at: new Date(),
+    emojis: [],
+    favourited: false,
+    media_attachments: [],
+    poll: null,
+    sensitive: false,
+    spoiler_text: '',
+  }, statusEdit);
 
-// Normalize emojis
-const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
-  return entity.update('emojis', ImmutableList(), emojis => {
-    return emojis.map(normalizeEmoji);
-  });
-};
+  result.media_attachments = (statusEdit.media_attachments ?? []).map(normalizeAttachment);
+  result.emojis = (statusEdit.emojis ?? []).map(normalizeEmoji);
 
-// Normalize the poll in the status, if applicable
-const normalizeStatusPoll = (statusEdit: ImmutableMap<string, any>) => {
-  try {
-    const poll = pollSchema.parse(statusEdit.get('poll').toJS());
-    return statusEdit.set('poll', poll);
-  } catch (_e) {
-    return statusEdit.set('poll', null);
-  }
-};
+  // Normalize the poll in the status, if applicable
+  const poll = pollSchema.safeParse(statusEdit.poll);
+  result.poll = poll.success ? poll.data : null;
 
-const normalizeContent = (statusEdit: ImmutableMap<string, any>) => {
-  const content = DOMPurify.sanitize(stripCompatibilityFeatures(statusEdit.get('content')), { ADD_ATTR: ['target'] });
-  return statusEdit.set('content', content);
-};
+  result.content = DOMPurify.sanitize(stripCompatibilityFeatures(statusEdit.content), { ADD_ATTR: ['target'] });
 
-export const normalizeStatusEdit = (statusEdit: Record<string, any>) => {
-  return StatusEditRecord(
-    ImmutableMap(fromJS(statusEdit)).withMutations(statusEdit => {
-      normalizeAttachments(statusEdit);
-      normalizeEmojis(statusEdit);
-      normalizeStatusPoll(statusEdit);
-      normalizeContent(statusEdit);
-    }),
-  );
+  return result;
 };

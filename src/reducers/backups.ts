@@ -1,38 +1,45 @@
-import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
-
 import {
   BACKUPS_FETCH_SUCCESS,
   BACKUPS_CREATE_SUCCESS,
 } from '../actions/backups.ts';
+import { fromDefaults } from '../utils/normalizers.ts';
 
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-export const BackupRecord = ImmutableRecord({
-  id: null as number | null,
+export interface Backup {
+  id: number | null;
+  content_type: string;
+  url: string;
+  file_size: number | null;
+  processed: boolean;
+  inserted_at: string;
+}
+
+type State = Record<string, Backup>;
+
+const initialState: State = {};
+
+const normalizeBackup = (backup: APIEntity): Backup => fromDefaults<Backup>({
+  id: null,
   content_type: '',
   url: '',
-  file_size: null as number | null,
+  file_size: null,
   processed: false,
   inserted_at: '',
-});
+}, backup);
 
-export type Backup = ReturnType<typeof BackupRecord>;
-type State = ImmutableMap<string, Backup>;
+const importBackups = (state: State, backups: APIEntity[]): State => {
+  const result = { ...state };
 
-const initialState: State = ImmutableMap();
-
-const importBackup = (state: State, backup: APIEntity) => {
-  return state.set(backup.inserted_at, BackupRecord(backup));
-};
-
-const importBackups = (state: State, backups: APIEntity[]) => {
-  return state.withMutations(mutable => {
-    backups.forEach(backup => importBackup(mutable, backup));
+  backups.forEach(backup => {
+    result[backup.inserted_at] = normalizeBackup(backup);
   });
+
+  return result;
 };
 
-export default function backups(state = initialState, action: AnyAction) {
+export default function backups(state = initialState, action: AnyAction): State {
   switch (action.type) {
     case BACKUPS_FETCH_SUCCESS:
     case BACKUPS_CREATE_SUCCESS:

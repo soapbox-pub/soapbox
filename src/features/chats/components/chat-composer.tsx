@@ -82,8 +82,8 @@ const ChatComposer = forwardRef<HTMLTextAreaElement | null, IChatComposer>(({
 
   const { chat } = useChatContext();
 
-  const isBlocked = useAppSelector((state) => state.relationships.getIn([chat?.account?.id, 'blocked_by']));
-  const isBlocking = useAppSelector((state) => state.relationships.getIn([chat?.account?.id, 'blocking']));
+  const isBlocked = useAppSelector((state) => state.relationships[chat?.account?.id ?? '']?.blocked_by);
+  const isBlocking = useAppSelector((state) => state.relationships[chat?.account?.id ?? '']?.blocking);
   const maxCharacterCount = useAppSelector((state) => state.instance.configuration.chats.max_characters);
   const attachmentLimit = useAppSelector(state => state.instance.configuration.chats.max_media_attachments);
 

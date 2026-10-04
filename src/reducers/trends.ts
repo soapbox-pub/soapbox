@@ -1,5 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-
 import { normalizeTag } from '@/normalizers/index.ts';
 
 import {
@@ -11,24 +9,28 @@ import {
 import type { APIEntity, Tag } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
-  items: ImmutableList<Tag>(),
+interface State {
+  items: Tag[];
+  isLoading: boolean;
+}
+
+const initialState: State = {
+  items: [],
   isLoading: false,
-});
+};
 
-type State = ReturnType<typeof ReducerRecord>;
-
-export default function trendsReducer(state: State = ReducerRecord(), action: AnyAction) {
+export default function trendsReducer(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case TRENDS_FETCH_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case TRENDS_FETCH_SUCCESS:
-      return state.withMutations(map => {
-        map.set('items', ImmutableList(action.tags.map((item: APIEntity) => normalizeTag(item))));
-        map.set('isLoading', false);
-      });
+      return {
+        ...state,
+        items: action.tags.map((item: APIEntity) => normalizeTag(item)),
+        isLoading: false,
+      };
     case TRENDS_FETCH_FAIL:
-      return state.set('isLoading', false);
+      return { ...state, isLoading: false };
     default:
       return state;
   }

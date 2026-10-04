@@ -185,7 +185,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
     dispatch(submitEvent());
   };
 
-  const accounts = useAppSelector((state) => state.user_lists.event_participation_requests.get(id!)?.items);
+  const accounts = useAppSelector((state) => state.user_lists.event_participation_requests[id!]?.items);
 
   useEffect(() => {
     if (id) dispatch(fetchEventParticipationRequests(id));
@@ -311,7 +311,7 @@ const ComposeEventModal: React.FC<IComposeEventModal> = ({ onClose }) => {
   );
   else body = accounts ? (
     <Stack space={3}>
-      {accounts.size > 0 ? (
+      {accounts.length > 0 ? (
         accounts.map(({ account, participation_message }) =>
           <Account key={account} eventId={id!} id={account} participationMessage={participation_message} />,
         )

@@ -48,7 +48,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   const [collapsed, setCollapsed] = useState(false);
 
   const node = useRef<HTMLDivElement>(null);
-  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(status.content, status.emojis.toJS(), 10), [status.content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(status.content, status.emojis, 10), [status.content]);
 
   const maybeSetCollapsed = (): void => {
     if (!node.current) return;
@@ -65,7 +65,7 @@ const StatusContent: React.FC<IStatusContent> = ({
   });
 
   const parsedHtml = useMemo((): string => {
-    return translatable && status.translation ? status.translation.get('content')! : status.content;
+    return translatable && status.translation ? status.translation.content! : status.content;
   }, [status.content, status.translation]);
 
   const withSpoiler = status.spoiler_text.length > 0;
@@ -82,7 +82,7 @@ const StatusContent: React.FC<IStatusContent> = ({
       direction={getTextDirection(status.spoiler_text)}
       lang={status.language || undefined}
     >
-      {emojifyText(status.spoiler_text, status.emojis.toJS())}
+      {emojifyText(status.spoiler_text, status.emojis)}
     </Text>
   ) : null;
 
@@ -110,8 +110,8 @@ const StatusContent: React.FC<IStatusContent> = ({
         direction={direction}
         lang={status.language || undefined}
         size={textSize}
-        emojis={status.emojis.toJS()}
-        mentions={status.mentions.toJS()}
+        emojis={status.emojis}
+        mentions={status.mentions}
         html={{ __html: parsedHtml }}
       />,
     ];
@@ -124,9 +124,10 @@ const StatusContent: React.FC<IStatusContent> = ({
       output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
-    const hasPoll = status.poll && typeof status.poll === 'string';
-    if (hasPoll) {
-      output.push(<Poll id={status.poll} key='poll' status={status.url} />);
+    const pollId = typeof status.poll === 'string' ? status.poll : null;
+    const hasPoll = !!pollId;
+    if (pollId) {
+      output.push(<Poll id={pollId} key='poll' status={status.url} />);
     }
 
     return <div className={clsx({ 'bg-gray-100 dark:bg-primary-800 rounded-md p-4': hasPoll })}>{output}</div>;
@@ -142,8 +143,8 @@ const StatusContent: React.FC<IStatusContent> = ({
         direction={direction}
         lang={status.language || undefined}
         size={textSize}
-        emojis={status.emojis.toJS()}
-        mentions={status.mentions.toJS()}
+        emojis={status.emojis}
+        mentions={status.mentions}
         html={{ __html: parsedHtml }}
       />,
     ];

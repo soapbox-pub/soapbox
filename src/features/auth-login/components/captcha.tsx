@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import { useState, useEffect } from 'react';
 import { useIntl, defineMessages, FormattedMessage } from 'react-intl';
 
@@ -19,7 +18,7 @@ interface ICaptchaField {
   name?: string;
   value: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onFetch?: (captcha: ImmutableMap<string, any>) => void;
+  onFetch?: (captcha: Record<string, any>) => void;
   onFetchFail?: (error: Error) => void;
   onClick?: React.MouseEventHandler;
   refreshInterval?: number;
@@ -38,12 +37,12 @@ const CaptchaField: React.FC<ICaptchaField> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const [captcha, setCaptcha] = useState(ImmutableMap<string, any>());
+  const [captcha, setCaptcha] = useState<Record<string, any>>({});
   const [refresh, setRefresh] = useState<NodeJS.Timeout | undefined>(undefined);
 
   const getCaptcha = () => {
     dispatch(fetchCaptcha()).then((response) => response.json()).then((data) => {
-      const captcha = ImmutableMap<string, any>(data);
+      const captcha: Record<string, any> = data;
       setCaptcha(captcha);
       onFetch(captcha);
     }).catch((error: Error) => {
@@ -74,7 +73,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
     };
   }, [idempotencyKey]);
 
-  switch (captcha.get('type')) {
+  switch (captcha.type) {
     case 'native':
       return (
         <div>
@@ -98,7 +97,7 @@ const CaptchaField: React.FC<ICaptchaField> = ({
 };
 
 interface INativeCaptchaField {
-  captcha: ImmutableMap<string, any>;
+  captcha: Record<string, any>;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   onClick: React.MouseEventHandler;
   name?: string;
@@ -112,7 +111,7 @@ const NativeCaptchaField: React.FC<INativeCaptchaField> = ({ captcha, onChange, 
     <Stack space={2}>
       <div className='flex w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-white dark:border-gray-600'>
         <button className='!block space-x-2 !border-none !p-0 !py-2 !text-primary-600 hover:!underline  focus:!ring-transparent focus:!ring-offset-0 dark:!text-accent-blue rtl:space-x-reverse' onClick={onClick}>
-          <img alt={intl.formatMessage(messages.captcha)} src={captcha.get('url')} />
+          <img alt={intl.formatMessage(messages.captcha)} src={captcha.url} />
         </button>
       </div>
 

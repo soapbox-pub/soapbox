@@ -59,7 +59,7 @@ const LIST_ADDER_LISTS_FETCH_FAIL    = 'LIST_ADDER_LISTS_FETCH_FAIL';
 const fetchList = (id: string | number) => (dispatch: AppDispatch, getState: () => RootState) => {
   if (!isLoggedIn(getState)) return;
 
-  if (getState().lists.get(String(id))) {
+  if (getState().lists[String(id)]) {
     return;
   }
 
@@ -124,7 +124,7 @@ const submitListEditor = (shouldReset?: boolean) => (dispatch: AppDispatch, getS
 const setupListEditor = (listId: string | number) => (dispatch: AppDispatch, getState: () => RootState) => {
   dispatch({
     type: LIST_EDITOR_SETUP,
-    list: getState().lists.get(String(listId)),
+    list: getState().lists[String(listId)],
   });
 
   dispatch(fetchListAccounts(listId));

@@ -24,9 +24,9 @@ const AboutPage: React.FC = () => {
 
   const { aboutPages } = soapboxConfig;
 
-  const page = aboutPages.get(slug || 'about');
-  const defaultLocale = page?.get('default') as string | undefined;
-  const pageLocales = page?.get('locales', []) as string[];
+  const page = aboutPages[slug || 'about'];
+  const defaultLocale = page?.default as string | undefined;
+  const pageLocales = (page?.locales ?? []) as string[];
 
   useEffect(() => {
     const fetchLocale = Boolean(page && locale !== defaultLocale && pageLocales.includes(locale));

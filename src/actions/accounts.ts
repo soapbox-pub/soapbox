@@ -14,10 +14,10 @@ import {
   importErrorWhileFetchingAccountByUsername,
 } from './importer/index.ts';
 
+import type { ReducerStatus } from '@/reducers/statuses.ts';
 import type { AppDispatch, RootState } from '@/store.ts';
-import type { APIEntity, Relationship, Status } from '@/types/entities.ts';
+import type { APIEntity, Relationship } from '@/types/entities.ts';
 import type { History } from '@/types/history.ts';
-import type { Map as ImmutableMap } from 'immutable';
 
 const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';
@@ -259,7 +259,7 @@ const blockAccountRequest = (id: string) => ({
   id,
 });
 
-const blockAccountSuccess = (relationship: APIEntity, statuses: ImmutableMap<string, Status>) => ({
+const blockAccountSuccess = (relationship: APIEntity, statuses: Record<string, ReducerStatus>) => ({
   type: ACCOUNT_BLOCK_SUCCESS,
   relationship,
   statuses,
@@ -337,7 +337,7 @@ const muteAccountRequest = (id: string) => ({
   id,
 });
 
-const muteAccountSuccess = (relationship: APIEntity, statuses: ImmutableMap<string, Status>) => ({
+const muteAccountSuccess = (relationship: APIEntity, statuses: Record<string, ReducerStatus>) => ({
   type: ACCOUNT_MUTE_SUCCESS,
   relationship,
   statuses,
@@ -486,7 +486,7 @@ const expandFollowers = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
-    const url = getState().user_lists.followers.get(id)?.next as string;
+    const url = getState().user_lists.followers[id]?.next as string;
 
     if (url === null) {
       return null;
@@ -568,7 +568,7 @@ const expandFollowing = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
-    const url = getState().user_lists.following.get(id)!.next;
+    const url = getState().user_lists.following[id]!.next;
 
     if (url === null) {
       return null;
@@ -614,7 +614,7 @@ const fetchRelationships = (accountIds: string[]) =>
     if (!isLoggedIn(getState)) return null;
 
     const loadedRelationships = getState().relationships;
-    const newAccountIds = accountIds.filter(id => loadedRelationships.get(id, null) === null);
+    const newAccountIds = accountIds.filter(id => !loadedRelationships[id]);
 
     if (newAccountIds.length === 0) {
       return null;

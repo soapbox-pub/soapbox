@@ -2,7 +2,6 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { render, RenderOptions } from '@testing-library/react';
 import { renderHook, RenderHookOptions } from '@testing-library/react-hooks';
-import { merge } from 'immutable';
 import { FC, ReactElement } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { IntlProvider } from 'react-intl';
@@ -39,7 +38,7 @@ const TestApp: FC<any> = ({ children, storeProps, routerProps = {} }) => {
   if (storeProps && typeof storeProps.getState !== 'undefined') { // storeProps is a store
     store = storeProps;
   } else if (storeProps) { // storeProps is state
-    appState = merge(rootState, storeProps);
+    appState = { ...rootState, ...storeProps };
     store = createTestStore(appState);
   } else {
     store = createTestStore(appState);

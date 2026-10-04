@@ -20,7 +20,6 @@ import filters from './filters.ts';
 import followed_tags from './followed-tags.ts';
 import group_memberships from './group-memberships.ts';
 import group_relationships from './group-relationships.ts';
-import groups from './groups.ts';
 import history from './history.ts';
 import instance from './instance.ts';
 import listAdder from './list-adder.ts';
@@ -76,7 +75,6 @@ export default combineReducers({
   followed_tags,
   group_memberships,
   group_relationships,
-  groups,
   history,
   instance,
   listAdder,

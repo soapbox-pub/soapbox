@@ -1,4 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { normalizeMention } from './mention.ts';
@@ -8,7 +7,6 @@ describe('normalizeMention()', () => {
     const account = {};
     const result = normalizeMention(account);
 
-    expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.id).toEqual('');
     expect(result.acct).toEqual('');
     expect(result.username).toEqual('');

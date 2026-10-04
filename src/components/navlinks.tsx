@@ -1,21 +1,19 @@
 import { Link } from 'react-router-dom';
 
 import Text from '@/components/ui/text.tsx';
-import { useSettings } from '@/hooks/useSettings.ts';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 interface INavlinks {
-  type: string;
+  type: 'homeFooter';
 }
 
 const Navlinks: React.FC<INavlinks> = ({ type }) => {
-  const { locale } = useSettings();
   const { copyright, navlinks } = useSoapboxConfig();
 
   return (
     <footer className='relative mx-auto mt-auto max-w-7xl py-8'>
       <div className='flex flex-wrap justify-center'>
-        {navlinks.get(type)?.map((link, idx) => {
+        {navlinks[type]?.map((link, idx) => {
           const url = link.url;
           const isExternal = url.startsWith('http');
           const Comp = (isExternal ? 'a' : Link) as 'a';
@@ -25,7 +23,7 @@ const Navlinks: React.FC<INavlinks> = ({ type }) => {
             <div key={idx} className='px-5 py-2'>
               <Comp {...compProps} className='text-primary-600 hover:underline dark:text-primary-400'>
                 <Text tag='span' theme='inherit' size='sm'>
-                  {(link.getIn(['titleLocales', locale]) || link.get('title')) as string}
+                  {link.title}
                 </Text>
               </Comp>
             </div>

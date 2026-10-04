@@ -97,7 +97,7 @@ const ChatMessageList: React.FC<IChatMessageList> = ({ chat }) => {
 
   const formattedChatMessages = chatMessages || [];
 
-  const isBlocked = useAppSelector((state) => state.relationships.getIn([chat.account.id, 'blocked_by']));
+  const isBlocked = useAppSelector((state) => state.relationships[chat.account.id]?.blocked_by);
 
   const lastChatMessage = chatMessages ? chatMessages[chatMessages.length - 1] : null;
 

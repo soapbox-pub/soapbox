@@ -26,7 +26,7 @@ const AwaitingApproval: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const showLoading = isLoading && accountIds.count() === 0;
+  const showLoading = isLoading && accountIds.length === 0;
 
   return (
     <ScrollableList

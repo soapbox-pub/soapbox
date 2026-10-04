@@ -107,7 +107,7 @@ const ComposeFormGroupToggle: React.FC<IComposeFormGroupToggle> = ({ composeId, 
   const dispatch = useAppDispatch();
   const { group } = useGroup(groupId || '', false);
 
-  const groupTimelineVisible = useAppSelector((state) => !!state.compose.get(composeId)?.group_timeline_visible);
+  const groupTimelineVisible = useAppSelector((state) => !!state.compose[composeId]?.group_timeline_visible);
 
   const handleToggleChange = () => {
     dispatch(setGroupTimelineVisible(composeId, !groupTimelineVisible));

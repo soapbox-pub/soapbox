@@ -1,9 +1,8 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { buildInstance } from '@/jest/factory.ts';
 import { mockStore, rootState } from '@/jest/test-helpers.tsx';
-import { ReducerCompose } from '@/reducers/compose.ts';
+import { newCompose } from '@/reducers/compose.ts';
 
 import { uploadCompose, submitCompose } from './compose.ts';
 import { STATUS_CREATE_REQUEST } from './statuses.ts';
@@ -30,7 +29,7 @@ describe('uploadCompose()', () => {
         ...rootState,
         me: '1234',
         instance,
-        compose: rootState.compose.set('home', ReducerCompose()),
+        compose: { ...rootState.compose, home: newCompose() },
       };
 
       store = mockStore(state);
@@ -78,7 +77,7 @@ describe('uploadCompose()', () => {
         ...rootState,
         me: '1234',
         instance,
-        compose: rootState.compose.set('home', ReducerCompose()),
+        compose: { ...rootState.compose, home: newCompose() },
       };
 
       store = mockStore(state);
@@ -113,7 +112,7 @@ describe('submitCompose()', () => {
     const state = {
       ...rootState,
       me: '1234',
-      compose: rootState.compose.set('home', ReducerCompose({ text: '@alex hello @mkljczk@pl.fediverse.pl @gg@汉语/漢語.com alex@alexgleason.me' })),
+      compose: { ...rootState.compose, home: newCompose({ text: '@alex hello @mkljczk@pl.fediverse.pl @gg@汉语/漢語.com alex@alexgleason.me' }) },
     };
 
     const store = mockStore(state);
@@ -121,7 +120,7 @@ describe('submitCompose()', () => {
     const actions = store.getActions();
 
     const statusCreateRequest = actions.find(action => action.type === STATUS_CREATE_REQUEST);
-    const to = statusCreateRequest!.params.to as ImmutableOrderedSet<string>;
+    const to = statusCreateRequest!.params.to as string[];
 
     const expected = [
       'alex',
@@ -129,6 +128,6 @@ describe('submitCompose()', () => {
       'gg@汉语/漢語.com',
     ];
 
-    expect(to.toJS()).toEqual(expected);
+    expect(to).toEqual(expected);
   });
 });

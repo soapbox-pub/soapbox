@@ -1,12 +1,10 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
-
 import tintify from '@/utils/colors.ts';
+import { mergeDeep } from '@/utils/merge-deep.ts';
 import { generateAccent, generateNeutral } from '@/utils/theme.ts';
 
 import type { TailwindColorPalette } from '@/types/colors.ts';
 
-type SoapboxConfig = ImmutableMap<string, any>;
-type SoapboxColors = ImmutableMap<string, any>;
+type SoapboxConfig = Record<string, any>;
 
 /** Check if the value is a valid hex color */
 const isHex = (value: any): boolean => /^#([0-9A-F]{3}){1,2}$/i.test(value);
@@ -35,8 +33,8 @@ const maybeGenerateAccentColor = (brandColor: any): string | null => {
 
 /** Build a color object from legacy colors */
 export const fromLegacyColors = (soapboxConfig: SoapboxConfig): TailwindColorPalette => {
-  const brandColor = soapboxConfig.get('brandColor');
-  const accentColor = soapboxConfig.get('accentColor');
+  const brandColor = soapboxConfig.brandColor;
+  const accentColor = soapboxConfig.accentColor;
   const accent = isHex(accentColor) ? accentColor : maybeGenerateAccentColor(brandColor);
 
   return expandPalette({
@@ -49,8 +47,8 @@ export const fromLegacyColors = (soapboxConfig: SoapboxConfig): TailwindColorPal
 
 /** Convert Soapbox Config into Tailwind colors */
 export const toTailwind = (soapboxConfig: SoapboxConfig): SoapboxConfig => {
-  const colors: SoapboxColors = ImmutableMap(soapboxConfig.get('colors'));
-  const legacyColors = ImmutableMap(fromJS(fromLegacyColors(soapboxConfig))) as SoapboxColors;
+  const colors = soapboxConfig.colors ?? {};
+  const legacyColors = fromLegacyColors(soapboxConfig);
 
-  return soapboxConfig.set('colors', legacyColors.mergeDeep(colors));
+  return { ...soapboxConfig, colors: mergeDeep(legacyColors, colors) };
 };

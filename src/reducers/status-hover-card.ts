@@ -1,5 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
-
 import {
   STATUS_HOVER_CARD_OPEN,
   STATUS_HOVER_CARD_CLOSE,
@@ -8,28 +6,29 @@ import {
 
 import type { AnyAction } from 'redux';
 
-export const ReducerRecord = ImmutableRecord({
-  ref: null as React.MutableRefObject<HTMLDivElement> | null,
+interface State {
+  ref: React.MutableRefObject<HTMLDivElement> | null;
+  statusId: string;
+  hovered: boolean;
+}
+
+export const initialState: State = {
+  ref: null,
   statusId: '',
   hovered: false,
-});
+};
 
-type State = ReturnType<typeof ReducerRecord>;
-
-export default function statusHoverCard(state: State = ReducerRecord(), action: AnyAction) {
+export default function statusHoverCard(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case STATUS_HOVER_CARD_OPEN:
-      return state.withMutations((state) => {
-        state.set('ref', action.ref);
-        state.set('statusId', action.statusId);
-      });
+      return { ...state, ref: action.ref, statusId: action.statusId };
     case STATUS_HOVER_CARD_UPDATE:
-      return state.set('hovered', true);
+      return { ...state, hovered: true };
     case STATUS_HOVER_CARD_CLOSE:
       if (state.hovered === true && !action.force)
         return state;
       else
-        return ReducerRecord();
+        return initialState;
     default:
       return state;
   }

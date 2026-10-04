@@ -1,5 +1,3 @@
-import { List as ImmutableList } from 'immutable';
-
 import { selectAccount, selectOwnAccount } from '@/selectors/index.ts';
 
 import type { RootState } from '@/store.ts';
@@ -47,19 +45,19 @@ export const getAccessToken = (state: RootState) => {
 export const getAuthUserId = (state: RootState) => {
   const me = state.auth.me;
 
-  return ImmutableList([
+  return [
     state.auth.users[me!]?.id,
     me,
-  ].filter(id => id)).find(validId);
+  ].filter(id => id).find(validId);
 };
 
 export const getAuthUserUrl = (state: RootState) => {
   const me = state.auth.me;
 
-  return ImmutableList([
+  return [
     state.auth.users[me!]?.url,
     me,
-  ].filter(url => url)).find(isURL);
+  ].filter(url => url).find(isURL);
 };
 
 export const getMeUrl = (state: RootState) => selectOwnAccount(state)?.url;

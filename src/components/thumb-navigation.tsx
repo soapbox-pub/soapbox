@@ -24,7 +24,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const { unreadChatsCount } = useStatContext();
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.length + state.admin.awaitingApproval.length);
 
   /** Conditionally render the supported messages link */
   const renderMessagesLink = (): React.ReactNode => {

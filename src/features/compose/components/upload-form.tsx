@@ -42,7 +42,7 @@ const UploadForm: React.FC<IUploadForm> = ({ composeId, onSubmit }) => {
     <div className='overflow-hidden'>
       <UploadProgress composeId={composeId} />
 
-      <HStack wrap className={clsx('overflow-hidden', mediaIds.size !== 0 && 'p-1')}>
+      <HStack wrap className={clsx('overflow-hidden', mediaIds.length !== 0 && 'p-1')}>
         {mediaIds.map((id: string) => (
           <Upload
             id={id}

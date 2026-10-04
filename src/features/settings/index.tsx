@@ -44,11 +44,11 @@ const Settings = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const mfa = useAppSelector((state) => state.security.get('mfa'));
+  const mfa = useAppSelector((state) => state.security.mfa);
   const features = useFeatures();
   const { account } = useOwnAccount();
 
-  const isMfaEnabled = mfa.getIn(['settings', 'totp']);
+  const isMfaEnabled = mfa.settings.totp;
 
   useEffect(() => {
     if (features.security) dispatch(fetchMfa());

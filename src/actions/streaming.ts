@@ -159,7 +159,7 @@ const connectTimelineStream = (
             if (!messageOwned) {
               updateChatListItem(chat);
 
-              if (settings.getIn(['chats', 'sound'])) {
+              if (settings.chats.sound) {
                 play(soundCache.chat);
               }
 

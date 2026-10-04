@@ -19,6 +19,7 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import NewListForm from './components/new-list-form.tsx';
 
 import type { RootState } from '@/store.ts';
+import type { List as ListEntity } from '@/types/entities.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -36,7 +37,9 @@ const getOrderedLists = createSelector([(state: RootState) => state.lists], list
     return lists;
   }
 
-  return lists.toList().filter((item) => !!item).sort((a: any, b: any) => a.get('title').localeCompare(b.get('title')));
+  return Object.values(lists)
+    .filter((item): item is ListEntity => !!item)
+    .sort((a, b) => a.title.localeCompare(b.title));
 });
 
 const Lists: React.FC = () => {

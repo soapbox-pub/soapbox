@@ -1,7 +1,6 @@
-import { List as ImmutableList, Map as ImmutableMap, fromJS } from 'immutable';
-
 import { PLEROMA_PRELOAD_IMPORT } from '@/actions/preload.ts';
-import { ConfigDB } from '@/utils/config-db.ts';
+import { ConfigDB, type Config } from '@/utils/config-db.ts';
+import { mergeDeep } from '@/utils/merge-deep.ts';
 
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin.ts';
 import {
@@ -10,51 +9,50 @@ import {
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox.ts';
 
-const initialState = ImmutableMap<string, any>();
+/** Raw Soapbox config, as received from the server. Use `useSoapboxConfig()` to get the normalized version. */
+type State = Record<string, unknown>;
 
-const fallbackState = ImmutableMap<string, any>({
+const initialState: State = {};
+
+const fallbackState: State = {
   brandColor: '#0482d8', // Azure
-});
-
-const updateFromAdmin = (state: ImmutableMap<string, any>, configs: ImmutableList<ImmutableMap<string, any>>) => {
-  try {
-    return ConfigDB.find(configs, ':pleroma', ':frontend_configurations')!
-      .get('value')
-      .find((value: ImmutableMap<string, any>) => value.getIn(['tuple', 0]) === ':soapbox_fe')
-      .getIn(['tuple', 1]);
-  } catch {
-    return state;
-  }
 };
 
-const preloadImport = (state: ImmutableMap<string, any>, action: Record<string, any>) => {
-  const path = '/api/pleroma/frontend_configurations';
-  const feData = action.data[path];
+const updateFromAdmin = (state: State, configs: Config[]): State => {
+  const config = ConfigDB.find(configs, ':pleroma', ':frontend_configurations');
+  const value = ConfigDB.findTupleValue(config?.value, ':soapbox_fe');
 
-  if (feData) {
-    const soapbox = feData.soapbox_fe;
-    return soapbox ? fallbackState.mergeDeep(fromJS(soapbox)) : fallbackState;
+  if (config && value !== undefined) {
+    return value as State;
   } else {
     return state;
   }
 };
 
-const importSoapboxConfig = (state: ImmutableMap<string, any>, soapboxConfig: ImmutableMap<string, any>, host: string) => {
-  return soapboxConfig;
+const preloadImport = (state: State, action: Record<string, any>): State => {
+  const path = '/api/pleroma/frontend_configurations';
+  const feData = action.data[path];
+
+  if (feData) {
+    const soapbox = feData.soapbox_fe;
+    return soapbox ? mergeDeep(fallbackState, soapbox) : fallbackState;
+  } else {
+    return state;
+  }
 };
 
-export default function soapbox(state = initialState, action: Record<string, any>) {
+export default function soapbox(state: State = initialState, action: Record<string, any>): State {
   switch (action.type) {
     case PLEROMA_PRELOAD_IMPORT:
       return preloadImport(state, action);
     case SOAPBOX_CONFIG_REMEMBER_SUCCESS:
-      return fromJS(action.soapboxConfig);
+      return action.soapboxConfig ?? {};
     case SOAPBOX_CONFIG_REQUEST_SUCCESS:
-      return importSoapboxConfig(state, fromJS(action.soapboxConfig) as ImmutableMap<string, any>, action.host);
+      return action.soapboxConfig ?? {};
     case SOAPBOX_CONFIG_REQUEST_FAIL:
-      return fallbackState.mergeDeep(state);
+      return mergeDeep(fallbackState, state);
     case ADMIN_CONFIG_UPDATE_SUCCESS:
-      return updateFromAdmin(state, fromJS(action.configs) as ImmutableList<ImmutableMap<string, any>>);
+      return updateFromAdmin(state, action.configs ?? []);
     default:
       return state;
   }

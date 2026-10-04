@@ -25,8 +25,8 @@ const FollowsTimeline: React.FC = () => {
 
   const polling = useRef<NodeJS.Timeout | null>(null);
 
-  const isPartial = useAppSelector(state => state.timelines.get('home')?.isPartial === true);
-  const next = useAppSelector(state => state.timelines.get('home')?.next);
+  const isPartial = useAppSelector(state => state.timelines.home?.isPartial === true);
+  const next = useAppSelector(state => state.timelines.home?.next);
 
   const handleLoadMore = (maxId: string) => {
     dispatch(expandFollowsTimeline({ url: next, maxId }));

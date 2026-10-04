@@ -1,26 +1,29 @@
-import { Record as ImmutableRecord } from 'immutable';
-
 import { fetchInstance } from '@/actions/instance.ts';
 import { SW_UPDATING } from '@/actions/sw.ts';
 
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
+interface State {
   /** Whether /api/v1/instance 404'd (and we should display the external auth form). */
-  instance_fetch_failed: false,
+  instance_fetch_failed: boolean;
   /** Whether the ServiceWorker is currently updating (and we should display a loading screen). */
-  swUpdating: false,
-});
+  swUpdating: boolean;
+}
 
-export default function meta(state = ReducerRecord(), action: AnyAction) {
+const initialState: State = {
+  instance_fetch_failed: false,
+  swUpdating: false,
+};
+
+export default function meta(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case fetchInstance.rejected.type:
       if (action.payload.response?.status === 404) {
-        return state.set('instance_fetch_failed', true);
+        return { ...state, instance_fetch_failed: true };
       }
       return state;
     case SW_UPDATING:
-      return state.set('swUpdating', action.isUpdating);
+      return { ...state, swUpdating: action.isUpdating };
     default:
       return state;
   }

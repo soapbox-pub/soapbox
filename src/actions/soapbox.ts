@@ -20,13 +20,14 @@ const getSoapboxConfig = createSelector([
   (state: RootState) => getFeatures(state.instance),
 ], (soapbox, features) => {
   // Do some additional normalization with the state
-  return normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
+  const soapboxConfig = normalizeSoapboxConfig(soapbox);
 
-    // If displayFqn isn't set, infer it from federation
-    if (soapbox.get('displayFqn') === undefined) {
-      soapboxConfig.set('displayFqn', features.federating);
-    }
-  });
+  // If displayFqn isn't set, infer it from federation
+  if (soapbox.displayFqn === undefined) {
+    soapboxConfig.displayFqn = features.federating;
+  }
+
+  return soapboxConfig;
 });
 
 const fetchFrontendConfigurations = () =>

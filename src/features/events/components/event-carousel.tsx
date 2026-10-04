@@ -12,7 +12,6 @@ import { makeGetStatus } from '@/selectors/index.ts';
 
 import PlaceholderEventPreview from '../../placeholder/components/placeholder-event-preview.tsx';
 
-import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const Event = ({ id }: { id: string }) => {
   const getStatus = useCallback(makeGetStatus(), []);
@@ -23,7 +22,7 @@ const Event = ({ id }: { id: string }) => {
   return (
     <Link
       className='w-full px-1'
-      to={`/@${status.getIn(['account', 'acct'])}/events/${status.id}`}
+      to={`/@${status.account?.acct}/events/${status.id}`}
     >
       <EventPreview status={status} floatingAction={false} />
     </Link>
@@ -31,7 +30,7 @@ const Event = ({ id }: { id: string }) => {
 };
 
 interface IEventCarousel {
-  statusIds: ImmutableOrderedSet<string>;
+  statusIds: readonly string[];
   isLoading?: boolean | null;
   emptyMessage: React.ReactNode;
 }
@@ -40,10 +39,10 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
   const [index, setIndex] = useState(0);
 
   const handleChangeIndex = (index: number) => {
-    setIndex(index % statusIds.size);
+    setIndex(index % statusIds.length);
   };
 
-  if (statusIds.size === 0) {
+  if (statusIds.length === 0) {
     if (isLoading) {
       return <PlaceholderEventPreview />;
     }
@@ -69,7 +68,7 @@ const EventCarousel: React.FC<IEventCarousel> = ({ statusIds, isLoading, emptyMe
       <ReactSwipeableViews animateHeight index={index} onChangeIndex={handleChangeIndex}>
         {statusIds.map(statusId => <Event key={statusId} id={statusId} />)}
       </ReactSwipeableViews>
-      {index !== statusIds.size - 1 && (
+      {index !== statusIds.length - 1 && (
         <div className='absolute right-3 top-1/2 z-10 -mt-4'>
           <button
             onClick={() => handleChangeIndex(index + 1)}

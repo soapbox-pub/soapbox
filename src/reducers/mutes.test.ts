@@ -1,4 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -10,7 +9,7 @@ import reducer from './mutes.ts';
 
 describe('mutes reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any).toJS()).toEqual({
+    expect(reducer(undefined, {} as any)).toEqual({
       new: {
         isSubmitting: false,
         accountId: null,
@@ -21,19 +20,19 @@ describe('mutes reducer', () => {
   });
 
   it('should handle MUTES_INIT_MODAL', () => {
-    const state = ImmutableRecord({
-      new: ImmutableRecord({
+    const state = {
+      new: {
         isSubmitting: false,
         accountId: null,
         notifications: true,
         duration: 0,
-      })(),
-    })();
+      },
+    };
     const action = {
       type: MUTES_INIT_MODAL,
       account: { id: 'account1' },
     };
-    expect(reducer(state, action).toJS()).toEqual({
+    expect(reducer(state, action)).toEqual({
       new: {
         isSubmitting: false,
         accountId: 'account1',
@@ -44,18 +43,18 @@ describe('mutes reducer', () => {
   });
 
   it('should handle MUTES_TOGGLE_HIDE_NOTIFICATIONS', () => {
-    const state = ImmutableRecord({
-      new: ImmutableRecord({
+    const state = {
+      new: {
         isSubmitting: false,
         accountId: null,
         notifications: true,
         duration: 0,
-      })(),
-    })();
+      },
+    };
     const action = {
       type: MUTES_TOGGLE_HIDE_NOTIFICATIONS,
     };
-    expect(reducer(state, action).toJS()).toEqual({
+    expect(reducer(state, action)).toEqual({
       new: {
         isSubmitting: false,
         accountId: null,

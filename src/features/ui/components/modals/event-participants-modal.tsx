@@ -17,7 +17,7 @@ interface IEventParticipantsModal {
 const EventParticipantsModal: React.FC<IEventParticipantsModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
 
-  const accountIds = useAppSelector((state) => state.user_lists.event_participations.get(statusId)?.items);
+  const accountIds = useAppSelector((state) => state.user_lists.event_participations[statusId]?.items);
 
   const fetchData = () => {
     dispatch(fetchEventParticipations(statusId));

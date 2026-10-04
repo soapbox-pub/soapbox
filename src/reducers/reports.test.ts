@@ -4,7 +4,7 @@ import reducer from './reports.ts';
 
 describe('reports reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any).toJS()).toEqual({
+    expect(reducer(undefined, {} as any)).toEqual({
       new: {
         isSubmitting: false,
         account_id: null,

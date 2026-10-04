@@ -42,12 +42,12 @@ const AccountTimeline: React.FC<IAccountTimeline> = ({ params, withReplies = fal
   const statusIds = useAppSelector(state => getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }));
   const featuredStatusIds = useAppSelector(state => getStatusIds(state, { type: `account:${account?.id}:pinned`, prefix: 'account_timeline' }));
 
-  const isBlocked = useAppSelector(state => state.relationships.getIn([account?.id, 'blocked_by']) === true);
+  const isBlocked = useAppSelector(state => state.relationships[account?.id ?? '']?.blocked_by === true);
   const unavailable = isBlocked && !features.blockersVisible;
-  const patronEnabled = soapboxConfig.getIn(['extensions', 'patron', 'enabled']) === true;
-  const isLoading = useAppSelector(state => state.timelines.getIn([`account:${path}`, 'isLoading']) === true);
-  const hasMore = useAppSelector(state => state.timelines.getIn([`account:${path}`, 'hasMore']) === true);
-  const next = useAppSelector(state => state.timelines.get(`account:${path}`)?.next);
+  const patronEnabled = soapboxConfig.extensions?.patron?.enabled === true;
+  const isLoading = useAppSelector(state => state.timelines[`account:${path}`]?.isLoading === true);
+  const hasMore = useAppSelector(state => state.timelines[`account:${path}`]?.hasMore === true);
+  const next = useAppSelector(state => state.timelines[`account:${path}`]?.next);
 
   const accountUsername = account?.username || params.username;
 

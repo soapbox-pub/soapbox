@@ -1,6 +1,5 @@
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 
 import { openModal } from '@/actions/modals.ts';
 import Blurhash from '@/components/blurhash.tsx';
@@ -22,7 +21,7 @@ const ChatUpload: React.FC<IChatUpload> = ({ attachment, onDelete }) => {
   const clickable = attachment.type !== 'unknown';
 
   const handleOpenModal = () => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(attachment).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [attachment], index: 0 }));
   };
 
   return (

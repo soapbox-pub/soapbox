@@ -12,18 +12,17 @@ import PendingStatus from '@/features/ui/components/pending-status.tsx';
 import { useSoapboxConfig } from '@/hooks/useSoapboxConfig.ts';
 
 import type { IScrollableList } from '@/components/scrollable-list.tsx';
-import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 
 interface IStatusList extends Omit<IScrollableList, 'onLoadMore' | 'children'> {
   /** Unique key to preserve the scroll position when navigating back. */
   scrollKey: string;
   /** List of status IDs to display. */
-  statusIds: ImmutableOrderedSet<string>;
+  statusIds: readonly string[];
   /** Last _unfiltered_ status ID (maxId) for pagination. */
   lastStatusId?: string;
   /** Pinned statuses to show at the top of the feed. */
-  featuredStatusIds?: ImmutableOrderedSet<string>;
+  featuredStatusIds?: readonly string[];
   /** Pagination callback when the end of the list is reached. */
   onLoadMore?: (lastStatusId: string) => void;
   /** Whether the data is currently being fetched. */
@@ -63,14 +62,14 @@ const StatusList: React.FC<IStatusList> = ({
   const node = useRef<VirtuosoHandle>(null);
 
   const getFeaturedStatusCount = () => {
-    return featuredStatusIds?.size || 0;
+    return featuredStatusIds?.length || 0;
   };
 
   const getCurrentStatusIndex = (id: string, featured: boolean): number => {
     if (featured) {
-      return featuredStatusIds?.keySeq().findIndex(key => key === id) || 0;
+      return featuredStatusIds?.indexOf(id) || 0;
     } else {
-      return statusIds.keySeq().findIndex(key => key === id) + getFeaturedStatusCount();
+      return statusIds.indexOf(id) + getFeaturedStatusCount();
     }
   };
 
@@ -85,11 +84,11 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const handleLoadOlder = useCallback(debounce(() => {
-    const maxId = lastStatusId || statusIds.last();
+    const maxId = lastStatusId || statusIds[statusIds.length - 1];
     if (onLoadMore && maxId) {
       onLoadMore(maxId.replace('末suggestions-', ''));
     }
-  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statusIds.last()]);
+  }, 300, { edges: ['leading'] }), [onLoadMore, lastStatusId, statusIds[statusIds.length - 1]]);
 
   const selectChild = (index: number) => {
     node.current?.scrollIntoView({
@@ -103,9 +102,8 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const renderLoadGap = (index: number) => {
-    const ids = statusIds.toList();
-    const nextId = ids.get(index + 1);
-    const prevId = ids.get(index - 1);
+    const nextId = statusIds[index + 1];
+    const prevId = statusIds[index - 1];
 
     if (index < 1 || !nextId || !prevId || !onLoadMore) return null;
 
@@ -146,7 +144,7 @@ const StatusList: React.FC<IStatusList> = ({
   const renderFeaturedStatuses = (): React.ReactNode[] => {
     if (!featuredStatusIds) return [];
 
-    return featuredStatusIds.toArray().map(statusId => (
+    return featuredStatusIds.map(statusId => (
       <StatusContainer
         key={`f-${statusId}`}
         id={statusId}
@@ -171,8 +169,8 @@ const StatusList: React.FC<IStatusList> = ({
   };
 
   const renderStatuses = (): React.ReactNode[] => {
-    if (isLoading || statusIds.size > 0) {
-      return statusIds.toList().reduce((acc, statusId, index) => {
+    if (isLoading || statusIds.length > 0) {
+      return statusIds.reduce((acc, statusId, index) => {
         if (statusId === null) {
           const gap = renderLoadGap(index);
           // one does not simply push a null item to Virtuoso: https://github.com/petyosi/react-virtuoso/issues/206#issuecomment-747363793
@@ -227,7 +225,7 @@ const StatusList: React.FC<IStatusList> = ({
       id='status-list'
       key='scrollable-list'
       isLoading={isLoading}
-      showLoading={isLoading && statusIds.size === 0}
+      showLoading={isLoading && statusIds.length === 0}
       onLoadMore={handleLoadOlder}
       placeholderComponent={() => <PlaceholderStatus />}
       placeholderCount={20}

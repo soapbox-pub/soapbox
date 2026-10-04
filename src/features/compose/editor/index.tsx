@@ -94,7 +94,7 @@ const ComposeEditor = forwardRef<LexicalEditor, IComposeEditor>(({
     theme,
     editorState: dispatch((_, getState) => {
       const state = getState();
-      const compose = state.compose.get(composeId);
+      const compose = state.compose[composeId];
 
       if (!compose) return;
 

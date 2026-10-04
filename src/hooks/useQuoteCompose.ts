@@ -7,7 +7,7 @@ export function useQuoteCompose() {
   const dispatch = useAppDispatch();
 
   const quoteCompose = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(quoteComposeAction(status));
     }

@@ -1,35 +1,42 @@
-import { List as ImmutableList, Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
-
 import { HISTORY_FETCH_REQUEST, HISTORY_FETCH_SUCCESS, HISTORY_FETCH_FAIL } from '@/actions/history.ts';
-import { normalizeStatusEdit } from '@/normalizers/index.ts';
+import { normalizeStatusEdit, type StatusEdit } from '@/normalizers/index.ts';
 
 import type { AnyAction } from 'redux';
 
-type StatusEditRecord = ReturnType<typeof normalizeStatusEdit>;
+interface StatusHistory {
+  loading: boolean;
+  items: StatusEdit[];
+}
 
-const HistoryRecord = ImmutableRecord({
+type State = Record<string, StatusHistory>;
+
+const initialState: State = {};
+
+const emptyHistory: StatusHistory = {
   loading: false,
-  items: ImmutableList<StatusEditRecord>(),
-});
+  items: [],
+};
 
-type State = ImmutableMap<string, ReturnType<typeof HistoryRecord>>;
-
-const initialState: State = ImmutableMap();
-
-export default function history(state: State = initialState, action: AnyAction) {
+export default function history(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case HISTORY_FETCH_REQUEST:
-      return state.update(action.statusId, HistoryRecord(), history => history!.withMutations(map => {
-        map.set('loading', true);
-        map.set('items', ImmutableList());
-      }));
+      return {
+        ...state,
+        [action.statusId]: { loading: true, items: [] },
+      };
     case HISTORY_FETCH_SUCCESS:
-      return state.update(action.statusId, HistoryRecord(), history => history!.withMutations(map => {
-        map.set('loading', false);
-        map.set('items', ImmutableList(action.history.map((x: any, i: number) => ({ ...x, account: x.account.id, original: i === 0 })).reverse().map(normalizeStatusEdit)));
-      }));
+      return {
+        ...state,
+        [action.statusId]: {
+          loading: false,
+          items: action.history.map((x: any, i: number) => ({ ...x, account: x.account.id, original: i === 0 })).reverse().map(normalizeStatusEdit),
+        },
+      };
     case HISTORY_FETCH_FAIL:
-      return state.update(action.statusId, HistoryRecord(), history => history!.set('loading', false));
+      return {
+        ...state,
+        [action.statusId]: { ...(state[action.statusId] ?? emptyHistory), loading: false },
+      };
     default:
       return state;
   }

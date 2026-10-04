@@ -33,9 +33,9 @@ describe('<LoginPage />', () => {
   //
   //   const app = new Map();
   //   app.set('app', { client_id: '12345', client_secret:'12345' });
-  //   const store = mockStore(ImmutableMap({
+  //   const store = mockStore({
   //     auth: { app },
-  //   }));
+  //   });
   //   const loginPage = createComponent(<LoginPage />, { store });
   //
   //   return loginPage.handleSubmit().then(() => {

@@ -20,7 +20,7 @@ const Reports: React.FC = () => {
 
   const [isLoading, setLoading] = useState(true);
 
-  const reports = useAppSelector(state => state.admin.openReports.toList());
+  const reports = useAppSelector(state => state.admin.openReports);
 
   useEffect(() => {
     dispatch(fetchReports())
@@ -28,7 +28,7 @@ const Reports: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const showLoading = isLoading && reports.count() === 0;
+  const showLoading = isLoading && reports.length === 0;
 
   return (
     <ScrollableList

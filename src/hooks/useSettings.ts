@@ -8,5 +8,5 @@ import { useAppSelector } from './useAppSelector.ts';
 /** Get the user settings from the store */
 export const useSettings = () => {
   const data = useAppSelector((state) => getSettings(state));
-  return useMemo(() => settingsSchema.parse(data.toJS()), [data]);
+  return useMemo(() => settingsSchema.parse(data), [data]);
 };

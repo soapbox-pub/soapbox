@@ -142,20 +142,20 @@ const SiteErrorBoundary: React.FC<ISiteErrorBoundary> = ({ children }) => {
 
       <footer className='mx-auto w-full max-w-7xl shrink-0 px-4 sm:px-6 lg:px-8'>
         <HStack justifyContent='center' space={4} element='nav'>
-          {links.get('status') && (
-            <SiteErrorBoundaryLink href={links.get('status')!}>
+          {links.status && (
+            <SiteErrorBoundaryLink href={links.status!}>
               <FormattedMessage id='alert.unexpected.links.status' defaultMessage='Status' />
             </SiteErrorBoundaryLink>
           )}
 
-          {links.get('help') && (
-            <SiteErrorBoundaryLink href={links.get('help')!}>
+          {links.help && (
+            <SiteErrorBoundaryLink href={links.help!}>
               <FormattedMessage id='alert.unexpected.links.help' defaultMessage='Help Center' />
             </SiteErrorBoundaryLink>
           )}
 
-          {links.get('support') && (
-            <SiteErrorBoundaryLink href={links.get('support')!}>
+          {links.support && (
+            <SiteErrorBoundaryLink href={links.support!}>
               <FormattedMessage id='alert.unexpected.links.support' defaultMessage='Support' />
             </SiteErrorBoundaryLink>
           )}

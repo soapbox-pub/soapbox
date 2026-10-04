@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { fireEvent, render, rootState, screen } from '@/jest/test-helpers.tsx';
@@ -96,9 +95,9 @@ describe('<SensitiveContentOverlay />', () => {
       status = normalizeStatus({ sensitive: true }) as ReducerStatus;
       store = {
         ...rootState,
-        settings: ImmutableMap({
+        settings: {
           displayMedia: 'show_all',
-        }),
+        },
       };
     });
 

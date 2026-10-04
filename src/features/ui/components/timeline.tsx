@@ -1,5 +1,4 @@
 import { debounce } from 'es-toolkit';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { dequeueTimeline, scrollTopTimeline } from '@/actions/timelines.ts';
@@ -26,12 +25,12 @@ const Timeline: React.FC<ITimeline> = ({
   const dispatch = useAppDispatch();
   const getStatusIds = useCallback(makeGetStatusIds(), []);
 
-  const lastStatusId = useAppSelector(state => (state.timelines.get(timelineId)?.items || ImmutableOrderedSet()).last() as string | undefined);
+  const lastStatusId = useAppSelector(state => state.timelines[timelineId]?.items.at(-1));
   const statusIds = useAppSelector(state => getStatusIds(state, { type: timelineId, prefix }));
-  const isLoading = useAppSelector(state => (state.timelines.get(timelineId) || { isLoading: true }).isLoading === true);
-  const isPartial = useAppSelector(state => (state.timelines.get(timelineId)?.isPartial || false) === true);
-  const hasMore = useAppSelector(state => state.timelines.get(timelineId)?.hasMore === true);
-  const hasQueuedItems = useAppSelector(state => state.timelines.get(timelineId)?.totalQueuedItemsCount || 0);
+  const isLoading = useAppSelector(state => (state.timelines[timelineId] || { isLoading: true }).isLoading === true);
+  const isPartial = useAppSelector(state => (state.timelines[timelineId]?.isPartial || false) === true);
+  const hasMore = useAppSelector(state => state.timelines[timelineId]?.hasMore === true);
+  const hasQueuedItems = useAppSelector(state => state.timelines[timelineId]?.totalQueuedItemsCount || 0);
 
   const [isInTop, setIsInTop] = useState<boolean>(window.scrollY < 50);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);

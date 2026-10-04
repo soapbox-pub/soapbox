@@ -29,7 +29,7 @@ const PublicTimeline = () => {
   const { instance } = useInstance();
   const settings = useSettings();
   const onlyMedia = settings.public.other.onlyMedia;
-  const next = useAppSelector(state => state.timelines.get('public')?.next);
+  const next = useAppSelector(state => state.timelines.public?.next);
 
   const timelineId = 'public';
 

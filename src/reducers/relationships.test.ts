@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import lain from '@/__fixtures__/lain.json';
@@ -8,7 +7,7 @@ import reducer from './relationships.ts';
 
 describe('relationships reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual({});
   });
 
   describe('ACCOUNT_IMPORT', () => {
@@ -17,8 +16,8 @@ describe('relationships reducer', () => {
         type: ACCOUNT_IMPORT,
         account: lain,
       };
-      const state = ImmutableMap<string, any>();
-      expect(reducer(state, action).toJS()).toEqual({
+      const state = {};
+      expect(reducer(state, action)).toEqual({
         '9v5bqYwY2jfmvPNhTM': {
           blocked_by: false,
           blocking: false,

@@ -33,7 +33,7 @@ const RemoteTimeline: React.FC<IRemoteTimeline> = ({ params }) => {
 
   const timelineId = 'remote';
   const onlyMedia = settings.remote.other.onlyMedia;
-  const next = useAppSelector(state => state.timelines.get('remote')?.next);
+  const next = useAppSelector(state => state.timelines.remote?.next);
 
   const pinned = settings.remote_timeline.pinnedHosts.includes(instance);
 

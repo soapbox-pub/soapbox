@@ -1,7 +1,3 @@
-import {
-  Map as ImmutableMap,
-  Record as ImmutableRecord,
-} from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { STATUS_IMPORT } from '@/actions/importer/index.ts';
@@ -17,16 +13,16 @@ import reducer, { ReducerStatus } from './statuses.ts';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual({});
   });
 
   describe('STATUS_IMPORT', () => {
-    it('parses the status as a Record', async () => {
+    it('parses the status', async () => {
       const status = await import('@/__fixtures__/pleroma-quote-post.json');
       const action = { type: STATUS_IMPORT, status };
-      const result = reducer(undefined, action).get('AFmFMSpITT9xcOJKcK');
+      const result = reducer(undefined, action).AFmFMSpITT9xcOJKcK;
 
-      expect(ImmutableRecord.isRecord(result)).toBe(true);
+      expect(result.id).toBe('AFmFMSpITT9xcOJKcK');
     });
 
     it('fixes the order of mentions', async () => {
@@ -36,9 +32,8 @@ describe('statuses reducer', () => {
       const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
 
       const result = reducer(undefined, action)
-        .get('AFChectaqZjmOVkXZ2')?.mentions
-        .map(mention => mention.get('username'))
-        .toJS();
+        .AFChectaqZjmOVkXZ2?.mentions
+        .map(mention => mention.username);
 
       expect(result).toEqual(expected);
     });
@@ -51,7 +46,7 @@ describe('statuses reducer', () => {
       state = reducer(state, { type: STATUS_IMPORT, status: quotePost });
       state = reducer(state, { type: STATUS_IMPORT, status: quotedQuotePost.pleroma.quote });
 
-      expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
+      expect(state.AFmFMSpITT9xcOJKcK.quote).toEqual('AFmFLcd6XYVdjWCrOS');
     });
 
     it('normalizes Mitra attachments', async () => {
@@ -85,25 +80,25 @@ describe('statuses reducer', () => {
         remote_url: null,
       }];
 
-      expect(state.get('017eeb0e-e5e7-98fe-6b2b-ad02349251fb')?.media_attachments.toJS()).toMatchObject(expected);
+      expect(state['017eeb0e-e5e7-98fe-6b2b-ad02349251fb']?.media_attachments).toMatchObject(expected);
     });
 
     it('fixes Pleroma attachments', async () => {
       const status = await import('@/__fixtures__/pleroma-status-with-attachments.json');
       const action = { type: STATUS_IMPORT, status };
       const state = reducer(undefined, action);
-      const result = state.get('AGNkA21auFR5lnEAHw')?.media_attachments;
+      const result = state.AGNkA21auFR5lnEAHw?.media_attachments;
 
-      expect(result?.size).toBe(4);
-      expect(result?.get(1)?.meta).toEqual(ImmutableMap());
-      expect(result?.getIn([1, 'pleroma', 'mime_type'])).toBe('application/x-nes-rom');
+      expect(result?.length).toBe(4);
+      expect(result?.[1]?.meta).toEqual({});
+      expect(result?.[1]?.pleroma.mime_type).toBe('application/x-nes-rom');
     });
 
     it('hides CWs', async () => {
       const status = await import('@/__fixtures__/status-cw.json');
       const action = { type: STATUS_IMPORT, status };
 
-      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      const hidden = reducer(undefined, action)['107831528995252317']?.hidden;
       expect(hidden).toBe(true);
     });
 
@@ -111,7 +106,7 @@ describe('statuses reducer', () => {
       const status = await import('@/__fixtures__/status-cw.json');
       const action = { type: STATUS_IMPORT, status, expandSpoilers: true };
 
-      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      const hidden = reducer(undefined, action)['107831528995252317']?.hidden;
       expect(hidden).toBe(false);
     });
 
@@ -121,7 +116,7 @@ describe('statuses reducer', () => {
 
       const expected = 'Hello <img draggable="false" class="emojione" alt=":ablobcathyper:" title=":ablobcathyper:" src="https://gleasonator.com/emoji/blobcat/ablobcathyper.png"> <img draggable="false" class="emojione" alt=":ageblobcat:" title=":ageblobcat:" src="https://gleasonator.com/emoji/blobcat/ageblobcat.png"> <img draggable="false" class="emojione" alt="😂" title=":joy:" src="/packs/emoji/1f602.svg"> world <img draggable="false" class="emojione" alt="😋" title=":yum:" src="/packs/emoji/1f60b.svg"> test <img draggable="false" class="emojione" alt=":blobcatphoto:" title=":blobcatphoto:" src="https://gleasonator.com/emoji/blobcat/blobcatphoto.png">';
 
-      const result = reducer(undefined, action).getIn(['AGm7uC9DaAIGUa4KYK', 'contentHtml']);
+      const result = (reducer(undefined, action).AGm7uC9DaAIGUa4KYK as any)?.contentHtml;
       expect(result).toBe(expected);
     });
 
@@ -135,7 +130,7 @@ Banning, censoring, and deplatforming anyone you disagree with
 
 Promoting free speech, even for people and ideas you dislike`;
 
-      const result = reducer(undefined, action).getIn(['103874034847713213', 'search_index']);
+      const result = reducer(undefined, action)['103874034847713213']?.search_index;
       expect(result).toEqual(expected);
     });
 
@@ -153,99 +148,99 @@ Promoting free speech, even for people and ideas you dislike`;
 
 @ademan@thebag.social`;
 
-      const result = reducer(undefined, action).getIn(['AHcweewcCh0iPUtMdk', 'search_index']);
+      const result = reducer(undefined, action).AHcweewcCh0iPUtMdk?.search_index;
       expect(result).toEqual(expected);
     });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {
     it('increments the replies_count of its parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_CREATE_REQUEST,
         params: { in_reply_to_id: '123' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(5);
     });
   });
 
   describe('STATUS_CREATE_FAIL', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 5 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_CREATE_FAIL,
         params: { in_reply_to_id: '123' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(4);
     });
   });
 
   describe('STATUS_DELETE_REQUEST', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_DELETE_REQUEST,
         params: { in_reply_to_id: '123' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(3);
     });
 
     it('gracefully does nothing if no parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_DELETE_REQUEST,
         params: { id: '1' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(4);
     });
   });
 
   describe('STATUS_DELETE_FAIL', () => {
     it('decrements the replies_count of its parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_DELETE_FAIL,
         params: { in_reply_to_id: '123' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(5);
     });
 
     it('gracefully does nothing if no parent', () => {
-      const state = ImmutableMap({
+      const state = {
         '123': normalizeStatus({ replies_count: 4 }) as ReducerStatus,
-      });
+      };
 
       const action = {
         type: STATUS_DELETE_FAIL,
         params: { id: '1' },
       };
 
-      const result = reducer(state, action).getIn(['123', 'replies_count']);
+      const result = reducer(state, action)['123'].replies_count;
       expect(result).toEqual(4);
     });
   });

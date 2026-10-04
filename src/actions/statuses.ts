@@ -53,7 +53,7 @@ const STATUS_TRANSLATE_UNDO    = 'STATUS_TRANSLATE_UNDO';
 const STATUS_UNFILTER = 'STATUS_UNFILTER';
 
 const statusExists = (getState: () => RootState, statusId: string) => {
-  return (getState().statuses.get(statusId) || null) !== null;
+  return (getState().statuses[statusId] || null) !== null;
 };
 
 const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
@@ -101,11 +101,11 @@ const createStatus = (params: Record<string, any>, idempotencyKey: string, statu
 };
 
 const editStatus = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
-  let status = getState().statuses.get(id)!;
-
-  if (status.poll) {
-    status = status.set('poll', getState().polls.get(status.poll) as any);
-  }
+  const reducerStatus = getState().statuses[id]!;
+  const status: Status = {
+    ...reducerStatus,
+    poll: reducerStatus.poll ? getState().polls[reducerStatus.poll] ?? null : null,
+  };
 
   dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
 
@@ -142,11 +142,11 @@ const deleteStatus = (id: string, withRedraft = false) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return null;
 
-    let status = getState().statuses.get(id)!;
-
-    if (status.poll) {
-      status = status.set('poll', getState().polls.get(status.poll) as any);
-    }
+    const reducerStatus = getState().statuses[id]!;
+    const status: Status = {
+      ...reducerStatus,
+      poll: reducerStatus.poll ? getState().polls[reducerStatus.poll] ?? null : null,
+    };
 
     dispatch({ type: STATUS_DELETE_REQUEST, params: status });
 

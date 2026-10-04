@@ -1,5 +1,5 @@
 import alertTriangleIcon from '@tabler/icons/outline/alert-triangle.svg';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { defineMessages, FormattedDate, useIntl } from 'react-intl';
 
 import { openModal } from '@/actions/modals.ts';
@@ -80,7 +80,8 @@ const AuthToken: React.FC<IAuthToken> = ({ token, isCurrent }) => {
 const AuthTokenList: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
-  const tokens = useAppSelector(state => state.security.get('tokens').reverse());
+  const securityTokens = useAppSelector(state => state.security.tokens);
+  const tokens = useMemo(() => [...securityTokens].reverse(), [securityTokens]);
 
   const currentTokenId = useAppSelector(state => {
     const currentToken = Object.values(state.auth.tokens).find((token) => token.me === state.auth.me);

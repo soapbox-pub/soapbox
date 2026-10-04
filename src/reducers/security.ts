@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, List as ImmutableList, Record as ImmutableRecord, fromJS } from 'immutable';
-
 import {
   MFA_FETCH_SUCCESS,
   MFA_CONFIRM_SUCCESS,
@@ -9,58 +7,66 @@ import {
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
 } from '../actions/security.ts';
+import { fromDefaults } from '../utils/normalizers.ts';
 
 import type { AnyAction } from 'redux';
 
-const TokenRecord = ImmutableRecord({
+export interface Token {
+  id: number;
+  app_name: string;
+  valid_until: string;
+}
+
+interface Mfa {
+  settings: Record<string, boolean>;
+}
+
+interface State {
+  tokens: Token[];
+  mfa: Mfa;
+}
+
+const initialState: State = {
+  tokens: [],
+  mfa: {
+    settings: {
+      totp: false,
+    },
+  },
+};
+
+const normalizeToken = (token: Record<string, any>): Token => fromDefaults<Token>({
   id: 0,
   app_name: '',
   valid_until: '',
-});
+}, token);
 
-const ReducerRecord = ImmutableRecord({
-  tokens: ImmutableList<Token>(),
-  mfa: ImmutableMap({
-    settings: ImmutableMap({
-      totp: false,
-    }),
-  }),
-});
-
-type State = ReturnType<typeof ReducerRecord>;
-
-export type Token = ReturnType<typeof TokenRecord>;
-
-const deleteToken = (state: State, tokenId: number) => {
-  return state.update('tokens', tokens => {
-    return tokens.filterNot(token => token.id === tokenId);
-  });
+const deleteToken = (state: State, tokenId: number): State => {
+  return { ...state, tokens: state.tokens.filter(token => token.id !== tokenId) };
 };
 
-const importMfa = (state: State, data: any) => {
-  return state.set('mfa', data);
+const setMfa = (state: State, method: string, enabled: boolean): State => {
+  return {
+    ...state,
+    mfa: {
+      ...state.mfa,
+      settings: { ...state.mfa.settings, [method]: enabled },
+    },
+  };
 };
 
-const enableMfa = (state: State, method: string) => {
-  return state.setIn(['mfa', 'settings', method], true);
-};
-
-const disableMfa = (state: State, method: string) => {
-  return state.setIn(['mfa', 'settings', method], false);
-};
-
-export default function security(state = ReducerRecord(), action: AnyAction) {
+export default function security(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case FETCH_TOKENS_SUCCESS:
-      return state.set('tokens', ImmutableList(action.tokens.map(TokenRecord)));
+      return { ...state, tokens: action.tokens.map(normalizeToken) };
     case REVOKE_TOKEN_SUCCESS:
       return deleteToken(state, action.id);
     case MFA_FETCH_SUCCESS:
-      return importMfa(state, fromJS(action.data));
+      return { ...state, mfa: action.data };
     case MFA_CONFIRM_SUCCESS:
-      return enableMfa(state, action.method);
+      return setMfa(state, action.method, true);
     case MFA_DISABLE_SUCCESS:
-      return disableMfa(state, action.method);
+      return setMfa(state, action.method, false);
     default:
       return state;
   }

@@ -1,7 +1,6 @@
 import arrowsMinimizeIcon from '@tabler/icons/outline/arrows-minimize.svg';
 import plusIcon from '@tabler/icons/outline/plus.svg';
-import { OrderedSet } from 'immutable';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { changeReportBlock, changeReportForward } from '@/actions/reports.ts';
@@ -36,7 +35,9 @@ const OtherActionsStep = ({ account }: IOtherActionsStep) => {
   const features = useFeatures();
   const intl = useIntl();
 
-  const statusIds = useAppSelector((state) => OrderedSet(state.timelines.get(`account:${account.id}:with_replies`)!.items).union(state.reports.new.status_ids) as OrderedSet<string>);
+  const timelineStatusIds = useAppSelector((state) => state.timelines[`account:${account.id}:with_replies`]!.items);
+  const selectedStatusIds = useAppSelector((state) => state.reports.new.status_ids);
+  const statusIds = useMemo(() => [...new Set([...timelineStatusIds, ...selectedStatusIds])], [timelineStatusIds, selectedStatusIds]);
   const isBlocked = useAppSelector((state) => state.reports.new.block);
   const isForward = useAppSelector((state) => state.reports.new.forward);
   const canForward = !account.local && features.federating;

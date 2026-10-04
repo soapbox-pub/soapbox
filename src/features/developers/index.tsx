@@ -5,7 +5,7 @@ import DevelopersChallenge from './developers-challenge.tsx';
 import DevelopersMenu from './developers-menu.tsx';
 
 const Developers: React.FC = () => {
-  const isDeveloper = useAppSelector((state) => getSettings(state).get('isDeveloper'));
+  const isDeveloper = useAppSelector((state) => getSettings(state).isDeveloper);
 
   return isDeveloper ? <DevelopersMenu /> : <DevelopersChallenge />;
 };

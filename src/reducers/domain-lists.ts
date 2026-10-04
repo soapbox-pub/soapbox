@@ -1,5 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
-
 import {
   DOMAIN_BLOCKS_FETCH_SUCCESS,
   DOMAIN_BLOCKS_EXPAND_SUCCESS,
@@ -8,25 +6,28 @@ import {
 
 import type { AnyAction } from 'redux';
 
-const BlocksRecord = ImmutableRecord({
-  items: ImmutableOrderedSet<string>(),
-  next: null as string | null,
-});
+interface State {
+  blocks: {
+    items: string[];
+    next: string | null;
+  };
+}
 
-const ReducerRecord = ImmutableRecord({
-  blocks: BlocksRecord(),
-});
+const initialState: State = {
+  blocks: {
+    items: [],
+    next: null,
+  },
+};
 
-type State = ReturnType<typeof ReducerRecord>;
-
-export default function domainLists(state: State = ReducerRecord(), action: AnyAction) {
+export default function domainLists(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case DOMAIN_BLOCKS_FETCH_SUCCESS:
-      return state.setIn(['blocks', 'items'], ImmutableOrderedSet(action.domains)).setIn(['blocks', 'next'], action.next);
+      return { ...state, blocks: { items: [...new Set<string>(action.domains)], next: action.next } };
     case DOMAIN_BLOCKS_EXPAND_SUCCESS:
-      return state.updateIn(['blocks', 'items'], set => (set as ImmutableOrderedSet<string>).union(action.domains)).setIn(['blocks', 'next'], action.next);
+      return { ...state, blocks: { items: [...new Set([...state.blocks.items, ...action.domains])], next: action.next } };
     case DOMAIN_UNBLOCK_SUCCESS:
-      return state.updateIn(['blocks', 'items'], set => (set as ImmutableOrderedSet<string>).delete(action.domain));
+      return { ...state, blocks: { ...state.blocks, items: state.blocks.items.filter(domain => domain !== action.domain) } };
     default:
       return state;
   }

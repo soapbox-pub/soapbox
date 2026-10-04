@@ -1,5 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
-
 import { normalizeTag } from '@/normalizers/index.ts';
 
 import {
@@ -24,11 +22,37 @@ import {
 import type { APIEntity, Tag } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ResultsRecord = ImmutableRecord({
-  accounts: ImmutableOrderedSet<string>(),
-  statuses: ImmutableOrderedSet<string>(),
-  groups: ImmutableOrderedSet<string>(),
-  hashtags: ImmutableOrderedSet<Tag>(), // it's a list of maps
+interface Results {
+  accounts: string[];
+  statuses: string[];
+  groups: string[];
+  hashtags: Tag[];
+  accountsHasMore: boolean;
+  statusesHasMore: boolean;
+  groupsHasMore: boolean;
+  hashtagsHasMore: boolean;
+  accountsLoaded: boolean;
+  statusesLoaded: boolean;
+  groupsLoaded: boolean;
+  hashtagsLoaded: boolean;
+}
+
+interface State {
+  value: string;
+  submitted: boolean;
+  submittedValue: string;
+  hidden: boolean;
+  results: Results;
+  filter: SearchFilter;
+  accountId: string | null;
+  next: string | null;
+}
+
+const initialResults: Results = {
+  accounts: [],
+  statuses: [],
+  groups: [],
+  hashtags: [],
   accountsHasMore: false,
   statusesHasMore: false,
   groupsHasMore: false,
@@ -37,35 +61,35 @@ const ResultsRecord = ImmutableRecord({
   statusesLoaded: false,
   groupsLoaded: false,
   hashtagsLoaded: false,
-});
+};
 
-const ReducerRecord = ImmutableRecord({
+const initialState: State = {
   value: '',
   submitted: false,
   submittedValue: '',
   hidden: false,
-  results: ResultsRecord(),
-  filter: 'statuses' as SearchFilter,
-  accountId: null as string | null,
-  next: null as string | null,
-});
+  results: initialResults,
+  filter: 'statuses',
+  accountId: null,
+  next: null,
+};
 
-type State = ReturnType<typeof ReducerRecord>;
 type APIEntities = Array<APIEntity>;
 export type SearchFilter = 'statuses' | 'accounts' | 'groups' | 'hashtags';
 
-const toIds = (items: APIEntities = []) => {
-  return ImmutableOrderedSet(items.map(item => item.id));
+const toIds = (items: APIEntities = []): string[] => {
+  return [...new Set(items.map(item => item.id as string))];
 };
 
-const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter, next: string | null) => {
-  return state.withMutations(state => {
-    if (state.value === searchTerm && state.filter === searchType) {
-      state.set('results', ResultsRecord({
+const importResults = (state: State, results: APIEntity, searchTerm: string, searchType: SearchFilter, next: string | null): State => {
+  if (state.value === searchTerm && state.filter === searchType) {
+    return {
+      ...state,
+      results: {
         statuses: toIds(results.statuses),
         accounts: toIds(results.accounts),
         groups: toIds(results.groups),
-        hashtags: ImmutableOrderedSet(results.hashtags.map(normalizeTag)), // it's a list of records
+        hashtags: results.hashtags.map(normalizeTag),
         accountsHasMore: results.accounts.length >= 20,
         statusesHasMore: results.statuses.length >= 20,
         groupsHasMore: results.groups?.length >= 20,
@@ -74,80 +98,87 @@ const importResults = (state: State, results: APIEntity, searchTerm: string, sea
         statusesLoaded: true,
         groupsLoaded: true,
         hashtagsLoaded: true,
-      }));
+      },
+      submitted: true,
+      next,
+    };
+  }
 
-      state.set('submitted', true);
-      state.set('next', next);
-    }
-  });
+  return state;
 };
 
-const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string, next: string | null) => {
-  return state.withMutations(state => {
-    if (state.value === searchTerm) {
-      state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
-      state.setIn(['results', `${searchType}Loaded`], true);
-      state.set('next', next);
-      state.updateIn(['results', searchType], items => {
-        const data = results[searchType];
+const paginateResults = (state: State, searchType: SearchFilter, results: APIEntity, searchTerm: string, next: string | null): State => {
+  if (state.value === searchTerm) {
+    const data = results[searchType];
+
+    return {
+      ...state,
+      next,
+      results: {
+        ...state.results,
+        [`${searchType}HasMore`]: data.length >= 20,
+        [`${searchType}Loaded`]: true,
         // Hashtags are a list of maps. Others are IDs.
-        if (searchType === 'hashtags') {
-          return (items as ImmutableOrderedSet<string>).concat((fromJS(data) as Record<string, any>).map(normalizeTag));
-        } else {
-          return (items as ImmutableOrderedSet<string>).concat(toIds(data));
-        }
-      });
-    }
-  });
+        [searchType]: searchType === 'hashtags'
+          ? [...state.results.hashtags, ...data.map(normalizeTag)]
+          : [...new Set([...state.results[searchType], ...toIds(data)])],
+      },
+    };
+  }
+
+  return state;
 };
 
-const handleSubmitted = (state: State, value: string) => {
-  return state.withMutations(state => {
-    state.set('results', ResultsRecord());
-    state.set('submitted', true);
-    state.set('submittedValue', value);
-  });
+const handleSubmitted = (state: State, value: string): State => {
+  return {
+    ...state,
+    results: initialResults,
+    submitted: true,
+    submittedValue: value,
+  };
 };
 
-export default function search(state = ReducerRecord(), action: AnyAction) {
+export default function search(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case SEARCH_CHANGE:
-      return state.set('value', action.value);
+      return { ...state, value: action.value };
     case SEARCH_CLEAR:
-      return ReducerRecord();
+      return initialState;
     case SEARCH_RESULTS_CLEAR:
-      return state.merge({
+      return {
+        ...state,
         value: '',
-        results: ResultsRecord(),
+        results: initialResults,
         submitted: false,
         submittedValue: '',
-      });
+      };
     case SEARCH_SHOW:
-      return state.set('hidden', false);
+      return { ...state, hidden: false };
     case COMPOSE_REPLY:
     case COMPOSE_MENTION:
     case COMPOSE_DIRECT:
     case COMPOSE_QUOTE:
-      return state.set('hidden', true);
+      return { ...state, hidden: true };
     case SEARCH_FETCH_REQUEST:
       return handleSubmitted(state, action.value);
     case SEARCH_FETCH_SUCCESS:
       return importResults(state, action.results, action.searchTerm, action.searchType, action.next);
     case SEARCH_FILTER_SET:
-      return state.set('filter', action.value);
+      return { ...state, filter: action.value };
     case SEARCH_EXPAND_REQUEST:
-      return state.setIn(['results', `${action.searchType}Loaded`], false);
+      return { ...state, results: { ...state.results, [`${action.searchType}Loaded`]: false } };
     case SEARCH_EXPAND_SUCCESS:
       return paginateResults(state, action.searchType, action.results, action.searchTerm, action.next);
     case SEARCH_ACCOUNT_SET:
-      if (!action.accountId) return state.merge({
-        results: ResultsRecord(),
+      if (!action.accountId) return {
+        ...state,
+        results: initialResults,
         submitted: false,
         submittedValue: '',
         filter: 'statuses',
         accountId: null,
-      });
-      return ReducerRecord({ accountId: action.accountId, filter: 'statuses' });
+      };
+      return { ...initialState, accountId: action.accountId, filter: 'statuses' };
     default:
       return state;
   }

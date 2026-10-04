@@ -8,7 +8,7 @@ function usePatronUser(url?: string) {
   const api = useApi();
   const soapboxConfig = useSoapboxConfig();
 
-  const patronEnabled = soapboxConfig.getIn(['extensions', 'patron', 'enabled']) === true;
+  const patronEnabled = soapboxConfig.extensions?.patron?.enabled === true;
 
   const { entity: patronUser, ...result } = useEntity<PatronUser>(
     [Entities.PATRON_USERS, url || ''],

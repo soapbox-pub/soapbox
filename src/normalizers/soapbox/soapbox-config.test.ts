@@ -1,4 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { normalizeSoapboxConfig } from './soapbox-config.ts';
@@ -7,7 +6,6 @@ describe('normalizeSoapboxConfig()', () => {
   it('adds base fields', () => {
     const result = normalizeSoapboxConfig({});
     expect(result.brandColor).toBe('');
-    expect(ImmutableRecord.isRecord(result)).toBe(true);
   });
 
   it('normalizes cryptoAddresses', () => {
@@ -24,17 +22,14 @@ describe('normalizeSoapboxConfig()', () => {
     };
 
     const result = normalizeSoapboxConfig(soapboxConfig);
-    expect(result.cryptoAddresses.size).toBe(1);
-    expect(ImmutableRecord.isRecord(result.cryptoAddresses.get(0))).toBe(true);
-    expect(result.toJS()).toMatchObject(expected);
+    expect(result.cryptoAddresses.length).toBe(1);
+    expect(result).toMatchObject(expected);
   });
 
   it('normalizes promoPanel', async () => {
     const soapboxConfig = await import('@/__fixtures__/spinster-soapbox.json');
     const result = normalizeSoapboxConfig(soapboxConfig);
-    expect(ImmutableRecord.isRecord(result.promoPanel)).toBe(true);
-    expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);
-    expect(result.promoPanel.items.get(2)?.icon).toBe('question-circle');
+    expect(result.promoPanel.items[2]?.icon).toBe('question-circle');
   });
 
   it('upgrades singleUserModeProfile to redirectRootNoLogin', () => {

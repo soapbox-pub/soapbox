@@ -63,7 +63,7 @@ export interface IStatus {
 }
 
 /**
- * Legacy Status accepting a the full entity in immutable.
+ * Legacy Status accepting the full legacy status entity.
  * @deprecated Use the PureStatus component.
  */
 const Status: React.FC<IStatus> = (props) => {
@@ -102,7 +102,7 @@ const Status: React.FC<IStatus> = (props) => {
   const statusUrl = `/@${actualStatus.account.acct}/posts/${actualStatus.id}`;
   const group = actualStatus.group;
 
-  const filtered = (status.filtered.size || actualStatus.filtered.size) > 0;
+  const filtered = (status.filtered.length || actualStatus.filtered.length) > 0;
 
   const { toggleReblog } = useReblog();
 
@@ -146,7 +146,7 @@ const Status: React.FC<IStatus> = (props) => {
 
   const handleHotkeyOpenMedia = (e?: KeyboardEvent): void => {
     const status = actualStatus;
-    const firstAttachment = status.media_attachments.first();
+    const firstAttachment = status.media_attachments[0];
 
     e?.preventDefault();
 
@@ -154,7 +154,7 @@ const Status: React.FC<IStatus> = (props) => {
       if (firstAttachment.type === 'video') {
         dispatch(openModal('VIDEO', { status, media: firstAttachment, time: 0 }));
       } else {
-        dispatch(openModal('MEDIA', { status: status.toJS(), media: status.media_attachments.toJS(), index: 0 }));
+        dispatch(openModal('MEDIA', { status: status, media: status.media_attachments, index: 0 }));
       }
     }
   };
@@ -173,7 +173,7 @@ const Status: React.FC<IStatus> = (props) => {
     if ((e && e.shiftKey) || !boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: actualStatus.toJS(), onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: actualStatus, onReblog: modalReblog }));
     }
   };
 
@@ -214,7 +214,7 @@ const Status: React.FC<IStatus> = (props) => {
     _expandEmojiSelector();
   };
 
-  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.size ? status.id : actualStatus.id));
+  const handleUnfilter = () => dispatch(unfilterStatus(status.filtered.length ? status.id : actualStatus.id));
 
   const _expandEmojiSelector = (): void => {
     const firstEmoji: HTMLDivElement | null | undefined = node.current?.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
@@ -364,7 +364,7 @@ const Status: React.FC<IStatus> = (props) => {
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if (actualStatus.pleroma.quote_visible === false) {
       quote = (
         <div>
           <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
@@ -467,10 +467,10 @@ const Status: React.FC<IStatus> = (props) => {
 
                   <TranslateButton status={actualStatus} />
 
-                  {(quote || actualStatus.card || actualStatus.media_attachments.size > 0) && (
+                  {(quote || actualStatus.card || actualStatus.media_attachments.length > 0) && (
                     <Stack space={4}>
                       <StatusMedia
-                        status={actualStatus.toJS() as StatusEntity}
+                        status={actualStatus as unknown as StatusEntity}
                         muted={muted}
                         onClick={handleClick}
                         showMedia={showMedia}

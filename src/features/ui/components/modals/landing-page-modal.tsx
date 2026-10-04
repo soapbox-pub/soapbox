@@ -35,10 +35,10 @@ const LandingPageModal: React.FC<ILandingPageModal> = ({ onClose }) => {
       onClose={() => onClose('LANDING_PAGE')}
     >
       <div className='mt-4 divide-y divide-solid divide-gray-200 dark:divide-gray-800'>
-        {links.get('help') && (
+        {links.help && (
           <nav className='mb-6 grid gap-y-8'>
             <a
-              href={links.get('help')}
+              href={links.help}
               target='_blank'
               className='flex items-center space-x-3 rounded-md p-3 hover:bg-gray-50 dark:hover:bg-gray-900/50'
             >

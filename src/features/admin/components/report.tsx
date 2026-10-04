@@ -22,8 +22,7 @@ import toast from '@/toast.tsx';
 
 import ReportStatus from './report-status.tsx';
 
-import type { Account, AdminReport, Status } from '@/types/entities.ts';
-import type { List as ImmutableList } from 'immutable';
+import type { Account } from '@/types/entities.ts';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
@@ -41,7 +40,7 @@ const Report: React.FC<IReport> = ({ id }) => {
 
   const getReport = useCallback(makeGetReport(), []);
 
-  const report = useAppSelector((state) => getReport(state, id) as AdminReport | undefined);
+  const report = useAppSelector((state) => getReport(state, id));
 
   const [accordionExpanded, setAccordionExpanded] = useState(false);
 
@@ -85,8 +84,8 @@ const Report: React.FC<IReport> = ({ id }) => {
   };
 
   const menu = makeMenu();
-  const statuses = report.statuses as ImmutableList<Status>;
-  const statusCount = statuses.count();
+  const statuses = report.statuses;
+  const statusCount = statuses.length;
   const acct = targetAccount.acct as string;
   const reporterAcct = account.acct as string;
 
@@ -121,7 +120,6 @@ const Report: React.FC<IReport> = ({ id }) => {
               {statuses.map(status => (
                 <ReportStatus
                   key={status.id}
-                  report={report}
                   status={status}
                 />
               ))}

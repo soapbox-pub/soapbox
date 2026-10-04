@@ -1,35 +1,47 @@
-import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
-export const GeographicLocationRecord = ImmutableRecord({
-  coordinates: null as [number, number] | null,
-  srid: '',
-});
+export interface GeographicLocation {
+  coordinates: [number, number] | null;
+  srid: string;
+}
 
-export const LocationRecord = ImmutableRecord({
-  url: '',
-  description: '',
-  country: '',
-  locality: '',
-  region: '',
-  postal_code: '',
-  street: '',
-  origin_id: '',
-  origin_provider: '',
-  type: '',
-  timezone: '',
-  geom: null as ReturnType<typeof GeographicLocationRecord> | null,
-});
+export interface Location {
+  url: string;
+  description: string;
+  country: string;
+  locality: string;
+  region: string;
+  postal_code: string;
+  street: string;
+  origin_id: string;
+  origin_provider: string;
+  type: string;
+  timezone: string;
+  geom: GeographicLocation | null;
+}
 
-const normalizeGeographicLocation = (location: ImmutableMap<string, any>) => {
-  if (location.get('geom')) {
-    return location.set('geom', GeographicLocationRecord(location.get('geom')));
+export const normalizeLocation = (location: Record<string, any>): Location => {
+  const result = fromDefaults<Location>({
+    url: '',
+    description: '',
+    country: '',
+    locality: '',
+    region: '',
+    postal_code: '',
+    street: '',
+    origin_id: '',
+    origin_provider: '',
+    type: '',
+    timezone: '',
+    geom: null,
+  }, location);
+
+  if (location.geom) {
+    result.geom = fromDefaults<GeographicLocation>({
+      coordinates: null,
+      srid: '',
+    }, location.geom);
   }
 
-  return location;
-};
-
-export const normalizeLocation = (location: Record<string, any>) => {
-  return LocationRecord(ImmutableMap(fromJS(location)).withMutations((location: ImmutableMap<string, any>) => {
-    normalizeGeographicLocation(location);
-  }));
+  return result;
 };

@@ -13,7 +13,7 @@ export function useReplyCompose() {
   const dispatch = useAppDispatch();
 
   const replyCompose = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(replyComposeAction(status));

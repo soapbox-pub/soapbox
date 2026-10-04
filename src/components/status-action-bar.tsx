@@ -247,7 +247,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       if ((e && e.shiftKey) || !boostModal) {
         modalReblog();
       } else {
-        dispatch(openModal('BOOST', { status: status.toJS(), onReblog: modalReblog }));
+        dispatch(openModal('BOOST', { status: status, onReblog: modalReblog }));
       }
     } else {
       onOpenUnauthorizedModal('REBLOG');
@@ -374,7 +374,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   };
 
   const handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(toggleMuteStatus(status.toJS() as StatusEntity));
+    dispatch(toggleMuteStatus(status as unknown as StatusEntity));
   };
 
   const handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
@@ -829,7 +829,7 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
           />
         )}
 
-        <DropdownMenu items={menu} status={status.toJS() as StatusEntity}>
+        <DropdownMenu items={menu} status={status as unknown as StatusEntity}>
           <StatusActionButton
             title={intl.formatMessage(messages.more)}
             icon={dotsIcon}

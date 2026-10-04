@@ -1,19 +1,18 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { useState } from 'react';
 
 import type { Attachment as AttachmentEntity } from '@/types/entities.ts';
 
 interface IPlaceholderMediaGallery {
-  media: ImmutableList<AttachmentEntity>;
+  media: readonly AttachmentEntity[];
   defaultWidth?: number;
 }
 
-const SizeData = ImmutableRecord({
-  style: {} as React.CSSProperties,
-  itemsDimensions: [] as Record<string, string>[],
-  size: 1 as number,
-  width: 0 as number,
-});
+interface SizeData {
+  style: React.CSSProperties;
+  itemsDimensions: Record<string, string>[];
+  size: number;
+  width: number;
+}
 
 const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, defaultWidth }) => {
   const [width, setWidth] = useState(defaultWidth);
@@ -60,12 +59,14 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
       ];
     }
 
-    return SizeData({
+    const sizeData: SizeData = {
       style,
       itemsDimensions,
       size,
-      width,
-    });
+      width: width ?? 0,
+    };
+
+    return sizeData;
   };
 
   const renderItem = (dimensions: Record<string, string>, i: number) => {
@@ -81,11 +82,11 @@ const PlaceholderMediaGallery: React.FC<IPlaceholderMediaGallery> = ({ media, de
     return <div key={i} className='relative float-left box-border block animate-pulse overflow-hidden rounded-sm border-0 bg-primary-200' style={{ position, float, left, top, right, bottom, height, width }} />;
   };
 
-  const sizeData = getSizeData(media.size);
+  const sizeData = getSizeData(media.length);
 
   return (
-    <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={sizeData.get('style')} ref={handleRef}>
-      {media.take(4).map((_, i) => renderItem(sizeData.get('itemsDimensions')[i], i))}
+    <div className='relative isolate box-border h-auto w-full overflow-hidden rounded-lg' style={sizeData.style} ref={handleRef}>
+      {media.slice(0, 4).map((_, i) => renderItem(sizeData.itemsDimensions[i], i))}
     </div>
   );
 };

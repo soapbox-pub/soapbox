@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import reducer from './user-lists.ts';
@@ -11,10 +10,10 @@ describe('user_lists reducer', () => {
       reblogged_by: {},
       favourited_by: {},
       reactions: {},
-      follow_requests: { next: null, items: ImmutableOrderedSet(), isLoading: false },
-      blocks: { next: null, items: ImmutableOrderedSet(), isLoading: false },
-      mutes: { next: null, items: ImmutableOrderedSet(), isLoading: false },
-      directory: { next: null, items: ImmutableOrderedSet(), isLoading: true },
+      follow_requests: { next: null, items: [], isLoading: false },
+      blocks: { next: null, items: [], isLoading: false },
+      mutes: { next: null, items: [], isLoading: false },
+      directory: { next: null, items: [], isLoading: true },
       pinned: {},
       birthday_reminders: {},
       familiar_followers: {},

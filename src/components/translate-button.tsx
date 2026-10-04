@@ -51,7 +51,7 @@ const TranslateButton: React.FC<ITranslateButton> = ({ status }) => {
   if (status.translation) {
     const languageNames = new Intl.DisplayNames([intl.locale], { type: 'language' });
     const languageName = languageNames.of(status.language!);
-    const provider     = status.translation.get('provider');
+    const provider     = status.translation.provider;
 
     return (
       <Stack alignItems='start'>

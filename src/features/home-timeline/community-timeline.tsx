@@ -18,7 +18,7 @@ const CommunityTimeline = () => {
 
   const settings = useSettings();
   const onlyMedia = settings.community.other.onlyMedia;
-  const next = useAppSelector(state => state.timelines.get('community')?.next);
+  const next = useAppSelector(state => state.timelines.community?.next);
 
   const timelineId = 'community';
 

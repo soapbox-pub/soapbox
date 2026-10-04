@@ -22,9 +22,9 @@ const ScheduledStatuses = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const statusIds = useAppSelector((state) => state.status_lists.get('scheduled_statuses')!.items);
-  const isLoading = useAppSelector((state) => state.status_lists.get('scheduled_statuses')!.isLoading);
-  const hasMore = useAppSelector((state) => !!state.status_lists.get('scheduled_statuses')!.next);
+  const statusIds = useAppSelector((state) => state.status_lists.scheduled_statuses!.items);
+  const isLoading = useAppSelector((state) => state.status_lists.scheduled_statuses!.isLoading);
+  const hasMore = useAppSelector((state) => !!state.status_lists.scheduled_statuses!.next);
 
   useEffect(() => {
     dispatch(fetchScheduledStatuses());

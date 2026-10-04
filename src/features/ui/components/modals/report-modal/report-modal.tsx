@@ -69,7 +69,7 @@ const reportSteps = {
 };
 
 const SelectedStatus = ({ statusId }: { statusId: string }) => {
-  const status = useAppSelector((state) => state.statuses.get(statusId));
+  const status = useAppSelector((state) => state.statuses[statusId]);
 
   if (!status) {
     return null;
@@ -90,9 +90,9 @@ const SelectedStatus = ({ statusId }: { statusId: string }) => {
         collapsable
       />
 
-      {status.media_attachments.size > 0 && (
+      {status.media_attachments.length > 0 && (
         <AttachmentThumbs
-          media={status.media_attachments.toJS() as unknown as Attachment[]}
+          media={status.media_attachments as unknown as Attachment[]}
           sensitive={status.sensitive}
         />
       )}
@@ -139,7 +139,7 @@ const ReportModal = ({ onClose }: IReportModal) => {
   };
 
   const renderSelectedStatuses = useCallback(() => {
-    switch (selectedStatusIds.size) {
+    switch (selectedStatusIds.length) {
       case 0:
         return (
           <div className='flex w-full items-center justify-center rounded-lg bg-gray-100 p-4 dark:bg-gray-800'>
@@ -147,9 +147,9 @@ const ReportModal = ({ onClose }: IReportModal) => {
           </div>
         );
       default:
-        return <SelectedStatus statusId={selectedStatusIds.first()} />;
+        return <SelectedStatus statusId={selectedStatusIds[0]} />;
     }
-  }, [selectedStatusIds.size]);
+  }, [selectedStatusIds.length]);
 
   const cancelText = useMemo(() => {
     switch (currentStep) {
@@ -286,8 +286,8 @@ const ReportModal = ({ onClose }: IReportModal) => {
       return false;
     }
 
-    return isSubmitting || (shouldRequireRule && ruleIds.isEmpty()) || (isReportingStatus && selectedStatusIds.size === 0);
-  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.size, isReportingStatus]);
+    return isSubmitting || (shouldRequireRule && ruleIds.length === 0) || (isReportingStatus && selectedStatusIds.length === 0);
+  }, [currentStep, isSubmitting, shouldRequireRule, ruleIds, selectedStatusIds.length, isReportingStatus]);
 
   const calculateProgress = useCallback(() => {
     switch (currentStep) {

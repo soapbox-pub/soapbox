@@ -6,7 +6,7 @@ import {
   STATUS_HOVER_CARD_UPDATE,
 } from '@/actions/status-hover-card.ts';
 
-import reducer, { ReducerRecord } from './status-hover-card.ts';
+import reducer, { initialState } from './status-hover-card.ts';
 
 describe(STATUS_HOVER_CARD_OPEN, () => {
   it('sets the ref and statusId', () => {
@@ -26,10 +26,11 @@ describe(STATUS_HOVER_CARD_OPEN, () => {
 
 describe(STATUS_HOVER_CARD_CLOSE, () => {
   it('flushes the state', () => {
-    const state = ReducerRecord({
+    const state = {
+      ...initialState,
       ref: { current: document.createElement('div') },
       statusId: '1234',
-    });
+    };
 
     const action = { type: STATUS_HOVER_CARD_CLOSE };
 
@@ -39,11 +40,12 @@ describe(STATUS_HOVER_CARD_CLOSE, () => {
   });
 
   it('leaves the state alone if hovered', () => {
-    const state = ReducerRecord({
+    const state = {
+      ...initialState,
       ref: { current: document.createElement('div') },
       statusId: '1234',
       hovered: true,
-    });
+    };
 
     const action = { type: STATUS_HOVER_CARD_CLOSE };
     const result = reducer(state, action);
@@ -51,11 +53,12 @@ describe(STATUS_HOVER_CARD_CLOSE, () => {
   });
 
   it('action.force flushes the state even if hovered', () => {
-    const state = ReducerRecord({
+    const state = {
+      ...initialState,
       ref: { current: document.createElement('div') },
       statusId: '1234',
       hovered: true,
-    });
+    };
 
     const action = { type: STATUS_HOVER_CARD_CLOSE, force: true };
     const result = reducer(state, action);
@@ -66,7 +69,7 @@ describe(STATUS_HOVER_CARD_CLOSE, () => {
 
 describe(STATUS_HOVER_CARD_UPDATE, () => {
   it('sets hovered', () => {
-    const state = ReducerRecord();
+    const state = initialState;
     const action = { type: STATUS_HOVER_CARD_UPDATE };
     const result = reducer(state, action);
     expect(result.hovered).toBe(true);

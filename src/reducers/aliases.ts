@@ -1,5 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
-
 import {
   ALIASES_SUGGESTIONS_READY,
   ALIASES_SUGGESTIONS_CLEAR,
@@ -10,37 +8,47 @@ import {
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
-  aliases: ImmutableRecord({
-    items: ImmutableList<string>(),
+interface State {
+  aliases: {
+    items: string[];
+    loaded: boolean;
+  };
+  suggestions: {
+    items: string[];
+    value: string;
+    loaded: boolean;
+  };
+}
+
+const initialState: State = {
+  aliases: {
+    items: [],
     loaded: false,
-  })(),
-  suggestions: ImmutableRecord({
-    items: ImmutableList<string>(),
+  },
+  suggestions: {
+    items: [],
     value: '',
     loaded: false,
-  })(),
-});
+  },
+};
 
-export default function aliasesReducer(state = ReducerRecord(), action: AnyAction) {
+export default function aliasesReducer(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case ALIASES_FETCH_SUCCESS:
-      return state
-        .setIn(['aliases', 'items'], action.value);
+      return { ...state, aliases: { ...state.aliases, items: action.value } };
     case ALIASES_SUGGESTIONS_CHANGE:
-      return state
-        .setIn(['suggestions', 'value'], action.value)
-        .setIn(['suggestions', 'loaded'], false);
+      return { ...state, suggestions: { ...state.suggestions, value: action.value, loaded: false } };
     case ALIASES_SUGGESTIONS_READY:
-      return state
-        .setIn(['suggestions', 'items'], ImmutableList(action.accounts.map((item: APIEntity) => item.id)))
-        .setIn(['suggestions', 'loaded'], true);
+      return {
+        ...state,
+        suggestions: {
+          ...state.suggestions,
+          items: action.accounts.map((item: APIEntity) => item.id),
+          loaded: true,
+        },
+      };
     case ALIASES_SUGGESTIONS_CLEAR:
-      return state.update('suggestions', suggestions => suggestions.withMutations(map => {
-        map.set('items', ImmutableList());
-        map.set('value', '');
-        map.set('loaded', false);
-      }));
+      return { ...state, suggestions: { items: [], value: '', loaded: false } };
     default:
       return state;
   }

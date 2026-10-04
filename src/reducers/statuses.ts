@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { produce, type Draft } from 'immer';
 import DOMPurify from 'isomorphic-dompurify';
 
 import { normalizeStatus } from '@/normalizers/index.ts';
@@ -52,20 +52,27 @@ const domParser = new DOMParser();
 type StatusRecord = ReturnType<typeof normalizeStatus>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string, ReducerStatus>;
+type State = Record<string, ReducerStatus>;
 
-export interface ReducerStatus extends StatusRecord {
+export interface ReducerStatus extends Omit<StatusRecord, 'reblog' | 'poll' | 'quote'> {
   reblog: string | null;
   poll: string | null;
   quote: string | null;
 }
 
+/** Replace an embedded entity with its ID, keeping an existing ID if it has none. */
+const minifyEmbedded = (entity: unknown): string | null => {
+  if (typeof entity === 'string') return entity;
+  return normalizeId((entity as { id?: unknown } | null)?.id);
+};
+
 const minifyStatus = (status: StatusRecord): ReducerStatus => {
-  return status.mergeWith((o, n) => n || o, {
-    reblog: normalizeId(status.getIn(['reblog', 'id'])),
-    poll: normalizeId(status.getIn(['poll', 'id'])),
-    quote: normalizeId(status.getIn(['quote', 'id'])),
-  }) as ReducerStatus;
+  return {
+    ...status,
+    reblog: minifyEmbedded(status.reblog),
+    poll: minifyEmbedded(status.poll),
+    quote: minifyEmbedded(status.quote),
+  };
 };
 
 // Gets titles of poll options from status
@@ -78,7 +85,7 @@ const getPollOptionTitles = ({ poll }: StatusRecord): readonly string[] => {
 };
 
 // Gets usernames of mentioned users from status
-const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> => {
+const getMentionedUsernames = (status: StatusRecord): string[] => {
   return status.mentions.map(({ acct }) => `@${acct}`);
 };
 
@@ -87,10 +94,12 @@ const buildSearchContent = (status: StatusRecord): string => {
   const pollOptionTitles = getPollOptionTitles(status);
   const mentionedUsernames = getMentionedUsernames(status);
 
-  const fields = ImmutableList([
+  const fields = [
     status.spoiler_text,
     status.content,
-  ]).concat(pollOptionTitles).concat(mentionedUsernames);
+    ...pollOptionTitles,
+    ...mentionedUsernames,
+  ];
 
   return htmlToPlaintext(fields.join('\n\n')) || '';
 };
@@ -103,122 +112,113 @@ export const calculateStatus = (
 ): StatusRecord => {
   const searchContent = buildSearchContent(status);
 
-  return status.merge({
+  return {
+    ...status,
     search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
     content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
     // `spoiler_text` alone is a subject line; it only warrants hiding the post
     // when the author also marked it sensitive.
     hidden: expandSpoilers ? false : status.sensitive,
-  });
+  };
 };
 
 // Check whether a status is a quote by secondary characteristics
 const isQuote = (status: StatusRecord) => {
-  return Boolean(status.pleroma.get('quote_url'));
+  return Boolean(status.pleroma.quote_url);
 };
 
 // Preserve translation if an existing status already has it
-const fixTranslation = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
+const fixTranslation = (status: StatusRecord, oldStatus?: ReducerStatus): StatusRecord => {
   if (oldStatus?.translation && !status.translation) {
-    return status
-      .set('translation', oldStatus.translation);
+    return { ...status, translation: oldStatus.translation };
   } else {
     return status;
   }
 };
 
 // Preserve quote if an existing status already has it
-const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord => {
+const fixQuote = (status: StatusRecord, oldStatus?: ReducerStatus): StatusRecord => {
   if (oldStatus && !status.quote && isQuote(status)) {
-    return status
-      .set('quote', oldStatus.quote)
-      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.pleroma.get('quote_visible'));
+    return {
+      ...status,
+      quote: oldStatus.quote,
+      pleroma: {
+        ...status.pleroma,
+        quote_visible: status.pleroma.quote_visible || oldStatus.pleroma.quote_visible,
+      },
+    };
   } else {
     return status;
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
-  const oldStatus = state.get(status.id);
+const fixStatus = (state: State, data: APIEntity, expandSpoilers: boolean): ReducerStatus => {
+  const oldStatus = state[data.id];
 
-  return normalizeStatus(status).withMutations(status => {
-    fixTranslation(status, oldStatus);
-    fixQuote(status, oldStatus);
-    calculateStatus(status, expandSpoilers);
-    minifyStatus(status);
-  }) as ReducerStatus;
+  let status = normalizeStatus(data);
+  status = fixTranslation(status, oldStatus);
+  status = fixQuote(status, oldStatus);
+  status = calculateStatus(status, expandSpoilers);
+  return minifyStatus(status);
 };
-
-const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
-  state.set(status.id, fixStatus(state, status, expandSpoilers));
 
 const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
-
-const deleteStatus = (state: State, id: string, references: Array<string>) => {
-  references.forEach(ref => {
-    state = deleteStatus(state, ref[0], []);
+  produce(state, draft => {
+    statuses.forEach(status => {
+      draft[status.id] = fixStatus(state, status, expandSpoilers);
+    });
   });
 
-  return state.delete(id);
+const deleteStatus = (draft: Draft<State>, id: string, references: Array<string>) => {
+  references.forEach(ref => {
+    deleteStatus(draft, ref[0], []);
+  });
+
+  delete draft[id];
 };
 
-const incrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
-  if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
-      return typeof count === 'number' ? count + 1 : 0;
-    });
-  } else {
-    return state;
+const incrementReplyCount = (draft: Draft<State>, { in_reply_to_id }: APIEntity) => {
+  const parent = in_reply_to_id ? draft[in_reply_to_id] : undefined;
+  if (parent) {
+    parent.replies_count = typeof parent.replies_count === 'number' ? parent.replies_count + 1 : 0;
   }
 };
 
-const decrementReplyCount = (state: State, { in_reply_to_id }: APIEntity) => {
-  if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
-      return typeof count === 'number' ? Math.max(0, count - 1) : 0;
-    });
-  } else {
-    return state;
+const decrementReplyCount = (draft: Draft<State>, { in_reply_to_id }: APIEntity) => {
+  const parent = in_reply_to_id ? draft[in_reply_to_id] : undefined;
+  if (parent) {
+    parent.replies_count = typeof parent.replies_count === 'number' ? Math.max(0, parent.replies_count - 1) : 0;
   }
 };
 
 /** Simulate favourite/unfavourite of status for optimistic interactions */
 const simulateFavourite = (
-  state: State,
+  draft: Draft<State>,
   statusId: string,
   favourited: boolean,
-): State => {
-  const status = state.get(statusId);
-  if (!status) return state;
+) => {
+  const status = draft[statusId];
+  if (!status) return;
 
   const delta = favourited ? +1 : -1;
 
-  const updatedStatus = status.merge({
-    favourited,
-    favourites_count: Math.max(0, status.favourites_count + delta),
-  });
-
-  return state.set(statusId, updatedStatus);
+  status.favourited = favourited;
+  status.favourites_count = Math.max(0, status.favourites_count + delta);
 };
 
 /** Simulate dislike/undislike of status for optimistic interactions */
 const simulateDislike = (
-  state: State,
+  draft: Draft<State>,
   statusId: string,
   disliked: boolean,
-): State => {
-  const status = state.get(statusId);
-  if (!status) return state;
+) => {
+  const status = draft[statusId];
+  if (!status) return;
 
   const delta = disliked ? +1 : -1;
 
-  const updatedStatus = status.merge({
-    disliked,
-    dislikes_count: Math.max(0, status.dislikes_count + delta),
-  });
-
-  return state.set(statusId, updatedStatus);
+  status.disliked = disliked;
+  status.dislikes_count = Math.max(0, status.dislikes_count + delta);
 };
 
 interface Translation {
@@ -228,100 +228,118 @@ interface Translation {
 }
 
 /** Import translation from translation service into the store. */
-const importTranslation = (state: State, statusId: string, translation: Translation) => {
-  const map = ImmutableMap(translation);
-  const result = map.set('content', stripCompatibilityFeatures(map.get('content', '')));
-  return state.setIn([statusId, 'translation'], result);
+const importTranslation = (draft: Draft<State>, statusId: string, translation: Translation) => {
+  const status = draft[statusId];
+  if (!status) return;
+
+  status.translation = {
+    ...translation,
+    content: stripCompatibilityFeatures(translation.content ?? ''),
+  };
 };
 
-/** Delete translation from the store. */
-const deleteTranslation = (state: State, statusId: string) => {
-  return state.deleteIn([statusId, 'translation']);
+/** Update a single status in the store, if it exists. */
+const updateStatus = (state: State, id: string, recipe: (status: Draft<ReducerStatus>) => void): State => {
+  if (!state[id]) return state;
+
+  return produce(state, draft => {
+    recipe(draft[id]!);
+  });
 };
 
-const initialState: State = ImmutableMap();
+const initialState: State = {};
 
 export default function statuses(state = initialState, action: AnyAction): State {
   switch (action.type) {
     case STATUS_IMPORT:
-      return importStatus(state, action.status, action.expandSpoilers);
+      return importStatuses(state, [action.status], action.expandSpoilers);
     case STATUSES_IMPORT:
       return importStatuses(state, action.statuses, action.expandSpoilers);
     case STATUS_CREATE_REQUEST:
-      return action.editing ? state : incrementReplyCount(state, action.params);
+      return action.editing ? state : produce(state, draft => incrementReplyCount(draft, action.params));
     case STATUS_CREATE_FAIL:
-      return action.editing ? state : decrementReplyCount(state, action.params);
+      return action.editing ? state : produce(state, draft => decrementReplyCount(draft, action.params));
     case FAVOURITE_REQUEST:
-      return simulateFavourite(state, action.status.id, true);
+      return produce(state, draft => simulateFavourite(draft, action.status.id, true));
     case UNFAVOURITE_REQUEST:
-      return simulateFavourite(state, action.status.id, false);
+      return produce(state, draft => simulateFavourite(draft, action.status.id, false));
     case DISLIKE_REQUEST:
-      return simulateDislike(state, action.status.id, true);
+      return produce(state, draft => simulateDislike(draft, action.status.id, true));
     case UNDISLIKE_REQUEST:
-      return simulateDislike(state, action.status.id, false);
+      return produce(state, draft => simulateDislike(draft, action.status.id, false));
     case EMOJI_REACT_REQUEST:
-      return state
-        .updateIn(
-          [action.status.id, 'reactions'],
-          emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji, action.custom),
-        );
-    case UNEMOJI_REACT_REQUEST:
-      return state
-        .updateIn(
-          [action.status.id, 'reactions'],
-          emojiReacts => simulateUnEmojiReact(emojiReacts as any, action.emoji),
-        );
-    case FAVOURITE_FAIL:
-      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'favourited'], false);
-    case DISLIKE_FAIL:
-      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'disliked'], false);
-    case REBLOG_REQUEST:
-      return state.setIn([action.status.id, 'reblogged'], true);
-    case REBLOG_FAIL:
-      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'reblogged'], false);
-    case UNREBLOG_REQUEST:
-      return state.setIn([action.status.id, 'reblogged'], false);
-    case UNREBLOG_FAIL:
-      return state.get(action.status.id) === undefined ? state : state.setIn([action.status.id, 'reblogged'], true);
-    case STATUS_MUTE_SUCCESS:
-      return state.setIn([action.id, 'muted'], true);
-    case STATUS_UNMUTE_SUCCESS:
-      return state.setIn([action.id, 'muted'], false);
-    case STATUS_REVEAL:
-      return state.withMutations(map => {
-        action.ids.forEach((id: string) => {
-          if (!(state.get(id) === undefined)) {
-            map.setIn([id, 'hidden'], false);
-          }
-        });
+      return updateStatus(state, action.status.id, status => {
+        status.reactions = simulateEmojiReact(status.reactions ?? [], action.emoji, action.custom);
       });
+    case UNEMOJI_REACT_REQUEST:
+      return updateStatus(state, action.status.id, status => {
+        status.reactions = simulateUnEmojiReact(status.reactions ?? [], action.emoji);
+      });
+    case FAVOURITE_FAIL:
+      return updateStatus(state, action.status.id, status => {
+        status.favourited = false;
+      });
+    case DISLIKE_FAIL:
+      return updateStatus(state, action.status.id, status => {
+        status.disliked = false;
+      });
+    case REBLOG_REQUEST:
+    case UNREBLOG_FAIL:
+      return updateStatus(state, action.status.id, status => {
+        status.reblogged = true;
+      });
+    case REBLOG_FAIL:
+    case UNREBLOG_REQUEST:
+      return updateStatus(state, action.status.id, status => {
+        status.reblogged = false;
+      });
+    case STATUS_MUTE_SUCCESS:
+      return updateStatus(state, action.id, status => {
+        status.muted = true;
+      });
+    case STATUS_UNMUTE_SUCCESS:
+      return updateStatus(state, action.id, status => {
+        status.muted = false;
+      });
+    case STATUS_REVEAL:
     case STATUS_HIDE:
-      return state.withMutations(map => {
+      return produce(state, draft => {
         action.ids.forEach((id: string) => {
-          if (!(state.get(id) === undefined)) {
-            map.setIn([id, 'hidden'], true);
+          const status = draft[id];
+          if (status) {
+            status.hidden = action.type === STATUS_HIDE;
           }
         });
       });
     case STATUS_DELETE_REQUEST:
-      return decrementReplyCount(state, action.params);
+      return produce(state, draft => decrementReplyCount(draft, action.params));
     case STATUS_DELETE_FAIL:
-      return incrementReplyCount(state, action.params);
+      return produce(state, draft => incrementReplyCount(draft, action.params));
     case STATUS_TRANSLATE_SUCCESS:
-      return importTranslation(state, action.id, action.translation);
+      return produce(state, draft => importTranslation(draft, action.id, action.translation));
     case STATUS_TRANSLATE_UNDO:
-      return deleteTranslation(state, action.id);
+      return updateStatus(state, action.id, status => {
+        status.translation = null;
+      });
     case STATUS_UNFILTER:
-      return state.setIn([action.id, 'showFiltered'], false);
+      return updateStatus(state, action.id, status => {
+        status.showFiltered = false;
+      });
     case TIMELINE_DELETE:
-      return deleteStatus(state, action.id, action.references);
+      return produce(state, draft => deleteStatus(draft, action.id, action.references));
     case EVENT_JOIN_REQUEST:
-      return state.setIn([action.id, 'event', 'join_state'], 'pending');
+      return updateStatus(state, action.id, status => {
+        if (status.event) status.event.join_state = 'pending';
+      });
     case EVENT_JOIN_FAIL:
     case EVENT_LEAVE_REQUEST:
-      return state.setIn([action.id, 'event', 'join_state'], null);
+      return updateStatus(state, action.id, status => {
+        if (status.event) status.event.join_state = null;
+      });
     case EVENT_LEAVE_FAIL:
-      return state.setIn([action.id, 'event', 'join_state'], action.previousState);
+      return updateStatus(state, action.id, status => {
+        if (status.event) status.event.join_state = action.previousState;
+      });
     default:
       return state;
   }

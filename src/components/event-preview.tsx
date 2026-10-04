@@ -84,7 +84,7 @@ const EventPreview: React.FC<IEventPreview> = ({ status, className, hideAction, 
             <HStack alignItems='center' space={2}>
               <Icon src={mapPinIcon} />
               <span>
-                {event.location.get('name')}
+                {event.location.name}
               </span>
             </HStack>
           )}

@@ -9,15 +9,14 @@ import ModalRoot, { ModalType } from '../components/modal-root.tsx';
 
 import type { AppDispatch, RootState } from '@/store.ts';
 
+const emptyProps = {};
+
 const mapStateToProps = (state: RootState) => {
-  const modal = state.modals.last({
-    modalType: null,
-    modalProps: {},
-  });
+  const modal = state.modals.at(-1);
 
   return {
-    type: modal.modalType as ModalType,
-    props: modal.modalProps,
+    type: (modal?.modalType ?? null) as ModalType,
+    props: modal?.modalProps ?? emptyProps,
   };
 };
 

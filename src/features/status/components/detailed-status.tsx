@@ -104,7 +104,7 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
   let quote;
 
   if (actualStatus.quote) {
-    if (actualStatus.pleroma.get('quote_visible', true) === false) {
+    if (actualStatus.pleroma.quote_visible === false) {
       quote = (
         <div>
           <p><FormattedMessage id='status.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
@@ -160,10 +160,10 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
 
             <TranslateButton status={actualStatus} />
 
-            {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.size > 0)) && (
+            {(withMedia && (quote || actualStatus.card || actualStatus.media_attachments.length > 0)) && (
               <Stack space={4}>
                 <StatusMedia
-                  status={actualStatus.toJS() as StatusEntity}
+                  status={actualStatus as unknown as StatusEntity}
                   showMedia={showMedia}
                   onToggleVisibility={onToggleMediaVisibility}
                 />
@@ -183,15 +183,15 @@ const DetailedStatus: React.FC<IDetailedStatus> = ({
             <span>
               {actualStatus.application && (
                 <>
-                  {actualStatus.application.get('website') ? (
-                    <a href={actualStatus.application.get('website')} target='_blank' rel='noopener' className='hover:underline'>
+                  {actualStatus.application.website ? (
+                    <a href={actualStatus.application.website} target='_blank' rel='noopener' className='hover:underline'>
                       <Text tag='span' theme='muted' size='sm'>
-                        {actualStatus.application.get('name')}
+                        {actualStatus.application.name}
                       </Text>
                     </a>
                   ) : (
                     <Text tag='span' theme='muted' size='sm'>
-                      {actualStatus.application.get('name')}
+                      {actualStatus.application.name}
                     </Text>
                   )}
                   {/* eslint-disable-next-line formatjs/no-literal-string-in-jsx */}

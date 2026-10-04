@@ -162,7 +162,7 @@ const handlePush = (event: PushEvent) => {
         title:     formatMessage(`notification.${notification.type}`, preferred_locale, { name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username }),
         body:      notification.status && htmlToPlainText(notification.status.content),
         icon:      notification.account.avatar_static,
-        timestamp: notification.created_at && Number(new Date(notification.created_at)),
+        timestamp: notification.created_at ? Number(new Date(notification.created_at)) : undefined,
         tag:       notification.id,
         image:     notification.status?.media_attachments[0]?.preview_url,
         data:      { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.acct}/posts/${notification.status.id}` : `/@${notification.account.acct}` },

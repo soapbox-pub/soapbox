@@ -160,7 +160,7 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
   const { isLoggedIn } = useLoggedIn();
 
   const { authenticatedProfile, cryptoAddresses } = useSoapboxConfig();
-  const hasCrypto = cryptoAddresses.size > 0;
+  const hasCrypto = cryptoAddresses.length > 0;
 
   // NOTE: Mastodon and Pleroma route some basenames to the backend.
   // When adding new routes, use a basename that does NOT conflict

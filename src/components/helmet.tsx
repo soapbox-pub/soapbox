@@ -12,8 +12,8 @@ FaviconService.initFaviconService();
 
 const getNotifTotals = (state: RootState): number => {
   const notifications = state.notifications.unread || 0;
-  const reports = state.admin.openReports.count();
-  const approvals = state.admin.awaitingApproval.count();
+  const reports = state.admin.openReports.length;
+  const approvals = state.admin.awaitingApproval.length;
   return notifications + reports + approvals;
 };
 

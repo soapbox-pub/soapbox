@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, Record as ImmutableRecord } from 'immutable';
-
 import {
   CHATS_FETCH_SUCCESS,
   CHATS_FETCH_REQUEST,
@@ -23,40 +21,46 @@ export interface ReducerChat extends ChatRecord {
   last_message: string | null;
 }
 
-const ReducerRecord = ImmutableRecord({
-  next: null as string | null,
+interface State {
+  next: string | null;
+  isLoading: boolean;
+  items: Record<string, ReducerChat>;
+}
+
+const initialState: State = {
+  next: null,
   isLoading: false,
-  items: ImmutableMap<ReducerChat>({}),
-});
-
-type State = ReturnType<typeof ReducerRecord>;
-
-const minifyChat = (chat: ChatRecord): ReducerChat => {
-  return chat.mergeWith((o, n) => n || o, {
-    last_message: normalizeId(chat.getIn(['last_message', 'id'])),
-  }) as ReducerChat;
+  items: {},
 };
 
-const fixChat = (chat: APIEntity): ReducerChat => {
-  return normalizeChat(chat).withMutations(chat => {
-    minifyChat(chat);
-  }) as ReducerChat;
+const fixChat = (data: APIEntity): ReducerChat => {
+  const chat = normalizeChat(data);
+  return {
+    ...chat,
+    last_message: normalizeId(data.last_message?.id) || (typeof data.last_message === 'string' ? data.last_message : null),
+  };
 };
 
-const importChat = (state: State, chat: APIEntity) => state.setIn(['items', chat.id], fixChat(chat));
+const importChats = (state: State, chats: APIEntities, next?: string): State => {
+  const items = { ...state.items };
 
-const importChats = (state: State, chats: APIEntities, next?: string) =>
-  state.withMutations(mutable => {
-    if (next !== undefined) mutable.set('next', next);
-    chats.forEach(chat => importChat(mutable, chat));
-    mutable.set('isLoading', false);
+  chats.forEach(chat => {
+    items[chat.id] = fixChat(chat);
   });
 
-export default function chats(state: State = ReducerRecord(), action: AnyAction): State {
+  return {
+    ...state,
+    next: next !== undefined ? next : state.next,
+    items,
+    isLoading: false,
+  };
+};
+
+export default function chats(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case CHATS_FETCH_REQUEST:
     case CHATS_EXPAND_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case CHATS_FETCH_SUCCESS:
     case CHATS_EXPAND_SUCCESS:
       return importChats(state, action.chats, action.next);
@@ -65,7 +69,9 @@ export default function chats(state: State = ReducerRecord(), action: AnyAction)
     case CHAT_FETCH_SUCCESS:
       return importChats(state, [action.chat]);
     case CHAT_READ_REQUEST:
-      return state.setIn([action.chatId, 'unread'], 0);
+      return state.items[action.chatId]
+        ? { ...state, items: { ...state.items, [action.chatId]: { ...state.items[action.chatId], unread: 0 } } }
+        : state;
     case CHAT_READ_SUCCESS:
       return importChats(state, [action.chat]);
     default:

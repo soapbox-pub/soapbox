@@ -13,7 +13,7 @@ interface IUnapprovedAccount {
 const UnapprovedAccount: React.FC<IUnapprovedAccount> = ({ accountId }) => {
   const dispatch = useAppDispatch();
 
-  const adminAccount = useAppSelector(state => state.admin.users.get(accountId));
+  const adminAccount = useAppSelector(state => state.admin.users[accountId]);
   const { account } = useAccount(adminAccount?.account || undefined);
 
   if (!adminAccount || !account) return null;

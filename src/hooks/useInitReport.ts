@@ -17,7 +17,7 @@ export function useInitReport() {
 
     if (!statusId) return;
 
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(initReportAction(entityType, account, { status }));
     }

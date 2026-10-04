@@ -1,4 +1,3 @@
-import { Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { normalizeAttachment } from './attachment.ts';
@@ -16,9 +15,8 @@ describe('normalizeChatMessage()', () => {
 
     const result = normalizeChatMessage(message);
 
-    expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.id).toEqual('abc');
-    expect(result.media_attachments.first()?.id).toEqual('def');
-    expect(result.media_attachments.first()?.preview_url).toEqual('https://gleasonator.com/favicon.png');
+    expect(result.media_attachments[0]?.id).toEqual('def');
+    expect(result.media_attachments[0]?.preview_url).toEqual('https://gleasonator.com/favicon.png');
   });
 });

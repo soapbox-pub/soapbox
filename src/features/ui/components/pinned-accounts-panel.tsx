@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -12,6 +11,8 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 
 import type { Account } from '@/schemas/index.ts';
 
+const emptyIds: string[] = [];
+
 interface IPinnedAccountsPanel {
   account: Account;
   limit: number;
@@ -19,13 +20,13 @@ interface IPinnedAccountsPanel {
 
 const PinnedAccountsPanel: React.FC<IPinnedAccountsPanel> = ({ account, limit }) => {
   const dispatch = useAppDispatch();
-  const pinned = useAppSelector((state) => state.user_lists.pinned.get(account.id)?.items || ImmutableOrderedSet<string>()).slice(0, limit);
+  const pinned = useAppSelector((state) => state.user_lists.pinned[account.id]?.items || emptyIds).slice(0, limit);
 
   useEffect(() => {
     dispatch(fetchPinnedAccounts(account.id));
   }, []);
 
-  if (pinned.isEmpty()) {
+  if (pinned.length === 0) {
     return (
       <WhoToFollowPanel limit={limit} />
     );

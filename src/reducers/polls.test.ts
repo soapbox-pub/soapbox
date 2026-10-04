@@ -1,4 +1,3 @@
-import { Map as ImmutableMap } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { POLLS_IMPORT } from '@/actions/importer/index.ts';
@@ -7,7 +6,7 @@ import reducer from './polls.ts';
 
 describe('polls reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any)).toEqual(ImmutableMap());
+    expect(reducer(undefined, {} as any)).toEqual({});
   });
 
   describe('POLLS_IMPORT', () => {
@@ -33,7 +32,7 @@ describe('polls reducer', () => {
         },
       };
 
-      expect(result.toJS()).toMatchObject(expected);
+      expect(result).toMatchObject(expected);
     });
   });
 });

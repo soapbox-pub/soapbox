@@ -36,7 +36,7 @@ describe('<Status />', () => {
     });
 
     it('is not rendered if status is under review', () => {
-      const inReviewStatus = status.set('visibility', 'self');
+      const inReviewStatus = { ...status, visibility: 'self' };
       render(<Status status={inReviewStatus as ReducerStatus} />, undefined, state);
       expect(screen.queryAllByTestId('status-action-bar')).toHaveLength(0);
     });

@@ -18,8 +18,8 @@ const NewListForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const value = useAppSelector((state) => state.listEditor.get('title'));
-  const disabled = useAppSelector((state) => !!state.listEditor.get('isSubmitting'));
+  const value = useAppSelector((state) => state.listEditor.title);
+  const disabled = useAppSelector((state) => !!state.listEditor.isSubmitting);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(changeListEditorTitle(e.target.value));

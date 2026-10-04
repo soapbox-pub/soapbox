@@ -29,7 +29,7 @@ const ScheduledStatusActionBar: React.FC<IScheduledStatusActionBar> = ({ status 
   const handleCancelClick = () => {
     dispatch((_, getState) => {
 
-      const deleteModal = getSettings(getState()).get('deleteModal');
+      const deleteModal = getSettings(getState()).deleteModal;
       if (!deleteModal) {
         dispatch(cancelScheduledStatus(status.id));
       } else {

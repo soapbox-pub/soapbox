@@ -24,8 +24,8 @@ export const HashtagTimeline: React.FC<IHashtagTimeline> = ({ params }) => {
 
   const features = useFeatures();
   const dispatch = useAppDispatch();
-  const tag = useAppSelector((state) => state.tags.get(id));
-  const next = useAppSelector(state => state.timelines.get(`hashtag:${id}`)?.next);
+  const tag = useAppSelector((state) => state.tags[id]);
+  const next = useAppSelector(state => state.timelines[`hashtag:${id}`]?.next);
   const { isLoggedIn } = useLoggedIn();
 
   const handleLoadMore = (maxId: string) => {

@@ -22,7 +22,7 @@ const List: React.FC<IList> = ({ listId }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const list = useAppSelector((state) => state.lists.get(listId));
+  const list = useAppSelector((state) => state.lists[listId]);
   const added = useAppSelector((state) => state.listAdder.lists.items.includes(listId));
 
   const onRemove = () => dispatch(removeFromListAdder(listId));

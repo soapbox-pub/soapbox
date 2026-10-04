@@ -1,5 +1,3 @@
-import { Record as ImmutableRecord, Set as ImmutableSet } from 'immutable';
-
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,
@@ -17,84 +15,104 @@ import {
 import type { ChatMessage, Group } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const NewReportRecord = ImmutableRecord({
-  isSubmitting: false,
-  entityType: '' as ReportableEntities,
-  account_id: null as string | null,
-  status_ids: ImmutableSet<string>(),
-  chat_message: null as null | ChatMessage,
-  group: null as null | Group,
-  comment: '',
-  forward: false,
-  block: false,
-  rule_ids: ImmutableSet<string>(),
+interface NewReport {
+  isSubmitting: boolean;
+  entityType: ReportableEntities;
+  account_id: string | null;
+  status_ids: string[];
+  chat_message: null | ChatMessage;
+  group: null | Group;
+  comment: string;
+  forward: boolean;
+  block: boolean;
+  rule_ids: string[];
+}
+
+interface State {
+  new: NewReport;
+}
+
+const initialState: State = {
+  new: {
+    isSubmitting: false,
+    entityType: '' as ReportableEntities,
+    account_id: null,
+    status_ids: [],
+    chat_message: null,
+    group: null,
+    comment: '',
+    forward: false,
+    block: false,
+    rule_ids: [],
+  },
+};
+
+const addToSet = (set: string[], value: string): string[] => set.includes(value) ? set : [...set, value];
+const removeFromSet = (set: string[], value: string): string[] => set.filter(item => item !== value);
+
+const updateNew = (state: State, changes: Partial<NewReport>): State => ({
+  ...state,
+  new: { ...state.new, ...changes },
 });
 
-const ReducerRecord = ImmutableRecord({
-  new: NewReportRecord(),
-});
-
-type State = ReturnType<typeof ReducerRecord>;
-
-export default function reports(state: State = ReducerRecord(), action: AnyAction) {
+export default function reports(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
-    case REPORT_INIT:
-      return state.withMutations(map => {
-        map.setIn(['new', 'isSubmitting'], false);
-        map.setIn(['new', 'account_id'], action.account.id);
-        map.setIn(['new', 'entityType'], action.entityType);
+    case REPORT_INIT: {
+      const changes: Partial<NewReport> = {
+        isSubmitting: false,
+        account_id: action.account.id,
+        entityType: action.entityType,
+      };
 
-        if (action.chatMessage) {
-          map.setIn(['new', 'chat_message'], action.chatMessage);
-        }
+      if (action.chatMessage) {
+        changes.chat_message = action.chatMessage;
+      }
 
-        if (action.group) {
-          map.setIn(['new', 'group'], action.group);
-        }
+      if (action.group) {
+        changes.group = action.group;
+      }
 
-        if (state.new.account_id !== action.account.id) {
-          map.setIn(['new', 'status_ids'], action.status ? ImmutableSet([action.status.reblog?.id || action.status.id]) : ImmutableSet());
-          map.setIn(['new', 'comment'], '');
-        } else if (action.status) {
-          map.updateIn(['new', 'status_ids'], set => (set as ImmutableSet<string>).add(action.status.reblog?.id || action.status.id));
-        }
-      });
+      if (state.new.account_id !== action.account.id) {
+        changes.status_ids = action.status ? [action.status.reblog?.id || action.status.id] : [];
+        changes.comment = '';
+      } else if (action.status) {
+        changes.status_ids = addToSet(state.new.status_ids, action.status.reblog?.id || action.status.id);
+      }
+
+      return updateNew(state, changes);
+    }
     case REPORT_STATUS_TOGGLE:
-      return state.updateIn(['new', 'status_ids'], set => {
-        if (action.checked) {
-          return (set as ImmutableSet<string>).add(action.statusId);
-        }
-
-        return (set as ImmutableSet<string>).remove(action.statusId);
+      return updateNew(state, {
+        status_ids: action.checked
+          ? addToSet(state.new.status_ids, action.statusId)
+          : removeFromSet(state.new.status_ids, action.statusId),
       });
     case REPORT_COMMENT_CHANGE:
-      return state.setIn(['new', 'comment'], action.comment);
+      return updateNew(state, { comment: action.comment });
     case REPORT_FORWARD_CHANGE:
-      return state.setIn(['new', 'forward'], action.forward);
+      return updateNew(state, { forward: action.forward });
     case REPORT_BLOCK_CHANGE:
-      return state.setIn(['new', 'block'], action.block);
+      return updateNew(state, { block: action.block });
     case REPORT_RULE_CHANGE:
-      return state.updateIn(['new', 'rule_ids'], (set) => {
-        if ((set as ImmutableSet<string>).includes(action.rule_id)) {
-          return (set as ImmutableSet<string>).remove(action.rule_id);
-        }
-
-        return (set as ImmutableSet<string>).add(action.rule_id);
+      return updateNew(state, {
+        rule_ids: state.new.rule_ids.includes(action.rule_id)
+          ? removeFromSet(state.new.rule_ids, action.rule_id)
+          : addToSet(state.new.rule_ids, action.rule_id),
       });
     case REPORT_SUBMIT_REQUEST:
-      return state.setIn(['new', 'isSubmitting'], true);
+      return updateNew(state, { isSubmitting: true });
     case REPORT_SUBMIT_FAIL:
-      return state.setIn(['new', 'isSubmitting'], false);
+      return updateNew(state, { isSubmitting: false });
     case REPORT_CANCEL:
     case REPORT_SUBMIT_SUCCESS:
-      return state.withMutations(map => {
-        map.setIn(['new', 'account_id'], null);
-        map.setIn(['new', 'status_ids'], ImmutableSet());
-        map.setIn(['new', 'chat_message'], null);
-        map.setIn(['new', 'comment'], '');
-        map.setIn(['new', 'isSubmitting'], false);
-        map.setIn(['new', 'rule_ids'], ImmutableSet());
-        map.setIn(['new', 'block'], false);
+      return updateNew(state, {
+        account_id: null,
+        status_ids: [],
+        chat_message: null,
+        comment: '',
+        isSubmitting: false,
+        rule_ids: [],
+        block: false,
       });
     default:
       return state;

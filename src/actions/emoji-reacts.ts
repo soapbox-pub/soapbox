@@ -1,5 +1,3 @@
-import { List as ImmutableList } from 'immutable';
-
 import { isLoggedIn } from '@/utils/auth.ts';
 
 import api from '../api/index.ts';
@@ -26,17 +24,17 @@ const noOp = () => () => new Promise(f => f(undefined));
 
 const simpleEmojiReact = (status: Status, emoji: string, custom?: string) =>
   (dispatch: AppDispatch) => {
-    const emojiReacts: ImmutableList<EmojiReaction> = status.reactions || ImmutableList();
+    const emojiReacts: readonly EmojiReaction[] = status.reactions || [];
 
     if (emoji === '👍' && status.favourited) return dispatch(unfavourite(status));
 
-    const undo = emojiReacts.filter(e => e.me === true && e.name === emoji).count() > 0;
+    const undo = emojiReacts.some(e => e.me === true && e.name === emoji);
     if (undo) return dispatch(unEmojiReact(status, emoji));
 
     return Promise.all([
       ...emojiReacts
         .filter((emojiReact) => emojiReact.me === true)
-        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.name))).toArray(),
+        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.name))),
       status.favourited && dispatch(unfavourite(status)),
     ]).then(() => {
       if (emoji === '👍') {

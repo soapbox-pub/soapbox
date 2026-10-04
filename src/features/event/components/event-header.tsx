@@ -21,7 +21,6 @@ import quoteIcon from '@tabler/icons/outline/quote.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
 import trashIcon from '@tabler/icons/outline/trash.svg';
 import usersIcon from '@tabler/icons/outline/users.svg';
-import { List as ImmutableList } from 'immutable';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -133,7 +132,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    dispatch(openModal('MEDIA', { media: ImmutableList([event.banner]).toJS() }));
+    dispatch(openModal('MEDIA', { media: [event.banner] }));
   };
 
   const handleExportClick = () => {
@@ -161,7 +160,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
     if (!boostModal) {
       modalReblog();
     } else {
-      dispatch(openModal('BOOST', { status: status.toJS(), onReblog: modalReblog }));
+      dispatch(openModal('BOOST', { status: status, onReblog: modalReblog }));
     }
   };
 
@@ -309,7 +308,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
         icon: atIcon,
       });
 
-      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages']) === true) {
+      if (status.account?.pleroma?.accepts_chat_messages === true) {
         menu.push({
           text: intl.formatMessage(messages.chat, { name: username }),
           action: handleChatClick,
@@ -503,7 +502,7 @@ const EventHeader: React.FC<IEventHeader> = ({ status }) => {
             <HStack alignItems='center' space={2}>
               <SvgIcon src={mapPinIcon} />
               <span>
-                {event.location.get('name')}
+                {event.location.name}
               </span>
             </HStack>
           )}

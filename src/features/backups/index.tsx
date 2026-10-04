@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { FormattedDate, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -66,7 +66,9 @@ const Backups = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
 
-  const backups = useAppSelector((state) => state.backups.toList().sortBy((backup) => backup.inserted_at));
+  const backupsById = useAppSelector((state) => state.backups);
+  const backups = useMemo(() => Object.values(backupsById)
+    .sort((a, b) => a.inserted_at.localeCompare(b.inserted_at)), [backupsById]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -81,7 +83,7 @@ const Backups = () => {
     }).catch(() => {});
   }, []);
 
-  const showLoading = isLoading && backups.count() === 0;
+  const showLoading = isLoading && backups.length === 0;
 
   const emptyMessage = (
     <Card size='lg'>
@@ -99,7 +101,7 @@ const Backups = () => {
     </Card>
   );
 
-  const backupsContent = backups.isEmpty() ? emptyMessage : (
+  const backupsContent = backups.length === 0 ? emptyMessage : (
     <div className='mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2'>
       {backups.map((backup) => <Backup key={backup.id} backup={backup} />)}
     </div>

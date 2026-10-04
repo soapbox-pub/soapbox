@@ -12,8 +12,7 @@ const normalize = (notification: any) => {
   const state = store.getState();
 
   return {
-    // @ts-ignore
-    notification: state.notifications.items.get(notification.id)!,
+    notification: state.notifications.items.find((item) => item.id === notification.id)!,
     state,
   };
 };

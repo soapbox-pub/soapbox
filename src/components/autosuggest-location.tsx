@@ -24,7 +24,7 @@ interface IAutosuggestLocation {
 }
 
 const AutosuggestLocation: React.FC<IAutosuggestLocation> = ({ id }) => {
-  const location = useAppSelector((state) => state.locations.get(id));
+  const location = useAppSelector((state) => state.locations[id]);
 
   if (!location) return null;
 

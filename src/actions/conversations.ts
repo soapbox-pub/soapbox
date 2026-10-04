@@ -48,7 +48,7 @@ const expandConversations = ({ maxId }: Record<string, any> = {}) => (dispatch: 
   const params: Record<string, any> = { max_id: maxId };
 
   if (!maxId) {
-    params.since_id = getState().conversations.items.getIn([0, 'id']);
+    params.since_id = getState().conversations.items[0]?.id;
   }
 
   const isLoadingRecent = !!params.since_id;

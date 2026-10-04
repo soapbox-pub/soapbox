@@ -7,21 +7,21 @@ export function useDislike() {
   const dispatch = useAppDispatch();
 
   const dislike = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(dislikeAction(status));
     }
   };
 
   const undislike = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(undislikeAction(status));
     }
   };
 
   const toggleDislike = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(toggleDislikeAction(status));
     }

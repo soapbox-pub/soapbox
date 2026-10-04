@@ -12,7 +12,7 @@ import Stack from '@/components/ui/stack.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { Status as StatusEntity } from '@/schemas/index.ts';
 
-import type { AdminReport, Status as LegacyStatus } from '@/types/entities.ts';
+import type { Status as LegacyStatus } from '@/types/entities.ts';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
@@ -21,7 +21,6 @@ const messages = defineMessages({
 
 interface IReportStatus {
   status: LegacyStatus;
-  report?: AdminReport;
 }
 
 const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
@@ -33,7 +32,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
   };
 
   const makeMenu = () => {
-    const acct = status.getIn(['account', 'acct']);
+    const acct = status.account?.acct;
 
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
@@ -53,7 +52,7 @@ const ReportStatus: React.FC<IReportStatus> = ({ status }) => {
     <HStack space={2} alignItems='start'>
       <Stack space={2} className='overflow-hidden' grow>
         <StatusContent status={status} />
-        <StatusMedia status={status.toJS() as StatusEntity}  />
+        <StatusMedia status={status as unknown as StatusEntity}  />
       </Stack>
 
       <div className='flex-none'>

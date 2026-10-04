@@ -1,5 +1,4 @@
 import { debounce } from 'es-toolkit';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -15,6 +14,8 @@ const messages = defineMessages({
   heading: { id: 'column.quotes', defaultMessage: 'Post quotes' },
 });
 
+const emptyIds: string[] = [];
+
 const handleLoadMore = debounce((statusId: string, dispatch: React.Dispatch<any>) =>
   dispatch(expandStatusQuotes(statusId)), 300, { edges: ['leading'] });
 
@@ -24,9 +25,9 @@ const Quotes: React.FC = () => {
   const { statusId } = useParams<{ statusId: string }>();
   const isMobile = useIsMobile();
 
-  const statusIds = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'items'], ImmutableOrderedSet<string>()));
-  const isLoading = useAppSelector((state) => state.status_lists.getIn([`quotes:${statusId}`, 'isLoading'], true));
-  const hasMore = useAppSelector((state) => !!state.status_lists.getIn([`quotes:${statusId}`, 'next']));
+  const statusIds = useAppSelector((state) => state.status_lists[`quotes:${statusId}`]?.items ?? emptyIds);
+  const isLoading = useAppSelector((state) => state.status_lists[`quotes:${statusId}`]?.isLoading ?? true);
+  const hasMore = useAppSelector((state) => !!state.status_lists[`quotes:${statusId}`]?.next);
 
   useEffect(() => {
     dispatch(fetchStatusQuotes(statusId));
@@ -42,7 +43,7 @@ const Quotes: React.FC = () => {
     <Column label={intl.formatMessage(messages.heading)} transparent={!isMobile}>
       <StatusList
         className='black:p-4 black:sm:p-5'
-        statusIds={statusIds as ImmutableOrderedSet<string>}
+        statusIds={statusIds}
         scrollKey={`quotes:${statusId}`}
         hasMore={hasMore}
         isLoading={typeof isLoading === 'boolean' ? isLoading : true}

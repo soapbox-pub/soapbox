@@ -65,7 +65,7 @@ const GroupBlockedMembers: React.FC<IGroupBlockedMembers> = ({ params }) => {
   const id = params?.groupId;
 
   const { group } = useGroup(id);
-  const accountIds = useAppSelector((state) => state.user_lists.group_blocks.get(id)?.items);
+  const accountIds = useAppSelector((state) => state.user_lists.group_blocks[id]?.items);
 
   useEffect(() => {
     dispatch(fetchGroupBlocks(id));

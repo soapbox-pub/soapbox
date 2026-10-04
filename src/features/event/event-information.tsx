@@ -73,19 +73,19 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
 
     const text = [
       <Fragment key='event-name'>
-        {event.location.get('name')}
+        {event.location.name}
       </Fragment>,
     ];
 
-    if (event.location.get('street')?.trim()) {
+    if (event.location.street?.trim()) {
       text.push (
         <Fragment key='event-street'>
-          <br />{event.location.get('street')}
+          <br />{event.location.street}
         </Fragment>,
       );
     }
 
-    const address = [event.location.get('postalCode'), event.location.get('locality'), event.location.get('country')].filter(text => text).join(', ');
+    const address = [event.location.postalCode, event.location.locality, event.location.country].filter(text => text).join(', ');
 
     if (address) {
       text.push(
@@ -96,7 +96,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       );
     }
 
-    if (tileServer && event.location.get('latitude')) {
+    if (tileServer && event.location.latitude) {
       text.push(
         <Fragment key='event-map'>
           <br />
@@ -168,7 +168,7 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
   }, [status]);
 
   const renderLinks = useCallback(() => {
-    if (!status.event?.links.size) return null;
+    if (!status.event?.links.length) return null;
 
     return (
       <Stack space={1}>
@@ -209,12 +209,12 @@ const EventInformation: React.FC<IEventInformation> = ({ params }) => {
       )}
 
       <StatusMedia
-        status={status.toJS() as StatusEntity}
+        status={status as unknown as StatusEntity}
         showMedia={showMedia}
         onToggleVisibility={handleToggleMediaVisibility}
       />
 
-      {status.quote && status.pleroma.get('quote_visible', true) && (
+      {status.quote && (status.pleroma.quote_visible ?? true) && (
         <QuotedStatus statusId={status.quote as string} />
       )}
 

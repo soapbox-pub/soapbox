@@ -1,6 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
 import clsx from 'clsx';
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -32,13 +31,13 @@ import ThreadStatus from './thread-status.tsx';
 const getAncestorsIds = createSelector([
   (_: RootState, statusId: string | undefined) => statusId,
   (state: RootState) => state.contexts.inReplyTos,
-], (statusId, inReplyTos) => {
-  let ancestorsIds = ImmutableOrderedSet<string>();
+], (statusId, inReplyTos): string[] => {
+  const ancestorsIds: string[] = [];
   let id: string | undefined = statusId;
 
   while (id && !ancestorsIds.includes(id)) {
-    ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
-    id = inReplyTos.get(id);
+    ancestorsIds.unshift(id);
+    id = inReplyTos[id];
   }
 
   return ancestorsIds;
@@ -47,26 +46,26 @@ const getAncestorsIds = createSelector([
 export const getDescendantsIds = createSelector([
   (_: RootState, statusId: string) => statusId,
   (state: RootState) => state.contexts.replies,
-], (statusId, contextReplies) => {
-  let descendantsIds = ImmutableOrderedSet<string>();
+], (statusId, contextReplies): string[] => {
+  const descendantsIds: string[] = [];
   const ids = [statusId];
 
   while (ids.length > 0) {
     const id = ids.shift();
     if (!id) break;
 
-    const replies = contextReplies.get(id);
+    const replies = contextReplies[id];
 
     if (descendantsIds.includes(id)) {
       break;
     }
 
     if (statusId !== id) {
-      descendantsIds = descendantsIds.union([id]);
+      descendantsIds.push(id);
     }
 
     if (replies) {
-      replies.reverse().forEach((reply: string) => {
+      [...replies].reverse().forEach((reply: string) => {
         ids.unshift(reply);
       });
     }
@@ -104,15 +103,15 @@ const Thread = (props: IThread) => {
   const { reblog } = useReblog();
 
   const { ancestorsIds, descendantsIds } = useAppSelector((state) => {
-    let ancestorsIds = ImmutableOrderedSet<string>();
-    let descendantsIds = ImmutableOrderedSet<string>();
+    let ancestorsIds: string[] = [];
+    let descendantsIds: string[] = [];
 
     if (status) {
       const statusId = status.id;
-      ancestorsIds = getAncestorsIds(state, state.contexts.inReplyTos.get(statusId));
-      descendantsIds = getDescendantsIds(state, statusId);
-      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
-      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
+      const allAncestorsIds = getAncestorsIds(state, state.contexts.inReplyTos[statusId]);
+      const allDescendantsIds = getDescendantsIds(state, statusId);
+      ancestorsIds = allAncestorsIds.filter(id => id !== statusId && !allDescendantsIds.includes(id));
+      descendantsIds = allDescendantsIds.filter(id => id !== statusId && !ancestorsIds.includes(id));
     }
 
     return {
@@ -122,8 +121,8 @@ const Thread = (props: IThread) => {
     };
   });
 
-  let initialTopMostItemIndex = ancestorsIds.size;
-  if (!useWindowScroll && initialTopMostItemIndex !== 0) initialTopMostItemIndex = ancestorsIds.size + 1;
+  let initialTopMostItemIndex = ancestorsIds.length;
+  if (!useWindowScroll && initialTopMostItemIndex !== 0) initialTopMostItemIndex = ancestorsIds.length + 1;
 
   const [showMedia, setShowMedia] = useState<boolean>(status?.visibility === 'self' ? false : defaultMediaVisibility(status, displayMedia));
 
@@ -156,14 +155,14 @@ const Thread = (props: IThread) => {
 
   const handleReblogClick = (status: Status, e?: React.MouseEvent) => {
     dispatch((_, getState) => {
-      const boostModal = getSettings(getState()).get('boostModal');
+      const boostModal = getSettings(getState()).boostModal;
       if (status.reblogged) {
         dispatch(unreblog(status));
       } else {
         if ((e && e.shiftKey) || !boostModal) {
           handleModalReblog(status);
         } else {
-          dispatch(openModal('BOOST', { status: status.toJS(), onReblog: handleModalReblog }));
+          dispatch(openModal('BOOST', { status: status, onReblog: handleModalReblog }));
         }
       }
     });
@@ -176,13 +175,13 @@ const Thread = (props: IThread) => {
 
     e?.preventDefault();
 
-    if (media && media.size) {
-      const firstAttachment = media.first()!;
+    if (media && media.length) {
+      const firstAttachment = media[0]!;
 
-      if (media.size === 1 && firstAttachment.type === 'video') {
+      if (media.length === 1 && firstAttachment.type === 'video') {
         dispatch(openModal('VIDEO', { media: firstAttachment, status: status }));
       } else {
-        dispatch(openModal('MEDIA', { media: media.toJS(), index: 0, status: status.toJS() }));
+        dispatch(openModal('MEDIA', { media: media, index: 0, status: status }));
       }
     }
   };
@@ -224,7 +223,7 @@ const Thread = (props: IThread) => {
   };
 
   const handleHotkeyOpenProfile = () => {
-    history.push(`/@${status!.getIn(['account', 'acct'])}`);
+    history.push(`/@${status!.account?.acct}`);
   };
 
   const handleHotkeyToggleHidden = () => {
@@ -237,13 +236,13 @@ const Thread = (props: IThread) => {
 
   const handleMoveUp = (id: string) => {
     if (id === status?.id) {
-      _selectChild(ancestorsIds.size - 1);
+      _selectChild(ancestorsIds.length - 1);
     } else {
-      let index = ImmutableList(ancestorsIds).indexOf(id);
+      let index = ancestorsIds.indexOf(id);
 
       if (index === -1) {
-        index = ImmutableList(descendantsIds).indexOf(id);
-        _selectChild(ancestorsIds.size + index);
+        index = descendantsIds.indexOf(id);
+        _selectChild(ancestorsIds.length + index);
       } else {
         _selectChild(index - 1);
       }
@@ -252,13 +251,13 @@ const Thread = (props: IThread) => {
 
   const handleMoveDown = (id: string) => {
     if (id === status?.id) {
-      _selectChild(ancestorsIds.size + 1);
+      _selectChild(ancestorsIds.length + 1);
     } else {
-      let index = ImmutableList(ancestorsIds).indexOf(id);
+      let index = ancestorsIds.indexOf(id);
 
       if (index === -1) {
-        index = ImmutableList(descendantsIds).indexOf(id);
-        _selectChild(ancestorsIds.size + index + 2);
+        index = descendantsIds.indexOf(id);
+        _selectChild(ancestorsIds.length + index + 2);
       } else {
         _selectChild(index + 1);
       }
@@ -314,7 +313,7 @@ const Thread = (props: IThread) => {
     );
   };
 
-  const renderChildren = (list: ImmutableOrderedSet<string>) => {
+  const renderChildren = (list: string[]) => {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return renderTombstone(id);
@@ -334,12 +333,12 @@ const Thread = (props: IThread) => {
   // Scroll focused status into view when thread updates.
   useEffect(() => {
     scroller.current?.scrollToIndex({
-      index: ancestorsIds.size,
+      index: ancestorsIds.length,
       offset: -146,
     });
 
     setTimeout(() => statusRef.current?.querySelector<HTMLDivElement>('.detailed-actualStatus')?.focus(), 0);
-  }, [status.id, ancestorsIds.size]);
+  }, [status.id, ancestorsIds.length]);
 
   const handleOpenCompareHistoryModal = (status: Status) => {
     dispatch(openModal('COMPARE_HISTORY', {
@@ -347,8 +346,8 @@ const Thread = (props: IThread) => {
     }));
   };
 
-  const hasAncestors = ancestorsIds.size > 0;
-  const hasDescendants = descendantsIds.size > 0;
+  const hasAncestors = ancestorsIds.length > 0;
+  const hasDescendants = descendantsIds.length > 0;
 
   type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
 
@@ -411,13 +410,13 @@ const Thread = (props: IThread) => {
   }
 
   if (hasAncestors) {
-    children.push(...renderChildren(ancestorsIds).toArray());
+    children.push(...renderChildren(ancestorsIds));
   }
 
   children.push(focusedStatus);
 
   if (hasDescendants) {
-    children.push(...renderChildren(descendantsIds).toArray());
+    children.push(...renderChildren(descendantsIds));
   }
 
   return (

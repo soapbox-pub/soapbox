@@ -1,5 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-
 import type { Account } from '@/types/entities.ts';
 
 /** Convert a plain tag into a badge. */
@@ -18,12 +16,12 @@ interface TagDiff {
 
 /** Returns the differences between two sets of tags. */
 const getTagDiff = (oldTags: string[], newTags: string[]): TagDiff => {
-  const o = ImmutableOrderedSet(oldTags);
-  const n = ImmutableOrderedSet(newTags);
+  const o = [...new Set(oldTags)];
+  const n = [...new Set(newTags)];
 
   return {
-    added: n.subtract(o).toArray(),
-    removed: o.subtract(n).toArray(),
+    added: n.filter(tag => !o.includes(tag)),
+    removed: o.filter(tag => !n.includes(tag)),
   };
 };
 

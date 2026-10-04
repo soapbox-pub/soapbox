@@ -15,7 +15,7 @@ export function useStatusHidden() {
   };
 
   const toggleStatusHidden = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(toggleStatusHiddenAction(status));
     }

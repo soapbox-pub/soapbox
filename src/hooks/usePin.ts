@@ -7,21 +7,21 @@ export function usePin() {
   const dispatch = useAppDispatch();
 
   const pin = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(pinAction(status));
     }
   };
 
   const unpin = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(unpinAction(status));
     }
   };
 
   const togglePin = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status) {
       dispatch(togglePinAction(status));
     }

@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import { useEffect } from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
@@ -15,8 +14,6 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { Attachment } from '@/schemas/index.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
 
-import type { StatusEdit as StatusEditEntity } from '@/types/entities.ts';
-
 interface ICompareHistoryModal {
   onClose: (string: string) => void;
   statusId: string;
@@ -25,9 +22,8 @@ interface ICompareHistoryModal {
 const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId }) => {
   const dispatch = useAppDispatch();
 
-  const loading = useAppSelector(state => state.history.getIn([statusId, 'loading']));
-  // @ts-ignore
-  const versions = useAppSelector<ImmutableList<StatusEditEntity>>(state => state.history.getIn([statusId, 'items']));
+  const loading = useAppSelector(state => state.history[statusId]?.loading);
+  const versions = useAppSelector(state => state.history[statusId]?.items);
 
   const onClickClose = () => {
     onClose('COMPARE_HISTORY');
@@ -51,7 +47,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
             <div className='flex flex-col py-2 first:pt-0 last:pb-0'>
               {version.spoiler_text?.length > 0 && (
                 <>
-                  <span>{emojifyText(version.spoiler_text, version.emojis.toJS())}</span>
+                  <span>{emojifyText(version.spoiler_text, version.emojis)}</span>
                   <hr />
                 </>
               )}
@@ -64,7 +60,7 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
               {poll && (
                 <div>
                   <Stack>
-                    {version.poll.options.map((option) => (
+                    {poll.options.map((option) => (
                       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
                         <span
                           className={clsx('mr-2.5 inline-block size-4 flex-none rounded-full border border-solid border-primary-600', {
@@ -81,8 +77,8 @@ const CompareHistoryModal: React.FC<ICompareHistoryModal> = ({ onClose, statusId
                 </div>
               )}
 
-              {version.media_attachments.size > 0 && (
-                <AttachmentThumbs media={version.media_attachments.toJS() as unknown as Attachment[]} />
+              {version.media_attachments.length > 0 && (
+                <AttachmentThumbs media={version.media_attachments as unknown as Attachment[]} />
               )}
 
               <Text align='right' tag='span' theme='muted' size='sm'>

@@ -1,8 +1,4 @@
-import {
-  Map as ImmutableMap,
-  OrderedSet as ImmutableOrderedSet,
-  Record as ImmutableRecord,
-} from 'immutable';
+import { produce, type Draft } from 'immer';
 
 import {
   STATUS_QUOTES_EXPAND_FAIL,
@@ -59,63 +55,81 @@ import {
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-export const StatusListRecord = ImmutableRecord({
-  next: null as string | null,
+export interface StatusList {
+  next: string | null;
+  loaded: boolean;
+  isLoading: boolean | null;
+  items: string[];
+}
+
+export const newStatusList = (): StatusList => ({
+  next: null,
   loaded: false,
-  isLoading: null as boolean | null,
-  items: ImmutableOrderedSet<string>(),
+  isLoading: null,
+  items: [],
 });
 
-type State = ImmutableMap<string, StatusList>;
-type StatusList = ReturnType<typeof StatusListRecord>;
+type State = Record<string, StatusList>;
 
-const initialState: State = ImmutableMap({
-  favourites: StatusListRecord(),
-  pins: StatusListRecord(),
-  scheduled_statuses: StatusListRecord(),
-  recent_events: StatusListRecord(),
-  joined_events: StatusListRecord(),
-});
+const initialState: State = {
+  favourites: newStatusList(),
+  pins: newStatusList(),
+  scheduled_statuses: newStatusList(),
+  recent_events: newStatusList(),
+  joined_events: newStatusList(),
+};
 
-const getStatusId = (status: string | APIEntity) => typeof status === 'string' ? status : status.id;
+const getStatusId = (status: string | APIEntity): string => typeof status === 'string' ? status : status.id;
 
-const getStatusIds = (statuses: APIEntity[] = []) => (
-  ImmutableOrderedSet(statuses.map(getStatusId))
+const getStatusIds = (statuses: APIEntity[] = []): string[] => (
+  [...new Set(statuses.map(getStatusId))]
 );
 
+/** Update a list, creating it if it doesn't exist. */
+const updateList = (state: State, listType: string, recipe: (list: Draft<StatusList>) => void): State => {
+  return produce(state, draft => {
+    draft[listType] ??= newStatusList();
+    recipe(draft[listType]);
+  });
+};
+
 const setLoading = (state: State, listType: string, loading: boolean) => {
-  return state.update(listType, StatusListRecord(), listMap => listMap.set('isLoading', loading));
+  return updateList(state, listType, list => {
+    list.isLoading = loading;
+  });
 };
 
 const normalizeList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
-  return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
-    map.set('next', next);
-    map.set('loaded', true);
-    map.set('isLoading', false);
-    map.set('items', getStatusIds(statuses));
-  }));
+  return updateList(state, listType, list => {
+    list.next = next;
+    list.loaded = true;
+    list.isLoading = false;
+    list.items = getStatusIds(statuses);
+  });
 };
 
 const appendToList = (state: State, listType: string, statuses: APIEntity[], next: string | null) => {
   const newIds = getStatusIds(statuses);
 
-  return state.update(listType, StatusListRecord(), listMap => listMap.withMutations(map => {
-    map.set('next', next);
-    map.set('isLoading', false);
-    map.update('items', items => items.union(newIds));
-  }));
+  return updateList(state, listType, list => {
+    list.next = next;
+    list.isLoading = false;
+    list.items = [...new Set([...list.items, ...newIds])];
+  });
 };
 
-const prependOneToList = (state: State, listType: string, status: APIEntity) => {
+const prependOneToList = (state: State, listType: string, status: string | APIEntity) => {
   const statusId = getStatusId(status);
-  return state.update(listType, StatusListRecord(), listMap => listMap.update('items', items => {
-    return ImmutableOrderedSet([statusId]).union(items);
-  }));
+  return updateList(state, listType, list => {
+    list.items = [...new Set([statusId, ...list.items])];
+  });
 };
 
-const removeOneFromList = (state: State, listType: string, status: APIEntity) => {
+const removeOneFromList = (state: State, listType: string, status: string | APIEntity) => {
   const statusId = getStatusId(status);
-  return state.update(listType, StatusListRecord(), listMap => listMap.update('items', items => items.delete(statusId)));
+  return updateList(state, listType, list => {
+    list.items = list.items.filter(id => id !== statusId);
+  });
 };
 
 const maybeAppendScheduledStatus = (state: State, status: APIEntity) => {
@@ -123,7 +137,7 @@ const maybeAppendScheduledStatus = (state: State, status: APIEntity) => {
   return prependOneToList(state, 'scheduled_statuses', getStatusId(status));
 };
 
-export default function statusLists(state = initialState, action: AnyAction) {
+export default function statusLists(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case FAVOURITED_STATUSES_FETCH_REQUEST:
     case FAVOURITED_STATUSES_EXPAND_REQUEST:

@@ -54,8 +54,8 @@ const SidebarNavigation = () => {
   const { account } = useOwnAccount();
 
   const notificationCount = useAppSelector((state) => state.notifications.unread);
-  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.length);
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.length + state.admin.awaitingApproval.length);
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];

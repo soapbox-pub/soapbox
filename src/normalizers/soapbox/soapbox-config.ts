@@ -1,22 +1,13 @@
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Record as ImmutableRecord,
-  fromJS,
-} from 'immutable';
-
 import { normalizeUsername } from '@/utils/input.ts';
+import { isPlainObject, mergeDeep } from '@/utils/merge-deep.ts';
+import { fromDefaults } from '@/utils/normalizers.ts';
 import { toTailwind } from '@/utils/tailwind.ts';
 import { generateAccent } from '@/utils/theme.ts';
 
-import type {
-  PromoPanelItem,
-  FooterItem,
-  CryptoAddress,
-} from '@/types/soapbox';
+import type { TailwindColorPalette } from '@/types/colors.ts';
 
-const DEFAULT_COLORS = ImmutableMap<string, any>({
-  success: ImmutableMap({
+const DEFAULT_COLORS: TailwindColorPalette = {
+  success: {
     50: '#f0fdf4',
     100: '#dcfce7',
     200: '#bbf7d0',
@@ -27,8 +18,8 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     700: '#15803d',
     800: '#166534',
     900: '#14532d',
-  }),
-  danger: ImmutableMap({
+  },
+  danger: {
     50: '#fef2f2',
     100: '#fee2e2',
     200: '#fecaca',
@@ -39,33 +30,85 @@ const DEFAULT_COLORS = ImmutableMap<string, any>({
     700: '#b91c1c',
     800: '#991b1b',
     900: '#7f1d1d',
-  }),
+  },
   'greentext': '#789922',
-});
+};
 
-export const PromoPanelItemRecord = ImmutableRecord({
-  icon: '',
-  text: '',
-  url: '',
-  textLocales: ImmutableMap<string, string>(),
-});
+export interface PromoPanelItem {
+  icon: string;
+  text: string;
+  url: string;
+  textLocales: Record<string, string>;
+}
 
-export const PromoPanelRecord = ImmutableRecord({
-  items: ImmutableList<PromoPanelItem>(),
-});
+export interface PromoPanel {
+  items: PromoPanelItem[];
+}
 
-export const FooterItemRecord = ImmutableRecord({
-  title: '',
-  url: '',
-});
+export interface FooterItem {
+  title: string;
+  url: string;
+}
 
-export const CryptoAddressRecord = ImmutableRecord({
-  address: '',
-  note: '',
-  ticker: '',
-});
+export interface CryptoAddress {
+  address: string;
+  note: string;
+  ticker: string;
+}
 
-export const SoapboxConfigRecord = ImmutableRecord({
+export interface SoapboxConfig {
+  appleAppId: string | null;
+  authProvider: string;
+  logo: string;
+  logoDarkMode: string | null;
+  banner: string;
+  brandColor: string; // Empty
+  accentColor: string;
+  colors: TailwindColorPalette;
+  copyright: string;
+  customCss: string[];
+  defaultSettings: Record<string, unknown>;
+  extensions: {
+    patron?: {
+      enabled?: boolean;
+    };
+    [key: string]: unknown;
+  };
+  gdpr: boolean;
+  gdprUrl: string;
+  greentext: boolean;
+  promoPanel: PromoPanel;
+  navlinks: {
+    homeFooter: FooterItem[];
+    [key: string]: unknown;
+  };
+  allowedEmoji: string[];
+  verifiedIcon: string;
+  verifiedCanEditName: boolean;
+  displayFqn: boolean;
+  cryptoAddresses: CryptoAddress[];
+  cryptoDonatePanel: {
+    limit: number;
+  };
+  aboutPages: Record<string, Record<string, unknown>>;
+  authenticatedProfile: boolean;
+  linkFooterMessage: string;
+  links: Record<string, string>;
+  displayCta: boolean;
+  /** Whether to inject suggested profiles into the Home feed. */
+  feedInjection: boolean;
+  tileServer: string;
+  tileServerAttribution: string;
+  redirectRootNoLogin: string;
+  /**
+   * Whether to use the preview URL for media thumbnails.
+   * On some platforms this can be too blurry without additional configuration.
+   */
+  mediaPreview: boolean;
+  sentryDsn: string | undefined;
+}
+
+const soapboxConfigDefaults = (): SoapboxConfig => ({
   appleAppId: null,
   authProvider: '',
   logo: '',
@@ -73,127 +116,136 @@ export const SoapboxConfigRecord = ImmutableRecord({
   banner: '',
   brandColor: '', // Empty
   accentColor: '',
-  colors: ImmutableMap(),
+  colors: {},
   copyright: `♥${new Date().getFullYear()}. Copying is an act of love. Please copy and share.`,
-  customCss: ImmutableList<string>(),
-  defaultSettings: ImmutableMap<string, any>(),
-  extensions: ImmutableMap(),
+  customCss: [],
+  defaultSettings: {},
+  extensions: {},
   gdpr: false,
   gdprUrl: '',
   greentext: false,
-  promoPanel: PromoPanelRecord(),
-  navlinks: ImmutableMap({
-    homeFooter: ImmutableList<FooterItem>(),
-  }),
-  allowedEmoji: ImmutableList<string>([
+  promoPanel: { items: [] },
+  navlinks: {
+    homeFooter: [],
+  },
+  allowedEmoji: [
     '👍',
     '❤️',
     '😆',
     '😮',
     '😢',
     '😩',
-  ]),
+  ],
   verifiedIcon: '',
   verifiedCanEditName: false,
   displayFqn: true,
-  cryptoAddresses: ImmutableList<CryptoAddress>(),
-  cryptoDonatePanel: ImmutableMap({
+  cryptoAddresses: [],
+  cryptoDonatePanel: {
     limit: 1,
-  }),
-  aboutPages: ImmutableMap<string, ImmutableMap<string, unknown>>(),
+  },
+  aboutPages: {},
   authenticatedProfile: true,
   linkFooterMessage: '',
-  links: ImmutableMap<string, string>(),
+  links: {},
   displayCta: true,
-  /** Whether to inject suggested profiles into the Home feed. */
   feedInjection: true,
   tileServer: '',
   tileServerAttribution: '',
   redirectRootNoLogin: '',
-  /**
-   * Whether to use the preview URL for media thumbnails.
-   * On some platforms this can be too blurry without additional configuration.
-   */
   mediaPreview: false,
-  sentryDsn: undefined as string | undefined,
-}, 'SoapboxConfig');
+  sentryDsn: undefined,
+});
 
-type SoapboxConfigMap = ImmutableMap<string, any>;
+type SoapboxConfigMap = Record<string, any>;
 
 const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
-  return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
-    return ticker.replace(/^\$/, '').toLowerCase();
-  });
+  const result = fromDefaults<CryptoAddress>({
+    address: '',
+    note: '',
+    ticker: '',
+  }, isPlainObject(address) ? address : {});
+
+  return { ...result, ticker: result.ticker.replace(/^\$/, '').toLowerCase() };
 };
 
 const normalizeCryptoAddresses = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const addresses = ImmutableList(soapboxConfig.get('cryptoAddresses'));
-  return soapboxConfig.set('cryptoAddresses', addresses.map(normalizeCryptoAddress));
+  const addresses = Array.isArray(soapboxConfig.cryptoAddresses) ? soapboxConfig.cryptoAddresses : [];
+  return { ...soapboxConfig, cryptoAddresses: addresses.map(normalizeCryptoAddress) };
 };
 
 const normalizeBrandColor = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const brandColor = soapboxConfig.get('brandColor') || soapboxConfig.getIn(['colors', 'primary', '500']) || '';
-  return soapboxConfig.set('brandColor', brandColor);
+  const brandColor = soapboxConfig.brandColor || soapboxConfig.colors?.primary?.['500'] || '';
+  return { ...soapboxConfig, brandColor };
 };
 
 const normalizeAccentColor = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const brandColor = soapboxConfig.get('brandColor');
+  const brandColor = soapboxConfig.brandColor;
 
-  const accentColor = soapboxConfig.get('accentColor')
-    || soapboxConfig.getIn(['colors', 'accent', '500'])
+  const accentColor = soapboxConfig.accentColor
+    || soapboxConfig.colors?.accent?.['500']
     || (brandColor ? generateAccent(brandColor) : '');
 
-  return soapboxConfig.set('accentColor', accentColor);
+  return { ...soapboxConfig, accentColor };
 };
 
 const normalizeColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const colors = DEFAULT_COLORS.mergeDeep(soapboxConfig.get('colors'));
-  return toTailwind(soapboxConfig.set('colors', colors));
+  const colors = mergeDeep(DEFAULT_COLORS, soapboxConfig.colors);
+  return toTailwind({ ...soapboxConfig, colors });
 };
 
 const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const colors = soapboxConfig.get('colors');
+  const colors = soapboxConfig.colors;
 
-  const missing = ImmutableMap({
-    'gradient-start': colors.getIn(['primary', '500']),
-    'gradient-end': colors.getIn(['accent', '500']),
-    'accent-blue': colors.getIn(['primary', '600']),
-  });
+  const missing = {
+    'gradient-start': colors.primary?.['500'],
+    'gradient-end': colors.accent?.['500'],
+    'accent-blue': colors.primary?.['600'],
+  };
 
-  return soapboxConfig.set('colors', missing.mergeDeep(colors));
+  return { ...soapboxConfig, colors: mergeDeep(missing, colors) };
 };
 
 const normalizePromoPanel = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const promoPanel = PromoPanelRecord(soapboxConfig.get('promoPanel'));
-  const items = promoPanel.items.map(PromoPanelItemRecord);
-  return soapboxConfig.set('promoPanel', promoPanel.set('items', items));
+  const items: unknown[] = Array.isArray(soapboxConfig.promoPanel?.items) ? soapboxConfig.promoPanel.items : [];
+
+  const promoPanel: PromoPanel = {
+    items: items.map((item) => fromDefaults<PromoPanelItem>({
+      icon: '',
+      text: '',
+      url: '',
+      textLocales: {},
+    }, isPlainObject(item) ? item : {})),
+  };
+
+  return { ...soapboxConfig, promoPanel };
 };
 
 const normalizeFooterLinks = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const path = ['navlinks', 'homeFooter'];
-  const items = (soapboxConfig.getIn(path, ImmutableList()) as ImmutableList<any>).map(FooterItemRecord);
-  return soapboxConfig.setIn(path, items);
+  const items: unknown[] = Array.isArray(soapboxConfig.navlinks?.homeFooter) ? soapboxConfig.navlinks.homeFooter : [];
+
+  const homeFooter = items.map((item) => fromDefaults<FooterItem>({
+    title: '',
+    url: '',
+  }, isPlainObject(item) ? item : {}));
+
+  return { ...soapboxConfig, navlinks: { ...soapboxConfig.navlinks, homeFooter } };
 };
 
 /** Single user mode is now managed by `redirectRootNoLogin`. */
 const upgradeSingleUserMode = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const singleUserMode = soapboxConfig.get('singleUserMode') as boolean | undefined;
-  const singleUserModeProfile = soapboxConfig.get('singleUserModeProfile') as string | undefined;
-  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin') as string | undefined;
+  const { singleUserMode, singleUserModeProfile, ...rest } = soapboxConfig;
+  const redirectRootNoLogin = soapboxConfig.redirectRootNoLogin as string | undefined;
 
   if (!redirectRootNoLogin && singleUserMode && singleUserModeProfile) {
-    return soapboxConfig
-      .set('redirectRootNoLogin', `/@${normalizeUsername(singleUserModeProfile)}`)
-      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+    return { ...rest, redirectRootNoLogin: `/@${normalizeUsername(singleUserModeProfile)}` };
   } else {
-    return soapboxConfig
-      .deleteAll(['singleUserMode', 'singleUserModeProfile']);
+    return rest;
   }
 };
 
 /** Ensure a valid path is used. */
 const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
-  const redirectRootNoLogin = soapboxConfig.get('redirectRootNoLogin');
+  const { redirectRootNoLogin, ...rest } = soapboxConfig;
 
   if (!redirectRootNoLogin) return soapboxConfig;
 
@@ -202,30 +254,30 @@ const normalizeRedirectRootNoLogin = (soapboxConfig: SoapboxConfigMap): SoapboxC
     const normalized = new URL(redirectRootNoLogin, 'http://a').pathname;
 
     if (normalized !== '/') {
-      return soapboxConfig.set('redirectRootNoLogin', normalized);
+      return { ...rest, redirectRootNoLogin: normalized };
     } else {
       // Prevent infinite redirect(?)
-      return soapboxConfig.delete('redirectRootNoLogin');
+      return rest;
     }
   } catch (e) {
     console.error('You have configured an invalid redirect in Soapbox Config.');
     console.error(e);
-    return soapboxConfig.delete('redirectRootNoLogin');
+    return rest;
   }
 };
 
-export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
-  return SoapboxConfigRecord(
-    ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
-      normalizeBrandColor(soapboxConfig);
-      normalizeAccentColor(soapboxConfig);
-      normalizeColors(soapboxConfig);
-      normalizePromoPanel(soapboxConfig);
-      normalizeFooterLinks(soapboxConfig);
-      maybeAddMissingColors(soapboxConfig);
-      normalizeCryptoAddresses(soapboxConfig);
-      upgradeSingleUserMode(soapboxConfig);
-      normalizeRedirectRootNoLogin(soapboxConfig);
-    }),
-  );
+export const normalizeSoapboxConfig = (data: Record<string, any>): SoapboxConfig => {
+  let soapboxConfig: SoapboxConfigMap = { ...data };
+
+  soapboxConfig = normalizeBrandColor(soapboxConfig);
+  soapboxConfig = normalizeAccentColor(soapboxConfig);
+  soapboxConfig = normalizeColors(soapboxConfig);
+  soapboxConfig = normalizePromoPanel(soapboxConfig);
+  soapboxConfig = normalizeFooterLinks(soapboxConfig);
+  soapboxConfig = maybeAddMissingColors(soapboxConfig);
+  soapboxConfig = normalizeCryptoAddresses(soapboxConfig);
+  soapboxConfig = upgradeSingleUserMode(soapboxConfig);
+  soapboxConfig = normalizeRedirectRootNoLogin(soapboxConfig);
+
+  return fromDefaults(soapboxConfigDefaults(), soapboxConfig);
 };

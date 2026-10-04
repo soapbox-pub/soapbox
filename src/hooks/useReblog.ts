@@ -39,7 +39,7 @@ export function useReblog() {
   }
 
   const reblog = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(reblogAction(status, { reblogEffect, unreblogEffect }));
@@ -54,7 +54,7 @@ export function useReblog() {
   };
 
   const unreblog = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(unreblogAction(status, { reblogEffect, unreblogEffect }));
@@ -69,7 +69,7 @@ export function useReblog() {
   };
 
   const toggleReblog = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(toggleReblogAction(status, { reblogEffect, unreblogEffect }));

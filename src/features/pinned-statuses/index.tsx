@@ -20,9 +20,9 @@ const PinnedStatuses = () => {
   const { username } = useParams<{ username: string }>();
 
   const meUsername = useAppSelector((state) => selectOwnAccount(state)?.username || '');
-  const statusIds = useAppSelector((state) => state.status_lists.get('pins')!.items);
-  const isLoading = useAppSelector((state) => !!state.status_lists.get('pins')!.isLoading);
-  const hasMore = useAppSelector((state) => !!state.status_lists.get('pins')!.next);
+  const statusIds = useAppSelector((state) => state.status_lists.pins!.items);
+  const isLoading = useAppSelector((state) => !!state.status_lists.pins!.isLoading);
+  const hasMore = useAppSelector((state) => !!state.status_lists.pins!.next);
 
   const isMyAccount = username.toLowerCase() === meUsername.toLowerCase();
 

@@ -1,5 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
-
 import {
   TRENDING_STATUSES_FETCH_REQUEST,
   TRENDING_STATUSES_FETCH_SUCCESS,
@@ -9,29 +7,35 @@ import {
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ReducerRecord = ImmutableRecord({
-  items: ImmutableOrderedSet<string>(),
+interface State {
+  items: string[];
+  isLoading: boolean;
+  next: string | null;
+}
+
+const initialState: State = {
+  items: [],
   isLoading: false,
-  next: null as string | null,
-});
-
-type State = ReturnType<typeof ReducerRecord>;
-type APIEntities = Array<APIEntity>;
-
-const toIds = (items: APIEntities) => ImmutableOrderedSet(items.map(item => item.id));
-
-const importStatuses = (state: State, statuses: APIEntities, next: string|null) => {
-  return state.withMutations(state => {
-    state.update('items', list => list.concat(toIds(statuses)));
-    state.set('isLoading', false);
-    state.set('next', next ? next : null);
-  });
+  next: null,
 };
 
-export default function trending_statuses(state: State = ReducerRecord(), action: AnyAction) {
+type APIEntities = Array<APIEntity>;
+
+const toIds = (items: APIEntities): string[] => items.map(item => item.id);
+
+const importStatuses = (state: State, statuses: APIEntities, next: string | null): State => {
+  return {
+    ...state,
+    items: [...new Set([...state.items, ...toIds(statuses)])],
+    isLoading: false,
+    next: next ? next : null,
+  };
+};
+
+export default function trending_statuses(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case TRENDING_STATUSES_FETCH_REQUEST:
-      return state.set('isLoading', true);
+      return { ...state, isLoading: true };
     case TRENDING_STATUSES_EXPAND_SUCCESS:
     case TRENDING_STATUSES_FETCH_SUCCESS:
       return importStatuses(state, action.statuses, action.next);

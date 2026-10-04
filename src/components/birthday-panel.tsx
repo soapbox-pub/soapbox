@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useEffect, useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -15,6 +14,8 @@ const timeToMidnight = () => {
   return midnight.getTime() - now.getTime();
 };
 
+const emptyIds: string[] = [];
+
 interface IBirthdayPanel {
   limit: number;
 }
@@ -22,7 +23,7 @@ interface IBirthdayPanel {
 const BirthdayPanel = ({ limit }: IBirthdayPanel) => {
   const dispatch = useAppDispatch();
 
-  const birthdays: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.birthday_reminders.get(state.me as string)?.items || ImmutableOrderedSet());
+  const birthdays = useAppSelector(state => state.user_lists.birthday_reminders[state.me as string]?.items || emptyIds);
   const birthdaysToRender = birthdays.slice(0, limit);
 
   const timeout = useRef<NodeJS.Timeout>();
@@ -48,7 +49,7 @@ const BirthdayPanel = ({ limit }: IBirthdayPanel) => {
     };
   }, []);
 
-  if (birthdaysToRender.isEmpty()) {
+  if (birthdaysToRender.length === 0) {
     return null;
   }
 

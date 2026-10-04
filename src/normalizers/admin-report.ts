@@ -2,49 +2,53 @@
  * Admin report normalizer:
  * Converts API admin-level report information into our internal format.
  */
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Record as ImmutableRecord,
-  fromJS,
-} from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
 import type { Account, EmbeddedEntity, Status } from '@/types/entities.ts';
 
-export const AdminReportRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account>,
-  action_taken: false,
-  action_taken_by_account: null as EmbeddedEntity<Account> | null,
-  assigned_account: null as EmbeddedEntity<Account> | null,
-  category: '',
-  comment: '',
-  created_at: new Date(),
-  id: '',
-  rules: ImmutableList<string>(),
-  statuses: ImmutableList<EmbeddedEntity<Status>>(),
-  target_account: null as EmbeddedEntity<Account>,
-  updated_at: new Date(),
-});
+export interface AdminReport {
+  account: EmbeddedEntity<Account>;
+  action_taken: boolean;
+  action_taken_by_account: EmbeddedEntity<Account> | null;
+  assigned_account: EmbeddedEntity<Account> | null;
+  category: string;
+  comment: string;
+  created_at: Date | string;
+  id: string;
+  rules: string[];
+  statuses: EmbeddedEntity<Status>[];
+  target_account: EmbeddedEntity<Account>;
+  updated_at: Date | string;
+}
 
-const normalizePleromaReport = (report: ImmutableMap<string, any>) => {
-  if (report.get('actor')){
-    return report.withMutations(report => {
-      report.set('target_account', report.get('account'));
-      report.set('account', report.get('actor'));
-
-      report.set('action_taken', report.get('state') !== 'open');
-      report.set('comment', report.get('content'));
-      report.set('updated_at', report.get('created_at'));
-    });
+const normalizePleromaReport = (report: Record<string, any>): Record<string, any> => {
+  if (report.actor) {
+    return {
+      ...report,
+      target_account: report.account,
+      account: report.actor,
+      action_taken: report.state !== 'open',
+      comment: report.content,
+      updated_at: report.created_at,
+    };
   }
 
   return report;
 };
 
-export const normalizeAdminReport = (report: Record<string, any>) => {
-  return AdminReportRecord(
-    ImmutableMap(fromJS(report)).withMutations((report: ImmutableMap<string, any>) => {
-      normalizePleromaReport(report);
-    }),
-  );
+export const normalizeAdminReport = (report: Record<string, any>): AdminReport => {
+  return fromDefaults<AdminReport>({
+    account: null,
+    action_taken: false,
+    action_taken_by_account: null,
+    assigned_account: null,
+    category: '',
+    comment: '',
+    created_at: new Date(),
+    id: '',
+    rules: [],
+    statuses: [],
+    target_account: null,
+    updated_at: new Date(),
+  }, normalizePleromaReport(report));
 };

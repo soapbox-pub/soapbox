@@ -1,19 +1,17 @@
-import { Map as ImmutableMap } from 'immutable';
 import { AnyAction } from 'redux';
 
 import { LOCATION_SEARCH_SUCCESS } from '@/actions/events.ts';
-import { normalizeLocation } from '@/normalizers/location.ts';
+import { normalizeLocation, type Location } from '@/normalizers/location.ts';
 
 import type { APIEntity } from '@/types/entities.ts';
 
-type LocationRecord = ReturnType<typeof normalizeLocation>;
-type State = ImmutableMap<any, LocationRecord>;
+type State = Record<string, Location>;
 
-const initialState: State = ImmutableMap();
+const initialState: State = {};
 
-const normalizeLocations = (state: State, locations: APIEntity[]) => {
+const normalizeLocations = (state: State, locations: APIEntity[]): State => {
   return locations.reduce(
-    (state: State, location: APIEntity) => state.set(location.origin_id, normalizeLocation(location)),
+    (state: State, location: APIEntity) => ({ ...state, [location.origin_id]: normalizeLocation(location) }),
     state,
   );
 };

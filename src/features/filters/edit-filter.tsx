@@ -176,7 +176,7 @@ const EditFilter: React.FC<IEditFilter> = ({ params }) => {
           setConversations(filter.context.includes('thread'));
           setAccounts(filter.context.includes('account'));
           setHide(filter.filter_action === 'hide');
-          setKeywords(filter.keywords.toJS());
+          setKeywords(filter.keywords);
         } else {
           setNotFound(true);
         }

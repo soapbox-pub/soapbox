@@ -26,7 +26,6 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useSuggestions } from '@/queries/suggestions.ts';
 
-import type { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import type { VirtuosoHandle } from 'react-virtuoso';
 
 const SearchResults = () => {
@@ -47,7 +46,7 @@ const SearchResults = () => {
   const { account } = useAccount(filterByAccount);
 
   const handleLoadMore = () => {
-    if (results.accounts.size || results.statuses.size || results.hashtags.size) {
+    if (results.accounts.length || results.statuses.length || results.hashtags.length) {
       dispatch(expandSearch(selectedFilter));
     } else if (nextTrendingStatuses) {
       dispatch(expandTrendingStatuses(nextTrendingStatuses));
@@ -57,7 +56,7 @@ const SearchResults = () => {
   const handleUnsetAccount = () => dispatch(setSearchAccount(null));
 
   const getCurrentIndex = (id: string): number => {
-    return resultsIds?.keySeq().findIndex(key => key === id);
+    return resultsIds?.indexOf(id);
   };
 
   const handleMoveUp = (id: string) => {
@@ -89,19 +88,19 @@ const SearchResults = () => {
     dispatch(fetchTrendingStatuses());
   }, []);
 
-  let searchResults;
+  let searchResults: React.ReactNode[] | undefined;
   let hasMore = false;
   let loaded;
   let noResultsMessage;
   let placeholderComponent = PlaceholderStatus as React.ComponentType;
-  let resultsIds: ImmutableOrderedSet<string>;
+  let resultsIds: string[];
 
   if (selectedFilter === 'accounts') {
     hasMore = results.accountsHasMore;
     loaded = results.accountsLoaded;
     placeholderComponent = PlaceholderAccount;
 
-    if (results.accounts && results.accounts.size > 0) {
+    if (results.accounts && results.accounts.length > 0) {
       searchResults = results.accounts.map(accountId => <AccountContainer key={accountId} id={accountId} />);
     } else if (!submitted && suggestions.length) {
       searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.account} id={suggestion.account} />);
@@ -122,7 +121,7 @@ const SearchResults = () => {
     hasMore = results.statusesHasMore;
     loaded = results.statusesLoaded;
 
-    if (results.statuses && results.statuses.size > 0) {
+    if (results.statuses && results.statuses.length > 0) {
       searchResults = results.statuses.map((statusId: string) => (
         <StatusContainer
           key={statusId}
@@ -132,7 +131,7 @@ const SearchResults = () => {
         />
       ));
       resultsIds = results.statuses;
-    } else if (!submitted && trendingStatuses && !trendingStatuses.isEmpty()) {
+    } else if (!submitted && trendingStatuses && trendingStatuses.length > 0) {
       hasMore = !!nextTrendingStatuses;
       searchResults = trendingStatuses.map((statusId: string) => (
         // @ts-ignore
@@ -164,9 +163,9 @@ const SearchResults = () => {
     loaded = results.hashtagsLoaded;
     placeholderComponent = PlaceholderHashtag;
 
-    if (results.hashtags && results.hashtags.size > 0) {
+    if (results.hashtags && results.hashtags.length > 0) {
       searchResults = results.hashtags.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
-    } else if (!submitted && !trends.isEmpty()) {
+    } else if (!submitted && trends.length > 0) {
       searchResults = trends.map(hashtag => <Hashtag key={hashtag.name} hashtag={hashtag} />);
     } else if (loaded) {
       noResultsMessage = (
@@ -203,7 +202,7 @@ const SearchResults = () => {
           key={selectedFilter}
           scrollKey={`${selectedFilter}:${value}`}
           isLoading={submitted && !loaded}
-          showLoading={submitted && !loaded && (Array.isArray(searchResults) ? !searchResults.length : searchResults?.isEmpty())}
+          showLoading={submitted && !loaded && !searchResults?.length}
           hasMore={hasMore}
           onLoadMore={handleLoadMore}
           placeholderComponent={placeholderComponent}

@@ -19,8 +19,8 @@ const ListTimeline: React.FC = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
 
-  const list = useAppSelector((state) => state.lists.get(id));
-  const next = useAppSelector(state => state.timelines.get(`list:${id}`)?.next);
+  const list = useAppSelector((state) => state.lists[id]);
+  const next = useAppSelector(state => state.timelines[`list:${id}`]?.next);
 
   useListStream(id);
 

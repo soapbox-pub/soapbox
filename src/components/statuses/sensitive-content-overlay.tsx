@@ -52,7 +52,7 @@ const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOver
   const { links } = useSoapboxConfig();
 
   const isUnderReview = status.visibility === 'self';
-  const isOwnStatus = status.getIn(['account', 'id']) === account?.id;
+  const isOwnStatus = status.account?.id === account?.id;
 
   const [visible, setVisible] = useState<boolean>(defaultMediaVisibility(status, displayMedia));
 
@@ -130,7 +130,7 @@ const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOver
                 <div className='py-4 italic'>
                   {/* eslint-disable formatjs/no-literal-string-in-jsx */}
                   <Text className='line-clamp-6' theme='white' size='md' weight='medium'>
-                    &ldquo;<span>{emojifyText(status.spoiler_text, status.emojis.toJS())}</span>&rdquo;
+                    &ldquo;<span>{emojifyText(status.spoiler_text, status.emojis)}</span>&rdquo;
                   </Text>
                   {/* eslint-enable formatjs/no-literal-string-in-jsx */}
                 </div>
@@ -140,9 +140,9 @@ const SensitiveContentOverlay = forwardRef<HTMLDivElement, ISensitiveContentOver
             <HStack alignItems='center' justifyContent='center' space={2}>
               {isUnderReview ? (
                 <>
-                  {links.get('support') && (
+                  {links.support && (
                     <a
-                      href={links.get('support')}
+                      href={links.support}
                       target='_blank'
                       onClick={(event) => event.stopPropagation()}
                     >

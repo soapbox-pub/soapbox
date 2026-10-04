@@ -11,7 +11,7 @@ interface IBirthdaysModal {
 }
 
 const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
-  const accountIds = useAppSelector(state => state.user_lists.birthday_reminders.get(state.me as string)?.items);
+  const accountIds = useAppSelector(state => state.user_lists.birthday_reminders[state.me as string]?.items);
 
   const onClickClose = () => {
     onClose('BIRTHDAYS');

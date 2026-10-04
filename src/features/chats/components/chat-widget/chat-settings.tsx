@@ -49,7 +49,7 @@ const ChatSettings = () => {
 
   const handleUpdateChat = (value: MessageExpirationValues) => updateChat.mutate({ message_expiration: value });
 
-  const isBlocking = useAppSelector((state) => state.relationships.getIn([chat?.account?.id, 'blocking']));
+  const isBlocking = useAppSelector((state) => state.relationships[chat?.account?.id ?? '']?.blocking);
 
   const closeSettings = () => {
     changeScreen(ChatWidgetScreens.CHAT, chat?.id);

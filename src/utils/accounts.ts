@@ -17,6 +17,20 @@ export const getDomain = (account: Pick<Account, 'acct' | 'url'>): string => {
   return domain ? domain : getDomainFromURL(account);
 };
 
+/** Guess the fully-qualified acct of an API entity that may not provide one. */
+export const guessFqn = (entity: { acct?: string; fqn?: string; url?: string }): string => {
+  if (entity.fqn) return entity.fqn;
+
+  const acct = entity.acct ?? '';
+  const [user, domain] = acct.split('@');
+
+  if (domain) {
+    return acct;
+  } else {
+    return [user, getDomainFromURL({ url: entity.url ?? '' })].join('@');
+  }
+};
+
 export const getBaseURL = (account: Pick<Account, 'url'>): string => {
   try {
     return new URL(account.url).origin;

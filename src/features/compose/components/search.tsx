@@ -68,7 +68,7 @@ const Search = (props: ISearch) => {
     if (previousToken) {
       removeToken(previousToken);
     }
-    
+
     // Add the new search token if not empty
     if (searchValue.trim().length > 0) {
       addToken(searchValue);
@@ -76,7 +76,7 @@ const Search = (props: ISearch) => {
     } else {
       setLastSearchToken('');
     }
-    
+
     dispatch(submitSearch());
   }, 900), []);
 

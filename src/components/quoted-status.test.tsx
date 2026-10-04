@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
+import { buildAccount } from '@/jest/factory.ts';
 import { render, screen, rootState } from '@/jest/test-helpers.tsx';
-import { normalizeStatus, normalizeAccount } from '@/normalizers/index.ts';
+import { normalizeStatus } from '@/normalizers/index.ts';
 
 import QuotedStatus from './quoted-status.tsx';
 
@@ -9,7 +10,7 @@ import type { ReducerStatus } from '@/reducers/statuses.ts';
 
 describe('<QuotedStatus />', () => {
   it('renders content', () => {
-    const account = normalizeAccount({
+    const account = buildAccount({
       id: '1',
       acct: 'alex',
       url: 'https://soapbox.test/users/alex',

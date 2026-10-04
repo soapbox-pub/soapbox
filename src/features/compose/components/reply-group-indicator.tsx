@@ -16,7 +16,7 @@ const ReplyGroupIndicator = (props: IReplyGroupIndicator) => {
 
   const getStatus = useCallback(makeGetStatus(), []);
 
-  const status = useAppSelector((state) => getStatus(state, { id: state.compose.get(composeId)?.in_reply_to! }));
+  const status = useAppSelector((state) => getStatus(state, { id: state.compose[composeId]?.in_reply_to! }));
   const group = status?.group as Group;
 
   if (!group) {

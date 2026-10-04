@@ -1,18 +1,20 @@
-import { Map as ImmutableMap, type Collection } from 'immutable';
-
 import type { Status } from '@/schemas/index.ts';
+
+interface ColumnSettings {
+  shows?: Partial<Record<'reblog' | 'reply' | 'direct', boolean>>;
+}
 
 export const shouldFilter = (
   status: Pick<Status, 'in_reply_to_id' | 'visibility'> & { reblog: unknown },
-  columnSettings: Collection<any, any>,
+  columnSettings: ColumnSettings | undefined,
 ) => {
-  const shows = ImmutableMap({
+  const shows = {
     reblog: status.reblog !== null,
     reply: status.in_reply_to_id !== null,
     direct: status.visibility === 'direct',
-  });
+  };
 
-  return shows.some((value, key) => {
-    return columnSettings.getIn(['shows', key]) === false && value;
+  return Object.entries(shows).some(([key, value]) => {
+    return columnSettings?.shows?.[key as keyof typeof shows] === false && value;
   });
 };

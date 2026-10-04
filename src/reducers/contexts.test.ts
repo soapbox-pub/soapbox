@@ -1,9 +1,3 @@
-import {
-  Map as ImmutableMap,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-  is,
-} from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import { STATUS_IMPORT } from '@/actions/importer/index.ts';
@@ -11,14 +5,14 @@ import { CONTEXT_FETCH_SUCCESS } from '@/actions/statuses.ts';
 import { TIMELINE_DELETE } from '@/actions/timelines.ts';
 import { applyActions } from '@/jest/test-helpers.tsx';
 
-import reducer, { ReducerRecord } from './contexts.ts';
+import reducer, { initialState } from './contexts.ts';
 
 describe('contexts reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any)).toEqual(ReducerRecord({
-      inReplyTos: ImmutableMap(),
-      replies: ImmutableMap(),
-    }));
+    expect(reducer(undefined, {} as any)).toEqual({
+      inReplyTos: {},
+      replies: {},
+    });
   });
 
   describe(CONTEXT_FETCH_SUCCESS, () => {
@@ -39,8 +33,8 @@ describe('contexts reducer', () => {
       ];
 
       const result = applyActions(undefined, actions, reducer);
-      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
-      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
+      expect(result.inReplyTos.C).toBe('C-tombstone');
+      expect(result.replies.A).toEqual(['C-tombstone']);
     });
 
     it('inserts a tombstone connecting an orphaned descendant (with null in_reply_to_id)', () => {
@@ -60,8 +54,8 @@ describe('contexts reducer', () => {
       ];
 
       const result = applyActions(undefined, actions, reducer);
-      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
-      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone']);
+      expect(result.inReplyTos.C).toBe('C-tombstone');
+      expect(result.replies.A).toEqual(['C-tombstone']);
     });
 
     it('doesn\'t explode when it encounters a loop', () => {
@@ -86,8 +80,8 @@ describe('contexts reducer', () => {
       const result = applyActions(undefined, actions, reducer);
 
       // These checks are superficial. We just don't want a stack overflow!
-      expect(result.inReplyTos.get('C')).toBe('C-tombstone');
-      expect(result.replies.get('A').toArray()).toEqual(['C-tombstone', 'F-tombstone']);
+      expect(result.inReplyTos.C).toBe('C-tombstone');
+      expect(result.replies.A).toEqual(['C-tombstone', 'F-tombstone']);
     });
   });
 
@@ -95,25 +89,26 @@ describe('contexts reducer', () => {
     it('deletes the status', () => {
       const action = { type: TIMELINE_DELETE, id: 'B' };
 
-      const state = ReducerRecord({
-        inReplyTos: fromJS({
+      const state = {
+        ...initialState,
+        inReplyTos: {
           B: 'A',
           C: 'B',
-        }) as ImmutableMap<string, string>,
-        replies: fromJS({
-          A: ImmutableOrderedSet(['B']),
-          B: ImmutableOrderedSet(['C']),
-        }) as ImmutableMap<string, ImmutableOrderedSet<string>>,
-      });
+        },
+        replies: {
+          A: ['B'],
+          B: ['C'],
+        },
+      };
 
-      const expected = ReducerRecord({
-        inReplyTos: fromJS({}) as ImmutableMap<string, string>,
-        replies: fromJS({
-          A: ImmutableOrderedSet(),
-        }) as ImmutableMap<string, ImmutableOrderedSet<string>>,
-      });
+      const expected = {
+        inReplyTos: {},
+        replies: {
+          A: [],
+        },
+      };
 
-      expect(is(reducer(state, action), expected)).toBe(true);
+      expect(reducer(state, action)).toEqual(expected);
     });
   });
 });

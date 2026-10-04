@@ -8,7 +8,7 @@ interface IPollPreview {
 }
 
 const PollPreview: React.FC<IPollPreview> = ({ pollId }) => {
-  const poll = useAppSelector((state) => state.polls.get(pollId) as PollEntity);
+  const poll = useAppSelector((state) => state.polls[pollId] as PollEntity);
 
   if (!poll) {
     return null;

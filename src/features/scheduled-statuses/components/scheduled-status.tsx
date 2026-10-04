@@ -22,7 +22,7 @@ interface IScheduledStatus {
 
 const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => {
   const status = useAppSelector((state) => {
-    const scheduledStatus = state.scheduled_statuses.get(statusId);
+    const scheduledStatus = state.scheduled_statuses[statusId];
     if (!scheduledStatus) return null;
     return buildStatus(state, scheduledStatus);
   }) as StatusEntity | null;
@@ -54,9 +54,9 @@ const ScheduledStatus: React.FC<IScheduledStatus> = ({ statusId, ...other }) => 
             collapsable
           />
 
-          {status.media_attachments.size > 0 && (
+          {status.media_attachments.length > 0 && (
             <AttachmentThumbs
-              media={status.media_attachments.toJS() as unknown as Attachment[]}
+              media={status.media_attachments as unknown as Attachment[]}
               sensitive={status.sensitive}
             />
           )}

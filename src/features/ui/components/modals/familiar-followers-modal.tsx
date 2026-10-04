@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { FormattedMessage } from 'react-intl';
 
 import ScrollableList from '@/components/scrollable-list.tsx';
@@ -11,6 +10,8 @@ import { emojifyText } from '@/utils/emojify.tsx';
 
 const getAccount = makeGetAccount();
 
+const emptyIds: string[] = [];
+
 interface IFamiliarFollowersModal {
   accountId: string;
   onClose: (string: string) => void;
@@ -18,7 +19,7 @@ interface IFamiliarFollowersModal {
 
 const FamiliarFollowersModal = ({ accountId, onClose }: IFamiliarFollowersModal) => {
   const account = useAppSelector(state => getAccount(state, accountId));
-  const familiarFollowerIds: ImmutableOrderedSet<string> = useAppSelector(state => state.user_lists.familiar_followers.get(accountId)?.items || ImmutableOrderedSet());
+  const familiarFollowerIds = useAppSelector(state => state.user_lists.familiar_followers[accountId]?.items || emptyIds);
 
   const onClickClose = () => {
     onClose('FAMILIAR_FOLLOWERS');

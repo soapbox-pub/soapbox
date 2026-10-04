@@ -87,7 +87,7 @@ const ChatMessage = (props: IChatMessage) => {
     && lastReadMessageTimestamp
     && lastReadMessageTimestamp >= new Date(chatMessage.created_at);
 
-  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content, props.chatMessage.emojis.toJS(), 3), [content]);
+  const isOnlyEmoji = useMemo(() => _isOnlyEmoji(content, props.chatMessage.emojis, 3), [content]);
 
   const emojiReactionRows = useMemo(() => {
     if (!chatMessage.emoji_reactions) {
@@ -105,7 +105,7 @@ const ChatMessage = (props: IChatMessage) => {
   };
 
   const maybeRenderMedia = (chatMessage: ChatMessageEntity) => {
-    if (!chatMessage.media_attachments.size) return null;
+    if (!chatMessage.media_attachments.length) return null;
 
     return (
       <MediaGallery
@@ -113,7 +113,7 @@ const ChatMessage = (props: IChatMessage) => {
           'rounded-br-sm': isMyMessage && content,
           'rounded-bl-sm': !isMyMessage && content,
         })}
-        media={chatMessage.media_attachments.toJS() as unknown as Attachment[]}
+        media={chatMessage.media_attachments as unknown as Attachment[]}
         onOpenMedia={onOpenMedia}
         visible
       />
@@ -265,7 +265,7 @@ const ChatMessage = (props: IChatMessage) => {
             space={0.5}
             className={clsx({
               'max-w-[85%]': true,
-              'flex-1': !!chatMessage.media_attachments.size,
+              'flex-1': !!chatMessage.media_attachments.length,
               'order-3': isMyMessage,
               'order-1': !isMyMessage,
             })}
@@ -280,8 +280,8 @@ const ChatMessage = (props: IChatMessage) => {
                   className={
                     clsx({
                       'text-ellipsis break-words relative rounded-md py-2 px-3 max-w-full space-y-2 [&_.mention]:underline': true,
-                      'rounded-tr-sm': (!!chatMessage.media_attachments.size) && isMyMessage,
-                      'rounded-tl-sm': (!!chatMessage.media_attachments.size) && !isMyMessage,
+                      'rounded-tr-sm': (!!chatMessage.media_attachments.length) && isMyMessage,
+                      'rounded-tl-sm': (!!chatMessage.media_attachments.length) && !isMyMessage,
                       '[&_.mention]:text-primary-600 dark:[&_.mention]:text-accent-blue': !isMyMessage,
                       '[&_.mention]:text-white dark:[&_.mention]:white': isMyMessage,
                       'bg-primary-500 text-white': isMyMessage,

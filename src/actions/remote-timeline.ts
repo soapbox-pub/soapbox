@@ -1,11 +1,10 @@
 import { getSettings, changeSetting } from '@/actions/settings.ts';
 
 import type { AppDispatch, RootState } from '@/store.ts';
-import type { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const getPinnedHosts = (state: RootState) => {
   const settings = getSettings(state);
-  return settings.getIn(['remote_timeline', 'pinnedHosts']) as ImmutableList<string> | ImmutableOrderedSet<string>;
+  return settings.remote_timeline.pinnedHosts;
 };
 
 const pinHost = (host: string) =>
@@ -13,7 +12,7 @@ const pinHost = (host: string) =>
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
-    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.toOrderedSet().add(host)));
+    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], [...new Set([...pinnedHosts, host])]));
   };
 
 const unpinHost = (host: string) =>
@@ -21,7 +20,7 @@ const unpinHost = (host: string) =>
     const state = getState();
     const pinnedHosts = getPinnedHosts(state);
 
-    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.toOrderedSet().remove(host)));
+    return dispatch(changeSetting(['remote_timeline', 'pinnedHosts'], pinnedHosts.filter(pinnedHost => pinnedHost !== host)));
   };
 
 export {

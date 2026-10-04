@@ -9,7 +9,6 @@ import presentationIcon from '@tabler/icons/outline/presentation.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import zoomInIcon from '@tabler/icons/outline/zoom-in.svg';
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import { useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { spring } from 'react-motion';
@@ -140,17 +139,17 @@ const Upload: React.FC<IUpload> = ({
   };
 
   const handleOpenModal = () => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(media).toJS(), index: 0 }));
+    dispatch(openModal('MEDIA', { media: [media], index: 0 }));
   };
 
   const active = hovered || focused;
   const description = dirtyDescription || (dirtyDescription !== '' && media.description) || '';
-  const focusX = media.meta.getIn(['focus', 'x']) as number | undefined;
-  const focusY = media.meta.getIn(['focus', 'y']) as number | undefined;
+  const focusX = media.meta.focus?.x;
+  const focusY = media.meta.focus?.y;
   const x = focusX ? ((focusX /  2) + .5) * 100 : undefined;
   const y = focusY ? ((focusY / -2) + .5) * 100 : undefined;
   const mediaType = media.type;
-  const mimeType = media.pleroma.get('mime_type') as string | undefined;
+  const mimeType = media.pleroma.mime_type as string | undefined;
   const isMediaCover = mediaType === 'video' || mediaType === 'audio';
 
   const uploadIcon = mediaType === 'unknown' && (

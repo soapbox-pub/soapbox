@@ -62,7 +62,7 @@ describe('chat utils', () => {
       ).toEqual(initialChatMessage.content);
 
       const nextChatMessage = normalizeChatMessage({
-        ...initialChatMessage.toJS(),
+        ...initialChatMessage,
         content: 'new content',
       });
 

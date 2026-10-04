@@ -21,10 +21,10 @@ const Events = () => {
 
   const dispatch = useAppDispatch();
 
-  const recentEvents = useAppSelector((state) => state.status_lists.get('recent_events')!.items);
-  const recentEventsLoading = useAppSelector((state) => state.status_lists.get('recent_events')!.isLoading);
-  const joinedEvents = useAppSelector((state) => state.status_lists.get('joined_events')!.items);
-  const joinedEventsLoading = useAppSelector((state) => state.status_lists.get('joined_events')!.isLoading);
+  const recentEvents = useAppSelector((state) => state.status_lists.recent_events!.items);
+  const recentEventsLoading = useAppSelector((state) => state.status_lists.recent_events!.isLoading);
+  const joinedEvents = useAppSelector((state) => state.status_lists.joined_events!.items);
+  const joinedEventsLoading = useAppSelector((state) => state.status_lists.joined_events!.isLoading);
 
   const onComposeEvent = () => {
     dispatch(openModal('COMPOSE_EVENT'));

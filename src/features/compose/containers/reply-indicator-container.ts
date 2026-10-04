@@ -16,14 +16,14 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const mapStateToProps = (state: RootState, { composeId }: { composeId: string }) => {
-    const statusId = state.compose.get(composeId)?.in_reply_to!;
-    const editing = !!state.compose.get(composeId)?.id;
+    const statusId = state.compose[composeId]?.in_reply_to!;
+    const editing = !!state.compose[composeId]?.id;
 
     const legacyStatus = getStatus(state, { id: statusId }) as LegacyStatus;
     const statusEntity = selectEntity<StatusEntity>(state, Entities.STATUSES, statusId);
 
     return {
-      status: (legacyStatus?.toJS() ?? statusEntity) as StatusEntity,
+      status: (legacyStatus ?? statusEntity) as unknown as StatusEntity,
       hideActions: editing,
     };
   };

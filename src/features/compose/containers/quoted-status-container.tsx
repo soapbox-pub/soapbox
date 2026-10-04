@@ -15,7 +15,7 @@ const QuotedStatusContainer: React.FC<IQuotedStatusContainer> = ({ composeId }) 
   const dispatch = useAppDispatch();
   const getStatus = useCallback(makeGetStatus(), []);
 
-  const status = useAppSelector(state => getStatus(state, { id: state.compose.get(composeId)?.quote! }));
+  const status = useAppSelector(state => getStatus(state, { id: state.compose[composeId]?.quote! }));
 
   const onCancel = () => {
     dispatch(cancelQuoteCompose());

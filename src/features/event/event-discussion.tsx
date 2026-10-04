@@ -1,5 +1,4 @@
 import { debounce } from 'es-toolkit';
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -26,7 +25,7 @@ type RouteParams = { statusId: string };
 
 interface IEventDiscussion {
   params: RouteParams;
-  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void;
+  onOpenMedia: (media: AttachmentEntity[], index: number) => void;
   onOpenVideo: (video: AttachmentEntity, time: number) => void;
 }
 
@@ -39,12 +38,11 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   const me = useAppSelector((state) => state.me);
 
   const descendantsIds = useAppSelector(state => {
-    let descendantsIds = ImmutableOrderedSet<string>();
+    let descendantsIds: string[] = [];
 
     if (status) {
       const statusId = status.id;
-      descendantsIds = getDescendantsIds(state, statusId);
-      descendantsIds = descendantsIds.delete(statusId);
+      descendantsIds = getDescendantsIds(state, statusId).filter(id => id !== statusId);
     }
 
     return descendantsIds;
@@ -76,12 +74,12 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   }, [isLoaded, me]);
 
   const handleMoveUp = (id: string) => {
-    const index = ImmutableList(descendantsIds).indexOf(id);
+    const index = descendantsIds.indexOf(id);
     _selectChild(index - 1);
   };
 
   const handleMoveDown = (id: string) => {
-    const index = ImmutableList(descendantsIds).indexOf(id);
+    const index = descendantsIds.indexOf(id);
     _selectChild(index + 1);
   };
 
@@ -136,7 +134,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
     );
   };
 
-  const renderChildren = (list: ImmutableOrderedSet<string>) => {
+  const renderChildren = (list: string[]) => {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return renderTombstone(id);
@@ -156,7 +154,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
     }
   }, 300, { edges: ['leading'] }), [next, status]);
 
-  const hasDescendants = descendantsIds.size > 0;
+  const hasDescendants = descendantsIds.length > 0;
 
   if (!status && isLoaded) {
     return (
@@ -171,7 +169,7 @@ const EventDiscussion: React.FC<IEventDiscussion> = (props) => {
   const children: JSX.Element[] = [];
 
   if (hasDescendants) {
-    children.push(...renderChildren(descendantsIds).toArray());
+    children.push(...renderChildren(descendantsIds));
   }
 
   return (

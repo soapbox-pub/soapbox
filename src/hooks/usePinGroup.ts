@@ -7,14 +7,14 @@ export function usePinGroup() {
   const dispatch = useAppDispatch();
 
   const pinToGroup = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status && status.group) {
       return dispatch(pinToGroupAction(status, status.group));
     }
   };
 
   const unpinFromGroup = (statusId: string) => {
-    const status = getState().statuses.get(statusId);
+    const status = getState().statuses[statusId];
     if (status && status.group) {
       return dispatch(unpinFromGroupAction(status, status.group));
     }

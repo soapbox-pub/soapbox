@@ -3,17 +3,19 @@
  * Converts API lists into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/list/}
  */
-import { Record as ImmutableRecord, Map as ImmutableMap, fromJS } from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
 // https://docs.joinmastodon.org/entities/list/
-export const ListRecord = ImmutableRecord({
-  id: '',
-  title: '',
-  replies_policy: null as 'followed' | 'list' | 'none' | null,
-});
+export interface List {
+  id: string;
+  title: string;
+  replies_policy: 'followed' | 'list' | 'none' | null;
+}
 
-export const normalizeList = (list: Record<string, any>) => {
-  return ListRecord(
-    ImmutableMap(fromJS(list)),
-  );
+export const normalizeList = (list: Record<string, any>): List => {
+  return fromDefaults<List>({
+    id: '',
+    title: '',
+    replies_policy: null,
+  }, list);
 };

@@ -13,7 +13,7 @@ export function useFavourite() {
   const dispatch = useAppDispatch();
 
   const favourite = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(favouriteAction(status));
@@ -28,7 +28,7 @@ export function useFavourite() {
   };
 
   const unfavourite = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(unfavouriteAction(status));
@@ -43,7 +43,7 @@ export function useFavourite() {
   };
 
   const toggleFavourite = (statusId: string) => {
-    let status: undefined|LegacyStatus|StatusEntity = getState().statuses.get(statusId);
+    let status: undefined|LegacyStatus|StatusEntity = getState().statuses[statusId];
 
     if (status) {
       dispatch(toggleFavouriteAction(status));

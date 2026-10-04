@@ -1,4 +1,3 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { useCallback, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -21,7 +20,7 @@ const MentionsModal: React.FC<IMentionsModal> = ({ onClose, statusId }) => {
   const getStatus = useCallback(makeGetStatus(), []);
 
   const status = useAppSelector((state) => getStatus(state, { id: statusId }));
-  const accountIds = status ? ImmutableOrderedSet(status.mentions.map(m => m.get('id'))) : null;
+  const accountIds = status ? [...new Set(status.mentions.map(m => m.id))] : null;
 
   const fetchData = () => {
     dispatch(fetchStatusWithContext(statusId));

@@ -1,4 +1,5 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { get, set } from 'es-toolkit/compat';
+import { produce } from 'immer';
 import { useState, useEffect, useMemo } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 
@@ -58,14 +59,14 @@ const messages = defineMessages({
 });
 
 type ValueGetter<T = Element> = (e: React.ChangeEvent<T>) => any;
-type Template = ImmutableMap<string, any>;
+type Template = Record<string, string>;
 type ConfigPath = Array<string | number>;
 type ThemeChangeHandler = (theme: string) => void;
 
 const templates: Record<string, Template> = {
-  promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
-  footerItem: ImmutableMap({ title: '', url: '' }),
-  cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
+  promoPanelItem: { icon: '', text: '', url: '' },
+  footerItem: { title: '', url: '' },
+  cryptoAddress: { ticker: '', address: '', note: '' },
 };
 
 const SoapboxConfig: React.FC = () => {
@@ -87,7 +88,9 @@ const SoapboxConfig: React.FC = () => {
   }, [data]);
 
   const setConfig = (path: ConfigPath, value: any) => {
-    const newData = data.setIn(path, value);
+    const newData = produce(data, draft => {
+      set(draft, path, value);
+    });
     setData(newData);
     setJsonValid(true);
   };
@@ -98,7 +101,7 @@ const SoapboxConfig: React.FC = () => {
   };
 
   const handleSubmit: React.FormEventHandler = (e) => {
-    dispatch(updateSoapboxConfig(data.toJS())).then(() => {
+    dispatch(updateSoapboxConfig(data)).then(() => {
       setLoading(false);
       toast.success(intl.formatMessage(messages.saved));
     }).catch(() => {
@@ -138,21 +141,21 @@ const SoapboxConfig: React.FC = () => {
 
   const handleStreamItemChange = (path: ConfigPath) => {
     return (values: any[]) => {
-      setConfig(path, ImmutableList(values));
+      setConfig(path, values);
     };
   };
 
   const addStreamItem = (path: ConfigPath, template: Template) => {
     return () => {
-      const items = data.getIn(path) || ImmutableList();
-      setConfig(path, items.push(template));
+      const items: unknown[] = get(data, path) || [];
+      setConfig(path, [...items, template]);
     };
   };
 
   const deleteStreamItem = (path: ConfigPath) => {
     return (i: number) => {
-      const newData = data.deleteIn([...path, i]);
-      setData(newData);
+      const items: unknown[] = get(data, path) || [];
+      setConfig(path, items.filter((_, index) => index !== i));
     };
   };
 
@@ -172,7 +175,7 @@ const SoapboxConfig: React.FC = () => {
 
   useEffect(() => {
     try {
-      const data = fromJS(JSON.parse(rawJSON));
+      const data = JSON.parse(rawJSON);
       putConfig(data);
     } catch {
       setJsonValid(false);
@@ -202,7 +205,7 @@ const SoapboxConfig: React.FC = () => {
           <List>
             <ListItem label={<FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' />}>
               <ThemeSelector
-                value={soapbox.defaultSettings.get('themeMode')}
+                value={soapbox.defaultSettings.themeMode as string}
                 onChange={handleThemeChange(['defaultSettings', 'themeMode'])}
               />
             </ListItem>
@@ -283,7 +286,7 @@ const SoapboxConfig: React.FC = () => {
               <Input
                 type='text'
                 placeholder='/timeline/local'
-                value={String(data.get('redirectRootNoLogin', ''))}
+                value={String(data.redirectRootNoLogin ?? '')}
                 onChange={handleChange(['redirectRootNoLogin'], (e) => e.target.value)}
               />
             </ListItem>
@@ -295,7 +298,7 @@ const SoapboxConfig: React.FC = () => {
               <Input
                 type='text'
                 placeholder='https://01234abcdef@glitch.tip.tld/5678'
-                value={String(data.get('sentryDsn', ''))}
+                value={String(data.sentryDsn ?? '')}
                 onChange={handleChange(['sentryDsn'], (e) => e.target.value)}
               />
             </ListItem>
@@ -309,7 +312,7 @@ const SoapboxConfig: React.FC = () => {
             label={<FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' />}
             hint={<FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />}
             component={PromoPanelInput}
-            values={soapbox.promoPanel.items.toArray()}
+            values={soapbox.promoPanel.items}
             onChange={handleStreamItemChange(['promoPanel', 'items'])}
             onAddItem={addStreamItem(['promoPanel', 'items'], templates.promoPanel)}
             onRemoveItem={deleteStreamItem(['promoPanel', 'items'])}
@@ -319,7 +322,7 @@ const SoapboxConfig: React.FC = () => {
             label={<FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' />}
             hint={<FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />}
             component={FooterLinkInput}
-            values={soapbox.navlinks.get('homeFooter')?.toArray() || []}
+            values={soapbox.navlinks.homeFooter || []}
             onChange={handleStreamItemChange(['navlinks', 'homeFooter'])}
             onAddItem={addStreamItem(['navlinks', 'homeFooter'], templates.footerItem)}
             onRemoveItem={deleteStreamItem(['navlinks', 'homeFooter'])}
@@ -368,7 +371,7 @@ const SoapboxConfig: React.FC = () => {
             label={<FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' />}
             hint={<FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />}
             component={CryptoAddressInput}
-            values={soapbox.cryptoAddresses.toArray()}
+            values={soapbox.cryptoAddresses}
             onChange={handleStreamItemChange(['cryptoAddresses'])}
             onAddItem={addStreamItem(['cryptoAddresses'], templates.cryptoAddress)}
             onRemoveItem={deleteStreamItem(['cryptoAddresses'])}
@@ -380,7 +383,7 @@ const SoapboxConfig: React.FC = () => {
               min={0}
               pattern='[0-9]+'
               placeholder={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
-              value={soapbox.cryptoDonatePanel.get('limit')}
+              value={soapbox.cryptoDonatePanel.limit}
               onChange={handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
             />
           </FormGroup>

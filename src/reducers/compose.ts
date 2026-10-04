@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord, fromJS } from 'immutable';
+import { produce, type Draft } from 'immer';
 
 import { isNativeEmoji } from '@/features/emoji/index.ts';
 import { Account } from '@/schemas/index.ts';
@@ -73,139 +73,169 @@ import type {
 
 const getResetFileKey = () => Math.floor((Math.random() * 0x10000));
 
-const PollRecord = ImmutableRecord({
-  options: ImmutableList(['', '']),
+interface Poll {
+  options: string[];
+  expires_in: number;
+  multiple: boolean;
+}
+
+const newPoll = (poll: Partial<Poll> = {}): Poll => ({
+  options: ['', ''],
   expires_in: 24 * 3600,
   multiple: false,
+  ...poll,
 });
 
-export const ReducerCompose = ImmutableRecord({
-  caretPosition: null as number | null,
+export interface Compose {
+  caretPosition: number | null;
+  content_type: string;
+  editorState: string | null;
+  focusDate: Date | null;
+  group_id: string | null;
+  idempotencyKey: string;
+  id: string | null;
+  in_reply_to: string | null;
+  is_changing_upload: boolean;
+  is_composing: boolean;
+  is_submitting: boolean;
+  is_uploading: boolean;
+  media_attachments: AttachmentEntity[];
+  poll: Poll | null;
+  privacy: string;
+  progress: number;
+  quote: string | null;
+  resetFileKey: number | null;
+  schedule: Date | null;
+  sensitive: boolean;
+  spoiler: boolean;
+  spoiler_text: string;
+  suggestions: (string | Emoji)[];
+  suggestion_token: string | null;
+  tagHistory: string[];
+  text: string;
+  /** Unique list of accts to address. */
+  to: string[];
+  group_timeline_visible: boolean; // TruthSocial
+}
+
+export const newCompose = (compose: Partial<Compose> = {}): Compose => ({
+  caretPosition: null,
   content_type: 'text/plain',
-  editorState: null as string | null,
-  focusDate: null as Date | null,
-  group_id: null as string | null,
+  editorState: null,
+  focusDate: null,
+  group_id: null,
   idempotencyKey: '',
-  id: null as string | null,
-  in_reply_to: null as string | null,
+  id: null,
+  in_reply_to: null,
   is_changing_upload: false,
   is_composing: false,
   is_submitting: false,
   is_uploading: false,
-  media_attachments: ImmutableList<AttachmentEntity>(),
-  poll: null as Poll | null,
+  media_attachments: [],
+  poll: null,
   privacy: 'public',
   progress: 0,
-  quote: null as string | null,
-  resetFileKey: null as number | null,
-  schedule: null as Date | null,
+  quote: null,
+  resetFileKey: null,
+  schedule: null,
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
-  suggestions: ImmutableList<string>(),
-  suggestion_token: null as string | null,
-  tagHistory: ImmutableList<string>(),
+  suggestions: [],
+  suggestion_token: null,
+  tagHistory: [],
   text: '',
-  to: ImmutableOrderedSet<string>(),
-  group_timeline_visible: false, // TruthSocial
+  to: [],
+  group_timeline_visible: false,
+  ...compose,
 });
 
-type State = ImmutableMap<string, Compose>;
-type Compose = ReturnType<typeof ReducerCompose>;
-type Poll = ReturnType<typeof PollRecord>;
+type State = Record<string, Compose>;
+
+/** Build a unique list of accts from the author and mentions, excluding the given acct. */
+const uniqueAccts = (accts: string[], exclude: string): string[] => {
+  return [...new Set(accts)].filter(acct => acct !== exclude);
+};
 
 const statusToTextMentions = (status: Status, account: Account) => {
-  const author = status.getIn(['account', 'acct']);
-  const mentions = status.get('mentions')?.map((m) => m.acct) || [];
+  const author = status.account?.acct;
+  const mentions = status.mentions?.map((m) => m.acct) || [];
 
-  return ImmutableOrderedSet([author])
-    .concat(mentions)
-    .delete(account.acct)
+  return uniqueAccts([author, ...mentions], account.acct)
     .map(m => `@${m} `)
     .join('');
 };
 
-export const statusToMentionsArray = (status: Status, account: Account) => {
-  const author = status.getIn(['account', 'acct']) as string;
-  const mentions = status.get('mentions')?.map((m) => m.acct) || [];
+export const statusToMentionsArray = (status: Status, account: Account): string[] => {
+  const author = status.account?.acct;
+  const mentions = status.mentions?.map((m) => m.acct) || [];
 
-  return ImmutableOrderedSet<string>([author])
-    .concat(mentions)
-    .delete(account.acct) as ImmutableOrderedSet<string>;
+  return uniqueAccts([author, ...mentions], account.acct);
 };
 
-export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: Account) => {
+export const statusToMentionsAccountIdsArray = (status: StatusEntity, account: Account): string[] => {
   const mentions = status.mentions.map((m) => m.id);
 
-  return ImmutableOrderedSet<string>([account.id])
-    .concat(mentions)
-    .delete(account.id);
+  return uniqueAccts([account.id, ...mentions], account.id);
 };
 
-const appendMedia = (compose: Compose, media: APIEntity, defaultSensitive?: boolean) => {
-  const prevSize = compose.media_attachments.size;
+const appendMedia = (compose: Draft<Compose>, media: APIEntity, defaultSensitive?: boolean) => {
+  const prevSize = compose.media_attachments.length;
 
-  return compose.withMutations(map => {
-    map.update('media_attachments', list => list.push(normalizeAttachment(media)));
-    map.set('is_uploading', false);
-    map.set('resetFileKey', Math.floor((Math.random() * 0x10000)));
-    map.set('idempotencyKey', crypto.randomUUID());
+  compose.media_attachments.push(normalizeAttachment(media));
+  compose.is_uploading = false;
+  compose.resetFileKey = Math.floor((Math.random() * 0x10000));
+  compose.idempotencyKey = crypto.randomUUID();
 
-    if (prevSize === 0 && (defaultSensitive || compose.spoiler)) {
-      map.set('sensitive', true);
-    }
-  });
+  if (prevSize === 0 && (defaultSensitive || compose.spoiler)) {
+    compose.sensitive = true;
+  }
 };
 
-const removeMedia = (compose: Compose, mediaId: string) => {
-  const prevSize = compose.media_attachments.size;
+const removeMedia = (compose: Draft<Compose>, mediaId: string) => {
+  const prevSize = compose.media_attachments.length;
 
-  return compose.withMutations(map => {
-    map.update('media_attachments', list => list.filterNot(item => item.id === mediaId));
-    map.set('idempotencyKey', crypto.randomUUID());
+  compose.media_attachments = compose.media_attachments.filter(item => item.id !== mediaId);
+  compose.idempotencyKey = crypto.randomUUID();
 
-    if (prevSize === 1) {
-      map.set('sensitive', false);
-    }
-  });
+  if (prevSize === 1) {
+    compose.sensitive = false;
+  }
 };
 
-const insertSuggestion = (compose: Compose, position: number, token: string | null, completion: string, path: Array<string | number>) => {
-  return compose.withMutations(map => {
-    map.updateIn(path, oldText => `${(oldText as string).slice(0, position)}${completion} ${(oldText as string).slice(position + (token?.length ?? 0))}`);
-    map.set('suggestion_token', null);
-    map.set('suggestions', ImmutableList());
-    if (path.length === 1 && path[0] === 'text') {
-      map.set('focusDate', new Date());
-      map.set('caretPosition', position + completion.length + 1);
-    }
-    map.set('idempotencyKey', crypto.randomUUID());
-  });
+const insertSuggestion = (compose: Draft<Compose>, position: number, token: string | null, completion: string, path: Array<string | number>) => {
+  const key = path[0] as 'text' | 'spoiler_text';
+  const oldText = compose[key];
+
+  compose[key] = `${oldText.slice(0, position)}${completion} ${oldText.slice(position + (token?.length ?? 0))}`;
+  compose.suggestion_token = null;
+  compose.suggestions = [];
+  if (path.length === 1 && path[0] === 'text') {
+    compose.focusDate = new Date();
+    compose.caretPosition = position + completion.length + 1;
+  }
+  compose.idempotencyKey = crypto.randomUUID();
 };
 
-const updateSuggestionTags = (compose: Compose, token: string, tags: ImmutableList<Tag>) => {
+const updateSuggestionTags = (compose: Draft<Compose>, token: string, tags: Tag[]) => {
   const prefix = token.slice(1);
 
-  return compose.merge({
-    suggestions: ImmutableList(tags
-      .filter((tag) => tag.get('name').toLowerCase().startsWith(prefix.toLowerCase()))
-      .slice(0, 4)
-      .map((tag) => '#' + tag.name)),
-    suggestion_token: token,
-  });
+  compose.suggestions = tags
+    .filter((tag) => tag.name.toLowerCase().startsWith(prefix.toLowerCase()))
+    .slice(0, 4)
+    .map((tag) => '#' + tag.name);
+  compose.suggestion_token = token;
 };
 
-const insertEmoji = (compose: Compose, position: number, emojiData: Emoji, needsSpace: boolean) => {
+const insertEmoji = (compose: Draft<Compose>, position: number, emojiData: Emoji, needsSpace: boolean) => {
   const oldText = compose.text;
   const emojiText = isNativeEmoji(emojiData) ? emojiData.native : emojiData.colons;
   const emoji = needsSpace ? ' ' + emojiText : emojiText;
 
-  return compose.merge({
-    text: `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`,
-    focusDate: new Date(),
-    caretPosition: position + emoji.length + 1,
-    idempotencyKey: crypto.randomUUID(),
-  });
+  compose.text = `${oldText.slice(0, position)}${emoji} ${oldText.slice(position)}`;
+  compose.focusDate = new Date();
+  compose.caretPosition = position + emoji.length + 1;
+  compose.idempotencyKey = crypto.randomUUID();
 };
 
 const privacyPreference = (a: string, b: string) => {
@@ -219,315 +249,370 @@ const privacyPreference = (a: string, b: string) => {
 const domParser = new DOMParser();
 
 const expandMentions = (status: Status) => {
-  const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;
+  const fragment = domParser.parseFromString(status.content, 'text/html').documentElement;
 
-  status.get('mentions').forEach((mention) => {
-    const node = fragment.querySelector(`a[href="${mention.get('url')}"]`);
-    if (node) node.textContent = `@${mention.get('acct')}`;
+  status.mentions.forEach((mention) => {
+    const node = fragment.querySelector(`a[href="${mention.url}"]`);
+    if (node) node.textContent = `@${mention.acct}`;
   });
 
   return fragment.innerHTML;
 };
 
-const getExplicitMentions = (me: string, status: Status) => {
+const getExplicitMentions = (me: string, status: Status): string[] => {
   const fragment = domParser.parseFromString(status.content, 'text/html').documentElement;
 
   const mentions = status
-    .get('mentions')
+    .mentions
     .filter((mention) => !(fragment.querySelector(`a[href="${mention.url}"]`) || mention.id === me))
     .map((m) => m.acct);
 
-  return ImmutableOrderedSet<string>(mentions);
+  return [...new Set(mentions)];
 };
 
-const getAccountSettings = (account: ImmutableMap<string, any>) => {
-  return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap()) as ImmutableMap<string, any>;
+const getAccountSettings = (account: APIEntity): Record<string, any> => {
+  return account?.pleroma?.settings_store?.[FE_NAME] ?? {};
 };
 
-const importAccount = (compose: Compose, account: APIEntity) => {
-  const settings = getAccountSettings(ImmutableMap(fromJS(account)));
+const importAccount = (compose: Draft<Compose>, account: APIEntity) => {
+  const settings = getAccountSettings(account);
 
-  const defaultPrivacy = settings.get('defaultPrivacy');
-  const defaultContentType = settings.get('defaultContentType');
+  const defaultPrivacy = settings.defaultPrivacy;
+  const defaultContentType = settings.defaultContentType;
 
-  return compose.withMutations(compose => {
-    if (defaultPrivacy) compose.set('privacy', defaultPrivacy);
-    if (defaultContentType) compose.set('content_type', defaultContentType);
-    compose.set('tagHistory', ImmutableList(tagHistory.get(account.id)));
-  });
+  if (defaultPrivacy) compose.privacy = defaultPrivacy;
+  if (defaultContentType) compose.content_type = defaultContentType;
+  compose.tagHistory = [...(tagHistory.get(account.id) ?? [])];
 };
 
-const updateSetting = (compose: Compose, path: string[], value: string) => {
+const updateSetting = (compose: Draft<Compose>, path: string[], value: string) => {
   const pathString = path.join(',');
   switch (pathString) {
     case 'defaultPrivacy':
-      return compose.set('privacy', value);
+      compose.privacy = value;
+      break;
     case 'defaultContentType':
-      return compose.set('content_type', value);
-    default:
-      return compose;
+      compose.content_type = value;
+      break;
   }
 };
 
-const updateCompose = (state: State, key: string, updater: (compose: Compose) => Compose) =>
-  state.update(key, state.get('default')!, updater);
-
-export const initialState: State = ImmutableMap({
-  default: ReducerCompose({ idempotencyKey: crypto.randomUUID(), resetFileKey: getResetFileKey() }),
+/** Update the compose form for the given key, starting from the default form if it doesn't exist. */
+const updateCompose = (state: State, key: string, recipe: (compose: Draft<Compose>) => Compose | void): State => ({
+  ...state,
+  [key]: produce(state[key] ?? state.default, recipe),
 });
 
-export default function compose(state = initialState, action: ComposeAction | EventsAction | MeAction | SettingsAction | TimelineAction) {
+export const initialState: State = {
+  default: newCompose({ idempotencyKey: crypto.randomUUID(), resetFileKey: getResetFileKey() }),
+};
+
+export default function compose(state = initialState, action: ComposeAction | EventsAction | MeAction | SettingsAction | TimelineAction): State {
   switch (action.type) {
     case COMPOSE_TYPE_CHANGE:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        map.set('content_type', action.value);
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, action.id, compose => {
+        compose.content_type = action.value;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_SPOILERNESS_CHANGE:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        map.set('spoiler_text', '');
-        map.set('spoiler', !compose.spoiler);
-        map.set('sensitive', !compose.spoiler);
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, action.id, compose => {
+        compose.spoiler_text = '';
+        compose.sensitive = !compose.spoiler;
+        compose.spoiler = !compose.spoiler;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_SPOILER_TEXT_CHANGE:
-      return updateCompose(state, action.id, compose => compose
-        .set('spoiler_text', action.text)
-        .set('idempotencyKey', crypto.randomUUID()));
+      return updateCompose(state, action.id, compose => {
+        compose.spoiler_text = action.text;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_VISIBILITY_CHANGE:
-      return updateCompose(state, action.id, compose => compose
-        .set('privacy', action.value)
-        .set('idempotencyKey', crypto.randomUUID()));
+      return updateCompose(state, action.id, compose => {
+        compose.privacy = action.value;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_CHANGE:
-      return updateCompose(state, action.id, compose => compose
-        .set('text', action.text)
-        .set('idempotencyKey', crypto.randomUUID()));
+      return updateCompose(state, action.id, compose => {
+        compose.text = action.text;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_REPLY:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        const defaultCompose = state.get('default')!;
+      return updateCompose(state, action.id, compose => {
+        const defaultCompose = state.default;
 
-        map.set('group_id', action.status.getIn(['group', 'id']) as string);
-        map.set('in_reply_to', action.status.get('id'));
-        map.set('to', action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : ImmutableOrderedSet<string>());
-        map.set('text', !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '');
-        map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-        map.set('content_type', defaultCompose.content_type);
+        compose.group_id = action.status.group?.id ?? null;
+        compose.in_reply_to = action.status.id;
+        compose.to = action.explicitAddressing ? statusToMentionsArray(action.status, action.account) : [];
+        compose.text = !action.explicitAddressing ? statusToTextMentions(action.status, action.account) : '';
+        compose.privacy = privacyPreference(action.status.visibility, defaultCompose.privacy);
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+        compose.content_type = defaultCompose.content_type;
         if (action.preserveSpoilers && action.status.spoiler_text) {
-          map.set('spoiler', true);
-          map.set('sensitive', true);
-          map.set('spoiler_text', action.status.spoiler_text);
+          compose.spoiler = true;
+          compose.sensitive = true;
+          compose.spoiler_text = action.status.spoiler_text;
         }
-      }));
+      });
     case COMPOSE_EVENT_REPLY:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        map.set('in_reply_to', action.status.get('id'));
-        map.set('to', statusToMentionsArray(action.status, action.account));
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, action.id, compose => {
+        compose.in_reply_to = action.status.id;
+        compose.to = statusToMentionsArray(action.status, action.account);
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_QUOTE:
-      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
-        const author = action.status.getIn(['account', 'acct']) as string;
-        const defaultCompose = state.get('default')!;
+      return updateCompose(state, 'compose-modal', compose => {
+        const author = action.status.account?.acct;
+        const defaultCompose = state.default;
 
-        map.set('quote', action.status.get('id'));
-        map.set('to', ImmutableOrderedSet<string>([author]));
-        map.set('text', '');
-        map.set('privacy', privacyPreference(action.status.visibility, defaultCompose.privacy));
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-        map.set('content_type', defaultCompose.content_type);
-        map.set('spoiler', false);
-        map.set('spoiler_text', '');
+        compose.quote = action.status.id;
+        compose.to = [author];
+        compose.text = '';
+        compose.privacy = privacyPreference(action.status.visibility, defaultCompose.privacy);
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+        compose.content_type = defaultCompose.content_type;
+        compose.spoiler = false;
+        compose.spoiler_text = '';
 
         if (action.status.visibility === 'group') {
           if (action.status.group?.group_visibility === 'everyone') {
-            map.set('privacy', privacyPreference('public', defaultCompose.privacy));
+            compose.privacy = privacyPreference('public', defaultCompose.privacy);
           } else if (action.status.group?.group_visibility === 'members_only') {
-            map.set('group_id', action.status.getIn(['group', 'id']) as string);
-            map.set('privacy', 'group');
+            compose.group_id = action.status.group?.id ?? null;
+            compose.privacy = 'group';
           }
         }
-      }));
+      });
     case COMPOSE_SUBMIT_REQUEST:
-      return updateCompose(state, action.id, compose => compose.set('is_submitting', true));
+      return updateCompose(state, action.id, compose => {
+        compose.is_submitting = true;
+      });
     case COMPOSE_UPLOAD_CHANGE_REQUEST:
-      return updateCompose(state, action.id, compose => compose.set('is_changing_upload', true));
+      return updateCompose(state, action.id, compose => {
+        compose.is_changing_upload = true;
+      });
     case COMPOSE_REPLY_CANCEL:
     case COMPOSE_QUOTE_CANCEL:
     case COMPOSE_RESET:
     case COMPOSE_SUBMIT_SUCCESS:
-      return updateCompose(state, action.id, () => state.get('default')!.withMutations(map => {
-        map.set('idempotencyKey', crypto.randomUUID());
-        map.set('in_reply_to', action.id.startsWith('reply:') ? action.id.slice(6) : null);
-        if (action.id.startsWith('group:')) {
-          map.set('privacy', 'group');
-          map.set('group_id', action.id.slice(6));
-        }
-      }));
+      return {
+        ...state,
+        [action.id]: produce(state.default, compose => {
+          compose.idempotencyKey = crypto.randomUUID();
+          compose.in_reply_to = action.id.startsWith('reply:') ? action.id.slice(6) : null;
+          if (action.id.startsWith('group:')) {
+            compose.privacy = 'group';
+            compose.group_id = action.id.slice(6);
+          }
+        }),
+      };
     case COMPOSE_SUBMIT_FAIL:
-      return updateCompose(state, action.id, compose => compose.set('is_submitting', false));
+      return updateCompose(state, action.id, compose => {
+        compose.is_submitting = false;
+      });
     case COMPOSE_UPLOAD_CHANGE_FAIL:
-      return updateCompose(state, action.composeId, compose => compose.set('is_changing_upload', false));
+      return updateCompose(state, action.composeId, compose => {
+        compose.is_changing_upload = false;
+      });
     case COMPOSE_UPLOAD_REQUEST:
-      return updateCompose(state, action.id, compose => compose.set('is_uploading', true));
+      return updateCompose(state, action.id, compose => {
+        compose.is_uploading = true;
+      });
     case COMPOSE_UPLOAD_SUCCESS:
-      return updateCompose(state, action.id, compose => appendMedia(compose, fromJS(action.media), state.get('default')!.sensitive));
+      return updateCompose(state, action.id, compose => appendMedia(compose, action.media, state.default.sensitive));
     case COMPOSE_UPLOAD_FAIL:
-      return updateCompose(state, action.id, compose => compose.set('is_uploading', false));
+      return updateCompose(state, action.id, compose => {
+        compose.is_uploading = false;
+      });
     case COMPOSE_UPLOAD_UNDO:
       return updateCompose(state, action.id, compose => removeMedia(compose, action.media_id));
     case COMPOSE_UPLOAD_PROGRESS:
-      return updateCompose(state, action.id, compose => compose.set('progress', Math.round((action.loaded / action.total) * 100)));
+      return updateCompose(state, action.id, compose => {
+        compose.progress = Math.round((action.loaded / action.total) * 100);
+      });
     case COMPOSE_MENTION:
-      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
-        map.update('text', text => [text.trim(), `@${action.account.acct} `].filter((str) => str.length !== 0).join(' '));
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, 'compose-modal', compose => {
+        compose.text = [compose.text.trim(), `@${action.account.acct} `].filter((str) => str.length !== 0).join(' ');
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_DIRECT:
-      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
-        map.update('text', text => [text.trim(), `@${action.account.acct} `].filter((str) => str.length !== 0).join(' '));
-        map.set('privacy', 'direct');
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, 'compose-modal', compose => {
+        compose.text = [compose.text.trim(), `@${action.account.acct} `].filter((str) => str.length !== 0).join(' ');
+        compose.privacy = 'direct';
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_GROUP_POST:
-      return updateCompose(state, action.id, compose => compose.withMutations(map => {
-        map.set('privacy', 'group');
-        map.set('group_id', action.group_id);
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-      }));
+      return updateCompose(state, action.id, compose => {
+        compose.privacy = 'group';
+        compose.group_id = action.group_id;
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+      });
     case COMPOSE_SUGGESTIONS_CLEAR:
-      return updateCompose(state, action.id, compose => compose.update('suggestions', list => list?.clear()).set('suggestion_token', null));
+      return updateCompose(state, action.id, compose => {
+        compose.suggestions = [];
+        compose.suggestion_token = null;
+      });
     case COMPOSE_SUGGESTIONS_READY:
-      return updateCompose(state, action.id, compose => compose.set('suggestions', ImmutableList(action.accounts ? action.accounts.map((item: APIEntity) => item.id) : action.emojis)).set('suggestion_token', action.token));
+      return updateCompose(state, action.id, compose => {
+        compose.suggestions = action.accounts ? action.accounts.map((item: APIEntity) => item.id) : (action.emojis ?? []);
+        compose.suggestion_token = action.token;
+      });
     case COMPOSE_SUGGESTION_SELECT:
       return updateCompose(state, action.id, compose => insertSuggestion(compose, action.position, action.token, action.completion, action.path));
     case COMPOSE_SUGGESTION_TAGS_UPDATE:
       return updateCompose(state, action.id, compose => updateSuggestionTags(compose, action.token, action.tags));
     case COMPOSE_TAG_HISTORY_UPDATE:
-      return updateCompose(state, action.id, compose => compose.set('tagHistory', ImmutableList(fromJS(action.tags)) as ImmutableList<string>));
+      return updateCompose(state, action.id, compose => {
+        compose.tagHistory = [...action.tags];
+      });
     case TIMELINE_DELETE:
       return updateCompose(state, 'compose-modal', compose => {
         if (action.id === compose.in_reply_to) {
-          return compose.set('in_reply_to', null);
+          compose.in_reply_to = null;
         } if (action.id === compose.quote) {
-          return compose.set('quote', null);
-        } else {
-          return compose;
+          compose.quote = null;
         }
       });
     case COMPOSE_EMOJI_INSERT:
       return updateCompose(state, action.id, compose => insertEmoji(compose, action.position, action.emoji, action.needsSpace));
     case COMPOSE_UPLOAD_CHANGE_SUCCESS:
-      return updateCompose(state, action.id, compose => compose
-        .set('is_changing_upload', false)
-        .update('media_attachments', list => list.map(item => {
+      return updateCompose(state, action.id, compose => {
+        compose.is_changing_upload = false;
+        compose.media_attachments = compose.media_attachments.map(item => {
           if (item.id === action.media.id) {
             return normalizeAttachment(action.media);
           }
 
           return item;
-        })));
+        });
+      });
     case COMPOSE_SET_STATUS:
-      return updateCompose(state, 'compose-modal', compose => compose.withMutations(map => {
+      return updateCompose(state, 'compose-modal', compose => {
         if (!action.withRedraft) {
-          map.set('id', action.status.id);
+          compose.id = action.status.id;
         }
-        map.set('text', action.rawText || htmlToPlaintext(expandMentions(action.status)));
-        map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : ImmutableOrderedSet<string>());
-        map.set('in_reply_to', action.status.get('in_reply_to_id'));
-        map.set('privacy', action.status.get('visibility'));
-        map.set('focusDate', new Date());
-        map.set('caretPosition', null);
-        map.set('idempotencyKey', crypto.randomUUID());
-        map.set('content_type', action.contentType || 'text/plain');
-        map.set('quote', action.status.getIn(['quote', 'id']) as string);
-        map.set('group_id', action.status.getIn(['group', 'id']) as string);
+        compose.text = action.rawText || htmlToPlaintext(expandMentions(action.status));
+        compose.to = action.explicitAddressing ? getExplicitMentions(action.status.account.id, action.status) : [];
+        compose.in_reply_to = action.status.in_reply_to_id;
+        compose.privacy = action.status.visibility;
+        compose.focusDate = new Date();
+        compose.caretPosition = null;
+        compose.idempotencyKey = crypto.randomUUID();
+        compose.content_type = action.contentType || 'text/plain';
+        compose.quote = typeof action.status.quote === 'string' ? action.status.quote : action.status.quote?.id ?? null;
+        compose.group_id = action.status.group?.id ?? null;
 
-        if (action.v?.software === PLEROMA && action.withRedraft && hasIntegerMediaIds(action.status.toJS() as any)) {
-          map.set('media_attachments', ImmutableList());
+        if (action.v?.software === PLEROMA && action.withRedraft && hasIntegerMediaIds(action.status as any)) {
+          compose.media_attachments = [];
         } else {
-          map.set('media_attachments', action.status.media_attachments);
+          compose.media_attachments = action.status.media_attachments;
         }
 
-        if (action.status.get('spoiler_text').length > 0) {
-          map.set('spoiler', true);
-          map.set('spoiler_text', action.status.get('spoiler_text'));
+        if (action.status.spoiler_text.length > 0) {
+          compose.spoiler = true;
+          compose.spoiler_text = action.status.spoiler_text;
         } else {
-          map.set('spoiler', false);
-          map.set('spoiler_text', '');
+          compose.spoiler = false;
+          compose.spoiler_text = '';
         }
 
         if (action.status.poll && typeof action.status.poll === 'object') {
-          map.set('poll', PollRecord({
-            options: ImmutableList(action.status.poll.options.map(({ title }) => title)),
+          compose.poll = newPoll({
+            options: action.status.poll.options.map(({ title }) => title),
             multiple: action.status.poll.multiple,
             expires_in: 24 * 3600,
-          }));
+          });
         }
-      }));
+      });
     case COMPOSE_POLL_ADD:
-      return updateCompose(state, action.id, compose => compose.set('poll', PollRecord()));
+      return updateCompose(state, action.id, compose => {
+        compose.poll = newPoll();
+      });
     case COMPOSE_POLL_REMOVE:
-      return updateCompose(state, action.id, compose => compose.set('poll', null));
+      return updateCompose(state, action.id, compose => {
+        compose.poll = null;
+      });
     case COMPOSE_SCHEDULE_ADD:
-      return updateCompose(state, action.id, compose => compose.set('schedule', new Date(Date.now() + 10 * 60 * 1000)));
+      return updateCompose(state, action.id, compose => {
+        compose.schedule = new Date(Date.now() + 10 * 60 * 1000);
+      });
     case COMPOSE_SCHEDULE_SET:
-      return updateCompose(state, action.id, compose => compose.set('schedule', action.date));
+      return updateCompose(state, action.id, compose => {
+        compose.schedule = action.date;
+      });
     case COMPOSE_SCHEDULE_REMOVE:
-      return updateCompose(state, action.id, compose => compose.set('schedule', null));
+      return updateCompose(state, action.id, compose => {
+        compose.schedule = null;
+      });
     case COMPOSE_POLL_OPTION_ADD:
-      return updateCompose(state, action.id, compose => compose.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).push(action.title)));
+      return updateCompose(state, action.id, compose => {
+        compose.poll?.options.push(action.title);
+      });
     case COMPOSE_POLL_OPTION_CHANGE:
-      return updateCompose(state, action.id, compose => compose.setIn(['poll', 'options', action.index], action.title));
+      return updateCompose(state, action.id, compose => {
+        if (compose.poll) compose.poll.options[action.index] = action.title;
+      });
     case COMPOSE_POLL_OPTION_REMOVE:
-      return updateCompose(state, action.id, compose => compose.updateIn(['poll', 'options'], options => (options as ImmutableList<string>).delete(action.index)));
+      return updateCompose(state, action.id, compose => {
+        compose.poll?.options.splice(action.index, 1);
+      });
     case COMPOSE_POLL_SETTINGS_CHANGE:
-      return updateCompose(state, action.id, compose => compose.update('poll', poll => {
-        if (!poll) return null;
-        return poll.withMutations((poll) => {
-          if (action.expiresIn) {
-            poll.set('expires_in', action.expiresIn);
-          }
-          if (typeof action.isMultiple === 'boolean') {
-            poll.set('multiple', action.isMultiple);
-          }
-        });
-      }));
+      return updateCompose(state, action.id, compose => {
+        if (!compose.poll) return;
+        if (action.expiresIn) {
+          compose.poll.expires_in = action.expiresIn;
+        }
+        if (typeof action.isMultiple === 'boolean') {
+          compose.poll.multiple = action.isMultiple;
+        }
+      });
     case COMPOSE_ADD_TO_MENTIONS:
-      return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.add(action.account)));
+      return updateCompose(state, action.id, compose => {
+        if (!compose.to.includes(action.account)) compose.to.push(action.account);
+      });
     case COMPOSE_REMOVE_FROM_MENTIONS:
-      return updateCompose(state, action.id, compose => compose.update('to', mentions => mentions!.delete(action.account)));
+      return updateCompose(state, action.id, compose => {
+        compose.to = compose.to.filter(acct => acct !== action.account);
+      });
     case COMPOSE_SET_GROUP_TIMELINE_VISIBLE:
-      return updateCompose(state, action.id, compose => compose.set('group_timeline_visible', action.groupTimelineVisible));
+      return updateCompose(state, action.id, compose => {
+        compose.group_timeline_visible = action.groupTimelineVisible;
+      });
     case ME_FETCH_SUCCESS:
     case ME_PATCH_SUCCESS:
       return updateCompose(state, 'default', compose => importAccount(compose, action.me));
     case SETTING_CHANGE:
       return updateCompose(state, 'default', compose => updateSetting(compose, action.path, action.value));
     case COMPOSE_EDITOR_STATE_SET:
-      return updateCompose(state, action.id, compose => compose.set('editorState', action.editorState as string));
+      return updateCompose(state, action.id, compose => {
+        compose.editorState = action.editorState as string;
+      });
     case EVENT_COMPOSE_CANCEL:
-      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', ''));
+      return updateCompose(state, 'event-compose-modal', compose => {
+        compose.text = '';
+      });
     case EVENT_FORM_SET:
-      return updateCompose(state, 'event-compose-modal', compose => compose.set('text', action.text));
+      return updateCompose(state, 'event-compose-modal', compose => {
+        compose.text = action.text;
+      });
     case COMPOSE_CHANGE_MEDIA_ORDER:
-      return updateCompose(state, action.id, compose => compose.update('media_attachments', list => {
-        const indexA = list.findIndex(x => x.get('id') === action.a);
-        const moveItem = list.get(indexA)!;
-        const indexB = list.findIndex(x => x.get('id') === action.b);
+      return updateCompose(state, action.id, compose => {
+        const list = compose.media_attachments;
+        const indexA = list.findIndex(x => x.id === action.a);
+        const indexB = list.findIndex(x => x.id === action.b);
+        const [moveItem] = list.splice(indexA, 1);
 
-        return list.splice(indexA, 1).splice(indexB, 0, moveItem);
-      }));
+        list.splice(indexB, 0, moveItem);
+      });
     default:
       return state;
   }

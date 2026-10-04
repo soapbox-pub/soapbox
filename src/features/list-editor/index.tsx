@@ -53,7 +53,7 @@ const ListEditor: React.FC<IListEditor> = ({ listId, onClose }) => {
       <EditListForm />
       <br />
 
-      {accountIds.size > 0 && (
+      {accountIds.length > 0 && (
         <div>
           <CardHeader>
             <CardTitle title={intl.formatMessage(messages.removeFromList)} />

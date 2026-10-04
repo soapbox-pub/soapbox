@@ -11,7 +11,6 @@ import type { APIEntity } from '@/types/entities.ts';
 const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
 const GROUP_IMPORT    = 'GROUP_IMPORT';
-const GROUPS_IMPORT   = 'GROUPS_IMPORT';
 const STATUS_IMPORT   = 'STATUS_IMPORT';
 const STATUSES_IMPORT = 'STATUSES_IMPORT';
 const POLLS_IMPORT    = 'POLLS_IMPORT';
@@ -47,13 +46,13 @@ const importGroups = (groups: Group[]) =>
 
 const importStatus = (status: APIEntity, idempotencyKey?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    const expandSpoilers = getSettings(getState()).expandSpoilers;
     return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
   };
 
 const importStatuses = (statuses: APIEntity[]) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    const expandSpoilers = getSettings(getState()).expandSpoilers;
     return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
   };
 
@@ -205,7 +204,6 @@ export {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,
   GROUP_IMPORT,
-  GROUPS_IMPORT,
   STATUS_IMPORT,
   STATUSES_IMPORT,
   POLLS_IMPORT,

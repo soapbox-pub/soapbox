@@ -46,7 +46,7 @@ const ConversationsList: React.FC = () => {
   };
 
   const handleLoadOlder = debounce(() => {
-    const maxId = conversations.getIn([-1, 'id']);
+    const maxId = conversations.at(-1)?.id;
     if (maxId) dispatch(expandConversations({ maxId }));
   }, 300, { edges: ['leading'] });
 
@@ -58,7 +58,7 @@ const ConversationsList: React.FC = () => {
       scrollKey='direct'
       ref={ref}
       isLoading={isLoading}
-      showLoading={isLoading && conversations.size === 0}
+      showLoading={isLoading && conversations.length === 0}
       emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
     >
       {conversations.map((item: any) => (

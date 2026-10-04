@@ -73,7 +73,7 @@ const PreviewCard: React.FC<IPreviewCard> = ({
           height: card.height,
         },
       },
-    }).toJS();
+    });
 
     onOpenMedia([{ ...attachment, blurhash: attachment.blurhash === undefined ? null : attachment.blurhash } as Attachment], 0);
   };

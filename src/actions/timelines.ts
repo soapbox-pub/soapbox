@@ -1,5 +1,3 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-
 import { getSettings } from '@/actions/settings.ts';
 import { normalizeStatus } from '@/normalizers/index.ts';
 import { shouldFilter } from '@/utils/timelines.ts';
@@ -34,10 +32,10 @@ const processTimelineUpdate = (timeline: string, status: APIEntity, accept: ((st
   (dispatch: AppDispatch, getState: () => RootState) => {
     const me = getState().me;
     const ownStatus = status.account?.id === me;
-    const hasPendingStatuses = !getState().pending_statuses.isEmpty();
+    const hasPendingStatuses = Object.keys(getState().pending_statuses).length > 0;
 
-    const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
-    const shouldSkipQueue = shouldFilter(normalizeStatus(status) as Status, columnSettings as any);
+    const columnSettings = getSettings(getState())[timeline] as Parameters<typeof shouldFilter>[1];
+    const shouldSkipQueue = shouldFilter(normalizeStatus(status), columnSettings);
 
     if (ownStatus && hasPendingStatuses) {
       // WebSockets push statuses without the Idempotency-Key,
@@ -84,7 +82,7 @@ const updateTimelineQueue = (timeline: string, statusId: string, accept: ((statu
 const dequeueTimeline = (timelineId: string, expandFunc?: (lastStatusId: string) => void, optionalExpandArgs?: any) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     const state = getState();
-    const queuedCount = state.timelines.get(timelineId)?.totalQueuedItemsCount || 0;
+    const queuedCount = state.timelines[timelineId]?.totalQueuedItemsCount || 0;
 
     if (queuedCount <= 0) return;
 
@@ -112,15 +110,17 @@ interface TimelineDeleteAction {
   type: typeof TIMELINE_DELETE;
   id: string;
   accountId: string;
-  references: ImmutableMap<string, readonly [statusId: string, accountId: string]>;
+  references: Array<[statusId: string, accountId: string]>;
   reblogOf: unknown;
 }
 
 const deleteFromTimelines = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const accountId = getState().statuses.get(id)?.account?.id!;
-    const references = getState().statuses.filter(status => status.reblog === id).map(status => [status.id, status.account.id] as const);
-    const reblogOf = getState().statuses.getIn([id, 'reblog'], null);
+    const accountId = getState().statuses[id]?.account?.id!;
+    const references = Object.values(getState().statuses)
+      .filter(status => status.reblog === id)
+      .map((status): [string, string] => [status.id, status.account.id]);
+    const reblogOf = getState().statuses[id]?.reblog ?? null;
 
     const action: TimelineDeleteAction = {
       type: TIMELINE_DELETE,
@@ -148,21 +148,12 @@ const parseTags = (tags: Record<string, any[]> = {}, mode: 'any' | 'all' | 'none
 
 const expandTimeline = (timelineId: string, path: string, params: Record<string, any> = {}, done = noOp) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const timeline = getState().timelines.get(timelineId) || {} as Record<string, any>;
+    const timeline = getState().timelines[timelineId];
     const isLoadingMore = !!params.max_id;
 
-    if (timeline.isLoading) {
+    if (timeline?.isLoading) {
       done();
       return dispatch(noOpAsync());
-    }
-
-    if (
-      !params.max_id &&
-      !params.pinned &&
-      (timeline.items || ImmutableOrderedSet()).size > 0 &&
-      !path.includes('max_id=')
-    ) {
-      params.since_id = timeline.getIn(['items', 0]);
     }
 
     const isLoadingRecent = !!params.since_id;

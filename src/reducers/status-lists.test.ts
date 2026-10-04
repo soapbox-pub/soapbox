@@ -4,7 +4,7 @@ import reducer from './status-lists.ts';
 
 describe('status_lists reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any).toJS()).toEqual({
+    expect(reducer(undefined, {} as any)).toEqual({
       favourites: {
         next: null,
         loaded: false,

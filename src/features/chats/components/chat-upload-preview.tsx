@@ -17,7 +17,7 @@ interface IChatUploadPreview {
  * It fills its container and is expected to be sized by its parent.
  */
 const ChatUploadPreview: React.FC<IChatUploadPreview> = ({ className, attachment }) => {
-  const mimeType = attachment.pleroma.get('mime_type') as string | undefined;
+  const mimeType = attachment.pleroma.mime_type as string | undefined;
 
   switch (attachment.type) {
     case 'image':

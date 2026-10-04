@@ -1,4 +1,3 @@
-import { List as ImmutableList, Record as ImmutableRecord } from 'immutable';
 import { describe, expect, it } from 'vitest';
 
 import * as actions from '@/actions/lists.ts';
@@ -11,7 +10,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: {
-        items: ImmutableList(),
+        items: [],
         loaded: false,
         isLoading: false,
       },
@@ -19,15 +18,15 @@ describe('list_adder reducer', () => {
   });
 
   it('should handle LIST_ADDER_RESET', () => {
-    const state = ImmutableRecord({
+    const state = {
       accountId: null,
 
-      lists: ImmutableRecord({
-        items: ImmutableList<string>(),
+      lists: {
+        items: [],
         loaded: false,
         isLoading: false,
-      })(),
-    })();
+      },
+    };
     const action = {
       type: actions.LIST_ADDER_RESET,
     };
@@ -35,7 +34,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: {
-        items: ImmutableList(),
+        items: [],
         loaded: false,
         isLoading: false,
       },
@@ -43,15 +42,15 @@ describe('list_adder reducer', () => {
   });
 
   it('should handle LIST_ADDER_LISTS_FETCH_REQUEST', () => {
-    const state = ImmutableRecord({
+    const state = {
       accountId: null,
 
-      lists: ImmutableRecord({
-        items: ImmutableList<string>(),
+      lists: {
+        items: [],
         loaded: false,
         isLoading: false,
-      })(),
-    })();
+      },
+    };
     const action = {
       type: actions.LIST_ADDER_LISTS_FETCH_REQUEST,
     };
@@ -59,7 +58,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: {
-        items: ImmutableList(),
+        items: [],
         loaded: false,
         isLoading: true,
       },
@@ -67,15 +66,15 @@ describe('list_adder reducer', () => {
   });
 
   it('should handle LIST_ADDER_LISTS_FETCH_FAIL', () => {
-    const state = ImmutableRecord({
+    const state = {
       accountId: null,
 
-      lists: ImmutableRecord({
-        items: ImmutableList<string>(),
+      lists: {
+        items: [],
         loaded: false,
         isLoading: false,
-      })(),
-    })();
+      },
+    };
     const action = {
       type: actions.LIST_ADDER_LISTS_FETCH_FAIL,
     };
@@ -83,7 +82,7 @@ describe('list_adder reducer', () => {
       accountId: null,
 
       lists: {
-        items: ImmutableList(),
+        items: [],
         loaded: false,
         isLoading: false,
       },
@@ -91,27 +90,27 @@ describe('list_adder reducer', () => {
   });
 
   // it('should handle LIST_ADDER_LISTS_FETCH_SUCCESS', () => {
-  //   const state = ImmutableMap({
+  //   const state = {
   //     accountId: null,
   //
-  //     lists: ImmutableMap({
-  //       items: ImmutableList(),
+  //     lists: {
+  //       items: [],
   //       loaded: false,
   //       isLoading: false,
-  //     }),
-  //   });
+  //     },
+  //   };
   //   const action = {
   //     type: actions.LIST_ADDER_LISTS_FETCH_SUCCESS,
   //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
+  //   expect(reducer(state, action)).toEqual({
   //     accountId: null,
   //
-  //     lists: ImmutableMap({
-  //       items: ImmutableList(),
+  //     lists: {
+  //       items: [],
   //       loaded: true,
   //       isLoading: false,
-  //     }),
-  //   }));
+  //     },
+  //   });
   // });
 
 });

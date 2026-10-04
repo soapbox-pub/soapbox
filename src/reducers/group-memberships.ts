@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, Record as ImmutableRecord } from 'immutable';
+import { produce, type Draft } from 'immer';
 
 import {
   GROUP_DELETE_SUCCESS,
@@ -17,83 +17,98 @@ import {
 import type { APIEntity } from '@/types/entities.ts';
 import type { AnyAction } from 'redux';
 
-const ListRecord = ImmutableRecord({
-  next: null as string | null,
-  isLoading: false,
-  items: ImmutableOrderedSet<string>(),
-});
-
-const ReducerRecord = ImmutableRecord({
-  admin: ImmutableMap<string, List>({}),
-  moderator: ImmutableMap<string, List>({}),
-  user: ImmutableMap<string, List>({}),
-});
-
 export type GroupRole = 'admin' | 'moderator' | 'user';
-export type List = ReturnType<typeof ListRecord>;
-type State = ReturnType<typeof ReducerRecord>;
 
-const normalizeList = (state: State, path: string[], memberships: APIEntity[], next: string | null) => {
-  return state.setIn(path, ListRecord({
-    next,
-    items: ImmutableOrderedSet(memberships.map(item => item.account.id)),
-    isLoading: false,
-  }));
+export interface List {
+  next: string | null;
+  isLoading: boolean;
+  items: string[];
+}
+
+type State = Record<GroupRole, Record<string, List>>;
+
+const initialState: State = {
+  admin: {},
+  moderator: {},
+  user: {},
 };
 
-const appendToList = (state: State, path: string[], memberships: APIEntity[], next: string | null) => {
-  return state.updateIn(path, map => {
-    return (map as List).set('next', next).set('isLoading', false).update('items', list => list.concat(memberships.map(item => item.account.id)));
-  });
+const roles: GroupRole[] = ['admin', 'moderator', 'user'];
+
+const emptyList = (): List => ({
+  next: null,
+  isLoading: false,
+  items: [],
+});
+
+const getList = (draft: Draft<State>, role: GroupRole, groupId: string): Draft<List> => {
+  draft[role][groupId] ??= emptyList();
+  return draft[role][groupId];
 };
 
-const updateLists = (state: State, groupId: string, memberships: APIEntity[]) => {
-  const updateList = (state: State, role: string, membership: APIEntity) => {
-    if (role === membership.role) {
-      return state.updateIn([role, groupId], map => (map as List).update('items', set => set.add(membership.account.id)));
-    } else {
-      return state.updateIn([role, groupId], map => (map as List).update('items', set => set.delete(membership.account.id)));
-    }
-  };
-
+const updateLists = (draft: Draft<State>, groupId: string, memberships: APIEntity[]) => {
   memberships.forEach(membership => {
-    state = updateList(state, 'admin', membership);
-    state = updateList(state, 'moderator', membership);
-    state = updateList(state, 'user', membership);
-  });
+    roles.forEach(role => {
+      const list = getList(draft, role, groupId);
+      const accountId = membership.account.id;
 
-  return state;
+      if (role === membership.role) {
+        if (!list.items.includes(accountId)) list.items.push(accountId);
+      } else {
+        list.items = list.items.filter(id => id !== accountId);
+      }
+    });
+  });
 };
 
-const removeFromList = (state: State, path: string[], accountId: string) => {
-  return state.updateIn(path, map => {
-    return (map as List).update('items', set => set.delete(accountId));
+const removeFromLists = (draft: Draft<State>, groupId: string, accountId: string) => {
+  roles.forEach(role => {
+    const list = draft[role][groupId];
+    if (list) {
+      list.items = list.items.filter(id => id !== accountId);
+    }
   });
 };
 
-export default function groupMemberships(state: State = ReducerRecord(), action: AnyAction) {
+export default function groupMemberships(state: State = initialState, action: AnyAction): State {
   switch (action.type) {
     case GROUP_DELETE_SUCCESS:
-      return state.deleteIn(['admin', action.id]).deleteIn(['moderator', action.id]).deleteIn(['user', action.id]);
+      return produce(state, draft => {
+        roles.forEach(role => {
+          delete draft[role][action.id];
+        });
+      });
     case GROUP_MEMBERSHIPS_FETCH_REQUEST:
     case GROUP_MEMBERSHIPS_EXPAND_REQUEST:
-      return state.updateIn([action.role, action.id], map => (map as List || ListRecord()).set('isLoading', true));
+      return produce(state, draft => {
+        getList(draft, action.role, action.id).isLoading = true;
+      });
     case GROUP_MEMBERSHIPS_FETCH_FAIL:
     case GROUP_MEMBERSHIPS_EXPAND_FAIL:
-      return state.updateIn([action.role, action.id], map => (map as List || ListRecord()).set('isLoading', false));
+      return produce(state, draft => {
+        getList(draft, action.role, action.id).isLoading = false;
+      });
     case GROUP_MEMBERSHIPS_FETCH_SUCCESS:
-      return normalizeList(state, [action.role, action.id], action.memberships, action.next);
+      return produce(state, draft => {
+        draft[action.role as GroupRole][action.id] = {
+          next: action.next,
+          items: [...new Set<string>(action.memberships.map((item: APIEntity) => item.account.id))],
+          isLoading: false,
+        };
+      });
     case GROUP_MEMBERSHIPS_EXPAND_SUCCESS:
-      return appendToList(state, [action.role, action.id], action.memberships, action.next);
+      return produce(state, draft => {
+        const list = getList(draft, action.role, action.id);
+        list.next = action.next;
+        list.isLoading = false;
+        list.items = [...new Set([...list.items, ...action.memberships.map((item: APIEntity) => item.account.id)])];
+      });
     case GROUP_PROMOTE_SUCCESS:
     case GROUP_DEMOTE_SUCCESS:
-      return updateLists(state, action.groupId, action.memberships);
+      return produce(state, draft => updateLists(draft, action.groupId, action.memberships));
     case GROUP_KICK_SUCCESS:
     case GROUP_BLOCK_SUCCESS:
-      state = removeFromList(state, ['admin', action.groupId], action.accountId);
-      state = removeFromList(state, ['moderator', action.groupId], action.accountId);
-      state = removeFromList(state, ['user', action.groupId], action.accountId);
-      return state;
+      return produce(state, draft => removeFromLists(draft, action.groupId, action.accountId));
     default:
       return state;
   }

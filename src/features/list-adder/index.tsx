@@ -15,7 +15,6 @@ import List from './components/list.tsx';
 
 import type { RootState } from '@/store.ts';
 import type { List as ListEntity } from '@/types/entities.ts';
-import type { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
   subheading: { id: 'lists.subheading', defaultMessage: 'Your lists' },
@@ -28,7 +27,9 @@ const getOrderedLists = createSelector([(state: RootState) => state.lists], list
     return lists;
   }
 
-  return lists.toList().filter(item => !!item).sort((a, b) => (a as ListEntity).title.localeCompare((b as ListEntity).title)) as ImmutableList<ListEntity>;
+  return Object.values(lists)
+    .filter((item): item is ListEntity => !!item)
+    .sort((a, b) => a.title.localeCompare(b.title));
 });
 
 interface IListAdder {

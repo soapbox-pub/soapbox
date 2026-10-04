@@ -32,7 +32,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
   } = useGroupMedia(groupId);
 
   const attachments = statuses.reduce<Attachment[]>((result, status) => {
-    result.push(...status.media_attachments.map((a) => a.set('status', status)));
+    result.push(...status.media_attachments.map((a) => ({ ...a, status })));
     return result;
   }, []);
 
@@ -43,7 +43,7 @@ const GroupGallery: React.FC<IGroupGallery> = (props) => {
       const media = (attachment.status as Status).media_attachments;
       const index = media.findIndex((x) => x.id === attachment.id);
 
-      dispatch(openModal('MEDIA', { media: media.toJS(), index, status: attachment?.status?.toJS() ?? attachment.status }));
+      dispatch(openModal('MEDIA', { media: media, index, status: attachment.status }));
     }
   };
 

@@ -6,7 +6,7 @@ import reducer from './suggestions.ts';
 
 describe('suggestions reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {} as any).toJS()).toEqual({
+    expect(reducer(undefined, {} as any)).toEqual({
       items: [],
       next: null,
       isLoading: false,
@@ -37,7 +37,7 @@ describe('suggestions reducer', () => {
         next: null,
       };
 
-      expect(reducer(state, action).toJS()).toEqual(expected);
+      expect(reducer(state, action)).toEqual(expected);
     });
   });
 });

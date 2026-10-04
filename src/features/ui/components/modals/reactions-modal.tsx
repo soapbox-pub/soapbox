@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { List as ImmutableList } from 'immutable';
 import { useEffect, useMemo, useState } from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 
@@ -12,9 +11,9 @@ import Tabs from '@/components/ui/tabs.tsx';
 import AccountContainer from '@/containers/account-container.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { ReactionRecord } from '@/reducers/user-lists.ts';
 
 import type { Item } from '@/components/ui/tabs.tsx';
+import type { Reaction } from '@/reducers/user-lists.ts';
 
 const messages = defineMessages({
   all: { id: 'reactions.all', defaultMessage: 'All' },
@@ -36,11 +35,18 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
   const dispatch = useAppDispatch();
   const intl = useIntl();
   const [reaction, setReaction] = useState(initialReaction);
-  const reactions = useAppSelector<ImmutableList<ReturnType<typeof ReactionRecord>> | undefined>((state) => {
-    const favourites = state.user_lists.favourited_by.get(statusId)?.items;
-    const reactions = state.user_lists.reactions.get(statusId)?.items;
-    return favourites && reactions && ImmutableList(favourites?.size ? [ReactionRecord({ accounts: favourites, count: favourites.size, name: '👍' })] : []).concat(reactions || []);
-  });
+  const favourites = useAppSelector((state) => state.user_lists.favourited_by[statusId]?.items);
+  const emojiReactions = useAppSelector((state) => state.user_lists.reactions[statusId]?.items);
+
+  const reactions = useMemo((): Reaction[] | undefined => {
+    if (!favourites || !emojiReactions) return;
+
+    const likes: Reaction[] = favourites.length
+      ? [{ accounts: favourites, count: favourites.length, name: '👍', url: null }]
+      : [];
+
+    return [...likes, ...emojiReactions];
+  }, [favourites, emojiReactions]);
 
   const fetchData = () => {
     dispatch(fetchFavourites(statusId));
@@ -80,15 +86,15 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     return <Tabs items={items} activeItem={reaction || 'all'} />;
   };
 
-  const accounts = useMemo((): ImmutableList<IAccountWithReaction> | undefined  => {
+  const accounts = useMemo((): IAccountWithReaction[] | undefined  => {
     if (!reactions) return;
 
     if (reaction) {
       const reactionRecord = reactions.find(({ name }) => name === reaction);
 
-      if (reactionRecord) return reactionRecord.accounts.map(account => ({ id: account, reaction: reaction, reactionUrl: reactionRecord.url || undefined })).toList();
+      if (reactionRecord) return reactionRecord.accounts.map(account => ({ id: account, reaction: reaction, reactionUrl: reactionRecord.url || undefined }));
     } else {
-      return reactions.map(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url }))).flatten() as ImmutableList<IAccountWithReaction>;
+      return reactions.flatMap(({ accounts, name, url }) => accounts.map(account => ({ id: account, reaction: name, reactionUrl: url || undefined })));
     }
   }, [reactions, reaction]);
 
@@ -104,12 +110,12 @@ const ReactionsModal: React.FC<IReactionsModal> = ({ onClose, statusId, reaction
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 
     body = (<>
-      {reactions.size > 0 && renderFilterBar()}
+      {reactions.length > 0 && renderFilterBar()}
       <ScrollableList
         scrollKey='reactions'
         emptyMessage={emptyMessage}
         className={clsx({
-          'mt-4': reactions.size > 0,
+          'mt-4': reactions.length > 0,
         })}
         listClassName='max-w-full'
         itemClassName='pb-3'

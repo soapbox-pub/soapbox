@@ -59,7 +59,7 @@ const fetchRelatedRelationships = (dispatch: AppDispatch, notifications: APIEnti
 
 const updateNotifications = (notification: APIEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
+    const showInColumn = (getSettings(getState()).notifications.shows as Record<string, boolean>)[notification.type] ?? true;
 
     if (notification.account) {
       dispatch(importFetchedAccount(notification.account));
@@ -90,9 +90,9 @@ const updateNotificationsQueue = (notification: APIEntity, intlMessages: Record<
     if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
     if (notification.type === 'chat') return; // Drop Truth Social chat notifications.
 
-    const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
+    const showAlert = (getSettings(getState()).notifications.alerts as Record<string, boolean>)[notification.type];
     const filters = getFilters(getState(), { contextType: 'notifications' });
-    const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type]);
+    const playSound = (getSettings(getState()).notifications.sounds as Record<string, boolean>)[notification.type];
 
     let filtered: boolean | null = false;
 
@@ -180,7 +180,7 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
 
     const state = getState();
     const features = getFeatures(state.instance);
-    const activeFilter = getSettings(state).getIn(['notifications', 'quickFilter', 'active']) as string;
+    const activeFilter = getSettings(state).notifications.quickFilter.active as string;
     const notifications = state.notifications;
     const isLoadingMore = !!maxId;
 
@@ -205,10 +205,6 @@ const expandNotifications = ({ maxId }: Record<string, any> = {}, done: () => an
       } else {
         params.exclude_types = excludeTypesFromFilter(activeFilter);
       }
-    }
-
-    if (!maxId && notifications.items.size > 0) {
-      params.since_id = notifications.getIn(['items', 0, 'id']);
     }
 
     dispatch(expandNotificationsRequest(isLoadingMore));
@@ -310,7 +306,7 @@ const markReadNotifications = () =>
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const topNotificationId = state.notifications.items.first()?.id;
+    const topNotificationId = state.notifications.items[0]?.id;
     const lastReadId = state.notifications.lastRead;
     const v = parseVersion(state.instance.version);
 

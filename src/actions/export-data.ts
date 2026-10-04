@@ -2,8 +2,8 @@ import { defineMessages } from 'react-intl';
 
 import { MastodonResponse } from '@/api/MastodonResponse.ts';
 import api from '@/api/index.ts';
-import { normalizeAccount } from '@/normalizers/index.ts';
 import toast from '@/toast.tsx';
+import { guessFqn } from '@/utils/accounts.ts';
 
 import type { RootState } from '@/store.ts';
 
@@ -70,7 +70,7 @@ const listAccounts = (getState: () => RootState) => {
       }
     }
 
-    const accts = [...map.values()].map((account) => normalizeAccount(account).fqn);
+    const accts = [...map.values()].map((account) => guessFqn(account));
 
     return accts;
   };

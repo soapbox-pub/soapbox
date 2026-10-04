@@ -3,16 +3,18 @@
  * Converts API filters into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/FilterKeyword/}
  */
-import { Map as ImmutableMap, Record as ImmutableRecord, fromJS } from 'immutable';
+import { fromDefaults } from '@/utils/normalizers.ts';
 
 // https://docs.joinmastodon.org/entities/FilterKeyword/
-export const FilterKeywordRecord = ImmutableRecord({
-  id: '',
-  keyword: '',
-  whole_word: false,
-});
+export interface FilterKeyword {
+  id: string;
+  keyword: string;
+  whole_word: boolean;
+}
 
-export const normalizeFilterKeyword = (filterKeyword: Record<string, any>) =>
-  FilterKeywordRecord(
-    ImmutableMap(fromJS(filterKeyword)),
-  );
+export const normalizeFilterKeyword = (filterKeyword: Record<string, any>): FilterKeyword =>
+  fromDefaults<FilterKeyword>({
+    id: '',
+    keyword: '',
+    whole_word: false,
+  }, filterKeyword);

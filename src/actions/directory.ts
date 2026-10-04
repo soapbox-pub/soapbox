@@ -43,7 +43,7 @@ const expandDirectory = (params: Record<string, any>) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(expandDirectoryRequest());
 
-    const loadedItems = getState().user_lists.directory.items.size;
+    const loadedItems = getState().user_lists.directory.items.length;
 
     api(getState).get('/api/v1/directory', { searchParams: { ...params, offset: loadedItems, limit: 20 } }).then((response) => response.json()).then((data) => {
       dispatch(importFetchedAccounts(data));

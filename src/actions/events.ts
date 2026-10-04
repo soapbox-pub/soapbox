@@ -141,7 +141,7 @@ const changeEditEventLocation = (value: string | null) =>
     let location = null;
 
     if (value) {
-      location = getState().locations.get(value);
+      location = getState().locations[value];
     }
 
     dispatch({
@@ -258,7 +258,7 @@ const submitEventFail = (error: unknown) => ({
 
 const joinEvent = (id: string, participationMessage?: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const status = getState().statuses.get(id);
+    const status = getState().statuses[id];
 
     if (!status || !status.event || status.event.join_state) {
       return dispatch(noOp);
@@ -302,7 +302,7 @@ const joinEventFail = (error: unknown, status: StatusEntity, previousState: stri
 
 const leaveEvent = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const status = getState().statuses.get(id);
+    const status = getState().statuses[id];
 
     if (!status || !status.event || !status.event.join_state) {
       return dispatch(noOp);
@@ -368,7 +368,7 @@ const fetchEventParticipationsFail = (id: string, error: unknown) => ({
 
 const expandEventParticipations = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = getState().user_lists.event_participations.get(id)?.next || null;
+    const url = getState().user_lists.event_participations[id]?.next || null;
 
     if (url === null) {
       return dispatch(noOp);
@@ -438,7 +438,7 @@ const fetchEventParticipationRequestsFail = (id: string, error: unknown) => ({
 
 const expandEventParticipationRequests = (id: string) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    const url = getState().user_lists.event_participations.get(id)?.next || null;
+    const url = getState().user_lists.event_participations[id]?.next || null;
 
     if (url === null) {
       return dispatch(noOp);
@@ -554,7 +554,7 @@ interface EventFormSetAction {
 }
 
 const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootState) => {
-  const status = getState().statuses.get(id)!;
+  const status = getState().statuses[id]!;
 
   dispatch({ type: STATUS_FETCH_SOURCE_REQUEST });
 
@@ -574,7 +574,7 @@ const editEvent = (id: string) => (dispatch: AppDispatch, getState: () => RootSt
 
 const fetchRecentEvents = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.get('recent_events')?.isLoading) {
+    if (getState().status_lists.recent_events?.isLoading) {
       return;
     }
 
@@ -597,7 +597,7 @@ const fetchRecentEvents = () =>
 
 const fetchJoinedEvents = () =>
   (dispatch: AppDispatch, getState: () => RootState) => {
-    if (getState().status_lists.get('joined_events')?.isLoading) {
+    if (getState().status_lists.joined_events?.isLoading) {
       return;
     }
 

@@ -1,4 +1,5 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { set } from 'es-toolkit/compat';
+import { produce } from 'immer';
 import { AnyAction } from 'redux';
 
 import { ME_FETCH_SUCCESS } from '@/actions/me.ts';
@@ -16,36 +17,47 @@ import {
 import type { Emoji } from '@/features/emoji/index.ts';
 import type { APIEntity } from '@/types/entities.ts';
 
-type State = ImmutableMap<string, any>;
+type State = Record<string, unknown>;
 
-const updateFrequentEmojis = (state: State, emoji: Emoji) => state.update('frequentlyUsedEmojis', ImmutableMap(), map => map.update(emoji.id, 0, (count: number) => count + 1)).set('saved', false);
+const updateFrequentEmojis = (state: State, emoji: Emoji): State => {
+  const frequentlyUsedEmojis = (state.frequentlyUsedEmojis ?? {}) as Record<string, number>;
 
-const importSettings = (state: State, account: APIEntity) => {
-  account = fromJS(account);
-  const prefs = account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
-  return state.merge(prefs) as State;
+  return {
+    ...state,
+    frequentlyUsedEmojis: {
+      ...frequentlyUsedEmojis,
+      [emoji.id]: (frequentlyUsedEmojis[emoji.id] ?? 0) + 1,
+    },
+    saved: false,
+  };
+};
+
+const importSettings = (state: State, account: APIEntity): State => {
+  const prefs = account?.pleroma?.settings_store?.[FE_NAME] ?? {};
+  return { ...state, ...prefs };
 };
 
 // Default settings are in action/settings.js
 //
-// Settings should be accessed with `getSettings(getState()).getIn(...)`
+// Settings should be accessed with `getSettings(getState())`
 // instead of directly from the state.
-export default function settings(state: State = ImmutableMap<string, any>({ saved: true }), action: AnyAction): State {
+export default function settings(state: State = { saved: true }, action: AnyAction): State {
   switch (action.type) {
     case ME_FETCH_SUCCESS:
       return importSettings(state, action.me);
     case NOTIFICATIONS_FILTER_SET:
     case SEARCH_FILTER_SET:
     case SETTING_CHANGE:
-      return state
-        .setIn(action.path, action.value)
-        .set('saved', false);
+      return produce(state, draft => {
+        set(draft, action.path, action.value);
+        draft.saved = false;
+      });
     case EMOJI_CHOOSE:
       return updateFrequentEmojis(state, action.emoji);
     case SETTING_SAVE:
-      return state.set('saved', true);
+      return { ...state, saved: true };
     case SETTINGS_UPDATE:
-      return ImmutableMap<string, any>(fromJS(action.settings));
+      return { ...action.settings };
     default:
       return state;
   }

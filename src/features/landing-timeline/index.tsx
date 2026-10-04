@@ -21,7 +21,7 @@ const LandingTimeline = () => {
   const isMobile = useIsMobile();
 
   const timelineEnabled = !instance.pleroma.metadata.restrict_unauthenticated.timelines.local;
-  const next = useAppSelector(state => state.timelines.get('community')?.next);
+  const next = useAppSelector(state => state.timelines.community?.next);
 
   const timelineId = 'community';
 

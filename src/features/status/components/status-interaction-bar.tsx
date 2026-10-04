@@ -94,7 +94,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
   const getQuotes = () => {
     if (status.quotes_count) {
       return (
-        <InteractionCounter count={status.quotes_count} to={`/@${status.getIn(['account', 'acct'])}/posts/${status.id}/quotes`}>
+        <InteractionCounter count={status.quotes_count} to={`/@${status.account?.acct}/posts/${status.id}/quotes`}>
           <FormattedMessage
             id='status.interactions.quotes'
             defaultMessage='{count, plural, one {Quote} other {Quotes}}'
@@ -175,7 +175,7 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
       return (
         <InteractionCounter count={count} onClick={features.exposableReactions ? handleClick : undefined}>
           <HStack space={0.5} alignItems='center'>
-            {emojiReacts.take(3).map((emoji, i) => {
+            {emojiReacts.slice(0, 3).map((emoji, i) => {
               if (emoji.url) {
                 return <img key={i} src={emoji.url} alt={emoji.name} className='size-4.5 flex-none' />;
               } else {
