@@ -18,8 +18,6 @@ import searchIcon from '@tabler/icons/outline/search.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
-import videoIcon from '@tabler/icons/outline/video.svg';
-import walletIcon from '@tabler/icons/outline/wallet.svg';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
@@ -34,7 +32,6 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
-import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 
 import DropdownMenu, { Menu } from './dropdown-menu/index.ts';
 import SidebarNavigationLink from './sidebar-navigation-link.tsx';
@@ -59,7 +56,6 @@ const SidebarNavigation = () => {
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
   const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
-  const settingsNotifications = useSettingsNotifications();
 
   const makeMenu = (): Menu => {
     const menu: Menu = [];
@@ -173,14 +169,6 @@ const SidebarNavigation = () => {
             text={<FormattedMessage id='tabs_bar.search' defaultMessage='Search' />}
           />
 
-          {features.nostr && (
-            <SidebarNavigationLink
-              to='/divine'
-              icon={videoIcon}
-              text={<FormattedMessage id='tabs_bar.divine' defaultMessage='Vines' />}
-            />
-          )}
-
           {account && (
             <>
 
@@ -206,22 +194,11 @@ const SidebarNavigation = () => {
                 text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
               />
 
-              {features.nostr && (
-                <SidebarNavigationLink
-                  to={'/wallet'}
-                  icon={walletIcon}
-                  activeIcon={walletIcon}
-                  text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
-                />
-              )
-              }
-
               <SidebarNavigationLink
                 to='/settings'
                 icon={settingsIcon}
                 activeIcon={settingsFilledIcon}
                 text={<FormattedMessage id='tabs_bar.settings' defaultMessage='Settings' />}
-                count={settingsNotifications.size}
               />
 
               {account.staff && (

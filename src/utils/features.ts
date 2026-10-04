@@ -15,12 +15,6 @@ const overrides = custom('features');
 const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 /**
- * Ditto, a Nostr server with Mastodon API.
- * @see {@link https://gitlab.com/soapbox-pub/ditto}
- */
-export const DITTO = 'Ditto';
-
-/**
  * Firefish, a fork of Misskey. Formerly known as Calckey.
  * @see {@link https://joinfirefish.org/}
  */
@@ -154,7 +148,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === PLEROMA && gte(v.version, parse('2.4.50')),
       v.software === TAKAHE && gte(v.version, parse('0.6.1')),
       v.software === TRUTHSOCIAL,
-      v.software === DITTO,
     ]),
 
     /**
@@ -184,7 +177,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * Ability to set one's website on their profile.
      * @see PATCH /api/v1/accounts/update_credentials
      */
-    accountWebsite: v.software === TRUTHSOCIAL || v.software === DITTO,
+    accountWebsite: v.software === TRUTHSOCIAL,
 
     /**
      * Ability to manage announcements by admins.
@@ -257,7 +250,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/accounts/:id/unblock
      * @see GET /api/v1/blocks
      */
-    blocks: v.software !== DITTO,
+    blocks: true,
 
     /**
      * Can bookmark statuses.
@@ -273,7 +266,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === PLEROMA && gte(v.version, parse('0.9.9')),
       v.software === PIXELFED,
       v.software === TAKAHE && gte(v.version, parse('0.9.0')),
-      v.software === DITTO,
     ]),
 
     /**
@@ -507,7 +499,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     explicitAddressing: any([
       v.software === PLEROMA && gte(v.version, parse('1.0.0')),
       v.software === TRUTHSOCIAL,
-      v.software === DITTO,
     ]),
 
     /** Whether to allow exporting follows/blocks/mutes to CSV by paginating the API. */
@@ -532,7 +523,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === MASTODON && gte(v.version, parse('3.5.0')),
       v.software === PLEROMA && gte(v.version, parse('2.5.51')) && v.build === REBASED,
       v.software === TAKAHE,
-      v.software === DITTO,
     ]),
 
     /** Whether the instance federates. */
@@ -597,7 +587,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     frontendConfigurations: any([
       v.software === PLEROMA,
-      v.software === DITTO,
     ]),
 
     /**
@@ -703,14 +692,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     instanceV2: any([
       v.software === MASTODON && gte(v.compatVersion, parse('4.0.0')),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.5.54')),
-      v.software === DITTO,
     ]),
-
-    /**
-     * Ability to set one's lightning address on their profile.
-     * @see PATCH /api/v1/accounts/update_credentials
-     */
-    lightning: v.software === DITTO,
 
     /**
      * Can create, view, and manage lists.
@@ -743,7 +725,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see POST /api/v1/admin/accounts/:account_id/approve
      */
     mastodonAdmin: any([
-      v.software === DITTO,
       v.software === MASTODON && gte(v.compatVersion, parse('2.9.1')),
       v.software === PLEROMA && v.build === REBASED && gte(v.version, parse('2.4.50')),
     ]),
@@ -784,27 +765,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     ]),
 
     /**
-     * Can set a Nostr username.
-     * @see PATCH /api/v1/accounts/update_credentials
-     */
-    nip05: v.software === DITTO,
-
-    /** Has a Nostr relay. */
-    nostr: !!instance.nostr?.relay,
-
-    /**
-     * Ability to sign Nostr events over websocket.
-     * @see GET /api/v1/streaming?stream=nostr
-     */
-    nostrSign: v.software === DITTO,
-
-    /**
-     * Whether the backend uses Ditto's Nosteric way of registration.
-     * @see POST /api/v1/accounts
-     */
-    nostrSignup: v.software === DITTO,
-
-    /**
      * Add private notes to accounts.
      * @see POST /api/v1/accounts/:id/note
      * @see GET /api/v1/accounts/relationships
@@ -819,7 +779,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * @see GET /api/v1/notifications
      */
     notificationsIncludeTypes: any([
-      v.software === DITTO,
       v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
       v.software === PLEROMA && gte(v.version, parse('2.4.50')),
@@ -856,7 +815,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      * Can set privacy scopes on statuses.
      * @see POST /api/v1/statuses
      */
-    privacyScopes: ![TRUTHSOCIAL, DITTO].includes(v.software!),
+    privacyScopes: v.software !== TRUTHSOCIAL,
 
     /**
      * A directory of discoverable profiles from the instance.
@@ -876,7 +835,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === MASTODON,
       v.software === PLEROMA,
       v.software === TAKAHE && gte(v.version, parse('0.7.0')),
-      v.software === DITTO,
     ]),
 
     /**
@@ -892,11 +850,7 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === PLEROMA,
       v.software === TAKAHE,
       v.software === WILDEBEEST,
-      v.software === DITTO,
     ]),
-
-    /** Ability to filter the public timeline by language. */
-    publicTimelineLanguage: v.software === DITTO,
 
     /**
      * Ability to quote posts in statuses.
@@ -942,9 +896,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
      */
     resetPassword: v.software === PLEROMA,
 
-    /** Admin can revoke the user's identity (without deleting their account). */
-    revokeName: v.software === DITTO,
-
     /**
      * Ability to post statuses in Markdown, BBCode, and HTML.
      * @see POST /api/v1/statuses
@@ -982,7 +933,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.version, parse('2.8.0')),
       v.software === PLEROMA && gte(v.version, parse('1.0.0')),
-      v.software === DITTO,
     ]),
 
     /**
@@ -1019,12 +969,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
     spoilers: v.software !== TRUTHSOCIAL,
 
     /**
-     * Can view user streaks.
-     * @see GET /api/v1/accounts/verify_credentials
-     */
-    streak: v.software === DITTO,
-
-    /**
      * Can display suggested accounts.
      * @see {@link https://docs.joinmastodon.org/methods/suggestions/}
      */
@@ -1033,8 +977,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
-
-    suggestionsLocal: v.software === DITTO,
 
     /**
      * Supports V2 suggested accounts.
@@ -1062,7 +1004,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === ICESHRIMP,
       v.software === FRIENDICA && gte(v.version, parse('2022.12.0')),
       v.software === MASTODON && gte(v.compatVersion, parse('3.5.0')),
-      v.software === DITTO,
     ]),
 
     /**
@@ -1074,7 +1015,6 @@ const getInstanceFeatures = (instance: InstanceV1 | InstanceV2) => {
       v.software === ICESHRIMP,
       v.software === MASTODON && gte(v.compatVersion, parse('3.0.0')),
       v.software === TRUTHSOCIAL,
-      v.software === DITTO,
     ]),
 
     /**

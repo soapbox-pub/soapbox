@@ -79,11 +79,6 @@ const contactSchema = coerceObject({
   email: z.string().email().optional().catch(undefined),
 });
 
-const nostrSchema = coerceObject({
-  pubkey: z.string(),
-  relay: z.string().url(),
-});
-
 const pleromaSchema = coerceObject({
   metadata: coerceObject({
     account_activation_required: z.boolean().catch(false),
@@ -186,7 +181,6 @@ const instanceV1Schema = coerceObject({
   languages: filteredArray(z.string()),
   max_media_attachments: z.number().optional().catch(undefined),
   max_toot_chars: z.number().optional().catch(undefined),
-  nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   registrations: z.boolean().catch(false),
   rules: filteredArray(ruleSchema),
@@ -209,7 +203,6 @@ const instanceV2Schema = coerceObject({
   domain: z.string().catch(''),
   icon: filteredArray(instanceIconSchema),
   languages: filteredArray(z.string()),
-  nostr: nostrSchema.optional().catch(undefined),
   pleroma: pleromaSchema,
   registrations: registrationsSchema,
   rules: filteredArray(ruleSchema),
@@ -234,7 +227,6 @@ function upgradeInstance(v1: InstanceV1): InstanceV2 {
     domain: v1.uri,
     icon: [],
     languages: v1.languages,
-    nostr: v1.nostr,
     pleroma: v1.pleroma,
     registrations: {
       approval_required: v1.approval_required,

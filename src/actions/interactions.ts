@@ -7,7 +7,7 @@ import { importFetchedAccounts, importFetchedStatus } from './importer/index.ts'
 import { expandGroupFeaturedTimeline } from './timelines.ts';
 
 import type { AppDispatch, RootState } from '@/store.ts';
-import type { Account as AccountEntity, APIEntity, Group, Status as StatusEntity } from '@/types/entities.ts';
+import type { APIEntity, Group, Status as StatusEntity } from '@/types/entities.ts';
 
 const REBLOG_REQUEST = 'REBLOG_REQUEST';
 const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -72,17 +72,6 @@ const FAVOURITES_EXPAND_FAIL = 'FAVOURITES_EXPAND_FAIL';
 
 const REBLOGS_EXPAND_SUCCESS = 'REBLOGS_EXPAND_SUCCESS';
 const REBLOGS_EXPAND_FAIL = 'REBLOGS_EXPAND_FAIL';
-
-const ZAP_REQUEST = 'ZAP_REQUEST';
-const ZAP_SUCCESS = 'ZAP_SUCCESS';
-const ZAP_FAIL    = 'ZAP_FAIL';
-
-const ZAPS_FETCH_REQUEST = 'ZAPS_FETCH_REQUEST';
-const ZAPS_FETCH_SUCCESS = 'ZAPS_FETCH_SUCCESS';
-const ZAPS_FETCH_FAIL    = 'ZAPS_FETCH_FAIL';
-
-const ZAPS_EXPAND_SUCCESS = 'ZAPS_EXPAND_SUCCESS';
-const ZAPS_EXPAND_FAIL = 'ZAPS_EXPAND_FAIL';
 
 type ReblogEffects = {
   reblogEffect: (statusId: string) => void;
@@ -315,48 +304,6 @@ const undislikeFail = (status: StatusEntity, error: unknown) => ({
   skipLoading: true,
 });
 
-const zap = (account: AccountEntity, status: StatusEntity | undefined, amount: number, comment: string) => (dispatch: AppDispatch, getState: () => RootState) => {
-  if (!isLoggedIn(getState)) return;
-
-  if (status) dispatch(zapRequest(status));
-
-  return api(getState).post('/api/v1/ditto/zap', { amount, comment, account_id: account.id, status_id: status?.id }).then(async (response) => {
-    const { invoice } =  await response.json();
-    if (!invoice) throw Error('Could not generate invoice');
-    if (!window.webln) return invoice;
-
-    try {
-      await window.webln?.enable();
-      await window.webln?.sendPayment(invoice);
-      if (status) dispatch(zapSuccess(status));
-      return undefined;
-    } catch (e) { // In case it fails we just return the invoice so the QR code can be created
-      return invoice;
-    }
-  }).catch(function(e) {
-    if (status) dispatch(zapFail(status, e));
-  });
-};
-
-const zapRequest = (status: StatusEntity) => ({
-  type: ZAP_REQUEST,
-  status: status,
-  skipLoading: true,
-});
-
-const zapSuccess = (status: StatusEntity) => ({
-  type: ZAP_SUCCESS,
-  status: status,
-  skipLoading: true,
-});
-
-const zapFail = (status: StatusEntity, error: unknown) => ({
-  type: ZAP_FAIL,
-  status: status,
-  error: error,
-  skipLoading: true,
-});
-
 const bookmarkRequest = (status: StatusEntity) => ({
   type: BOOKMARK_REQUEST,
   status: status,
@@ -562,64 +509,6 @@ const fetchReactionsFail = (id: string, error: unknown) => ({
   error,
 });
 
-const fetchZaps = (id: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(fetchZapsRequest(id));
-
-    api(getState).get(`/api/v1/ditto/statuses/${id}/zapped_by`).then(async (response) => {
-      const next = response.next();
-      const data = await response.json();
-      dispatch(importFetchedAccounts((data as APIEntity[]).map(({ account }) => account).flat()));
-      dispatch(fetchZapsSuccess(id, data, next));
-    }).catch(error => {
-      dispatch(fetchZapsFail(id, error));
-    });
-  };
-
-const fetchZapsRequest = (id: string) => ({
-  type: ZAPS_FETCH_REQUEST,
-  id,
-});
-
-const fetchZapsSuccess = (id: string, zaps: APIEntity[], next: string | null) => ({
-  type: ZAPS_FETCH_SUCCESS,
-  id,
-  zaps,
-  next,
-});
-
-const fetchZapsFail = (id: string, error: unknown) => ({
-  type: REACTIONS_FETCH_FAIL,
-  id,
-  error,
-});
-
-const expandZaps = (id: string, path: string) =>
-  (dispatch: AppDispatch, getState: () => RootState) => {
-    api(getState).get(path).then(async (response) => {
-      const next = response.next();
-      const data = await response.json();
-      dispatch(importFetchedAccounts(data.map((item: APIEntity) => item.account)));
-      dispatch(fetchRelationships(data.map((item: APIEntity) => item.account.id)));
-      dispatch(expandZapsSuccess(id, data, next));
-    }).catch(error => {
-      dispatch(expandZapsFail(id, error));
-    });
-  };
-
-const expandZapsSuccess = (id: string, zaps: APIEntity[], next: string | null) => ({
-  type: ZAPS_EXPAND_SUCCESS,
-  id,
-  zaps,
-  next,
-});
-
-const expandZapsFail = (id: string, error: unknown) => ({
-  type: ZAPS_EXPAND_FAIL,
-  id,
-  error,
-});
-
 const pin = (status: StatusEntity) =>
   (dispatch: AppDispatch, getState: () => RootState) => {
     if (!isLoggedIn(getState)) return;
@@ -793,13 +682,6 @@ export {
   FAVOURITES_EXPAND_FAIL,
   REBLOGS_EXPAND_SUCCESS,
   REBLOGS_EXPAND_FAIL,
-  ZAP_REQUEST,
-  ZAP_FAIL,
-  ZAPS_FETCH_REQUEST,
-  ZAPS_FETCH_SUCCESS,
-  ZAPS_FETCH_FAIL,
-  ZAPS_EXPAND_SUCCESS,
-  ZAPS_EXPAND_FAIL,
   reblog,
   unreblog,
   toggleReblog,
@@ -864,7 +746,4 @@ export {
   remoteInteractionRequest,
   remoteInteractionSuccess,
   remoteInteractionFail,
-  zap,
-  fetchZaps,
-  expandZaps,
 };

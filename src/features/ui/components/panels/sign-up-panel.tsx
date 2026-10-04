@@ -1,22 +1,17 @@
 import { FormattedMessage } from 'react-intl';
 
-import { openModal } from '@/actions/modals.ts';
 import Button from '@/components/ui/button.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
-import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { useRegistrationStatus } from '@/hooks/useRegistrationStatus.ts';
 
 const SignUpPanel = () => {
   const { instance } = useInstance();
-  const { nostrSignup } = useFeatures();
   const { isOpen } = useRegistrationStatus();
   const me = useAppSelector((state) => state.me);
-  const dispatch = useAppDispatch();
 
   if (me || !isOpen) return null;
 
@@ -35,8 +30,7 @@ const SignUpPanel = () => {
       <HStack space={2}>
         <Button
           theme='tertiary'
-          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_LOGIN')) : undefined}
-          to={nostrSignup ? undefined : '/login'}
+          to='/login'
           block
         >
           <FormattedMessage id='account.login' defaultMessage='Log in' />
@@ -44,8 +38,7 @@ const SignUpPanel = () => {
 
         <Button
           theme='primary'
-          onClick={nostrSignup ? () => dispatch(openModal('NOSTR_SIGNUP')) : undefined}
-          to={nostrSignup ? undefined : '/signup'}
+          to='/signup'
           block
         >
           <FormattedMessage id='account.register' defaultMessage='Sign up' />

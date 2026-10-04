@@ -57,8 +57,6 @@ const messages = defineMessages({
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
   websitePlaceholder: { id: 'edit_profile.fields.website_placeholder', defaultMessage: 'Display a Link' },
   locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
-  nip05Placeholder: { id: 'edit_profile.fields.nip05_placeholder', defaultMessage: 'user@{domain}' },
-  lud16Placeholder: { id: 'edit_profile.fields.lud16_placeholder', defaultMessage: 'user@example.com' },
   cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
 
@@ -124,13 +122,6 @@ interface AccountCredentials {
   location?: string;
   /** User's birthday. */
   birthday?: string;
-  /** Nostr NIP-05 identifier. */
-  nip05?: string;
-  /**
-   * Lightning address.
-   * https://github.com/lnurl/luds/blob/luds/16.md
-   */
-  lud16?: string;
 }
 
 /** Convert an account into an update_credentials request object. */
@@ -153,8 +144,6 @@ const accountToCredentials = (account: Account): AccountCredentials => {
     website: account.website,
     location: account.location,
     birthday: account.pleroma?.birthday ?? undefined,
-    nip05: account.source?.nostr?.nip05 ?? '',
-    lud16: account?.nostr?.lud16 ?? '',
   };
 };
 
@@ -349,19 +338,6 @@ const EditProfile: React.FC = () => {
           />
         </FormGroup>
 
-        {features.nip05 && (
-          <FormGroup
-            labelText={<FormattedMessage id='edit_profile.fields.nip05_label' defaultMessage='Username' />}
-          >
-            <Input
-              type='text'
-              value={data.nip05}
-              onChange={handleTextChange('nip05')}
-              placeholder={intl.formatMessage(messages.nip05Placeholder, { domain: instance.domain })}
-            />
-          </FormGroup>
-        )}
-
         {features.birthdays && (
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
@@ -382,19 +358,6 @@ const EditProfile: React.FC = () => {
               value={data.location}
               onChange={handleTextChange('location')}
               placeholder={intl.formatMessage(messages.locationPlaceholder)}
-            />
-          </FormGroup>
-        )}
-
-        {features.lightning && (
-          <FormGroup
-            labelText={<FormattedMessage id='edit_profile.fields.lud16_label' defaultMessage='Lightning Address' />}
-          >
-            <Input
-              type='email'
-              value={data.lud16}
-              onChange={handleTextChange('lud16')}
-              placeholder={intl.formatMessage(messages.lud16Placeholder)}
             />
           </FormGroup>
         )}

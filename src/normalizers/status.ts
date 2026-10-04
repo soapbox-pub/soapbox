@@ -67,7 +67,6 @@ export const StatusRecord = ImmutableRecord({
   muted: false,
   pinned: false,
   pleroma: ImmutableMap<string, any>(),
-  ditto: ImmutableMap<string, any>(),
   poll: null as EmbeddedEntity<Poll>,
   quote: null as EmbeddedEntity<any>,
   quotes_count: 0,
@@ -76,8 +75,6 @@ export const StatusRecord = ImmutableRecord({
   reblogged: false,
   reblogs_count: 0,
   replies_count: 0,
-  zaps_amount: 0,
-  zaps_amount_cashu: 0,
   sensitive: false,
   spoiler_text: '',
   tags: ImmutableList<ImmutableMap<string, any>>(),
@@ -85,8 +82,6 @@ export const StatusRecord = ImmutableRecord({
   uri: '',
   url: '',
   visibility: 'public' as StatusVisibility,
-  zapped: false,
-  zapped_cashu: false,
   event: null as ReturnType<typeof EventRecord> | null,
 
   // Internal fields

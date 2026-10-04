@@ -1,18 +1,16 @@
 import xIcon from '@tabler/icons/outline/x.svg';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { changeSetting } from '@/actions/settings.ts';
-import { clearTimeline, expandPublicTimeline } from '@/actions/timelines.ts';
+import { expandPublicTimeline } from '@/actions/timelines.ts';
 import { usePublicStream } from '@/api/hooks/index.ts';
 import PullToRefresh from '@/components/pull-to-refresh.tsx';
 import Accordion from '@/components/ui/accordion.tsx';
 import { Column } from '@/components/ui/column.tsx';
-import { LanguageDropdown } from '@/components/ui/language-dropdown.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { useSettings } from '@/hooks/useSettings.ts';
 
@@ -27,9 +25,6 @@ const messages = defineMessages({
 const PublicTimeline = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const features = useFeatures();
-
-  const [language, setLanguage] = useState<string>(localStorage.getItem('soapbox:global:language') || '');
 
   const { instance } = useInstance();
   const settings = useSettings();
@@ -39,7 +34,7 @@ const PublicTimeline = () => {
   const timelineId = 'public';
 
   const explanationBoxExpanded = settings.explanationBox;
-  const showExplanationBox = settings.showExplanationBox && !features.nostr;
+  const showExplanationBox = settings.showExplanationBox;
 
   const dismissExplanationBox = () => {
     dispatch(changeSetting(['showExplanationBox'], false));
@@ -57,22 +52,16 @@ const PublicTimeline = () => {
     return dispatch(expandPublicTimeline({ onlyMedia }));
   };
 
-  usePublicStream({ onlyMedia, language });
+  usePublicStream({ onlyMedia });
 
   useEffect(() => {
-    dispatch(clearTimeline('public'));
-    localStorage.setItem('soapbox:global:language', language);
-  }, [language]);
-
-  useEffect(() => {
-    dispatch(expandPublicTimeline({ onlyMedia, language }));
-  }, [onlyMedia, language]);
+    dispatch(expandPublicTimeline({ onlyMedia }));
+  }, [onlyMedia]);
 
   return (
     <Column
       withHeader={false}
       label={intl.formatMessage(messages.title)}
-      action={features.publicTimelineLanguage ? <LanguageDropdown language={language} setLanguage={setLanguage} /> : null}
       slim
     >
       <PinnedHostsPicker />

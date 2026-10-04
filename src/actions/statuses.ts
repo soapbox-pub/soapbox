@@ -1,5 +1,4 @@
 import { Status as StatusEntity } from '@/schemas/index.ts';
-import { settingsSchema } from '@/schemas/soapbox/settings.ts';
 import { isLoggedIn } from '@/utils/auth.ts';
 import { getFeatures } from '@/utils/features.ts';
 import { shouldHaveCard } from '@/utils/status.ts';
@@ -10,7 +9,6 @@ import { setComposeToStatus } from './compose-status.ts';
 import { fetchGroupRelationships } from './groups.ts';
 import { importFetchedStatus, importFetchedStatuses } from './importer/index.ts';
 import { openModal } from './modals.ts';
-import { getSettings } from './settings.ts';
 import { deleteFromTimelines } from './timelines.ts';
 
 import type { AppDispatch, RootState } from '@/store.ts';
@@ -60,12 +58,6 @@ const statusExists = (getState: () => RootState, statusId: string) => {
 
 const createStatus = (params: Record<string, any>, idempotencyKey: string, statusId: string | null) => {
   return (dispatch: AppDispatch, getState: () => RootState) => {
-    const settings = settingsSchema.parse(getSettings(getState()).toJS());
-
-    if (settings.discloseClient) {
-      params.disclose_client = true;
-    }
-
     dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey, editing: !!statusId });
 
     const method = statusId === null ? 'POST' : 'PUT';

@@ -1,6 +1,5 @@
 import atIcon from '@tabler/icons/outline/at.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
-import boltIcon from '@tabler/icons/outline/bolt.svg';
 import circleXIcon from '@tabler/icons/outline/circle-x.svg';
 import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
 import dotsIcon from '@tabler/icons/outline/dots.svg';
@@ -20,7 +19,6 @@ import userXIcon from '@tabler/icons/outline/user-x.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import { useMutation } from '@tanstack/react-query';
 import { List as ImmutableList } from 'immutable';
-import { nip19 } from 'nostr-tools';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -44,7 +42,6 @@ import VerificationBadge from '@/components/verification-badge.tsx';
 import MovedNote from '@/features/account-timeline/components/moved-note.tsx';
 import ActionButton from '@/features/ui/components/action-button.tsx';
 import SubscriptionButton from '@/features/ui/components/subscription-button.tsx';
-import { usePaymentMethod } from '@/features/zap/usePaymentMethod.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
@@ -71,7 +68,6 @@ const messages = defineMessages({
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   copy: { id: 'account.copy', defaultMessage: 'Copy link to profile' },
-  npub: { id: 'account.npub', defaultMessage: 'Copy user npub' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
   media: { id: 'account.media', defaultMessage: 'Media' },
   blockDomain: { id: 'account.block_domain', defaultMessage: 'Hide everything from {domain}' },
@@ -100,7 +96,6 @@ const messages = defineMessages({
   profileExternal: { id: 'account.profile_external', defaultMessage: 'View profile on {domain}' },
   header: { id: 'account.header.alt', defaultMessage: 'Profile header' },
   subscribeFeed: { id: 'account.rss_feed', defaultMessage: 'Subscribe to RSS feed' },
-  method: { id: 'payment_method.send_to', defaultMessage: 'Send sats via {method} to {target}' },
 });
 
 interface IHeader {
@@ -116,7 +111,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
   const { account: ownAccount } = useOwnAccount();
   const { follow } = useFollow();
 
-  const { method: paymentMethod } = usePaymentMethod();
 
   const { software } = useAppSelector((state) => parseVersion(state.instance.version));
 
@@ -308,14 +302,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
     copy(account.url);
   };
 
-  const handleCopyNpub: React.EventHandler<React.MouseEvent> = (e) => {
-    copy(nip19.npubEncode(account.nostr.pubkey!));
-  };
-
-  const handleZapAccount: React.EventHandler<React.MouseEvent> = (e) => {
-    dispatch(openModal('PAY_REQUEST', { account }));
-  };
-
   const makeMenu = () => {
     const menu: Menu = [];
 
@@ -340,10 +326,9 @@ const Header: React.FC<IHeader> = ({ account }) => {
       });
     }
 
-    const externalNostrUrl = account.ditto.external_url ? new URL(account.ditto.external_url).host : undefined;
-    if (features.federating && (!account.local || externalNostrUrl)) {
-      const domain = externalNostrUrl || account.fqn.split('@')[1];
-      const url = account.ditto.external_url || account.url;
+    if (features.federating && !account.local) {
+      const domain = account.fqn.split('@')[1];
+      const url = account.url;
 
       if (domain && url) {
         menu.push({
@@ -360,14 +345,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
       action: handleCopy,
       icon: clipboardCopyIcon,
     });
-
-    if (account.nostr.pubkey) {
-      menu.push({
-        text: intl.formatMessage(messages.npub),
-        action: handleCopyNpub,
-        icon: clipboardCopyIcon,
-      });
-    }
 
     if (!ownAccount) return menu;
 
@@ -664,23 +641,8 @@ const Header: React.FC<IHeader> = ({ account }) => {
     );
   };
 
-  const renderZapAccount = () => {
-    return (
-      <IconButton
-        src={boltIcon}
-        onClick={handleZapAccount}
-        title={intl.formatMessage(messages.method, { target: account.display_name, method: paymentMethod })}
-        theme='outlined'
-        className='px-2'
-        iconClassName='size-4'
-      />
-    );
-  };
-
   const info = makeInfo();
   const menu = makeMenu();
-  const acceptsZaps = account.ditto.accepts_zaps === true;
-  const acceptsZapsCashu = account.ditto.accepts_zaps_cashu === true;
 
   return (
     <div>
@@ -722,7 +684,6 @@ const Header: React.FC<IHeader> = ({ account }) => {
               <SubscriptionButton account={account} />
               {renderMessageButton()}
               {renderShareButton()}
-              {(acceptsZaps || acceptsZapsCashu) && renderZapAccount()}
 
               {menu.length > 0 && (
                 <DropdownMenu items={menu} placement='bottom-end'>

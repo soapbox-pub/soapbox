@@ -59,13 +59,6 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     }));
   };
 
-  const onOpenZapsModal = (username: string, statusId: string): void => {
-    dispatch(openModal('ZAPS', {
-      username,
-      statusId,
-    }));
-  };
-
   const getNormalizedReacts = () => {
     return reduceEmoji(
       status.reactions,
@@ -197,36 +190,11 @@ const StatusInteractionBar: React.FC<IStatusInteractionBar> = ({ status }): JSX.
     return null;
   };
 
-  const handleOpenZapsModal = () => {
-    if (!me) {
-      return onOpenUnauthorizedModal();
-    }
-
-    onOpenZapsModal(account.acct, status.id);
-  };
-
-  const getZaps = () => {
-    if (status.zaps_amount || status.zaps_amount_cashu) {
-      return (
-        <InteractionCounter count={(status.zaps_amount ?? 0) / 1000 + (status.zaps_amount_cashu ?? 0)} onClick={handleOpenZapsModal}>
-          <FormattedMessage
-            id='status.interactions.zaps'
-            defaultMessage='{count, plural, one {Zap} other {Zaps}}'
-            values={{ count: (status.zaps_amount ?? 0) / 1000 + (status.zaps_amount_cashu ?? 0) }}
-          />
-        </InteractionCounter>
-      );
-    }
-
-    return null;
-  };
-
   return (
     <HStack space={3}>
       {getReposts()}
       {getQuotes()}
       {(features.emojiReacts || features.emojiReactsMastodon) ? getEmojiReacts() : getFavourites()}
-      {getZaps()}
       {getDislikes()}
     </HStack>
   );

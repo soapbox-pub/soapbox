@@ -23,10 +23,6 @@ const statusPleromaSchema = z.object({
   quote_visible: z.boolean().catch(true),
 });
 
-const statusDittoSchema = z.object({
-  external_url: z.string().optional().catch(undefined),
-});
-
 const baseStatusSchema = z.object({
   account: accountSchema,
   application: z.object({
@@ -53,7 +49,6 @@ const baseStatusSchema = z.object({
   muted: z.coerce.boolean(),
   pinned: z.coerce.boolean(),
   pleroma: statusPleromaSchema.optional().catch(undefined),
-  ditto: statusDittoSchema.optional().catch(undefined),
   reactions: filteredArray(emojiReactionSchema),
   poll: pollSchema.nullable().catch(null),
   quote: z.literal(null).catch(null),
@@ -71,10 +66,6 @@ const baseStatusSchema = z.object({
   uri: z.string().url().catch(''),
   url: z.string().url().catch(''),
   visibility: z.string().catch('public'),
-  zapped: z.coerce.boolean(),
-  zaps_amount: z.number().catch(0),
-  zapped_cashu: z.coerce.boolean(),
-  zaps_amount_cashu: z.number().catch(0),
 });
 
 type BaseStatus = z.infer<typeof baseStatusSchema>;

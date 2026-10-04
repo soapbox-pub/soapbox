@@ -6,12 +6,10 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, MfaRequiredError, verifyCredentials } from '@/actions/auth.ts';
 import { fetchInstance } from '@/actions/instance.ts';
-import { openModal } from '@/actions/modals.ts';
 import { openSidebar } from '@/actions/sidebar.ts';
 import SiteLogo from '@/components/site-logo.tsx';
 import Avatar from '@/components/ui/avatar.tsx';
 import Button from '@/components/ui/button.tsx';
-import Counter from '@/components/ui/counter.tsx';
 import Form from '@/components/ui/form.tsx';
 import HStack from '@/components/ui/hstack.tsx';
 import IconButton from '@/components/ui/icon-button.tsx';
@@ -23,7 +21,6 @@ import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { useRegistrationStatus } from '@/hooks/useRegistrationStatus.ts';
-import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 
 import ProfileDropdown from './profile-dropdown.tsx';
 
@@ -43,7 +40,6 @@ const Navbar = () => {
   const { isOpen } = useRegistrationStatus();
   const { account } = useOwnAccount();
   const node = useRef(null);
-  const settingsNotifications = useSettingsNotifications();
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
@@ -51,10 +47,6 @@ const Navbar = () => {
   const [mfaToken, setMfaToken] = useState<string>();
 
   const onOpenSidebar = () => dispatch(openSidebar());
-
-  const handleNostrLogin = async () => {
-    dispatch(openModal('NOSTR_LOGIN'));
-  };
 
   const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
@@ -94,11 +86,6 @@ const Navbar = () => {
           {account && (
             <div className='absolute inset-y-0 left-0 flex items-center lg:hidden rtl:left-auto rtl:right-0'>
               <button onClick={onOpenSidebar} className='relative'>
-                {settingsNotifications.size ? (
-                  <span className='absolute -right-3 -top-1 z-10 flex h-5 min-w-[20px] shrink-0 items-center justify-center whitespace-nowrap break-words'>
-                    <Counter count={settingsNotifications.size} />
-                  </span>
-                ) : null}
                 <Avatar src={account.avatar} size={34} />
               </button>
             </div>
@@ -136,61 +123,49 @@ const Navbar = () => {
                 </div>
               ) : (
                 <>
-                  {features.nostrSignup ? (
-                    <div className='hidden items-center xl:flex'>
-                      <Button
-                        theme='primary'
-                        onClick={handleNostrLogin}
-                        disabled={isLoading}
-                      >
-                        {intl.formatMessage(messages.login)}
-                      </Button>
-                    </div>
-                  ) : (
-                    <Form className='hidden items-center space-x-2 xl:flex rtl:space-x-reverse' onSubmit={handleSubmit}>
-                      <Input
-                        required
-                        value={username}
-                        onChange={(event) => setUsername(event.target.value)}
-                        type='text'
-                        placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
-                        className='max-w-[200px]'
-                      />
+                  <Form className='hidden items-center space-x-2 xl:flex rtl:space-x-reverse' onSubmit={handleSubmit}>
+                    <Input
+                      required
+                      value={username}
+                      onChange={(event) => setUsername(event.target.value)}
+                      type='text'
+                      placeholder={intl.formatMessage(features.logInWithUsername ? messages.username : messages.email)}
+                      className='max-w-[200px]'
+                    />
 
-                      <Input
-                        required
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        type='password'
-                        placeholder={intl.formatMessage(messages.password)}
-                        className='max-w-[200px]'
-                      />
+                    <Input
+                      required
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      type='password'
+                      placeholder={intl.formatMessage(messages.password)}
+                      className='max-w-[200px]'
+                    />
 
-                      <Link to='/reset-password'>
-                        <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
-                          <IconButton
-                            src={helpIcon}
-                            className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
-                            iconClassName='h-5 w-5'
-                          />
-                        </Tooltip>
-                      </Link>
+                    <Link to='/reset-password'>
+                      <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
+                        <IconButton
+                          src={helpIcon}
+                          className='cursor-pointer bg-transparent text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-200'
+                          iconClassName='h-5 w-5'
+                        />
+                      </Tooltip>
+                    </Link>
 
-                      <Button
-                        theme='primary'
-                        type='submit'
-                        disabled={isLoading}
-                      >
-                        {intl.formatMessage(messages.login)}
-                      </Button>
-                    </Form>
-                  )}
+                    <Button
+                      theme='primary'
+                      type='submit'
+                      disabled={isLoading}
+                    >
+                      {intl.formatMessage(messages.login)}
+                    </Button>
+                  </Form>
 
                   <div className='space-x-1.5 xl:hidden'>
                     <Button
                       theme='tertiary'
                       size='sm'
-                      {...(features.nostrSignup ? { onClick: handleNostrLogin } : { to: '/login' })}
+                      to='/login'
                     >
                       <FormattedMessage id='account.login' defaultMessage='Log in' />
                     </Button>

@@ -4,11 +4,10 @@ import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials, switchAccount, MfaRequiredError } from '@/actions/auth.ts';
 import { fetchInstance } from '@/actions/instance.ts';
-import { closeModal, openModal } from '@/actions/modals.ts';
+import { closeModal } from '@/actions/modals.ts';
 import { BigCard } from '@/components/big-card.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { getRedirectUrl } from '@/utils/redirect.ts';
 
@@ -21,7 +20,6 @@ const LoginPage = () => {
 
   const me = useAppSelector((state) => state.me);
   const instance = useInstance();
-  const { nostrSignup } = useFeatures();
 
   const token = new URLSearchParams(window.location.search).get('token');
 
@@ -61,11 +59,6 @@ const LoginPage = () => {
     setIsLoading(true);
     event.preventDefault();
   };
-
-  if (nostrSignup) {
-    setTimeout(() => dispatch(openModal('NOSTR_LOGIN')), 100);
-    return <Redirect to='/' />;
-  }
 
   if (instance.isNotFound) {
     return <Redirect to='/login/external' />;

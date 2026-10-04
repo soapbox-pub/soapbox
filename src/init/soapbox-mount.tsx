@@ -29,21 +29,14 @@ const SoapboxMount = () => {
 
   const soapboxConfig = useSoapboxConfig();
 
-  const showCaptcha = account?.source?.ditto.captcha_solved === false;
   const needsOnboarding = useAppSelector(state => state.onboarding.needsOnboarding);
   const showOnboarding = account && needsOnboarding;
 
   useEffect(() => {
-    if (showCaptcha) {
-      dispatch(openModal('CAPTCHA'));
-    }
-  }, [showCaptcha]);
-
-  useEffect(() => {
-    if (showOnboarding && !showCaptcha) {
+    if (showOnboarding) {
       dispatch(openModal('ONBOARDING'));
     }
-  }, [showOnboarding, showCaptcha]);
+  }, [showOnboarding]);
 
   const { redirectRootNoLogin, gdpr } = soapboxConfig;
 

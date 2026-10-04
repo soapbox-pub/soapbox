@@ -7,7 +7,6 @@ import HStack from '@/components/ui/hstack.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
 import VerificationBadge from '@/components/verification-badge.tsx';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useSuggestions } from '@/queries/suggestions.ts';
 import { emojifyText } from '@/utils/emojify.tsx';
 
@@ -75,9 +74,8 @@ interface IFeedSuggestions {
 
 const FeedSuggestions: React.FC<IFeedSuggestions> = ({ statusId, onMoveUp, onMoveDown }) => {
   const intl = useIntl();
-  const features = useFeatures();
 
-  const { data: suggestedProfiles, isLoading } = useSuggestions({ local: features.suggestionsLocal });
+  const { data: suggestedProfiles, isLoading } = useSuggestions();
 
   if (!isLoading && suggestedProfiles.length === 0) return null;
 

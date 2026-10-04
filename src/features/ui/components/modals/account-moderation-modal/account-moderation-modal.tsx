@@ -2,9 +2,8 @@ import externalLinkIcon from '@tabler/icons/outline/external-link.svg';
 import { ChangeEventHandler, useState } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
-import { revokeName, setBadges as saveBadges } from '@/actions/admin.ts';
+import { setBadges as saveBadges } from '@/actions/admin.ts';
 import { deactivateUserModal, deleteUserModal } from '@/actions/moderation.tsx';
-import { HTTPError } from '@/api/HTTPError.ts';
 import { useSuggest, useVerify } from '@/api/hooks/admin/index.ts';
 import { useAccount } from '@/api/hooks/index.ts';
 import Account from '@/components/account.tsx';
@@ -34,7 +33,6 @@ const messages = defineMessages({
   userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
   userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
   badgesSaved: { id: 'admin.users.badges_saved_message', defaultMessage: 'Custom badges updated.' },
-  revokedName: { id: 'admin.users.revoked_name_message', defaultMessage: 'Name revoked.' },
 });
 
 interface IAccountModerationModal {
@@ -98,16 +96,6 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
     dispatch(deactivateUserModal(intl, account.id));
   };
 
-  const handleRevokeName = () => {
-    dispatch(revokeName(account.id))
-      .then(() => toast.success(intl.formatMessage(messages.revokedName)))
-      .catch((error) => {
-        if (error instanceof HTTPError) {
-          toast.showAlertForError(error);
-        }
-      });
-  };
-
   const handleDelete = () => {
     dispatch(deleteUserModal(intl, account.id));
   };
@@ -134,7 +122,7 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
         </OutlineBox>
 
         <List>
-          {(ownAccount.admin && (account.local || features.nostr)) && (
+          {(ownAccount.admin && account.local) && (
             <ListItem label={<FormattedMessage id='account_moderation_modal.fields.account_role' defaultMessage='Staff level' />}>
               <div className='w-auto'>
                 <StaffRolePicker account={account} />
@@ -171,13 +159,6 @@ const AccountModerationModal: React.FC<IAccountModerationModal> = ({ onClose, ac
         </List>
 
         <List>
-          {features.revokeName && (
-            <ListItem
-              label={<FormattedMessage id='account_moderation_modal.fields.revoke_name' defaultMessage='Revoke name' />}
-              onClick={handleRevokeName}
-            />
-          )}
-
           <ListItem
             label={<FormattedMessage id='account_moderation_modal.fields.deactivate' defaultMessage='Deactivate account' />}
             onClick={handleDeactivate}

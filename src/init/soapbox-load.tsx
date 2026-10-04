@@ -5,9 +5,6 @@ import { IntlProvider } from 'react-intl';
 import { fetchMe } from '@/actions/me.ts';
 import { fetchSoapboxConfig } from '@/actions/soapbox.ts';
 import LoadingScreen from '@/components/loading-screen.tsx';
-import { useNostr } from '@/contexts/nostr-context.tsx';
-import { useBunker } from '@/hooks/nostr/useBunker.ts';
-import { useSigner } from '@/hooks/nostr/useSigner.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
@@ -44,13 +41,6 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const nostr = useNostr();
-  const signer = useSigner();
-
-  const nostrLoading = Boolean(nostr.isRelayLoading || signer.isLoading);
-
-  useBunker();
-
   /** Whether to display a loading indicator. */
   const showLoading = [
     me === null,
@@ -59,7 +49,6 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
     localeLoading,
     instance.isLoading,
     swUpdating,
-    nostrLoading,
   ].some(Boolean);
 
   // Load the user's locale
@@ -72,7 +61,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
 
   // Load initial data from the API
   useEffect(() => {
-    if (!instance.isLoading && !nostrLoading) {
+    if (!instance.isLoading) {
       dispatch(loadInitial()).then(() => {
         setIsLoaded(true);
       }).catch((error) => {
@@ -80,7 +69,7 @@ const SoapboxLoad: React.FC<ISoapboxLoad> = ({ children }) => {
         setIsLoaded(true);
       });
     }
-  }, [instance.isLoading, nostrLoading]);
+  }, [instance.isLoading]);
 
   // intl is part of loading.
   // It's important nothing in here depends on intl.

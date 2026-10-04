@@ -5,7 +5,6 @@ import { openModal } from '@/actions/modals.ts';
 import HoverRefWrapper from '@/components/hover-ref-wrapper.tsx';
 import HoverStatusWrapper from '@/components/hover-status-wrapper.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { shortenNostr } from '@/utils/nostr.ts';
 
 import type { Status } from '@/types/entities.ts';
 
@@ -56,7 +55,7 @@ const StatusReplyMentions: React.FC<IStatusReplyMentions> = ({ status, hoverable
         className='inline-block max-w-[200px] truncate align-bottom text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue' style={{ direction: 'ltr' }}
         onClick={(e) => e.stopPropagation()}
       > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
-        @{shortenNostr(account.username)}
+        @{account.username}
       </Link>
     );
 

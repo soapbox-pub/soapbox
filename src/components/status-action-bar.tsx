@@ -4,7 +4,6 @@ import atIcon from '@tabler/icons/outline/at.svg';
 import banIcon from '@tabler/icons/outline/ban.svg';
 import bellOffIcon from '@tabler/icons/outline/bell-off.svg';
 import bellIcon from '@tabler/icons/outline/bell.svg';
-import boltIcon from '@tabler/icons/outline/bolt.svg';
 import bookmarkOffIcon from '@tabler/icons/outline/bookmark-off.svg';
 import bookmarkIcon from '@tabler/icons/outline/bookmark.svg';
 import clipboardCopyIcon from '@tabler/icons/outline/clipboard-copy.svg';
@@ -141,7 +140,6 @@ const messages = defineMessages({
   unpin: { id: 'status.unpin', defaultMessage: 'Unpin from profile' },
   unpinFromGroup: { id: 'status.unpin_to_group', defaultMessage: 'Unpin from Group' },
   view: { id: 'toast.view', defaultMessage: 'View' },
-  zap: { id: 'status.zap', defaultMessage: 'Zap' },
 });
 
 interface IStatusActionBar {
@@ -222,14 +220,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       dispatch(toggleDislike(status));
     } else {
       onOpenUnauthorizedModal('DISLIKE');
-    }
-  };
-
-  const handleZapClick: React.EventHandler<React.MouseEvent> = (e) => {
-    if (me) {
-      dispatch(openModal('PAY_REQUEST', { status, account: status.account }));
-    } else {
-      onOpenUnauthorizedModal('PAY_REQUEST');
     }
   };
 
@@ -470,14 +460,13 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
       }
     }
 
-    if (features.federating && (status.ditto?.get('external_url') || !account.local)) {
-      const externalNostrUrl: string | undefined = status.ditto?.get('external_url');
-      const { hostname: domain } = new URL(externalNostrUrl || status.uri);
+    if (features.federating && !account.local) {
+      const { hostname: domain } = new URL(status.uri);
 
       menu.push({
         text: intl.formatMessage(messages.external, { domain }),
         icon: externalLinkIcon,
-        href: externalNostrUrl || status.uri,
+        href: status.uri,
         target: '_blank',
       });
     }
@@ -748,8 +737,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
   }
 
   const canShare = ('share' in navigator) && (status.visibility === 'public' || status.visibility === 'group');
-  const acceptsZaps = status.account.ditto.accepts_zaps === true;
-  const acceptsZapsCashu = status.account.ditto.accepts_zaps_cashu === true;
 
   const spacing: {
     [key: string]: React.ComponentProps<typeof HStack>['space'];
@@ -830,19 +817,6 @@ const StatusActionBar: React.FC<IStatusActionBar> = ({
             active={status.disliked}
             count={status.dislikes_count}
             theme={statusActionButtonTheme}
-          />
-        )}
-
-        {(acceptsZaps || acceptsZapsCashu) && (
-          <StatusActionButton
-            title={intl.formatMessage(messages.zap)}
-            icon={boltIcon}
-            color='accent'
-            filled
-            onClick={handleZapClick}
-            active={status.zapped_cashu || status.zapped}
-            theme={statusActionButtonTheme}
-            count={(status?.zaps_amount ?? 0) / 1000 + (status?.zaps_amount_cashu ?? 0)}
           />
         )}
 

@@ -89,13 +89,6 @@ const Dashboard: React.FC = () => {
       </DashCounters>
 
       <List>
-        {account.admin && features.nostr && (
-          <ListItem
-            to='/soapbox/admin/ditto-server'
-            label={<FormattedMessage id='column.admin.ditto_server.manage' defaultMessage='Manage Ditto Server' />}
-          />
-        )}
-
         {account.admin && (
           <ListItem
             to='/soapbox/config'
@@ -107,13 +100,6 @@ const Dashboard: React.FC = () => {
           to='/soapbox/admin/log'
           label={<FormattedMessage id='column.admin.moderation_log' defaultMessage='Moderation Log' />}
         />
-
-        {features.nostr && (
-          <ListItem
-            to='/soapbox/admin/zap-split'
-            label={<FormattedMessage id='column.admin.zap_split' defaultMessage='Manage Zap Split' />}
-          />
-        )}
 
         {features.adminAnnouncements && (
           <ListItem
@@ -133,13 +119,6 @@ const Dashboard: React.FC = () => {
           <ListItem
             to='/soapbox/admin/domains'
             label={<FormattedMessage id='column.admin.domains' defaultMessage='Domains' />}
-          />
-        )}
-
-        {features.nostr && (
-          <ListItem
-            to='/soapbox/admin/nostr/relays'
-            label={<FormattedMessage id='column.admin.nostr_relays' defaultMessage='Relays' />}
           />
         )}
       </List>

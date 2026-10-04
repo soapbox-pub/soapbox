@@ -1,5 +1,4 @@
 import globeIcon from '@tabler/icons/outline/globe.svg';
-import trendIcon from '@tabler/icons/outline/trending-up.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
 import { useEffect, useMemo, useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
@@ -13,19 +12,16 @@ import Stack from '@/components/ui/stack.tsx';
 import Tabs from '@/components/ui/tabs.tsx';
 import SearchResults from '@/features/compose/components/search-results.tsx';
 import Search from '@/features/compose/components/search.tsx';
-import ExploreNostr from '@/features/explore/components/nostr.tsx';
 import AccountsCarousel from '@/features/explore/components/popular-accounts.tsx';
 import { useSearchTokens } from '@/features/explore/useSearchTokens.ts';
 import { PublicTimeline } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { SearchFilter } from '@/reducers/search.ts';
 
 const messages = defineMessages({
   heading: { id: 'column.explore', defaultMessage: 'Explore' },
   accounts: { id: 'search_results.accounts', defaultMessage: 'Accounts' },
   statuses: { id: 'search_results.posts', defaultMessage: 'Posts' },
-  trends: { id: 'search_results.trends', defaultMessage: 'Trends' },
 });
 
 const PostsTab = () => {
@@ -40,14 +36,6 @@ const PostsTab = () => {
         </>
       )}
 
-    </Stack>
-  );
-};
-
-const TrendsTab = () => {
-  return (
-    <Stack>
-      <SearchResults />
     </Stack>
   );
 };
@@ -72,7 +60,6 @@ const AccountsTab = () => {
 
 
 const ExplorePage = () => {
-  const features = useFeatures();
   const intl = useIntl();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -82,7 +69,6 @@ const ExplorePage = () => {
 
   const selectedValue = useMemo(() => {
     if (path === '/explore') return 'posts';
-    if (path === '/explore/trends') return 'statuses';
     return 'accounts';
   }, [path]);
 
@@ -102,12 +88,6 @@ const ExplorePage = () => {
         name: 'posts',
         icon: globeIcon,
       },
-      ...(features.nostr ? [{
-        text: intl.formatMessage(messages.trends),
-        action: () => handleTabs('/trends', 'statuses'),
-        name: 'statuses',
-        icon: trendIcon,
-      }] : []),
       {
         text: intl.formatMessage(messages.accounts),
         action: () => handleTabs('/accounts', 'accounts'),
@@ -139,16 +119,8 @@ const ExplorePage = () => {
           {renderFilterBar()}
         </div>
 
-        {features.nostr && path === '/explore' && (
-          <div className='sticky top-11 z-50 bg-white black:bg-black dark:bg-primary-900 lg:top-0'>
-            <ExploreNostr />
-            <Divider />
-          </div>
-        )}
-
         <Switch>
           <Route exact path='/explore' component={PostsTab} />
-          {features.nostr && <Route path='/explore/trends' component={TrendsTab} />}
           <Route path='/explore/accounts' component={AccountsTab} />
         </Switch>
 

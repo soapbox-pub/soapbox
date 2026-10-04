@@ -81,11 +81,6 @@ const participationAcceptedNotificationSchema = baseNotificationSchema.extend({
   status: statusSchema,
 });
 
-const nameGrantNotificationSchema = baseNotificationSchema.extend({
-  type: z.literal('ditto:name_grant'),
-  name: z.string(),
-});
-
 const notificationSchema = z.discriminatedUnion('type', [
   mentionNotificationSchema,
   statusNotificationSchema,
@@ -101,7 +96,6 @@ const notificationSchema = z.discriminatedUnion('type', [
   eventReminderNotificationSchema,
   participationRequestNotificationSchema,
   participationAcceptedNotificationSchema,
-  nameGrantNotificationSchema,
 ]);
 
 type Notification = z.infer<typeof notificationSchema>;

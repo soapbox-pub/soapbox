@@ -10,7 +10,6 @@ import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { statusToMentionsAccountIdsArray } from '@/reducers/compose.ts';
 import { makeGetStatus } from '@/selectors/index.ts';
-import { shortenNostr } from '@/utils/nostr.ts';
 
 import type { Status as StatusEntity } from '@/types/entities.ts';
 
@@ -63,7 +62,7 @@ const ReplyMentions: React.FC<IReplyMentions> = ({ composeId }) => {
     const username = acct.split('@')[0];
     return (
       <span className='inline-block text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue'>{/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
-        @{shortenNostr(username)}
+        @{username}
       </span>
     );
   }).toArray();

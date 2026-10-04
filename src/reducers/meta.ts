@@ -1,7 +1,6 @@
 import { Record as ImmutableRecord } from 'immutable';
 
 import { fetchInstance } from '@/actions/instance.ts';
-import { NOSTR_PUBKEY_SET } from '@/actions/nostr.ts';
 import { SW_UPDATING } from '@/actions/sw.ts';
 
 import type { AnyAction } from 'redux';
@@ -11,8 +10,6 @@ const ReducerRecord = ImmutableRecord({
   instance_fetch_failed: false,
   /** Whether the ServiceWorker is currently updating (and we should display a loading screen). */
   swUpdating: false,
-  /** User's nostr pubkey. */
-  pubkey: undefined as string | undefined,
 });
 
 export default function meta(state = ReducerRecord(), action: AnyAction) {
@@ -24,8 +21,6 @@ export default function meta(state = ReducerRecord(), action: AnyAction) {
       return state;
     case SW_UPDATING:
       return state.set('swUpdating', action.isUpdating);
-    case NOSTR_PUBKEY_SET:
-      return state.set('pubkey', action.pubkey);
     default:
       return state;
   }

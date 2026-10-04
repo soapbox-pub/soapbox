@@ -9,7 +9,6 @@ const skinToneSchema = z.union([
 ]);
 
 const settingsSchema = z.object({
-  discloseClient: z.boolean().catch(true),
   onboarded: z.boolean().catch(false),
   skinTone: skinToneSchema.catch(1),
   reduceMotion: z.boolean().catch(false),
@@ -74,8 +73,6 @@ const settingsSchema = z.object({
       show: z.boolean().catch(true),
     }),
   }),
-  /** Settings notifications that have been dismissed. See `useSettingsNotifications` hook. */
-  dismissedSettingsNotifications: z.array(z.string()).catch([]),
   frequentlyUsedEmojis: z.record(
     z.string(),
     z.number().int().nonnegative(),

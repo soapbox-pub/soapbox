@@ -17,8 +17,6 @@ const NOTIFICATION_TYPES = [
   'pleroma:event_reminder',
   'pleroma:participation_request',
   'pleroma:participation_accepted',
-  'ditto:name_grant',
-  'ditto:zap',
 ] as const;
 
 /** Notification types to exclude from the "All" filter by default. */

@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useCompose } from '@/hooks/useCompose.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
-import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
-import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 import { selectOwnAccount } from '@/selectors/index.ts';
 
 import Warning from '../components/warning.tsx';
@@ -19,9 +16,6 @@ interface IWarningWrapper {
 const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
   const compose = useCompose(composeId);
   const scheduledStatusCount = useAppSelector((state) => state.scheduled_statuses.size);
-  const { account } = useOwnAccount();
-  const settingsNotifications = useSettingsNotifications();
-  const features = useFeatures();
 
   const needsLockWarning = useAppSelector((state) => compose.privacy === 'private' && !selectOwnAccount(state)!.locked);
   const hashtagWarning = (compose.privacy !== 'public' && compose.privacy !== 'group') && APPROX_HASHTAG_RE.test(compose.text);
@@ -44,31 +38,6 @@ const WarningWrapper: React.FC<IWarningWrapper> = ({ composeId }) => {
             ) }}
           />)
         }
-      />
-    );
-  }
-
-  if (features.nostr && account?.source?.nostr?.nip05 === undefined) {
-    return (
-      <Warning
-        message={(settingsNotifications.has('needsNip05')) ? (
-          <FormattedMessage
-            id='compose_form.nip05.warning'
-            defaultMessage={'You don\'t have a username configured. {click} to set one up.'}
-            values={{
-              click: (
-                <Link to='/settings/identity'>
-                  <FormattedMessage id='compose_form.nip05.warning.click' defaultMessage='Click here' />
-                </Link>
-              ),
-            }}
-          />
-        ) : (
-          <FormattedMessage
-            id='compose_form.nip05.pending'
-            defaultMessage='Your username request is under review.'
-          />
-        )}
       />
     );
   }

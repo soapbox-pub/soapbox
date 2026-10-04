@@ -1,9 +1,8 @@
 import { useFloating } from '@floating-ui/react';
-import flameIcon from '@tabler/icons/filled/flame.svg';
 import calendarIcon from '@tabler/icons/outline/calendar.svg';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
-import { useIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { fetchRelationships } from '@/actions/accounts.ts';
@@ -34,10 +33,6 @@ import { dateFormatOptions } from './relative-timestamp.tsx';
 
 import type { Account, PatronUser } from '@/schemas/index.ts';
 import type { AppDispatch } from '@/store.ts';
-
-const messages = defineMessages({
-  streak: { id: 'account.streak', defaultMessage: 'Day Streak' },
-});
 
 const getBadges = (
   account?: Pick<Account, 'admin' | 'moderator'>,
@@ -195,19 +190,6 @@ export const ProfileHoverCard: React.FC<IProfileHoverCard> = ({ visible = true }
                     </Text>
                   </HStack>
                 </Link>
-              )}
-
-              {account.ditto?.streak?.days > 0 && (
-                <HStack alignItems='center'>
-                  <Text theme='primary'>
-                    <span role='img' aria-label={intl.formatMessage(messages.streak)}>
-                      <Icon src={flameIcon} className='size-4' />
-                    </span>
-                  </Text>
-                  <Text weight='bold' size='sm' className='text-black'>
-                    {shortNumberFormat(account.ditto.streak.days)}
-                  </Text>
-                </HStack>
               )}
             </HStack>
 

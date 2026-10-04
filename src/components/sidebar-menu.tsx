@@ -13,7 +13,6 @@ import plusIcon from '@tabler/icons/outline/plus.svg';
 import settingsIcon from '@tabler/icons/outline/settings.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import userIcon from '@tabler/icons/outline/user.svg';
-import walletIcon from '@tabler/icons/outline/wallet.svg';
 import xIcon from '@tabler/icons/outline/x.svg';
 import clsx from 'clsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -35,7 +34,6 @@ import ProfileStats from '@/features/ui/components/profile-stats.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
-import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 import { makeGetOtherAccounts } from '@/selectors/index.ts';
 
 import type { Account as AccountEntity } from '@/schemas/account.ts';
@@ -112,7 +110,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
   const settings = useAppSelector((state) => getSettings(state));
   const followRequestsCount = useAppSelector((state) => state.user_lists.follow_requests.items.count());
-  const settingsNotifications = useSettingsNotifications();
 
   const closeButtonRef = useRef(null);
 
@@ -214,16 +211,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     onClick={onClose}
                   />
 
-                  {features.nostr && (
-                    <SidebarLink
-                      to={'/wallet'}
-                      icon={walletIcon}
-                      text={<FormattedMessage id='tabs_bar.wallet' defaultMessage='Wallet' />}
-                      onClick={onClose}
-                    />
-                  )
-                  }
-
                   {(account.locked || followRequestsCount > 0) && (
                     <SidebarLink
                       to='/follow_requests'
@@ -301,7 +288,6 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                     icon={settingsIcon}
                     text={intl.formatMessage(messages.preferences)}
                     onClick={onClose}
-                    count={settingsNotifications.size}
                   />
 
                   {features.federating && (

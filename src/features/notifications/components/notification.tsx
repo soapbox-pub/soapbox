@@ -1,6 +1,5 @@
 import atIcon from '@tabler/icons/outline/at.svg';
 import bellRingingIcon from '@tabler/icons/outline/bell-ringing.svg';
-import boltIcon from '@tabler/icons/outline/bolt.svg';
 import briefcaseIcon from '@tabler/icons/outline/briefcase.svg';
 import calendarEventIcon from '@tabler/icons/outline/calendar-event.svg';
 import calendarTimeIcon from '@tabler/icons/outline/calendar-time.svg';
@@ -10,24 +9,20 @@ import messagesIcon from '@tabler/icons/outline/messages.svg';
 import moodHappyIcon from '@tabler/icons/outline/mood-happy.svg';
 import pencilIcon from '@tabler/icons/outline/pencil.svg';
 import repeatIcon from '@tabler/icons/outline/repeat.svg';
-import userCheckIcon from '@tabler/icons/outline/user-check.svg';
 import userPlusIcon from '@tabler/icons/outline/user-plus.svg';
 import { useCallback } from 'react';
-import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage, FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl, IntlShape, MessageDescriptor, defineMessage } from 'react-intl';
 import { Link, useHistory } from 'react-router-dom';
 
 import { mentionCompose } from '@/actions/compose.ts';
 import { favourite, unreblog, unfavourite } from '@/actions/interactions.ts';
-import { patchMe } from '@/actions/me.ts';
 import { openModal } from '@/actions/modals.ts';
 import { getSettings } from '@/actions/settings.ts';
 import { hideStatus, revealStatus } from '@/actions/statuses.ts';
 import Icon from '@/components/icon.tsx';
 import Status from '@/components/status.tsx';
-import Button from '@/components/ui/button.tsx';
 import Emoji from '@/components/ui/emoji.tsx';
 import HStack from '@/components/ui/hstack.tsx';
-import Stack from '@/components/ui/stack.tsx';
 import Text from '@/components/ui/text.tsx';
 import AccountContainer from '@/containers/account-container.tsx';
 import StatusContainer from '@/containers/status-container.tsx';
@@ -37,7 +32,6 @@ import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { useReblog } from '@/hooks/useReblog.ts';
 import { makeGetNotification } from '@/selectors/index.ts';
-import toast from '@/toast.tsx';
 import { emojifyText } from '@/utils/emojify.tsx';
 import { NotificationType, validType } from '@/utils/notification.ts';
 
@@ -82,8 +76,6 @@ const icons: Record<NotificationType, string> = {
   'pleroma:event_reminder': calendarTimeIcon,
   'pleroma:participation_request': calendarEventIcon,
   'pleroma:participation_accepted': calendarEventIcon,
-  'ditto:name_grant': userCheckIcon,
-  'ditto:zap': boltIcon,
 };
 
 const nameMessage = defineMessage({
@@ -160,28 +152,14 @@ const notificationMessages: Record<NotificationType, MessageDescriptor> = define
     id: 'notification.pleroma:participation_accepted',
     defaultMessage: 'You were accepted to join the event',
   },
-  'ditto:name_grant': {
-    id: 'notification.ditto:name_grant',
-    defaultMessage: 'You were granted the name {acct}',
-  },
-  'ditto:zap': {
-    id: 'notification.ditto:zap',
-    defaultMessage: '{name} zapped you {amount} sats',
-  },
-});
-
-const messages = defineMessages({
-  updateNameSuccess: { id: 'notification.update_name_success', defaultMessage: 'Name updated successfully' },
 });
 
 const buildMessage = (
   intl: IntlShape,
   type: NotificationType,
   account: AccountEntity,
-  acct: string | undefined,
   targetName: string,
   instanceTitle: string,
-  amount: number,
 ): React.ReactNode => {
   const link = buildLink(account);
   const name = intl.formatMessage(nameMessage, {
@@ -190,8 +168,6 @@ const buildMessage = (
   });
 
   return intl.formatMessage(notificationMessages[type], {
-    acct,
-    amount,
     name,
     targetName,
     instance: instanceTitle,
@@ -312,11 +288,6 @@ const Notification: React.FC<INotification> = (props) => {
     }
   };
 
-  const updateName = async (name: string) => {
-    await dispatch(patchMe({ nip05: name }));
-    toast.success(messages.updateNameSuccess);
-  };
-
   const renderIcon = (): React.ReactNode => {
     if (type === 'pleroma:emoji_reaction' && notification.emoji) {
       if (notification.emoji_url) {
@@ -339,7 +310,6 @@ const Notification: React.FC<INotification> = (props) => {
   const renderContent = () => {
     switch (type as NotificationType) {
       case 'follow':
-      case 'ditto:zap':
         if (!status) {
           return account && typeof account === 'object' ? (
             <AccountContainer
@@ -413,32 +383,19 @@ const Notification: React.FC<INotification> = (props) => {
             showGroup={false}
           />
         ) : null;
-      case 'ditto:name_grant':
-        return (
-          <Stack className='p-4'>
-            <Button onClick={() => updateName(notification.name)}>
-              <FormattedMessage
-                id='notification.set_name' defaultMessage='Set name to {name}'
-                values={{ name: notification.name }}
-              />
-            </Button>
-          </Stack>
-        );
       default:
         return null;
     }
   };
 
-  const acct = notification.name;
   const targetName = notification.target && typeof notification.target === 'object' ? notification.target.acct : '';
 
-  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, acct, targetName, instance.title, notification.amount / 1000) : null;
+  const message: React.ReactNode = validType(type) && account && typeof account === 'object' ? buildMessage(intl, type, account, targetName, instance.title) : null;
 
   const ariaLabel = validType(type) ? (
     notificationForScreenReader(
       intl,
       intl.formatMessage(notificationMessages[type], {
-        acct,
         name: account && typeof account === 'object' ? account.acct : '',
         targetName,
       }),

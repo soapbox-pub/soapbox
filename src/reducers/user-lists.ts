@@ -2,7 +2,6 @@ import {
   Map as ImmutableMap,
   OrderedSet as ImmutableOrderedSet,
   Record as ImmutableRecord,
-  List as ImmutableList,
 } from 'immutable';
 import { AnyAction } from 'redux';
 
@@ -65,8 +64,6 @@ import {
   FAVOURITES_EXPAND_SUCCESS,
   DISLIKES_FETCH_SUCCESS,
   REACTIONS_FETCH_SUCCESS,
-  ZAPS_FETCH_SUCCESS,
-  ZAPS_EXPAND_SUCCESS,
 } from '@/actions/interactions.ts';
 import {
   NOTIFICATIONS_UPDATE,
@@ -93,18 +90,6 @@ const ReactionListRecord = ImmutableRecord({
   isLoading: false,
 });
 
-export const ZapRecord = ImmutableRecord({
-  account: '',
-  comment: '',
-  amount: 0, // in millisats
-});
-
-const ZapListRecord = ImmutableRecord({
-  next: null as string | null,
-  items: ImmutableList<Zap>(),
-  isLoading: false,
-});
-
 export const ParticipationRequestRecord = ImmutableRecord({
   account: '',
   participation_message: null as string | null,
@@ -123,7 +108,6 @@ export const ReducerRecord = ImmutableRecord({
   favourited_by: ImmutableMap<string, List>(),
   disliked_by: ImmutableMap<string, List>(),
   reactions: ImmutableMap<string, ReactionList>(),
-  zapped_by: ImmutableMap<string, ZapList>(),
   follow_requests: ListRecord(),
   blocks: ListRecord(),
   mutes: ListRecord(),
@@ -141,12 +125,10 @@ type State = ReturnType<typeof ReducerRecord>;
 export type List = ReturnType<typeof ListRecord>;
 type Reaction = ReturnType<typeof ReactionRecord>;
 type ReactionList = ReturnType<typeof ReactionListRecord>;
-type Zap = ReturnType<typeof ZapRecord>;
-type ZapList = ReturnType<typeof ZapListRecord>;
 type ParticipationRequest = ReturnType<typeof ParticipationRequestRecord>;
 type ParticipationRequestList = ReturnType<typeof ParticipationRequestListRecord>;
 type Items = ImmutableOrderedSet<string>;
-type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'disliked_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests' | 'membership_requests' | 'group_blocks' | 'zapped_by', string];
+type NestedListPath = ['followers' | 'following' | 'reblogged_by' | 'favourited_by' | 'disliked_by' | 'reactions' | 'pinned' | 'birthday_reminders' | 'familiar_followers' | 'event_participations' | 'event_participation_requests' | 'membership_requests' | 'group_blocks', string];
 type ListPath = ['follow_requests' | 'blocks' | 'mutes' | 'directory'];
 
 const normalizeList = (state: State, path: NestedListPath | ListPath, accounts: APIEntity[], next?: string | null) => {
@@ -204,24 +186,6 @@ export default function userLists(state = ReducerRecord(), action: AnyAction) {
           accounts: ImmutableOrderedSet(accounts.map((account: APIEntity) => account.id)),
         }))),
       }));
-    case ZAPS_FETCH_SUCCESS:
-      return state.setIn(['zapped_by', action.id], ZapListRecord({
-        items: ImmutableList(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
-          ...zap,
-          account: account.id,
-        }))), next: action.next,
-      }));
-    case ZAPS_EXPAND_SUCCESS:
-      return state.updateIn(['zapped_by', action.id], map => {
-        return (map as List)
-          .set('next', action.next)
-          .set('isLoading', false)
-          .update('items', list => (list as Items).concat(ImmutableList(action.zaps.map(({ account, ...zap }: APIEntity) => ZapRecord({
-            ...zap,
-            account: account.id,
-          })))));
-      });
-
     case NOTIFICATIONS_UPDATE:
       return action.notification.type === 'follow_request' ? normalizeFollowRequest(state, action.notification) : state;
     case FOLLOW_REQUESTS_FETCH_SUCCESS:

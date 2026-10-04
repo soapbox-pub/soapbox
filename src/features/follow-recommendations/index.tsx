@@ -12,14 +12,10 @@ const messages = defineMessages({
   heading: { id: 'follow_recommendations.heading', defaultMessage: 'Suggested Profiles' },
 });
 
-interface IFollowRecommendations {
-  local?: boolean;
-}
-
-const FollowRecommendations: React.FC<IFollowRecommendations> = ({ local = false }) => {
+const FollowRecommendations: React.FC = () => {
   const intl = useIntl();
 
-  const { data: suggestions, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useSuggestions({ local });
+  const { data: suggestions, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useSuggestions();
 
   const handleLoadMore = debounce(() => {
     if (hasNextPage && !isFetchingNextPage) {

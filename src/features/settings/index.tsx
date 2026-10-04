@@ -2,19 +2,14 @@ import { useEffect } from 'react';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 
 import { fetchMfa } from '@/actions/mfa.ts';
-import CopyableInput from '@/components/copyable-input.tsx';
 import List, { ListItem } from '@/components/list.tsx';
 import { Card, CardBody, CardHeader, CardTitle } from '@/components/ui/card.tsx';
 import { Column } from '@/components/ui/column.tsx';
-import Counter from '@/components/ui/counter.tsx';
-import FormGroup from '@/components/ui/form-group.tsx';
 import Text from '@/components/ui/text.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
-import { useInstance } from '@/hooks/useInstance.ts';
 import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
-import { useSettingsNotifications } from '@/hooks/useSettingsNotifications.ts';
 
 import Preferences from '../preferences/index.tsx';
 
@@ -30,8 +25,6 @@ const messages = defineMessages({
   configureMfa: { id: 'settings.configure_mfa', defaultMessage: 'Configure MFA' },
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
   editProfile: { id: 'settings.edit_profile', defaultMessage: 'Edit Profile' },
-  editIdentity: { id: 'settings.edit_identity', defaultMessage: 'Identity' },
-  editRelays: { id: 'nostr_relays.title', defaultMessage: 'Relays' },
   exportData: { id: 'column.export_data', defaultMessage: 'Export data' },
   importData: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   mfaDisabled: { id: 'mfa.disabled', defaultMessage: 'Disabled' },
@@ -54,8 +47,6 @@ const Settings = () => {
   const mfa = useAppSelector((state) => state.security.get('mfa'));
   const features = useFeatures();
   const { account } = useOwnAccount();
-  const { instance } = useInstance();
-  const settingsNotifications = useSettingsNotifications();
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);
 
@@ -79,15 +70,6 @@ const Settings = () => {
             <ListItem label={intl.formatMessage(messages.editProfile)} to='/settings/profile'>
               <span className='max-w-full truncate'>{displayName}</span>
             </ListItem>
-            {features.nip05 && (
-              <ListItem label={intl.formatMessage(messages.editIdentity)} to='/settings/identity'>
-                <span className='max-w-full truncate'>
-                  {account?.source?.nostr?.nip05}
-                  {settingsNotifications.has('needsNip05') && <Counter count={1} />}
-                </span>
-              </ListItem>
-            )}
-            {features.nostr && <ListItem label={intl.formatMessage(messages.editRelays)} to='/settings/relays' />}
           </List>
         </CardBody>
 
@@ -181,20 +163,6 @@ const Settings = () => {
                   <ListItem label={<Text theme='danger'>{intl.formatMessage(messages.deleteAccount)}</Text>} to='/settings/account' />
                 )}
               </List>
-            </CardBody>
-          </>
-        )}
-
-        {instance.nostr && (
-          <>
-            <CardHeader>
-              <CardTitle title={<FormattedMessage id='nostr_panel.title' defaultMessage='Nostr Relay' />} />
-            </CardHeader>
-
-            <CardBody className='pb-3'>
-              <FormGroup hintText={<FormattedMessage id='nostr_panel.message' defaultMessage='Connect with any Nostr client.' />}>
-                <CopyableInput value={instance.nostr.relay} />
-              </FormGroup>
             </CardBody>
           </>
         )}

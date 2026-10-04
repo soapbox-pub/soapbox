@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useRef } from 'react';
 import { useIntl } from 'react-intl';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { uploadCompose } from '@/actions/compose.ts';
 import Avatar from '@/components/ui/avatar.tsx';
@@ -19,8 +19,6 @@ import {
   BirthdayPanel,
   CtaBanner,
   AnnouncementsPanel,
-  LatestAccountsPanel,
-  PocketWallet,
 } from '@/features/ui/util/async-components.ts';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
@@ -39,7 +37,6 @@ interface IHomePage {
 const HomePage: React.FC<IHomePage> = ({ children }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const { pathname } = useLocation();
 
   const me = useAppSelector(state => state.me);
   const { account } = useOwnAccount();
@@ -49,7 +46,6 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
   const composeId = 'home';
   const composeBlock = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
-  const isGlobalPage = pathname === '/timeline/global';
 
   const hasPatron = soapboxConfig.extensions.getIn(['patron', 'enabled']) === true;
   const hasCrypto = typeof soapboxConfig.cryptoAddresses.getIn([0, 'ticker']) === 'string';
@@ -61,15 +57,6 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
 
   const acct = account?.acct ?? '';
   const avatar = account?.avatar ?? '';
-  const hasWallet = account?.ditto.accepts_zaps_cashu ??  false;
-
-  const renderSuggestions = () => {
-    if (features.suggestionsLocal && !isGlobalPage) {
-      return <LatestAccountsPanel limit={3} />;
-    } else if (features.suggestions) {
-      return <WhoToFollowPanel limit={3} />;
-    }
-  };
 
   return (
     <>
@@ -114,16 +101,15 @@ const HomePage: React.FC<IHomePage> = ({ children }) => {
         {!me && (
           <SignUpPanel />
         )}
-        {me && features.nostr && hasWallet && (
-          <PocketWallet />
-        )}
         {me && features.announcements && (
           <AnnouncementsPanel />
         )}
         {features.trends && (
           <TrendsPanel limit={5} />
         )}
-        {renderSuggestions()}
+        {features.suggestions && (
+          <WhoToFollowPanel limit={3} />
+        )}
         {features.birthdays && (
           <BirthdayPanel limit={10} />
         )}

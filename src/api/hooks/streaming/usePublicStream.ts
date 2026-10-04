@@ -2,15 +2,12 @@ import { useTimelineStream } from './useTimelineStream.ts';
 
 interface UsePublicStreamOpts {
   onlyMedia?: boolean;
-  language?: string;
 }
 
-function usePublicStream({ onlyMedia, language }: UsePublicStreamOpts = {}) {
+function usePublicStream({ onlyMedia }: UsePublicStreamOpts = {}) {
   return useTimelineStream(
     `public${onlyMedia ? ':media' : ''}`,
     `public${onlyMedia ? ':media' : ''}`,
-    null,
-    { enabled: !language }, // TODO: support language streaming
   );
 }
 

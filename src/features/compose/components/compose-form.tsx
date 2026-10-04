@@ -15,7 +15,6 @@ import {
   selectComposeSuggestion,
   uploadCompose,
 } from '@/actions/compose.ts';
-import { openModal } from '@/actions/modals.ts';
 import { useCustomEmojis } from '@/api/hooks/useCustomEmojis.ts';
 import AutosuggestInput, { AutoSuggestion } from '@/components/autosuggest-input.tsx';
 import Button from '@/components/ui/button.tsx';
@@ -29,7 +28,6 @@ import { useCompose } from '@/hooks/useCompose.ts';
 import { useDraggedFiles } from '@/hooks/useDraggedFiles.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
-import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 import { usePrevious } from '@/hooks/usePrevious.ts';
 
 import QuotedStatusContainer from '../containers/quoted-status-container.tsx';
@@ -77,9 +75,6 @@ interface IComposeForm<ID extends string> {
 }
 
 const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickableAreaRef, event, group, extra }: IComposeForm<ID>) => {
-  const { account } = useOwnAccount();
-  const userStreak = account?.ditto.streak.days;
-
   const history = useHistory();
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -160,10 +155,6 @@ const ComposeForm = <ID extends string>({ id, shouldCondense, autoFocus, clickab
 
     dispatch(changeCompose(id, text));
     dispatch(submitCompose(id, { history }));
-
-    if (userStreak === 0 && features.streak) {
-      dispatch(openModal('STREAK'));
-    }
 
     editorRef.current?.dispatchCommand(CLEAR_EDITOR_COMMAND, undefined);
   };

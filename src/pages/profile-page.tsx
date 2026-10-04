@@ -17,7 +17,6 @@ import {
   CtaBanner,
   PinnedAccountsPanel,
   AccountNotePanel,
-  PocketWallet,
 } from '@/features/ui/util/async-components.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
@@ -41,7 +40,6 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
   const { displayFqn } = useSoapboxConfig();
-  const hasWallet = account?.ditto.accepts_zaps_cashu ?? false;
 
   // Fix case of username
   if (account && account.acct !== username) {
@@ -118,10 +116,6 @@ const ProfilePage: React.FC<IProfilePage> = ({ params, children }) => {
       <Layout.Aside>
         {!me && (
           <SignUpPanel />
-        )}
-
-        {me && features.nostr && hasWallet && (
-          <PocketWallet />
         )}
 
         {features.notes && account && account?.id !== me && (

@@ -1,11 +1,7 @@
 import { FormattedMessage } from 'react-intl';
-import { Redirect } from 'react-router-dom';
 
-import { openModal } from '@/actions/modals.ts';
 import { BigCard } from '@/components/big-card.tsx';
 import Text from '@/components/ui/text.tsx';
-import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
-import { useFeatures } from '@/hooks/useFeatures.ts';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { useRegistrationStatus } from '@/hooks/useRegistrationStatus.ts';
 
@@ -14,14 +10,6 @@ import RegistrationForm from './registration-form.tsx';
 const RegistrationPage: React.FC = () => {
   const { instance } = useInstance();
   const { isOpen } = useRegistrationStatus();
-  const { nostrSignup } = useFeatures();
-  const dispatch = useAppDispatch();
-
-  if (nostrSignup) {
-    setTimeout(() => dispatch(openModal('NOSTR_SIGNUP')), 100);
-    return <Redirect to='/' />;
-  }
-
   if (!isOpen) {
     return (
       <BigCard title={<FormattedMessage id='registration.closed_title' defaultMessage='Registrations Closed' />}>

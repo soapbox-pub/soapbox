@@ -1,4 +1,3 @@
-import { useLocation } from 'react-router-dom';
 
 import Layout from '@/components/ui/layout.tsx';
 import LinkFooter from '@/features/ui/components/link-footer.tsx';
@@ -7,11 +6,9 @@ import {
   TrendsPanel,
   SignUpPanel,
   CtaBanner,
-  PocketWallet,
 } from '@/features/ui/util/async-components.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
-import { useOwnAccount } from '@/hooks/useOwnAccount.ts';
 
 interface IDefaultPage {
   children: React.ReactNode;
@@ -20,9 +17,6 @@ interface IDefaultPage {
 const DefaultPage: React.FC<IDefaultPage> = ({ children }) => {
   const me = useAppSelector(state => state.me);
   const features = useFeatures();
-  const { account } = useOwnAccount();
-  const path = useLocation().pathname;
-  const hasPocketWallet = account?.ditto.accepts_zaps_cashu && path !== '/wallet';
 
   return (
     <>
@@ -37,9 +31,6 @@ const DefaultPage: React.FC<IDefaultPage> = ({ children }) => {
       <Layout.Aside>
         {!me && (
           <SignUpPanel />
-        )}
-        {me && features.nostr && hasPocketWallet && (
-          <PocketWallet />
         )}
         {features.trends && (
           <TrendsPanel limit={5} />

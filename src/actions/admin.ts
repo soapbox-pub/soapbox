@@ -172,17 +172,6 @@ function fetchUsers(filters: Record<string, boolean>, page = 1, query?: string |
   };
 }
 
-function revokeName(accountId: string, reportId?: string) {
-  return (_dispatch: AppDispatch, getState: () => RootState) => {
-    const params = {
-      type: 'revoke_name',
-      report_id: reportId,
-    };
-
-    return api(getState).post(`/api/v1/admin/accounts/${accountId}/action`, params);
-  };
-}
-
 function deactivateUsers(accountIds: string[], reportId?: string) {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     return Promise.all(
@@ -433,7 +422,6 @@ export {
   deleteUser,
   approveUser,
   rejectUser,
-  revokeName,
   deleteStatus,
   toggleStatusSensitivity,
   tagUsers,

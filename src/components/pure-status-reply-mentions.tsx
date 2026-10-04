@@ -6,7 +6,6 @@ import HoverRefWrapper from '@/components/hover-ref-wrapper.tsx';
 import HoverStatusWrapper from '@/components/hover-status-wrapper.tsx';
 import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { Status as StatusEntity } from '@/schemas/index.ts';
-import { shortenNostr } from '@/utils/nostr.ts';
 
 interface IPureStatusReplyMentions {
   status: StatusEntity;
@@ -55,7 +54,7 @@ const PureStatusReplyMentions: React.FC<IPureStatusReplyMentions> = ({ status, h
         className='inline-block max-w-[200px] truncate align-bottom text-primary-600 no-underline hover:text-primary-700 hover:underline dark:text-accent-blue dark:hover:text-accent-blue' style={{ direction: 'ltr' }}
         onClick={(e) => e.stopPropagation()}
       > {/* eslint-disable-line formatjs/no-literal-string-in-jsx */}
-        @{shortenNostr(account.username)}
+        @{account.username}
       </Link>
     );
 

@@ -1,4 +1,3 @@
-import { NSchema as n } from '@nostrify/nostrify';
 import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
@@ -36,16 +35,6 @@ const baseAccountSchema = z.object({
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   discoverable: z.boolean().catch(false),
   display_name: z.string().catch(''),
-  ditto: coerceObject({
-    accepts_zaps: z.boolean().catch(false),
-    accepts_zaps_cashu: z.boolean().catch(false),
-    external_url: z.string().optional().catch(undefined),
-    streak: coerceObject({
-      days: z.number().catch(0),
-      start: z.string().datetime().nullable().catch(null),
-      end: z.string().datetime().nullable().catch(null),
-    }),
-  }),
   domain: z.string().optional().catch(undefined),
   emojis: filteredArray(customEmojiSchema),
   fields: filteredArray(fieldSchema),
@@ -64,10 +53,6 @@ const baseAccountSchema = z.object({
     z.string(),
     z.null(),
   ]).catch(null),
-  nostr: coerceObject({
-    pubkey: n.id().optional().catch(undefined),
-    lud16: z.string().email().optional().catch(undefined),
-  }),
   note: contentSchema,
   /** Fedibird extra settings. */
   other_settings: z.object({
@@ -107,12 +92,6 @@ const baseAccountSchema = z.object({
       discoverable: z.boolean().catch(true),
     }).optional().catch(undefined),
     sms_verified: z.boolean().catch(false),
-    nostr: z.object({
-      nip05: z.string().optional().catch(undefined),
-    }).optional().catch(undefined),
-    ditto: coerceObject({
-      captcha_solved: z.boolean().catch(true),
-    }),
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),

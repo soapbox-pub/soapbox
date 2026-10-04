@@ -25,20 +25,14 @@ type PageParam = {
 
 const SuggestionKeys = {
   suggestions: ['suggestions'] as const,
-  localSuggestions: ['suggestions', 'local'] as const,
 };
 
-interface UseSuggestionsOpts {
-  local?: boolean;
-}
-
-const useSuggestions = (opts?: UseSuggestionsOpts) => {
+const useSuggestions = () => {
   const api = useApi();
   const dispatch = useAppDispatch();
-  const local = opts?.local ?? false;
 
   const getV2Suggestions = async (pageParam?: PageParam): Promise<PaginatedResult<Result>> => {
-    const endpoint = pageParam?.link || (local ? '/api/v2/ditto/suggestions/local' : '/api/v2/suggestions');
+    const endpoint = pageParam?.link || '/api/v2/suggestions';
     const response = await api.get(endpoint);
     const next = response.next();
 
@@ -57,7 +51,7 @@ const useSuggestions = (opts?: UseSuggestionsOpts) => {
   };
 
   const result = useInfiniteQuery({
-    queryKey: local ? SuggestionKeys.localSuggestions : SuggestionKeys.suggestions,
+    queryKey: SuggestionKeys.suggestions,
     queryFn: ({ pageParam }) => getV2Suggestions(pageParam),
     placeholderData: keepPreviousData,
     initialPageParam: undefined as PageParam | undefined,

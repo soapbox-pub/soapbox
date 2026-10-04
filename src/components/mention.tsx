@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 
 import Tooltip from '@/components/ui/tooltip.tsx';
-import { shortenNostr } from '@/utils/nostr.ts';
 
 
 import type { Mention as MentionEntity } from '@/schemas/index.ts';
@@ -29,7 +28,7 @@ const Mention: React.FC<IMention> = ({ mention: { acct, username }, disabled }) 
         dir='ltr'
         // eslint-disable-next-line formatjs/no-literal-string-in-jsx
       >
-        @{shortenNostr(username)}
+        @{username}
       </Link>
     </Tooltip>
   );

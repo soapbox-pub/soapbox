@@ -41,7 +41,6 @@ import ProfilePage from '@/pages/profile-page.tsx';
 import RemoteInstancePage from '@/pages/remote-instance-page.tsx';
 import ExplorePage from '@/pages/search-page.tsx';
 import StatusPage from '@/pages/status-page.tsx';
-import WidePage from '@/pages/wide-page.tsx';
 
 import FloatingActionButton from './components/floating-action-button.tsx';
 import Navbar from './components/navbar.tsx';
@@ -68,15 +67,10 @@ import {
   EditFilter,
   PinnedStatuses,
   Explore,
-  DivinePage,
   ListTimeline,
   Lists,
   Bookmarks,
   Settings,
-  Wallet,
-  WalletRelays,
-  WalletMints,
-  WalletTransactions,
   EditProfile,
   EditEmail,
   EditPassword,
@@ -144,16 +138,9 @@ import {
   RegisterInvite,
   ExternalLogin,
   LandingTimeline,
-  EditIdentity,
   Domains,
-  NostrRelays,
-  Bech32Redirect,
   Relays,
-  ManageZapSplit,
   Rules,
-  AdminNostrRelays,
-  NostrBunkerLogin,
-  ManageDittoServer,
 } from './util/async-components.ts';
 import GlobalHotkeys from './util/global-hotkeys.tsx';
 import { WrappedRoute } from './util/react-router-helpers.tsx';
@@ -266,8 +253,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
       <WrappedRoute path='/explore' page={ExplorePage} component={Explore} content={children} publicRoute />
-      {features.nostr && <WrappedRoute path='/divine' page={DefaultPage} component={DivinePage} content={children} publicRoute />}
-      {features.suggestionsLocal && <WrappedRoute path='/suggestions/local' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} componentParams={{ local: true }} />}
       {features.suggestions && <WrappedRoute path='/suggestions' exact publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />}
       {features.profileDirectory && <WrappedRoute path='/directory' exact publicRoute page={DefaultPage} component={Directory} content={children} />}
       {features.events && <WrappedRoute path='/events' page={EventsPage} component={Events} content={children} />}
@@ -323,35 +308,26 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
       <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-      {features.nip05 && <WrappedRoute path='/settings/identity' page={DefaultPage} component={EditIdentity} content={children} />}
       {features.exportData && <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />}
       {features.importData && <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />}
       {features.accountAliases && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
       {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
       {features.backups && <WrappedRoute path='/settings/backups' page={DefaultPage} component={Backups} content={children} />}
-      <WrappedRoute path='/settings/relays' page={DefaultPage} component={NostrRelays} content={children} />
       <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
       <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
       <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
       <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
       <WrappedRoute path='/settings/tokens' page={DefaultPage} component={AuthTokenList} content={children} />
       <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
-      {features.nostr && <WrappedRoute path='/wallet' page={DefaultPage} component={Wallet} content={children} exact />}
-      <WrappedRoute path='/wallet/relays' page={DefaultPage} component={WalletRelays} content={children} exact />
-      <WrappedRoute path='/wallet/mints' page={DefaultPage} component={WalletMints} content={children} exact />
-      <WrappedRoute path='/wallet/transactions' page={DefaultPage} component={WalletTransactions} content={children} exact />
       <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
       <WrappedRoute path='/soapbox/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/approval' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
-      {features.nostr && <WrappedRoute path='/soapbox/admin/ditto-server' adminOnly page={WidePage} component={ManageDittoServer} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/reports' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
       <WrappedRoute path='/soapbox/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
-      {features.nostr && <WrappedRoute path='/soapbox/admin/zap-split' staffOnly page={WidePage} component={ManageZapSplit} content={children} exact />}
       <WrappedRoute path='/soapbox/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
       <WrappedRoute path='/soapbox/admin/theme' staffOnly page={AdminPage} component={ThemeEditor} content={children} exact />
       <WrappedRoute path='/soapbox/admin/relays' staffOnly page={AdminPage} component={Relays} content={children} exact />
-      {features.nostr && <WrappedRoute path='/soapbox/admin/nostr/relays' staffOnly page={AdminPage} component={AdminNostrRelays} content={children} exact />}
       {features.adminAnnouncements && <WrappedRoute path='/soapbox/admin/announcements' staffOnly page={AdminPage} component={Announcements} content={children} exact />}
       {features.domains && <WrappedRoute path='/soapbox/admin/domains' staffOnly page={AdminPage} component={Domains} content={children} exact />}
       {features.adminRules && <WrappedRoute path='/soapbox/admin/rules' staffOnly page={AdminPage} component={Rules} content={children} exact />}
@@ -376,7 +352,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
         <WrappedRoute path='/signup' page={EmptyPage} component={RegistrationPage} publicRoute exact />
       )}
 
-      <WrappedRoute path='/login/nostr' page={DefaultPage} component={NostrBunkerLogin} publicRoute exact />
       <WrappedRoute path='/login/external' page={DefaultPage} component={ExternalLogin} publicRoute exact />
       <WrappedRoute path='/login/add' page={DefaultPage} component={LoginPage} publicRoute exact />
       <WrappedRoute path='/login' page={DefaultPage} component={LoginPage} publicRoute exact />
@@ -386,7 +361,6 @@ const SwitchingColumnsArea: React.FC<ISwitchingColumnsArea> = ({ children }) => 
       <Redirect from='/auth/password/new' to='/reset-password' />
       <Redirect from='/auth/password/edit' to={`/edit-password${search}`} />
 
-      <WrappedRoute path='/:bech32([\x21-\x7E]{1,83}1[023456789acdefghjklmnpqrstuvwxyz]{6,})' publicRoute page={EmptyPage} component={Bech32Redirect} content={children} />
 
       <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
     </Switch>

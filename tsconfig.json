@@ -9,8 +9,7 @@
       "@/*": ["./src/*"],
     },
     "types": [
-      "vite/client",
-      "@webbtc/webln-types"
+      "vite/client"
     ],
 
     /* Bundler mode */
