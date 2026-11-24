@@ -1,3 +1,4 @@
+import { parseHTML } from '@/utils/html.ts';
 import { isIntegerId } from '@/utils/numbers.tsx';
 
 import type { Status } from '@/types/entities.ts';
@@ -25,9 +26,7 @@ export const getFirstExternalLink = (status: Pick<Status, 'content'>): HTMLAncho
   try {
     // Pulled from Pleroma's media parser
     const selector = 'a:not(.mention,.hashtag,.attachment,[rel~="tag"])';
-    const element = document.createElement('div');
-    element.innerHTML = status.content;
-    return element.querySelector(selector);
+    return parseHTML(status.content).querySelector(selector);
   } catch {
     return null;
   }
