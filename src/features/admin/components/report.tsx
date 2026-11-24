@@ -129,10 +129,9 @@ const Report: React.FC<IReport> = ({ id }) => {
 
         <Stack>
           {(report.comment || '').length > 0 && (
-            <Text
-              tag='blockquote'
-              dangerouslySetInnerHTML={{ __html: report.comment }}
-            />
+            <Text tag='blockquote' className='whitespace-pre-wrap' data-testid='report-comment'>
+              {report.comment}
+            </Text>
           )}
 
           <HStack space={1}>
