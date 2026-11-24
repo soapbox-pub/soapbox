@@ -240,7 +240,8 @@ const importTranslation = (draft: Draft<State>, statusId: string, translation: T
 
   status.translation = {
     ...translation,
-    content: stripCompatibilityFeatures(translation.content ?? ''),
+    // Rendered as HTML in place of the (sanitized) status content.
+    content: DOMPurify.sanitize(stripCompatibilityFeatures(translation.content ?? ''), { USE_PROFILES: { html: true } }),
   };
 };
 
