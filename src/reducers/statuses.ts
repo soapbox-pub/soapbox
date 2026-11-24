@@ -1,5 +1,5 @@
 import { produce, type Draft } from 'immer';
-import DOMPurify from 'isomorphic-dompurify';
+
 
 import {
   BOOKMARK_REQUEST,
@@ -11,6 +11,7 @@ import { normalizeStatus } from '@/normalizers/index.ts';
 import { simulateEmojiReact, simulateUnEmojiReact } from '@/utils/emoji-reacts.ts';
 import { htmlToPlaintext, stripCompatibilityFeatures } from '@/utils/html.ts';
 import { normalizeId } from '@/utils/normalizers.ts';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -121,7 +122,7 @@ export const calculateStatus = (
   return {
     ...status,
     search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || '',
-    content: DOMPurify.sanitize(stripCompatibilityFeatures(status.content), { USE_PROFILES: { html: true } }),
+    content: sanitizeHtml(stripCompatibilityFeatures(status.content)),
     // `spoiler_text` alone is a subject line; it only warrants hiding the post
     // when the author also marked it sensitive.
     hidden: expandSpoilers ? false : status.sensitive,
@@ -241,7 +242,7 @@ const importTranslation = (draft: Draft<State>, statusId: string, translation: T
   status.translation = {
     ...translation,
     // Rendered as HTML in place of the (sanitized) status content.
-    content: DOMPurify.sanitize(stripCompatibilityFeatures(translation.content ?? ''), { USE_PROFILES: { html: true } }),
+    content: sanitizeHtml(stripCompatibilityFeatures(translation.content ?? '')),
   };
 };
 

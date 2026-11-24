@@ -1,5 +1,6 @@
-import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
+
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import { attachmentSchema } from './attachment.ts';
 import { cardSchema } from './card.ts';
@@ -23,7 +24,7 @@ const chatMessageSchema = z.object({
 }).transform((message) => ({
   ...message,
   // Pending messages are the user's own plain text, escaped at render time.
-  content: message.pending ? message.content : DOMPurify.sanitize(message.content, { USE_PROFILES: { html: true } }),
+  content: message.pending ? message.content : sanitizeHtml(message.content),
 }));
 
 type ChatMessage = z.infer<typeof chatMessageSchema>;

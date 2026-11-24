@@ -1,6 +1,5 @@
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
-import DOMPurify from 'isomorphic-dompurify';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -19,6 +18,7 @@ import { useAppDispatch } from '@/hooks/useAppDispatch.ts';
 import { useAppSelector } from '@/hooks/useAppSelector.ts';
 import { useFeatures } from '@/hooks/useFeatures.ts';
 import { IChat, useChatActions } from '@/queries/chats.ts';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import type { Menu } from '@/components/dropdown-menu/index.ts';
 
@@ -49,7 +49,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
 
   // `chat.last_message` comes straight from the API (and from streaming), not through the chat message normalizer.
   const lastMessageContent = useMemo(
-    () => DOMPurify.sanitize(chat.last_message?.content ?? '', { USE_PROFILES: { html: true } }),
+    () => sanitizeHtml(chat.last_message?.content ?? ''),
     [chat.last_message?.content],
   );
 

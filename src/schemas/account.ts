@@ -1,8 +1,8 @@
-import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import avatarMissing from '@/assets/images/avatar-missing.png';
 import headerMissing from '@/assets/images/header-missing.png';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 import { safeUrl } from '@/utils/url.ts';
 
 import { customEmojiSchema } from './custom-emoji.ts';
@@ -18,7 +18,7 @@ const hexSchema = z.string().regex(/^#[a-f0-9]{6}$/i);
 const fieldSchema = z.object({
   name: z.string(),
   /** HTML from the server, rendered as markup on the profile. */
-  value: z.string().transform((value) => DOMPurify.sanitize(value, { USE_PROFILES: { html: true } })),
+  value: z.string().transform((value) => sanitizeHtml(value)),
   verified_at: z.string().datetime().nullable().catch(null),
 });
 
@@ -139,7 +139,7 @@ const transformAccount = <T extends TransformableAccount>({ pleroma, other_setti
     moderator: pleroma?.is_moderator || false,
     local: pleroma?.is_local !== undefined ? pleroma.is_local : account.acct.split('@')[1] === undefined,
     location: account.location || pleroma?.location || other_settings?.location || '',
-    note: DOMPurify.sanitize(account.note, { USE_PROFILES: { html: true } }),
+    note: sanitizeHtml(account.note),
     pleroma,
     roles: account.roles.length ? account.roles : filterBadges(pleroma?.tags),
     staff: pleroma?.is_admin || pleroma?.is_moderator || false,

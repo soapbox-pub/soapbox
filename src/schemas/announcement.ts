@@ -1,5 +1,6 @@
-import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
+
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import { announcementReactionSchema } from './announcement-reaction.ts';
 import { customEmojiSchema } from './custom-emoji.ts';
@@ -12,7 +13,7 @@ import type { Resolve } from '@/utils/types.ts';
 // https://docs.joinmastodon.org/entities/announcement/
 const announcementSchema = z.object({
   id: z.string(),
-  content: z.string().catch('').transform((value) => DOMPurify.sanitize(value, { USE_PROFILES: { html: true } })),
+  content: z.string().catch('').transform((value) => sanitizeHtml(value)),
   starts_at: z.string().datetime().nullable().catch(null),
   ends_at: z.string().datetime().nullable().catch(null),
   all_day: z.boolean().catch(false),

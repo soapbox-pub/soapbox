@@ -1,13 +1,13 @@
 /**
  * Status edit normalizer
  */
-import DOMPurify from 'isomorphic-dompurify';
 
 import { normalizeAttachment } from '@/normalizers/attachment.ts';
 import { normalizeEmoji } from '@/normalizers/emoji.ts';
 import { pollSchema } from '@/schemas/index.ts';
 import { stripCompatibilityFeatures } from '@/utils/html.ts';
 import { fromDefaults } from '@/utils/normalizers.ts';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import type { Account, Attachment, Emoji, EmbeddedEntity, Poll } from '@/types/entities.ts';
 
@@ -43,7 +43,7 @@ export const normalizeStatusEdit = (statusEdit: Record<string, any>): StatusEdit
   const poll = pollSchema.safeParse(statusEdit.poll);
   result.poll = poll.success ? poll.data : null;
 
-  result.content = DOMPurify.sanitize(stripCompatibilityFeatures(statusEdit.content), { ADD_ATTR: ['target'] });
+  result.content = sanitizeHtml(stripCompatibilityFeatures(statusEdit.content));
 
   return result;
 };

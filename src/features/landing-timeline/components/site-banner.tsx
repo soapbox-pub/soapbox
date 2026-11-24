@@ -1,15 +1,15 @@
-import DOMPurify from 'isomorphic-dompurify';
 
 import Markup from '@/components/markup.tsx';
 import Stack from '@/components/ui/stack.tsx';
 import { useInstance } from '@/hooks/useInstance.ts';
 import { getTextDirection } from '@/utils/rtl.ts';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import { LogoText } from './logo-text.tsx';
 
 const SiteBanner: React.FC = () => {
   const { instance } = useInstance();
-  const description = DOMPurify.sanitize(instance.description);
+  const description = sanitizeHtml(instance.description);
 
   return (
     <Stack space={3}>

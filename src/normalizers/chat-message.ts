@@ -1,9 +1,9 @@
-import DOMPurify from 'isomorphic-dompurify';
 
 import { normalizeAttachment } from '@/normalizers/attachment.ts';
 import { emojiReactionSchema } from '@/schemas/index.ts';
 import { filteredArray } from '@/schemas/utils.ts';
 import { fromDefaults } from '@/utils/normalizers.ts';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import type { Attachment, Card, Emoji, EmojiReaction } from '@/types/entities.ts';
 
@@ -56,7 +56,7 @@ export const normalizeChatMessage = (chatMessage: Record<string, any>): ChatMess
   // Chat content is HTML from the server, rendered with `dangerouslySetInnerHTML`.
   // Pending messages are the user's own plain text and get escaped at render time instead.
   if (!result.pending) {
-    result.content = DOMPurify.sanitize(result.content, { USE_PROFILES: { html: true } });
+    result.content = sanitizeHtml(result.content);
   }
 
   // Rewrite `<p></p>` to empty string.

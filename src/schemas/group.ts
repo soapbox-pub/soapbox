@@ -1,8 +1,8 @@
-import DOMPurify from 'isomorphic-dompurify';
 import z from 'zod';
 
 import avatarMissing from '@/assets/images/avatar-missing.png';
 import headerMissing from '@/assets/images/header-missing.png';
+import { sanitizeHtml } from '@/utils/sanitize.ts';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { groupRelationshipSchema } from './group-relationship.ts';
@@ -42,7 +42,7 @@ const groupSchema = z.object({
 
   return {
     ...group,
-    note: DOMPurify.sanitize(group.note, { USE_PROFILES: { html: true } }),
+    note: sanitizeHtml(group.note),
   };
 });
 
