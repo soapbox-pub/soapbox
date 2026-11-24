@@ -221,6 +221,7 @@ export const logOut = (refresh = true) =>
         localStorage.removeItem('soapbox:external:app');
         localStorage.removeItem('soapbox:external:baseurl');
         localStorage.removeItem('soapbox:external:scopes');
+        localStorage.removeItem('soapbox:external:state');
 
         dispatch({ type: AUTH_LOGGED_OUT, account, refresh });
 

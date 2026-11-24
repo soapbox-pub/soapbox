@@ -29,6 +29,7 @@ const messages = defineMessages({
   instanceFailed: { id: 'login_external.errors.instance_fail', defaultMessage: 'The instance returned an error.' },
   unreachable: { id: 'login_external.errors.unreachable', defaultMessage: 'Couldn\'t reach {host}. Check the address and try again.' },
   invalidHost: { id: 'login_external.errors.invalid_host', defaultMessage: 'Enter the domain of your server, like mastodon.social.' },
+  loginFailed: { id: 'login_external.errors.login_failed', defaultMessage: 'Couldn\'t finish logging in. Please try again.' },
   submit: { id: 'login_external.submit', defaultMessage: 'Continue' },
 });
 
@@ -146,7 +147,11 @@ const ExternalLoginForm: React.FC<IExternalLoginForm> = ({ label }) => {
 
   useEffect(() => {
     if (code) {
-      dispatch(loginWithCode(code));
+      dispatch(loginWithCode(code, query.get('state'))).catch((error: unknown) => {
+        console.error(error);
+        window.history.replaceState(null, '', window.location.pathname);
+        setError(intl.formatMessage(messages.loginFailed));
+      });
     }
   }, [code]);
 

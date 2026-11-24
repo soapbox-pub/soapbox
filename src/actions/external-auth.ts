@@ -52,16 +52,22 @@ const externalAuthorize = (instance: InstanceV1, baseURL: string) =>
     return dispatch(createExternalApp(instance, baseURL)).then((app) => {
       const { client_id, redirect_uri } = app as Record<string, string>;
 
+      // Random value the server sends back with the code, so we only accept codes
+      // from a login this browser started.
+      const state = crypto.randomUUID();
+
       const query = new URLSearchParams({
         client_id,
         redirect_uri,
         response_type: 'code',
         scope: scopes,
+        state,
       });
 
       localStorage.setItem('soapbox:external:app', JSON.stringify(app));
       localStorage.setItem('soapbox:external:baseurl', baseURL);
       localStorage.setItem('soapbox:external:scopes', scopes);
+      localStorage.setItem('soapbox:external:state', state);
 
       window.location.href = `${baseURL}/oauth/authorize?${query.toString()}`;
     });
@@ -76,9 +82,28 @@ export const externalLogin = (host: string) =>
     });
   };
 
-export const loginWithCode = (code: string) =>
+/** Forget the app and settings of an external login in progress. */
+export const clearExternalAuth = () => {
+  localStorage.removeItem('soapbox:external:app');
+  localStorage.removeItem('soapbox:external:baseurl');
+  localStorage.removeItem('soapbox:external:scopes');
+  localStorage.removeItem('soapbox:external:state');
+};
+
+export const loginWithCode = (code: string, state?: string | null) =>
   (dispatch: AppDispatch) => {
-    const { client_id, client_secret, redirect_uri } = JSON.parse(localStorage.getItem('soapbox:external:app')!);
+    const app = localStorage.getItem('soapbox:external:app');
+    const expectedState = localStorage.getItem('soapbox:external:state');
+
+    // Only finish a login this browser started. Without this, a link with someone else's
+    // code could log the user in to an account of the attacker's choosing.
+    // (Provider logins through `prepareRequest` don't send a state, and store none.)
+    if (!app || (expectedState && state !== expectedState)) {
+      clearExternalAuth();
+      return Promise.reject(new Error('No matching login in progress'));
+    }
+
+    const { client_id, client_secret, redirect_uri } = JSON.parse(app);
     const baseURL = localStorage.getItem('soapbox:external:baseurl')!;
     const scope   = localStorage.getItem('soapbox:external:scopes')!;
 
@@ -95,6 +120,6 @@ export const loginWithCode = (code: string) =>
       .then((token: Record<string, string | number>) => dispatch(authLoggedIn(token)))
       .then(({ access_token }: any) => dispatch(verifyCredentials(access_token as string, baseURL)))
       .then((account: { id: string }) => dispatch(switchAccount(account.id)))
-      .then(() => localStorage.removeItem('soapbox:external:baseurl'))
+      .then(() => clearExternalAuth())
       .then(() => window.location.href = '/');
   };

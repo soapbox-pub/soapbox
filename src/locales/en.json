@@ -1000,6 +1000,7 @@
   "login_external.custom_server": "Sign in on this server",
   "login_external.errors.instance_fail": "The instance returned an error.",
   "login_external.errors.invalid_host": "Enter the domain of your server, like mastodon.social.",
+  "login_external.errors.login_failed": "Couldn't finish logging in. Please try again.",
   "login_external.errors.unreachable": "Couldn't reach {host}. Check the address and try again.",
   "login_external.server_active_users": "{count} active",
   "login_external.submit": "Continue",
