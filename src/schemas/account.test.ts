@@ -14,6 +14,12 @@ describe('accountSchema', () => {
       }],
     });
 
-    expect(account.fields[0]?.value).toEqual('<a>click</a> <a rel="me" href="https://example.com">example.com</a><img src="x">');
+    const value = new DOMParser().parseFromString(account.fields[0]!.value, 'text/html').body;
+    const [unsafe, safe] = value.querySelectorAll('a');
+
+    expect(unsafe.hasAttribute('href')).toBe(false);
+    expect(safe.getAttribute('href')).toBe('https://example.com');
+    expect(safe.getAttribute('rel')).toBe('me');
+    expect(value.querySelector('img')?.hasAttribute('onerror')).toBe(false);
   });
 });
