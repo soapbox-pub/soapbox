@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
+import { httpUrlSchema } from './utils.ts';
+
 const applicationSchema = z.object({
   name: z.string().catch(''),
-  website: z.string().url().nullable().catch(null),
+  website: httpUrlSchema.nullable().catch(null),
   scopes: z.string().array().catch([]),
   redirect_uris: z.string().url().array().optional().catch(undefined),
   redirect_uri: z.string().url().optional().catch(undefined),

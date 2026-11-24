@@ -3,10 +3,11 @@ import z from 'zod';
 
 import avatarMissing from '@/assets/images/avatar-missing.png';
 import headerMissing from '@/assets/images/header-missing.png';
+import { safeUrl } from '@/utils/url.ts';
 
 import { customEmojiSchema } from './custom-emoji.ts';
 import { Relationship } from './relationship.ts';
-import { coerceObject, contentSchema, filteredArray } from './utils.ts';
+import { coerceObject, contentSchema, filteredArray, httpUrlSchema } from './utils.ts';
 
 import type { Resolve } from '@/utils/types.ts';
 
@@ -96,11 +97,11 @@ const baseAccountSchema = z.object({
   }).optional().catch(undefined),
   statuses_count: z.number().catch(0),
   suspended: z.boolean().catch(false),
-  uri: z.string().url().catch(''),
-  url: z.string().url(),
+  uri: httpUrlSchema.catch(''),
+  url: httpUrlSchema,
   username: z.string().catch(''),
   verified: z.boolean().catch(false),
-  website: z.string().catch(''),
+  website: z.string().catch('').transform((value) => safeUrl(value)),
 });
 
 type BaseAccount = z.infer<typeof baseAccountSchema>;

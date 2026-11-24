@@ -4,6 +4,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { z } from 'zod';
 
 import { groupSchema } from './group.ts';
+import { httpUrlSchema } from './utils.ts';
 
 const IDNA_PREFIX = 'xn--';
 
@@ -13,10 +14,10 @@ const IDNA_PREFIX = 'xn--';
  */
 const cardSchema = z.object({
   author_name: z.string().catch(''),
-  author_url: z.string().url().catch(''),
+  author_url: httpUrlSchema.catch(''),
   blurhash: z.string().nullable().catch(null),
   description: z.string().catch(''),
-  embed_url: z.string().url().catch(''),
+  embed_url: httpUrlSchema.catch(''),
   group: groupSchema.nullable().catch(null), // TruthSocial
   height: z.number().catch(0),
   html: z.string().catch(''),
@@ -30,10 +31,10 @@ const cardSchema = z.object({
     }).optional().catch(undefined),
   }).optional().catch(undefined),
   provider_name: z.string().catch(''),
-  provider_url: z.string().url().catch(''),
+  provider_url: httpUrlSchema.catch(''),
   title: z.string().catch(''),
   type: z.enum(['link', 'photo', 'video', 'rich']).catch('link'),
-  url: z.string().url(),
+  url: httpUrlSchema,
   width: z.number().catch(0),
 }).transform(({ pleroma, ...card }) => {
   if (!card.provider_name) {

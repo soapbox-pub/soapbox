@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { httpUrlSchema } from './utils.ts';
+
 const historySchema = z.object({
   accounts: z.coerce.number(),
   uses: z.coerce.number(),
@@ -8,7 +10,7 @@ const historySchema = z.object({
 /** https://docs.joinmastodon.org/entities/tag */
 const tagSchema = z.object({
   name: z.string().min(1),
-  url: z.string().url().catch(''),
+  url: httpUrlSchema.catch(''),
   history: z.array(historySchema).nullable().catch(null),
   following: z.boolean().catch(false),
 });

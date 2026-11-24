@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
+import { httpUrlSchema } from './utils.ts';
+
 const mentionSchema = z.object({
   acct: z.string(),
   id: z.string(),
-  url: z.string().url().catch(''),
+  url: httpUrlSchema.catch(''),
   username: z.string().catch(''),
 }).transform((mention) => {
   if (!mention.username) {

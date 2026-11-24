@@ -4,6 +4,7 @@
  * @see {@link https://docs.joinmastodon.org/entities/attachment/}
  */
 import { fromDefaults } from '@/utils/normalizers.ts';
+import { isSafeUrl, safeUrl } from '@/utils/url.ts';
 
 interface AttachmentMetaSize {
   width?: number;
@@ -64,8 +65,10 @@ export const normalizeAttachment = (attachment: Record<string, any>): Attachment
     attachment.remote_url,
   ].find(url => url) || '';
 
-  result.url = attachment.url ?? url;
-  result.preview_url = attachment.preview_url ?? url;
+  // These end up in `href` and `src`, so only allow web URLs.
+  result.url = safeUrl(attachment.url ?? url);
+  result.preview_url = safeUrl(attachment.preview_url ?? url);
+  result.remote_url = isSafeUrl(result.remote_url) ? result.remote_url : null;
 
   // Ensure meta is not null
   result.meta = { ...attachment.meta };

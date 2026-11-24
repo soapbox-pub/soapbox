@@ -1,5 +1,10 @@
 import z from 'zod';
 
+import { isSafeUrl } from '@/utils/url.ts';
+
+/** An http(s) URL from untrusted data. Rejects `javascript:`, `data:` and other schemes `z.string().url()` allows. */
+const httpUrlSchema = z.string().url().refine((value) => isSafeUrl(value), { message: 'URL must be http(s)' });
+
 /** Ensure HTML content is a string, and drop empty `<p>` tags. */
 const contentSchema = z.string().catch('').transform((value) => value === '<p></p>' ? '' : value);
 
@@ -42,4 +47,4 @@ function coerceObject<T extends z.ZodRawShape>(shape: T) {
 /** Validates a hex color code. */
 const hexColorSchema = z.string().regex(/^#([a-f0-9]{3}|[a-f0-9]{4}|[a-f0-9]{6}|[a-f0-9]{8})$/i);
 
-export { filteredArray, hexColorSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };
+export { filteredArray, hexColorSchema, httpUrlSchema, emojiSchema, contentSchema, dateSchema, jsonSchema, mimeSchema, coerceObject };

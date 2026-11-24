@@ -9,6 +9,7 @@ import { normalizeMention } from '@/normalizers/mention.ts';
 import { accountSchema, cardSchema, emojiReactionSchema, groupSchema, pollSchema, tombstoneSchema } from '@/schemas/index.ts';
 import { filteredArray } from '@/schemas/utils.ts';
 import { fromDefaults } from '@/utils/normalizers.ts';
+import { safeUrl } from '@/utils/url.ts';
 
 import type { Account } from '@/schemas/index.ts';
 import type { Attachment, Card, Emoji, Group, Mention, Poll, EmbeddedEntity, EmojiReaction } from '@/types/entities.ts';
@@ -267,6 +268,16 @@ export const normalizeStatus = (data: Record<string, any>): Status => {
   if (data.friendica) {
     status.dislikes_count = data.friendica.dislikes_count;
     status.disliked = data.friendica.disliked;
+  }
+
+  // Links to the status and its app come from the remote server; only allow web URLs.
+  status.url = safeUrl(status.url);
+  status.uri = safeUrl(status.uri);
+  if (status.application) {
+    status.application = { ...status.application, website: safeUrl(status.application.website) || null };
+  }
+  if (status.pleroma?.quote_url) {
+    status.pleroma = { ...status.pleroma, quote_url: safeUrl(status.pleroma.quote_url) || undefined };
   }
 
   status.tombstone = parseOrNull(tombstoneSchema, data.tombstone);

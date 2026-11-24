@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
+import { httpUrlSchema } from './utils.ts';
+
 const locationSchema = z.object({
-  url: z.string().url().catch(''),
+  url: httpUrlSchema.catch(''),
   description: z.string().catch(''),
   country: z.string().catch(''),
   locality: z.string().catch(''),

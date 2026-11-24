@@ -4,6 +4,7 @@
  * @see {@link https://docs.joinmastodon.org/entities/mention/}
  */
 import { fromDefaults } from '@/utils/normalizers.ts';
+import { safeUrl } from '@/utils/url.ts';
 
 // https://docs.joinmastodon.org/entities/mention/
 export interface Mention {
@@ -20,6 +21,8 @@ export const normalizeMention = (mention: Record<string, any>): Mention => {
     username: '',
     url: '',
   }, mention);
+
+  result.url = safeUrl(result.url);
 
   // Set username from acct, if applicable
   result.username = result.username || result.acct.split('@')[0];
