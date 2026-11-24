@@ -16,6 +16,7 @@ import { useInstance } from '@/hooks/useInstance.ts';
 import { useRegistrationStatus } from '@/hooks/useRegistrationStatus.ts';
 import { selectAccount } from '@/selectors/index.ts';
 import toast from '@/toast.tsx';
+import { isSafeUrl } from '@/utils/url.ts';
 
 const messages = defineMessages({
   accountPlaceholder: { id: 'remote_interaction.account_placeholder', defaultMessage: 'Enter your username@domain you want to act from' },
@@ -59,6 +60,8 @@ const UnauthorizedModal: React.FC<IUnauthorizedModal> = ({ action, onClose, acco
 
     dispatch(remoteInteraction(apId!, account))
       .then(url => {
+        // The URL comes from the remote server's subscribe template, so only open web URLs.
+        if (!isSafeUrl(url) || !url) throw new Error('Invalid remote interaction URL');
         window.open(url, '_new', 'noopener,noreferrer');
         onClose('UNAUTHORIZED');
       })

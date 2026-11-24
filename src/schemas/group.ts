@@ -7,19 +7,19 @@ import { sanitizeHtml } from '@/utils/sanitize.ts';
 import { customEmojiSchema } from './custom-emoji.ts';
 import { groupRelationshipSchema } from './group-relationship.ts';
 import { groupTagSchema } from './group-tag.ts';
-import { filteredArray } from './utils.ts';
+import { filteredArray, mediaUrlSchema } from './utils.ts';
 
 const groupSchema = z.object({
-  avatar: z.string().catch(avatarMissing),
-  avatar_static: z.string().catch(''),
+  avatar: mediaUrlSchema(avatarMissing),
+  avatar_static: mediaUrlSchema(''),
   created_at: z.string().datetime().catch(new Date().toUTCString()),
   deleted_at: z.string().datetime().or(z.null()).catch(null),
   display_name: z.string().catch(''),
   domain: z.string().catch(''),
   emojis: filteredArray(customEmojiSchema),
   group_visibility: z.string().catch(''), // TruthSocial
-  header: z.string().catch(headerMissing),
-  header_static: z.string().catch(''),
+  header: mediaUrlSchema(headerMissing),
+  header_static: mediaUrlSchema(''),
   id: z.coerce.string(),
   locked: z.boolean().catch(false),
   membership_required: z.boolean().catch(false),
