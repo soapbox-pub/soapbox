@@ -19,4 +19,23 @@ describe('normalizeChatMessage()', () => {
     expect(result.media_attachments[0]?.id).toEqual('def');
     expect(result.media_attachments[0]?.preview_url).toEqual('https://gleasonator.com/favicon.png');
   });
+
+  it('sanitizes HTML content from the server', () => {
+    const result = normalizeChatMessage({
+      id: 'abc',
+      content: '<p>hi <img src="x" onerror="alert(1)"><script>alert(2)</script></p>',
+    });
+
+    expect(result.content).toEqual('<p>hi <img src="x"></p>');
+  });
+
+  it('leaves pending content alone, to be escaped at render time', () => {
+    const result = normalizeChatMessage({
+      id: 'abc',
+      content: 'a & b <3',
+      pending: true,
+    });
+
+    expect(result.content).toEqual('a & b <3');
+  });
 });

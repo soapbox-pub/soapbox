@@ -1,5 +1,6 @@
 import dotsIcon from '@tabler/icons/outline/dots.svg';
 import logoutIcon from '@tabler/icons/outline/logout.svg';
+import DOMPurify from 'isomorphic-dompurify';
 import { useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
@@ -45,6 +46,12 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
   const { deleteChat } = useChatActions(chat?.id as string);
   const isBlocked = useAppSelector((state) => state.relationships[chat.account.id]?.blocked_by);
   const isBlocking = useAppSelector((state) => state.relationships[chat?.account?.id]?.blocking);
+
+  // `chat.last_message` comes straight from the API (and from streaming), not through the chat message normalizer.
+  const lastMessageContent = useMemo(
+    () => DOMPurify.sanitize(chat.last_message?.content ?? '', { USE_PROFILES: { html: true } }),
+    [chat.last_message?.content],
+  );
 
   const menu = useMemo((): Menu => [{
     text: intl.formatMessage(messages.leaveChat),
@@ -119,7 +126,7 @@ const ChatListItem: React.FC<IChatListItemInterface> = ({ chat, onClick }) => {
                     truncate
                     className='truncate-child pointer-events-none h-5 w-full'
                     data-testid='chat-last-message'
-                    dangerouslySetInnerHTML={{ __html: chat.last_message?.content }}
+                    dangerouslySetInnerHTML={{ __html: lastMessageContent }}
                   />
                 )}
               </>
