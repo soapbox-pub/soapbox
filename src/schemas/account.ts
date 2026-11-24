@@ -16,7 +16,8 @@ const hexSchema = z.string().regex(/^#[a-f0-9]{6}$/i);
 
 const fieldSchema = z.object({
   name: z.string(),
-  value: z.string(),
+  /** HTML from the server, rendered as markup on the profile. */
+  value: z.string().transform((value) => DOMPurify.sanitize(value, { USE_PROFILES: { html: true } })),
   verified_at: z.string().datetime().nullable().catch(null),
 });
 
